@@ -1,0 +1,105 @@
+<style type="text/css" >
+.dd{width:134px; height:30px;display:inline-block;}
+</style>
+<div class="pageContent">
+	<form method="post" id="detail_form" action="">
+		<div class="pageFormContent" layoutH="56">
+			<input type="hidden" id="agentSize" name="agentSize" value="$!agentList.size()"/>
+			<div class="dd">
+				<input type="checkbox" value="-1" id="allAgent" name="agent" onclick="checkboxOnclick(this)"/> 全选
+			</div>
+			<div class="dd" id="userbox">
+				<input type="checkbox" value="0" name="agent" id="agentId0" onclick="checkboxOnclick1(this)"/> 普通用户
+			</div>
+			<div class="dd">
+				
+			</div>
+			#set($ag=1)
+			#foreach($agent in $!agentList)
+				<div class="dd">
+				<input type="checkbox" id="agentId$ag" value="$agent.id" name="agent" onclick="checkboxOnclick1(this)"/> $agent.agentName
+				</div>
+				#set($ag=$ag + 1)
+			#end
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="checkAgent()" class="close">确定</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	function checkAgent() {
+		var ids = "";
+		var sum = parseInt(0);
+		$("input[name=agent]:checkbox").each(function(){
+			if($(this).attr("checked")) {
+				ids += $(this).attr('value') + ",";
+				if($(this).attr('value') != "-1"){
+					sum = parseInt(sum)+parseInt(1);
+				}
+				
+			}
+		})
+		$("#agentIds").val(ids);
+		$("#showAgentChoose").text("已选择"+sum+"个渠道");
+		
+	}
+	
+	$(function(){
+		var agents = $("#agentIds").val();
+		var arr = agents.split(",");
+		for(var i=0; i<arr.length; i++) {
+			if(arr[i] != null && arr[i] != '') {
+				$("input[name=agent]:checkbox").each(function(){
+					if($(this).attr('value') == arr[i]) {
+						$(this).attr('checked','checked');
+        			}
+        		})
+			}
+		}
+	})
+	
+	function checkboxOnclick(e){
+    	if ( e.checked == true){
+			//if($("#user").attr("checked") == undefined){
+				//$("[name='agent']").attr("checked",'true');//全选
+				//$("[id='user']").removeAttr("checked");
+				
+			//}else{
+				//$("[name='agent']").attr("checked",'true');//全选
+			//}
+			
+			$("[name='agent']").attr("checked",'true');//全选
+        }else{
+			//if($("#user").attr("checked") != undefined){
+				//$("[name='agent']").removeAttr("checked");//取消全选   
+				//$("[id='user']").attr("checked",'true');
+			//}else{
+				//$("[name='agent']").removeAttr("checked");//取消全选   
+			//}
+			$("[name='agent']").removeAttr("checked");//取消全选  
+    	}
+	}
+	
+	function checkboxOnclick1(e){
+    	if ( e.checked != true){
+        	$("[id='allAgent']").removeAttr("checked");
+        }else{
+			var n = parseInt($("#agentSize").val())+parseInt(1);
+			var s = parseInt(0);
+			for(var i=parseInt(0);i<n;i++){
+				if($("#agentId"+i).attr("checked") != undefined){
+					s = s+parseInt(1);
+				}
+			}
+			if(parseInt(s) == parseInt(n)){
+				$("[id='allAgent']").attr("checked",'true');
+			}
+		}
+	}
+</script>

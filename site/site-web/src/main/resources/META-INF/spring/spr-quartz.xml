@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd" >
+	
+
+	<!-- 触发时间 配置区域 -->
+	<!-- 异常请求任务执行时间设置 -->
+	<bean id="abnormalRequestHostTime" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="abnormalRequestHostTask" />
+		</property>
+		<!-- cron表达式 -->
+		<property name="cronExpression">
+			<value>0 0/1 * * * ?</value><!-- 每天每5分钟触发 -->
+		</property>
+	</bean>
+	<!-- 异常请求告警任务执行时间设置 -->
+	<bean id="abnormalRequestAlarmTime" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="abnormalRequestAlarmTask" />
+		</property>
+		<!-- cron表达式 -->
+		<property name="cronExpression">
+			<value>0 0 2 * * ?</value><!-- 每天凌晨2点触发 -->
+		</property>
+	</bean>
+
+	<!-- 要调用的TASK类 配置区域 -->
+	<!-- 异常请求任务 -->
+	<bean id="abnormalRequestHostJob" class="com.pinting.site.common.interceptor.task.AbnormalRequestHostTask"></bean>
+	<!-- 异常请求告警任务 -->
+	<bean id="abnormalRequestAlarmJob" class="com.pinting.site.common.interceptor.task.AbnormalRequestAlarmTask"></bean>
+	
+	<bean id="abnormalRequestHostTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject">
+			<ref bean="abnormalRequestHostJob" />
+		</property>
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod">
+			<value>execute</value>
+		</property>
+	</bean>
+	<bean id="abnormalRequestAlarmTask"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject">
+			<ref bean="abnormalRequestAlarmJob" />
+		</property>
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod">
+			<value>execute</value>
+		</property>
+	</bean>
+
+	<!-- 总管理类 配置（包括执行任务列表） -->
+	<bean id="startQuertz" lazy-init="false" autowire="no"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<!-- 异常请求任务执行时间 引入 -->
+				<ref bean="abnormalRequestHostTime" />
+				<!-- 异常请求告警任务执行时间 引入 -->
+				<ref bean="abnormalRequestAlarmTime" />
+				<!-- 其他任务执行时间 引入 -->
+				<!-- ... ... -->
+			</list>
+		</property>
+	</bean>
+
+</beans>

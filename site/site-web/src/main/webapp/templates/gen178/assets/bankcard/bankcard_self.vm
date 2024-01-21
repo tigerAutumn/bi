@@ -1,0 +1,65 @@
+#LoadGenCSS("/resources/gen178/styles/assets/bankcard_index")
+#LoadGenJS("/resources/gen178/scripts/assets/bankcard_index")
+#LoadGenJS("/resources/gen178/scripts/common/common")
+
+<!--新版开始-->
+<div class="bankcard">
+    <div class="tickets_title">
+                <ul class="clearfix">
+                    <li class="tickets_title_focuse">我的银行卡</li>
+                </ul>
+            </div>
+            <div class="bankcard_list">
+				<!--未绑卡-->
+				#if($!size == 0)
+                <div class="bankcard_card card_none">
+                    <div class="addcard text_center">
+                        <img alt="" src="$!env.get('gen.server.web')/resources/gen178/images/assets/bankcard/addcard.png">
+                    </div>
+                    <p>点击添加一张银行卡</p>
+                </div>
+				<script>
+                    $('.card_none').click(function () {
+                        var agentViewFlag = $('#agentViewFlag').val();
+                        location.href = "$!env.get('gen.server.web')/gen178/bankcard/index?entry=self" + '&agentViewFlag=' + agentViewFlag;
+                    });
+                </script>
+				#else
+				<!--已绑卡-->
+				#foreach($!bankcard in $!bankcards)
+                <input type="hidden" name="cardId" value="$!bankcard.id" />
+                <input type="hidden" name="cardNo" value="$string.right($!bankcard.cardNo,4)" />
+                <input type="hidden" name="bankName" value="$!bankcard.bankName" />
+                <input type="hidden" name="smallLogo" value="$!smallLogo" />
+                <input type="hidden" name="largeLogo" value="$!largeLogo" />
+                <div class="bankcard_card text_center">
+					#if($!bankcard.isFirst == 1)
+						<img src="$!env.get('gen.server.web')/resources/gen178/images/assets/bankcard/bankcard_safeCard.png" class="safe_card">
+					#end
+                    <div class="card_ifo">
+                        #if($!bankcard.smallLogo)
+                            <img src="$!env.get('gen.server.web')/$!bankcard.smallLogo">
+                        #elseif($!bankcard.largeLogo)
+                            <img src="$!env.get('gen.server.web')/$!bankcard.largeLogo">
+                        #else
+                            <img src="$!env.get('gen.server.web')/resources/gen178/images/bank_null.jpg">
+                        #end
+                        <span>$!bankcard.bankName</span>
+                    </div>
+                    <p>****&nbsp;&nbsp;****&nbsp;****&nbsp;<span>$string.right($!bankcard.cardNo,4)</span></p>
+                </div>
+				#end
+				#end
+            </div>
+            <div class="bankcard_des clearfix">
+                <h5>绑卡说明：</h5>
+                <p>1.为了保障您的资金安全，您在币港湾只能绑定一张银行卡，绑定成功此卡将作为您的币港湾安全卡；</p>
+                <p>2.由于安全卡只能设置一张，所以即使您的账户被盗，他人也无法将资金转移到其他账户，保障您的资金万无一失。</p>
+                <div class="bankcard_step text_center clearfix">
+                    <img src="$!env.get('gen.server.web')/resources/gen178/images/assets/bankcard/bankcard_des_card.png">
+                    <p style="float: left">币港湾账户</p>
+                    <p style="float: right">币港湾安全卡</p>
+                </div>
+            </div>
+        </div>
+<!--新版结束-->

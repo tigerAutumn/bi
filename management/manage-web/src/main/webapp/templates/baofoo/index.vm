@@ -1,0 +1,147 @@
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!req.pageNum"/>
+    <input type="hidden" name="numPerPage" value="$!req.numPerPage"/>
+    <input type="hidden" name="orderField" value="$!{orderField}"/>
+    <input type="hidden" name="orderDirection" value="$!{orderDirection}"/>
+</form>
+<div class="pageHeader">
+    <form id="baoFooForm" rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('baofoo/bind_card/index.htm')"
+          method="post">
+        <input type="hidden" name="pageNum" value="$!req.pageNum"/>
+        <input type="hidden" name="numPerPage" value="$!req.numPerPage"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <table class="searchContent">
+                    <tr>
+                        <td>
+                            姓名：<input id="cardOwner" type="text" name="cardOwner" value="$!req.cardOwner"/>
+                        </td>
+                        <td>
+                            <div class="buttonActive">
+                                <div class="buttonContent">
+                                    <button type="submit">查询</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </ul>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li><a class="add" href="$env.getWebURL('baofoo/bind_card/detail.htm')" target="dialog" mask="true"
+                   rel="createBack" height="300"><span>新增</span></a></li>
+            <li class="line">line</li>
+			<!-- <li><a class="edit" href="$env.getWebURL('baofoo/bind_card/batch_bind.htm')" target="dialog" mask="true"
+           rel="createBack" height="300"><span>批量绑卡</span></a></li> -->
+			<button id="batch_bind_sub_id" type="button">批量绑卡</button>
+        </ul>
+    </div>
+    <table class="table" width="1050" layoutH="138">
+        <thead>
+        <tr>
+            <th width="3%">用户姓名</th>
+            <th width="5%">手机</th>
+            <th width="5%">身份证号</th>
+            <th width="3%">银行类型</th>
+            <th width="5%">银行卡号</th>
+            <th width="3%">状态</th>
+            <th width="7%">返回消息</th>
+            <th width="3%">创建时间</th>
+            <th width="3%">更新时间</th>
+            <th width="3%">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach($user in $bindUserList)
+            <tr target="sid_user" rel="1">
+                <td>$!user.userName</td>
+                <td>$!user.mobile</td>
+                <td>$!user.idCard</td>
+                <td>$!user.bankName</td>
+                <td>$!user.cardNo</td>
+                <td>
+                    #if("$!user.bindStatus" == "BIND_SUCCESS")
+                        绑卡成功
+                    #elseif("$!user.bindStatus" == "INIT")
+                        新建
+                    #elseif("$!user.bindStatus" == "COMM_FAIL")
+                        通讯失败
+                    #elseif("$!user.bindStatus" == "PRE_BIND_FAIL")
+                        预绑卡失败
+                    #elseif("$!user.bindStatus" == "PRE_BIND_SUCCESS")
+                        预绑卡成功
+                    #elseif("$!user.bindStatus" == "BIND_FAIL")
+                        绑卡失败
+                    #elseif("$!user.bindStatus" == "UNBIND_SUCCESS")
+                        解绑成功
+					#elseif("$!user.bindStatus" == "FAIL")
+                        绑卡失败
+                    #end
+                </td>
+                <td>$!user.returnMsg</td>
+                <td>$!date.format($!user.createTime)</td>
+                <td>$!date.format($!user.updateTime)</td>
+                <td>
+                    #if("$!user.bindStatus" == "BIND_SUCCESS")
+                        <a title="确认解绑" target="ajaxTodo"
+                           href="$env.getWebURL('/baofoo/unbind_card.htm?bindUserId=')$!user.id" class="btnDel">解绑银行卡</a>
+                    #end
+                </td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+                <option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!totalNum条</span>
+        </div>
+
+        <div class="pagination" targetType="navTab" totalCount="$!totalNum" numPerPage="$!req.numPerPage"
+             currentPage="$!req.pageNum"></div>
+
+    </div>
+</div>
+<script>
+    function navTabAjaxDone(json) {
+        if (json.statusCode == "200") {
+            alertMsg.correct(json.message);
+        } else {
+            alertMsg.error(json.message);
+        }
+    }
+	
+	$("#batch_bind_sub_id").click(function(){
+		$.ajax({
+			url: $("#APP_ROOT_PATH").val() + "/baofoo/bind_card/batch_bind_sub.htm",
+			data: {
+			},
+			type : 'post',
+			success : function(data) {
+  				if (data.statusCode == "200") {
+					alertMsg.correct(data.message);
+                    navTab.reload("$env.getWebURL('baofoo/bind_card/index.htm')");
+                }else{
+					if(data.message){
+						 alertMsg.error(data.message);
+					}else{
+						 alertMsg.error("操作失败");
+					}
+                }
+			}
+		});
+	
+    });
+</script>

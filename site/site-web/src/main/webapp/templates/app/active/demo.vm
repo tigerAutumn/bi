@@ -1,0 +1,91 @@
+#Html("begin")
+#Head("begin")
+#Title("app活动页面测试")
+#LoadCSS("resources/micro2.0/styles/regular/default")
+#LoadCSS("resources/micro2.0/styles/regular/product_details")
+#LoadJS("resources/micro2.0/scripts/regular/six")
+#LoadJS("resources/micro2.0/scripts/zepto.min")
+#LoadJS("resources/micro2.0/scripts/swiper.min")
+#LoadJS("resources/micro2.0/scripts/regular/custom")
+#Head("end")
+<body>
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<input type="hidden" id="userId" value="$!userId"/>
+<input type="hidden" id="client" value="$!client"/>
+<div class="mian">
+	<input type="button" id="btn1" value="首页" onclick="transfer(1)" style="width:100px;height:60px"/>&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" id="btn2" value="理财产品" onclick="transfer(2)" style="width:100px;height:60px"/>&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" id="btn3" value="产品详情" onclick="transfer(3)" style="width:100px;height:60px"/>&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" id="btn4" value="我的资产" onclick="transfer(4)" style="width:100px;height:60px"/>&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" id="btn5" value="推荐赢现金" onclick="transfer(5)" style="width:100px;height:60px"/>&nbsp;&nbsp;&nbsp;&nbsp;<p>&nbsp;</p>
+	<input type="button" id="btn6" value="安全保障" onclick="transfer(6)" style="width:100px;height:60px"/>&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" id="btn7" value="我的推荐" onclick="transfer(7)" style="width:100px;height:60px"/>&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" id="btn8" value="我的投资界面" onclick="transfer(8)" style="width:100px;height:60px"/>&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" id="btn9" value="交易明细界面" onclick="transfer(9)" style="width:100px;height:60px"/>&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" id="btn10" value="安全中心" onclick="transfer(10)" style="width:100px;height:60px"/>&nbsp;&nbsp;&nbsp;&nbsp;<p>&nbsp;</p>
+	<input type="button" id="btn11" value="银行卡界面" onclick="transfer(11)" style="width:100px;height:60px"/>&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" id="btn12" value="分享浮层页" onclick="transfer(12)" style="width:100px;height:60px"/>&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" id="btn13" value="登录" onclick="transfer(13)" style="width:100px;height:60px"/>
+</div>
+</body>
+<script type="text/javascript">	
+	//H5跳转到app内页(不能写到单独的js里面)
+	function transfer(i) {
+		var client = document.getElementById("client").value;
+		var json = '';
+		switch(i) {
+		case 1:
+			json = '{"appActive":{"page":"a"}}';
+			break;
+		case 2:
+			json = '{"appActive":{"page":"b"}}';
+			break;
+		case 3:
+			json = '{"appActive":{"page":"c","id":117}}';
+			break;
+		case 4:
+			json = '{"appActive":{"page":"d"}}';
+			break;
+		case 5:
+			json = '{"appActive":{"page":"e"}}';
+			break;
+		case 6:
+			json = '{"appActive":{"page":"f"}}';
+			break;
+		case 7:
+			json = '{"appActive":{"page":"g"}}';
+			break;
+		case 8:
+			json = '{"appActive":{"page":"h"}}';
+			break;
+		case 9:
+			json = '{"appActive":{"page":"i"}}';
+			break;
+		case 10:
+			json = '{"appActive":{"page":"j"}}';
+			break;
+		case 11:
+			json = '{"appActive":{"page":"k"}}';
+			break;
+		case 12:
+			json = '{"appActive":{"page":"l","title":"欧洲杯活动等你来参与","content":"好朋友就要一起赚钱，跟我进币港湾，既有高额奖励金，还能免费砸金蛋拿iPhone 6s!","logo":"/resources/micro/images/activity_bgw.jpg","url":"http://www.baidu.com"}}';
+			break;
+		case 11:
+			json = '{"appActive":{"page":"m"}}';
+			break;
+		}
+		if(client == "ios") {
+			toiOSPage(json);
+		}
+		if(client == "android") {
+			toAndroidPage(json);
+		}
+	}
+	function toiOSPage(json) {
+		
+	}
+	function toAndroidPage(json) {
+		javascript:coinharbour.toAndroidPage(json);
+	}
+</script>
+#Html("end")

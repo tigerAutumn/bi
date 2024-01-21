@@ -1,0 +1,63 @@
+<div class="pageContent">
+##LoadCSS("/resources/ztree/css/zTreeStyle/zTreeStyle")
+##LoadJS("/resources/ztree/js/jquery.ztree.core")
+##LoadJS("/resources/ztree/js/jquery.ztree.excheck")
+#LoadJS("/resources/js/customer_update")
+<div style="display:none;" class="div_dept">
+	<input name="check_dept" class="check_dept" type="checkBox" style=" float: left;" checked onchange="check_dept(this)"/>
+	<select class="required select_dept" onclick="change_dept(this)">
+	</select>
+</div>
+#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+<form id="flashForm" method="post" action="$env.getWebURL('/financial/statistics/company_customer/update.htm')?detailFlag=update" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+<input type="hidden" name="id" id="id" value="$!bsCompanyCustomer.id"/>
+<input type="hidden" name="parent_id" id="parent_id" value="$!bsCompanyCustomer.parentId"/>
+<input type="hidden" name="new_user_id" id="new_user_id" value="$!bsCompanyCustomer.userId"/>
+<input type="hidden" name="userId" id="userId" value="$!bsCompanyCustomer.userId"/>
+<input type="hidden" name="customer_name" id="customer_name" value="$!bsCompanyCustomer.customerName"/>
+</form>
+	<div class="pageFormContent nowrap" layoutH="97">
+
+		<dl>
+			<dt>
+				客户名称：
+			</dt>
+			<dd>
+				<input type="text" id="customerName" name="customerName" size="30" class="required" maxlength="20" value="$!bsCompanyCustomer.customerName"/>
+			</dd>
+		</dl>
+		<dl>
+			<dt>上级用户</dt>
+			<dd class="dept_dd">
+				$!parentName
+			   	<!-- <div class="content_wrap">
+                	<div class="zTreeDemoBackground left">
+                		<ul id="customerTree" class="ztree"></ul>
+                	</div>
+				</div> -->
+			</dd>
+		</dl>
+	</div>
+	<div class="formBar">
+		<ul style="float:left;">
+			<li><div class="buttonActive"><div class="buttonContent"><button onclick="formsubmint()" type="button">保存</button></div></div></li>
+			<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+		</ul>
+	</div>
+</div>
+
+<script>
+	function navTabAjaxDone(json) {
+		 if (json.statusCode == "200") {
+		 	navTab.closeCurrentTab();
+			alertMsg.correct(json.message);
+			navTab.reload("$env.getWebURL('/financial/statistics/company_customer/index.htm')");
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+</script>

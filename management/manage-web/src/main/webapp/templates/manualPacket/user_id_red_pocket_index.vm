@@ -1,0 +1,122 @@
+<style>
+#msg{display:inline-block; vertical-align: top;width: 117px;white-space: normal;
+    float: right;
+    position: absolute;
+    top: 10px;}
+.red_color{color:red;}
+</style>
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="user_id_red_packet_form" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/manualPacket/userId/userSearch.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!req.pageNum" />
+		<input type="hidden" id="totalRows" name="totalRows" value="$!totalRows" />
+		<input type="hidden" id="receiveNum" name="receiveNum" value="$!receiveNum" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td style="position:relative;">
+						<textarea rows="5" cols="120" id="userIds" name="userIds" placeholder="请输入userid，并以逗号隔开">$!req.userIds</textarea>
+						<div id="msg"></div>
+						<button type="button" onclick="formSubmit()">查询</button>
+						<button type="button" onclick="openRedPacketDialog()">发红包</button>
+					</td>
+				</tr>
+				
+			</table>
+	
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1082" layoutH="180">
+		<thead>
+			<tr>
+				<th width="43">userid</th>
+				<th width="30">持仓金额</th>
+				<th width="73">总购买额</th>
+				<th width="40">累计推荐奖励</th>
+				<th width="72">注册时间</th>
+				<th width="72">首次购买时间</th>
+				<th width="72">最后购买时间</th>
+				<th width="62">渠道</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($operate in $operateList)
+			<tr target="sid_user" rel="1">
+				<td>$!operate.userId</td>
+				<td>$!money.format($!operate.investMoney)</td>
+				<td>$!money.format($!operate.investTotalMoney)</td>
+				<td>$!money.format($!operate.totalBonus)</td>
+				<td>$!date.format($!operate.registerTime)</td>
+				<td>$!date.format($!operate.firstBuyTime)</td>
+				<td>$!date.format($!operate.lastBuyTime)</td>
+				<td>#if("$!operate.agentName" != "") $!operate.agentName#end</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+
+	</div>
+</div>
+<script>
+function openRedPacketDialog() {
+	var userIds = $.trim($('#userIds').val());
+	if(userIds == '') {
+		alertMsg.warn("userId不能为空！");
+		return false;
+	}
+	
+	$.ajax({
+		type : 'post',
+		url : $('#APP_ROOT_PATH').val()+'/manualPacket/checkUserIdCount.htm',
+		data : {
+			userIds :  $('#userIds').val()
+		},
+		success : function(data) {
+			alertMsg.confirm("输入了<span class='red_color'>"+data.receiveNum+"</span>个userid，其中有效用户<span class='red_color'>"+data.realityNum+"</span>个，是否继续？", {     
+			okCall: function(){      
+    			var params = "userCount=" + data.realityNum;
+				var options = {"mask":true,"close":"function","height":490, "width":677};
+				$.pdialog.open($('#APP_ROOT_PATH').val()+"/manualPacket/userIdRedPacketSend.htm?"+params, "manual_user_id_red_pocket", "发红包", options);
+    		}    
+			}); 
+		}
+	});
+}
+
+function formSubmit() {
+	var userIds = $.trim($('#userIds').val());
+	if(userIds == '') {
+		alertMsg.warn("userId不能为空！");
+		return false;
+	}
+	$("#user_id_red_packet_form").submit();
+}
+
+$(function(){
+	var receiveNum = $("#receiveNum").val();
+	if(receiveNum != '') {
+		$("#msg").html("输入了<span class='red_color'>"+receiveNum+"</span>个userid，其中有效用户<span class='red_color'>"+$("#totalRows").val()+"</span>个");
+	}
+})
+</script>

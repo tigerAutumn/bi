@@ -1,0 +1,40 @@
+    <div class="pageContent">
+    	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+    	<form id="financeForm" method="post" action="$env.getWebURL('/bsuser/saveRecord.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+    		#Hidden("id", "$!bsUserChannel.id")
+    		<div class="pageFormContent nowrap" layoutH="97">
+    			<dl>
+                    <dt style="width:80px">
+    					回访记录：
+                    </dt>
+    				<dd style="width:400px">
+    					<input type="hidden" name="userId" class="required" value="$!userId" />
+                        <textarea name="content" rows="20" cols="80" />
+                    </dd>
+    			</dl>
+    		</div>
+    		<div class="formBar">
+    			<ul>
+                    <li ><div class="buttonActive"><div class="buttonContent"><button type="submit">提交</button></div></div></li>
+    				<li>
+    					<div class="button"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div>
+    				</li>
+    			</ul>
+    		</div>
+    	</form>
+    	
+    </div>
+	<script>
+    	function navTabAjaxDone(json) {
+    		if (json.statusCode == "200") {
+    			alertMsg.correct('操作成功!');
+    			$.pdialog.closeCurrent();
+				$("input[name='pageNum']").val(1);
+    			navTab.reload("$env.getWebURL('/bsuserRegister/index.htm')");
+    		} else {
+    			alertMsg.error('操作失败!');
+    		}
+    		$.pdialog.closeCurrent();
+    	}
+    	
+    </script>

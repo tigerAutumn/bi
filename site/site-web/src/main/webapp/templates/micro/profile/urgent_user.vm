@@ -1,0 +1,69 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾理财官网_安心可靠互联网金融投资理财平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#Head("end")
+	
+<body>
+	<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$!env.getWebURL('')" />
+    <!-- website wrapper starts -->
+    <div class="websiteWrapper"> 
+      
+      #Header("紧急联系人","","","micro/profile/index")
+      
+      <!-- notification starts -->
+      
+      <!-- notification ends --> 
+      
+      <!-- page wrapper starts -->
+	  <form action="$!env.getWebURL('/micro/profile/bindurgent')" method="post" class="generalForm" id="generalForm">
+			<div class="pageWrapper contactPageWrapper"> 
+            <input type="hidden" id="urgentNameReg" value="$!reg.get('userName')" />
+        	<input type="hidden" id="urgentMobileReg" value="$!reg.get('mobile')" />
+        	<input type="hidden" id="passwordReg" value="$!reg.get('payPassword')" />
+           <div class="gm formFieldWrapper" style="margin-top:20px;"><span>姓名：</span> <input name="urgentName" id="urgentName" type="text" maxlength="4" data-placeholder="请输入姓名" value="$!urgentName" class="urgentNameField requiredField regExpField" /></div>
+            <div class="gm formFieldWrapper" style="border:1px #eee solid;"><span>手机号：</span> <input name="urgentMobile" id="urgentMobile" type="text" maxlength="11" data-placeholder="请输入手机号" value="$!urgentMobile" class="urgentMobileField requiredField regExpField" /> </div>
+        	<div class="gm" id="changeRelation">
+				<span>关系：</span>
+				<span style="float:left; min-width: 50%;max-width: 70%;" id="relationName">请选择关系</span>
+				<input type="hidden" name="relation" value="$!relationId" class="bankCardNoField requiredField" id="relationId"/>
+			</div>
+                <div id="relations" style="display:none">
+        			<div class="ts" >请选择关系：</div>
+            		#foreach($!grid in $!relationList)
+        			<div class="gm dicList">
+        					<input type="hidden" class="itemid" id="item_$!grid.itemId" value="$!grid.itemId"/>
+            				<span style="float:left;padding-left:77px; min-width: 50%;max-width: 70%;">$!grid.itemName </span>
+        			</div>
+        			#end
+        		</div>
+   <div class="gm formFieldWrapper" style="margin-top:20px; border:1px #eee solid;"><span>支付密码：</span> <input name="payPassWord" id="password"  type="password" placeholder="请输入支付密码" class="passwordField requiredField regExpField" /></div>
+		<div class="formSubmitButtonErrorsWrapper"> 
+                    <!-- form errors start --> 
+                    <span class="formValidationError" id="urgentNameFieldError">
+						<span>请输入姓名</span>
+						<span>姓名格式不正确</span>
+    				</span> 
+    				<span class="formValidationError" id="urgentMobileFieldError">
+						<span>请输入手机号码</span>
+						<span>手机格式不正确</span>
+    				</span>
+    				<span class="formValidationError" id="passwordFieldError">
+						<span>请输入支付密码</span>
+						<span>支付密码格式不正确</span>
+    				</span>
+                    <!-- form errors end -->
+                  </div>
+   
+		<a class="go_btn1" id="urgentSubmitButton" href="#" style="color:#6cf;margin-bottom:50px;" data-form-id="generalForm">保存</a>
+  </div>
+	  </form>
+      <!-- page wrapper ends --> 
+     
+      #Footer("4")
+      
+    </div>
+	<!-- website wrapper ends -->
+	#LoadJS("resources/micro/scripts/profile/urgent_user")
+</body>
+
+#Html("end")

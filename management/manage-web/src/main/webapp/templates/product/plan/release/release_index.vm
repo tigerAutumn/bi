@@ -1,0 +1,411 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+<div class="page unitBox">
+	<div class="pageHeader">
+    	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/product/release/release_index.htm')" id="generalForm" method="post">
+        	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+			<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+			<div class="searchBar">
+                <table class="searchContent">
+        			<tr>
+						<td>
+                       		计划名称
+							<input type="text" name="name" value="$!req.name"/>
+        				</td>
+						<td>
+                       		计划系列
+							<select name="serialId">
+								<option value="">全部</option>
+								#foreach($!serial in $!serials)
+    								<option value="$!serial.id" #if("$!req.serialId" == "$!serial.id") selected #end>
+										$!serial.serialName
+                                    </option>
+								#end
+								<option value="-1" #if("$!req.serialId" == "-1") selected #end>
+									非系列计划（自定义计划名称）
+								</option>
+                            </select>
+        				</td>
+						<td>
+                       		期限
+							<select name="term">
+								<option value="">全部</option>
+								#set($Integer = 0)
+								#foreach($term in $!terms)
+    								<option value="$!term.term" #if("$!req.term"=="$!term.term") selected  #end>
+                                            #if(0 > $Integer.parseInt("$!term.term"))
+												 #set($termNum = $Integer.parseInt("$!term.term")*-1 ) $!termNum 天
+                                            #else
+												 $!term.term个月
+                                            #end
+									</option>
+    							#end
+                            </select>
+							利率
+							<select name="baseRate">
+								<option value="" >全部</option>
+    							#foreach($rate in $!rates)
+    								<option value="$!rate.baseRate" #if("$!req.baseRate"=="$!rate.baseRate") selected  #end>$!rate.baseRate%</option>
+    							#end
+                            </select>
+        				</td>
+						<td>
+                       		是否推荐
+							<select name="isSuggest">
+								<option value="">全部</option>
+								<option value="YES" #if("$!req.isSuggest" == "YES") selected #end>是</option>
+								<option value="NO" #if("$!req.isSuggest" == "NO") selected #end>否</option>
+                            </select>
+        				</td>
+						<td>
+                       		计划状态
+							<select name="status">
+								<option value="">全部</option>
+								<option value="2" #if("$!req.status" == "2") selected #end>审核中</option>
+								<option value="3" #if("$!req.status" == "3") selected #end>未通过</option>
+								<option value="4" #if("$!req.status" == "4") selected #end>待发布</option>
+								<option value="5" #if("$!req.status" == "5") selected #end>未开放</option>
+								<option value="6" #if("$!req.status" == "6") selected #end>进行中</option>
+								<option value="7" #if("$!req.status" == "7") selected #end>已完成</option>
+                            </select>
+        				</td>
+					</tr>
+					<tr>
+						<td>
+                       		发布时间
+							<input style="width:70px;" type="text" id="distributeStartTime" name="distributeStartTime" value="$!req.distributeStartTime" class="date" [pattern="yyyy-MM-dd"] [yearstart="-80"] [yearend="5"] readonly/>
+							-
+							<input style="width:70px;" type="text" id="distributeEndTime" name="distributeEndTime" value="$!req.distributeEndTime" class="date" [pattern="yyyy-MM-dd"] [yearstart="-80"] [yearend="5"] readonly/>
+        				</td>
+						<td>
+                       		开始时间
+							<input style="width:70px;" type="text" id="startTimeBegin" name="startTimeBegin" value="$!req.startTimeBegin" class="date" [pattern="yyyy-MM-dd"] [yearstart="-80"] [yearend="5"] readonly/>
+							-
+							<input style="width:70px;" type="text" id="startTimeEnd" name="startTimeEnd" value="$!req.startTimeEnd" class="date" [pattern="yyyy-MM-dd"] [yearstart="-80"] [yearend="5"] readonly/>
+        				</td>
+						<td>
+                       		结束时间
+							<input style="width:70px;" type="text" id="endTimeBegin" name="endTimeBegin" value="$!req.endTimeBegin" class="date" [pattern="yyyy-MM-dd"] [yearstart="-80"] [yearend="5"] readonly/>
+							-
+							<input style="width:70px;" type="text" id="endTimeEnd" name="endTimeEnd" value="$!req.endTimeEnd" class="date" [pattern="yyyy-MM-dd"] [yearstart="-80"] [yearend="5"] readonly/>
+        				</td>
+						<td>
+							<a class="add" href="$env.getWebURL('/terminal/terminal_list.htm')" target="dialog" mask="true" rel="createBack" height="270" width="370"><span><button type="button">选择展示终端</button></span></a>
+							<input type="hidden" id="sShowTerminal" name="sShowTerminal" value="$!req.sShowTerminal"/>
+        				</td>
+        				<td>
+        					<div class="buttonActive">
+        						<div class="buttonContent">
+        							<button onclick="searchFunction()" type="button">查询</button>
+        						</div>
+        					</div>
+        				</td>
+                    </tr>
+        		</table>
+        	</div>
+    	</form>
+    </div>
+    <div class="pageContent">
+    	<table class="table" width="1800" layoutH="140">
+    		<thead>
+    			<tr>
+					<th width="8%">计划名称</th>
+    				<th width="5%">计划系列</th>
+					<th width="4%">计划总额</th>
+    				<th width="4%">当前投资额</th>
+					<th width="2.5%">利率</th>
+    				<th width="2.5%">期限</th>
+					<th width="3">计划活动类型</th>
+					<th width="7%">展示终端</th>
+    				<th width="5%">还款方式</th>
+    				<th width="4%">计息方式</th>
+    				<th width="6%">开始时间</th>
+    				<th width="6%">结束时间</th>
+					<th width="6%">修改时间</th>
+					<th width="3%">计划状态</th>
+					<th width="3%">审核人</th>
+					<th width="3%">发布人</th>
+					<th width="6%">发布时间</th>
+					<th width="3%">是否推荐</th>
+                    <th width="2.5%">提醒标签</th>
+                    <th width="2.5%">加息标签</th>
+					<th width="14%">操作</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			#foreach($grid in $dataGrid)
+    			<tr target="sid_user" rel="1">
+    				<td>$!grid.name</td>
+    				<td>
+						#if($!grid.serialName)
+							$!grid.serialName
+						#else
+							非系列计划
+						#end
+					</td>
+					<td>
+						#set($maxTotalAmountWan = $!grid.maxTotalAmount / 10000)
+						$!money.format($maxTotalAmountWan)万
+					</td>
+					<td>$!money.format($!grid.currTotalAmount)</td>
+					<td>$!grid.baseRate %</td>
+    				<td>
+						#if(0 > $Integer.parseInt("$!grid.term"))
+							#set($termNumS = $Integer.parseInt("$!grid.term")*-1 ) $!termNumS 天
+                        #else
+							#if($!grid.term == 12)
+    							365 天
+    						#else
+    							#set($termDay = $grid.term*30)
+    							$!termDay
+    							天
+    						#end
+                        #end
+					</td>
+					<td>
+    					#if($!grid.pActivityType == "NORMAL")普通产品
+    					#elseif($!grid.pActivityType == "NEW_BUYER")新手标
+						#elseif($!grid.pActivityType == "ACTIVITY")限时活动标
+    					#end
+    				</td>
+                    <td>$!grid.showTerminal</td>
+    				<td>
+						#if("$!grid.returnType" == "FINISH_RETURN_ALL") 到期还本付息
+						#elseif("$!grid.returnType" == "AVERAGE_CAPITAL_PLUS_INTEREST") 等额本息
+						#end
+					</td>
+                    <td>
+						#if("$!grid.beginInterestDays" == "NEXT_DAY") 次日起息
+						#elseif("$!grid.beginInterestDays" == "MATCH_DAY") 匹配债权后当日起息
+						#end
+                    </td>
+
+
+                    <td>$!date.format($!grid.startTime)</td>
+					<td>$!date.format($!grid.endTime)</td>
+					<td>$!date.format($!grid.updateTime)</td>
+					<td>
+						#if($!grid.status == 2)	## 审核中
+							<span style="color:gray">$!message.get("PRODUCT_STATUS_$!grid.status")</span>
+						#elseif($!grid.status == 3)	## 未通过
+							<span style="color:red">$!message.get("PRODUCT_STATUS_$!grid.status")</span>
+						#elseif($!grid.status == 4)	## 待发布
+							<span style="color:green">$!message.get("PRODUCT_STATUS_$!grid.status")</span>
+						#elseif($!grid.status == 5)	## 未开放
+							<span style="color:blue">$!message.get("PRODUCT_STATUS_$!grid.status")</span>
+						#elseif($!grid.status == 6)	## 进行中
+							<span style="color:blueviolet">$!message.get("PRODUCT_STATUS_$!grid.status")</span>
+						#elseif($!grid.status == 7)	## 已完成
+							<span style="color:black">$!message.get("PRODUCT_STATUS_$!grid.status")</span>
+						#end
+					</td>
+					<td>$!grid.checkUserName</td>
+					<td>$!grid.distributeUserName </td>
+					<td>$!date.format($!grid.distributeTime)</td>
+					<td>
+						#if("$!grid.isSuggest" == "YES")
+                            <span style="color:blue">推荐</span>
+    					#else
+							<span style="color:black">非推荐</span>
+    					#end
+					</td>
+                    <td>$!grid.remindTagContent</td>
+                    <td>$!grid.interestRatesTagContent</td>
+					<td>
+						#if("$!grid.status" == "2")	## 审核中
+							<span style="color:gray">发布</span>&nbsp;&nbsp;
+    						<span style="color:gray">推荐</span>&nbsp;&nbsp;
+    						<a title="详情" style="color:blue" target="navTab" href="$env.getWebURL('/product/release/details_index.htm')?productId=$!grid.id"  mask="true" rel="createBack" height="380">
+								详情
+    						</a>
+							#if($!grid.pActivityType == "NORMAL")
+                                &nbsp;&nbsp;
+                                <a title="提醒标签" style="color:blue" target="dialog" href="$env.getWebURL('/product/release/release_remind_tag.htm')?productId=$!grid.id" mask="true" rel="createBack" height="380">
+                                    提醒标签
+                                </a>&nbsp;&nbsp;
+                                <a title="加息标签" style="color:blue" target="dialog" href="$env.getWebURL('/product/release/release_interest_rates_tag.htm')?productId=$!grid.id" mask="true" rel="createBack" height="380">
+                                    加息标签
+                                </a>
+							#else
+							#end
+						#elseif("$!grid.status" == "4")	## 待发布
+							<a title="发布" style="color:blue" target="dialog" href="$env.getWebURL('/product/release/release_confirm_page.htm')?productId=$!grid.id" mask="true" rel="createBack" height="380">
+    							发布
+    						</a>&nbsp;&nbsp;
+							<span style="color:gray">推荐</span>&nbsp;&nbsp;
+    						<a title="详情" style="color:blue" target="navTab" href="$env.getWebURL('/product/release/details_index.htm')?productId=$!grid.id"  mask="true" rel="createBack" height="380">
+    							详情
+    						</a>
+							#if($!grid.pActivityType == "NORMAL")
+                                &nbsp;&nbsp;
+                                <a title="提醒标签" style="color:blue" target="dialog" href="$env.getWebURL('/product/release/release_remind_tag.htm')?productId=$!grid.id" mask="true" rel="createBack" height="380">
+                                    提醒标签
+                                </a>&nbsp;&nbsp;
+                                <a title="加息标签" style="color:blue" target="dialog" href="$env.getWebURL('/product/release/release_interest_rates_tag.htm')?productId=$!grid.id" mask="true" rel="createBack" height="380">
+                                    加息标签
+                                </a>
+							#else
+							#end
+						#elseif("$!grid.status" == "5") ## 未开放
+							<a title="结束" style="color:red" target="ajaxTodo" href="$env.getWebURL('/product/release/finish.htm')?productId=$!grid.id" >
+    							结束
+    						</a>&nbsp;&nbsp;
+							#if("$!grid.isSuggest" == "YES")
+        						<a title="取消推荐" style="color:blue" target="ajaxTodo" href="$env.getWebURL('/product/release/cancle.htm')?productId=$!grid.id">
+        							取消推荐
+        						</a>
+        					#else
+        						<a title="推荐" style="color:blue" target="ajaxTodo" href="$env.getWebURL('/product/release/recommend.htm')?productId=$!grid.id" >
+        							推荐
+        						</a>
+							#end
+							&nbsp;&nbsp;
+    						<a title="详情" style="color:blue" target="navTab" href="$env.getWebURL('/product/release/details_index.htm')?productId=$!grid.id"  mask="true" rel="createBack" height="380">
+    							详情
+    						</a>
+							#if($!grid.pActivityType == "NORMAL")
+                                &nbsp;&nbsp;
+                                <a title="提醒标签" style="color:blue" target="dialog" href="$env.getWebURL('/product/release/release_remind_tag.htm')?productId=$!grid.id" mask="true" rel="createBack" height="380">
+                                    提醒标签
+                                </a>&nbsp;&nbsp;
+                                <a title="加息标签" style="color:blue" target="dialog" href="$env.getWebURL('/product/release/release_interest_rates_tag.htm')?productId=$!grid.id" mask="true" rel="createBack" height="380">
+                                    加息标签
+                                </a>
+							#else
+							#end
+						#elseif("$!grid.status" == "3")	## 未通过
+							<span style="color:gray">发布</span>&nbsp;&nbsp;
+							<span style="color:gray">推荐</span>&nbsp;&nbsp;
+    						<a title="详情" style="color:blue" target="navTab" href="$env.getWebURL('/product/release/details_index.htm')?productId=$!grid.id"  mask="true" rel="createBack" height="380">
+    							详情
+    						</a>
+							#if($!grid.pActivityType == "NORMAL")
+                                &nbsp;&nbsp;
+                                <a title="提醒标签" style="color:blue" target="dialog" href="$env.getWebURL('/product/release/release_remind_tag.htm')?productId=$!grid.id" mask="true" rel="createBack" height="380">
+                                    提醒标签
+                                </a>&nbsp;&nbsp;
+                                <a title="加息标签" style="color:blue" target="dialog" href="$env.getWebURL('/product/release/release_interest_rates_tag.htm')?productId=$!grid.id" mask="true" rel="createBack" height="380">
+                                    加息标签
+                                </a>
+							#else
+							#end
+						#elseif("$!grid.status" == "6")	## 进行中
+							<a title="结束" style="color:red" target="ajaxTodo" href="$env.getWebURL('/product/release/finish.htm')?productId=$!grid.id" >
+    							结束
+    						</a>
+							&nbsp;&nbsp;
+							#if("$!grid.isSuggest" == "YES")
+        						<a title="取消推荐" style="color:blue" target="ajaxTodo" href="$env.getWebURL('/product/release/cancle.htm')?productId=$!grid.id" >
+        							取消推荐
+        						</a>
+        					#else
+        						<a title="推荐" style="color:blue" target="ajaxTodo" href="$env.getWebURL('/product/release/recommend.htm')?productId=$!grid.id" >
+        							推荐
+        						</a>
+							#end
+							&nbsp;&nbsp;
+    						<a title="详情" style="color:blue" target="navTab" href="$env.getWebURL('/product/release/details_index.htm')?productId=$!grid.id"  mask="true" rel="createBack" height="380">
+    							详情
+    						</a>
+							#if($!grid.pActivityType == "NORMAL")
+                                &nbsp;&nbsp;
+                                <a title="提醒标签" style="color:blue" target="dialog" href="$env.getWebURL('/product/release/release_remind_tag.htm')?productId=$!grid.id" mask="true" rel="createBack" height="380">
+                                    提醒标签
+                                </a>&nbsp;&nbsp;
+                                <a title="加息标签" style="color:blue" target="dialog" href="$env.getWebURL('/product/release/release_interest_rates_tag.htm')?productId=$!grid.id" mask="true" rel="createBack" height="380">
+                                    加息标签
+                                </a>
+							#else
+							#end
+						#elseif("$!grid.status" == "7")	## 已完成
+							<span style="color:gray">结束</span>&nbsp;&nbsp;
+							<span style="color:gray">推荐</span>&nbsp;&nbsp;
+    						<a title="详情" style="color:blue" target="navTab" href="$env.getWebURL('/product/release/details_index.htm')?productId=$!grid.id"  mask="true" rel="createBack" height="380">
+    							详情
+    						</a>
+							#if($!grid.pActivityType == "NORMAL")
+                                &nbsp;&nbsp;
+                                <a title="提醒标签" style="color:blue" target="dialog" href="$env.getWebURL('/product/release/release_remind_tag.htm')?productId=$!grid.id" mask="true" rel="createBack" height="380">
+                                    提醒标签
+                                </a>&nbsp;&nbsp;
+                                <a title="加息标签" style="color:blue" target="dialog" href="$env.getWebURL('/product/release/release_interest_rates_tag.htm')?productId=$!grid.id" mask="true" rel="createBack" height="380">
+                                    加息标签
+                                </a>
+							#else
+							#end
+						#end
+					</td>
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+    			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!count条</span>
+    	</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+    </div>
+    </div>
+	
+</div>
+<script>  
+	function searchFunction(){
+		if(($("#distributeStartTime").val() && !$("#distributeEndTime").val()) || (!$("#distributeStartTime").val() && $("#distributeEndTime").val())) {
+			alertMsg.warn('发布时间必须是在某一区间内');
+			return false;
+		}
+		if(($("#startTimeBegin").val() && !$("#startTimeEnd").val()) || (!$("#startTimeBegin").val() && $("#startTimeEnd").val())) {
+			alertMsg.warn('开始时间必须是在某一区间内');
+			return false;
+		}
+		if(($("#endTimeBegin").val() && !$("#endTimeEnd").val()) || (!$("#endTimeBegin").val() && $("#endTimeEnd").val())) {
+			alertMsg.warn('结束时间必须是在某一区间内');
+			return false;
+		}
+		if($("#distributeStartTime").val() && $("#distributeEndTime").val()) {
+			if($("#distributeStartTime").val() > $("#distributeEndTime").val()) {
+				alertMsg.warn('发布时间区间选择不正确');
+				return false;
+			}
+		}
+		if($("#startTimeBegin").val() && $("#startTimeEnd").val()) {
+			if($("#startTimeBegin").val() > $("#startTimeEnd").val()) {
+				alertMsg.warn('开始时间区间选择不正确');
+				return false;
+			}
+		}
+		if($("#endTimeBegin").val() && $("#endTimeEnd").val()) {
+			if($("#endTimeBegin").val() > $("#endTimeEnd").val()) {
+				alertMsg.warn('结束时间区间选择不正确');
+				return false;
+			}
+		}
+		$("#generalForm").submit();
+	}
+	function navTabAjaxDone(json){
+      DWZ.ajaxDone(json);
+      if (json.statusCode == DWZ.statusCode.ok){
+        if (json.navTabId){ //把指定navTab页面标记为需要“重新载入”。注意navTabId不能是当前navTab页面的
+              navTab.reloadFlag(json.navTabId);
+        } else { //重新载入当前navTab页面
+              navTabPageBreak();
+        }
+        if ("closeCurrent" == json.callbackType) {
+              setTimeout(function(){navTab.closeCurrentTab();}, 100);
+        } else if ("forward" == json.callbackType) {
+              navTab.reload(json.forwardUrl);
+        }
+    }
+}
+
+</script> 

@@ -1,0 +1,87 @@
+-- 这是产品退出时，需要转让，转让中需要的数据，除了债权的数据外，还需要1、查询上次债转时的付息（left join）
+-- 2、查询最近一次利息还款的计划还款日期（left join）-云贷 需要
+-- 3、查询最近一次还款的计划还款日期（left join）-分期 需要
+-- 4、查询当期还款账单日期（left join）-分期 需要
+-- 5、查询最近一次还款时间（left join）-七贷随借随还 需要
+-- 6、正在进行理财人还款的金额（left join） 
+
+-- 线上耗时0.034秒
+select a.id, a.loan_id, a.bs_user_id, a.bs_sub_account_id, a.ln_user_id, a.ln_sub_account_id, a.init_amount, 
+    		a.discount_amount, a.total_amount,
+			CASE WHEN fin.paying_principal >0 THEN a.left_amount -fin.paying_principal ELSE a.left_amount END as left_amount,  
+			a.first_term, a.`status`, a.trans_mark, a.bid_status, 
+   			a.create_time, a.update_time, 
+	  		b.interest_begin_date,b.last_finish_interest_date,
+	  		c.base_rate,
+			CASE WHEN a.trans_mark ='NORMAL' THEN DATE(d.loan_time) ELSE DATE(a.create_time) END AS relation_begin_date,
+			CASE WHEN a.trans_mark = 'NORMAL' THEN 0 ELSE f.in_amount-f.amount END last_pay_interest,
+			CASE WHEN lu.partner_code = 'YUN_DAI_SELF' THEN e.plan_date ELSE e3.repay_time END last_pay_interest_date,
+			e1.plan_date last_repay_plan_date,e2.plan_date this_repay_plan_date,date(d.loan_time)loan_date,
+			hfu.hf_user_id,d.agreement_rate,lu.partner_code
+		from (select * from ln_loan_relation 
+				 where left_amount >0 and `status`='SUCCESS'
+					and bs_sub_account_id =  264088
+			)a
+			LEFT JOIN ln_credit_transfer f on f.in_loan_relation_id = a.id
+			LEFT JOIN (
+              SELECT * FROM (
+				SELECT aa.* FROM (
+					select b1.*
+					from ln_loan_relation a1, ln_repay_schedule b1
+					where a1.loan_id = b1.loan_id 
+						and b1.`status` in('REPAIED','LATE_NOT','LATE_REPAIED') 
+						and b1.finish_time is not null
+						and a1.bs_sub_account_id =  264088
+					) aa ,
+					ln_repay_schedule_detail c1 
+					WHERE  aa.id = c1.plan_id and c1.subject_code='PRINCIPAL' and c1.plan_amount = 0
+					ORDER BY aa.plan_date desc
+				) aa
+				GROUP BY aa.loan_id
+			)e on e.loan_id = a.loan_id
+			LEFT JOIN (
+				SELECT * FROM (
+					SELECT aa.* FROM (
+					  select a.* from ln_repay_schedule a,ln_loan_relation b where 
+										a.loan_id = b.loan_id
+						and a.`status` in('LATE_NOT','LATE_REPAIED','REPAIED') 
+										and b.bs_sub_account_id =  264088
+					) aa ORDER BY plan_date desc
+				)aa
+              GROUP BY aa.loan_id
+			)e1 on e1.loan_id = a.loan_id
+			LEFT JOIN (
+				SELECT * FROM (
+					SELECT aa.* FROM (
+					  select a.* from ln_repay_schedule a,ln_loan_relation b where 
+										a.loan_id = b.loan_id
+						and a.`status` ='INIT' 
+						and b.bs_sub_account_id =  264088
+					) aa ORDER BY plan_date asc
+				)aa
+              GROUP BY aa.loan_id
+			)e2 on e2.loan_id = a.loan_id
+			LEFT JOIN (
+              SELECT * FROM (
+				SELECT aa.* FROM (
+					select b1.*
+						from ln_loan_relation a1, ln_bill_biz_info b1
+					where a1.loan_id = b1.loan_id 
+						and a1.bs_sub_account_id =  264088
+				
+				) aa ORDER BY aa.repay_time desc
+			  )aa 
+        GROUP BY aa.loan_id
+			)e3 on e3.loan_id = a.loan_id
+			LEFT JOIN (SELECT sum(plan_principal) paying_principal ,relation_id from ln_finance_repay_schedule where `status` = 'REPAYING' GROUP BY relation_id) fin
+			ON fin.relation_id = a.id,
+			bs_sub_account b,bs_product c,bs_hfbank_user_ext hfu,ln_loan d,ln_user lu
+		where a.bs_sub_account_id = b.id
+		 and hfu.user_id = a.bs_user_id
+		 and b.product_id = c.id
+		 and a.loan_id = d.id
+		 and d.ln_user_id = lu.id
+		
+
+		ORDER BY left_amount DESC
+		 ;

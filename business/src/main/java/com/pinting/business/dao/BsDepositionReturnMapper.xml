@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsDepositionReturnMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsDepositionReturn" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="principal" property="principal" jdbcType="DOUBLE" />
+    <result column="interest" property="interest" jdbcType="DOUBLE" />
+    <result column="penalty" property="penalty" jdbcType="DOUBLE" />
+    <result column="bonus" property="bonus" jdbcType="DOUBLE" />
+    <result column="overflow_interest" property="overflowInterest" jdbcType="DOUBLE" />
+    <result column="expect_date" property="expectDate" jdbcType="DATE" />
+    <result column="sub_account_id" property="subAccountId" jdbcType="INTEGER" />
+    <result column="return_order_no" property="returnOrderNo" jdbcType="VARCHAR" />
+    <result column="return_amount" property="returnAmount" jdbcType="DOUBLE" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, principal, interest, penalty, bonus, overflow_interest, expect_date, 
+    sub_account_id, return_order_no, return_amount, finish_time, status, create_time, 
+    update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsDepositionReturnExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_deposition_return
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_deposition_return
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_deposition_return
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsDepositionReturnExample" >
+    delete from bs_deposition_return
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsDepositionReturn" >
+    insert into bs_deposition_return (id, user_id, principal, 
+      interest, penalty, bonus, 
+      overflow_interest, expect_date, sub_account_id, 
+      return_order_no, return_amount, finish_time, 
+      status, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{principal,jdbcType=DOUBLE}, 
+      #{interest,jdbcType=DOUBLE}, #{penalty,jdbcType=DOUBLE}, #{bonus,jdbcType=DOUBLE}, 
+      #{overflowInterest,jdbcType=DOUBLE}, #{expectDate,jdbcType=DATE}, #{subAccountId,jdbcType=INTEGER}, 
+      #{returnOrderNo,jdbcType=VARCHAR}, #{returnAmount,jdbcType=DOUBLE}, #{finishTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsDepositionReturn" >
+    insert into bs_deposition_return
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="principal != null" >
+        principal,
+      </if>
+      <if test="interest != null" >
+        interest,
+      </if>
+      <if test="penalty != null" >
+        penalty,
+      </if>
+      <if test="bonus != null" >
+        bonus,
+      </if>
+      <if test="overflowInterest != null" >
+        overflow_interest,
+      </if>
+      <if test="expectDate != null" >
+        expect_date,
+      </if>
+      <if test="subAccountId != null" >
+        sub_account_id,
+      </if>
+      <if test="returnOrderNo != null" >
+        return_order_no,
+      </if>
+      <if test="returnAmount != null" >
+        return_amount,
+      </if>
+      <if test="finishTime != null" >
+        finish_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="principal != null" >
+        #{principal,jdbcType=DOUBLE},
+      </if>
+      <if test="interest != null" >
+        #{interest,jdbcType=DOUBLE},
+      </if>
+      <if test="penalty != null" >
+        #{penalty,jdbcType=DOUBLE},
+      </if>
+      <if test="bonus != null" >
+        #{bonus,jdbcType=DOUBLE},
+      </if>
+      <if test="overflowInterest != null" >
+        #{overflowInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="expectDate != null" >
+        #{expectDate,jdbcType=DATE},
+      </if>
+      <if test="subAccountId != null" >
+        #{subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="returnOrderNo != null" >
+        #{returnOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="returnAmount != null" >
+        #{returnAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="finishTime != null" >
+        #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsDepositionReturnExample" resultType="java.lang.Integer" >
+    select count(*) from bs_deposition_return
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_deposition_return
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.principal != null" >
+        principal = #{record.principal,jdbcType=DOUBLE},
+      </if>
+      <if test="record.interest != null" >
+        interest = #{record.interest,jdbcType=DOUBLE},
+      </if>
+      <if test="record.penalty != null" >
+        penalty = #{record.penalty,jdbcType=DOUBLE},
+      </if>
+      <if test="record.bonus != null" >
+        bonus = #{record.bonus,jdbcType=DOUBLE},
+      </if>
+      <if test="record.overflowInterest != null" >
+        overflow_interest = #{record.overflowInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="record.expectDate != null" >
+        expect_date = #{record.expectDate,jdbcType=DATE},
+      </if>
+      <if test="record.subAccountId != null" >
+        sub_account_id = #{record.subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="record.returnOrderNo != null" >
+        return_order_no = #{record.returnOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.returnAmount != null" >
+        return_amount = #{record.returnAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.finishTime != null" >
+        finish_time = #{record.finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_deposition_return
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      principal = #{record.principal,jdbcType=DOUBLE},
+      interest = #{record.interest,jdbcType=DOUBLE},
+      penalty = #{record.penalty,jdbcType=DOUBLE},
+      bonus = #{record.bonus,jdbcType=DOUBLE},
+      overflow_interest = #{record.overflowInterest,jdbcType=DOUBLE},
+      expect_date = #{record.expectDate,jdbcType=DATE},
+      sub_account_id = #{record.subAccountId,jdbcType=INTEGER},
+      return_order_no = #{record.returnOrderNo,jdbcType=VARCHAR},
+      return_amount = #{record.returnAmount,jdbcType=DOUBLE},
+      finish_time = #{record.finishTime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsDepositionReturn" >
+    update bs_deposition_return
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="principal != null" >
+        principal = #{principal,jdbcType=DOUBLE},
+      </if>
+      <if test="interest != null" >
+        interest = #{interest,jdbcType=DOUBLE},
+      </if>
+      <if test="penalty != null" >
+        penalty = #{penalty,jdbcType=DOUBLE},
+      </if>
+      <if test="bonus != null" >
+        bonus = #{bonus,jdbcType=DOUBLE},
+      </if>
+      <if test="overflowInterest != null" >
+        overflow_interest = #{overflowInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="expectDate != null" >
+        expect_date = #{expectDate,jdbcType=DATE},
+      </if>
+      <if test="subAccountId != null" >
+        sub_account_id = #{subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="returnOrderNo != null" >
+        return_order_no = #{returnOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="returnAmount != null" >
+        return_amount = #{returnAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="finishTime != null" >
+        finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsDepositionReturn" >
+    update bs_deposition_return
+    set user_id = #{userId,jdbcType=INTEGER},
+      principal = #{principal,jdbcType=DOUBLE},
+      interest = #{interest,jdbcType=DOUBLE},
+      penalty = #{penalty,jdbcType=DOUBLE},
+      bonus = #{bonus,jdbcType=DOUBLE},
+      overflow_interest = #{overflowInterest,jdbcType=DOUBLE},
+      expect_date = #{expectDate,jdbcType=DATE},
+      sub_account_id = #{subAccountId,jdbcType=INTEGER},
+      return_order_no = #{returnOrderNo,jdbcType=VARCHAR},
+      return_amount = #{returnAmount,jdbcType=DOUBLE},
+      finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+    <!-- 投资到期统计 S  -->
+  <resultMap id="InvestExpireMap" type="com.pinting.business.model.vo.InvestExpireVO">
+    <result column="rowno" jdbcType="INTEGER" property="rowno" />
+    <result column="customer_code" jdbcType="VARCHAR" property="customerCode" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="finish_time" jdbcType="TIMESTAMP" property="time" />
+    <result column="corpus_and_interest" jdbcType="DOUBLE" property="corpusAndInterest" />
+    <result column="product_type" jdbcType="VARCHAR" property="productType" />
+  </resultMap>
+
+  <select id="investExpire" resultMap="InvestExpireMap">
+    SELECT
+    (@rowNO := @rowNo + 1) rowno,
+    t.*
+    FROM
+    (SELECT @rowNO := #{position}) b,
+    (
+      SELECT CONCAT(a.id,DATE_FORMAT(create_time,'%Y%m%d%k%i%s')) order_no, concat("3.",a.user_id) customer_code,
+      b.user_name, a.finish_time, a.return_amount corpus_and_interest, c.product_type
+      FROM bs_deposition_return a
+      LEFT JOIN bs_user b ON a.user_id = b.id
+      LEFT JOIN bs_sub_account c ON a.sub_account_id = c.id
+      WHERE a.status = 'SUCCESS'
+      <if test="partnerCode != null and partnerCode != '' and partnerCode == 'YUN'">
+        AND c.product_type = 'AUTH_YUN'
+
+        <if test="type != null and type != '' and type == 'VIP'">
+          AND FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'YUN_DAI_SELF_SUPER_FINANCE_USER_ID'))
+        </if>
+
+        <if test="type != null and type != '' and type == 'NORMAL'">
+          AND !FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'YUN_DAI_SELF_SUPER_FINANCE_USER_ID'))
+        </if>
+      </if>
+	  <if test="partnerCode != null and partnerCode != '' and partnerCode == 'SEVEN'">
+        AND c.product_type = 'AUTH_7'
+
+        <if test="type != null and type != '' and type == 'VIP'">
+          AND FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = '7_DAI_SELF_SUPER_FINANCE_USER_ID'))
+        </if>
+
+        <if test="type != null and type != '' and type == 'NORMAL'">
+          AND !FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = '7_DAI_SELF_SUPER_FINANCE_USER_ID'))
+        </if>
+      </if>
+      <if test="partnerCode != null and partnerCode != '' and partnerCode == 'ZSD'">
+        AND c.product_type = 'AUTH_ZSD'
+
+        <if test="type != null and type != '' and type == 'VIP'">
+          AND FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'ZSD_SUPER_FINANCE_USER_ID'))
+        </if>
+
+        <if test="type != null and type != '' and type == 'NORMAL'">
+          AND !FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'ZSD_SUPER_FINANCE_USER_ID'))
+        </if>
+      </if>
+      <if test="partnerCode != null and partnerCode != '' and partnerCode == 'FREE'">
+        AND c.product_type = 'AUTH_FREE'
+        <if test="type != null and type != '' and type == 'VIP'">
+          AND FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'FREE_SUPER_FINANCE_USER_ID'))
+        </if>
+
+        <if test="type != null and type != '' and type == 'NORMAL'">
+          AND !FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'FREE_SUPER_FINANCE_USER_ID'))
+        </if>
+      </if>
+      <if test="userName != null and userName != ''">
+        AND b.user_name like concat(concat('%', #{userName}),'%')
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND a.finish_time >= #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        <![CDATA[
+                          AND a.finish_time <= #{endTime}
+                      ]]>
+      </if>
+      ORDER BY
+      update_time DESC
+      LIMIT #{position}, #{offset}
+    ) t
+  </select>
+
+  <select id="investExpireCount" resultType="java.lang.Integer">
+    SELECT COUNT(a.id)
+    FROM bs_deposition_return a
+    LEFT JOIN bs_user b ON a.user_id = b.id
+    LEFT JOIN bs_sub_account c ON a.sub_account_id = c.id
+    WHERE a.status = 'SUCCESS'
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'YUN'">
+      AND c.product_type = 'AUTH_YUN'
+
+      <if test="type != null and type != '' and type == 'VIP'">
+        AND FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'YUN_DAI_SELF_SUPER_FINANCE_USER_ID'))
+      </if>
+
+      <if test="type != null and type != '' and type == 'NORMAL'">
+        AND !FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'YUN_DAI_SELF_SUPER_FINANCE_USER_ID'))
+      </if>
+    </if>
+	<if test="partnerCode != null and partnerCode != '' and partnerCode == 'SEVEN'">
+      AND c.product_type = 'AUTH_7'
+
+      <if test="type != null and type != '' and type == 'VIP'">
+        AND FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = '7_DAI_SELF_SUPER_FINANCE_USER_ID'))
+      </if>
+
+      <if test="type != null and type != '' and type == 'NORMAL'">
+        AND !FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = '7_DAI_SELF_SUPER_FINANCE_USER_ID'))
+      </if>
+    </if>
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'ZSD'">
+      AND c.product_type = 'AUTH_ZSD'
+
+      <if test="type != null and type != '' and type == 'VIP'">
+        AND FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'ZSD_SUPER_FINANCE_USER_ID'))
+      </if>
+
+      <if test="type != null and type != '' and type == 'NORMAL'">
+        AND !FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'ZSD_SUPER_FINANCE_USER_ID'))
+      </if>
+    </if>
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'FREE'">
+      AND c.product_type = 'AUTH_FREE'
+      <if test="type != null and type != '' and type == 'VIP'">
+        AND FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'FREE_SUPER_FINANCE_USER_ID'))
+      </if>
+
+      <if test="type != null and type != '' and type == 'NORMAL'">
+        AND !FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'FREE_SUPER_FINANCE_USER_ID'))
+      </if>
+    </if>
+    <if test="userName != null and userName != ''">
+      AND b.user_name like concat(concat('%', #{userName}),'%')
+    </if>
+    <if test="startTime != null and startTime != ''">
+      AND a.finish_time >= #{startTime}
+    </if>
+    <if test="endTime != null and endTime != ''">
+      <![CDATA[
+                          AND a.finish_time <= #{endTime}
+                      ]]>
+    </if>
+  </select>
+
+  <select id="investExpireTotalAmount" resultType="java.lang.Double">
+    SELECT IFNULL(SUM(a.return_amount),0)
+    FROM bs_deposition_return a
+    LEFT JOIN bs_user b ON a.user_id = b.id
+    LEFT JOIN bs_sub_account c ON a.sub_account_id = c.id
+    WHERE a.status = 'SUCCESS'
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'YUN'">
+      AND c.product_type = 'AUTH_YUN'
+
+      <if test="type != null and type != '' and type == 'VIP'">
+        AND FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'YUN_DAI_SELF_SUPER_FINANCE_USER_ID'))
+      </if>
+
+      <if test="type != null and type != '' and type == 'NORMAL'">
+        AND !FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'YUN_DAI_SELF_SUPER_FINANCE_USER_ID'))
+      </if>
+    </if>
+	<if test="partnerCode != null and partnerCode != '' and partnerCode == 'SEVEN'">
+      AND c.product_type = 'AUTH_7'
+
+      <if test="type != null and type != '' and type == 'VIP'">
+        AND FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = '7_DAI_SELF_SUPER_FINANCE_USER_ID'))
+      </if>
+
+      <if test="type != null and type != '' and type == 'NORMAL'">
+        AND !FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = '7_DAI_SELF_SUPER_FINANCE_USER_ID'))
+      </if>
+    </if>
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'ZSD'">
+      AND c.product_type = 'AUTH_ZSD'
+
+      <if test="type != null and type != '' and type == 'VIP'">
+        AND FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'ZSD_SUPER_FINANCE_USER_ID'))
+      </if>
+
+      <if test="type != null and type != '' and type == 'NORMAL'">
+        AND !FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'ZSD_SUPER_FINANCE_USER_ID'))
+      </if>
+    </if>
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'FREE'">
+      AND c.product_type = 'AUTH_FREE'
+      <if test="type != null and type != '' and type == 'VIP'">
+        AND FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'FREE_SUPER_FINANCE_USER_ID'))
+      </if>
+
+      <if test="type != null and type != '' and type == 'NORMAL'">
+        AND !FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'FREE_SUPER_FINANCE_USER_ID'))
+      </if>
+    </if>
+    <if test="userName != null and userName != ''">
+      AND b.user_name like concat(concat('%', #{userName}),'%')
+    </if>
+    <if test="startTime != null and startTime != ''">
+      AND a.finish_time >= #{startTime}
+    </if>
+    <if test="endTime != null and endTime != ''">
+      <![CDATA[
+                          AND a.finish_time <= #{endTime}
+                      ]]>
+    </if>
+  </select>
+
+  <!-- 投资到期统计 E  -->
+  
+</mapper>

@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsFinanceWithdrawRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsFinanceWithdrawRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="withdraw_time" property="withdrawTime" jdbcType="TIMESTAMP" />
+    <result column="op_user_id" property="opUserId" jdbcType="INTEGER" />
+    <result column="confirm_user_id" property="confirmUserId" jdbcType="INTEGER" />
+    <result column="confirm_time" property="confirmTime" jdbcType="TIMESTAMP" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, amount, withdraw_time, op_user_id, confirm_user_id, confirm_time, note, create_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsFinanceWithdrawRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_finance_withdraw_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_finance_withdraw_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_finance_withdraw_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsFinanceWithdrawRecordExample" >
+    delete from bs_finance_withdraw_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsFinanceWithdrawRecord" >
+    insert into bs_finance_withdraw_record (id, amount, withdraw_time, 
+      op_user_id, confirm_user_id, confirm_time, 
+      note, create_time)
+    values (#{id,jdbcType=INTEGER}, #{amount,jdbcType=DOUBLE}, #{withdrawTime,jdbcType=TIMESTAMP}, 
+      #{opUserId,jdbcType=INTEGER}, #{confirmUserId,jdbcType=INTEGER}, #{confirmTime,jdbcType=TIMESTAMP}, 
+      #{note,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsFinanceWithdrawRecord" >
+    insert into bs_finance_withdraw_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="withdrawTime != null" >
+        withdraw_time,
+      </if>
+      <if test="opUserId != null" >
+        op_user_id,
+      </if>
+      <if test="confirmUserId != null" >
+        confirm_user_id,
+      </if>
+      <if test="confirmTime != null" >
+        confirm_time,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="withdrawTime != null" >
+        #{withdrawTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opUserId != null" >
+        #{opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="confirmUserId != null" >
+        #{confirmUserId,jdbcType=INTEGER},
+      </if>
+      <if test="confirmTime != null" >
+        #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsFinanceWithdrawRecordExample" resultType="java.lang.Integer" >
+    select count(*) from bs_finance_withdraw_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_finance_withdraw_record
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.withdrawTime != null" >
+        withdraw_time = #{record.withdrawTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.opUserId != null" >
+        op_user_id = #{record.opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.confirmUserId != null" >
+        confirm_user_id = #{record.confirmUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.confirmTime != null" >
+        confirm_time = #{record.confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_finance_withdraw_record
+    set id = #{record.id,jdbcType=INTEGER},
+      amount = #{record.amount,jdbcType=DOUBLE},
+      withdraw_time = #{record.withdrawTime,jdbcType=TIMESTAMP},
+      op_user_id = #{record.opUserId,jdbcType=INTEGER},
+      confirm_user_id = #{record.confirmUserId,jdbcType=INTEGER},
+      confirm_time = #{record.confirmTime,jdbcType=TIMESTAMP},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsFinanceWithdrawRecord" >
+    update bs_finance_withdraw_record
+    <set >
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="withdrawTime != null" >
+        withdraw_time = #{withdrawTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opUserId != null" >
+        op_user_id = #{opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="confirmUserId != null" >
+        confirm_user_id = #{confirmUserId,jdbcType=INTEGER},
+      </if>
+      <if test="confirmTime != null" >
+        confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsFinanceWithdrawRecord" >
+    update bs_finance_withdraw_record
+    set amount = #{amount,jdbcType=DOUBLE},
+      withdraw_time = #{withdrawTime,jdbcType=TIMESTAMP},
+      op_user_id = #{opUserId,jdbcType=INTEGER},
+      confirm_user_id = #{confirmUserId,jdbcType=INTEGER},
+      confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <resultMap id="FinanceWithdrawRecordVOMap" type="com.pinting.business.model.vo.FinanceWithdrawRecordVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="withdraw_time" property="withdrawTime" jdbcType="TIMESTAMP" />
+    <result column="op_user_id" property="opUserId" jdbcType="INTEGER" />
+    <result column="confirm_user_id" property="confirmUserId" jdbcType="INTEGER" />
+    <result column="confirm_time" property="confirmTime" jdbcType="TIMESTAMP" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="op_user_name" property="opUserName" jdbcType="VARCHAR" />
+    <result column="confirm_user_name" property="confirmUserName" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="countFinanceWithdrawRecords" resultType="java.lang.Integer" parameterType="java.util.Map">
+  	SELECT COUNT(a.id)
+	FROM bs_finance_withdraw_record a LEFT JOIN m_user confirm ON a.confirm_user_id = confirm.id, m_user op
+	WHERE a.op_user_id = op.id
+	<if test="startTime != '' and startTime != null">
+		AND DATE(a.withdraw_time) >= DATE(#{startTime})
+	</if>
+	<if test="endTime != '' and endTime != null">
+		AND DATE(a.withdraw_time) &lt;= DATE(#{endTime})
+	</if>
+  </select>
+  
+  <select id="selectFinanceWithdrawRecords" resultMap="FinanceWithdrawRecordVOMap" parameterType="java.util.Map">
+  	SELECT a.id, a.amount, a.confirm_time, a.confirm_user_id, a.create_time, a.note,
+		a.op_user_id, a.withdraw_time, op.`name` AS op_user_name, confirm.`name` AS confirm_user_name
+	FROM bs_finance_withdraw_record a LEFT JOIN m_user confirm ON a.confirm_user_id = confirm.id, m_user op
+	WHERE a.op_user_id = op.id
+	<if test="startTime != '' and startTime != null">
+		AND DATE(a.withdraw_time) >= DATE(#{startTime})
+	</if>
+	<if test="endTime != '' and endTime != null">
+		AND DATE(a.withdraw_time) &lt;= DATE(#{endTime})
+	</if>
+	ORDER BY a.id DESC
+	LIMIT #{start}, #{numPerPage}
+  </select>
+</mapper>

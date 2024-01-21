@@ -1,0 +1,110 @@
+﻿-- 库表修改
+-- bs_sub_account表新增字段left_plan_interest剩余应付利息
+ALTER TABLE `bs_sub_account`
+ADD COLUMN `left_plan_interest`  double(15,2) NULL DEFAULT NULL COMMENT '剩余应付利息：目前只针对AUTH_FREE' AFTER `freeze_balance`;
+
+-- ln_finance_repay_schedule表新增字段left_plan_interest剩余应付利息
+ALTER TABLE `ln_finance_repay_schedule`
+ADD COLUMN `left_plan_interest`  double(15,2) NULL DEFAULT NULL COMMENT '剩余应付利息：目前只针对AUTH_FREE' AFTER `diff_amount`;
+
+-- ln_daily_amount表新增字段，修改注释
+ALTER TABLE `ln_daily_amount`
+MODIFY COLUMN `termx_amount`  double(15,2) NULL DEFAULT NULL COMMENT '不定期限汇总资金' AFTER `term12_left_amount`,
+MODIFY COLUMN `termx_left_amount`  double(15,2) NULL DEFAULT NULL COMMENT '不定期限剩余资金' AFTER `termx_amount`,
+ADD COLUMN `free_rate`  double(15,2) NULL DEFAULT NULL COMMENT '自由资金比例' AFTER `termx_left_amount`,
+ADD COLUMN `free_amount`  double(15,2) NULL DEFAULT NULL COMMENT '自由资金总额度' AFTER `free_rate`,
+ADD COLUMN `partner_amount`  double(15,2) NULL DEFAULT NULL COMMENT '合作方老产品总额度' AFTER `free_amount`,
+ADD COLUMN `status`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '可用状态：INIT-初始值；AVAILABLE-可用' AFTER `partner_amount`,
+ADD COLUMN `available_end_time`  datetime NULL DEFAULT NULL COMMENT '有效截止时间' AFTER `status`;
+
+-- 新增菜单
+INSERT INTO `m_menu` (`url`, `parent_id`, `order_num`, `name`, `note`) SELECT '/dailyOperations/loanAmountManage/index.htm' as url, t.id as parent_id, '27' as order_num, '放款资金管理' as name, '' as note FROM m_menu t where t.`name` = '日常业务';
+
+-- 新增 币港湾体系-存管自由资金站岗户
+INSERT INTO `bs_sys_sub_account` (`code`, `open_balance`, `balance`, `available_balance`, `can_withdraw`, `freeze_balance`, `last_trans_date`, `note`) VALUES ('BGW_REG_FREE', '0.00', '0.00', '0.00', '0.00', '0.00', NULL, '币港湾体系-存管自由资金产品户'); 
+INSERT INTO `bs_sys_sub_account` (`code`, `open_balance`, `balance`, `available_balance`, `can_withdraw`, `freeze_balance`, `last_trans_date`, `note`) VALUES ('BGW_AUTH_FREE', '0.00', '0.00', '0.00', '0.00', '0.00', NULL, '币港湾体系-存管自由资金站岗户'); 
+
+-- bs_sys_config表数据新增自由资金VIP理财人用户编号 
+INSERT INTO `bs_sys_config` VALUES ('FREE_SUPER_FINANCE_USER_ID', '22210', '自由资金VIP理财人用户编号', '自由资金VIP理财人用户编号'); 
+-- 原赞时贷VIP童斐站岗户AUTH_ZSD，直接替换为AUTH_FREE，待上线前出脚本确定！！！（剩余应付利息初始值=0）
+update bs_sub_account set product_type='AUTH_FREE',left_plan_interest=0,note='FREE自由资金计划VIP理财人转换(原赞时贷VIP)' where id=178342;
+update bs_sub_account set product_type='DIFF_FREE',note='FREE自由资金计划VIP理财人转换(原赞时贷VIP)' where id=178343;
+
+-- bs_sys_config表数据新增自由资金VIP理财VIP专享产品编号—–需要在新增产品修改修改id 
+INSERT INTO `bs_sys_config` VALUES ('FREE_SUPER_PRODUCT_ID', '1884', '自由资金VIP理财VIP专享产品编号', '自由资金VIP理财VI专享产品编号'); 
+
+-- 菜单理财字眼修改 
+update m_menu set name='产品计划管理' where name='理财计划管理'; 
+update m_menu set name='产品计划申请管理' where name='理财计划申请管理'; 
+update m_menu set name='产品计划审核管理' where name='理财计划审核管理'; 
+update m_menu set name='产品计划发布管理' where name='理财计划发布管理'; 
+
+-- 产品计划发布，支持AUTH_FREE发布
+INSERT INTO `bs_term_product_code`(`property_symbol`, `term`, `code`, `create_time`, `update_time`) VALUES ( 'FREE', 1, '7030', '2018-06-05 19:21:00', '2018-06-05 19:21:03'); 
+INSERT INTO `bs_term_product_code`(`property_symbol`, `term`, `code`, `create_time`, `update_time`) VALUES ( 'FREE', 3, '7090', '2018-06-05 19:21:37', '2018-06-05 19:21:39'); 
+INSERT INTO `bs_term_product_code`(`property_symbol`, `term`, `code`, `create_time`, `update_time`) VALUES ( 'FREE', 6, '7180', '2018-06-05 19:21:53', '2018-06-05 19:21:56'); 
+INSERT INTO `bs_term_product_code`(`property_symbol`, `term`, `code`, `create_time`, `update_time`) VALUES ( 'FREE', 12, '7365', '2018-06-05 19:22:08', '2018-06-05 19:22:12'); 
+
+
+
+-- 借款债权匹配控制参数
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('MATCH_MAX_BALANCE', '10000', '第一级债权匹配金额配置（最大匹配金额）','第一级债权匹配金额配置（最大匹配金额）');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('MATCH_MIDDLE_BALANCE', '1000', '第二级债权匹配金额配置（中间匹配金额）', '第二级债权匹配金额配置（中间匹配金额）');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('MATCH_REDIS_FLAG_EXPTIME', '300', '借款债权匹配redis队列Flag标识失效时间(单位秒)', '云贷/七贷/自由三个站岗户初始化判断标识失效时间，true可初始化站岗户队列，false不初始化');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('MATCH_REDIS_LEVEL_QUEUE_COUNT', '200', '借款债权匹配redis队列中数量', '云贷/七贷/自由三个站岗户区间中各放置的站岗户数量');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('MATCH_MAX_AMOUNT_NORMAL', '10000', '普通用户最大可匹配金额 默认10000元', '普通用户最大可匹配金额 默认10000元');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('MATCH_MAX_AMOUNT_QIANBAO', '5000', '钱报用户最大可匹配金额 默认5000元', '钱报用户最大可匹配金额 默认5000元');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('MATCH_IS_PRIORITY_USE_FREE', 'false', '债权匹配是否优先支持Free自由站岗户','债权匹配是否优先支持Free自由站岗户');
+
+
+-- 结算利率等配置
+-- 云贷自主_等额本息_系统结算_年化利率
+INSERT INTO `bs_sys_config` VALUES ('YUN_FIXED_INSTALLMENT_SYS_SETTLE_RATE', '18', '云贷自主_等额本息_系统结算_年化利率 %', NULL);
+-- 云贷_等额本息_借款服务费率
+INSERT INTO `bs_sys_config` VALUES ('LOAN_SERVICE_RATE_YUN_FIXED_INSTALLMENT', '2', '云贷_等额本息_借款服务费率%', NULL);
+
+-- 云贷自主_等本等息_系统结算_年化利率
+INSERT INTO `bs_sys_config` VALUES ('YUN_FIXED_PRINCIPAL_INTEREST_SYS_SETTLE_RATE', '18', '云贷自主_等额本息_系统结算_年化利率 %', NULL);
+-- 云贷_等本等息_借款服务费率
+INSERT INTO `bs_sys_config` VALUES ('LOAN_SERVICE_RATE_FIXED_PRINCIPAL_INTEREST', '2', '云贷_等额本息_借款服务费率%', NULL);
+
+
+-- 订正资产方为云贷的合作方业务标识
+update ln_loan a,(select a.id,a.partner_business_flag
+from ln_loan a,ln_user b
+where a.ln_user_id = b.id and b.partner_code='YUN_DAI_SELF' 
+)tt  SET a.partner_business_flag = 'REPAY_ANY_TIME' WHERE a.id = tt.id;
+
+
+-- ln_loan表新增字段 期数单位（修订旧数据）
+ALTER TABLE `ln_loan` ADD COLUMN `period_unit` int(11) NULL COMMENT '期数单位  1日 2周 3月 4季 5年' AFTER `period`;
+UPDATE ln_loan t SET t.period_unit = 3 where t.period <= 12;
+UPDATE ln_loan t SET t.period_unit = 1 where t.period > 12;
+
+ALTER TABLE ln_loan MODIFY COLUMN `partner_business_flag` varchar(64) COMMENT '合作方业务标识：REPAY_ANY_TIME（消费循环贷） / FIXED_INSTALLMENT（等额本息）/ FIXED_PRINCIPAL_INTEREST（等本等息）';
+
+-- ln_loan 新增字段：借款人地址，借款人邮箱
+ALTER TABLE `ln_loan`
+ADD COLUMN `address`  varchar(128) NULL COMMENT '借款人地址' AFTER `break_max_days`,
+ADD COLUMN `email`  varchar(64) NULL COMMENT '借款人邮箱' AFTER `address`;
+
+
+-- 协议版本控制
+INSERT INTO `bs_agreement_version` ( `partner_code`, `agreement_name`, `agreement_type`, `agreement_version`, `agreement_url`, `agreement_effective_start_time`, `agreement_effective_end_time`, `create_time`, `update_time`) VALUES ( 'YUN_DAI_SELF', '存管云贷代偿协议收款确认函', 'hf_yundai_receiptConfirmAgreement', '1_1', 'agreement/letterOfCreditConfirm4Pdf', now(), NULL, now(), now());
+INSERT INTO `bs_agreement_version` ( `partner_code`, `agreement_name`, `agreement_type`, `agreement_version`, `agreement_url`, `agreement_effective_start_time`, `agreement_effective_end_time`, `create_time`, `update_time`) VALUES ( 'YUN_DAI_SELF', '代偿协议通知书', 'hf_yundai_creditorNoticeAgreement', '1_1', 'agreement/lateRepayCreditorNotice4Pdf', now(), NULL, now(), now());
+INSERT INTO `bs_agreement_version` ( `partner_code`, `agreement_name`, `agreement_type`, `agreement_version`, `agreement_url`, `agreement_effective_start_time`, `agreement_effective_end_time`, `create_time`, `update_time`) VALUES ( 'YUN_DAI_SELF', '存管云贷代偿协议收款确认函（等本等息，等额本息）', 'hf_yundai_receiptConfirmAgreement_stage', '1_1', 'agreement/letterOfCreditConfirm4Pdf', now(), NULL, now(), now());
+INSERT INTO `bs_agreement_version` ( `partner_code`, `agreement_name`, `agreement_type`, `agreement_version`, `agreement_url`, `agreement_effective_start_time`, `agreement_effective_end_time`, `create_time`, `update_time`) VALUES ( 'YUN_DAI_SELF', '代偿协议通知书（等本等息，等额本息）', 'hf_yundai_creditorNoticeAgreement_stage', '1_1', 'agreement/lateRepayCreditorNotice4Pdf', now(), NULL, now(), now());
+
+-- 合规二期存管云贷借款协议（添加借款人地址和邮箱)
+INSERT INTO `bs_agreement_version` (`partner_code`, `agreement_name`, `agreement_type`, `agreement_version`, `agreement_url`, `agreement_effective_start_time`, `agreement_effective_end_time`, `create_time`, `update_time`) VALUES ('YUN_DAI_SELF', '合规二期存管云贷借款协议（添加借款人地址和邮箱）', 'HF_YUN_LOAN_AGREEMENT', '1_3', 'agreement/hfCustodyLoanVersionAgreement', NOW(), NULL, NOW(), NOW());
+-- 存管云贷债转协议（等额本息、等本等息）
+INSERT INTO `bs_agreement_version` (`partner_code`, `agreement_name`, `agreement_type`, `agreement_version`, `agreement_url`, `agreement_effective_start_time`, `agreement_effective_end_time`, `create_time`, `update_time`) VALUES ('YUN_DAI_SELF', '存管云贷债转协议（等额本息、等本等息产品）', 'hf_yundai_claimsAgreement', '1_2', 'agreement/hfCustodyClaimsAgreementInit', NOW(), NULL, NOW(), NOW());
+-- 存管云贷借款协议（等额本息）
+INSERT INTO `bs_agreement_version` (`partner_code`, `agreement_name`, `agreement_type`, `agreement_version`, `agreement_url`, `agreement_effective_start_time`, `agreement_effective_end_time`, `create_time`, `update_time`) VALUES ('YUN_DAI_SELF', '存管云贷借款协议（等额本息产品）', 'hf_yundai_loanAgreement_installment', '1_1', 'agreement/entrance', NOW(), NULL, NOW(), NOW());
+-- 存管云贷借款协议（等本等息）
+INSERT INTO `bs_agreement_version` (`partner_code`, `agreement_name`, `agreement_type`, `agreement_version`, `agreement_url`, `agreement_effective_start_time`, `agreement_effective_end_time`, `create_time`, `update_time`) VALUES ('YUN_DAI_SELF', '存管云贷借款协议（等本等息产品）', 'hf_yundai_loanAgreement_principal_interest', '1_1', 'agreement/entrance', NOW(), NULL, NOW(), NOW());
+
+
+-- 管理台-存管债转及支付查询sql索引优化
+ALTER TABLE `bs_sys_account_jnl`
+ADD INDEX `index_trans_time` (`trans_time`) USING BTREE ;

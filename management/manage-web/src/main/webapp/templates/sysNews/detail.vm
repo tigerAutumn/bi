@@ -1,0 +1,269 @@
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	<input type="hidden" name="publishTime" value="$!publishTime" />
+	<form id="financeForm" method="post" action="$env.getWebURL('/sysNews/save.htm?sign=add')" class="pageForm" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("id", "$!bsSysNews.id")
+		#if($!flag != 'company_dynamic')
+			#Hidden("type", "$!type")
+		#end
+		<input type="hidden" id="receiverType" name="receiverType" value="" />
+		<input type="hidden" id="publishFlag" name="publishFlag" value="" />
+		<div class="pageFormContent nowrap" layoutH="97">
+			<dl>
+				<dt>
+					发布端口：
+				</dt>
+				<dd>
+                    <input type="checkBox" value="BGW" name="receiver" class="required">币港湾（pc、app、h5）</input>
+					<input type="checkBox" value="BGW178" name="receiver" class="required">钱报-币港湾（pc、h5）</input></br>
+                    <input type="checkBox" value="BGWKQ" name="receiver" class="required">柯桥日报-币港湾（pc、h5）</input>
+                    <input type="checkBox" value="BGWHN" name="receiver" class="required">海宁日报-币港湾（pc、h5）</input></br>
+                    <input type="checkBox" value="BGWRUIAN" name="receiver" class="required">瑞安日报-币港湾（pc、h5）</input>
+                    <input type="checkBox" value="BGWQD" name="receiver" class="required">七店-币港湾（h5）</input>
+                    <input type="checkBox" value="BGWQHDJT" name="receiver" class="required">秦皇岛交通广播-币港湾（h5）</input></br>
+                    <input type="checkBox" value="BGWQHDXW" name="receiver" class="required">秦皇岛新闻891-币港湾（h5）</input>
+                    <input type="checkBox" value="BGWQHDTV" name="receiver" class="required">秦皇岛电视台今日报道-币港湾（h5）</input></br>
+                    <input type="checkBox" value="BGWQHDST" name="receiver" class="required">视听之友-币港湾（pc、h5）</input>
+                    <input type="checkBox" value="BGWQHDSJC" name="receiver" class="required">1038私家车广播-币港湾（h5）</input>
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					是否推荐：
+				</dt>
+				<dd>
+					<label style="margin-left: -8px;">
+						<input type="checkBox" name="priority" value="1"> 推荐
+                    </label>
+				</dd>
+			</dl>
+			#if($!flag == 'company_dynamic')
+			<dl>
+				<dt>
+					类型：
+                </dt>
+				<dd >
+					<select name="type"  id="type">
+						<option value="COMPANY_DYNAMIC" #if("$!bsSysNews.type"=="COMPANY_DYNAMIC") selected  #end>公司动态</option>
+						<option value="WFANS_ACTIVITY" #if("$!bsSysNews.type"=="WFANS_ACTIVITY") selected  #end>湾粉活动</option>
+    				</select>
+                </dd>
+			</dl>
+			#end
+			<dl>
+				<dt >
+					标题：
+                </dt>
+				<dd >
+					<input type="text" id="subject" name="subject" class="required"  style="width:500px;"  maxlength="60" value="$!bsSysNews.subject" />
+                </dd>
+			</dl>
+
+			<dl>
+				<dt >
+					时间：
+                </dt>
+				<dd >## class="date textInput readonly"
+					<input style="width:150px;" name="publishTime"  dateFmt="yyyy-MM-dd HH:mm:ss"  type="text" id="publishTime" class="date" readonly="true" size="15"  value="" />
+                </dd>
+                <script>
+					var date = new Date();
+					var year = date.getFullYear();
+					var month = date.getMonth() + 1;
+					if(month < 10) {
+						month = "0" + month;
+					}
+					var day = date.getDate();
+					if(day < 10) {
+						day = "0" + day;
+					}
+					var hour = date.getHours();
+					if(hour < 10) {
+						hour = "0" + hour;
+					}
+					var minite = date.getMinutes();
+					if(minite < 10) {
+						minite = "0" + minite;
+					}
+					var second = date.getSeconds();
+					if(second < 10) {
+						second = "0" + second;
+					}
+					var time = year + '-' + month + '-' + day + ' ' + hour + ':' + minite + ':' + second;
+					$("#publishTime").val(time);
+				</script>
+			</dl>
+
+			<dl>
+				<dt >
+					来源：
+                </dt>
+				<dd >
+					<input type="text" id="source" name="source" class="required"  style="width:500px;"  maxlength="60" value="$!bsSysNews.source" />
+                </dd>
+			</dl>
+
+			<dl>
+				<dt >
+					摘要：
+                </dt>
+				<dd >
+					<textarea class="textInput" rows="4" cols="81" maxlength="150" name="summary" >$!bsSysNews.summary</textarea>
+                </dd>
+			</dl>
+
+			<dl id = "subject_img_dl">
+				<dt>封面图：</dt>
+				<dd>
+                    <input id="subjectImgNewsAdd" value="$!bsSysNews.subjectImg" name="subjectImg" type="hidden"/>
+                    <div id="uploader-demo">
+                        <!--用来存放item-->
+                        <div id="fileThumb" class="uploader-list">
+                            <div class="file-item thumbnail" style="display: none;">
+								<img/><div class="info"></div>
+							</div>
+						</div>
+                        <div id="filePicker">选择图片</div>
+                    </div>
+                    只支持372x206大小图片
+				</dd>
+			</dl>
+
+			<dl>
+				<dt>内容：</dt>
+				<dd  id="dd_editor"> <!-- 新闻编辑器 -->
+                    <textarea name="content" class="editor"  rows="50" cols="115"   tools="simple" upImgUrl="$env.getWebURL('/upload/newsImg.htm')" upImgExt="jpg,jpeg,gif,png">$!news.content</textarea>
+				</dd>
+				<dd style="display:none" id="dd_content">	<!-- 公告 -->
+					<textarea class="textInput content" rows="50" cols="115" name="other"></textarea>
+				</dd>
+			</dl>
+
+		</div>
+		<div class="formBar">
+			<ul>
+				<li ><div class="buttonActive"><div class="buttonContent"><button type="button" id="save_btn_publish">直接发布</button></div></div></li>
+                <li ><div class="buttonActive"><div class="buttonContent"><button id="save_btn" type="button">保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+
+</div>
+<script>
+	_global.uploadSingleImg("/upload/newsImg.htm", '#filePicker', 372, 206, 372, 206, '#fileThumb', function (file, data) {
+		$('#subjectImgNewsAdd').val(data.msg.url);
+    }, function(file, data) {
+        $('#filePicker').children('div').children('img').attr('src', '');
+        $('#subjectImgNewsAdd').val('');
+	});
+
+	function navTabAjaxDone(json) {
+		 if (json.statusCode == "200") {
+		 	navTab.closeCurrentTab();
+			alertMsg.correct(json.message);
+			navTab.reload("$env.getWebURL('/sysNews/"+$("#flag").val()+".htm')");
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+
+	$(function(){
+		var flag = $("#flag").val();
+		if(flag == 'notice') {
+			$("#subject_img_dl").hide();
+			$("#dd_editor").hide();
+			$("#dd_content").show();
+			$('.editor').attr('name', 'other');
+			$('.content').attr('name', 'content');
+		}
+		if(flag == 'news' || flag == 'company_dynamic') {
+			$("#subject_img_dl").show();
+			$("#dd_content").hide();
+			$("#dd_editor").show();
+			$('.content').attr('name', 'other');
+			$('.editor').attr('name', 'content');
+		}
+
+	});
+
+
+	// 直接发布
+	$("#save_btn_publish").click(function(){
+
+		var receiver = '';
+		$("input[name=receiver]:checkbox").each(function(){
+			if($(this).attr("checked")) {
+				receiver += $(this).attr('value') + ",";
+			}
+		});
+		if(receiver != ''){
+			$("#receiverType").val(receiver);
+		}
+
+
+		if($("#type").val() == 'NEWS' || $("#type").val() == 'COMPANY_DYNAMIC' || $("#type").val() == 'WFANS_ACTIVITY') {
+			var subjectImg = $("#subjectImgNewsAdd").val();
+			if(!subjectImg){
+				alertMsg.warn("请上传封面图片！");
+				return;
+			}
+
+			var content = $('.editor').val();
+			if(content.search('data:image') >= 0 && content.search('base64') >= 0) {
+				alertMsg.warn("图片必须上传方式加载，请勿直接粘贴！");
+				return;
+			} else {
+				$("#publishFlag").val("PUBLISHED");
+				$("#financeForm").submit();
+			}
+		} else {
+			$("#subjectImgNewsAdd").val("");
+			$("#publishFlag").val("PUBLISHED");
+			$("#financeForm").submit();
+		}
+	});
+
+
+
+	// 保存
+	$("#save_btn").click(function(){
+
+		var receiver = '';
+		$("input[name=receiver]:checkbox").each(function(){
+			if($(this).attr("checked")) {
+				receiver += $(this).attr('value') + ",";
+			}
+		});
+		if(receiver != ''){
+			$("#receiverType").val(receiver);
+		}
+
+
+		if($("#type").val() == 'NEWS' || $("#type").val() == 'COMPANY_DYNAMIC' || $("#type").val() == 'WFANS_ACTIVITY') {
+			var subjectImg = $("#subjectImgNewsAdd").val();
+			if(!subjectImg){
+				alertMsg.warn("请上传封面图片！");
+				return;
+			}
+
+			var content = $('.editor').val();
+			if(content.search('data:image') >= 0 && content.search('base64') >= 0) {
+				alertMsg.warn("图片必须上传方式加载，请勿直接粘贴！");
+				return;
+			} else {
+				$("#financeForm").submit();
+			}
+		} else {
+			$("#subjectImgNewsAdd").val("");
+			$("#financeForm").submit();
+		}
+	});
+
+</script>

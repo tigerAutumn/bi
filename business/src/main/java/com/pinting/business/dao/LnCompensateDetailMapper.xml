@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.LnCompensateDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.LnCompensateDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="compensate_id" property="compensateId" jdbcType="INTEGER" />
+    <result column="partner_user_id" property="partnerUserId" jdbcType="VARCHAR" />
+    <result column="partner_loan_id" property="partnerLoanId" jdbcType="VARCHAR" />
+    <result column="partner_repay_id" property="partnerRepayId" jdbcType="VARCHAR" />
+    <result column="repay_serial" property="repaySerial" jdbcType="INTEGER" />
+    <result column="repay_type" property="repayType" jdbcType="VARCHAR" />
+    <result column="total" property="total" jdbcType="DOUBLE" />
+    <result column="principal" property="principal" jdbcType="DOUBLE" />
+    <result column="interest" property="interest" jdbcType="DOUBLE" />
+    <result column="principal_overdue" property="principalOverdue" jdbcType="DOUBLE" />
+    <result column="interest_overdue" property="interestOverdue" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="agreement_generate_status" property="agreementGenerateStatus" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, compensate_id, partner_user_id, partner_loan_id, partner_repay_id, repay_serial, 
+    repay_type, total, principal, interest, principal_overdue, interest_overdue, status, 
+    create_time, update_time, agreement_generate_status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.LnCompensateDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ln_compensate_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ln_compensate_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ln_compensate_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.LnCompensateDetailExample" >
+    delete from ln_compensate_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.LnCompensateDetail" >
+    insert into ln_compensate_detail (id, compensate_id, partner_user_id, 
+      partner_loan_id, partner_repay_id, repay_serial, 
+      repay_type, total, principal, 
+      interest, principal_overdue, interest_overdue, 
+      status, create_time, update_time, agreement_generate_status
+      )
+    values (#{id,jdbcType=INTEGER}, #{compensateId,jdbcType=INTEGER}, #{partnerUserId,jdbcType=VARCHAR}, 
+      #{partnerLoanId,jdbcType=VARCHAR}, #{partnerRepayId,jdbcType=VARCHAR}, #{repaySerial,jdbcType=INTEGER}, 
+      #{repayType,jdbcType=VARCHAR}, #{total,jdbcType=DOUBLE}, #{principal,jdbcType=DOUBLE}, 
+      #{interest,jdbcType=DOUBLE}, #{principalOverdue,jdbcType=DOUBLE}, #{interestOverdue,jdbcType=DOUBLE}, 
+      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{agreementGenerateStatus,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"  parameterType="com.pinting.business.model.LnCompensateDetail" >
+    insert into ln_compensate_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="compensateId != null" >
+        compensate_id,
+      </if>
+      <if test="partnerUserId != null" >
+        partner_user_id,
+      </if>
+      <if test="partnerLoanId != null" >
+        partner_loan_id,
+      </if>
+      <if test="partnerRepayId != null" >
+        partner_repay_id,
+      </if>
+      <if test="repaySerial != null" >
+        repay_serial,
+      </if>
+      <if test="repayType != null" >
+        repay_type,
+      </if>
+      <if test="total != null" >
+        total,
+      </if>
+      <if test="principal != null" >
+        principal,
+      </if>
+      <if test="interest != null" >
+        interest,
+      </if>
+      <if test="principalOverdue != null" >
+        principal_overdue,
+      </if>
+      <if test="interestOverdue != null" >
+        interest_overdue,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="agreementGenerateStatus != null" >
+        agreement_generate_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="compensateId != null" >
+        #{compensateId,jdbcType=INTEGER},
+      </if>
+      <if test="partnerUserId != null" >
+        #{partnerUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerLoanId != null" >
+        #{partnerLoanId,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerRepayId != null" >
+        #{partnerRepayId,jdbcType=VARCHAR},
+      </if>
+      <if test="repaySerial != null" >
+        #{repaySerial,jdbcType=INTEGER},
+      </if>
+      <if test="repayType != null" >
+        #{repayType,jdbcType=VARCHAR},
+      </if>
+      <if test="total != null" >
+        #{total,jdbcType=DOUBLE},
+      </if>
+      <if test="principal != null" >
+        #{principal,jdbcType=DOUBLE},
+      </if>
+      <if test="interest != null" >
+        #{interest,jdbcType=DOUBLE},
+      </if>
+      <if test="principalOverdue != null" >
+        #{principalOverdue,jdbcType=DOUBLE},
+      </if>
+      <if test="interestOverdue != null" >
+        #{interestOverdue,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="agreementGenerateStatus != null" >
+        #{agreementGenerateStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.LnCompensateDetailExample" resultType="java.lang.Integer" >
+    select count(*) from ln_compensate_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ln_compensate_detail
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.compensateId != null" >
+        compensate_id = #{record.compensateId,jdbcType=INTEGER},
+      </if>
+      <if test="record.partnerUserId != null" >
+        partner_user_id = #{record.partnerUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.partnerLoanId != null" >
+        partner_loan_id = #{record.partnerLoanId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.partnerRepayId != null" >
+        partner_repay_id = #{record.partnerRepayId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.repaySerial != null" >
+        repay_serial = #{record.repaySerial,jdbcType=INTEGER},
+      </if>
+      <if test="record.repayType != null" >
+        repay_type = #{record.repayType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.total != null" >
+        total = #{record.total,jdbcType=DOUBLE},
+      </if>
+      <if test="record.principal != null" >
+        principal = #{record.principal,jdbcType=DOUBLE},
+      </if>
+      <if test="record.interest != null" >
+        interest = #{record.interest,jdbcType=DOUBLE},
+      </if>
+      <if test="record.principalOverdue != null" >
+        principal_overdue = #{record.principalOverdue,jdbcType=DOUBLE},
+      </if>
+      <if test="record.interestOverdue != null" >
+        interest_overdue = #{record.interestOverdue,jdbcType=DOUBLE},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.agreementGenerateStatus != null" >
+        agreement_generate_status = #{record.agreementGenerateStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ln_compensate_detail
+    set id = #{record.id,jdbcType=INTEGER},
+      compensate_id = #{record.compensateId,jdbcType=INTEGER},
+      partner_user_id = #{record.partnerUserId,jdbcType=VARCHAR},
+      partner_loan_id = #{record.partnerLoanId,jdbcType=VARCHAR},
+      partner_repay_id = #{record.partnerRepayId,jdbcType=VARCHAR},
+      repay_serial = #{record.repaySerial,jdbcType=INTEGER},
+      repay_type = #{record.repayType,jdbcType=VARCHAR},
+      total = #{record.total,jdbcType=DOUBLE},
+      principal = #{record.principal,jdbcType=DOUBLE},
+      interest = #{record.interest,jdbcType=DOUBLE},
+      principal_overdue = #{record.principalOverdue,jdbcType=DOUBLE},
+      interest_overdue = #{record.interestOverdue,jdbcType=DOUBLE},
+      status = #{record.status,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      agreement_generate_status = #{record.agreementGenerateStatus,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.LnCompensateDetail" >
+    update ln_compensate_detail
+    <set >
+      <if test="compensateId != null" >
+        compensate_id = #{compensateId,jdbcType=INTEGER},
+      </if>
+      <if test="partnerUserId != null" >
+        partner_user_id = #{partnerUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerLoanId != null" >
+        partner_loan_id = #{partnerLoanId,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerRepayId != null" >
+        partner_repay_id = #{partnerRepayId,jdbcType=VARCHAR},
+      </if>
+      <if test="repaySerial != null" >
+        repay_serial = #{repaySerial,jdbcType=INTEGER},
+      </if>
+      <if test="repayType != null" >
+        repay_type = #{repayType,jdbcType=VARCHAR},
+      </if>
+      <if test="total != null" >
+        total = #{total,jdbcType=DOUBLE},
+      </if>
+      <if test="principal != null" >
+        principal = #{principal,jdbcType=DOUBLE},
+      </if>
+      <if test="interest != null" >
+        interest = #{interest,jdbcType=DOUBLE},
+      </if>
+      <if test="principalOverdue != null" >
+        principal_overdue = #{principalOverdue,jdbcType=DOUBLE},
+      </if>
+      <if test="interestOverdue != null" >
+        interest_overdue = #{interestOverdue,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="agreementGenerateStatus != null" >
+        agreement_generate_status = #{agreementGenerateStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.LnCompensateDetail" >
+    update ln_compensate_detail
+    set compensate_id = #{compensateId,jdbcType=INTEGER},
+      partner_user_id = #{partnerUserId,jdbcType=VARCHAR},
+      partner_loan_id = #{partnerLoanId,jdbcType=VARCHAR},
+      partner_repay_id = #{partnerRepayId,jdbcType=VARCHAR},
+      repay_serial = #{repaySerial,jdbcType=INTEGER},
+      repay_type = #{repayType,jdbcType=VARCHAR},
+      total = #{total,jdbcType=DOUBLE},
+      principal = #{principal,jdbcType=DOUBLE},
+      interest = #{interest,jdbcType=DOUBLE},
+      principal_overdue = #{principalOverdue,jdbcType=DOUBLE},
+      interest_overdue = #{interestOverdue,jdbcType=DOUBLE},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      agreement_generate_status = #{agreementGenerateStatus,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectLnCompensateDetailMaxId" resultType="java.lang.Integer" >
+    SELECT
+      max(a.id)
+    FROM
+    ln_compensate_detail a, ln_compensate b
+    WHERE a.status = 'SUCC'
+    AND (a.agreement_generate_status IS NULL OR a.agreement_generate_status != 'SUCC')
+    AND a.compensate_id = b.id AND b.partner_code IN ('YUN_DAI_SELF', '7_DAI_SELF') AND a.principal > 0
+    AND (a.create_time BETWEEN (SELECT conf_value FROM bs_sys_config WHERE conf_key = 'LATE_AGREEMENT_GRNERATE_START_DATE')
+      AND (SELECT conf_value FROM bs_sys_config WHERE conf_key = 'LATE_AGREEMENT_GRNERATE_END_DATE'))
+  </select>
+
+  <select id="selectLateAgreementRepeatGenerateList" resultMap="BaseResultMap" >
+    SELECT
+      a.id, a.compensate_id, a.partner_user_id, a.partner_loan_id, a.partner_repay_id, a.repay_serial,
+      a.repay_type, a.total, a.principal, a.interest, a.principal_overdue, a.interest_overdue, a.status,
+      a.create_time, a.update_time, a.agreement_generate_status
+    FROM
+    ln_compensate_detail a, ln_compensate b
+    WHERE a.status = 'SUCC'
+    AND (a.agreement_generate_status IS NULL OR a.agreement_generate_status != 'SUCC')
+    AND a.compensate_id = b.id AND b.partner_code IN ('YUN_DAI_SELF', '7_DAI_SELF') AND a.principal > 0
+    AND (a.create_time BETWEEN (SELECT conf_value FROM bs_sys_config WHERE conf_key = 'LATE_AGREEMENT_GRNERATE_START_DATE')
+      AND (SELECT conf_value FROM bs_sys_config WHERE conf_key = 'LATE_AGREEMENT_GRNERATE_END_DATE'))
+    AND a.id &lt; #{id,jdbcType=INTEGER}
+    ORDER BY a.id DESC
+    LIMIT #{selectNum,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectLnCompensateDetailList" resultMap="BaseResultMap" >
+	select a.* 
+	FROM
+    ln_compensate_detail a, ln_compensate b
+	<where>
+		a.compensate_id = b.id
+	  	<if test="orderNo != null and orderNo != ''" >
+        	and b.pay_order_no = #{orderNo}
+      	</if>
+       	<if test="status != null and status != ''">
+        	and a.status = #{status}
+   		</if>
+	</where>
+  </select>
+
+  <select id="selectSettledLnLoan4RepayScheduleFinishTime" parameterType="java.util.Map" resultType="com.pinting.business.model.LnLoan">
+      SELECT
+          loan.id,
+          loan.partner_loan_id,
+          loan.partner_business_flag
+      FROM
+          (
+          SELECT
+              loan.id,
+              loan.partner_loan_id,
+              loan.partner_business_flag
+          FROM
+              (
+              SELECT
+                  lrs.loan_id
+              FROM
+                  ln_repay_schedule lrs
+              WHERE
+                  lrs.`status` IN (
+                      'REPAIED',
+                      'LATE_NOT',
+                      'LATE_REPAIED'
+                  )
+            <if test="maxId != null and maxId != 0" >
+              AND lrs.loan_id &lt; #{maxId}
+            </if>
+              AND lrs.finish_time BETWEEN (#{startTime})
+              AND (#{endTime})
+          ) lrs
+          INNER JOIN ln_loan loan ON loan.id = lrs.loan_id
+          INNER JOIN ln_user lu ON lu.id = loan.ln_user_id
+          AND lu.partner_code = 'YUN_DAI_SELF'
+          INNER JOIN ln_compensate_detail lcd ON lcd.partner_loan_id = loan.partner_loan_id
+          AND lcd.principal > 0
+          AND lcd.`status` = 'SUCC'
+          AND (
+              lcd.agreement_generate_status IS NULL
+              OR lcd.agreement_generate_status != 'SUCC'
+          )
+      GROUP BY
+          loan.id
+      ) loan
+      ORDER BY
+          loan.id DESC
+      LIMIT #{selectNum}
+  </select>
+</mapper>

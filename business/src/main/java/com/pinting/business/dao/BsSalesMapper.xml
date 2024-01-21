@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsSalesMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsSales" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="sales_name" property="salesName" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="invite_code" property="inviteCode" jdbcType="VARCHAR" />
+    <result column="entry_time" property="entryTime" jdbcType="DATE" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+   <resultMap type="com.pinting.business.model.vo.BsSalesVO" id="BankListResultMap" extends="BaseResultMap">
+  	<result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+  	<result column="indirect_money" property="indirectMoney" jdbcType="DOUBLE" />
+  	<result column="direct_money" property="directMoney" jdbcType="DOUBLE" />
+  	<result column="direct_people" property="directPeople" jdbcType="INTEGER" />
+  	<result column="indirect_people" property="indirectPeople" jdbcType="INTEGER" />
+  	<result column="user_name" property="userName" jdbcType="VARCHAR" />
+  	<result column="recommend_name" property="recommendName" jdbcType="VARCHAR" />
+  	<result column="product_name" property="productName" jdbcType="VARCHAR" />
+  	<result column="balance" property="balance" jdbcType="DOUBLE" />
+  	<result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
+  	<result column="investment_user" property="investmentUser" jdbcType="INTEGER" />
+  	<result column="direct_annual_amount" property="directAnnualAmount" jdbcType="DOUBLE" />
+  	<result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+  	<result column="dept_manager_name" property="deptManagerName" jdbcType="VARCHAR" />
+  	
+  </resultMap>
+  <resultMap id="DirectInviteResultMap" type="com.pinting.business.model.vo.BsSalesDirectInviteVO" >
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="register_time" property="registerTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="sales_name" property="salesName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, sales_name, mobile, invite_code, entry_time, status, note, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsSalesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_sales
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_sales
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_sales
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsSalesExample" >
+    delete from bs_sales
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsSales"  >
+    insert into bs_sales (id, sales_name, mobile, 
+      invite_code, entry_time, status, 
+      note, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{salesName,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{inviteCode,jdbcType=VARCHAR}, #{entryTime,jdbcType=DATE}, #{status,jdbcType=INTEGER}, 
+      #{note,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsSales"  useGeneratedKeys="true" keyProperty="id">
+    insert into bs_sales
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="salesName != null" >
+        sales_name,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="inviteCode != null" >
+        invite_code,
+      </if>
+      <if test="entryTime != null" >
+        entry_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="salesName != null" >
+        #{salesName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="inviteCode != null" >
+        #{inviteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="entryTime != null" >
+        #{entryTime,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsSalesExample" resultType="java.lang.Integer" >
+    select count(*) from bs_sales
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_sales
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.salesName != null" >
+        sales_name = #{record.salesName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null" >
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inviteCode != null" >
+        invite_code = #{record.inviteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.entryTime != null" >
+        entry_time = #{record.entryTime,jdbcType=DATE},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_sales
+    set id = #{record.id,jdbcType=INTEGER},
+      sales_name = #{record.salesName,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      invite_code = #{record.inviteCode,jdbcType=VARCHAR},
+      entry_time = #{record.entryTime,jdbcType=DATE},
+      status = #{record.status,jdbcType=INTEGER},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsSales" >
+    update bs_sales
+    <set >
+      <if test="salesName != null" >
+        sales_name = #{salesName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="inviteCode != null" >
+        invite_code = #{inviteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="entryTime != null" >
+        entry_time = #{entryTime,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsSales" >
+    update bs_sales
+    set sales_name = #{salesName,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      invite_code = #{inviteCode,jdbcType=VARCHAR},
+      entry_time = #{entryTime,jdbcType=DATE},
+      status = #{status,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <sql id="Base_Bank_List" >
+    <if test="salesName !=null and salesName != ''">   
+       and sales_name like CONCAT(CONCAT('%', #{salesName}),'%')    
+    </if>
+    <if test="deptName !=null and deptName != '' ">   
+       and dept.dept_name = #{deptName}
+  	</if>
+  </sql> 
+  
+  <sql id="Base_Bank_Time" >
+    <if test="startTime !=null and startTime != ''">   
+       	and a.open_time &gt;= #{startTime}
+   	</if>
+   	<if test="endTime !=null and endTime != '' ">   
+       	and a.open_time &lt;= DATE_FORMAT(#{endTime},'%Y-%m-%d 23:59:59')
+   	</if>
+    <if test="(startTime == null  or startTime == '') and (endTime == null or endTime == '') ">   
+        and a.open_time BETWEEN '2015-03-01 00:00:00' AND now()    
+    </if>
+  </sql>
+  
+  <select id="count" parameterType="com.pinting.business.model.vo.BsSalesVO" resultType="java.lang.Integer" >
+	    select count(*) from bs_sales e 
+	    LEFT JOIN bs_dept_sales dept_sales ON  e.id = dept_sales.sales_id
+		LEFT JOIN bs_dept dept ON  dept_sales.dept_id = dept.id
+		LEFT JOIN bs_dept_manager  dept_manager  ON dept.id = dept_manager.dept_id
+		LEFT JOIN m_user m_user ON dept_manager.m_user_id = m_user.id
+	    left join
+        (
+        select count(*) as direct_people , s.sales_id from bs_user_sales s where s.grade=1 group by s.sales_id) ss on  e.id=ss.sales_id left join    
+        (
+       select count(*) as direct_invest_people,sum(f.amt) as direct_money, f.sales_id from (
+       select sum(a.balance) amt, d.sales_id from bs_sub_account a, bs_account b, bs_user c, bs_user_sales d 
+       where a.account_id=b.id and b.user_id=c.id and c.id=d.user_id and d.grade=1
+       and a.product_type = 'reg' and a.status not in (1,6)
+       <include refid="Base_Bank_Time" />
+        group by c.id, d.sales_id) f group by f.sales_id
+       ) g on e.id=g.sales_id
+        left join 
+        (   
+        select count(*) as indirect_people , s.sales_id from bs_user_sales s where s.grade >= 2 group by s.sales_id) rr on  e.id=rr.sales_id left join    
+        (
+       select count(*) as direct_invest_people,sum(f.amt) as indirect_money, f.sales_id from ( 
+       select sum(a.balance) amt, d.sales_id from bs_sub_account a, bs_account b, bs_user c, bs_user_sales d 
+       where a.account_id=b.id and b.user_id=c.id and c.id=d.user_id and d.grade >= 2
+       and a.product_type = 'reg' and a.status not in (1,6) 
+       <include refid="Base_Bank_Time" /> 
+        group by c.id, d.sales_id) f group by f.sales_id
+       ) gg on e.id=gg.sales_id where 1 = 1
+       <include refid="Base_Bank_List" />
+       <if test="mUserId != '' and mUserId != null">
+       	AND m_user.id =  #{mUserId}
+      </if>
+  </select>
+  <select id="page" resultMap="BankListResultMap" parameterType="com.pinting.business.model.vo.BsSalesVO" >
+         select 
+        
+	        e.id, e.sales_name, e.mobile, e.invite_code, e.entry_time, e.`status`, e.note, e.create_time, e.update_time, ss.direct_people,
+		    ss.sales_id, g.direct_invest_people, g.direct_money,gg.direct_invest_people,g.direct_money,
+			rr.indirect_people,gg.indirect_money,aa.investment_user,ee.direct_annual_amount,
+        	(@rowNO := @rowNo+1) as number ,dept.dept_name,m_user.`name`  dept_manager_name
+        from (SELECT * FROM  bs_sales ORDER BY entry_time DESC) e  
+        LEFT JOIN bs_dept_sales dept_sales ON  e.id = dept_sales.sales_id
+		LEFT JOIN bs_dept dept ON  dept_sales.dept_id = dept.id
+		LEFT JOIN bs_dept_manager  dept_manager  ON dept.id = dept_manager.dept_id
+		LEFT JOIN m_user m_user ON dept_manager.m_user_id = m_user.id
+        left join
+        	(select count(*) as direct_people , s.sales_id from bs_user_sales s where s.grade=1 group by s.sales_id) ss on  e.id=ss.sales_id 
+        left join    
+	        (
+		       select count(*) as direct_invest_people,sum(f.amt) as direct_money, f.sales_id from (
+			       select sum(a.open_balance) amt, d.sales_id from bs_sub_account a, bs_account b, bs_user c, bs_user_sales d
+			       where a.account_id=b.id and b.user_id=c.id and c.id=d.user_id and d.grade=1
+			       and a.product_type in ('REG', 'AUTH_ZSD', 'AUTH_7','AUTH_YUN') and a.status not in (1,6)
+			       <include refid="Base_Bank_Time" />
+			        group by c.id, d.sales_id
+		        ) f group by f.sales_id
+	       ) g on e.id=g.sales_id
+	    left join 
+	        	(select count(*) as indirect_people , s.sales_id from bs_user_sales s where s.grade >= 2 group by s.sales_id) rr on  e.id=rr.sales_id 
+	    left join    
+		        (
+			       select count(*) as direct_invest_people,sum(f.amt) as indirect_money, f.sales_id from ( 
+			       select sum(a.open_balance) amt, d.sales_id from bs_sub_account a, bs_account b, bs_user c, bs_user_sales d
+			       where a.account_id=b.id and b.user_id=c.id and c.id=d.user_id and d.grade >= 2
+			       and a.product_type in ('REG', 'AUTH_ZSD', 'AUTH_7','AUTH_YUN') and a.status not in (1,6)
+			       <include refid="Base_Bank_Time" /> 
+			        group by c.id, d.sales_id) f group by f.sales_id
+		       ) gg on e.id=gg.sales_id
+		left join 
+		       (
+				select count(*) as investment_user,c.sales_id 
+				 from 
+				  (select s.account_id 
+				  from bs_sub_account s 
+				  where s.product_type in ('REG', 'AUTH_ZSD', 'AUTH_7','AUTH_YUN') and s.status not in (1,6)
+				    <if test="startTime !=null and startTime != ''">   
+				       	and s.open_time &gt;= #{startTime}
+				   	</if>
+				   	<if test="endTime !=null and endTime != '' ">   
+				       	and s.open_time &lt;= DATE_FORMAT(#{endTime},'%Y-%m-%d 23:59:59')
+				   	</if>
+				    
+				    <if test="(startTime == null or startTime == '') and (endTime == null  or endTime == '') ">   
+				        and s.open_time BETWEEN '2015-03-01 00:00:00' AND now()    
+				    </if>
+				  group by s.account_id ) s 
+				  LEFT JOIN bs_account a on s.account_id = a.id
+				  LEFT JOIN bs_user_sales c on c.user_id = a.user_id and c.grade = 1
+				 GROUP BY c.sales_id
+				) aa on e.id = aa.sales_id
+		left join
+		      (
+		      select dd.sales_id,sum(dd.totalMoney) as direct_annual_amount from 
+				(
+					select cc.* ,(cc.sevenMoney + cc.oneMoney + cc.threeMoney + cc.sixMoney + cc.twelveMoney) as totalMoney from
+					(
+						select bb.* ,
+						case when bb.seven is null then 0 else bb.seven end as sevenMoney ,
+						case when bb.one is null then 0 else bb.one end as oneMoney ,
+						case when bb.three is null then 0 else bb.three end as threeMoney , 
+						case when bb.six is null then 0 else bb.six end as sixMoney ,
+						case when bb.twelve is null then 0 else bb.twelve end as twelveMoney
+						from
+						(
+						select aa.*,
+								 case when aa.term is null then 0 else aa.term end as termNull,
+								 case when aa.term = -7 then ROUND(aa.amt * 7/365,2) end as seven ,
+								 case when aa.term = 1 then ROUND(aa.amt * aa.term * 30/365,2) end as one ,
+								 case when aa.term = 3 then ROUND(aa.amt * aa.term * 30/365,2) end as three ,
+								 case when aa.term = 6 then ROUND(aa.amt * aa.term * 30/365,2) end as six ,
+								 case when aa.term = 12 then ROUND(aa.amt,2) end as twelve
+							from 
+								(
+									select sum(a.open_balance) amt, d.sales_id, p.term from bs_sub_account a, bs_account b, bs_user c, bs_user_sales d, bs_product p
+									where a.account_id=b.id and b.user_id=c.id and c.id=d.user_id and d.grade=1
+									and a.product_type in ('REG', 'AUTH_ZSD', 'AUTH_7','AUTH_YUN') and p.id = a.product_id and a.status not in (1,6)
+									<include refid="Base_Bank_Time" />
+									group by c.id, d.sales_id,p.term
+								) aa 
+						) bb
+					)cc
+				)dd group by dd.sales_id 
+             ) ee on e.id = ee.sales_id,(SELECT @rowNO :=0) p where 1 = 1 
+      <include refid="Base_Bank_List" />
+      <if test="mUserId != '' and mUserId != null">
+       	AND m_user.id =  #{mUserId}
+      </if>
+		 <!-- order by -->
+    	<if test="orderDirection!=null and orderDirection != ''  and orderField != ''  and orderField!=null ">   
+    		 order by ${orderField}  ${orderDirection}
+    	</if> 
+		<!-- status asc,entry_time desc -->
+		<include refid="sql-global.pagination"/>
+  </select>
+  
+  <sql id="Base_Bank_UserList" >
+    <if test="userName !=null and userName != ''">   
+       and d.user_name like CONCAT(CONCAT('%', #{userName}),'%')    
+    </if>
+    <if test="mobile !=null and mobile != ''">   
+       and d.mobile like CONCAT(CONCAT('%', #{mobile}),'%')    
+    </if>
+    <if test="startTime !=null and endTime != null">   
+       and a.open_time BETWEEN #{startTime} AND #{endTime}    
+    </if>
+    <if test="startTime !=null and endTime == null">   
+       and a.open_time BETWEEN #{startTime} AND now()
+    </if>
+    <if test="startTime ==null and endTime != null">   
+       and a.open_time BETWEEN 0 AND #{endTime}    
+    </if>
+    <if test="startMoney != null and endMoney != null">
+       and a.balance BETWEEN #{startMoney} and #{endMoney}
+    </if>
+    <if test="startMoney != null and endMoney == null">
+       and a.balance >= #{startMoney}
+    </if>
+    <if test="startMoney == null and endMoney != null">
+       and a.balance &lt;= #{endMoney}
+    </if>
+  </sql> 
+  
+  <select id="userCount" parameterType="com.pinting.business.model.vo.BsSalesVO" resultType="java.lang.Integer" >
+		select count(a.id) from bs_sub_account a,bs_account b,(
+			select bu.user_id as user_id,bs.sales_name,bs.status as sales_status from bs_sales bs left join bs_user_sales bu on bs.id = bu.sales_id where 1=1
+			<if test="id !=null and id != 0">
+			and bs.id = #{id}
+			</if>
+			<if test="grade != null and grade == 1">
+			and grade = #{grade}
+			</if>
+            <if test="grade != null and grade > 1">
+              and grade >= #{grade}
+            </if>
+	       ) as c, bs_user d 
+	       <if test="grade > 1">
+	       left join (
+	       	  select user_name as recommend_name, id as did from bs_user
+	       ) e on e.did = d.recommend_id
+	       </if>
+               where a.account_id = b.id and b.user_id = c.user_id and a.product_type in ('REG', 'AUTH_YUN', 'AUTH_7', 'AUTH_ZSD') and a.status not in (1,6) and d.id = c.user_id
+               <include refid="Base_Bank_UserList" />
+  </select>
+  
+  <select id="userPage" resultMap="BankListResultMap" parameterType="com.pinting.business.model.vo.BsSalesVO" >
+         select a.id, d.user_name, d.mobile, c.sales_name
+              <if test="grade > 1">, e.recommend_name</if>
+            , a.product_name, a.open_balance as balance, a.open_time,
+            (@rowNO := @rowNo+1) as number from bs_sub_account a,bs_account b,(
+			select bu.user_id as user_id,bs.sales_name,bs.status as sales_status from bs_sales bs left join bs_user_sales bu on bs.id = bu.sales_id where 1=1
+			<if test="id !=null and id != 0">
+			and bs.id = #{id}
+			</if>
+            <if test="grade != null and grade == 1">
+              and grade = #{grade}
+            </if>
+            <if test="grade != null and grade > 1">
+              and grade >= #{grade}
+            </if>
+	       ) as c, bs_user d 
+	       <if test="grade > 1">
+	       left join (
+	       	  select user_name as recommend_name, id as did from bs_user
+	       ) e on e.did = d.recommend_id
+	       </if>
+               ,(SELECT @rowNO :=0) f where a.account_id = b.id and b.user_id = c.user_id and a.product_type in ('REG', 'AUTH_YUN', 'AUTH_7', 'AUTH_ZSD') and a.status not in (1,6) and d.id = c.user_id
+               <include refid="Base_Bank_UserList" />
+		<include refid="sql-global.pagination"/>
+   </select>
+   
+   <sql id="Base_Bank" >
+      <if test="id != null and id != 0" >
+        and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="mobile != null and mobile != ''" >
+        and mobile = #{mobile,jdbcType=VARCHAR}
+    </if>
+    <if test="inviteCode != null and inviteCode != ''" >
+        and invite_code = #{inviteCode,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null and status != 0" >
+        and status = #{status,jdbcType=INTEGER}
+    </if>
+  </sql>
+  
+  <select id="selectBsSales" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsSales" >
+    select
+    <include refid="Base_Column_List" />
+    from bs_sales where 1 = 1
+    <include refid="Base_Bank" />
+    LIMIT 0,1
+  </select>
+  
+  <select id="selectSalesDirectInviteUsers" resultMap="DirectInviteResultMap" parameterType="com.pinting.business.model.BsSales" >
+	  SELECT 
+		a.create_time, b.user_name,b.mobile,b.register_time,c.sales_name 
+	  FROM 
+		bs_user_sales a, bs_user b, bs_sales c 
+	  where 
+		a.sales_id=c.id and a.user_id=b.id and a.grade=1 and a.sales_id=#{id}
+	  <include refid="sql-global.pagination"/>
+   </select>
+   <select id="countSalesDirectInviteUsers" resultType="java.lang.Integer" parameterType="com.pinting.business.model.BsSales" >
+	  SELECT 
+		count(*)
+	  FROM 
+		bs_user_sales a, bs_user b
+	  where 
+		a.user_id=b.id and a.grade=1 and a.sales_id=#{id}
+   </select>
+   
+</mapper>

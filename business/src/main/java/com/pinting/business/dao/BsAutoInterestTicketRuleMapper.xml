@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsAutoInterestTicketRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsAutoInterestTicketRule" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="serial_no" property="serialNo" jdbcType="VARCHAR" />
+    <result column="agent_ids" property="agentIds" jdbcType="VARCHAR" />
+    <result column="trigger_type" property="triggerType" jdbcType="VARCHAR" />
+    <result column="trigger_time_start" property="triggerTimeStart" jdbcType="TIMESTAMP" />
+    <result column="trigger_time_end" property="triggerTimeEnd" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, serial_no, agent_ids, trigger_type, trigger_time_start, trigger_time_end, 
+    create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsAutoInterestTicketRuleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_auto_interest_ticket_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_auto_interest_ticket_rule
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_auto_interest_ticket_rule
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsAutoInterestTicketRuleExample" >
+    delete from bs_auto_interest_ticket_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsAutoInterestTicketRule" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bs_auto_interest_ticket_rule (serial_no, agent_ids, trigger_type, 
+      trigger_time_start, trigger_time_end, 
+      create_time, update_time)
+    values (#{serialNo,jdbcType=VARCHAR}, #{agentIds,jdbcType=VARCHAR}, #{triggerType,jdbcType=VARCHAR}, 
+      #{triggerTimeStart,jdbcType=TIMESTAMP}, #{triggerTimeEnd,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsAutoInterestTicketRule" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bs_auto_interest_ticket_rule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="serialNo != null" >
+        serial_no,
+      </if>
+      <if test="agentIds != null" >
+        agent_ids,
+      </if>
+      <if test="triggerType != null" >
+        trigger_type,
+      </if>
+      <if test="triggerTimeStart != null" >
+        trigger_time_start,
+      </if>
+      <if test="triggerTimeEnd != null" >
+        trigger_time_end,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="serialNo != null" >
+        #{serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="agentIds != null" >
+        #{agentIds,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerType != null" >
+        #{triggerType,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerTimeStart != null" >
+        #{triggerTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="triggerTimeEnd != null" >
+        #{triggerTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsAutoInterestTicketRuleExample" resultType="java.lang.Integer" >
+    select count(*) from bs_auto_interest_ticket_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_auto_interest_ticket_rule
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.serialNo != null" >
+        serial_no = #{record.serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agentIds != null" >
+        agent_ids = #{record.agentIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.triggerType != null" >
+        trigger_type = #{record.triggerType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.triggerTimeStart != null" >
+        trigger_time_start = #{record.triggerTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.triggerTimeEnd != null" >
+        trigger_time_end = #{record.triggerTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_auto_interest_ticket_rule
+    set id = #{record.id,jdbcType=INTEGER},
+      serial_no = #{record.serialNo,jdbcType=VARCHAR},
+      agent_ids = #{record.agentIds,jdbcType=VARCHAR},
+      trigger_type = #{record.triggerType,jdbcType=VARCHAR},
+      trigger_time_start = #{record.triggerTimeStart,jdbcType=TIMESTAMP},
+      trigger_time_end = #{record.triggerTimeEnd,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsAutoInterestTicketRule" >
+    update bs_auto_interest_ticket_rule
+    <set >
+      <if test="serialNo != null" >
+        serial_no = #{serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="agentIds != null" >
+        agent_ids = #{agentIds,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerType != null" >
+        trigger_type = #{triggerType,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerTimeStart != null" >
+        trigger_time_start = #{triggerTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="triggerTimeEnd != null" >
+        trigger_time_end = #{triggerTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsAutoInterestTicketRule" >
+    update bs_auto_interest_ticket_rule
+    set serial_no = #{serialNo,jdbcType=VARCHAR},
+      agent_ids = #{agentIds,jdbcType=VARCHAR},
+      trigger_type = #{triggerType,jdbcType=VARCHAR},
+      trigger_time_start = #{triggerTimeStart,jdbcType=TIMESTAMP},
+      trigger_time_end = #{triggerTimeEnd,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

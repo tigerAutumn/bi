@@ -1,0 +1,237 @@
+#LoadJS("resources/js/ajaxfileupload")
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/bsCheckInUser/checkInUser/index.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.web')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="totalRows" value="$!totalRows" />
+	<div class="searchBar">
+		<table class="searchContent">
+			<tr>
+				<td>
+					手机号：<input  id="mobile" type="text" name="mobile" value="$!req.mobile" maxlength="11" size="11" />
+					<td>
+						<label >是否中奖：</label>
+						<select name="isWin" > 
+							<option value="" #if("$!req.isWin"=="") selected #end>全部</option>
+							<option value="-1" #if("$!req.isWin"=="-1") selected  #end>已中奖</option>
+							<option value="-2" #if("$!req.isWin"=="-2") selected  #end>未中奖</option>
+						</select>
+					</td>
+					<td>
+						<label >奖项：</label>
+						<select name="activityAwardId" > 
+							<option value="" #if("$!req.activityAwardId"=="") selected #end>全部</option>
+        					<option value="87" #if("$!req.activityAwardId"=="87") selected  #end>一等奖</option>
+							<option value="88" #if("$!req.activityAwardId"=="88") selected  #end>二等奖</option>
+							<option value="89" #if("$!req.activityAwardId"=="89") selected  #end>三等奖</option>
+							<option value="90" #if("$!req.activityAwardId"=="90") selected  #end>幸运奖</option>
+        				</select>
+					</td>
+					<td>
+						<span style="margin-left:20px;cursor:pointer;">
+							<button onclick="func()" type="button" style="cursor: pointer;">查询</button>
+                        </span>
+					</td>
+			   </tr>
+			   
+               <td style="height:10px"></td>
+			   
+			   <tr>
+					<td>
+						手机号：<input style="width: 120px;" name="addMobile" id="addMobile" maxlength="11" size="11" placeholder="手机号每次输入一个" />
+					</td>
+					<td>
+						<button onclick="add()" type="button">添加</button>
+					</td>
+					<td>
+						<button onclick="exp()" type="button">下载模板</button>
+					</td>
+					<td>
+                        <form>
+                            <input type="file" name="fileField" id="fileField" onclick="this.form.reset();" onchange="fileUpload()">
+						</form>
+					</td>
+                   <td>
+						<span style="margin-left:20px;cursor:pointer;">
+							<button type="button" onclick="revert_draw_result()">重置抽奖结果</button>
+                        </span>
+                   </td>
+					<td>
+						<span style="margin-left:20px;cursor:pointer;">
+							<a target="_blank" href="$!env.get('gen.web')/gen2.0/activity/2017_christmas_cj9bb90face4de00000000002147483647"><button type="button">抽奖页面</button></a>
+                        </span>
+					</td>
+			   </tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="128" >
+		<thead>
+			<tr>
+				<th width="5%">编号</th>
+				<th width="19%">手机号</th>
+				<th width="19%">是否中奖</th>
+				<th width="19%">中奖时间</th>
+				<th width="19%">奖项</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $checkInUserList)
+    			<tr target="sid_user" rel="1" >
+					#if($!numPerPage == 20)
+						#set($a=$!velocityCount + 20 * ($!pageNum - 1))
+						<td>$a</td>
+					#elseif($!numPerPage == 50)
+						#set($b=$!velocityCount + 50 * ($!pageNum - 1))
+						<td>$b</td>
+					#elseif($!numPerPage == 100)
+						#set($c=$!velocityCount + 100 * ($!pageNum - 1))
+						<td>$c</td>
+					#elseif($!numPerPage == 200)
+						#set($d=$!velocityCount + 200 * ($!pageNum - 1))
+						<td>$d</td>
+					#end
+					<td>$!grid.mobile</td>
+					<td>
+    					#if($!grid.isWin == 'Y')
+    						已中奖
+    					#else
+    						未中奖
+    					#end
+					</td>
+					<td>$!date.format($!grid.backDrawTime)</td>
+					<td>$!grid.content</td>
+    			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+
+<script>
+    function func(){
+        var mobile = $("#mobile").val().trim();
+        var reg = /^[0-9]*$/;
+		if(mobile) {
+            if(reg.test(mobile)) {
+                var url = $("#APP_ROOT_PATH").val() + "/bsCheckInUser/checkInUser/index.htm";
+                $("#myform").attr("action",url);
+                $("#myform").attr("onsubmit","return navTabSearch(this);");
+                $("#myform").submit();
+            } else {
+                alertMsg.warn("手机号不正确，请重新输入！");
+                return;
+            }
+        } else {
+            var url = $("#APP_ROOT_PATH").val() + "/bsCheckInUser/checkInUser/index.htm";
+            $("#myform").attr("action",url);
+            $("#myform").attr("onsubmit","return navTabSearch(this);");
+            $("#myform").submit();
+		}
+    }
+
+	function revert_draw_result() {
+        alertMsg.confirm("本功能仅用于清空试用数据！粉丝见面会上产生的正式抽奖结果请勿清空！确定清空请点【确定】，不清空请点【取消】！", {
+            okCall: function(){
+                var root = $("#APP_ROOT_PATH").val();
+                $.ajax({
+                    url : root + "/bsCheckInUser/revert.htm",
+                    type:'post',
+                    dataType:'json',
+                    success: function(data) {
+                        if(data.statusCode == "200") {
+                            navTab.reload($("#pagerForm").attr('action'));
+                            alertMsg.correct('重置成功');
+                        } else {
+                            alertMsg.error(data.message);
+                        }
+                    }
+                });
+            }
+        });
+	}
+
+    function add() {
+    	var mobile = $("#addMobile").val().trim();
+		if(mobile == null || mobile == ""){
+			alertMsg.warn("手机号为空，请重新输入！");
+			return false;
+		}
+    	var reg = /^1[34587]\d{9}$/;
+    	if(reg.test(mobile)) {
+    		var root = $('#APP_ROOT_PATH').val();
+    		$.post(root+"/bsCheckInUser/addMobileRecord.htm",{"mobile":mobile},function(data){
+			if(data.statusCode == "200") {
+			debugger;
+				alertMsg.correct("添加成功！");
+				func();
+			}else {
+				alertMsg.warn("手机号已存在，请重新输入！");;
+			}
+    		},"json");
+    	}
+    	else {
+    		alertMsg.warn("手机号不正确，请重新输入！");
+    		return;
+    	}
+	
+	}
+	
+    function exp(){
+        location.href = $("#APP_ROOT_PATH").val() + "/bsCheckInUser/xls.htm";
+    }
+
+	function fileUpload(){
+    	 var url = $("#APP_ROOT_PATH").val() + "/bsCheckInUser/readExcel.htm";
+         $.ajaxFileUpload
+		 ({
+               url:url,
+               secureuri :false,
+               fileElementId :'fileField',
+               dataType :'json',
+               success : function (data){
+				  var mobile = $("#mobile").val();
+				  if(data.mobile != 'undefined'){
+    				  if(mobile != null &&　mobile　!= ''){
+    				     //$("#mobile").val(data.mobile)
+    				  }else{
+    				     //$("#mobile").val(data.mobile)
+    				  }
+				  }
+				  if(data.code == 1){
+				     alertMsg.correct("文件读取成功，数据已存库");
+					 func();
+				  }else if(data.code == 2){
+				     alertMsg.warn("导入号码格式有误，请检查导入的手机号码");
+				  }else{
+				     alertMsg.warn("文件格式错误或文件内容为空！");
+				  }
+               },
+               error: function(data){
+    			 alertMsg.error("操作失败！");
+               }
+         });
+    }
+</script>

@@ -1,0 +1,49 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾理财官网_安心可靠互联网金融投资理财平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#Head("end")
+</head>
+
+<body>
+<!-- website wrapper starts -->
+<div style="min-height: 57px;" class="websiteWrapper">
+   #if("$!result.id"=="6")
+	 #Header("定期理财-超级体验30天")
+   #else
+     #Header("定期理财-$!result.trem个月期$!result.rate%")
+   #end
+  <!-- header wrapper ends --> 
+
+<div class="newrow">
+	<input name="maxInvestTimes" id="maxInvestTimes" value="$!result.maxInvestTimes" type="hidden">
+	<input name="ceiling" id="ceiling" value="$!result.priceCeiling" type="hidden">
+	<input name="limit" id="limit" value="$!result.priceLimit" type="hidden">
+  <div class="newbox" id="slider1">
+    <div class="dq2" style="margin-top:0px;">
+      <!--
+      <div class="wz13" style="padding-top:5px;">当天还可购买次数&nbsp;&nbsp;<span>$!result.buyNum&nbsp;</span>次</div>
+	  -->
+      <div class="wz13">*今日开始计息 <br>
+        收益显示时间$!date.formatDateTime($!interestBeginDate,"yyyy.MM.dd")</div>
+    <div class="gm3" style="line-height:40px;margin-top:10px"><span style="font-size:16px;color:#666666;">购入金额</span>
+		<form id="myForm" action="$!env.getWebURL('')/micro/regular/choseBank" method="post" onkeydown="if(event.keyCode==13){return false;}">
+			<input style="width: 100%;font-size: 14px;margin-top:7px;color:#fa6813;" name="money" id="money" onkeyup="onlyNum(this);" placeholder="请输入$!result.priceLimit元整数倍的金额" type="text"/>
+			<input name="productId" id="productId" value="$!result.id" type="hidden">
+        </form>
+    </div>
+    <!--tab-e-->
+    <div class="wz4"> <a style="margin-top:20px;" class="go_btn3" id="commit" date-maxInvestTimes="$!money.defaultRound($!result.maxInvestTimes)" date-buyNum="$!result.buyNum" date-surplusAmount="$!money.defaultRound($!result.surplusAmount)"  product-id="$!result.id" date-money="money" date-limit="$!money.defaultRound($!result.priceLimit)" date-ceiling="$!money.defaultRound($!result.priceCeiling)">确认购买</a>
+      <div class="xy1" style="margin-bottom:50px;font-size: 14px;color:#716e7f">点击确认购买即代表您同意<a href="$!env.getWebURL('/micro/regular/buyagreement?term=')$!result.trem">《投资协议》</a></div>
+    </div>
+  </div>
+  <!-- footer wrapper starts -->
+ #LoadJS("resources/micro/scripts/regular/buy")
+ #Footer("2")
+  <!-- footer wrapper ends --> 
+  <!-- footer wrapper ends --> 
+</div>
+</div>
+</div>
+<!-- website wrapper ends -->
+</body>
+</html>

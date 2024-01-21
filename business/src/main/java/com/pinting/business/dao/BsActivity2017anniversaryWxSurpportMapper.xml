@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinting.business.dao.BsActivity2017anniversaryWxSurpportMapper">
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsActivity2017anniversaryWxSurpport">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="partner_id" jdbcType="INTEGER" property="partnerId" />
+    <result column="wx_info_id" jdbcType="INTEGER" property="wxInfoId" />
+    <result column="lucky_draw_id" jdbcType="INTEGER" property="luckyDrawId" />
+    <result column="activity_id" jdbcType="INTEGER" property="activityId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, partner_id, wx_info_id, lucky_draw_id, activity_id, content, create_time, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.pinting.business.model.BsActivity2017anniversaryWxSurpportExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_activity_2017anniversary_wx_surpport
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bs_activity_2017anniversary_wx_surpport
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bs_activity_2017anniversary_wx_surpport
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsActivity2017anniversaryWxSurpportExample">
+    delete from bs_activity_2017anniversary_wx_surpport
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsActivity2017anniversaryWxSurpport">
+    insert into bs_activity_2017anniversary_wx_surpport (id, partner_id, wx_info_id, 
+      lucky_draw_id, activity_id, content, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{partnerId,jdbcType=INTEGER}, #{wxInfoId,jdbcType=INTEGER}, 
+      #{luckyDrawId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsActivity2017anniversaryWxSurpport">
+    insert into bs_activity_2017anniversary_wx_surpport
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="partnerId != null">
+        partner_id,
+      </if>
+      <if test="wxInfoId != null">
+        wx_info_id,
+      </if>
+      <if test="luckyDrawId != null">
+        lucky_draw_id,
+      </if>
+      <if test="activityId != null">
+        activity_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="partnerId != null">
+        #{partnerId,jdbcType=INTEGER},
+      </if>
+      <if test="wxInfoId != null">
+        #{wxInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="luckyDrawId != null">
+        #{luckyDrawId,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null">
+        #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsActivity2017anniversaryWxSurpportExample" resultType="java.lang.Long">
+    select count(*) from bs_activity_2017anniversary_wx_surpport
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update bs_activity_2017anniversary_wx_surpport
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.partnerId != null">
+        partner_id = #{record.partnerId,jdbcType=INTEGER},
+      </if>
+      <if test="record.wxInfoId != null">
+        wx_info_id = #{record.wxInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="record.luckyDrawId != null">
+        lucky_draw_id = #{record.luckyDrawId,jdbcType=INTEGER},
+      </if>
+      <if test="record.activityId != null">
+        activity_id = #{record.activityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update bs_activity_2017anniversary_wx_surpport
+    set id = #{record.id,jdbcType=INTEGER},
+      partner_id = #{record.partnerId,jdbcType=INTEGER},
+      wx_info_id = #{record.wxInfoId,jdbcType=INTEGER},
+      lucky_draw_id = #{record.luckyDrawId,jdbcType=INTEGER},
+      activity_id = #{record.activityId,jdbcType=INTEGER},
+      content = #{record.content,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsActivity2017anniversaryWxSurpport">
+    update bs_activity_2017anniversary_wx_surpport
+    <set>
+      <if test="partnerId != null">
+        partner_id = #{partnerId,jdbcType=INTEGER},
+      </if>
+      <if test="wxInfoId != null">
+        wx_info_id = #{wxInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="luckyDrawId != null">
+        lucky_draw_id = #{luckyDrawId,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null">
+        activity_id = #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsActivity2017anniversaryWxSurpport">
+    update bs_activity_2017anniversary_wx_surpport
+    set partner_id = #{partnerId,jdbcType=INTEGER},
+      wx_info_id = #{wxInfoId,jdbcType=INTEGER},
+      lucky_draw_id = #{luckyDrawId,jdbcType=INTEGER},
+      activity_id = #{activityId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <resultMap id="AnniversaryHelpFriendVOMap" type="com.pinting.business.model.vo.AnniversaryHelpFriendVO" >
+    <result column="partner_id" property="shareUserId" jdbcType="INTEGER" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="nick" property="wxNick" jdbcType="VARCHAR" />
+    <result column="head_img_url" property="wxHeadImg" jdbcType="VARCHAR" />
+    <result column="content" property="goldIngotNum" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectByPartnerId" resultMap="AnniversaryHelpFriendVOMap" parameterType="java.util.Map" >
+    SELECT a.partner_id, b.open_id, b.nick, b.head_img_url, a.content
+    FROM bs_activity_2017anniversary_wx_surpport a, bs_wx_info b
+    WHERE a.activity_id = #{activityId} AND a.wx_info_id = b.id AND a.partner_id = #{shareUserId}
+    ORDER BY a.create_time DESC
+    LIMIT #{start}, #{numPerPage}
+  </select>
+  <select id="selectByOpenId" resultMap="AnniversaryHelpFriendVOMap" parameterType="java.util.Map" >
+    SELECT a.partner_id, b.open_id, b.nick, b.head_img_url, a.content
+    FROM bs_activity_2017anniversary_wx_surpport a, bs_wx_info b
+    WHERE a.activity_id = #{activityId} AND a.wx_info_id = b.id AND a.partner_id = #{shareUserId} AND b.open_id = #{openId}
+    LIMIT 1
+  </select>
+
+</mapper>

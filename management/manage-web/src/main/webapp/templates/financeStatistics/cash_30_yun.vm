@@ -1,0 +1,69 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);"  action="$env.getWebURL('/financeStatistics/cash30Yun.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+	<div class="searchBar">
+
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li>		
+				<span style="margin-left:10px;">
+    				<font color="red">当前VIP持有债权：#if(!$!debtAmount)0.00 #else $!money.format($!debtAmount) #end 元</font>
+                </span>
+			</li>
+			<li>		
+				<span style="margin-left:10px;">
+    				<font color="blue">当前VIP站岗余额：#if(!$!standAmount)0.00 #else $!money.format($!standAmount) #end 元</font>
+                </span>
+			</li>
+			
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="120">
+		<thead>
+			<tr>
+				<th width="14%">兑付日期</th>
+				<th width="14%">云贷预计退出债权总额</th>
+				<th width="14%">云贷预计前日还款资金</th>
+				<th width="14%">应预备资金</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($cash in $cashList)
+			<tr>
+				<td>$!date.format($!cash.finishDate)</td>
+				<td>#if($!cash.totalAmount != 0 )$!money.format($!cash.totalAmount)  #end</td>
+				<td>#if($!cash.returnedAmount != 0 )$!money.format($!cash.returnedAmount)  #end</td>
+				<td>#if($!cash.prepareAmount != 0 )$!money.format($!cash.prepareAmount)  #end</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+#LoadJS("/resources/js/global_validate")

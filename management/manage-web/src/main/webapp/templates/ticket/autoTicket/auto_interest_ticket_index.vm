@@ -1,0 +1,446 @@
+<style type="text/css">
+    label.required {background-position:100% 0;}
+</style>
+<!-- 有回显的自动加息券新增 -->
+<div class="pageContent">
+    <form method="post" id="indexForm" action="$env.getWebURL('ticket/autoInterestTicket/save.htm')"
+          class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+        #Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+        <input type="hidden" id="time" name="time" value="$!time"/>
+        <div class="pageFormContent" layoutH="100" style="width:700px;margin-left: 70px;">
+            <p style="width:600px;">
+                <label>加息券名称：</label>
+                <input onkeyup="value=value.replace(/[^\u4E00-\uFA29\uE7C7-\uE7F3a-zA-Z0-9\\.\\%]*/g,'')" id="serialName" name="serialName" type="text" size="15" maxlength="12" class="required"
+                       value="$!interestTicket.serialName"/>
+            <div style="float: left; margin-left: -247px;margin-top: 9px;">最多12个字，允许中英文和数字</div>
+            </p>
+
+            <p style="width:600px;">
+                <label>加息券使用条件：</label>
+                单笔加入满&nbsp;&nbsp;<input id="investLimit" onkeyup="value=value.replace(/((^\s*)[^\d]*)|([^\d]*(\s*$))/g,'')" name="investLimit"
+                                        type="text" size="15" maxlength="8" class="required number"
+                                        value="$!number.format("0", $!interestTicket.investLimit)"
+                                        style="float: none;"/>&nbsp;&nbsp;元
+            </p>
+            <p style="width:600px;">
+                <label>加息幅度：</label>
+                <input id="ticketApr" name="ticketApr"
+                       onkeyup="value=value.replace(/((^\s*)[^\.\d]*)|([^\.\d]*(\s*$))/g,'').replace(/\.\d{2,}$/,value.substr(value.indexOf('.'),3))" type="text"
+                       size="10" maxlength="5" class="required number"
+                       value="$!number.format("0.00", $!interestTicket.ticketApr)" placeholder=""
+                       style="float: none;"/>&nbsp;&nbsp;%
+            <div style="float: left; margin-left: -247px;margin-top: 9px;">需填写小数点后2位（格式：1.00%）</div>
+            </p>
+            <p>
+                <label>发放数量：</label>
+                <input id="grantTotal" name="grantTotal" onkeyup="value=value.replace(/((^\s*)[^\d]*)|([^\d]*(\s*$))/g,'')" type="text"
+                       size="15" maxlength="9" class="required number" value="$!interestTicket.grantTotal"
+                       placeholder=""/>&nbsp;&nbsp;个
+            </p>
+
+            <p>
+                <a href="$env.getWebURL('ticket/autoTicket/agent.htm')" class="button" target="dialog" mask="true"
+                   rel="createBack" height="500" width="450"><span>选择渠道</span><i style="color: red">*</i>&nbsp;</a>
+            <div id="showAgentChoose" style="float: left; margin-left: -247px;margin-top: 9px;">
+                已选择
+                    #set($agentSize = 0)
+                    #if($!interestTicket && $!interestTicket.agentIds =="-1")
+                        #set($agentSize = 1+$!allAgents.size())
+                    #elseif($!interestTicket && $!interestTicket.agentIds !="-1")
+                        #set($agentSize = $!interestTicket.agentIds.split(",").size())
+                    #end
+                    $agentSize
+                个渠道
+            </div>
+            <input type="hidden" id="agentIds" name="agentIds" value="$!interestTicket.agentIds"/>
+            </p>
+            <p>
+                <label class="required">产品限制：<i style="color: red">*</i></label>
+                <input type="checkbox" value="" name="product" id="product" onclick="chooseAll(this,'product')"/>全选
+                <input type="hidden" id="productLimit" name="productLimit" value="$!interestTicket.productLimit"/>
+            </p>
+            <p style="width:600px;">
+                <label>&nbsp;</label>
+                <input type="checkbox" value="BIGANGWAN_SERIAL" name="product" id="product1"
+                       onclick="chooseOne(this,'product')"/>港湾系列
+                <input type="checkbox" value="YONGJIN_SERIAL" name="product" id="product2"
+                       onclick="chooseOne(this,'product')"/>涌金系列
+                <input type="checkbox" value="KUAHONG_SERIAL" name="product" id="product3"
+                       onclick="chooseOne(this,'product')"/>跨虹系列
+                <input type="checkbox" value="BAOXIN_SERIAL" name="product" id="product4"
+                       onclick="chooseOne(this,'product')"/>保信系列
+            </p>
+            <p>
+                <label class="required">期限限制：<i style="color: red">*</i></label>
+                <input type="checkbox" value="" name="term" id="term" onclick="chooseAll(this,'term')"/>全选
+                <input type="hidden" id="termLimit" name="termLimit" value="$!interestTicket.termLimit"/>
+            </p>
+            <p>##style="width:600px;"
+                <label>&nbsp;</label>
+                <input type="checkbox" value="30" name="term" id="term1" onclick="chooseOne(this,'term')"/>30天
+                <input type="checkbox" value="90" name="term" id="term2" onclick="chooseOne(this,'term')"/>90天
+                <input type="checkbox" value="180" name="term" id="term3" onclick="chooseOne(this,'term')"/>180天
+                <input type="checkbox" value="365" name="term" id="term4" onclick="chooseOne(this,'term')"/>365天
+            </p>
+            <p>
+                <label class="required">设置触发条件：<i style="color: red">*</i></label>
+                <select name="triggerType" id="triggerType">
+                    <option value="HAPPY_BIRTHDAY" #if($!interestTicket.triggerType == 'HAPPY_BIRTHDAY') selected #end>
+                        生日福利
+                    </option>
+                    <option value="WECHAT_MINI_PROGRAM" #if($!interestTicket.triggerType == 'WECHAT_MINI_PROGRAM') selected #end>
+                        微信小程序
+                    </option>					<option value="EXCHANGE_4MALL" #if($!interestTicket.triggerType == 'EXCHANGE_4MALL') selected #end>
+                        积分商城兑换
+                    </option>
+                </select>
+            </p>
+            <p style="width:650px">
+                <label id="timeText" class="required">触发时间：<i style="color: red">*</i></label>
+                <input name="triggerTimeStart" type="text" size="20" id="triggerTimeStart"
+                       class=" date dateInitStart textInput readonly" datefmt="yyyy-MM-dd HH:mm:ss" readonly="true"
+                       value="$!interestTicket.triggerTimeStart.substring(0,19)" />
+                <label style="width:15px">至</label>
+                <input name="triggerTimeEnd" type="text" size="20" id="triggerTimeEnd"
+                       class=" date dateInitEnd textInput readonly" datefmt="yyyy-MM-dd HH:mm:ss" readonly="true"
+                       value="$!interestTicket.triggerTimeEnd.substring(0,19)" /> &nbsp;&nbsp;
+               <span id ="isBirthday"> <button onclick="findCountBirthdayByDate()" type="button">查询</button></span>
+            </p>
+            <p id="countBirthdayShow" style="width:650px;display: none">
+                <label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <span id="countBirthday"></span>
+            </p>
+            <p>
+                <label class="required">使用有效期：<i style="color: red">*</i></label>
+                <select name="validTermType" id="validTermType">
+                    <option value="FIXED" #if($!interestTicket.validTermType == 'FIXED') selected #end>固定日期</option>
+                    <option value="AFTER_RECEIVE" #if($!interestTicket.validTermType == 'AFTER_RECEIVE') selected #end>
+                        发放后生效
+                    </option>
+                </select>
+            </p>
+            <div id="useTimeShow" #if($!interestTicket.validTermType == 'AFTER_RECEIVE') style="display: none" #end>
+                <p style="width:650px">
+                    <label>&nbsp;</label>
+                    <input name="useTimeStart" type="text" size="20" id="useTimeStart"
+                           class=" date dateInitStart textInput readonly" datefmt="yyyy-MM-dd HH:mm:ss" readonly="true"
+                           value="$!interestTicket.useTimeStart.substring(0,19)"/>
+                    <label style="width:15px">至</label>
+                    <input name="useTimeEnd" type="text" size="20" id="useTimeEnd"
+                           class=" date dateInitEnd textInput readonly" datefmt="yyyy-MM-dd HH:mm:ss" readonly="true"
+                           value="$!interestTicket.useTimeEnd.substring(0,19)"/>
+                </p>
+            </div>
+            <div id="useDayShow" #if($!interestTicket.validTermType != 'AFTER_RECEIVE') style="display: none" #end>
+                <p style="width:450px"><label>&nbsp;</label>
+                    <input id="availableDays" name="availableDays" type="text" size="10" maxlength="4"
+                           onkeyup="value=value.replace(/[^\d]/g,'')" class="number"
+                           value="$!interestTicket.availableDays" style="float: none;"/> &nbsp;&nbsp;天
+                </p>
+            </div>
+            <p>
+                <label>通知渠道：</label>
+                ##<input type="checkbox" value="WECHAT" name="notify"/>微信
+                <input type="checkbox" value="SMS" name="notify"/>短信
+                <input type="checkbox" value="APP" name="notify"/>app通知
+                <input type="hidden" id="notifyChannel" name="notifyChannel" value="$!interestTicket.notifyChannel"/>
+            </p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+        </div>
+        <div style="margin-left:350px;">
+            <p>
+            <div class="buttonActive" style="margin-right: 20px;">
+                <div class="buttonContent">
+                    <button type="button" onclick="submit_from()" style="width:50px;">保存</button>
+                </div>
+            </div>
+            <div class="button">
+                <div class="buttonContent">
+                    <button type="button" class="close" style="width:50px;">取消</button>
+                </div>
+            </div>
+            </p>
+        </div>
+    </form>
+</div>
+
+<script>
+    function navTabAjaxDone(json) {
+        if (json.statusCode == "200") {
+            navTab.closeCurrentTab();
+            alertMsg.correct(json.message);
+            navTab.reload("$env.getWebURL('ticket/ticketGrantManagementIndex.htm')");
+        } else {
+            if (json.message) {
+                alertMsg.error(json.message);
+            } else {
+                alertMsg.error('操作失败!');
+            }
+        }
+    }
+
+    function chooseAll(e, name) {
+        if (e.checked == true) {
+            $("[name='" + name + "']").attr("checked", 'true');//全选
+        } else {
+            $("[name='" + name + "']").removeAttr("checked");//取消全选
+        }
+    }
+
+    function chooseOne(e, name) {
+        if (e.checked != true) {
+            $("[id='" + name + "']").removeAttr("checked");
+        } else {
+            var num = parseInt(4);
+            var sum = parseInt(0);
+            for (var i = parseInt(1); i <= num; i++) {
+                //if($("#term"+i).attr("checked") != undefined)
+                if ($("#" + name + i).attr("checked") != undefined) {
+                    sum = sum + parseInt(1);
+                }
+            }
+            if (parseInt(sum) == parseInt(num)) {
+                $("[id='" + name + "']").attr("checked", 'true');
+            }
+        }
+    }
+
+    function setCheckBoxValue(parentCheckBox, subCheckBox) {
+        var value = '';
+        $("input[name=" + subCheckBox + "]:checkbox").each(function () {
+            if ($(this).attr("checked")) {
+                if ($(this).attr("id") != subCheckBox) {
+                    value += $(this).attr('value') + ",";
+                }
+            }
+        });
+        if (value != '') {
+            $("#" + parentCheckBox).val(value.substring(0, value.length - 1));
+        } else {
+            $("#" + parentCheckBox).val('');
+        }
+    }
+
+    function initCheckBoxValue(parentCheckBox, subCheckBox) {
+        // checkBox复选框初始化
+        var terms = $("#" + parentCheckBox).val();
+        if (terms != undefined && terms != '') {
+            var termArr = terms.split(",");
+            var count = 0; // 计算复选框选项个数
+            for (var i = 0; i < termArr.length; i++) {
+                if (termArr[i] != null && termArr[i] != '') {
+                    $("input[name=" + subCheckBox + "]:checkbox").each(function () {
+                        if ($(this).attr('value') == termArr[i]) {
+                            $(this).attr('checked', 'checked');
+                            count++;
+                        }
+                    })
+                }
+            }
+            var total = 0; // 计算复选框选项总数
+            $("input[name=" + subCheckBox + "]:checkbox").each(function () {
+                total++;
+            })
+            if (count == total-1 && count > 0) {
+                $("#" + subCheckBox).attr('checked', 'checked');
+            }
+        }
+    }
+
+    $(function () {
+        $("select[name=validTermType]").on('change', function () {
+            var timeVal = this.value;
+            if (timeVal == 'FIXED') {
+                document.getElementById("useTimeShow").style.display = "";
+                document.getElementById("useDayShow").style.display = "none";
+            } else if (timeVal == 'AFTER_RECEIVE') {
+                document.getElementById("useTimeShow").style.display = "none";
+                document.getElementById("useDayShow").style.display = "";
+            }
+        });
+		$("select[name=triggerType]").on('change', function () {
+            var timeVal = this.value;
+            if (timeVal == 'HAPPY_BIRTHDAY') {
+                document.getElementById("isBirthday").style.display = "";
+            } else if (timeVal == 'EXCHANGE_4MALL') {
+                document.getElementById("isBirthday").style.display = "none";
+            }
+        });
+		
+
+        initCheckBoxValue('productLimit', 'product');
+
+        initCheckBoxValue('termLimit','term');
+
+        initCheckBoxValue('notifyChannel','notify');
+    });
+
+    function submit_from() {
+        var serialName = $("#serialName").val();
+        var investLimit = $("#investLimit").val();
+        var ticketApr = $("#ticketApr").val();
+        var grantTotal = $("#grantTotal").val();
+        var triggerType = $("#triggerType").val();
+        var validTermType = $("#validTermType").val();
+
+        if (serialName == '') {
+            alertMsg.warn("加息券名称不能为空！");
+            return false;
+        }
+        if (investLimit == '') {
+            alertMsg.warn("加息券使用条件不能为空！");
+            return false;
+        }
+        if (investLimit != '') {
+            if (parseInt(investLimit) <= parseInt(0)) {
+                alertMsg.warn("加息券使用条件金额必须大于0！");
+                return false;
+            }
+        }
+        if (ticketApr == '') {
+            alertMsg.warn("加息幅度不能为空！");
+            return false;
+        }
+
+        var exp = /^\d{1,2}\.\d{2}$/;
+        if(!exp.test(ticketApr)){
+            alertMsg.warn("加息幅度格式错误！");
+            return;
+        }
+
+        if (parseInt(ticketApr*100) <= parseInt(0)) {
+            alertMsg.warn("加息幅度必须大于0！");
+            return false;
+        }
+
+        if (grantTotal == '') {
+            alertMsg.warn("发放数量不能为空！");
+            return false;
+        }
+        if (parseInt(grantTotal) <= parseInt(0)) {
+            alertMsg.warn("发放数量必须大于0！");
+            return false;
+        }
+        if (parseInt(grantTotal) > parseInt(100000000)) {
+            alertMsg.warn("发放数量不能大于1亿！");
+            return false;
+        }
+
+        var agentIds = $("#agentIds").val();
+        if (agentIds == '') {
+            alertMsg.warn("请选择渠道！");
+            return false;
+        }
+
+        setCheckBoxValue('productLimit', 'product');
+
+        var productLimit = $("#productLimit").val();
+        if (productLimit == '') {
+            alertMsg.warn("请选择产品限制！");
+            return false;
+        }
+
+        setCheckBoxValue('termLimit', 'term');
+
+        var termLimit = $("#termLimit").val();
+        if (termLimit == '') {
+            alertMsg.warn("请选择期限限制！");
+            return false;
+        }
+
+        if (triggerType == '') {
+            alertMsg.warn("请选择触发条件！");
+            return false;
+        }
+
+        var triggerTimeStart = $("#triggerTimeStart").val();
+        var triggerTimeEnd = $("#triggerTimeEnd").val();
+        var time = $("#time").val() + " 00:00:00";
+        if (triggerTimeStart == '' || triggerTimeEnd == '') {
+            alertMsg.warn("触发时间不能为空！");
+            return false;
+        }
+
+        if (triggerTimeStart != '' && triggerTimeEnd != '') {
+            if (triggerTimeStart < time) {
+                alertMsg.warn("触发时间不能早于今天！");
+                return false;
+            }
+            if (triggerTimeStart > triggerTimeEnd) {
+                alertMsg.warn("触发开发时间必须小于结束时间！");
+                return false;
+            }
+        }
+
+        if (validTermType == 'FIXED') {
+            var useTimeStart = $("#useTimeStart").val();
+            var useTimeEnd = $("#useTimeEnd").val();
+            if (useTimeEnd == '' || useTimeEnd == '') {
+                alertMsg.warn("有效期时间不能为空！");
+                return false;
+            }
+            if (useTimeStart != '' && useTimeEnd != '') {
+                if (useTimeStart > useTimeEnd) {
+                    alertMsg.warn("有效期开始时间必须小于结束时间！");
+                    return false;
+                }
+            }
+            if (useTimeEnd < triggerTimeEnd) {
+                alertMsg.warn("有效期结束时间不能早于触发结束时间！");
+                return false;
+            }
+
+        } else if (validTermType == 'AFTER_RECEIVE') {
+            var availableDays = $("#availableDays").val();
+            if (availableDays == '') {
+                alertMsg.warn("有效期时间不能为空！");
+                return false;
+            }
+        }
+
+        setCheckBoxValue('notifyChannel', 'notify');
+
+        $("#indexForm").submit();
+    }
+
+    function findCountBirthdayByDate() {
+        var triggerTimeStart = $("#triggerTimeStart").val();
+        var triggerTimeEnd = $("#triggerTimeEnd").val();
+        var time = $("#time").val() + " 00:00:00";
+        if (triggerTimeStart == '' || triggerTimeEnd == '') {
+            alertMsg.warn("有效触发时间不能为空！");
+            return false;
+        }
+
+        if (triggerTimeStart != '' && triggerTimeEnd != '') {
+            if (triggerTimeStart < time) {
+                alertMsg.warn("触发时间不能早于今天！");
+                return false;
+            }
+            if (triggerTimeStart > triggerTimeEnd) {
+                alertMsg.warn("触发开发时间必须小于结束时间！");
+                return false;
+            }
+        }
+
+        $.ajax({
+            type: 'post',
+            url: $("#APP_ROOT_PATH").val() + "/ticket/userBirthday/count.htm",
+            data: {
+                triggerTimeStart : triggerTimeStart,
+                triggerTimeEnd : triggerTimeEnd
+            },
+            success: function (data) {
+                if (data.statusCode == "200") {
+                    var msg = '触发时间范围内，过生日用户数量：'+ data.countBirthday +'人';
+                    $("#countBirthday").text(msg);
+                    $("#countBirthdayShow").show();
+                }
+            }
+        })
+    }
+
+</script>

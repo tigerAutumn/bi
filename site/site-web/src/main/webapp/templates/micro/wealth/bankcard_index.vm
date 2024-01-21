@@ -1,0 +1,78 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾理财官网_安心可靠互联网金融投资理财平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#Head("end")
+	
+<body>
+	<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$!env.getWebURL('')" />
+    <!-- website wrapper starts -->
+    <div class="websiteWrapper"> 
+      
+      #Header("我的银行卡", "", "", "micro/wealth/index")
+      
+      <!-- notification starts -->
+      
+      <!-- notification ends --> 
+      
+      <!--tab-s-->
+      
+      <div class="newrow">
+        <!-- page content wrapper starts -->
+        <div class="newbox" id="slider1">
+    	    
+			<div class="bankts"><p style=" text-indent:0em;">亲爱的投资者：</p>
+<p>为了最大程度保证您的便捷和资金安全，币港湾实行<span>多卡进，一卡出。</span>我们需要确保绑定一张属于您或您家人的卡，并实时到公安部和银行去认证此卡的真实有效性。当您的投资到期后，会将<span>本金+利息</span>一起回款到此卡上。绑卡一旦成功，即说明卡真实有效，保证将来回款的安全，无需修改。另外，您可以使用任何币港湾支持的银行卡进行投资。如有疑问，请在线反馈或者致电：<a href="tel:400-806-1230" style="color:#97ded6;text-decoration:none;">400-806-1230</a></p>
+</div>
+			
+			
+			
+			
+    	<div class="box">
+			#if($!size == 0)
+			     <a class="go_btn1" style="margin-top:0px;" #if($!isBinding == 1) onclick="drawToast('银行卡正在绑定中，成功会以短信通知，请稍后！')" #else href="$!env.getWebURL('/micro/wealth/bankcard_add')" #end >
+					<div class="bc">
+				<img src="$!env.getWebURL('/resources/micro/images/cd.png')" width="39" height="40"><span>添加新卡</span></div></a>
+			#end
+			
+			#foreach($!bankcard in $!bankcards)
+			#if($!isBinding == 1)
+				<a href="javascript:void(0)" onclick="drawToast('银行卡正在绑定中，成功会以短信通知，请稍后！')">
+			#elseif($!isBinding == 2)
+				<a href="javascript:void(0)">
+			#elseif($!isBinding == 3)
+				<a href="$!env.getWebURL('/micro/wealth/bankcard_add?id=')$!bankcard.id">
+			#end
+				<div class="ll" style="background:url()"><img src="$!env.getWebURL('')/resources/micro/images/yhk_ico1.jpg" width="19" height="20">
+						$!msg.get("BANK_STATUS_$!bankcard.status")
+					<span>$string.left($!bankcard.cardNo,4)****$string.right($!bankcard.cardNo,4) ($!bankcard.cardOwner)</span>
+					<input type="hidden" name="cardInfo" value="$!bankcard.id/$!bankcard.cardNo/$!bankcard.cardOwner/$!bankcard.bankId"/>
+				</div>
+			</a>
+			#end
+			
+			
+			#if($!isBinding == 3)
+			     <a class="go_btn1" style="margin-top:0px;"  href="$!env.getWebURL('/micro/wealth/bankcard_add')">
+					<div class="bc">
+				<img src="$!env.getWebURL('/resources/micro/images/cd.png')" width="39" height="40"><span>添加新卡</span></div></a>
+			#end
+        </div>
+		
+        <!-- page content wrapper ends --> 
+        
+		<br>
+		<br>
+		<br>
+		<br>
+      </div>
+
+	  <!--tab-e-->
+
+      
+      #Footer("4")
+      
+    </div>
+	<!-- website wrapper ends -->
+</body>
+
+#Html("end")

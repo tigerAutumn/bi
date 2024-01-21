@@ -1,0 +1,168 @@
+#LoadJS("resources/js/hfbankHeadfee")
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$!env.getWebURL(''))
+    <div class="pageFormContent nowrap" layoutH="60">
+        <label >验证码：</label>
+        <input type="text" name="smsCode" id="smsCode" maxLength="6"/>
+        &nbsp;&nbsp;&nbsp;<button class="phone_time" disabled="disabled" >重发(<span>60</span>)</button>
+
+        <br/><br/><br/>
+        <span>已向手机号$!{checkMobile}发送了划转验证码，请您注意查收，妥善保管！</span>
+        <input type="hidden" name="userId" id="userId" value="$!userId"/>
+        <input type="hidden" name="amount" id="amount" value="$!amount"/>
+        <input type="hidden" name="serverTokenTopUp" id="serverTokenTopUp" value="$!serverToken"/>
+        <input type="hidden" name="note" id="note" value="$!note"/>
+
+        <input type="hidden" name="destAccount" id="destAccount" value="$!destAccount"/>
+        <input type="hidden" name="userName" id="userName" value="$!userName"/>
+        <input type="hidden" name="propertySymbol" id="propertySymbol" value="$!propertySymbol"/>
+
+    </div>
+    <div class="formBar">
+        <ul>
+            <li>
+                <div class="buttonActive">
+                    <div class="buttonContent">
+                        <button onclick="yunHeadFeeTransfer()" type="button">提交</button>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="button">
+                    <div class="buttonContent">
+                        <button type="button" class="close">取消</button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+	
+<script>
+    function yunHeadFeeTransfer(){
+		if($('#smsCode').val()) {
+            var smsCode = $.trim($("#smsCode").val());
+            var userId = $.trim($("#userId").val());
+            var amount = $.trim($("#amount").val());
+            var serverTokenTopUp = $.trim($("#serverTokenTopUp").val());
+            var note = $.trim($("#note").val());
+            var destAccount = $.trim($("#destAccount").val());
+
+
+            jQuery.ajax({
+                url: $('#APP_ROOT_PATH').val() + '/financial/yunHeadFeeTransfer.htm',
+                data:{
+                    smsCode: smsCode,
+                    userId: userId,
+                    amount: amount,
+                    token: serverTokenTopUp,
+                    note: note,
+                    destAccount: destAccount
+                },
+                type:'post',
+                success: function(data){
+                    if (data.statusCode == 200) {
+                        alertMsg.correct("划转成功！");
+                        $.pdialog.closeCurrent();
+                        $("#serverTokenTopUp").val(data.serverToken);
+                        navTab.reload("$env.getWebURL('financial/yunHeadFeeTransferIndex.htm')");
+                    } else if (data.statusCode == 300) {
+                        $("#serverTokenTopUp").val(data.serverToken);
+                        alertMsg.warn("划转失败！");
+                        $.pdialog.closeCurrent();
+                    } else if (data.statusCode == 302) {
+                        $("#serverTokenTopUp").val(data.serverToken);
+                        alertMsg.warn(data.message);
+                        setInterval(function(){
+                            alertMsg.close();
+                        }, 2000);
+                        
+                        if(data.message == "手机验证码不正确，请重新验证！" || data.message == '未用该手机发送验证码！') {
+                            // 校验验证码发送次数
+                            var root = $('#APP_ROOT_PATH').val();
+                            $.post(root+"/financial/checkYunHeadFeeCodeCount.htm",{"amount":amount, "note":note},function(data){
+                                if(data.statusCode == "200") {//手机发送次数 <= 5次
+                                    // 1、校验余额是否充足
+                                    var amount = $.trim($("#amount").val());
+                                    var note = $.trim($("#note").val());
+                                    var isEnoughAmount = "notEnoughAmount";
+
+                                    jQuery.ajax({
+                                        url: $('#APP_ROOT_PATH').val() + '/financial/yunHeadFeeTransfer.htm',
+                                        data:{
+                                            amount: amount,
+                                            token: serverTokenTopUp,
+                                            note: note
+                                        },
+                                        type:'post',
+                                        success: function(data){
+                                            if (data.statusCode == 302) {
+                                                $("#serverTokenTopUp").val(data.serverToken);
+                                                alertMsg.warn("划出账户余额不足！");
+                                                $.pdialog.closeCurrent();
+                                            } else {
+                                                // 2、金额充足发送验证码
+                                                $("#serverTokenTopUp").val(data.serverToken);
+                                                
+                                                // 发送短信
+                                                jQuery.ajax({
+									                url: $('#APP_ROOT_PATH').val() + '/financial/yunHeadFeeCode.htm',
+									                data:{
+									                    note: note,
+									                    amount: amount
+									                },
+									                type:'get',
+									                success: function(data){
+									                	var newToken = $($(data).find('#serverTokenTopUp')).val();
+									                	console.log(newToken);
+									                	$("#serverTokenTopUp").val(newToken);
+									                }
+									            });
+                                            }
+                                        },
+                                        error: function(){
+                                        	$.pdialog.closeCurrent();
+                                        }
+                                    });
+
+                                }else if(data.statusCode == "301") {
+                                    $.pdialog.closeCurrent();
+                                    $("#serverTokenTopUp").val(data.serverToken);
+                                    alertMsg.warn("该手机号验证码发送超过5次，请明天再进行提现操作！");
+                                }else if(data.statusCode == "302") {
+                                    $.pdialog.closeCurrent();
+                                    $("#serverTokenTopUp").val(data.serverToken);
+                                    alertMsg.warn("划账审核验证手机号初始数据不存在！");
+                                }else {
+                                    $.pdialog.closeCurrent();
+                                    $("#serverTokenTopUp").val(data.serverToken);
+                                    alertMsg.warn("操作失败！");
+                                }
+                            },"json");
+
+                        }
+
+
+
+                    } else if (data.statusCode == 303) {
+                        $("#serverTokenTopUp").val(data.serverToken);
+                        $("#amount").val(data.amount);
+                        alertMsg.warn("验证码错误！请重新输入！");
+                        $.pdialog.closeCurrent();
+                    } else if (data.statusCode == 305) {
+                        $("#serverTokenTopUp").val(data.serverToken);
+                        alertMsg.warn('请勿重复提交!');
+                    } else {
+                        alertMsg.error('划转失败请重试！');
+                        $.pdialog.closeCurrent();
+                        $("#serverTokenTopUp").val(data.serverToken);
+                        navTab.reload("$env.getWebURL('financial/yunHeadFeeTransferIndex.htm')");
+                    }
+                }
+            });
+    	} else if(!$('#smsCode').val()) {
+    		alertMsg.info('请输入验证码！');
+    	}
+    }
+
+</script>

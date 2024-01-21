@@ -1,0 +1,108 @@
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+    <form id="hfBindForm" method="post" class="pageForm required-validate" onsubmit="" action="$env.getWebURL('/baofooBatch/bind_card/baofoo_batchbind_card.htm')">
+        <div class="pageFormContent nowrap">
+            <dl style="height: 40px;">
+                <dt>宝付批量绑卡</dt>
+            </dl>
+            <dl>
+                <dt>用户手机号码：</dt>
+                <dd>
+                    <input type="text" name="mobile" id="mobile"></input>
+                </dd>
+            </dl>
+            <dl>
+                <dt>用户姓名：</dt>
+                <dd>
+                    <input type="text" name="userName" id="userName"></input>
+                </dd>
+            </dl>
+            <dl>
+                <dt>用户身份证：</dt>
+                <dd>
+                    <input type="text" name="idCard" id="idCard"></input>
+                </dd>
+            </dl>
+            <dl>
+                <dt>用户银行卡号：</dt>
+                <dd>
+                    <input type="text" name="cardNo" id="cardNo"></input>
+                </dd>
+            </dl>
+            <dl >
+                <ul>
+                    <li ><div class="buttonActive" style="margin-left: 129px;"><div class="buttonContent"><button type="button" id="batch_btn">恒丰批量绑卡</button></div></div></li>
+                </ul>
+            </dl>
+        </div>
+    </form>
+
+
+	<form id="idBatchbindForm" method="post" class="pageForm required-validate" onsubmit="" action="$env.getWebURL('/baofooBatch/bind_card/baofoo_batchbind_card.htm')">
+		<div class="pageFormContent nowrap">
+			<dl style="height: 40px;">
+				<dt>宝付批量绑卡</dt>
+			</dl>
+			<dl>
+				<dt>用户手机号码：</dt>
+				<dd>
+					 <textarea name="bindCardMobile" id="bindCardMobile" cols="80" rows="20" placeholder="请输入用户手机号码，多个用逗号隔开。"></textarea>
+				</dd>
+			</dl>
+			<dl >
+				<ul>
+                  <li ><div class="buttonActive" style="margin-left: 129px;"><div class="buttonContent"><button type="button" id="id_batch_bind_sub">批量绑卡</button></div></div></li>
+			    </ul>
+			</dl>
+		</div>
+	</form>
+	
+</div>
+<script>
+	$('#batch_btn').click(function() {
+        $.ajax({
+            url: $("#APP_ROOT_PATH").val() + "/baofooBatch/hf/batch_bind.htm",
+            data: {
+                mobile: $("#mobile").val(),
+                userName: $("#userName").val(),
+                idCard: $("#idCard").val(),
+                cardNo: $("#cardNo").val()
+            },
+            type : 'post',
+            success : function(data) {
+                if (data.statusCode == "200") {
+                    alertMsg.correct("批量绑卡成功");
+                }else{
+                    if(data.message){
+                        alertMsg.error(data.message);
+                    }else{
+                        alertMsg.error("操作失败");
+                    }
+                }
+            }
+        });
+	});
+
+    $("#id_batch_bind_sub").click(function () {
+    
+		$.ajax({
+			url: $("#APP_ROOT_PATH").val() + "/baofooBatch/bind_card/batch_bind_sub.htm",
+			data: {
+				bindCardMobile: $("#bindCardMobile").val(),
+			},
+			type : 'post',
+			success : function(data) {
+  				if (data.statusCode == "200") {
+                    alertMsg.correct(data.message + "条记录批量绑卡成功");
+                }else{
+					if(data.message){
+						 alertMsg.error(data.message);
+					}else{
+						 alertMsg.error("操作失败");
+					}
+                }
+			}
+		});
+	
+    });
+</script>

@@ -1,0 +1,206 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+	<input type="hidden" name="useTimeStart" value="$!req.useTimeStart" />
+	<input type="hidden" name="useTimeEnd" value="$!req.useTimeEnd" />
+	<input type="hidden" name="distributeTimeStart" value="$!req.distributeTimeStart" />
+	<input type="hidden" name="distributeTimeEnd" value="$!req.distributeTimeEnd" />
+	<input type="hidden" name="agentId" value="$!req.agentId" />
+	<input type="hidden" name="serialName" value="$!req.serialName" />
+	<input type="hidden" name="status" value="$!req.status" />
+	<input type="hidden" name="mobile" value="$!req.mobile" />
+	<input type="hidden" name="serialNo" value="$!req.serialNo" />
+</form>
+	<div class="pageHeader">
+		<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('redPacket/redPacketInfoIndex.htm')" id="myform"  method="post">
+			<input type="hidden" id="queryFlag" name="queryFlag" value="QUERY"/>
+			<div class="searchBar">
+				<table class="searchContent">
+					<tr>
+						<td>
+							在此期间有效：
+							<input type="text" id="useTimeStart" name="useTimeStart" value="$!req.useTimeStart" class="date" dateFmt="yyyy-MM-dd" readonly/>
+							至
+							<input type="text" id="useTimeEnd" name="useTimeEnd" value="$!req.useTimeEnd" class="date" dateFmt="yyyy-MM-dd" readonly/>
+						</td>
+						<td>
+							发放时间：
+							<input type="text" id="distributeTimeStart" name="distributeTimeStart" value="$!req.distributeTimeStart" class="date" dateFmt="yyyy-MM-dd" readonly/>
+							至
+							<input type="text" id="distributeTimeEnd" name="distributeTimeEnd" value="$!req.distributeTimeEnd" class="date" dateFmt="yyyy-MM-dd" readonly/>
+						</td>
+						<td>
+							红包名称：
+							<input type="text" id="redPacketName" name="redPacketName" value="$!req.redPacketName" maxlength="20" class="clear"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							类型：
+							<select name="distributeType" id="distributeType" class="valid">
+								<option value="">所有</option>
+								<option value="MANUAL" #if("$!req.distributeType"=="MANUAL") selected #end >手动发放 </option>
+								<option value="AUTO_REGISTER" #if("$!req.distributeType"=="AUTO_REGISTER") selected #end >自动-注册 </option>
+								<option value="AUTO_RECOMMEND" #if("$!req.distributeType"=="AUTO_RECOMMEND") selected #end >自动-邀请 </option>
+								<option value="AUTO_FULL" #if("$!req.distributeType"=="AUTO_FULL") selected #end >自动-满额 </option>
+								<option value="AUTO_318SHAKE" #if("$!req.distributeType"=="AUTO_318SHAKE") selected #end >自动-318摇一摇老用户 </option>
+								<option value="AUTO_EXCHANGE_4MALL" #if("$!req.distributeType"=="AUTO_EXCHANGE_4MALL") selected #end >自动-积分商城兑换 </option>
+							</select>
+							状态：
+							<select name="status" id="status" class="valid">
+								<option value="">所有</option>
+								<option value="INIT" #if("$!req.status"=="INIT") selected #end >未使用 </option>
+								<option value="BUYING" #if("$!req.status"=="BUYING") selected #end >购买使用中 </option>
+								<option value="USED" #if("$!req.status"=="USED") selected #end >已使用</option>
+								<option value="OVER" #if("$!req.status"=="OVER") selected #end >已过期 </option>
+							</select>
+						</td>
+						<td>
+							手机号：
+							<input type="text" id="mobile" name="mobile" value="$!req.mobile" maxlength="11" class="clear" />
+						</td>
+
+						<td>
+							<a class="add" href="$env.getWebURL('/agent/agent_list.htm')" target="dialog" mask="true" rel="createBack" height="390" width="600"><span><button type="button">选择渠道</button></span></a>
+							<input type="hidden" id="agentTotal" name="agentTotal" value="$!agentTotal"/>
+							<input type="hidden" id="agentIds" name="agentIds" value="$!req.agentIds"/>
+							<input type="hidden" id="nonAgentId" name="nonAgentId" value="$!req.nonAgentId"/>
+						</td>
+
+					</tr>
+					<tr>
+						<td>
+							批次号：
+							<input type="text" id="serialNo" name="serialNo" value="$!req.serialNo" class="clear" />
+						</td>
+						<td>
+							使用时间：
+							<input type="text" id="usedTimeStart" name="usedTimeStart" value="$!req.usedTimeStart" class="date" dateFmt="yyyy-MM-dd" readonly/>
+							至
+							<input type="text" id="usedTimeEnd" name="usedTimeEnd" value="$!req.usedTimeEnd" class="date" dateFmt="yyyy-MM-dd" readonly/>
+						</td>
+						<td>
+							<div class="buttonActive">
+								<div class="buttonContent">
+									<button onclick="searchFunction()" type="button">查询</button>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</form>
+	</div>
+
+<div class="pageContent" >
+	<table class="table" width="100%" layoutH="135">
+		<thead>
+			<tr>
+				<th width="4%">用户id</th>
+				<th width="6%">手机号</th>
+				<th width="7%">名称</th>
+				<th width="6%">红包名称</th>
+				<th width="7%">批次</th>
+				<th width="4%">类型</th>
+				<th width="4%">金额</th>
+				<th width="6%">投资金额</th>
+				<th width="5%">投资期限（天）</th>
+				<th width="8%">使用时间</th>
+				<th width="9%">使用条件</th>
+				<th width="16%">有效期</th>
+				<th width="8%">发放日期</th>
+				<th width="3%">状态</th>
+				<th width="5%">渠道</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $dataGrid)
+			<tr target="sid_user" rel="1">
+				<td>$!grid.userId</td>
+				<td>$!grid.mobile</td>
+				<td>$!grid.rpName</td>
+				<td>$!grid.serialName</td>
+				<td>$!grid.serialNo</td>
+				<td>
+					#if("$!grid.distributeType" == "MANUAL")
+						手动发放
+					#elseif("$!grid.distributeType" == "AUTO")
+						#if("$!grid.triggerType" == "NEW_USER")
+							自动-注册
+						#elseif("$!grid.triggerType" == "BUY_FULL")
+							自动-满额
+						#elseif("$!grid.triggerType" == "INVITE_FULL")
+							自动-邀请
+						#elseif("$!grid.triggerType" == "318_GAME_OLD_USER")
+							自动-318摇一摇老用户
+						#elseif("$!grid.triggerType" == "EXCHANGE_4MALL")
+							自动-积分商城兑换
+						#end
+					#end
+				</td>
+				<td>$!number.format("0.00", $!grid.amount)</td>
+				<td>$!number.format("0.00", $!grid.investAmount)</td>
+				<td>$!grid.investDays</td>
+				<td>$!date.format($!grid.usedTime)</td>
+				<td>
+					单笔满 $!number.format("0", $!grid.full) 减  $!money.format($!grid.subtract)
+				</td>
+				<td>$!date.format($!grid.useTimeStart) 至 $!date.format($!grid.useTimeEnd)</td>
+				<td>$!date.format($!grid.distributeTime)</td>
+				<td>
+					#if("$!grid.status" == "INIT")
+						<span style="color:darkgray">未使用</span>
+					#elseif("$!grid.status" == "BUYING")
+						<span style="color:green">使用中</span>
+					#elseif("$!grid.status" == "USED")
+						<span style="color:blue">已使用</span>
+					#elseif("$!grid.status" == "OVER")
+						<span style="color:red">已过期</span>
+					#end
+				</td>
+				<td>$!grid.agentName</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+	<div class="pages">
+		<span>显示</span>
+		<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+		</select>
+		<span>条，共$!count条</span>
+	</div>
+	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+</div>
+</div>
+
+<script>  
+	function searchFunction(){
+		var beginTime = $("#useTimeStart").val();
+    	var overTime = $("#useTimeEnd").val();
+    	if(beginTime != "" && overTime != ""){
+    		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+    		if(result < 0){
+    			alert("有效时间的开始时间不能在结束时间之后！！");
+    			return false;
+    		}
+    	}	
+		 
+		var distributeTimeStart = $("#distributeTimeStart").val();
+    	var distributeTimeEnd = $("#distributeTimeEnd").val();
+    	if(distributeTimeStart != "" && distributeTimeEnd != ""){
+    		var result = Date.parse(distributeTimeEnd.replace(/-/g,"/"))- Date.parse(distributeTimeStart.replace(/-/g,"/"));
+    		if(result < 0){
+    			alert("发放时间的开始时间不能在结束时间之后！！");
+    			return false;
+    		}
+    	}	 
+		
+    	$("#myform").submit();
+    }
+</script> 

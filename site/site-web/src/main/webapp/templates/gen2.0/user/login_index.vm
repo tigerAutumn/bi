@@ -1,0 +1,109 @@
+#Html("begin")
+#GenHead("begin","登录,币港湾,币港湾官网","欢迎登录币港湾!币港湾官网为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("登录【币港湾官网】")
+
+#GenHead("end")
+	<body>
+    <input type="hidden" id="mobileToken" name="mobileToken" value="$!mobileToken">
+    <form action="$!env.get('gen.server.web')/micro2.0/assets/assets" method="post" id="assets_action">
+	</form>
+	<!--header -s-->
+	##GenHeaderLogin()
+	#LoadGenCSS("/resources/gen2.0/styles/login_header")
+	#Gen2Header("home", "login")
+		<div class="content">
+			#if($!banner)
+            	<div class="content_main" style="background-image:url($!env.get('gen.server.web')/$!banner.imgPath);">
+			#else
+            	<div class="content_main" style="background-image:url($!env.get('gen.server.web')/resources/gen2.0/images/login/login_bg.jpg);">
+			#end
+				<div class="content_right">
+					<form action="$!env.get('gen.server.web')/gen2.0/user/login" method="post" id="generalForm">
+    					<div class="right_wrap">
+                            <div class="right_title">
+                                <span>登录</span>
+							</div>
+							<div class="right_form">
+        						<div class="top1">
+                                    <label class="top_p">
+										<i class="Z_imgi Z_name"></i>
+                                        <span class="top_p_line"></span>
+                                        <span class="account_error error"></span>
+										<input type="tel" id="nick" name="nick" maxlength="16" class="top_input line_hg" placeholder="输入用户名或手机号">
+									</label>
+        						</div>
+        						<div class="top1">
+                                    <label class="top_p">
+                                        <span class="pasword_interface"></span>
+										<i class="Z_imgi Z_password"></i>
+                                        <span class="top_p_line"></span>
+                                        <span class="password_error error"></span>
+										<input type="password" id="password" name="password" maxlength="16" class="top_input line_hg" placeholder="请输入登录密码">
+									</label>
+        						</div>
+								<p class="right_form_error"></p>
+    						</div>
+    		
+    		
+        					<div class="right_bot">
+        						<div class="bot1" id="login_submit" type="button">
+        							登&nbsp;&nbsp;录
+        						</div>
+        						<p class="bot2 loin_wj">
+    								<a href="$!env.get('gen.server.web')/gen2.0/user/register_first_new_index" style="float:left;margin-top: 0;font-size: 12px;">没有账号？<span style="color: #ff6633;">立即注册</span></a>
+    								<a href="$!env.get('gen.server.web')/gen2.0/user/forget_password_first">
+    									<span style="color: #ff6633;">忘记密码?</span>
+    								</a>
+    							</p>
+        					</div>
+    						<div class="bot3">
+            					<img src="$!env.get('gen.server.web')/resources/gen2.0/images/login/safe.png" style="position:relative;top:-1px;">
+            					您的信息已使用SSL加密技术，数据传输安全
+            				</div>
+                        </div>
+					</form> 
+				</div>
+			</div>
+			
+		</div>
+	<!--footer -s-->
+	#Gen2Footer()
+	<!--footer -e-->
+#LoadGenJS("/resources/gen2.0/scripts/echarts")
+#LoadGenJS("/resources/gen2.0/scripts/switchable")
+#LoadGenJS("/resources/gen2.0/scripts/textSlider")
+#LoadGenJS("/resources/gen2.0/scripts/index_style")
+#LoadGenJS("/resources/gen2.0/scripts/user/login_index")
+<script>
+	$(document).ready(function clickme(){
+        $('.wx').hover(function(){
+        	$('.imgs').fadeIn(100);
+        },function(){
+        	$('.imgs').hide(100);
+        });
+
+	
+	 //输入框单击变黄 失去焦点变黑
+        $('.top_input').focus(function(){
+        	$(this).parent('.top_p').addClass("label_focuse");
+			$(this).siblings(".error").hide();
+        });
+        $('.top_input').blur(function(){
+        	$(this).parent('.top_p').removeClass("label_focuse");
+        });
+		
+		//显示、隐藏密码
+		$(".pasword_interface").click(function(){
+			if($("#password").attr("type") == "password"){
+				$("#password").attr("type","text");
+				$(this).addClass("interface_show");
+			}else{
+				$("#password").attr("type","password");
+				$(this).removeClass("interface_show");
+			}
+		})
+   })
+   
+</script>
+</body>
+#Html("end")

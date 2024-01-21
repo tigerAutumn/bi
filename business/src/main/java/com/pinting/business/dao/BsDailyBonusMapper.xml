@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsDailyBonusMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsDailyBonus" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="be_recommend_user_id" property="beRecommendUserId" jdbcType="INTEGER" />
+    <result column="sub_account_id" property="subAccountId" jdbcType="INTEGER" />
+    <result column="bonus" property="bonus" jdbcType="DOUBLE" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="use_time" property="useTime" jdbcType="TIMESTAMP" />
+    <result column="ticket_apr" property="ticketApr" jdbcType="DOUBLE" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, be_recommend_user_id, sub_account_id, bonus, time, type, note
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsDailyBonusExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_daily_bonus
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+   <select id="selectByExamplePage" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    d.bonus, d.time, d.type, d.note,
+    i.use_time, i.ticket_apr, s.product_name
+    from bs_daily_bonus d
+    left join bs_interest_ticket_info i on d.sub_account_id = i.auth_account_id
+    left join bs_sub_account s on d.sub_account_id = s.id and s.product_type in ('AUTH_YUN', 'AUTH_7', 'AUTH_ZSD', 'AUTH_FREE')
+   	<where>
+	    d.user_id=#{userId , jdbcType=INTEGER}
+	    <if test="beginDate != null" >
+	    	<![CDATA[ and d.time < #{beginDate}]]>
+	    </if>
+	</where>
+		order by d.time desc,d.id desc
+        limit #{start , jdbcType=INTEGER}, #{pageSize , jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_daily_bonus
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_daily_bonus
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsDailyBonusExample" >
+    delete from bs_daily_bonus
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsDailyBonus" >
+    insert into bs_daily_bonus (id, user_id, be_recommend_user_id, 
+      sub_account_id, bonus, time, 
+      type)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{beRecommendUserId,jdbcType=INTEGER}, 
+      #{subAccountId,jdbcType=INTEGER}, #{bonus,jdbcType=DOUBLE}, #{time,jdbcType=TIMESTAMP}, 
+      #{type,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsDailyBonus" >
+    insert into bs_daily_bonus
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="beRecommendUserId != null" >
+        be_recommend_user_id,
+      </if>
+      <if test="subAccountId != null" >
+        sub_account_id,
+      </if>
+      <if test="bonus != null" >
+        bonus,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="beRecommendUserId != null" >
+        #{beRecommendUserId,jdbcType=INTEGER},
+      </if>
+      <if test="subAccountId != null" >
+        #{subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="bonus != null" >
+        #{bonus,jdbcType=DOUBLE},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsDailyBonusExample" resultType="java.lang.Integer" >
+    select count(*) from bs_daily_bonus
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_daily_bonus
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.beRecommendUserId != null" >
+        be_recommend_user_id = #{record.beRecommendUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.subAccountId != null" >
+        sub_account_id = #{record.subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bonus != null" >
+        bonus = #{record.bonus,jdbcType=DOUBLE},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_daily_bonus
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      be_recommend_user_id = #{record.beRecommendUserId,jdbcType=INTEGER},
+      sub_account_id = #{record.subAccountId,jdbcType=INTEGER},
+      bonus = #{record.bonus,jdbcType=DOUBLE},
+      time = #{record.time,jdbcType=TIMESTAMP},
+      type = #{record.type,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsDailyBonus" >
+    update bs_daily_bonus
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="beRecommendUserId != null" >
+        be_recommend_user_id = #{beRecommendUserId,jdbcType=INTEGER},
+      </if>
+      <if test="subAccountId != null" >
+        sub_account_id = #{subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="bonus != null" >
+        bonus = #{bonus,jdbcType=DOUBLE},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsDailyBonus" >
+    update bs_daily_bonus
+    set user_id = #{userId,jdbcType=INTEGER},
+      be_recommend_user_id = #{beRecommendUserId,jdbcType=INTEGER},
+      sub_account_id = #{subAccountId,jdbcType=INTEGER},
+      bonus = #{bonus,jdbcType=DOUBLE},
+      time = #{time,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <resultMap id="DailyBonusVOResultMap" type="com.pinting.business.model.vo.BsDailyBonusVO" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="be_recommend_user_id" property="beRecommendUserId" jdbcType="INTEGER" />
+    <result column="bonus" property="bonus" jdbcType="DOUBLE" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="account_id" property="accountId" jdbcType="INTEGER" />
+    <result column="sub_account_id" property="subAccountId" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="selectSumDailyBonusByUserIdAndTime" parameterType="java.util.HashMap" resultMap="DailyBonusVOResultMap" >
+	 select 
+    	a.user_id, 
+   		a.be_recommend_user_id, 
+   		sum(a.bonus) as bonus,
+   		date_format(a.time,'%Y-%m-%d') as time,
+			b.id as account_id,
+			c.id as sub_account_id
+   	from 
+   		bs_sub_account c,  bs_account b
+		left join 
+			bs_daily_bonus a 
+		on 
+			date_format(a.time,'%Y-%m-%d')=#{time} and 
+			a.user_id=b.user_id 
+	where 
+		b.user_id=#{userId} and 
+		c.account_id=b.id and 
+		c.product_type='JSH'
+		
+  </select>
+  <select id="sumShouldBonus" resultType="java.lang.Double">
+  		SELECT 
+		
+				sum(t.bonus)
+		
+		from 	
+			bs_daily_bonus t where t.bonus > 0 
+  
+  </select>
+  
+  <select id="sumIncarnateBonus" resultType="java.lang.Double">
+  
+  		SELECT 
+			sum(t.bonus) * -1
+		from 	
+			bs_daily_bonus t where 0 > t.bonus
+  </select>
+  
+  <sql id="Base_BsDailyBonus_List" >
+    <if test="id !=null and id != 0">   
+       and a.id = #{id,jdbcType=INTEGER}  
+    </if>
+    <if test="name !=null and name != ''">   
+       and b.user_name like CONCAT(CONCAT('%', #{name}),'%')    
+    </if>
+    <if test="mobile !=null and mobile != ''">   
+       and b.mobile like CONCAT(CONCAT('%', #{mobile}),'%')    
+    </if>
+    <if test="byName !=null and byName != ''">   
+       and c.user_name like CONCAT(CONCAT('%', #{byName}),'%')    
+    </if>
+    <if test="byMobile !=null and byMobile != ''">   
+       and c.mobile like CONCAT(CONCAT('%', #{byMobile}),'%')    
+    </if>
+  </sql>
+  
+  <resultMap id="BonusBaseResultMap" type="com.pinting.business.model.vo.BsDailyBonusVO" extends="BaseResultMap">
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="by_name" property="byName" jdbcType="VARCHAR" />
+    <result column="by_mobile" property="byMobile" jdbcType="VARCHAR" />
+    <result column="sub_end_time" property="subEndTime" jdbcType="TIMESTAMP" />
+    <result column="balance" property="balance" jdbcType="DOUBLE" />
+    <result column="bonuss" property="bonuss" jdbcType="DOUBLE" />
+    <result column="all_bonus" property="allBonus" jdbcType="DOUBLE" />
+    <result column="term" property="term" jdbcType="INTEGER" />
+    <result column="buy_time" property="buyTime" jdbcType="TIMESTAMP" />
+    <result column="recommend_name" property="recommendName" jdbcType="VARCHAR" />
+    <result column="recommend_mobile" property="recommendMobile" jdbcType="VARCHAR" />
+
+	<result column="invester_name" property="investerName" jdbcType="VARCHAR" />
+    <result column="invester_mobile" property="investerMobile" jdbcType="VARCHAR" />
+	<result column="general_name" property="generalName" jdbcType="VARCHAR" />
+	<result column="general_mobile" property="generalMobile" jdbcType="VARCHAR" />
+    <result column="sales_name" property="salesName" jdbcType="VARCHAR" />
+    <result column="sales_mobile" property="salesMobile" jdbcType="VARCHAR" />
+    <result column="manager_name" property="managerName" jdbcType="VARCHAR" />
+    <result column="manager_mobile" property="managerMobile" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 奖励金记录统计 -->
+  <select id="bsDailyBonusCount" parameterType="com.pinting.business.model.vo.BsDailyBonusVO" resultType="java.lang.Integer" >
+	  SELECT COUNT(*) FROM (
+	    SELECT 
+			aa.id
+			from 
+			(
+			   SELECT 
+					a.id, 
+					c.user_name invester_name ,c.mobile invester_mobile,c.recommend_id, 
+					d.sales_id,
+					e.customer_manager_dafy_id 
+				from bs_daily_bonus a 
+				LEFT JOIN bs_user_sales d on a.user_id=d.user_id and d.grade = 1
+				LEFT JOIN bs_user_customer_manager e ON e.user_id=a.user_id, 
+				bs_user c 
+				where a.be_recommend_user_id=c.id 
+				<if test="byName !=null and byName != ''">   
+			       and c.user_name like CONCAT(CONCAT('%', #{byName}),'%')    
+			    </if>
+			    <if test="byMobile !=null and byMobile != ''">   
+			       and c.mobile like CONCAT(CONCAT('%', #{byMobile}),'%')    
+			    </if>
+			) aa 
+			LEFT JOIN bs_user h on aa.recommend_id=h.id
+			LEFT JOIN bs_sales f ON f.id=aa.sales_id
+			LEFT JOIN tbemployee g ON g.lUserId=aa.customer_manager_dafy_id 
+			where 1 = 1
+		    <if test="recommendName != null and recommendName != '' ">
+		    	and (h.user_name like CONCAT(CONCAT('%', #{recommendName}),'%') 
+		    	or f.sales_name like CONCAT(CONCAT('%', #{recommendName}),'%') 
+		    	or g.strName like CONCAT(CONCAT('%', #{recommendName}),'%'))
+		    </if>
+		    <if test="recommendMobile != null and recommendMobile != '' ">
+		    	and (h.mobile like CONCAT(CONCAT('%', #{recommendMobile}),'%') 
+		    	or f.mobile like CONCAT(CONCAT('%', #{recommendMobile}),'%') 
+		    	or g.strLoginId like CONCAT(CONCAT('%', #{recommendMobile}),'%'))
+		    </if>
+	    ) bb
+  </select>
+  
+  <!-- 奖励金列表查询 -->
+  <select id="bsDailyBonusPage" resultMap="BonusBaseResultMap" parameterType="com.pinting.business.model.vo.BsDailyBonusVO" >
+  	SELECT 
+		aa.bonus as bonus, 
+		aa.time as time, 
+		aa.user_name as name,
+		aa.mobile as mobile,
+		h.user_name as general_name,
+		h.mobile as general_mobile,
+		f.sales_name as sales_name,
+		f.mobile as sales_mobile,
+		g.strName as manager_name,
+		g.strLoginId as manager_mobile,
+		aa.invester_name as by_name,
+		aa.invester_mobile as by_mobile,
+		aa.sub_account_id as sub_account_id,
+		i.open_time as buyTime,
+        (i.open_balance + IFNULL(red.open_balance,0)) as balance,
+		k.term as term 
+		from 
+		(
+		   SELECT 
+				a.bonus,a.time,a.sub_account_id,
+				b.user_name,b.mobile, 
+				b.agent_id, 
+				c.user_name invester_name ,c.mobile invester_mobile,c.recommend_id, 
+				d.sales_id,
+				e.customer_manager_dafy_id 
+			from bs_daily_bonus a 
+			LEFT JOIN bs_user_sales d on a.user_id=d.user_id and d.grade = 1
+			LEFT JOIN bs_user_customer_manager e ON e.user_id=a.user_id, 
+			bs_user b, bs_user c 
+			where a.user_id=b.id and a.be_recommend_user_id=c.id
+			<!-- 投资人 -->
+		    <if test="byName !=null and byName != ''">
+		       and c.user_name like CONCAT(CONCAT('%', #{byName}),'%')    
+		    </if>
+		    <if test="byMobile !=null and byMobile != ''">   
+		       and c.mobile like CONCAT(CONCAT('%', #{byMobile}),'%')    
+		    </if>
+		) aa 
+		LEFT JOIN bs_user h on aa.recommend_id=h.id
+		LEFT JOIN bs_sales f ON f.id=aa.sales_id
+		LEFT JOIN tbemployee g ON g.lUserId=aa.customer_manager_dafy_id 
+		LEFT JOIN bs_sub_account i on aa.sub_account_id=i.id
+        LEFT JOIN bs_sub_account_pair pr ON pr.auth_account_id = i.id
+        LEFT JOIN bs_sub_account red ON red.id = pr.red_account_id
+		LEFT JOIN bs_product k on i.product_id = k.id
+	    where 1 = 1
+	    <!-- 推荐人 -->
+	    <if test="recommendName != null and recommendName != '' ">
+	    	and (h.user_name like CONCAT(CONCAT('%', #{recommendName}),'%') 
+	    	or f.sales_name like CONCAT(CONCAT('%', #{recommendName}),'%') 
+	    	or g.strName like CONCAT(CONCAT('%', #{recommendName}),'%'))
+	    </if>
+	    <if test="recommendMobile != null and recommendMobile != '' ">
+	    	and (h.mobile like CONCAT(CONCAT('%', #{recommendMobile}),'%') 
+	    	or f.mobile like CONCAT(CONCAT('%', #{recommendMobile}),'%') 
+	    	or g.strLoginId like CONCAT(CONCAT('%', #{recommendMobile}),'%'))
+	    </if>
+	    order by aa.time desc
+	    <include refid="sql-global.pagination"/>
+  </select>
+  
+  <!-- 奖励金总金额 -->
+  <select id="bonusSum" parameterType="com.pinting.business.model.vo.BsDailyBonusVO" resultType="java.lang.Double" >
+  	SELECT 
+		sum(aa.bonus) as all_bonus 
+		from 
+		(
+		   SELECT 
+				a.bonus,
+				c.user_name invester_name ,c.mobile invester_mobile,c.recommend_id, 
+				d.sales_id,
+				e.customer_manager_dafy_id 
+			from bs_daily_bonus a 
+			LEFT JOIN bs_user_sales d on a.user_id=d.user_id and d.grade = 1
+			LEFT JOIN bs_user_customer_manager e ON e.user_id=a.user_id, 
+			bs_user c 
+			where a.be_recommend_user_id=c.id
+		    <if test="byName !=null and byName != ''">   
+		       and c.user_name like CONCAT(CONCAT('%', #{byName}),'%')    
+		    </if>
+		    <if test="byMobile !=null and byMobile != ''">   
+		       and c.mobile like CONCAT(CONCAT('%', #{byMobile}),'%')    
+		    </if>
+		) aa 
+		LEFT JOIN bs_user h on aa.recommend_id=h.id
+		LEFT JOIN bs_sales f ON f.id=aa.sales_id
+		LEFT JOIN tbemployee g ON g.lUserId=aa.customer_manager_dafy_id 
+	    where 1 = 1 
+	    <if test="recommendName != null and recommendName != '' ">
+	    	and (h.user_name like CONCAT(CONCAT('%', #{recommendName}),'%') 
+	    	or f.sales_name like CONCAT(CONCAT('%', #{recommendName}),'%') 
+	    	or g.strName like CONCAT(CONCAT('%', #{recommendName}),'%'))
+	    </if>
+	    <if test="recommendMobile != null and recommendMobile != '' ">
+	    	and (h.mobile like CONCAT(CONCAT('%', #{recommendMobile}),'%') 
+	    	or f.mobile like CONCAT(CONCAT('%', #{recommendMobile}),'%') 
+	    	or g.strLoginId like CONCAT(CONCAT('%', #{recommendMobile}),'%'))
+	    </if>
+  </select>
+  
+  <select id="bsDailyBonus4ServiceDetail" resultMap="BonusBaseResultMap" parameterType="com.pinting.business.model.vo.BsDailyBonusVO" >
+    SELECT 
+		aa.bonus as bonus, 
+		aa.time as time, 
+		aa.user_name as name,
+		aa.mobile as mobile,
+		h.user_name as general_name,
+		h.mobile as general_mobile,
+		f.sales_name as sales_name,
+		f.mobile as sales_mobile,
+		g.strName as manager_name,
+		g.strLoginId as manager_mobile,
+		aa.invester_name as by_name,
+		aa.invester_mobile as by_mobile,
+		aa.sub_account_id as sub_account_id,
+		i.open_time as buyTime,
+		i.balance,
+		k.term as term 
+		from 
+		(
+		   SELECT 
+				a.bonus,a.time,a.sub_account_id,
+				b.user_name,b.mobile, 
+				b.agent_id, 
+				c.user_name invester_name ,c.mobile invester_mobile,c.recommend_id, 
+				d.sales_id,
+				e.customer_manager_dafy_id 
+			from bs_daily_bonus a 
+			LEFT JOIN bs_user_sales d on a.user_id=d.user_id and d.grade = 1
+			LEFT JOIN bs_user_customer_manager e ON e.user_id=a.user_id, 
+			bs_user b, bs_user c 
+			where a.user_id=b.id and a.be_recommend_user_id=c.id
+		) aa 
+		LEFT JOIN bs_user h on aa.recommend_id=h.id
+		LEFT JOIN bs_sales f ON f.id=aa.sales_id
+		LEFT JOIN tbemployee g ON g.lUserId=aa.customer_manager_dafy_id 
+		LEFT JOIN bs_sub_account i on aa.sub_account_id=i.id
+		LEFT JOIN bs_product k on i.product_id = k.id
+		where aa.sub_account_id = #{subAccountId,jdbcType=INTEGER}
+    	order by aa.time desc
+  </select>
+  
+  <select id="bonusSum4ServiceDetail" resultType="java.lang.Double" parameterType="com.pinting.business.model.vo.BsDailyBonusVO" >
+	SELECT 
+		sum(aa.bonus) as all_bonus 
+		from 
+		(
+		   SELECT 
+				a.bonus,a.sub_account_id,
+				c.user_name invester_name ,c.mobile invester_mobile,c.recommend_id, 
+				d.sales_id,
+				e.customer_manager_dafy_id 
+			from bs_daily_bonus a 
+			LEFT JOIN bs_user_sales d on a.user_id=d.user_id and d.grade = 1
+			LEFT JOIN bs_user_customer_manager e ON e.user_id=a.user_id, 
+			bs_user c 
+			where a.be_recommend_user_id=c.id
+		) aa 
+		LEFT JOIN bs_user h on aa.recommend_id=h.id
+		LEFT JOIN bs_sales f ON f.id=aa.sales_id
+		LEFT JOIN tbemployee g ON g.lUserId=aa.customer_manager_dafy_id 
+	    where aa.sub_account_id = #{subAccountId,jdbcType=INTEGER}
+  </select>
+  
+  <resultMap id="BonusBaseResultSum" type="com.pinting.business.model.vo.BsDailyBonusVO" extends="BaseResultMap">
+    <result column="bonuss" property="bonuss" jdbcType="DOUBLE" />
+  </resultMap>
+  
+  <select id="subAccountKeySumBonus" resultMap="BonusBaseResultSum" parameterType="com.pinting.business.model.vo.BsDailyBonusVO" >
+    select sum(bonus) bonuss from bs_daily_bonus d left join bs_sub_account s on d.sub_account_id = s.id where 1 = 1
+    <if test="subAccountId !=null and subAccountId != 0">   
+       and d.sub_account_id = #{subAccountId,jdbcType=INTEGER}  
+    </if>
+    group by s.id
+  </select>
+  
+</mapper>

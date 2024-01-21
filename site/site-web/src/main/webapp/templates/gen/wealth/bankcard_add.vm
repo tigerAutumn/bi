@@ -1,0 +1,117 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾理财官网_安全可靠互联网金融投资理财平台_品听资产_杭商资产_浙大网新_P2P网贷")
+
+#Head("end")
+
+<body #if($!res.openCityId) onload="change($!res.openProvinceId,$!res.openCityId)" #end>
+<input id="security_token" name="ci_csrf_token" value="" type="hidden">
+<!--top-->
+#GenHeader()
+<!--top-->
+#LoadJS("resources/micro/scripts/wealth/addBank")
+#LoadJS("resources/micro/scripts/wealth/province")
+#LoadJS("resources/micro/scripts/regular/bankTest")
+<script type="text/javascript" src="$!env.get('gen.server.web')/resources/micro/scripts/common/form.js" charset="UTF-8"></script>
+<script type="text/javascript" src="$!env.get('gen.server.web')/resources/micro/scripts/common/form-validate.js" charset="UTF-8"></script>
+
+
+<!--S banner-->
+
+<!--E banner-->
+	
+
+<div class="th3 clearfix">
+ <div class="pageWrapper contactPageWrapper"> 
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$!env.get('gen.server.web')" />
+ <input type="hidden" id="cardIdReg" value="(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d{1}|X|x)$)" />
+ <input type="hidden" id="nameReg" value="^([\u4e00-\u9fa5]+|([a-z]+\s?)+){1,20}$" />
+ </div>
+<div class="wrapper pageWrapper generalPageWrapper" style="margin-top:40px;">
+<form id="myform">
+
+           <div class="reg-items">
+				<div class="phone-verify" style="margin: 40px auto 0px; width: 580px;">
+					<div 
+					<div class="ui-form-item2 gm formFieldWrapper" style="margin-top:0px;">
+                      <label class="ui-label"><span class="ui-form-required">*</span>选择开户行</label>
+                      <input  type="hidden" name="bankName" id="bankName"/>
+                      <select name="bankId" id="bank" class="myselect1">
+                        	#foreach($!bank in $!res.bankList)
+                               <option value="$!bank.id" #if($!bank.id == $!res.bankId) selected="selected" #end>$!bank.name</option>
+                        	#end
+                      </select>
+                   </div>
+				   
+				   <div class="ui-form-item2 gm formFieldWrapper" style="margin-top:0px;">
+                        <label class="ui-label"><span class="ui-form-required">*</span>选择开户省份</label>
+                        <input  type="hidden" name="provinceName" id="provinceName"/>
+            			<input  type="hidden" name="provinceCode" id="provinceCode"/>
+                		<select  id="sProvince" name="openProvince" >
+            				#foreach($!province in $!res.provinceList)
+            			       <option value="$!province.id" code="$!province.itemCode" #if($!province.id == $!res.openProvinceId) selected="selected" #end>$!province.itemName</option>
+            				#end
+                		</select>
+                   </div>
+				   
+				   <div class="ui-form-item2 gm formFieldWrapper" style="margin-top:0px;">
+						<label class="ui-label"><span class="ui-form-required">*</span>选择开户城市</label>
+						<input  type="hidden" name="cityName" id="cityName"/>
+            			<input  type="hidden" name="cityCode" id="cityCode"/>
+            			<select id="sCity" name="openCity" >
+            				#foreach($!city in $!res.cityList)
+            			       <option value="$!city.id" code="$!city.itemCode">$!city.itemName</option>
+            				#end
+            			</select>
+                   </div>
+					
+				##	<div class="ui-form-item2 gm formFieldWrapper" style="margin-top:0px;">
+                 ##     <label class="ui-label"><span class="ui-form-required">*</span>支行名称</label>
+                      <input name="branchName"  id="branchName" placeholder="请输入支行名称" type="hidden"  value="$!res.subBranchName" class="ui-input input-icon input-bg-gray userNameField requiredField" >
+                  ## </div>
+					<div class="ui-form-item2 gm formFieldWrapper" style="margin-top:0px;">
+                      <label class="ui-label"><span class="ui-form-required">*</span>卡号</label>
+                      <input name="cardNo" id="cardNo" placeholder="请输入您的卡号" type="text"  value="$!res.cardNo" class="ui-input input-icon input-bg-gray userNameField requiredField" >
+                   </div>
+    				<div class="ui-form-item2 gm formFieldWrapper">
+                          <label class="ui-label"><span class="ui-form-required">*</span>姓名</label>
+                          <input name="cardOwner" id="name"  placeholder="请输入您的姓名" type="text" #if($!res.userName && $!res.idCard) value="$!res.userName"  #end class="ui-input input-icon input-bg-gray passwordField requiredField regExpField">
+                    </div>
+					
+					<div class="ui-form-item2 gm formFieldWrapper">
+                          <label class="ui-label"><span class="ui-form-required">*</span>身份证</label>
+                          <input name="idCard" id="cardId" placeholder="请输入您的身份证" type="text"  #if($!res.userName && $!res.idCard) value="$!res.idCard"  #end class="ui-input input-icon input-bg-gray passwordField requiredField regExpField">
+                    </div>
+					
+            		 <div class="formSubmitButtonErrorsWrapper"> 
+                       <!-- form errors start -->  
+            			   <span class="formValidationError" id="branchNameFieldError">
+                            	<span>请输入支行名称</span>
+                           </span>
+                           <span class="formValidationError" id="cardIdFieldError">
+                            	<span>请输入身份证号</span>
+                        		<span>身份证号格式不正确</span>
+                           </span>
+                            <span class="formValidationError" id="nameFieldError">
+                            	<span>请输入姓名</span>
+                        		<span>姓名格式不正确</span>
+                           </span>
+            		    <!-- form errors end -->
+                     </div>
+    				<div class="pl50" style="margin-top:0px;padding-left: 180px;">
+    				     <input value="立即绑卡" class="ui-button-rrd-blue ui-button-rrd-blue-large" id="addment" type="button">
+                    </div>
+					              
+				</div>
+				
+		  </div>
+
+</div>
+</form>
+</div>
+<div class="hidden"> <script> var _hmt = _hmt || []; (function() { var hm = document.createElement("script"); hm.src = "//hm.baidu.com/hm.js?3b6fd20f28f9c7cf68479877df4e04be"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s); })(); </script> </div>
+#GenFooter()
+<!--E gb_foot-->
+<script type="text/javascript" src="$!env.get('gen.server.web')/resources/micro/scripts/common/form.js" charset="UTF-8"></script>
+<script type="text/javascript" src="$!env.get('gen.server.web')/resources/micro/scripts/common/form-validate.js" charset="UTF-8"></script>
+</body></html>

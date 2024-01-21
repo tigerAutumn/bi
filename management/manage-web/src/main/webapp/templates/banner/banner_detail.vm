@@ -1,0 +1,377 @@
+<h2 class="contentTitle">#if("add"=="$!type")添加banner#else 修改banner #end -
+
+#if($!newChannel == "MICRO") 币港湾微信 （640 x 320）
+#elseif($!newChannel == "MICRO178") 钱报微信（640 x 320）
+#elseif($!newChannel == "MICROKQ") 柯桥日报微信（640 x 320）
+#elseif($!newChannel == "MICROHN") 海宁日报微信（640 x 320）
+#elseif($!newChannel == "MICRORUIAN") 瑞安日报微信（640 x 320）
+#elseif($!newChannel == "MICROQD") 七店微信（640 x 320）
+#elseif($!newChannel == "MICROJT") 秦皇岛交通广播微信（640 x 320）
+#elseif($!newChannel == "MICROXW") 秦皇岛新闻891微信（640 x 320）
+#elseif($!newChannel == "MICROTV") 秦皇岛电视台今日报道微信（640 x 320）
+#elseif($!newChannel == "MICROSTZY") 视听之友微信（640 x 320）
+#elseif($!newChannel == "MICROSJC") 1038私家车广播微信（640 x 320）
+
+#elseif($!newChannel == "GEN") 币港湾电脑（1920 x 410）
+#elseif($!newChannel == "GEN178") 钱报电脑（1920 x 410）
+#elseif($!newChannel == "GENKQ") 柯桥日报电脑（1920 x 410）
+#elseif($!newChannel == "GENHN") 海宁日报电脑（1920 x 410）
+#elseif($!newChannel == "GENRUIAN") 瑞安日报电脑（1920 x 410）
+#elseif($!newChannel == "GENSTZY") 视听之友电脑（1920 x 410）
+
+#elseif($!newChannel == "APP") 币港湾APP（750 x 380）
+#elseif($!newChannel == "APP_START")app启动页管理（720 x 1000）
+#end
+</h2>
+<div class="pageContent">
+	
+	<form id="flashForm" method="post" action="$env.getWebURL('/banner/addOrUpdate.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("type", "$!type")
+		#Hidden("newChannel", "$!newChannel")
+		#Hidden("id", "$!banner.id")
+		#Hidden("showpushType","$!pushType")
+		#Hidden("showappPage","$!appPage")
+		#Hidden("activityType","$!activityType")
+
+		<div class="pageFormContent nowrap" layoutH="97">
+			<dl>
+				<dt>名称：</dt>
+				<dd>
+					<input type="text" id="subjects" name="subject" size="30" class="required" maxlength="10" value="$!banner.subject" />(10字以内，允许中英文数字)
+				</dd>
+			</dl>
+			#if($!newChannel == 'APP_START')
+			#else
+				<dl>
+					<dt>顺序：</dt>
+					<dd>
+						<input id="priCount" value="$!count" name="priCount" type="hidden"/>
+						#if($!count == 6)
+						#set($count = 5)
+						#elseif($!count == 0)
+						#set($count = 1)
+						#end
+
+						<select name="priority" class="required combox">
+							#foreach($foo in [1..$!count])
+								<option value=$foo #if("$!banner.priority"==$foo) selected  #end>第$foo 幕</option>
+							#end
+
+							<option value="-1" #if("$!banner.priority"=="-1") selected  #end>不显示</option>
+						</select>
+					</dd>
+				</dl>
+			#end
+			<dl>
+				<dt>上传图片：</dt>
+				<dd>
+                    <input id="imgPathBanner" value="$!banner.imgPath" name="imgPath" type="hidden"/>
+                    <div id="uploader-demo">
+                        <!--用来存放item-->
+                        <div id="fileThumb" class="uploader-list">
+							#if("$!banner.imgPath"=="")
+                                <div class="file-item thumbnail" style="display: none;">
+                                    <img/><div class="info"></div>
+                                </div>
+							#else
+                                <div class="file-item thumbnail">
+                                    <img src="$!mUrl$!banner.imgPath"/><div class="info"></div>
+                                </div>
+							#end
+
+                        </div>
+                        <div id="filePicker">选择图片</div>
+                    </div>
+				</dd>
+			</dl>
+
+			#if($!newChannel == 'APP' || $!newChannel == 'APP_START')
+				<dl>
+					<dt>跳转至：$!newChannel</dt>
+					<dd>
+						<select class="combox" name="pushType" id="pushTypeSelect">
+							<option value="url" #if($!pushType == 'url') selected #end>url</option>
+							<option value="APP" #if($!pushType == 'APP') selected #end>APP内页</option>
+						</select>
+					</dd>
+				</dl>
+				<dl>
+					<dt>&nbsp;</dt>
+					<dd class="native_content">
+						<input name="appPage" type="text"  size="100" maxlength="200" value=""/>
+						<th width="4%">
+							活动类型：
+							<input type="radio" id="activity_type_null_app" name="activity_type" value="" />无
+							<input type="radio" id="activity_type_fight_app" name="activity_type" value="FIGHT_SECONDS" />争标夺秒
+							<input type="radio" id="activity_type_all_app" name="activity_type" value="SCRATCH_CARD" />全民刮刮乐
+                            <input type="radio" id="activity_type_lucky" name="activity_type" value="LUCKY_LENDERS" />幸运出借人
+						</th>
+						</br>
+						&nbsp;&nbsp;（绝对路径请输入“http://”,如百度：http://www.baidu.com）
+					</dd>
+				</dl>
+			#else
+				<dl>
+					<dt>点击链接：</dt>
+					<dd>
+						<input type="text" name="url" id="url" size="100"  maxlength="200" value="$!banner.url" />
+						#if($!newChannel == "MICRO" || $!newChannel == "GEN" || $!newChannel == "APP")
+							<th width="4%">
+								活动类型：
+								<input type="radio" id="activity_type_null" name="activity_type" value="" />无
+								<input type="radio" id="activity_type_fight" name="activity_type" value="FIGHT_SECONDS" />争标夺秒
+                                <input type="radio" id="activity_type_all" name="activity_type" value="SCRATCH_CARD" />全民刮刮乐
+                                <input type="radio" id="activity_type_lucky" name="activity_type" value="LUCKY_LENDERS" />幸运出借人
+							</th>
+						#end
+						</br>
+						&nbsp;&nbsp;（绝对路径请输入“http://”,如百度：http://www.baidu.com）
+					</dd>
+				</dl>
+			#end
+		</div>
+		<div class="formBar">
+			<ul style="float:left;">
+				<li><div class="buttonActive"><div class="buttonContent"><button onclick="formsubmint()" type="button">保存</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+<script>
+	(function() {
+		// 上传图片相关
+        var channel = $('#newChannel').val();
+		var constants = {
+            MICRO: 'MICRO',
+            MICRO178: 'MICRO178',
+            MICROKQ: 'MICROKQ',
+            MICROHN: 'MICROHN',
+            MICRORUIAN: 'MICRORUIAN',
+            MICROQD: 'MICROQD',
+            APP: 'APP',
+            APP_START: 'APP_START',
+            GEN: 'GEN',
+            GEN178: 'GEN178',
+            GENKQ: 'GENKQ',
+            GENHN: 'GENHN',
+            GENRUIAN: 'GENRUIAN',
+           	MICROJT: 'MICROJT',
+           	MICROXW: 'MICROXW',
+           	MICROTV: 'MICROTV',
+           	MICROSTZY: 'MICROSTZY',
+           	MICROSJC: 'MICROSJC',
+           	GENSTZY: 'GENSTZY'
+		}
+        var width = 0;
+        var height = 0;
+        switch (channel) {
+            case constants.MICRO:
+            case constants.MICRO178:
+            case constants.MICROKQ:
+            case constants.MICROHN:
+            case constants.MICRORUIAN:
+            case constants.MICROQD:
+                width = 640;
+                height = 320;
+				break;
+            case constants.MICROJT:
+                width = 640;
+                height = 320;
+				break;
+            case constants.MICROXW:
+                width = 640;
+                height = 320;
+				break;
+            case constants.MICROTV:
+                width = 640;
+                height = 320;
+				break;
+            case constants.MICROSTZY:
+                width = 640;
+                height = 320;
+				break;
+            case constants.MICROSJC:
+                width = 640;
+                height = 320;
+				break;
+            case constants.GENSTZY:
+                width = 1920;
+                height = 410;
+				break;
+				
+            case constants.APP:
+                width = 750;
+                height = 380;
+				break;
+            case constants.APP_START:
+                width = 720;
+                height = 1000;
+				break;
+            case constants.GEN:
+            case constants.GEN178:
+            case constants.GENKQ:
+            case constants.GENHN:
+            case constants.GENRUIAN:
+                width = 1920;
+                height = 410;
+				break;
+        }
+
+        _global.uploadSingleImg("/upload/bannerImg.htm", '#filePicker', width, height, width/2, height/2, '#fileThumb', function (file, data) {
+            $('#imgPathBanner').val(data.msg.pathUrl);
+        }, function(file, data) {
+            $('#filePicker').children('div').children('img').attr('src', '');
+            $('#imgPathBanner').val('');
+        });
+	})();
+
+
+
+
+	$("select[name=pushType]").on('change',function(){
+		var pushType = this.value;
+		if(pushType == 'url') {
+            var activityType = $.trim($('#activityType').val());
+            if(activityType == "FIGHT_SECONDS"){
+                $("#activity_type_fight_app").attr("checked","true");
+            }else if(activityType == "SCRATCH_CARD") {
+                $("#activity_type_all_app").attr("checked","true");
+            }else {
+                $("#activity_type_null_app").attr("checked","true");
+            }
+			
+			$(".native_content").html("<input name='appPage' type='text'  size='100' maxlength='200' value='"+$.trim($('#appPage').val())+"'/>"
+							+"<th width='4%'>"
+								+ "活动类型："
+								+ "<input type='radio' id='activity_type_null_app' name='activity_type' value='' />无"
+								+ "<input type='radio' id='activity_type_fight_app' name='activity_type' value='FIGHT_SECONDS' />争标夺秒"
+								+ "<input type='radio' id='activity_type_all_app' name='activity_type' value='SCRATCH_CARD' />全民刮刮乐"
+								+ "<input type='radio' id='activity_type_lucky' name='activity_type' value='LUCKY_LENDERS' />幸运出借人"
+							+ "</th></br>"
+				+"&nbsp;&nbsp;（绝对路径请输入“http://”,如百度：http://www.baidu.com）");
+		}else if(pushType == 'APP') {
+			var options = "<select id='page' name='appPage' class='combox'> "
+					+ "<option value='1'"+dealAppPage(1)+">首页</option>"
+					+ "<option value='2'"+dealAppPage(2)+">理财产品</option>"
+					+ "<option value='3'"+dealAppPage(3)+">我的资产</option>"
+					+ "<option value='4'"+dealAppPage(4)+">更多</option>"
+					+ "<option value='5'"+dealAppPage(5)+">推荐奖励金</option>"
+					+ "<option value='6'"+dealAppPage(6)+">安全保障</option>"
+					+ "<option value='7'"+dealAppPage(7)+">我的推荐</option>"
+					+ "<option value='8'"+dealAppPage(8)+">帮助中心</option>"
+					+ "<option value='9'"+dealAppPage(9)+">意见反馈</option>"
+					+ "<option value='11'"+dealAppPage(11)+">我的投资页面</option>"
+					+ "<option value='12'"+dealAppPage(12)+">交易明细页面</option>"
+					+ "<option value='13'"+dealAppPage(13)+">安全中心</option>"
+					+ "<option value='14'"+dealAppPage(14)+">银行卡界面</option>"
+					+ "<option value='15'"+dealAppPage(15)+">我的红包列表</option>"
+					+ "<option value='17'"+dealAppPage(17)+">关注币港湾</option>"
+				+ "</select>";
+				
+				$(".native_content").html(options);
+		}
+	});
+	
+	 $(function(){
+    	var pushType = $.trim($('#showpushType').val());
+		if(pushType == 'url') {
+			$(".native_content").html("<input name='appPage' type='text' size='100' maxlength='200' value='"+$.trim($('#showappPage').val())+"'/>"
+                    +"<th width='4%'>"
+                    + "活动类型："
+                    + "<input type='radio' id='activity_type_null_app' name='activity_type' value='' />无"
+                    + "<input type='radio' id='activity_type_fight_app' name='activity_type' value='FIGHT_SECONDS' />争标夺秒"
+                    + "<input type='radio' id='activity_type_all_app' name='activity_type' value='SCRATCH_CARD' />全民刮刮乐"
+                    + "<input type='radio' id='activity_type_lucky' name='activity_type' value='LUCKY_LENDERS' />幸运出借人"
+                    + "</th></br>"
+				+"&nbsp;&nbsp;（绝对路径请输入“http://”,如百度：http://www.baidu.com）");
+		}else if(pushType == 'APP') {
+			var options = "<select id='page' name='appPage' class='combox'> "
+					+ "<option value='1'"+dealAppPage(1)+">首页</option>"
+					+ "<option value='2'"+dealAppPage(2)+">理财产品</option>"
+					+ "<option value='3'"+dealAppPage(3)+">我的资产</option>"
+					+ "<option value='4'"+dealAppPage(4)+">更多</option>"
+					+ "<option value='5'"+dealAppPage(5)+">推荐奖励金</option>"
+					+ "<option value='6'"+dealAppPage(6)+">安全保障</option>"
+					+ "<option value='7'"+dealAppPage(7)+">我的推荐</option>"
+					+ "<option value='8'"+dealAppPage(8)+">帮助中心</option>"
+					+ "<option value='9'"+dealAppPage(9)+">意见反馈</option>"
+					+ "<option value='11'"+dealAppPage(11)+">我的投资页面</option>"
+					+ "<option value='12'"+dealAppPage(12)+">交易明细页面</option>"
+					+ "<option value='13'"+dealAppPage(13)+">安全中心</option>"
+					+ "<option value='14'"+dealAppPage(14)+">银行卡界面</option>"
+					+ "<option value='15'"+dealAppPage(15)+">我的红包列表</option>"
+					+ "<option value='17'"+dealAppPage(17)+">关注币港湾</option>"
+				+ "</select>";
+				
+				$(".native_content").html(options);
+		}
+    })
+	
+	function dealAppPage(page) {
+		var appPage = $.trim($('#showappPage').val());
+		if(appPage == page) {
+			return 'selected';
+		}else {
+			return "";
+		}
+	}
+	
+	function formsubmint(){
+		var subject = $("#subjects").val();
+		if(subject == ''){
+			alertMsg.warn('请输入名称！!');
+			return false;
+		}
+		var k=1;
+		var path=$("#imgPathBanner").val();
+		if(!path){
+			alertMsg.warn('请上传图片！!');
+			k=0;
+		}
+		var channel=$("#newChannel").val();
+		var selectText=$('#pushTypeSelect option:selected').text();
+        var radio_ary= $('input:radio[name="activity_type"]:checked').val();
+        if(radio_ary == null && (channel == "MICRO" || channel == "GEN" || ((channel == "APP"||channel=="APP_START") && selectText=="url"))){
+            alertMsg.warn("请选择对应的活动类型!");
+            return false;
+        }
+
+        if(k>0){
+			$("#flashForm").submit();
+		}
+    }
+	function navTabAjaxDone(json) {
+		var channel=$("#newChannel").val();
+		if (json.statusCode == 200) {
+			navTab.closeCurrentTab();
+			alertMsg.correct(json.message);
+			navTab.reload("$env.getWebURL('/banner/banner_index.htm?cc=')"+channel);
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+	$(function(){
+	
+});
+
+	//单选框回显
+	var activityType = $.trim($('#activityType').val());
+	if(activityType == "FIGHT_SECONDS"){
+        $("#activity_type_fight").attr("checked","true");
+        $("#activity_type_fight_app").attr("checked","true");
+	}else if(activityType == "SCRATCH_CARD") {
+        $("#activity_type_all").attr("checked","true");
+        $("#activity_type_all_app").attr("checked","true");
+	} else if(activityType == "LUCKY_LENDERS") {
+        $("#activity_type_lucky").attr("checked","true");
+    } else {
+        $("#activity_type_null").attr("checked","true");
+        $("#activity_type_null_app").attr("checked","true");
+	}
+
+</script>
+</div>

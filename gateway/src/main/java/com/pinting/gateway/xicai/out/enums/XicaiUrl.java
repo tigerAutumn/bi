@@ -1,0 +1,60 @@
+/**
+ * business.com Inc.
+ * Copyright (c) 2015-2025 All Rights Reserved.
+ */
+package com.pinting.gateway.xicai.out.enums;
+
+
+/**
+ * 19pay 接口url枚举
+ * @author Baby shark love blowing wind
+ * @version $Id: QuickPayUrl.java, v 0.1 2015-5-15 下午6:04:14 BabyShark Exp $
+ */
+public enum XicaiUrl {
+    /** 推送产品ID接口 */
+    SEND_PRODUCT_ID("/push_p2p", "推送产品ID接口"),
+    /** 投资回调接口 */
+    INVEST_CALL_BACK("/InvestCallBack", "投资回调接口"),
+    /** 绑定回调接口 */
+    BIND_USER_CALL_BACK("/BindUserCallBack", "绑定回调接口"),
+    ;
+
+    /** code */
+    private String code;
+
+    /** description */
+    private String description;
+
+    /**
+     * 私有的构造方法
+     * @param code
+     * @param description
+     */
+    private XicaiUrl(String code, String description) {
+        this.code = code;
+        this.description = description;
+    }
+
+    /**
+     * 
+     * @param code
+     * @return {@link ActivityState} 实例
+     */
+    public static XicaiUrl find(String code) {
+        for (XicaiUrl key : XicaiUrl.values()) {
+            if (key.getCode().equals(code)) {
+                return key;
+            }
+        }
+        return null;//throw new GatewayBaseException(GatewayBaseCode.SYSTEM_ERROR, "根据code=" + code + "获取组织类型失败");
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+}

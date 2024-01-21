@@ -1,0 +1,100 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+	<input type="hidden" name="startTime" value="$!req.startTime" />
+	<input type="hidden" name="endTime" value="$!req.endTime" />
+	<input type="hidden" name="agentId" value="$!req.agentId" />
+</form>
+<div class="page unitBox">
+	<div class="pageHeader">
+    	<form rel="pagerForm" id="sale_form" onsubmit="return navTabSearch(this);" action="$env.getWebURL('financialAccount/saleAgentData.htm')" method="post">
+        	<div class="searchBar">
+                <table class="searchContent">
+        			<tr>
+						<td>
+							<select class="combox" name="agentId" id="agentId">
+								<option value="">全部</option>
+								#foreach($!agent in $!agents)
+									<option value="$!agent.id" #if("$!req.agentId"=="$!agent.id") selected #end >$!agent.agentName </option>
+								#end
+							</select>
+						</td>
+						<td>
+        					<label id="date_text">开始时间：</label>
+        					<input type="text" id="startTime" name="startTime" value="$!req.startTime" class="date" dateFmt="yyyy-MM-dd" readonly/>
+        				</td>
+						<td>
+        					<label id="date_text">结束时间：</label>
+							<input type="text" id="endTime" name="endTime" value="$!req.endTime" class="date" dateFmt="yyyy-MM-dd" readonly/>
+						</td>
+        				<td>
+        					<div class="buttonActive">
+        						<div class="buttonContent">
+        							<button type="button" onclick="sub_form()">查询</button>
+        						</div>
+        					</div>
+        				</td>
+                    </tr>
+        		</table>
+        	</div>
+    	</form>
+    </div>
+    <div class="pageContent" >
+		<div class="panelBar">
+        		<ul class="toolBar">
+        			<li>		
+        				<span style="margin-left:10px;">
+            				<font color="red">年化资金购买值合计：#if(!$!sumCpAgentData)0.00 #else $!money.format($!sumCpAgentData) #end 元</font>
+                        </span>
+        			</li>
+        		</ul>
+        </div>
+    	<table class="table" width="100%" layoutH="118">
+    		<thead>
+    			<tr>
+					<th width="3%">渠道来源</th>
+    				<th width="3%">购买期数</th>
+					<th width="2%">购买金额</th>
+					<th width="5%">年化资金购买值（CP）</th>
+    				<th width="3%">产品名称</th>
+					<th width="5%">产品利率</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+				#set($Integer = 0)
+    			#foreach($grid in $dataGrid)
+    			<tr target="sid_user" rel="1">
+    				<td>$!grid.agentName</td>
+    				<td>
+                        #if(0 > $Integer.parseInt("$!grid.term"))
+							#set($termNum = $Integer.parseInt("$!grid.term")*-1 ) $!termNum 天
+                        #else
+							$!grid.term 个月
+                        #end
+					</td>
+    				<td>$!number.format("0.00", $!grid.balance)</td>
+					<td>$!number.format("0.00", $!grid.cp)</td>
+					<td>$!grid.productName</td>
+					<td>$!grid.baseRate %</td>
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+    			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!count条</span>
+    	</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+    </div>
+    </div>
+	
+</div>
+#LoadJS("/resources/js/sale_agent_data")

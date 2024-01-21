@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinting.business.dao.BsSysBalanceDailySnapMapper">
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsSysBalanceDailySnap">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="account_type" jdbcType="VARCHAR" property="accountType" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="balance" jdbcType="DOUBLE" property="balance" />
+    <result column="available_balance" jdbcType="DOUBLE" property="availableBalance" />
+    <result column="freeze_balance" jdbcType="DOUBLE" property="freezeBalance" />
+    <result column="snap_date" jdbcType="DATE" property="snapDate" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, account_type, code, balance, available_balance, freeze_balance, snap_date, note, 
+    create_time, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.pinting.business.model.BsSysBalanceDailySnapExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_sys_balance_daily_snap
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bs_sys_balance_daily_snap
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bs_sys_balance_daily_snap
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsSysBalanceDailySnapExample">
+    delete from bs_sys_balance_daily_snap
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsSysBalanceDailySnap">
+    insert into bs_sys_balance_daily_snap (id, account_type, code, 
+      balance, available_balance, freeze_balance, 
+      snap_date, note, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{accountType,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{balance,jdbcType=DOUBLE}, #{availableBalance,jdbcType=DOUBLE}, #{freezeBalance,jdbcType=DOUBLE}, 
+      #{snapDate,jdbcType=DATE}, #{note,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsSysBalanceDailySnap">
+    insert into bs_sys_balance_daily_snap
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="accountType != null">
+        account_type,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="balance != null">
+        balance,
+      </if>
+      <if test="availableBalance != null">
+        available_balance,
+      </if>
+      <if test="freezeBalance != null">
+        freeze_balance,
+      </if>
+      <if test="snapDate != null">
+        snap_date,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="accountType != null">
+        #{accountType,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null">
+        #{balance,jdbcType=DOUBLE},
+      </if>
+      <if test="availableBalance != null">
+        #{availableBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="freezeBalance != null">
+        #{freezeBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="snapDate != null">
+        #{snapDate,jdbcType=DATE},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsSysBalanceDailySnapExample" resultType="java.lang.Long">
+    select count(*) from bs_sys_balance_daily_snap
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update bs_sys_balance_daily_snap
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.accountType != null">
+        account_type = #{record.accountType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null">
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.balance != null">
+        balance = #{record.balance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.availableBalance != null">
+        available_balance = #{record.availableBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.freezeBalance != null">
+        freeze_balance = #{record.freezeBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.snapDate != null">
+        snap_date = #{record.snapDate,jdbcType=DATE},
+      </if>
+      <if test="record.note != null">
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update bs_sys_balance_daily_snap
+    set id = #{record.id,jdbcType=INTEGER},
+      account_type = #{record.accountType,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=VARCHAR},
+      balance = #{record.balance,jdbcType=DOUBLE},
+      available_balance = #{record.availableBalance,jdbcType=DOUBLE},
+      freeze_balance = #{record.freezeBalance,jdbcType=DOUBLE},
+      snap_date = #{record.snapDate,jdbcType=DATE},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsSysBalanceDailySnap">
+    update bs_sys_balance_daily_snap
+    <set>
+      <if test="accountType != null">
+        account_type = #{accountType,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null">
+        balance = #{balance,jdbcType=DOUBLE},
+      </if>
+      <if test="availableBalance != null">
+        available_balance = #{availableBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="freezeBalance != null">
+        freeze_balance = #{freezeBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="snapDate != null">
+        snap_date = #{snapDate,jdbcType=DATE},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsSysBalanceDailySnap">
+    update bs_sys_balance_daily_snap
+    set account_type = #{accountType,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      balance = #{balance,jdbcType=DOUBLE},
+      available_balance = #{availableBalance,jdbcType=DOUBLE},
+      freeze_balance = #{freezeBalance,jdbcType=DOUBLE},
+      snap_date = #{snapDate,jdbcType=DATE},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="findHfSysBalanceDailySnap" parameterType="com.pinting.business.model.vo.HFDailySnapVO" resultType="java.util.HashMap">
+  	SELECT 
+		a.snap_date as snapDate,
+		MAX(CASE WHEN a.code = 'HF_JSH' THEN a.balance ELSE 0 END) as hfJsh,
+		MAX(CASE WHEN a.code = 'HF_FEE' THEN a.balance ELSE 0 END) +
+		MAX(CASE WHEN a.code = 'HF_FEE_TRANSIT' THEN a.balance ELSE 0 END) as hfFee,
+		MAX(CASE WHEN a.code = 'HF_COUPON' THEN a.balance ELSE 0 END) as hfCoupon,
+		MAX(CASE WHEN a.code = 'HF_ADVANCE' THEN a.balance ELSE 0 END) +
+		MAX(CASE WHEN a.code = 'HF_ADVANCE_TRANSIT' THEN a.balance ELSE 0 END) as hfAdvance,
+		MAX(CASE WHEN a.code = 'HF_USER_BALANCE' THEN a.balance ELSE 0 END) as userBalance 
+	FROM bs_sys_balance_daily_snap a
+	WHERE account_type = 'HFBANK'
+	GROUP BY a.snap_date order by snap_date desc
+    <include refid="sql-global.pagination" />
+  </select>
+    
+  <select id="queryHfSysBalanceDailySnapCount" resultType="java.lang.Integer">
+  	select count(*) from (
+	select count(*) from bs_sys_balance_daily_snap WHERE account_type = 'HFBANK' group by snap_date) a
+  </select>
+  
+  <select id="findBaofooSysBalanceDailySnap" parameterType="com.pinting.business.model.vo.BAOFOODailySnapVO" resultType="java.util.HashMap">
+  	SELECT 
+		a.snap_date as snapDate,
+		MAX(CASE WHEN a.code = 'JSH' THEN a.balance ELSE 0 END) as jsh,
+		MAX(CASE WHEN a.code = 'USER' THEN a.balance ELSE 0 END) as user,
+		MAX(CASE WHEN a.code = 'REG_YUN' THEN a.balance ELSE 0 END) as regYun,
+		MAX(CASE WHEN a.code = 'RETURN_YUN' THEN a.balance ELSE 0 END) as returnYun,
+		MAX(CASE WHEN a.code = 'REG_7' THEN a.balance ELSE 0 END) as reg7,
+		MAX(CASE WHEN a.code = 'RETURN_7' THEN a.balance ELSE 0 END) as return7,
+		MAX(CASE WHEN a.code = 'THD_BGW_REVENUE_YUN' THEN a.balance ELSE 0 END) as thdBgwRevenueYun,
+		MAX(CASE WHEN a.code = 'THD_BGW_REVENUE_ZAN' THEN a.balance ELSE 0 END) as thdBgwRevenueZan,
+		MAX(CASE WHEN a.code = 'THD_REVENUE_YUN' THEN a.balance ELSE 0 END) as thdRevenueYun,
+		MAX(CASE WHEN a.code = 'THD_REVENUE_ZAN' THEN a.balance ELSE 0 END) as thdRevenueZan,
+		MAX(CASE WHEN a.code = 'THD_MARGIN_ZAN' THEN a.balance ELSE 0 END) as thdMarginZan,
+		MAX(CASE WHEN a.code = 'FEE' THEN a.balance ELSE 0 END) as fee,
+		MAX(CASE WHEN a.code = 'USER_INTEREST' THEN a.balance ELSE 0 END) as userIntertest,
+		MAX(CASE WHEN a.code = 'BAD_LOANS_ZAN' THEN a.balance ELSE 0 END) as badLoansZan,
+		MAX(CASE WHEN a.code = 'THD_REDPACKET' THEN a.balance ELSE 0 END) as thdRedpacket,
+		MAX(CASE WHEN a.code = 'JLJ' THEN a.balance ELSE 0 END) as jlj
+	FROM bs_sys_balance_daily_snap a
+	WHERE account_type = 'CW_BAOFOO'
+	GROUP BY a.snap_date order by snap_date desc
+    <include refid="sql-global.pagination" />
+  </select>
+  
+  <select id="selectBaofooSysBalanceDailySnap" resultType="java.util.HashMap">
+  	SELECT 
+		a.snap_date as snapDate,
+		MAX(CASE WHEN a.code = 'JSH' THEN a.balance ELSE 0 END) as jsh,
+		MAX(CASE WHEN a.code = 'USER' THEN a.balance ELSE 0 END) as user,
+		MAX(CASE WHEN a.code = 'REG_YUN' THEN a.balance ELSE 0 END) as regYun,
+		MAX(CASE WHEN a.code = 'RETURN_YUN' THEN a.balance ELSE 0 END) as returnYun,
+		MAX(CASE WHEN a.code = 'REG_7' THEN a.balance ELSE 0 END) as reg7,
+		MAX(CASE WHEN a.code = 'RETURN_7' THEN a.balance ELSE 0 END) as return7,
+		MAX(CASE WHEN a.code = 'THD_BGW_REVENUE_YUN' THEN a.balance ELSE 0 END) as thdBgwRevenueYun,
+		MAX(CASE WHEN a.code = 'THD_BGW_REVENUE_ZAN' THEN a.balance ELSE 0 END) as thdBgwRevenueZan,
+		MAX(CASE WHEN a.code = 'THD_REVENUE_YUN' THEN a.balance ELSE 0 END) as thdRevenueYun,
+		MAX(CASE WHEN a.code = 'THD_REVENUE_ZAN' THEN a.balance ELSE 0 END) as thdRevenueZan,
+		MAX(CASE WHEN a.code = 'THD_MARGIN_ZAN' THEN a.balance ELSE 0 END) as thdMarginZan,
+		MAX(CASE WHEN a.code = 'FEE' THEN a.balance ELSE 0 END) as fee,
+		MAX(CASE WHEN a.code = 'USER_INTEREST' THEN a.balance ELSE 0 END) as userIntertest,
+		MAX(CASE WHEN a.code = 'BAD_LOANS_ZAN' THEN a.balance ELSE 0 END) as badLoansZan,
+		MAX(CASE WHEN a.code = 'THD_REDPACKET' THEN a.balance ELSE 0 END) as thdRedpacket,
+		MAX(CASE WHEN a.code = 'JLJ' THEN a.balance ELSE 0 END) as jlj
+	FROM bs_sys_balance_daily_snap a
+	WHERE account_type = 'CW_BAOFOO'
+	GROUP BY a.snap_date order by snap_date desc
+  </select>
+    
+  <select id="queryBaofooSysBalanceDailySnapCount" resultType="java.lang.Integer">
+  	select count(*) from (
+	select count(*) from bs_sys_balance_daily_snap WHERE account_type = 'CW_BAOFOO' group by snap_date) a
+  </select>
+  
+  <select id="findBgwSysBalanceDailySnap" parameterType="com.pinting.business.model.vo.BGWDailySnapVO" resultType="java.util.HashMap">
+  	SELECT 
+		a.snap_date as snapDate,
+		MAX(CASE WHEN a.code = 'DEP_JSH' THEN a.balance ELSE 0 END) as depJsh,
+		MAX(CASE WHEN a.code = 'DEP_REDPACKET' THEN a.balance ELSE 0 END) as depRedpacket,
+		MAX(CASE WHEN a.code = 'BGW_USER' THEN a.balance ELSE 0 END) as bgwUser,
+		MAX(CASE WHEN a.code = 'BGW_REG_YUN' THEN a.balance ELSE 0 END) as bgwRegYun,
+		MAX(CASE WHEN a.code = 'BGW_AUTH_YUN' THEN a.balance ELSE 0 END) as bgwAuthYun,
+		MAX(CASE WHEN a.code = 'BGW_RETURN_YUN' THEN a.balance ELSE 0 END) as bgwReturnYun,
+		MAX(CASE WHEN a.code = 'BGW_REG_ZAN' THEN a.balance ELSE 0 END) as bgwRegZan,
+		MAX(CASE WHEN a.code = 'BGW_AUTH_ZAN' THEN a.balance ELSE 0 END) as bgwAuthZan,
+		MAX(CASE WHEN a.code = 'BGW_RETURN_ZAN' THEN a.balance ELSE 0 END) as bgwReturnZan,
+		MAX(CASE WHEN a.code = 'DEP_BGW_REVENUE_ZAN' THEN a.balance ELSE 0 END) as depBgwRevenueZan,
+		MAX(CASE WHEN a.code = 'DEP_BGW_REVENUE_YUN' THEN a.balance ELSE 0 END) as depBgwRevenueYun,
+		MAX(CASE WHEN a.code = 'DEP_OTHER_FEE' THEN a.balance ELSE 0 END) as depOtherFee,
+		MAX(CASE WHEN a.code = 'DEP_HEADFEE_YUN' THEN a.balance ELSE 0 END) as depHeadFeeYun,
+		MAX(CASE WHEN a.code = 'RED_YUN' THEN a.balance ELSE 0 END) as redYun,
+		MAX(CASE WHEN a.code = 'DEP_ADVANCE' THEN a.balance ELSE 0 END) as depAdvance
+	FROM bs_sys_balance_daily_snap a
+	WHERE account_type = 'BGW' or account_type = 'CW_HF'
+	GROUP BY a.snap_date order by snap_date desc
+    <include refid="sql-global.pagination" />
+  </select>
+  
+  <select id="selectBgwSysBalanceDailySnap" resultType="java.util.HashMap">
+  	SELECT 
+		a.snap_date as snapDate,
+		MAX(CASE WHEN a.code = 'DEP_JSH' THEN a.balance ELSE 0 END) as depJsh,
+		MAX(CASE WHEN a.code = 'DEP_REDPACKET' THEN a.balance ELSE 0 END) as depRedpacket,
+		MAX(CASE WHEN a.code = 'BGW_USER' THEN a.balance ELSE 0 END) as bgwUser,
+		MAX(CASE WHEN a.code = 'BGW_REG_YUN' THEN a.balance ELSE 0 END) as bgwRegYun,
+		MAX(CASE WHEN a.code = 'BGW_AUTH_YUN' THEN a.balance ELSE 0 END) as bgwAuthYun,
+		MAX(CASE WHEN a.code = 'BGW_RETURN_YUN' THEN a.balance ELSE 0 END) as bgwReturnYun,
+		MAX(CASE WHEN a.code = 'BGW_REG_ZAN' THEN a.balance ELSE 0 END) as bgwRegZan,
+		MAX(CASE WHEN a.code = 'BGW_AUTH_ZAN' THEN a.balance ELSE 0 END) as bgwAuthZan,
+		MAX(CASE WHEN a.code = 'BGW_RETURN_ZAN' THEN a.balance ELSE 0 END) as bgwReturnZan,
+		MAX(CASE WHEN a.code = 'DEP_BGW_REVENUE_ZAN' THEN a.balance ELSE 0 END) as depBgwRevenueZan,
+		MAX(CASE WHEN a.code = 'DEP_BGW_REVENUE_YUN' THEN a.balance ELSE 0 END) as depBgwRevenueYun,
+		MAX(CASE WHEN a.code = 'DEP_OTHER_FEE' THEN a.balance ELSE 0 END) as depOtherFee,
+		MAX(CASE WHEN a.code = 'DEP_HEADFEE_YUN' THEN a.balance ELSE 0 END) as depHeadFeeYun,
+		MAX(CASE WHEN a.code = 'RED_YUN' THEN a.balance ELSE 0 END) as redYun,
+		MAX(CASE WHEN a.code = 'DEP_ADVANCE' THEN a.balance ELSE 0 END) as depAdvance
+	FROM bs_sys_balance_daily_snap a
+	WHERE account_type = 'BGW' or account_type = 'CW_HF'
+	GROUP BY a.snap_date order by snap_date desc
+  </select>
+    
+  <select id="queryBgwSysBalanceDailySnapCount" resultType="java.lang.Integer">
+  	select count(*) from (
+	select count(*) from bs_sys_balance_daily_snap WHERE account_type = 'BGW' group by snap_date) a
+  </select>
+  
+  <resultMap id="SysBalanceDailyMap" type="com.pinting.business.model.vo.BsSysBalanceDailyFileVO">
+    <result column="account_type" jdbcType="VARCHAR" property="accountType" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="balance" jdbcType="DOUBLE" property="balance" />
+    <result column="available_balance" jdbcType="DOUBLE" property="availableBalance" />
+    <result column="freeze_balance" jdbcType="DOUBLE" property="freezeBalance" />
+    <result column="snap_date" jdbcType="DATE" property="snapDate" />
+  </resultMap>
+   
+  <select id="querySysBalanceDaily" parameterType="java.lang.String" resultMap="SysBalanceDailyMap"> 
+  	select account_type,`code`,balance,available_balance,freeze_balance,snap_date
+	from bs_sys_balance_daily_snap where snap_date= #{snapDate}
+	order by account_type asc, code asc
+  </select>
+    
+</mapper>

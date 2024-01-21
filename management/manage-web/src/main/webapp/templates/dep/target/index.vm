@@ -1,0 +1,121 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="page unitBox">
+    <div class="pageHeader">
+        <form rel="pagerForm" onsubmit="return searchSend(this);" action="$env.getWebURL('/target/index.htm')" id="myform"  method="post">
+            <input type="hidden" name="pageNum" value="$!pageNum" />
+            <input type="hidden" name="numPerPage" value="$!numPerPage" />
+            <div class="searchBar">
+                <table class="searchContent">
+                    <tr>
+                        <td>
+                            <label>标的编号</label>
+                            <input id="id" type="text" name="id" maxlength="10" value="$!id" class="clear num"/>
+                        </td>
+                        <td>
+                            <div class="buttonActive">
+                                <div class="buttonContent">
+                                    <button onclick="searchJnl()" type="button">查询</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="pageContent">
+        <table class="table" width="100%" layoutH="115">
+            <thead>
+            <tr>
+                <th width="3%">标的流水编号</th>
+                <th width="3%">标的操作名称</th>
+                <th width="2%">标的操作金额</th>
+                <th width="5%">订单号</th>
+                <th width="5%">状态</th>
+                <th width="5%">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                #foreach($grid in $list)
+                    <tr target="sid_user" rel="1">
+                        <td>$!grid.id</td>
+                        <td>$!grid.transName</td>
+                        <td>$!grid.amount</td>
+                        <td>$!grid.orderNo</td>
+                        <td>$!grid.transStatus</td>
+                        #if($!grid.transType == "CHARGE_OFF_PRE")
+                            <td><a title="出账重发" target="ajaxTodo" rel="createBack" href="$env.getWebURL('target/send.htm')?id=$!grid.id">出账重发</a></td>
+                        #elseif($!grid.transType == "PROD_CHARGE_OFF")
+                            <td>
+                                <a title="出账重发" style="color: blue;" target="ajaxTodo" rel="createBack" href="$env.getWebURL('target/send.htm')?id=$!grid.id&type=chargeOff">出账重发</a>
+                                <a title="提现重发" style="color: green;" target="ajaxTodo" rel="createBack" href="$env.getWebURL('target/send.htm')?id=$!grid.id&type=withdraw">提现重发</a>
+                            </td>
+                        #else
+                            <td><a title="重发" target="ajaxTodo" rel="createBack" href="$env.getWebURL('target/send.htm')?id=$!grid.id">重发</a></td>
+                        #end
+                    </tr>
+                #end
+            </tbody>
+        </table>
+        <div class="panelBar">
+            <div class="pages">
+                <span>显示</span>
+                <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                    <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                    <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                    <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                    <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+                </select>
+                <span>条，共$!count条</span>
+            </div>
+            <div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+        </div>
+    </div>
+
+</div>
+<script>
+    function searchJnl(){
+        $("#myform").submit();
+    }
+    function searchSend(form, navTabId) {
+        /**
+         * 处理navTab上的查询, 会重新载入当前navTab
+         * @param {Object} form
+         */
+        var $form = $(form);
+        if (form[DWZ.pageInfo.pageNum]) form[DWZ.pageInfo.pageNum].value = 1;
+        navTab.reload($form.attr('action'), {data: $form.serializeArray(), navTabId:navTabId});
+        return false;
+    }
+
+    function ajaxTodo(url, callback){
+        jQuery.ajax({
+            url: url,
+            type: 'get',
+            success: function(data){
+                if(data.statusCode && data.statusCode == '200') {
+                    alertMsg.info(data.message);
+                    navTab.reload("$env.getWebURL('/target/index.htm')");
+                } else {
+                    if(data.message) {
+                        alertMsg.error(data.message);
+                    } else {
+                        alertMsg.error('操作失败');
+                    }
+                }
+            },
+            error: function(data){
+                if(data.message) {
+                    alertMsg.error(data.message);
+                } else {
+                    alertMsg.error('操作失败');
+                }
+            }
+        });
+        return false;
+    }
+</script>

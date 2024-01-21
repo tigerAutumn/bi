@@ -1,0 +1,26 @@
+#if($!message)
+    <input type="hidden" value="$!message" id="message">
+#else
+    #foreach($!user in $!result.list)
+        <li>
+            <span class="vote_list_number">$!{user.serialNo}号</span>
+            <div class="vote_list_txt">
+                #if($!user.content)
+                    $!{user.content}
+                #else
+                    节约用水，从我开始！
+                #end
+            </div>
+            <div class="vote_list_content">
+            <span class="vote_list_one">
+                <i class="vote_list_name"> $!{user.userName}</i><i class="vote_list_tel"> $!{user.voteNum}票</i>
+            </span>
+                <span class="vote_list_money">家庭人均水费 $!money.format($!{user.monthWaterRate}) 元</span>
+            <span class="vote_list_btn">
+                <a href="javascript:void(0);" class="vote_list_btna go_vote" sign_up_id="$!user.id" onclick="vote(this)">投票</a>
+            </span>
+            </div>
+        </li>
+    #end
+#end
+

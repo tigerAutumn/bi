@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.mall.dao.MallExchangeOrdersMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.mall.model.MallExchangeOrders" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="comm_id" property="commId" jdbcType="INTEGER" />
+    <result column="pay_points" property="payPoints" jdbcType="BIGINT" />
+    <result column="buy_num" property="buyNum" jdbcType="INTEGER" />
+    <result column="order_status" property="orderStatus" jdbcType="VARCHAR" />
+    <result column="order_note" property="orderNote" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, order_no, user_id, comm_id, pay_points, buy_num, order_status, order_note, create_time, 
+    update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.mall.model.MallExchangeOrdersExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from mall_exchange_orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from mall_exchange_orders
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from mall_exchange_orders
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.mall.model.MallExchangeOrdersExample" >
+    delete from mall_exchange_orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.mall.model.MallExchangeOrders" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mall_exchange_orders (id, order_no, user_id, 
+      comm_id, pay_points, buy_num, 
+      order_status, order_note, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{commId,jdbcType=INTEGER}, #{payPoints,jdbcType=BIGINT}, #{buyNum,jdbcType=INTEGER}, 
+      #{orderStatus,jdbcType=VARCHAR}, #{orderNote,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.mall.model.MallExchangeOrders" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mall_exchange_orders
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="commId != null" >
+        comm_id,
+      </if>
+      <if test="payPoints != null" >
+        pay_points,
+      </if>
+      <if test="buyNum != null" >
+        buy_num,
+      </if>
+      <if test="orderStatus != null" >
+        order_status,
+      </if>
+      <if test="orderNote != null" >
+        order_note,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="commId != null" >
+        #{commId,jdbcType=INTEGER},
+      </if>
+      <if test="payPoints != null" >
+        #{payPoints,jdbcType=BIGINT},
+      </if>
+      <if test="buyNum != null" >
+        #{buyNum,jdbcType=INTEGER},
+      </if>
+      <if test="orderStatus != null" >
+        #{orderStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNote != null" >
+        #{orderNote,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.mall.model.MallExchangeOrdersExample" resultType="java.lang.Integer" >
+    select count(*) from mall_exchange_orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update mall_exchange_orders
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderNo != null" >
+        order_no = #{record.orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.commId != null" >
+        comm_id = #{record.commId,jdbcType=INTEGER},
+      </if>
+      <if test="record.payPoints != null" >
+        pay_points = #{record.payPoints,jdbcType=BIGINT},
+      </if>
+      <if test="record.buyNum != null" >
+        buy_num = #{record.buyNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderStatus != null" >
+        order_status = #{record.orderStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderNote != null" >
+        order_note = #{record.orderNote,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update mall_exchange_orders
+    set id = #{record.id,jdbcType=INTEGER},
+      order_no = #{record.orderNo,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      comm_id = #{record.commId,jdbcType=INTEGER},
+      pay_points = #{record.payPoints,jdbcType=BIGINT},
+      buy_num = #{record.buyNum,jdbcType=INTEGER},
+      order_status = #{record.orderStatus,jdbcType=VARCHAR},
+      order_note = #{record.orderNote,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.mall.model.MallExchangeOrders" >
+    update mall_exchange_orders
+    <set >
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="commId != null" >
+        comm_id = #{commId,jdbcType=INTEGER},
+      </if>
+      <if test="payPoints != null" >
+        pay_points = #{payPoints,jdbcType=BIGINT},
+      </if>
+      <if test="buyNum != null" >
+        buy_num = #{buyNum,jdbcType=INTEGER},
+      </if>
+      <if test="orderStatus != null" >
+        order_status = #{orderStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNote != null" >
+        order_note = #{orderNote,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.mall.model.MallExchangeOrders" >
+    update mall_exchange_orders
+    set order_no = #{orderNo,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      comm_id = #{commId,jdbcType=INTEGER},
+      pay_points = #{payPoints,jdbcType=BIGINT},
+      buy_num = #{buyNum,jdbcType=INTEGER},
+      order_status = #{orderStatus,jdbcType=VARCHAR},
+      order_note = #{orderNote,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+  
+  <select id="selectByOrderId" resultType="com.pinting.mall.model.vo.MallExchangeOrdersCommodityVO" parameterType="java.util.Map" >
+  	select a.*,b.comm_name,b.comm_type_id,b.comm_property,c.comm_type_name,c.comm_type_code
+	from 
+	(select id order_id, order_no, user_id, comm_id, pay_points, buy_num, order_status, order_note,update_time order_succ_time
+		from mall_exchange_orders where id = #{orderId}
+	) a,mall_commodity_info b,mall_commodity_type c
+	where b.id = a.comm_id and b.comm_type_id = c.id 
+  </select>
+
+  <select id="selectMallExchangeByUserId" resultType="com.pinting.mall.model.vo.MallExchangeVO" parameterType="java.util.Map" >
+    SELECT
+	    b.comm_picture_url, 
+		b.comm_name, 
+		a.create_time AS exchange_time,
+	    c.status AS send_status, 
+		a.comm_id, 
+		a.id AS order_id, 
+		b.comm_property,
+		d.rec_name,
+		d.rec_mobile,
+		d.rec_adress,
+		d.rec_adress_detail,
+		a.pay_points,
+		c.delivery_note,
+		c.create_time as send_commodity_time,
+		e.user_name,
+		e.mobile
+    FROM
+    	(SELECT id,comm_id,create_time,pay_points,user_id FROM mall_exchange_orders WHERE user_id = #{userId , jdbcType=INTEGER} AND order_status IN ('SUCCESS', 'FINISHED', 'SEND_FAIL')) a left join bs_user e on a.user_id = e.id,
+    	mall_commodity_info b, 
+		mall_send_commodity c left join mall_consignee_address_info d on c.receipt_id = d.id
+    WHERE a.comm_id = b.id AND a.id = c.order_id
+    ORDER BY a.create_time DESC
+    LIMIT #{start , jdbcType=INTEGER}, #{pageSize , jdbcType=INTEGER}
+  </select>
+
+  <select id="selectMallExchangeCountByUserId" resultType="java.lang.Integer" parameterType="java.util.Map" >
+    SELECT
+      COUNT(a.id)
+    FROM
+    (SELECT id, comm_id
+    FROM mall_exchange_orders WHERE user_id = #{userId , jdbcType=INTEGER} AND order_status IN ('SUCCESS', 'FINISHED', 'SEND_FAIL')) a,
+    mall_commodity_info b, mall_send_commodity c
+    WHERE a.comm_id = b.id AND a.id = c.order_id
+  </select>
+
+  <select id="selectExchangeRealDetailByUserId" resultType="com.pinting.mall.model.vo.MallExchangeVO" parameterType="java.util.Map" >
+    SELECT
+      b.comm_picture_url, b.comm_name, a.create_time AS exchange_time, a.pay_points,
+      d.rec_name, d.rec_mobile, d.rec_adress_detail,
+      c.status AS send_status, c.update_time AS send_commodity_time,
+      c.delivery_note, b.comm_property, d.rec_adress
+    FROM
+    (SELECT
+    id, comm_id, order_status, create_time, pay_points
+    FROM mall_exchange_orders WHERE user_id = #{userId , jdbcType=INTEGER} AND order_status IN ('SUCCESS', 'FINISHED', 'SEND_FAIL')) a,
+    mall_commodity_info b, mall_send_commodity c, mall_consignee_address_info d
+    WHERE a.comm_id = b.id AND a.id = c.order_id AND c.receipt_id = d.id
+    AND a.comm_id = #{commId , jdbcType=INTEGER} AND a.id = #{orderId , jdbcType=INTEGER}
+  </select>
+
+  <select id="selectExchangeEmptyDetailByUserId" resultType="com.pinting.mall.model.vo.MallExchangeVO" parameterType="java.util.Map" >
+    SELECT
+      b.comm_picture_url, b.comm_name, a.create_time AS exchange_time, a.pay_points,
+      c.status AS send_status, c.update_time AS send_commodity_time,
+      c.delivery_note, b.comm_property, d.mobile, d.user_name
+    FROM
+    (SELECT
+    id, comm_id, order_status, create_time, pay_points, user_id
+    FROM mall_exchange_orders WHERE user_id = #{userId , jdbcType=INTEGER} AND order_status IN ('SUCCESS', 'FINISHED', 'SEND_FAIL')) a,
+    mall_commodity_info b, mall_send_commodity c, bs_user d
+    WHERE a.comm_id = b.id AND a.id = c.order_id AND a.user_id = d.id
+    AND a.comm_id = #{commId , jdbcType=INTEGER} AND a.id = #{orderId , jdbcType=INTEGER}
+  </select>
+
+  
+  <select id="findManageExchangeOrdersList" resultType="com.pinting.mall.model.vo.MallExchangeOrdersVO" parameterType="com.pinting.mall.model.vo.MallExchangeOrdersVO" >
+  	SELECT a.id as order_id, a.create_time as exchange_time, b.comm_name, c.comm_type_name, c.comm_type_code, b.comm_property, a.pay_points,
+	e.mobile, f.rec_name, f.rec_mobile, CONCAT(f.rec_name, ',', f.rec_mobile, ',', f.rec_adress, f.rec_adress_detail) as delivery_info,
+	d.status, d.update_time as deliveryTime, a.order_status
+		from mall_exchange_orders a 
+		left join mall_commodity_info b on a.comm_id = b.id
+		left join mall_commodity_type c on b.comm_type_id = c.id
+		left join mall_send_commodity d on a.id = d.order_id
+		left join bs_user e on a.user_id = e.id
+		left join mall_consignee_address_info f on d.receipt_id = f.id
+	<where>
+		a.order_status in ('SUCCESS', 'FINISHED', 'SEND_FAIL')	
+		<if test="exchangeStartTime != null and exchangeStartTime != ''"> 
+			and a.create_time &gt;= #{exchangeStartTime}
+		</if>
+		<if test="exchangeEndTime != null and exchangeEndTime != ''"> 
+			and a.create_time &lt;= #{exchangeEndTime}
+		</if>
+		<if test="commName != null and commName != ''"> 
+			and b.comm_name like concat(concat('%', #{commName,jdbcType=VARCHAR}),'%')
+		</if>
+		<if test="commProperty != null and commProperty != ''"> 
+			and b.comm_property = #{commProperty}
+		</if>
+		<if test="mobile != null and mobile != ''"> 
+			and e.mobile like concat(concat('%', #{mobile,jdbcType=VARCHAR}),'%')
+		</if>
+		<if test="status != null and status == 'STAY_SEND'">
+	        and (d.status = 'STAY_SEND' or (a.order_status = 'SEND_FAIL' and d.status = 'FINISHED'))
+	    </if>
+	    <if test="status != null and status == 'FINISHED'">
+	        and (d.status = 'FINISHED' and a.order_status != 'SEND_FAIL')
+	    </if>
+	    <if test="deliveryInfo != null and deliveryInfo != ''"> 
+			and (f.rec_name like concat(concat('%', #{deliveryInfo,jdbcType=VARCHAR}),'%')
+			or f.rec_mobile like concat(concat('%', #{deliveryInfo,jdbcType=VARCHAR}),'%')
+			or f.rec_adress like concat(concat('%', #{deliveryInfo,jdbcType=VARCHAR}),'%')
+			or f.rec_adress_detail like concat(concat('%', #{deliveryInfo,jdbcType=VARCHAR}),'%'))
+		</if>
+	</where>
+	order by a.create_time desc
+  </select>
+  	
+</mapper>

@@ -1,0 +1,45 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/assets/account_balance.min")
+#WeChatShare()
+#Head("end")
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$!env.getWebURL('')" />
+    <input type="hidden" id="user_balance" value="$!resMsg.canWithdraw" />
+    <input type="hidden" id="qianbao" value="$!qianbao" />
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+    <div class="container">
+    	<div class="header">
+        	#if("$!qianbao"=="qianbao")
+        		<a class="header_arrow" href="$!env.getWebURL('micro2.0/assets/assets')?qianbao=qianbao&agentViewFlag=$!agentViewFlag"></a>
+        	#else
+        		<a class="header_arrow" href="$!env.getWebURL('micro2.0/assets/assets')"></a>
+        	#end
+        	<h1 class="heade_ft oran_color">普通账户余额</h1>
+    		<span class="header_company">单位：元</span>
+    	</div>
+    	<div class="total_money">
+    		<span style="">$!money.format($!resMsg.availableBalance)</span>
+    	</div>
+    	<div class="conta_h3">账户余额</div>
+    </div>
+    <div class="main">
+    	<ul>
+    		<li class="item">
+    			<div class="item_small"  id="to_user_withdraw">
+    				提现（余额转出）
+    			</div>
+    		</li>
+    	</ul>
+    	<div class="prompt-txt">
+    		由于已全面对接恒丰银行存管系统，普通账户内的余额只提供提现服务，您可将资金提现后再充值到恒丰银行个人存管账户。
+    	</div>
+    </div>
+#LoadJS("resources/micro2.0/scripts/assets/account_balance")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/assets/custom")
+</body>
+#Html("end")

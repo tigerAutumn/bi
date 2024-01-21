@@ -1,0 +1,63 @@
+<h2 class="contentTitle">#if("$constant.get('SYSCONFIG_UPDATEFLAG_CREATE')"=="$!updateFlag")新增配置#else 修改配置 #end</h2>
+<div class="pageContent">
+	
+	<form id="newsForm" method="post" action="$env.getWebURL('/sys/config/update.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("updateFlag", "$!updateFlag")
+
+		<div class="pageFormContent nowrap" layoutH="97">
+			<dl>
+				<dt>规则主键：</dt>
+				<dd>
+					<input type="text" name="confKey" style="width:500px" class="required" maxlength="128" value="$!conf.confKey" #if("$constant.get('SYSCONFIG_UPDATEFLAG_UPDATE')"=="$!updateFlag") readonly #end />
+				</dd>
+				<dd>
+					<div style="margin-left:150px;">建议字母大写</div>
+				</dd>
+			</dl>
+			<dl>
+				<dt>规则值：</dt>
+				<dd>
+					<input type="text" name="confValue" style="width:500px" class="required" maxlength="200" value="$!conf.confValue" />
+				</dd>
+			</dl>
+			<dl>
+			<dl>
+				<dt>规则名称：</dt>
+				<dd>
+                    <input type="text" name="name" style="width:500px" class="required" maxlength="200" value="$!conf.name" />
+				</dd>
+			</dl>
+			<dl>
+				<dt>规则备注：</dt>
+				<dd>
+                    <textarea name="note" style="width:500px" class="" maxlength="300">$!conf.note</textarea>
+				</dd>
+			</dl>
+			
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button onclick="formSubmint()" type="button">保存</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+    <script>
+	function formSubmint(){
+		$("#newsForm").submit();
+    }
+	function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			alertMsg.correct('您的数据提交成功!');
+			navTab.closeCurrentTab();
+			navTab.reload("$env.getWebURL('/sys/config/index.htm')");
+		} else {
+			alertMsg.error('保存失败！');
+		}
+	}
+	$(function(){
+	
+	});
+	</script>
+</div>
+		

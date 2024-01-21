@@ -1,0 +1,141 @@
+#LoadJS("/resources/js/birthday")
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+	<input type="hidden" name="time" value="$!req.time" />
+	<input type="hidden" name="type" value="$!req.type" />
+</form>
+<div class="page unitBox">
+	<div class="pageHeader">
+    	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('financialAccount/index_account3.htm')" id="myform"  method="post">
+        	<div class="searchBar">
+                <table class="searchContent">
+        			<tr>
+							<td>
+            					<label id="date_text">日期：</label>
+                                <select id="sel_year" name="timeYear" rel="$!timeYear" ></select>年 
+                                <select id="sel_month" name="timeMonth" rel="$!timeMonth"></select>月
+								 <select id="sel_day" name="timeDay" rel="$!timeDay"></select>日
+            				</td>
+    						<script>  
+                                $(function () {
+                                	$.ms_DatePicker({
+                                            YearSelector: ".sel_year",
+                                            MonthSelector: ".sel_month",
+                                            DaySelector: ".sel_day"
+                                    });
+                                	$.ms_DatePicker();
+                           	 	}); 
+                            </script> 
+        				<td>
+        					<div class="buttonActive">
+        						<div class="buttonContent">
+        							<button onclick="searchFunction()" type="button">查询</button>
+        						</div>
+        					</div>
+        				</td>
+                    </tr>
+        		</table>
+        	</div>
+    	</form>
+    </div>
+    <div class="pageContent">
+    	<div class="panelBar">
+        		<ul class="toolBar">
+        			<li>		
+        				<span style="margin-left:10px;">
+            				<font color="red">投资总额： $!totalInvestAmount 元</font>
+                        </span>
+        			</li>
+					<li>		
+        				<span style="margin-left:10px;">
+            				<font color="red">当月利息回款总额： $!totalReturnInterestAmount 元</font>
+                        </span>
+        			</li>
+        		</ul>
+        	</div>
+    	<table class="table" width="100%" layoutH="128">
+    		<thead>
+    			<tr>
+					<th width="3%">手机号</th>
+    				<th width="3%">姓名</th>
+					<th width="2%">期限</th>
+    				<th width="3%">利率</th>
+					<th width="5%">购买金额</th>
+    				<th width="5%">应计息天数</th>
+    				<th width="5%">产品状态</th>
+    				<th width="4%">购买日期</th>
+    				<th width="4%">起息日期</th>
+    				<th width="4%">到期提现日</th>
+					<th width="4%">渠道来源</th>
+					<th width="4%">达飞利息回款（年化值*（24%））</th>
+					<th width="4%">用户利息扣除</th>
+					<th width="4%">用户奖励金扣除</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			#foreach($grid in $dataGrid)
+    			<tr target="sid_user" rel="1">
+    				<td>$!grid.mobile</td>
+    				<td>$!grid.userName</td>
+    				<td>$!grid.term #if($!grid.term == 7) 天 #else 个月#end</td>
+    				<td>$!grid.baseRate %</td>
+    				<td>$!number.format("0.00", $!grid.balance)</td>
+					<td>$!grid.needInterestDays</td>
+					<td>$!grid.status</td>
+					<td>$!date.formatYYYYMMDD($!grid.openTime)</td>
+					<td>$!date.formatYYYYMMDD($!grid.interestBeginDate)</td>
+					<td>$!date.formatYYYYMMDD($!grid.returnMoneyDays)</td>
+					<td>$!grid.agentName</td>
+					<td>$!number.format("0.00", $!grid.dafyReturnBalance) </td>
+					<td>$!number.format("0.00", $!grid.userInterestBalance)</td>
+					<td>$!number.format("0.00", $!grid.userBonusBalance)</td>
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+    			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!count条</span>
+    	</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+    </div>
+    </div>
+	
+</div>
+<script>  
+	function searchFunction(){
+	var timeYear = $("#sel_year").val();
+	var timeMonth = $("#sel_month").val();
+	var timeDay = $("#sel_day").val();
+	
+	if(timeYear=="0"){
+		timeYear=null;
+	}
+	if(timeMonth=="0"){
+		timeMonth=null;
+	}
+	if(timeDay=="0"){
+		timeDay=null;
+	}
+	
+	if(!timeYear){
+		alertMsg.error("请选择年份！");
+		return false;
+	}
+	if(!timeMonth){
+		alertMsg.error("请选择月份！");
+		return false;
+	}	
+
+	$("#myform").submit();
+}
+</script> 

@@ -1,0 +1,66 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')"/>
+<div class="pageContent">
+	<form method="post" name="detail_form" action="$env.getWebURL('/mallExchangeOrders/sendCommodity.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+        <div class="pageFormContent" layoutH="56">
+     
+           	<dl>
+                <dt >发货信息：</dt>
+                <dd style="width:0px;">
+                    #if("$!deliveryVO.commTypeCode" != "" && ($!deliveryVO.commTypeCode == "RED_PACKET" || $!deliveryVO.commTypeCode == "INTEREST_TACKET"))
+                    	<input type="text" id="deliveryNote" name="deliveryNote" value="请在我的账户—优惠券中查询已兑换的优惠券" maxlength="120" style="width:305px; height:16px" />
+                    #else                    
+                    	<input type="text" id="deliveryNote" name="deliveryNote" maxlength="120" style="width:305px; height:16px" />
+                    #end
+                </dd>
+            </dl>
+		   
+		    <dl>
+                <dt >备注：</dt>
+                <dd style="width:100px;">
+                    <textarea name="note" id="note" rows="8" cols="50"  type="text"></textarea>
+                </dd>
+            </dl>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+                </li>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_deliveryForm('$!orderId')">发货</button></div></div></li>
+            </ul>
+        </div>
+	</form>
+</div>
+<script>
+	
+		function submit_deliveryForm(orderId) {
+	        var orderIds = [];
+	        orderIds[0] = orderId;
+        	var deliveryNote = $.trim($("#deliveryNote").val());
+            var note = $.trim($("#note").val());
+                
+            $.ajax({
+                type: 'post',
+                url: $("#APP_ROOT_PATH").val() + "/mallExchangeOrders/sendCommodity.htm",
+                data: {
+                    orderIds: orderIds,
+                    note: note,
+                    deliveryNote: deliveryNote
+                },
+                success: function (data) {
+                    if (data.statusCode == "200") {
+                    	alertMsg.correct('操作成功!');
+                    	$.pdialog.closeCurrent();
+                        navTab.reload("$env.getWebURL('mallExchangeOrders/findList.htm')");
+                    } else {
+                        if (data.message) {
+                            alertMsg.error(data.message);
+                        } else {
+                            alertMsg.error("操作失败");
+                        }
+                    }
+                }
+            })
+        }
+	
+</script>

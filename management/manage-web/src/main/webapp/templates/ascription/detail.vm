@@ -1,0 +1,348 @@
+<style>
+    .text_span {
+        float: left;
+        width: 35%;
+        height: 30px;
+        text-align: left;
+    }
+
+    span.error {
+        width: 130px;
+        position: static;
+    }
+
+    .show_style {
+        padding-left: 60px;
+    }
+
+    .pageFormContent p {
+        text-align: left;
+        line-height: 22px;
+        width: 1000px;
+        height: auto;
+        text-indent: 24px;
+    }
+
+    h1 h2 h3 h4 h5 {
+        margin-left: 0;
+        font-family: 微软雅黑;
+    }
+</style>
+
+<div class="pageContent">
+    <form id="productForm" method="post" action="$env.getWebURL('/ascription/modify.htm')"
+          class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+        #Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+        #Hidden("userId","$!detail.userId")
+        #Hidden("afterManageId","$!detail.afterManageId")
+        #Hidden("afterDeptCode","$!detail.afterDeptCode")
+        #Hidden("afterDeptId","$!detail.afterDeptId")
+        #Hidden("resultsTimeSys","$!date.format($!detail.resultsTime)")
+        <div class="pageFormContent nowrap" layoutH="50" style="height:auto;">
+            <dl style="height: 50px;margin-top:30px">
+                <dt>新客户经理手机号：</dt>
+                <dd style="width:130px;">
+                    <input type="text" id="manageMobile" name="manageMobile" size="15" maxlength="11"
+                           value="$!detail.manageMobile" class="required" style="width: 100%"/>
+                </dd>
+                <dt style="margin-left:100px;width: 50px;">营业部：</dt>
+                <dd style="width:134px;">
+                    <input type="text" id="deptName" name="deptName" value="$!detail.deptName" readonly="readonly"/>
+                </dd>
+                <dt style="margin-left:100px;width: 60px;">客户经理：</dt>
+                <dd style="width:134px;">
+                    <input type="text" id="manageName" name="manageName" value="$!detail.manageName"
+                           readonly="readonly"/>
+                </dd>
+            </dl>
+            <dl>
+                <dt>业绩截点：</dt>
+                <dd style="width:130px;">
+                    <input name="resultsTime" datefmt="yyyy-MM-dd HH:mm:ss" type="text" id="resultsTime"
+                           class=" date textInput required" size="15"
+                           value="$!date.format($!detail.resultsTime)" style="width: 100%"/>
+                </dd>
+            </dl>
+            <div class="text_span">
+				<span>
+					&nbsp
+				</span>
+				<span style="width:200px">
+					&nbsp
+				</span>
+            </div>
+            <div id="content" hidden="hidden">
+                <hr style="margin-left:20px;float:left;border:1px dashed #333333;border-bottom:0;border-right:0;border-left:0;width:95%;">
+
+                <div style="margin-top:30px;margin-left:400px;font-family: 微软雅黑;height: 60px" class="text_span">
+				<span>
+					本次更改结果确认
+				</span>
+                </div>
+
+                <div style="margin-left:200px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					姓名：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;" id="userName">
+				</span>
+                </div>
+
+                <div class="text_span">
+				<span>
+					手机号：
+				</span>
+				<span style="width:200px" id="userMobile">
+				</span>
+                </div>
+
+                <div style="margin-left:200px;float:left;height:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					变更前客户经理：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;" id="preManageName">
+				</span>
+                </div>
+                <div class="text_span">
+				<span>
+					变更后客户经理：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;" id="afterManageName">
+				</span>
+                </div>
+
+                <div style="margin-left:200px;float:left; height:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					变更前渠道：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;" id="preAgentName">
+				</span>
+                </div>
+                <div class="text_span">
+				<span>
+					变更后渠道：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;" id="afterAgentName">
+				</span>
+                </div>
+                <div style="margin-left:200px;float:left;height:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					业绩截点：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;" id="resultTime">
+				</span>
+                </div>
+                <div style="margin-left:200px;float:left; height:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					涉及变更的投资笔数：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;color: red;" id="resultsChangeCount">
+				</span>
+                </div>
+                <div style="margin-left:200px;float:left;height:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					涉及变更的投资额度：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;color: red;" id="resultsChangeSum">
+				</span>
+                </div>
+            </div>
+        </div>
+        <div class="formBar">
+            <div class="buttonActive" style="float: right">
+                <div class="buttonContent">
+                    <button onclick="formSubmit()" type="button" style="width: 50px;">确认</button>
+                </div>
+            </div>
+        </div>
+    </form>
+        #LoadJS("/resources/js/global_validate")
+    <script>
+        $(function () {
+
+            var rootUrl = $.trim($('#APP_ROOT_PATH').val());
+
+            function managerMobileBlur() {
+
+                var manageMobile = $('#manageMobile').val();
+                var resultsTime = $('#resultsTime').val();
+                if (!manageMobile || !resultsTime) {
+                    $('#content').hide();
+                    $('#deptName').val("");
+                    $('#manageName').val("");
+                    alertMsg.error("手机号和业绩截点不能为空");
+
+                    return;
+                }
+
+                if (manageMobile.length == 11) {
+
+                    $.ajax({
+                                type: 'post',
+                                url: rootUrl + "/ascription/detail_info.htm",
+                                data: {
+                                    manageMobile: manageMobile,
+                                    userId: $('#userId').val(),
+                                    resultsTime: resultsTime
+                                },
+                                async: false,
+                                success: function (data) {
+                                    if (data.detail == null) {
+                                        $('#content').hide();
+                                        $('#deptName').val("");
+                                        $('#manageName').val("");
+                                        alertMsg.error("该客户经理不存在");
+                                    } else if (data.detail.afterManageId == data.detail.preManageId) {
+                                        alertMsg.warn("客户经理一致，请修改");
+                                    } else {
+                                        $('#content').show();
+                                        $('#deptName').val(data.detail.deptName);
+                                        $('#manageName').val(data.detail.manageName);
+                                        if (data.detail.userName) {
+                                            $('#userName').text(data.detail.userName);
+                                        }
+                                        $('#userMobile').text(data.detail.userMobile);
+                                        if (data.detail.preManageName) {
+                                            $('#preManageName').text(data.detail.preManageName);
+                                        }
+                                        $('#afterManageName').text(data.detail.afterManageName);
+                                        if (data.detail.preAgentName) {
+                                            $('#preAgentName').text(data.detail.preAgentName);
+                                        }
+                                        $('#afterAgentName').text(data.detail.afterAgentName);
+                                        $('#resultsChangeCount').text(data.detail.resultsChangeCount + "笔");
+                                        if (data.detail.resultsChangeSum) {
+                                            $('#resultsChangeSum').text(data.detail.resultsChangeSum + "元");
+                                        } else {
+                                            $('#resultsChangeSum').text("0元");
+                                        }
+
+                                        $('#resultTime').text(resultsTime);
+                                        $('#afterManageId').val(data.detail.afterManageId);
+                                        $('#afterDeptCode').val(data.detail.afterDeptCode);
+                                        $('#afterDeptId').val(data.detail.afterDeptId);
+                                    }
+                                }
+                            }
+                    );
+                } else {
+                    $('#content').hide();
+                    $('#deptName').val("");
+                    $('#manageName').val("");
+                }
+            }
+
+            $('#manageMobile').keypress(function (e) {
+
+                if (e.keyCode == 13) {
+                    managerMobileBlur();
+                }
+            })
+
+            $('#manageMobile').blur(function () {
+                managerMobileBlur();
+            })
+
+
+            function resultsTimeBlur() {
+
+                var manageMobile = $('#manageMobile').val();
+                var resultsTime = $('#resultsTime').val();
+
+                if (!manageMobile || !resultsTime) {
+                    $('#content').hide();
+                    $('#deptName').val("");
+                    $('#manageName').val("");
+                    alertMsg.error("手机号和业绩截点不能为空");
+                    return;
+                }
+
+                $.ajax({
+                    type: 'post',
+                    url: rootUrl + "/ascription/detail_info.htm",
+                    data: {
+                        manageMobile: manageMobile,
+                        userId: $('#userId').val(),
+                        resultsTime: resultsTime
+                    },
+                    async: false,
+                    success: function (data) {
+                        if (data.detail == null) {
+                            $('#content').hide();
+                            $('#deptName').val("");
+                            $('#manageName').val("");
+                            alertMsg.error("该客户经理不存在");
+                        } else if (data.detail.afterManageId == data.detail.preManageId) {
+                            alertMsg.warn("客户经理一致，请修改");
+                        } else {
+                            $('#content').show();
+                            $('#deptName').val(data.detail.deptName);
+                            $('#manageName').val(data.detail.manageName);
+                            if (data.detail.userName) {
+                                $('#userName').text(data.detail.userName);
+                            }
+                            $('#userMobile').text(data.detail.userMobile);
+                            if (data.detail.preManageName) {
+                                $('#preManageName').text(data.detail.preManageName);
+                            }
+                            $('#afterManageName').text(data.detail.afterManageName);
+                            if (data.detail.preAgentName) {
+                                $('#preAgentName').text(data.detail.preAgentName);
+                            }
+                            $('#afterAgentName').text(data.detail.afterAgentName);
+                            $('#resultsChangeCount').text(data.detail.resultsChangeCount + "笔");
+                            if (data.detail.resultsChangeSum) {
+                                $('#resultsChangeSum').text(data.detail.resultsChangeSum + "元");
+                            } else {
+                                $('#resultsChangeSum').text("0元");
+                            }
+
+                            $('#resultTime').text(resultsTime);
+                            $('#afterManageId').val(data.detail.afterManageId);
+                            $('#afterDeptCode').val(data.detail.afterDeptCode);
+                            $('#afterDeptId').val(data.detail.afterDeptId);
+                        }
+                    }
+                })
+            }
+
+            $("#resultsTime").click(function () {
+                $(document).off('click', '.okBut');
+                $(document).off('click', '.clearBut');
+                $(document).on('click', ".okBut", function () {
+                    resultsTimeBlur()
+                });
+                $(document).on('click', '.clearBut', function () {
+                    resultsTimeBlur()
+                });
+            })
+        })
+
+
+        function formSubmit() {
+            var manageMobile = $('#manageMobile').val();
+            var resultsTime = $('#resultsTime').val();
+            var deptName = $('#deptName').val();
+            var manageName = $('#manageName').val();
+
+            if (!manageMobile || !resultsTime || !deptName || !manageName || deptName == "" || manageName == "" || manageMobile == "" || resultsTime == "") {
+                alertMsg.error("客户经理数据错误");
+                return;
+            }
+
+            $("#productForm").submit();
+        }
+
+        function navTabAjaxDone(json) {
+            if (json.statusCode == 200) {
+                $.pdialog.closeCurrent();
+                alertMsg.correct(json.message);
+                navTab.reload("$env.getWebURL('/ascription/user_info.htm')");
+            } else {
+                alertMsg.error(json.message);
+            }
+        }
+
+
+    </script>
+</div>

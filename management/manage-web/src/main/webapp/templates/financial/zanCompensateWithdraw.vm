@@ -1,0 +1,80 @@
+<div class="pageContent" id="topUp">
+	#Hidden("APP_ROOT_PATH",$!env.getWebURL(''))
+	<form id="topUpForm" method="post" action="$env.getWebURL('/financial/accountZanCompensateWithdraw.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<div class="pageFormContent nowrap" layoutH="60">
+			<label >提现验证码：</label>
+			<input type="text" name="smsCode" id="smsCode" maxLength="6"/>
+
+            <br/><br/><br/>
+            <span>已向手机号$!{checkMobile}发送了提现验证码，请您注意查收，妥善保管！</span>
+			<input type="hidden" name="userId" id="userId" value="$!userId"/>
+			<input type="hidden" name="amount" id="amount" value="$!amount"/>
+            <input type="hidden" name="serverTokenWithdraw" id="serverTokenWithdraw" value="$!serverToken"/>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li>
+					<div class="buttonActive">
+						<div class="buttonContent">
+							<button onclick="topUp()" type="button">提交</button>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
+							<button type="button" class="close">取消</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+	
+<script>
+    function topUp(){
+		if($('#smsCode').val()) {
+            var userId = $.trim($("#userId").val());
+            var amount = $.trim($("#amount").val());
+            var smsCode = $.trim($("#smsCode").val());
+            var serverToken = $.trim($("#serverTokenWithdraw").val());
+
+			jQuery.ajax({
+				url: $('#APP_ROOT_PATH').val() + '/financial/accountZanCompensateWithdraw.htm',
+				data:{
+					amount: amount,
+                    userId: userId,
+                    smsCode: smsCode,
+					token: serverToken
+				},
+				type:'post',
+				success: function(data){
+
+                    if (data.statusCode == 200) {
+                        alertMsg.correct('申请已提交！');
+                        $.pdialog.closeCurrent();
+                        $("#serverToken").val(data.serverToken);
+                        navTab.reload("$env.getWebURL('financial/zanCompensateListIndex.htm')");
+                    } else if(data.statusCode == 301 || data.statusCode == 304) {
+                        $.pdialog.closeCurrent();
+                        alertMsg.warn(data.message);
+                        $("#serverToken").val(data.serverToken);
+                    } else if (data.statusCode == "305") {
+                        $("#serverToken").val(data.serverToken);
+                        alertMsg.warn('请勿重复提交!');
+                    }else {
+                        alertMsg.error('提现失败请重试！');
+                        $.pdialog.closeCurrent();
+                        $("#serverToken").val(data.serverToken);
+                        navTab.reload("$env.getWebURL('financial/zanCompensateListIndex.htm')");
+                    }
+				}
+			});
+
+    	} else if(!$('#smsCode').val()) {
+    		alertMsg.info('请输入验证码！');
+    	}
+    }
+
+</script>

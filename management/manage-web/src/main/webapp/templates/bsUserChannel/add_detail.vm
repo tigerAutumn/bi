@@ -1,0 +1,63 @@
+    <div class="pageContent">
+    	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+    	<form id="financeForm" method="post" action="$env.getWebURL('/bsUserChannel/save.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+    		#Hidden("id", "$!bsUserChannel.id")
+    		<div class="pageFormContent nowrap" layoutH="97">
+    			<dl>
+    				<dt style="width:170px">
+    					用户名：
+                    </dt>
+    				<dd style="width:400px">
+    					<input type="hidden" name="userId" value="$!userId" />
+    					#if($!userName && ''!= $!userName)
+    						<input type="text"  name="userName" class="required" readonly="true" maxlength="30" value="$!userName" />
+    					#else
+    						<input type="text"  name="userName" class="required" readonly="true" maxlength="30" value="未绑卡用户" />
+    					#end
+    					<div class="buttonActive" style="margin-left: 15px;"><div class="buttonContent"><button onclick="clickme()" type="button" >更改用户</button></div></div>
+                    </dd>
+    			</dl>
+    			<dl>
+    				<dt style="width:170px">
+    					银行名称-渠道-通道类型：
+                    </dt>
+    				<dd style="width:400px">
+    					<select name="bankChannelId" >
+    						#foreach($payCard in $!payCards)
+    						<option value="$!payCard.payId" #if("$!bsUserChannel.bankChannelId"=="$!payCard.payId") selected  #end>$!payCard.name - $message.get("BSUSERCHANNEL_CHANNEL_$!payCard.channel") - $!payCard.channelPriority </option>
+    						#end
+        				</select>
+                    </dd>
+    			</dl>
+    		</div>
+    		<div class="formBar">
+    			<ul>
+                    <li ><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+    				<li>
+    					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+    				</li>
+    			</ul>
+    		</div>
+    	</form>
+    	
+    </div>
+    <script>
+    	function navTabAjaxDone(json) {
+    		if (json.statusCode == "301") {
+    			alertMsg.warn('用户该类型优先支付渠道已存在!');
+    		} else if (json.statusCode == "200") {
+    			alertMsg.correct('操作成功!');
+    			$.pdialog.closeCurrent();
+				$("input[name='pageNum']").val(1);
+    			navTab.reload("$env.getWebURL('/bsUserChannel/index.htm')");
+    		} else {
+    			alertMsg.error('操作失败!');
+    		}
+    		$.pdialog.closeCurrent();
+    	}
+    	
+    	function clickme(){
+    		$.pdialog.closeCurrent();
+    		navTab.reload("$env.getWebURL('/bsuser/change.htm')");
+    	}
+    </script>

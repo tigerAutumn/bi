@@ -1,0 +1,45 @@
+#foreach($data in $!dataList)
+    	<tr>
+    		<td>$data.borrowerName</td>
+    		<td>$!money.format($!data.approveAmount)</td>
+			<td>$!money.format($!data.planTotal)</td>
+			<td>$!money.format($!data.realTotal)</td>
+    		<td>$!{data.repayedPeriodCount} / $!{data.period}</td>
+			<td >		
+				#if("$!data.status" == "PAYING")
+    			放款中
+    			#elseif("$!data.status" == "SUCCESS")
+    			还款中
+    			#elseif("$!data.status" == "FAIL")
+    			放款失败
+				#elseif("$!data.status" == "REPAID")
+				还款结束
+				#end
+			</td>
+			<td >
+				#if($!data.transCount > 0)
+					#if($!qianbao == 'qianbao')
+                        <a onclick="claimsPrint(this);" data-datas="loanRelationId=$!data.id&qianbao=$!qianbao&agentViewFlag=$!agentViewFlag" style="display: block;line-height: 24px;margin-top: -16px;color: #86bbfd ;cursor: pointer;">《债权转让协议》</a>
+					#else
+                        <a onclick="claimsPrint(this);" data-datas="loanRelationId=$!data.id" style="display: block;line-height: 24px;margin-top: -16px;color: #86bbfd ;cursor: pointer;">《债权转让协议》</a>
+					#end
+
+					#if(("$!data.status" == "SUCCESS") || ("$!data.status" == "REPAID"))
+						#if($!qianbao == 'qianbao')
+                            <br/><a onclick="loanPrint(this);" data-datas="loanRelationId=$!data.id&qianbao=$!qianbao&agentViewFlag=$!agentViewFlag" style="display: block;line-height: 24px;margin-top: -16px;color: #86bbfd ;cursor: pointer;">《借款协议》</a>
+						#else
+                            <br/><a onclick="loanPrint(this);" data-datas="loanRelationId=$!data.id" style="display: block;line-height: 24px;margin-top: -16px;color: #86bbfd ;cursor: pointer;">《借款协议》</a>
+						#end
+					#end
+				#else
+					#if(("$!data.status" == "SUCCESS") || ("$!data.status" == "REPAID"))
+						#if($!qianbao == 'qianbao')
+                            <br/><a onclick="loanPrint(this);" data-datas="loanRelationId=$!data.id&qianbao=$!qianbao&agentViewFlag=$!agentViewFlag" style="display: block;line-height: 24px;margin-top: -16px;color: #86bbfd ;cursor: pointer;">《借款协议》</a>
+						#else
+                            <br/><a onclick="loanPrint(this);" data-datas="loanRelationId=$!data.id" style="display: block;line-height: 24px;margin-top: -16px;color: #86bbfd ;cursor: pointer;">《借款协议》</a>
+						#end
+					#end
+				#end
+            </td>
+		</tr>	
+#end

@@ -1,0 +1,65 @@
+<style>
+	.box-mask{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;opacity:0.5;filter:alpha(opacity=50);z-index:99;display:none;}
+	.box-a{position:absolute;z-index:101;display:none; width:240px;  border:1px solid #ccc; border-radius:6px; text-align:center; background:#fff;}
+	.box-a p{ width:240px;  line-height: 40px; margin:0; padding:0;}
+	.box-a p span{ width:119.5px; height:40px; line-height: 40px; display:inline-block; border-top:1px solid #30a9fe; color:#30a9fe;}
+	.box-a p span.span1{border-right:1px solid #30a9fe; cursor:pointer;}
+	.return_sub_btn {cursor:pointer;}
+</style>
+<div class="rig2_6" id="return_path_div" style="display:block;">
+	<p class="rig2_p6">回款路径</p>
+	<div class="rig2_6top">
+	<ul>
+		#if($!returnPath == "2")
+    		<li class="rig2_6li1 return_path_li" card_id="" bankName="账户余额" card_no="">
+    			<span><img src="$!env.get('gen.server.web')/resources/gen178/images/help_zhye.png"></span>
+    				账户余额<em>回款至余额，方便随时投资</em><b>
+    					<span class="yuan"></span></b>
+    		</li>
+    		#if("$!bankName" != "")
+    		<li class="rig2_6li2 return_path_li" card_id="$!cardId" bankName="$!bankName" card_no="$!string.right($!cardNo, 4)">
+    			<span><img src="$!env.get('gen.server.web')/$!smallLogo"></span>
+    				$!bankName<em>**** **** **** $!string.right($!cardNo, 4)</em><b>已选择
+    					<span class="yuan" style="border-color: rgb(255, 255, 255); background: url($!env.get('gen.server.web')/resources/gen178/images/duih.png) no-repeat;"></span></b>
+    		</li>
+    		#end
+		#else
+    		<li class="rig2_6li1 return_path_li" card_id="" bankName="账户余额" card_no="">
+    			<span><img src="$!env.get('gen.server.web')/resources/gen178/images/help_zhye.png"></span>
+    				账户余额<em>回款至余额，方便随时投资</em><b>已选择
+    					<span class="yuan" style="border-color: rgb(255, 255, 255); background: url($!env.get('gen.server.web')/resources/gen178/images/duih.png) no-repeat;"></span></b>
+    		</li>
+    		#if("$!bankName" != "")
+    		<li class="rig2_6li2 return_path_li" card_id="$!cardId" bankName="$!bankName" card_no="$!string.right($!cardNo, 4)">
+    			<span><img src="$!env.get('gen.server.web')/$!smallLogo"></span>
+    				$!bankName<em>**** **** **** $!string.right($!cardNo, 4)</em><b><span class="yuan"></span></b>
+    		</li>
+    		#end
+		#end
+	</ul>
+	</div>
+	<div class="rig2_6bottom">
+		<p class="rig2_p6bot">回款路径说明：<span style="color:red">（注：2017年1月1日起取消回款到银行卡设置，资金将自动回款到账户余额）</span></p>
+		<dl class="rig2_6dl">
+			<dt class="rig2_6dt1">1、回款说明及规则<br/>设置回款路径后，资金将自动回款至银行卡或账户余额</dt>
+			<dt>2、回款至账户余额<br/>设置完成后，投资到期后资金将于1~3天内回款至账户余额<br/>注：您可以将账户余额提现至回款银行卡，或再次购买理财产品</dt>
+			<dt>3、回款至安全卡<br/>设置完成后，投资到期后资金将回款至安全卡，预计将1~3天内到账</dt>
+		</dl>
+	</div>
+</div>
+	
+
+
+## 确认框
+<div class="box-mask"></div>
+<div class="box-a">
+	<input id="cardId" name="cardId" type="hidden"/>
+	<p><strong>提示</strong></p>
+    <p id="show_text">您的投资将回款至账户余额</p>
+    <p><span class="span1 return_cancel_btn">取消</span><span class="return_sub_btn">确定</span></p>
+</div>
+
+#LoadGenJS("/resources/gen178/scripts/assets/return_path")
+
+
+

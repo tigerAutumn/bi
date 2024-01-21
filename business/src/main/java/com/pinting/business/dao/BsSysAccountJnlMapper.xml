@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsSysAccountJnlMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsSysAccountJnl" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="trans_time" property="transTime" jdbcType="TIMESTAMP" />
+    <result column="trans_code" property="transCode" jdbcType="VARCHAR" />
+    <result column="trans_name" property="transName" jdbcType="VARCHAR" />
+    <result column="trans_amount" property="transAmount" jdbcType="DOUBLE" />
+    <result column="sys_time" property="sysTime" jdbcType="TIMESTAMP" />
+    <result column="channel_time" property="channelTime" jdbcType="TIMESTAMP" />
+    <result column="channel_jnl_no" property="channelJnlNo" jdbcType="VARCHAR" />
+    <result column="cd_flag1" property="cdFlag1" jdbcType="INTEGER" />
+    <result column="sub_account_code1" property="subAccountCode1" jdbcType="VARCHAR" />
+    <result column="before_balance1" property="beforeBalance1" jdbcType="DOUBLE" />
+    <result column="after_balance1" property="afterBalance1" jdbcType="DOUBLE" />
+    <result column="before_avialable_balance1" property="beforeAvialableBalance1" jdbcType="DOUBLE" />
+    <result column="after_avialable_balance1" property="afterAvialableBalance1" jdbcType="DOUBLE" />
+    <result column="before_freeze_balance1" property="beforeFreezeBalance1" jdbcType="DOUBLE" />
+    <result column="after_freeze_balance1" property="afterFreezeBalance1" jdbcType="DOUBLE" />
+    <result column="cd_flag2" property="cdFlag2" jdbcType="INTEGER" />
+    <result column="sub_account_code2" property="subAccountCode2" jdbcType="VARCHAR" />
+    <result column="before_balance2" property="beforeBalance2" jdbcType="DOUBLE" />
+    <result column="after_balance2" property="afterBalance2" jdbcType="DOUBLE" />
+    <result column="before_avialable_balance2" property="beforeAvialableBalance2" jdbcType="DOUBLE" />
+    <result column="after_avialable_balance2" property="afterAvialableBalance2" jdbcType="DOUBLE" />
+    <result column="before_freeze_balance2" property="beforeFreezeBalance2" jdbcType="DOUBLE" />
+    <result column="after_freeze_balance2" property="afterFreezeBalance2" jdbcType="DOUBLE" />
+    <result column="fee" property="fee" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="resp_code" property="respCode" jdbcType="VARCHAR" />
+    <result column="resp_msg" property="respMsg" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="op_id" property="opId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, trans_time, trans_code, trans_name, trans_amount, sys_time, channel_time, channel_jnl_no, 
+    cd_flag1, sub_account_code1, before_balance1, after_balance1, before_avialable_balance1, 
+    after_avialable_balance1, before_freeze_balance1, after_freeze_balance1, cd_flag2, 
+    sub_account_code2, before_balance2, after_balance2, before_avialable_balance2, after_avialable_balance2, 
+    before_freeze_balance2, after_freeze_balance2, fee, status, resp_code, resp_msg, 
+    note, op_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsSysAccountJnlExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_sys_account_jnl
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_sys_account_jnl
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_sys_account_jnl
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsSysAccountJnlExample" >
+    delete from bs_sys_account_jnl
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsSysAccountJnl" >
+    insert into bs_sys_account_jnl (id, trans_time, trans_code, 
+      trans_name, trans_amount, sys_time, 
+      channel_time, channel_jnl_no, cd_flag1, 
+      sub_account_code1, before_balance1, after_balance1, 
+      before_avialable_balance1, after_avialable_balance1, 
+      before_freeze_balance1, after_freeze_balance1, 
+      cd_flag2, sub_account_code2, before_balance2, 
+      after_balance2, before_avialable_balance2, after_avialable_balance2, 
+      before_freeze_balance2, after_freeze_balance2, 
+      fee, status, resp_code, 
+      resp_msg, note, op_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{transTime,jdbcType=TIMESTAMP}, #{transCode,jdbcType=VARCHAR}, 
+      #{transName,jdbcType=VARCHAR}, #{transAmount,jdbcType=DOUBLE}, #{sysTime,jdbcType=TIMESTAMP}, 
+      #{channelTime,jdbcType=TIMESTAMP}, #{channelJnlNo,jdbcType=VARCHAR}, #{cdFlag1,jdbcType=INTEGER}, 
+      #{subAccountCode1,jdbcType=VARCHAR}, #{beforeBalance1,jdbcType=DOUBLE}, #{afterBalance1,jdbcType=DOUBLE}, 
+      #{beforeAvialableBalance1,jdbcType=DOUBLE}, #{afterAvialableBalance1,jdbcType=DOUBLE}, 
+      #{beforeFreezeBalance1,jdbcType=DOUBLE}, #{afterFreezeBalance1,jdbcType=DOUBLE}, 
+      #{cdFlag2,jdbcType=INTEGER}, #{subAccountCode2,jdbcType=VARCHAR}, #{beforeBalance2,jdbcType=DOUBLE}, 
+      #{afterBalance2,jdbcType=DOUBLE}, #{beforeAvialableBalance2,jdbcType=DOUBLE}, #{afterAvialableBalance2,jdbcType=DOUBLE}, 
+      #{beforeFreezeBalance2,jdbcType=DOUBLE}, #{afterFreezeBalance2,jdbcType=DOUBLE}, 
+      #{fee,jdbcType=DOUBLE}, #{status,jdbcType=INTEGER}, #{respCode,jdbcType=VARCHAR}, 
+      #{respMsg,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, #{opId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsSysAccountJnl" >
+    insert into bs_sys_account_jnl
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="transTime != null" >
+        trans_time,
+      </if>
+      <if test="transCode != null" >
+        trans_code,
+      </if>
+      <if test="transName != null" >
+        trans_name,
+      </if>
+      <if test="transAmount != null" >
+        trans_amount,
+      </if>
+      <if test="sysTime != null" >
+        sys_time,
+      </if>
+      <if test="channelTime != null" >
+        channel_time,
+      </if>
+      <if test="channelJnlNo != null" >
+        channel_jnl_no,
+      </if>
+      <if test="cdFlag1 != null" >
+        cd_flag1,
+      </if>
+      <if test="subAccountCode1 != null" >
+        sub_account_code1,
+      </if>
+      <if test="beforeBalance1 != null" >
+        before_balance1,
+      </if>
+      <if test="afterBalance1 != null" >
+        after_balance1,
+      </if>
+      <if test="beforeAvialableBalance1 != null" >
+        before_avialable_balance1,
+      </if>
+      <if test="afterAvialableBalance1 != null" >
+        after_avialable_balance1,
+      </if>
+      <if test="beforeFreezeBalance1 != null" >
+        before_freeze_balance1,
+      </if>
+      <if test="afterFreezeBalance1 != null" >
+        after_freeze_balance1,
+      </if>
+      <if test="cdFlag2 != null" >
+        cd_flag2,
+      </if>
+      <if test="subAccountCode2 != null" >
+        sub_account_code2,
+      </if>
+      <if test="beforeBalance2 != null" >
+        before_balance2,
+      </if>
+      <if test="afterBalance2 != null" >
+        after_balance2,
+      </if>
+      <if test="beforeAvialableBalance2 != null" >
+        before_avialable_balance2,
+      </if>
+      <if test="afterAvialableBalance2 != null" >
+        after_avialable_balance2,
+      </if>
+      <if test="beforeFreezeBalance2 != null" >
+        before_freeze_balance2,
+      </if>
+      <if test="afterFreezeBalance2 != null" >
+        after_freeze_balance2,
+      </if>
+      <if test="fee != null" >
+        fee,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="respCode != null" >
+        resp_code,
+      </if>
+      <if test="respMsg != null" >
+        resp_msg,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="opId != null" >
+        op_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="transTime != null" >
+        #{transTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="transCode != null" >
+        #{transCode,jdbcType=VARCHAR},
+      </if>
+      <if test="transName != null" >
+        #{transName,jdbcType=VARCHAR},
+      </if>
+      <if test="transAmount != null" >
+        #{transAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="sysTime != null" >
+        #{sysTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="channelTime != null" >
+        #{channelTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="channelJnlNo != null" >
+        #{channelJnlNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cdFlag1 != null" >
+        #{cdFlag1,jdbcType=INTEGER},
+      </if>
+      <if test="subAccountCode1 != null" >
+        #{subAccountCode1,jdbcType=VARCHAR},
+      </if>
+      <if test="beforeBalance1 != null" >
+        #{beforeBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="afterBalance1 != null" >
+        #{afterBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="beforeAvialableBalance1 != null" >
+        #{beforeAvialableBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="afterAvialableBalance1 != null" >
+        #{afterAvialableBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="beforeFreezeBalance1 != null" >
+        #{beforeFreezeBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="afterFreezeBalance1 != null" >
+        #{afterFreezeBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="cdFlag2 != null" >
+        #{cdFlag2,jdbcType=INTEGER},
+      </if>
+      <if test="subAccountCode2 != null" >
+        #{subAccountCode2,jdbcType=VARCHAR},
+      </if>
+      <if test="beforeBalance2 != null" >
+        #{beforeBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="afterBalance2 != null" >
+        #{afterBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="beforeAvialableBalance2 != null" >
+        #{beforeAvialableBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="afterAvialableBalance2 != null" >
+        #{afterAvialableBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="beforeFreezeBalance2 != null" >
+        #{beforeFreezeBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="afterFreezeBalance2 != null" >
+        #{afterFreezeBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="fee != null" >
+        #{fee,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="respCode != null" >
+        #{respCode,jdbcType=VARCHAR},
+      </if>
+      <if test="respMsg != null" >
+        #{respMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="opId != null" >
+        #{opId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsSysAccountJnlExample" resultType="java.lang.Integer" >
+    select count(*) from bs_sys_account_jnl
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_sys_account_jnl
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.transTime != null" >
+        trans_time = #{record.transTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.transCode != null" >
+        trans_code = #{record.transCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.transName != null" >
+        trans_name = #{record.transName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.transAmount != null" >
+        trans_amount = #{record.transAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sysTime != null" >
+        sys_time = #{record.sysTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.channelTime != null" >
+        channel_time = #{record.channelTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.channelJnlNo != null" >
+        channel_jnl_no = #{record.channelJnlNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cdFlag1 != null" >
+        cd_flag1 = #{record.cdFlag1,jdbcType=INTEGER},
+      </if>
+      <if test="record.subAccountCode1 != null" >
+        sub_account_code1 = #{record.subAccountCode1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beforeBalance1 != null" >
+        before_balance1 = #{record.beforeBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="record.afterBalance1 != null" >
+        after_balance1 = #{record.afterBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="record.beforeAvialableBalance1 != null" >
+        before_avialable_balance1 = #{record.beforeAvialableBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="record.afterAvialableBalance1 != null" >
+        after_avialable_balance1 = #{record.afterAvialableBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="record.beforeFreezeBalance1 != null" >
+        before_freeze_balance1 = #{record.beforeFreezeBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="record.afterFreezeBalance1 != null" >
+        after_freeze_balance1 = #{record.afterFreezeBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cdFlag2 != null" >
+        cd_flag2 = #{record.cdFlag2,jdbcType=INTEGER},
+      </if>
+      <if test="record.subAccountCode2 != null" >
+        sub_account_code2 = #{record.subAccountCode2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beforeBalance2 != null" >
+        before_balance2 = #{record.beforeBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="record.afterBalance2 != null" >
+        after_balance2 = #{record.afterBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="record.beforeAvialableBalance2 != null" >
+        before_avialable_balance2 = #{record.beforeAvialableBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="record.afterAvialableBalance2 != null" >
+        after_avialable_balance2 = #{record.afterAvialableBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="record.beforeFreezeBalance2 != null" >
+        before_freeze_balance2 = #{record.beforeFreezeBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="record.afterFreezeBalance2 != null" >
+        after_freeze_balance2 = #{record.afterFreezeBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="record.fee != null" >
+        fee = #{record.fee,jdbcType=DOUBLE},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.respCode != null" >
+        resp_code = #{record.respCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.respMsg != null" >
+        resp_msg = #{record.respMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.opId != null" >
+        op_id = #{record.opId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_sys_account_jnl
+    set id = #{record.id,jdbcType=INTEGER},
+      trans_time = #{record.transTime,jdbcType=TIMESTAMP},
+      trans_code = #{record.transCode,jdbcType=VARCHAR},
+      trans_name = #{record.transName,jdbcType=VARCHAR},
+      trans_amount = #{record.transAmount,jdbcType=DOUBLE},
+      sys_time = #{record.sysTime,jdbcType=TIMESTAMP},
+      channel_time = #{record.channelTime,jdbcType=TIMESTAMP},
+      channel_jnl_no = #{record.channelJnlNo,jdbcType=VARCHAR},
+      cd_flag1 = #{record.cdFlag1,jdbcType=INTEGER},
+      sub_account_code1 = #{record.subAccountCode1,jdbcType=VARCHAR},
+      before_balance1 = #{record.beforeBalance1,jdbcType=DOUBLE},
+      after_balance1 = #{record.afterBalance1,jdbcType=DOUBLE},
+      before_avialable_balance1 = #{record.beforeAvialableBalance1,jdbcType=DOUBLE},
+      after_avialable_balance1 = #{record.afterAvialableBalance1,jdbcType=DOUBLE},
+      before_freeze_balance1 = #{record.beforeFreezeBalance1,jdbcType=DOUBLE},
+      after_freeze_balance1 = #{record.afterFreezeBalance1,jdbcType=DOUBLE},
+      cd_flag2 = #{record.cdFlag2,jdbcType=INTEGER},
+      sub_account_code2 = #{record.subAccountCode2,jdbcType=VARCHAR},
+      before_balance2 = #{record.beforeBalance2,jdbcType=DOUBLE},
+      after_balance2 = #{record.afterBalance2,jdbcType=DOUBLE},
+      before_avialable_balance2 = #{record.beforeAvialableBalance2,jdbcType=DOUBLE},
+      after_avialable_balance2 = #{record.afterAvialableBalance2,jdbcType=DOUBLE},
+      before_freeze_balance2 = #{record.beforeFreezeBalance2,jdbcType=DOUBLE},
+      after_freeze_balance2 = #{record.afterFreezeBalance2,jdbcType=DOUBLE},
+      fee = #{record.fee,jdbcType=DOUBLE},
+      status = #{record.status,jdbcType=INTEGER},
+      resp_code = #{record.respCode,jdbcType=VARCHAR},
+      resp_msg = #{record.respMsg,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      op_id = #{record.opId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsSysAccountJnl" >
+    update bs_sys_account_jnl
+    <set >
+      <if test="transTime != null" >
+        trans_time = #{transTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="transCode != null" >
+        trans_code = #{transCode,jdbcType=VARCHAR},
+      </if>
+      <if test="transName != null" >
+        trans_name = #{transName,jdbcType=VARCHAR},
+      </if>
+      <if test="transAmount != null" >
+        trans_amount = #{transAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="sysTime != null" >
+        sys_time = #{sysTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="channelTime != null" >
+        channel_time = #{channelTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="channelJnlNo != null" >
+        channel_jnl_no = #{channelJnlNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cdFlag1 != null" >
+        cd_flag1 = #{cdFlag1,jdbcType=INTEGER},
+      </if>
+      <if test="subAccountCode1 != null" >
+        sub_account_code1 = #{subAccountCode1,jdbcType=VARCHAR},
+      </if>
+      <if test="beforeBalance1 != null" >
+        before_balance1 = #{beforeBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="afterBalance1 != null" >
+        after_balance1 = #{afterBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="beforeAvialableBalance1 != null" >
+        before_avialable_balance1 = #{beforeAvialableBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="afterAvialableBalance1 != null" >
+        after_avialable_balance1 = #{afterAvialableBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="beforeFreezeBalance1 != null" >
+        before_freeze_balance1 = #{beforeFreezeBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="afterFreezeBalance1 != null" >
+        after_freeze_balance1 = #{afterFreezeBalance1,jdbcType=DOUBLE},
+      </if>
+      <if test="cdFlag2 != null" >
+        cd_flag2 = #{cdFlag2,jdbcType=INTEGER},
+      </if>
+      <if test="subAccountCode2 != null" >
+        sub_account_code2 = #{subAccountCode2,jdbcType=VARCHAR},
+      </if>
+      <if test="beforeBalance2 != null" >
+        before_balance2 = #{beforeBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="afterBalance2 != null" >
+        after_balance2 = #{afterBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="beforeAvialableBalance2 != null" >
+        before_avialable_balance2 = #{beforeAvialableBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="afterAvialableBalance2 != null" >
+        after_avialable_balance2 = #{afterAvialableBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="beforeFreezeBalance2 != null" >
+        before_freeze_balance2 = #{beforeFreezeBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="afterFreezeBalance2 != null" >
+        after_freeze_balance2 = #{afterFreezeBalance2,jdbcType=DOUBLE},
+      </if>
+      <if test="fee != null" >
+        fee = #{fee,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="respCode != null" >
+        resp_code = #{respCode,jdbcType=VARCHAR},
+      </if>
+      <if test="respMsg != null" >
+        resp_msg = #{respMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="opId != null" >
+        op_id = #{opId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsSysAccountJnl" >
+    update bs_sys_account_jnl
+    set trans_time = #{transTime,jdbcType=TIMESTAMP},
+      trans_code = #{transCode,jdbcType=VARCHAR},
+      trans_name = #{transName,jdbcType=VARCHAR},
+      trans_amount = #{transAmount,jdbcType=DOUBLE},
+      sys_time = #{sysTime,jdbcType=TIMESTAMP},
+      channel_time = #{channelTime,jdbcType=TIMESTAMP},
+      channel_jnl_no = #{channelJnlNo,jdbcType=VARCHAR},
+      cd_flag1 = #{cdFlag1,jdbcType=INTEGER},
+      sub_account_code1 = #{subAccountCode1,jdbcType=VARCHAR},
+      before_balance1 = #{beforeBalance1,jdbcType=DOUBLE},
+      after_balance1 = #{afterBalance1,jdbcType=DOUBLE},
+      before_avialable_balance1 = #{beforeAvialableBalance1,jdbcType=DOUBLE},
+      after_avialable_balance1 = #{afterAvialableBalance1,jdbcType=DOUBLE},
+      before_freeze_balance1 = #{beforeFreezeBalance1,jdbcType=DOUBLE},
+      after_freeze_balance1 = #{afterFreezeBalance1,jdbcType=DOUBLE},
+      cd_flag2 = #{cdFlag2,jdbcType=INTEGER},
+      sub_account_code2 = #{subAccountCode2,jdbcType=VARCHAR},
+      before_balance2 = #{beforeBalance2,jdbcType=DOUBLE},
+      after_balance2 = #{afterBalance2,jdbcType=DOUBLE},
+      before_avialable_balance2 = #{beforeAvialableBalance2,jdbcType=DOUBLE},
+      after_avialable_balance2 = #{afterAvialableBalance2,jdbcType=DOUBLE},
+      before_freeze_balance2 = #{beforeFreezeBalance2,jdbcType=DOUBLE},
+      after_freeze_balance2 = #{afterFreezeBalance2,jdbcType=DOUBLE},
+      fee = #{fee,jdbcType=DOUBLE},
+      status = #{status,jdbcType=INTEGER},
+      resp_code = #{respCode,jdbcType=VARCHAR},
+      resp_msg = #{respMsg,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      op_id = #{opId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 系统记账流水列表查询 -->
+  <select id="selectSysAccountList"  resultMap="BaseResultMap" >
+  	select  
+	  	a.id, a.trans_time, a.trans_code as transOtherCode, a.trans_name, a.trans_amount, a.sys_time as sysTime, a.channel_time, a.channel_jnl_no, a.cd_flag1,                                       
+		a.sub_account_code1, a.before_balance1, a.after_balance1, a.before_avialable_balance1, a.after_avialable_balance1, a.before_freeze_balance1,   
+		a.after_freeze_balance1, a.cd_flag2, a.sub_account_code2, a.before_balance2, a.after_balance2, a.before_avialable_balance2,
+		a.after_avialable_balance2, a.before_freeze_balance2, a.after_freeze_balance2, a.fee, a.status, a.resp_code, a.resp_msg, a.note, a.op_id 
+  	from bs_sys_account_jnl a where 1 = 1 
+    <if test="transOtherCode != null and transOtherCode != '' " >
+  		and a.trans_code = #{transOtherCode}
+    </if>
+    <if test="status != null and status != '' " >
+  		and a.status = #{status}
+    </if>
+ 	<if test="startTransAmount != null and startTransAmount > 0 " >
+ 		 and a.trans_amount >= #{startTransAmount}
+ 	</if>
+ 	<if test="endTransAmount != null and endTransAmount > 0 " >
+  		 and  #{endTransAmount} >= a.trans_amount
+    </if>
+    <if test="beginTime != null and overTime != null and beginTime != '' and overTime != '' ">
+	    and a.sys_time between DATE_FORMAT(#{beginTime},'%Y-%m-%d 00:00:00') and DATE_FORMAT(#{overTime},'%Y-%m-%d 23:59:59')
+	</if>
+	<if test="startTransTime != null and endTransTime != null and startTransTime != '' and endTransTime != '' ">
+	    and a.trans_time between DATE_FORMAT(#{startTransTime},'%Y-%m-%d 00:00:00') and DATE_FORMAT(#{endTransTime},'%Y-%m-%d 23:59:59')
+	</if>
+	<if test="orderDirection!=null and orderDirection != ''  and orderField != ''  and orderField!=null ">   
+ 	    order by 	${orderField}  ${orderDirection} 
+    </if>
+   	<include refid="sql-global.pagination"/>
+  </select>
+  
+  <!-- 系统记账流水记录统计 -->
+  <select id="selectCountSysAccount"  resultType="java.lang.Integer" >
+  	select count(*) from bs_sys_account_jnl a where 1 = 1 
+    <if test="transOtherCode != null and transOtherCode != '' " >
+  		and a.trans_code = #{transOtherCode}
+    </if>
+    <if test="status != null and status != '' " >
+  		and a.status = #{status}
+    </if>
+ 	<if test="startTransAmount != null and startTransAmount > 0 " >
+ 		 and a.trans_amount >= #{startTransAmount}
+ 	</if>
+ 	<if test="endTransAmount != null and endTransAmount > 0 " >
+  		 and  #{endTransAmount} >= a.trans_amount
+    </if>
+    <if test="beginTime != null and overTime != null and beginTime != '' and overTime != '' ">
+	    and a.sys_time between DATE_FORMAT(#{beginTime},'%Y-%m-%d 00:00:00') and DATE_FORMAT(#{overTime},'%Y-%m-%d 23:59:59')
+	</if>
+	<if test="startTransTime != null and endTransTime != null and startTransTime != '' and endTransTime != '' ">
+	    and a.trans_time between DATE_FORMAT(#{startTransTime},'%Y-%m-%d 00:00:00') and DATE_FORMAT(#{endTransTime},'%Y-%m-%d 23:59:59')
+	</if>
+  </select>
+  
+  
+   <resultMap id="BsSysAccountJnlCheckVOMap" type="com.pinting.business.model.vo.BsSysAccountJnlCheckVO" >
+    <result column="user_balance" property="userBalance" jdbcType="DOUBLE" />
+	<result column="auth_yun" property="authYun" jdbcType="DOUBLE" />
+	<result column="auth_zan" property="authZan" jdbcType="DOUBLE" />
+	<result column="sum_balance" property="sumBalance" jdbcType="DOUBLE" />
+   </resultMap>
+  
+  <select id="selectLastJnlByDate" resultMap="BsSysAccountJnlCheckVOMap" >
+  select a.user_balance,b.auth_yun,c.auth_zan, a.user_balance+b.auth_yun+c.auth_zan sum_balance
+  from (select case when (select count(*)
+		from bs_sys_account_jnl 
+		where (sub_account_code1 ='BGW_USER' or sub_account_code2 = 'BGW_USER')
+		and trans_time &lt;=#{date} ) =0 THEN 0 
+		ELSE (select CASE when sub_account_code1 = 'BGW_USER' THEN after_balance1 ELSE after_balance2 END as user_balance
+		from bs_sys_account_jnl 
+		where (sub_account_code1 ='BGW_USER' or sub_account_code2 = 'BGW_USER')
+		and trans_time&lt;=#{date}  ORDER BY trans_time desc limit 1)END as user_balance)a,
+	
+		(select case when (select count(*)
+		from bs_sys_account_jnl 
+		where (sub_account_code1 ='BGW_AUTH_YUN' or sub_account_code2 = 'BGW_AUTH_YUN')
+		and trans_time&lt;=#{date}  ) =0 THEN 0 
+		ELSE (select CASE when sub_account_code1 = 'BGW_AUTH_YUN' THEN after_balance1 ELSE after_balance2 END as auth_yun
+		from bs_sys_account_jnl 
+		where (sub_account_code1 ='BGW_AUTH_YUN' or sub_account_code2 = 'BGW_AUTH_YUN')
+		and trans_time&lt;=#{date}  ORDER BY trans_time desc limit 1)END as auth_yun)b,
+	
+		(select case when (select count(*)
+		from bs_sys_account_jnl 
+		where (sub_account_code1 ='BGW_AUTH_ZAN' or sub_account_code2 = 'BGW_AUTH_ZAN')
+		and trans_time&lt;=#{date}  ) =0 THEN 0 
+		ELSE (select CASE when sub_account_code1 = 'BGW_AUTH_ZAN' THEN after_balance1 ELSE after_balance2 END as auth_zan
+		from bs_sys_account_jnl 
+		where (sub_account_code1 ='BGW_AUTH_ZAN' or sub_account_code2 = 'BGW_AUTH_ZAN')
+		and trans_time&lt;=#{date}  ORDER BY trans_time desc limit 1)END as auth_zan)c
+  </select>
+
+
+
+
+
+  <resultMap id="HFBGWRevenueOfZanMap" type="com.pinting.business.model.vo.HFBGWRevenueOfZanVO" >
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="partner_code" property="partnerCode" jdbcType="VARCHAR" />
+    <result column="total_amount" property="totalAmount" jdbcType="DOUBLE" />
+    <result column="trans_amount" property="transAmount" jdbcType="DOUBLE" />
+    <result column="trans_time" property="transTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectHFBGWRevenueOfZan" resultMap="HFBGWRevenueOfZanMap" >
+    select a.id, d.user_name, concat(left(d.mobile, 3), '****', right(d.mobile, 4)) as mobile,
+    e.partner_code, c.total_amount, a.trans_amount, a.trans_time from (
+      select a.id, a.trans_amount, a.trans_time, a.op_id from bs_sys_account_jnl a
+      where a.trans_code = 'REPAY_2_INVESTOR_REVENUE' and a.sub_account_code1 = 'BGW_RETURN_ZAN'
+      and a.sub_account_code2 = 'DEP_BGW_REVENUE_ZAN' and a.op_id is not null
+      <if test="startTime != null and startTime != ''">
+        and date(a.trans_time) >= date(#{startTime})
+      </if>
+      <if test="endTime != null and endTime != ''">
+        and date(a.trans_time) &lt;= date(#{endTime})
+      </if>
+      order by a.trans_time desc, a.id desc
+      <if test="start != null and numPerPage != null">
+        limit #{start}, #{numPerPage}
+      </if>
+    ) as a left join ln_finance_repay_schedule b on a.op_id = b.id
+    left join ln_loan_relation c on b.relation_id = c.id
+    left join bs_user d on c.bs_user_id = d.id
+    left join ln_user e on c.ln_user_id = e.id
+  </select>
+
+  <select id="countHFBGWRevenueOfZan" resultType="java.lang.Integer" parameterType="java.util.Map" >
+    select count(a.id)
+    from bs_sys_account_jnl a
+    where a.trans_code = 'REPAY_2_INVESTOR_REVENUE' and a.sub_account_code1 = 'BGW_RETURN_ZAN'
+    and a.sub_account_code2 = 'DEP_BGW_REVENUE_ZAN' and a.op_id is not null
+    <if test="startTime != null and startTime != ''">
+      and date(a.trans_time) >= date(#{startTime})
+    </if>
+    <if test="endTime != null and endTime != ''">
+      and date(a.trans_time) &lt;= date(#{endTime})
+    </if>
+  </select>
+
+  <select id="sumHFBGWRevenueOfZan" resultType="java.lang.Double" parameterType="java.util.Map" >
+    select ifnull(sum(a.trans_amount), 0)
+    from bs_sys_account_jnl a
+    where a.trans_code = 'REPAY_2_INVESTOR_REVENUE' and a.sub_account_code1 = 'BGW_RETURN_ZAN'
+    and a.sub_account_code2 = 'DEP_BGW_REVENUE_ZAN' and a.op_id is not null
+    <if test="startTime != null and startTime != ''">
+      and date(a.trans_time) >= date(#{startTime})
+    </if>
+    <if test="endTime != null and endTime != ''">
+      and date(a.trans_time) &lt;= date(#{endTime})
+    </if>
+  </select>
+
+</mapper>

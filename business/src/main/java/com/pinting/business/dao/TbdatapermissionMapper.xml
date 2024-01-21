@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.TbdatapermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.Tbdatapermission" >
+    <id column="lId" property="lid" jdbcType="BIGINT" />
+    <result column="lUserId" property="luserid" jdbcType="BIGINT" />
+    <result column="strDeptCode" property="strdeptcode" jdbcType="VARCHAR" />
+    <result column="nCurrentLevel" property="ncurrentlevel" jdbcType="INTEGER" />
+    <result column="lOperateId" property="loperateid" jdbcType="BIGINT" />
+    <result column="dtUpdateTime" property="dtupdatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    lId, lUserId, strDeptCode, nCurrentLevel, lOperateId, dtUpdateTime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.TbdatapermissionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tbdatapermission
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbdatapermission
+    where lId = #{lid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tbdatapermission
+    where lId = #{lid,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.TbdatapermissionExample" >
+    delete from tbdatapermission
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.Tbdatapermission" >
+    insert into tbdatapermission (lId, lUserId, strDeptCode, 
+      nCurrentLevel, lOperateId, dtUpdateTime
+      )
+    values (#{lid,jdbcType=BIGINT}, #{luserid,jdbcType=BIGINT}, #{strdeptcode,jdbcType=VARCHAR}, 
+      #{ncurrentlevel,jdbcType=INTEGER}, #{loperateid,jdbcType=BIGINT}, #{dtupdatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.Tbdatapermission" >
+    insert into tbdatapermission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="lid != null" >
+        lId,
+      </if>
+      <if test="luserid != null" >
+        lUserId,
+      </if>
+      <if test="strdeptcode != null" >
+        strDeptCode,
+      </if>
+      <if test="ncurrentlevel != null" >
+        nCurrentLevel,
+      </if>
+      <if test="loperateid != null" >
+        lOperateId,
+      </if>
+      <if test="dtupdatetime != null" >
+        dtUpdateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="lid != null" >
+        #{lid,jdbcType=BIGINT},
+      </if>
+      <if test="luserid != null" >
+        #{luserid,jdbcType=BIGINT},
+      </if>
+      <if test="strdeptcode != null" >
+        #{strdeptcode,jdbcType=VARCHAR},
+      </if>
+      <if test="ncurrentlevel != null" >
+        #{ncurrentlevel,jdbcType=INTEGER},
+      </if>
+      <if test="loperateid != null" >
+        #{loperateid,jdbcType=BIGINT},
+      </if>
+      <if test="dtupdatetime != null" >
+        #{dtupdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.TbdatapermissionExample" resultType="java.lang.Integer" >
+    select count(*) from tbdatapermission
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tbdatapermission
+    <set >
+      <if test="record.lid != null" >
+        lId = #{record.lid,jdbcType=BIGINT},
+      </if>
+      <if test="record.luserid != null" >
+        lUserId = #{record.luserid,jdbcType=BIGINT},
+      </if>
+      <if test="record.strdeptcode != null" >
+        strDeptCode = #{record.strdeptcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ncurrentlevel != null" >
+        nCurrentLevel = #{record.ncurrentlevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.loperateid != null" >
+        lOperateId = #{record.loperateid,jdbcType=BIGINT},
+      </if>
+      <if test="record.dtupdatetime != null" >
+        dtUpdateTime = #{record.dtupdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tbdatapermission
+    set lId = #{record.lid,jdbcType=BIGINT},
+      lUserId = #{record.luserid,jdbcType=BIGINT},
+      strDeptCode = #{record.strdeptcode,jdbcType=VARCHAR},
+      nCurrentLevel = #{record.ncurrentlevel,jdbcType=INTEGER},
+      lOperateId = #{record.loperateid,jdbcType=BIGINT},
+      dtUpdateTime = #{record.dtupdatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.Tbdatapermission" >
+    update tbdatapermission
+    <set >
+      <if test="luserid != null" >
+        lUserId = #{luserid,jdbcType=BIGINT},
+      </if>
+      <if test="strdeptcode != null" >
+        strDeptCode = #{strdeptcode,jdbcType=VARCHAR},
+      </if>
+      <if test="ncurrentlevel != null" >
+        nCurrentLevel = #{ncurrentlevel,jdbcType=INTEGER},
+      </if>
+      <if test="loperateid != null" >
+        lOperateId = #{loperateid,jdbcType=BIGINT},
+      </if>
+      <if test="dtupdatetime != null" >
+        dtUpdateTime = #{dtupdatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where lId = #{lid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.Tbdatapermission" >
+    update tbdatapermission
+    set lUserId = #{luserid,jdbcType=BIGINT},
+      strDeptCode = #{strdeptcode,jdbcType=VARCHAR},
+      nCurrentLevel = #{ncurrentlevel,jdbcType=INTEGER},
+      lOperateId = #{loperateid,jdbcType=BIGINT},
+      dtUpdateTime = #{dtupdatetime,jdbcType=TIMESTAMP}
+    where lId = #{lid,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectSyncTime" resultType="java.util.Date">
+  	select max(dtUpdateTime) from tbdatapermission
+  </select>
+  
+  <insert id="batchInsertTbdatapermission">
+  	${sql}
+  </insert>
+</mapper>

@@ -1,0 +1,84 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!product.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!product.numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/ascription/user_info.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" name="pageNum" value="$!product.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!product.numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+				<tr>
+					<td>
+						<label >注册手机号：</label>
+						<input  id="mobile" type="text" maxlength="11" name="mobile" value="$!req.mobile" size="11"/>
+					</td>
+					<td>
+						<label >身份证：</label>
+						<input id="idCard" type="text" name="idCard" value="$!req.idCard" maxlength="18"/>
+					</td>
+                    <td>
+						<span style="margin-left:20px;cursor:pointer;">
+							<button onclick="func()" type="button" style="cursor: pointer;">查询</button>
+                        </span>
+                    </td>
+                </tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1000" layoutH="55" >
+		<thead>
+			<tr>
+                <th width="2%">姓名</th>
+				<th width="2%">手机号</th>
+				<th width="2%">身份证</th>
+                <th width="2%">销售人员</th>
+                <th width="2%">客户经理</th>
+                <th width="2%">邀请人</th>
+				<th width="2%">渠道来源</th>
+                <th width="3%">注册时间</th>
+				<th width="2%">操作</th>
+			</tr>
+		</thead>
+	
+		<tbody>
+			#if($!userInfo)
+			<tr target="sid_user" rel="1" >
+                <td>$!userInfo.userName</td>
+                <td>$!userInfo.mobile</td>
+				<td>$!userInfo.idCard</td>
+                <td>$!userInfo.saleName</td>
+                <td>$!userInfo.managerName</td>
+                <td>$!userInfo.recommendName</td>
+				<td>$!userInfo.agentName</td>
+				<td>$!date.format($!userInfo.registerTime)</td>
+				<td>
+
+    				#if(("$!userInfo.saleName" == "" || "!$!userInfo.saleName") && ("$!userInfo.recommendName" == "" || "!$!userInfo.recommendName"))
+                        <a title="用户变更归属" target="dialog" href="$env.getWebURL('/ascription/detail.htm?userId=')$!userInfo.userId" class="btnEdit" mask="true" rel="createBack" height="550" width="1000">编辑</a>
+    				#end
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+</div>
+<script>
+
+function func(){
+
+	var mobile = $("#mobile").val();
+	var idCard = $("#idCard").val();
+
+	if((mobile==null || mobile=="") && (idCard==null || idCard=="")){
+        alertMsg.error("手机号和身份证号不能同时为空");
+        return;
+	}
+
+    $("#myform").submit();
+}
+</script>

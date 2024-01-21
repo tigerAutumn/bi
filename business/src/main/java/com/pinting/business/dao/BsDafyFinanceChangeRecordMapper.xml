@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsDafyFinanceChangeRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsDafyFinanceChangeRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="old_customer_manager_name" property="oldCustomerManagerName" jdbcType="VARCHAR" />
+    <result column="new_customer_manager_name" property="newCustomerManagerName" jdbcType="VARCHAR" />
+    <result column="old_customer_manager_dafy_id" property="oldCustomerManagerDafyId" jdbcType="INTEGER" />
+    <result column="new_customer_manager_dafy_id" property="newCustomerManagerDafyId" jdbcType="INTEGER" />
+    <result column="old_dafy_dept_id" property="oldDafyDeptId" jdbcType="INTEGER" />
+    <result column="new_dafy_dept_id" property="newDafyDeptId" jdbcType="INTEGER" />
+    <result column="old_dafy_dept_code" property="oldDafyDeptCode" jdbcType="VARCHAR" />
+    <result column="new_dafy_dept_code" property="newDafyDeptCode" jdbcType="VARCHAR" />
+    <result column="old_dafy_dept_name" property="oldDafyDeptName" jdbcType="VARCHAR" />
+    <result column="new_dafy_dept_name" property="newDafyDeptName" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="op_user_id" property="opUserId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, old_customer_manager_name, new_customer_manager_name, old_customer_manager_dafy_id, 
+    new_customer_manager_dafy_id, old_dafy_dept_id, new_dafy_dept_id, old_dafy_dept_code, 
+    new_dafy_dept_code, old_dafy_dept_name, new_dafy_dept_name, note, op_user_id, create_time, 
+    update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsDafyFinanceChangeRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_dafy_finance_change_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_dafy_finance_change_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_dafy_finance_change_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsDafyFinanceChangeRecordExample" >
+    delete from bs_dafy_finance_change_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsDafyFinanceChangeRecord" >
+    insert into bs_dafy_finance_change_record (id, user_id, old_customer_manager_name, 
+      new_customer_manager_name, old_customer_manager_dafy_id, 
+      new_customer_manager_dafy_id, old_dafy_dept_id, 
+      new_dafy_dept_id, old_dafy_dept_code, new_dafy_dept_code, 
+      old_dafy_dept_name, new_dafy_dept_name, note, 
+      op_user_id, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{oldCustomerManagerName,jdbcType=VARCHAR}, 
+      #{newCustomerManagerName,jdbcType=VARCHAR}, #{oldCustomerManagerDafyId,jdbcType=INTEGER}, 
+      #{newCustomerManagerDafyId,jdbcType=INTEGER}, #{oldDafyDeptId,jdbcType=INTEGER}, 
+      #{newDafyDeptId,jdbcType=INTEGER}, #{oldDafyDeptCode,jdbcType=VARCHAR}, #{newDafyDeptCode,jdbcType=VARCHAR}, 
+      #{oldDafyDeptName,jdbcType=VARCHAR}, #{newDafyDeptName,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
+      #{opUserId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsDafyFinanceChangeRecord" >
+    insert into bs_dafy_finance_change_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="oldCustomerManagerName != null" >
+        old_customer_manager_name,
+      </if>
+      <if test="newCustomerManagerName != null" >
+        new_customer_manager_name,
+      </if>
+      <if test="oldCustomerManagerDafyId != null" >
+        old_customer_manager_dafy_id,
+      </if>
+      <if test="newCustomerManagerDafyId != null" >
+        new_customer_manager_dafy_id,
+      </if>
+      <if test="oldDafyDeptId != null" >
+        old_dafy_dept_id,
+      </if>
+      <if test="newDafyDeptId != null" >
+        new_dafy_dept_id,
+      </if>
+      <if test="oldDafyDeptCode != null" >
+        old_dafy_dept_code,
+      </if>
+      <if test="newDafyDeptCode != null" >
+        new_dafy_dept_code,
+      </if>
+      <if test="oldDafyDeptName != null" >
+        old_dafy_dept_name,
+      </if>
+      <if test="newDafyDeptName != null" >
+        new_dafy_dept_name,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="opUserId != null" >
+        op_user_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="oldCustomerManagerName != null" >
+        #{oldCustomerManagerName,jdbcType=VARCHAR},
+      </if>
+      <if test="newCustomerManagerName != null" >
+        #{newCustomerManagerName,jdbcType=VARCHAR},
+      </if>
+      <if test="oldCustomerManagerDafyId != null" >
+        #{oldCustomerManagerDafyId,jdbcType=INTEGER},
+      </if>
+      <if test="newCustomerManagerDafyId != null" >
+        #{newCustomerManagerDafyId,jdbcType=INTEGER},
+      </if>
+      <if test="oldDafyDeptId != null" >
+        #{oldDafyDeptId,jdbcType=INTEGER},
+      </if>
+      <if test="newDafyDeptId != null" >
+        #{newDafyDeptId,jdbcType=INTEGER},
+      </if>
+      <if test="oldDafyDeptCode != null" >
+        #{oldDafyDeptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="newDafyDeptCode != null" >
+        #{newDafyDeptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="oldDafyDeptName != null" >
+        #{oldDafyDeptName,jdbcType=VARCHAR},
+      </if>
+      <if test="newDafyDeptName != null" >
+        #{newDafyDeptName,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="opUserId != null" >
+        #{opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsDafyFinanceChangeRecordExample" resultType="java.lang.Integer" >
+    select count(*) from bs_dafy_finance_change_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_dafy_finance_change_record
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.oldCustomerManagerName != null" >
+        old_customer_manager_name = #{record.oldCustomerManagerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.newCustomerManagerName != null" >
+        new_customer_manager_name = #{record.newCustomerManagerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.oldCustomerManagerDafyId != null" >
+        old_customer_manager_dafy_id = #{record.oldCustomerManagerDafyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.newCustomerManagerDafyId != null" >
+        new_customer_manager_dafy_id = #{record.newCustomerManagerDafyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.oldDafyDeptId != null" >
+        old_dafy_dept_id = #{record.oldDafyDeptId,jdbcType=INTEGER},
+      </if>
+      <if test="record.newDafyDeptId != null" >
+        new_dafy_dept_id = #{record.newDafyDeptId,jdbcType=INTEGER},
+      </if>
+      <if test="record.oldDafyDeptCode != null" >
+        old_dafy_dept_code = #{record.oldDafyDeptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.newDafyDeptCode != null" >
+        new_dafy_dept_code = #{record.newDafyDeptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.oldDafyDeptName != null" >
+        old_dafy_dept_name = #{record.oldDafyDeptName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.newDafyDeptName != null" >
+        new_dafy_dept_name = #{record.newDafyDeptName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.opUserId != null" >
+        op_user_id = #{record.opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_dafy_finance_change_record
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      old_customer_manager_name = #{record.oldCustomerManagerName,jdbcType=VARCHAR},
+      new_customer_manager_name = #{record.newCustomerManagerName,jdbcType=VARCHAR},
+      old_customer_manager_dafy_id = #{record.oldCustomerManagerDafyId,jdbcType=INTEGER},
+      new_customer_manager_dafy_id = #{record.newCustomerManagerDafyId,jdbcType=INTEGER},
+      old_dafy_dept_id = #{record.oldDafyDeptId,jdbcType=INTEGER},
+      new_dafy_dept_id = #{record.newDafyDeptId,jdbcType=INTEGER},
+      old_dafy_dept_code = #{record.oldDafyDeptCode,jdbcType=VARCHAR},
+      new_dafy_dept_code = #{record.newDafyDeptCode,jdbcType=VARCHAR},
+      old_dafy_dept_name = #{record.oldDafyDeptName,jdbcType=VARCHAR},
+      new_dafy_dept_name = #{record.newDafyDeptName,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      op_user_id = #{record.opUserId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsDafyFinanceChangeRecord" >
+    update bs_dafy_finance_change_record
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="oldCustomerManagerName != null" >
+        old_customer_manager_name = #{oldCustomerManagerName,jdbcType=VARCHAR},
+      </if>
+      <if test="newCustomerManagerName != null" >
+        new_customer_manager_name = #{newCustomerManagerName,jdbcType=VARCHAR},
+      </if>
+      <if test="oldCustomerManagerDafyId != null" >
+        old_customer_manager_dafy_id = #{oldCustomerManagerDafyId,jdbcType=INTEGER},
+      </if>
+      <if test="newCustomerManagerDafyId != null" >
+        new_customer_manager_dafy_id = #{newCustomerManagerDafyId,jdbcType=INTEGER},
+      </if>
+      <if test="oldDafyDeptId != null" >
+        old_dafy_dept_id = #{oldDafyDeptId,jdbcType=INTEGER},
+      </if>
+      <if test="newDafyDeptId != null" >
+        new_dafy_dept_id = #{newDafyDeptId,jdbcType=INTEGER},
+      </if>
+      <if test="oldDafyDeptCode != null" >
+        old_dafy_dept_code = #{oldDafyDeptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="newDafyDeptCode != null" >
+        new_dafy_dept_code = #{newDafyDeptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="oldDafyDeptName != null" >
+        old_dafy_dept_name = #{oldDafyDeptName,jdbcType=VARCHAR},
+      </if>
+      <if test="newDafyDeptName != null" >
+        new_dafy_dept_name = #{newDafyDeptName,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="opUserId != null" >
+        op_user_id = #{opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsDafyFinanceChangeRecord" >
+    update bs_dafy_finance_change_record
+    set user_id = #{userId,jdbcType=INTEGER},
+      old_customer_manager_name = #{oldCustomerManagerName,jdbcType=VARCHAR},
+      new_customer_manager_name = #{newCustomerManagerName,jdbcType=VARCHAR},
+      old_customer_manager_dafy_id = #{oldCustomerManagerDafyId,jdbcType=INTEGER},
+      new_customer_manager_dafy_id = #{newCustomerManagerDafyId,jdbcType=INTEGER},
+      old_dafy_dept_id = #{oldDafyDeptId,jdbcType=INTEGER},
+      new_dafy_dept_id = #{newDafyDeptId,jdbcType=INTEGER},
+      old_dafy_dept_code = #{oldDafyDeptCode,jdbcType=VARCHAR},
+      new_dafy_dept_code = #{newDafyDeptCode,jdbcType=VARCHAR},
+      old_dafy_dept_name = #{oldDafyDeptName,jdbcType=VARCHAR},
+      new_dafy_dept_name = #{newDafyDeptName,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      op_user_id = #{opUserId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  
+  <resultMap id="OwnershipChangeRecordMap" type="com.pinting.business.model.vo.BsDafyFinanceChangeRecordVO" extends="BaseResultMap">
+    	 <result column="rowno" property="rowno" jdbcType="INTEGER" />
+    	 <result column="user_name" property="userName" jdbcType="VARCHAR" />
+   		 <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+   		 <result column="op_user_name" property="opUserName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="queryOwnershipChangeRecord" resultMap="OwnershipChangeRecordMap" parameterType="java.util.Map" >
+		SELECT
+		(@rowNO := @rowNo + 1) rowno,
+		t.*
+		FROM
+		(SELECT @rowNO := 0) b,
+		(
+				SELECT 
+					b.user_name,
+					CONCAT(SUBSTRING(b.mobile FROM 1 FOR 7),"****") mobile,
+					a.old_customer_manager_name,
+					a.old_dafy_dept_name,
+					a.new_customer_manager_name,
+					a.new_dafy_dept_name,
+					c.name op_user_name,
+					a.create_time
+				FROM 
+				`bs_dafy_finance_change_record` a
+				LEFT JOIN bs_user b  ON a.user_id = b.id
+				LEFT JOIN m_user c  ON a.op_user_id = c.id
+				where 1=1
+				<if test="userId != null and userId != ''" >
+		     		and a.user_id = #{userId}
+		     	</if>
+		) t
+  </select>
+  <select id="queryOwnershipChangeRecordCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+				SELECT 
+					COUNT(*)
+				FROM 
+				`bs_dafy_finance_change_record` a
+				LEFT JOIN bs_user b  ON a.user_id = b.id
+				where 1=1
+				<if test="userId != null and userId != ''" >
+		     		and a.user_id = #{userId}
+		     	</if>
+  </select>
+  
+  <insert id="insertChangeOwnership" parameterType="java.util.Map" >
+	INSERT INTO 
+		bs_dafy_finance_change_record(user_id, old_customer_manager_name, new_customer_manager_name, 
+		old_customer_manager_dafy_id, new_customer_manager_dafy_id, old_dafy_dept_id, new_dafy_dept_id, old_dafy_dept_code,
+		new_dafy_dept_code, old_dafy_dept_name, new_dafy_dept_name, op_user_id, create_time, update_time)
+	SELECT 
+		(
+			SELECT user_id FROM bs_user_customer_manager u WHERE u.id=#{id}
+		) AS user_id, old_customer_manager_name, new_customer_manager_name, old_customer_manager_dafy_id,
+		new_customer_manager_dafy_id, old_dafy_dept_id, new_dafy_dept_id, old_dafy_dept_code,
+		new_dafy_dept_code, old_dafy_dept_name, new_dafy_dept_name, #{opId} AS op_user_id, NOW() AS create_time, NOW() AS update_time
+	FROM (
+		SELECT a.lUserId AS old_customer_manager_dafy_id, a.strName AS old_customer_manager_name, b.lId AS old_dafy_dept_id,
+			a.strDeptCode AS old_dafy_dept_code, b.strDeptName AS old_dafy_dept_name
+		FROM tbemployee a, tbdepartment b, bs_user_customer_manager u 
+		WHERE a.strDeptCode = b.strDeptCode AND a.lUserId = u.customer_manager_dafy_id AND u.id = #{id}
+	) AS aa, (
+		SELECT a.lUserId AS new_customer_manager_dafy_id, a.strName AS new_customer_manager_name, b.lId AS new_dafy_dept_id,
+			a.strDeptCode AS new_dafy_dept_code, b.strDeptName AS new_dafy_dept_name
+		FROM tbemployee a, tbdepartment b WHERE a.strDeptCode = b.strDeptCode AND a.lUserId = #{newDafyUserId}
+	) AS bb
+  </insert>
+  
+</mapper>

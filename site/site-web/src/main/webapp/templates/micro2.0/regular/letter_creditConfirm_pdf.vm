@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <br/><br/>
+    <span >致： $!yunDaiSelfUserName   (债权受让人)</span>
+    <br/>
+    <span>
+      <br/>
+        #if($!partnerEnum == "YUN_DAI_SELF")
+            达飞云贷科技（北京）有限公司
+        #else
+            深圳市期待互联网科技有限公司
+        #end
+      <br/><br/>
+      鉴于，  出借人   （以下简称“本方”）在杭州币港湾科技有限公司（以下简称“币港湾”）提供的信息中介服务下，向融资方（借款人）进行了资金出借并签署了《借款协议》及其他一系列与借款有关的协议（以下统称“借款协议”）。
+      <br/><br/>
+      本方将其名下的对借款人享有的债权转让给了  $!yunDaiSelfUserName （身份证号/ 统一社会信用代码：  $!yunDaiSelfIdCard   ）（以下简称“债权受让人”）。
+      <br/><br/>
+      本人确认，已收到债权受让人支付的债权转让价款，具体明细详见附件一。
+      <br/><br/>
+      附件一：债权转让列表
+      <br/><br/>
+      <br/>
+      <br/><span >   杭州币港湾科技有限公司   （签章）</span>
+      <br/>
+      <br/>
+      <br/><span >$!createTime</span>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+    </span>
+    <br/><br/>
+
+    <span >附件一：</span>
+    <br/>
+      <br/>
+      <br/><br/>
+      <table border="1" cellspacing="0" cellpadding="0" width="100%">
+          <tr>
+              <td colspan="8" style="text-align:center;">债权转让列表</td>
+          </tr>
+          <tr>
+              <td>序号</td>
+              <td>借款人姓名及身份证号</td>
+              <td>《借款协议》编号</td>
+              <td>借款金额及利率</td>
+              <td>借款期限</td>
+              <td>债权转让价格 （人民币：元）</td>
+              <td>支付时间</td>
+          </tr>
+          #foreach($data in $!dataGrid)
+              <tr>
+                  #set($a=$!velocityCount)
+                  <td>$!a</td>
+                  <td>$!data.loanUserName $!data.loanIdCard</td>
+                  <td>$!data.loanAgreementNumber</td>
+                  <td>$!money.format($!data.approveAmount) 元 $!money.format($!data.agreementRate) %</td>
+                  <td>
+                      #if($!partnerEnum == "YUN_DAI_SELF")
+                          $!data.period 天
+                      #else
+                          $!data.sevenPeriod 期
+                      #end
+                  </td>
+                  <td>$!money.format($!data.transferCreditorAmount)</td>
+                  <td>$!data.lateRepayDate</td>
+              </tr>
+          #end
+      </table>
+
+    <br/><br/>
+
+</body>
+</html>

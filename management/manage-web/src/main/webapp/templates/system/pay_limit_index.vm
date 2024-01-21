@@ -1,0 +1,120 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')"/>
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="pageHeader">
+    <form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/sys/payLimit/index.htm')" onsubmit="return navTabSearch(this);">
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="pageNum" value="$!pageNum" />
+        <input type="hidden" name="numPerPage" value="$!numPerPage" />
+        <div class="searchBar">
+            <table class="searchContent">
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li>
+            	<a class="add" target="dialog" href="$env.getWebURL('/sys/payLimit/detail.htm')" mask="true" rel="createBack" height="360" width="580"><span>新增</span></a>
+            </li>
+        </ul>
+    </div>
+    <table class="table" width="1396" layoutH="108">
+        <thead>
+        <tr>
+            <th width="15%">序号</th>
+            <th width="20%">时间</th>
+            <th width="20%">限制条件</th>
+            <th width="12%">操作人</th>
+            <th width="18%">更新时间</th>
+            <th width="15%">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach($grid in $!pageList)
+            <tr target="sid_user" rel="1" >
+                <td>$!grid.rowno</td>
+                <td>
+                	$!grid.timeType &nbsp;&nbsp;
+                	$!grid.timeStart至$!grid.timeEnd
+                </td>
+                <td>
+               		#if("$!grid.limitType"=="AMOUNT")
+                    	金额
+                    #elseif("$!grid.limitType"=="NUMBER")
+                		笔数
+                	#end
+                	&nbsp;&nbsp;
+                	
+                	#if("$!grid.limitEquleType"=="LESS_THEN_OR_EQULE_TO")
+                    	小于等于
+                    #elseif("$!grid.limitEquleType"=="EQULE_TO")
+                    	等于
+                    #elseif("$!grid.limitEquleType"=="MORE_THEN_OR_EQULE_TO")
+                    	大于等于
+                    #end
+             
+                	$!grid.limitVaule
+                </td>
+                
+                <td>
+                	$!grid.operateName
+                </td>
+                <td>$!date.format($!grid.updateTime)</td>
+                <td>
+                    <a title="编辑" target="dialog" href="$env.getWebURL('/sys/payLimit/detail.htm?ruleId=')$!grid.id" mask="true" rel="createBack" height="360" width="580">编辑</a>
+                	#if("$!grid.timeType" != "DEFAULT")
+                		<a title="删除" onclick="closeRule('$!grid.id')" mask="true">删除</a>
+                	#end
+                </td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!totalRows条</span>
+        </div>
+        <div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+    </div>
+</div>
+
+<script>
+    function closeRule(ruleId) {
+        var ruleId = ruleId;
+        alertMsg.confirm("你确定删除此配置？", {
+            okCall: function () {
+                $.ajax({
+                    type: 'post',
+                    url: $("#APP_ROOT_PATH").val() + "/sys/payLimit/updateStatus.htm",
+                    data: {
+                        ruleId: ruleId
+                    },
+                    success: function (data) {
+                        if (data.statusCode == "200") {
+                            alertMsg.correct("删除配置成功");
+                            navTab.reload("$env.getWebURL('/sys/payLimit/index.htm')");
+                        } else {
+                            if (data.message) {
+                                alertMsg.error(data.message);
+                            } else {
+                                alertMsg.error("操作失败");
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    }
+    
+</script>

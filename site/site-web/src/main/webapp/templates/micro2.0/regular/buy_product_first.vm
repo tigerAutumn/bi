@@ -1,0 +1,221 @@
+## 未绑卡 添加新的银行卡
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/regular/buy_product.min")
+#WeChatShare()
+#Head("end")
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <form id="submitForm" method="post">
+        <input type="hidden" id="id" name="id" value="$!id" />
+        <input type="hidden" id="rate" name="rate" value="$!rate" />
+        <input type="hidden" id="term" name="term" value="$!term" />
+        <input type="hidden" id="minInvestAmount" name="minInvestAmount" value="$!minInvestAmount" />
+        <input type="hidden" id="alreadyUse" value="0"/>
+        <input type="hidden" id="token" name="token" value="$!token" />
+        <input type="hidden" id="qianbao" name="qianbao" value="$!qianbao" />
+        <input type="hidden" id="name" name="name" value="$!name" />
+    	<input type="hidden" id="redPacketId" name="redPacketId" value="$!redPacketId" />
+    
+        <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+        <!-- 是否选择红包 -->
+        <input type="hidden" id="useFlag" name="useFlag" value="$!useFlag" />
+    	<input type="hidden" id="productId" name="productId" value="$!id" />
+        <input type='hidden' name='amount' value="$!amount" id="amount_pre"/>
+        <input type='hidden' name='source' value='first_buy' id="source"/>
+        <input type='hidden' name='userName' value="$!userName" id="userName_pre"/>
+        <input type='hidden' name='idCard' value="$!idCard" id="idCard_pre"/>
+        <input type='hidden' name='cardNo' value="$!cardNo" id="cardNo_pre"/>
+        <input type='hidden' name='selbank' value="$!selbank" id="selbank_pre"/>
+        <input type='hidden' name='mobile' value="$!mobile" id="mobile_pre"/>
+    	<input type="hidden" id="proLimitAmout" name="proLimitAmout" value="$!proLimitAmout" />
+    	<input type="hidden" id="maxSingleInvestAmount" name="maxSingleInvestAmount" value="$!maxSingleInvestAmount" />
+    </form>
+    <input type="hidden" id="redPacketList" name="redPacketList" value='$!redPacketList' />
+    
+    <div class="header">
+    	<a class="header_arrow" href="javascript:history.go(-1)"></a>
+    	<h1 class="heade_ft oran_color">$!name</h1>
+    	<a href="$!env.getWebURL('micro2.0/regular/quickpayBankDetail')">
+    	<div class="right_title" style="top:15px;">限额说明</div>
+    	</a>
+    </div>
+    <div class="main">
+    	<ul>
+    		<li class="item">
+    			<div class="item_small bor_none">
+    				<span class="font_left">购入金额</span>
+    				<input class="rech_money error_width" value="$!number.format('0', $!amount)" maxlength="9" type="tel" name="amount" id="amount" placeholder="请输入100元整数倍" oninput="checkNumber(this)">
+    			</div>
+    		</li>
+    		<div class="money_info">
+        		<div class="info_left ft_orange">
+    				#if(!$maxSingleInvestAmount)
+    					<span class="ft_gray" id="show_text">预期收益</span> <span class="ft_orange" id="lixi">0.00 </span><span id="money_type">元</span>
+    				#else
+    					<span class="ft_gray" id="show_text">限购金额</span> <span class="ft_orange" id="lixi">
+    					#if($!maxSingleInvestAmount >= 10000)
+                				#if($!maxSingleInvestAmount %10000 >0 && $!maxSingleInvestAmount %1000>0)
+                					#set($maxSingleInvestAmount = $!maxSingleInvestAmount/10000)
+                					$!number.format("0.00",$maxSingleInvestAmount) </span><span id="money_type">万</span>
+                				#elseif($!maxSingleInvestAmount %10000 >0 && $!maxSingleInvestAmount %1000==0)
+                					#set($maxSingleInvestAmount = $!maxSingleInvestAmount/10000)
+                					$!number.format("0.0",$maxSingleInvestAmount) </span><span id="money_type">万</span>
+                				#else
+                					#set($maxSingleInvestAmount = $!maxSingleInvestAmount/10000)
+                					$!number.format("0",$maxSingleInvestAmount) </span><span id="money_type">万</span>
+                				#end
+                			#else
+                				$!number.format("0",$!maxSingleInvestAmount) </span><span id="money_type">元</span>
+                			#end
+    				#end
+    			</div>
+        		<div class="info_right ft_orange">
+        			<span class="ft_gray">剩余可投</span> <span class="ft_orange">
+    					#if($!proLimitAmout >= 10000)
+            				#if($!proLimitAmout %10000 >0 && $!proLimitAmout %1000>0)
+            					#set($surplusAmount = $!proLimitAmout/10000)
+            					$!number.format("0.00",$surplusAmount) </span>万
+            				#elseif($!proLimitAmout %10000 >0 && $!proLimitAmout %1000==0)
+            					#set($surplusAmount = $!proLimitAmout/10000)
+            					$!number.format("0.0",$surplusAmount) </span>万
+            				#else
+            					#set($surplusAmount = $!proLimitAmout/10000)
+            					$!number.format("0",$surplusAmount) </span>万
+            				#end
+            			#elseif($!proLimitAmout >=100 && $!proLimitAmout <10000)
+            				$!number.format("0",$!proLimitAmout) </span>元
+    					#else
+    						0 元
+    					#end
+        		</div>
+    		</div>
+    		##<li class="rech_bank regu_color"><span class="regu_sp1">预期收益</span><span class="oran_color number" id="lixi">0.00</span>元</li>
+    		##if($!proLimitAmout)<li class="rech_bank oran_color"><span class="regu_sp1">剩余额度：</span><span class="oran_color number" id="lixi">#if($!proLimitAmout < 100) 0.00 #else $!money.format($!proLimitAmout) #end</span>元</li> #end
+    		#if($!userProLimitAmout)<li class="rech_bank oran_color">
+    				<span class="regu_sp1">可买额度：</span>
+    				<span class="oran_color number" id="lixi">#if($!userProLimitAmout < 100) 0.00 #else $!money.format($!userProLimitAmout) #end</span>元
+    				<div class="btn_dialog">提高额度秘笈</div>
+    		</li> 
+    		#end
+    	</ul>
+    </div>
+    <div class="main rech_main">
+    	<div class="rech_bank">银行卡支付</div>
+    	<ul>
+    		<li class="item item_top_border">
+    			<div class="item_small">
+    				<span class="font_left">姓名</span>
+    				<input class="rech_money" type="text" name="userName" id="userName" value="$!userName" placeholder="请输入持卡人姓名" maxlength="10">
+    			</div>
+    		</li>
+    		<li class="item">
+    			<div class="item_small bor_none">
+    				<span class="font_left">身份证</span>
+    				<input class="rech_money sea_ver" type="text" name="idCard" id="idCard" value="$!idCard" placeholder="请输入持卡人身份证" maxlength="18" oninput="checkIdCard(this)" onblur="onblurCardIs()">
+    			</div>
+    		</li>
+    		<li id="warn" style="display:none;" class="rech_bank sf_warm">请输入正确的身份证！</li>
+    	</ul>
+    </div>
+    <div class="main">
+    	<ul>
+    		<li class="item item_top_border">
+    			<div class="item_small">
+    				<span class="font_left">卡号</span>
+    				<input class="rech_money" type="tel" name="cardNo" id="cardNo" value="$!cardNo" placeholder="请输入银行卡号(仅借记卡)" maxlength="20" oninput="cardbin()">
+    			</div>
+    		</li>
+    		<li class="item">
+    			<div class="item_small bor_none">
+    				<span class="font_left">类型</span>
+    				<a class="a_seteeing slect_a" href="javascript:void(0)">
+    					<div class="secl_over">
+    					<select class="font_right rela_top" id="selbank">
+    						<option class="rela_ft ft_setting" value="-1">请选择银行</option>
+    						#foreach($bank in $bankList)
+    							#if($bank.isAvailable == 1)
+    								<option #if("$!selbank" == "$!bank.bankId") selected #end class="rela_ft" value="$!bank.bankId" isAvailable="$!bank.isAvailable" oneTop="$!bank.oneTop" dayTop="$!bank.dayTop" notice="$!bank.notice">$!{bank.bankName}</option>
+    							#else
+    								<option class="rela_ft" #if("$!selbank" == "$!bank.bankId") selected #end value="$!bank.bankId" isAvailable="$!bank.isAvailable" oneTop="$!bank.oneTop" dayTop="$!bank.dayTop" notice="$!bank.notice">$!{bank.bankName}(暂不可用)</option>
+    							#end
+    						#end
+    					</select>
+    					</div>
+    				</a>
+    			</div>
+    		</li>
+    	</ul>
+    	<div class="rech_bank regu_color" id="limit">
+    		<span class="regu_sp1">单笔限额</span><span class="oran_color number" id="onelimit">0.00</span>万元，
+    		<span class="regu_sp1">单日限额</span><span class="oran_color number" id="daylimit">0.00</span>万元。
+            <span class="oran_color" id="cardType"></span>
+    	</div>
+    	<div class="rech_tt" id="notice"></div>
+    </div>
+    <div class="main rech_phone rech_pack">
+    	<ul>
+    		<li class="item">
+    			<div class="item_small bor_none">
+    				<span class="font_left">手机号</span>
+    				<input class="rech_money sea_ver" type="tel" value="$!mobile" name="mobile" id="mobile" placeholder="请输入银行卡预留手机号" maxlength="11" oninput="checkNumber(this)">
+    			</div>
+    		</li>
+    	</ul>
+    </div>
+    <div class="main rech_phone">
+    	<ul>
+    		<li class="item">
+    			<div class="item_small bor_none red_packet" id="red_packet_span">
+    				<span class="font_left" style="color: #333;">使用红包</span>
+                    <span class="rech_money" id="red_packet_name">
+                        <span id="text_red_packet">暂无可用红包</span>
+    					<span id="full"></span>
+                        <span id="text_red_packet2"></span>
+    					<span id="subtract"></span>
+    				</span>
+    			</div>
+    		</li>
+    	</ul>
+    </div>
+    <a href="javascript:void(0)" class="Exit_login sub_btn" onclick="preOrder('pre')">安全卡支付0元</a>
+    <div class="rech_yes">点击购买即代表您同意：
+    	#if("$!qianbao" == "qianbao")
+        	<a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/financial')?propertyType=$!propertyType&qianbao=qianbao&agentViewFlag=$!agentViewFlag&propertySymbol=$!propertySymbol">《出借服务协议》、</a>
+        	<a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/pay')?qianbao=qianbao&agentViewFlag=$!agentViewFlag">《支付协议》、</a>
+        	<a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/account')?qianbao=qianbao&agentViewFlag=$!agentViewFlag">《账户服务协议》</a>
+    	#else
+    		<a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/financial?propertyType=')$!propertyType&propertySymbol=$!propertySymbol">《出借服务协议》、</a>
+        	<a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/pay')">《支付协议》、</a>
+        	<a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/account')">《账户服务协议》</a>
+    	#end
+    </div>
+    
+    <!-- 弹窗 -->
+    <div class="dialog_wrap">
+    	<input type="hidden" id="orderNo" value=""/>
+    	<div class="deposit_dialog">
+    		<h3 class="deposit_info_title">支付验证</h3>
+    		<i class="dep_img off_dialog"></i>
+    		<div class="yz_info"></div>
+    		<div class="yz_warp">
+    			<span class="yz_ft">验证码</span>
+    			<input class="pass_input" type="tel" id="verifyCode" name="verifyCode" value="" placeholder="请输入短信验证码" maxlength="6">
+    			<div class="phone_time">重发(<span>60</span>)</div>
+    		</div>
+    		<a class="down_ok" href="javascript:void(0)" onclick="preOrder('regular')"><div class="top_line" style="background-color:#ff6633">确定</div></a>
+    
+    	</div>
+    </div>
+    <div id="reapal_form" >	
+    </div>
+#LoadJS("resources/micro2.0/scripts/zepto.min")
+#LoadJS("resources/micro2.0/scripts/regular/custom")
+#LoadJS("resources/common/scripts/global_validate")
+#LoadJS("resources/micro2.0/scripts/regular/regular_product_firstBuy")
+#LoadJS("resources/micro2.0/scripts/common/common")
+</body>
+#Html("end")

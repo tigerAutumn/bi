@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.LnAccountFillDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.LnAccountFillDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="partner_code" property="partnerCode" jdbcType="VARCHAR" />
+    <result column="fill_type" property="fillType" jdbcType="VARCHAR" />
+    <result column="fill_date" property="fillDate" jdbcType="TIMESTAMP" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="out_account_id" property="outAccountId" jdbcType="INTEGER" />
+    <result column="in_account_id" property="inAccountId" jdbcType="INTEGER" />
+    <result column="relative_no" property="relativeNo" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, partner_code, fill_type, fill_date, amount, out_account_id, in_account_id, relative_no, 
+    status, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.LnAccountFillDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ln_account_fill_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ln_account_fill_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ln_account_fill_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.LnAccountFillDetailExample" >
+    delete from ln_account_fill_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.LnAccountFillDetail" >
+    insert into ln_account_fill_detail (id, partner_code, fill_type, 
+      fill_date, amount, out_account_id, 
+      in_account_id, relative_no, status, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{partnerCode,jdbcType=VARCHAR}, #{fillType,jdbcType=VARCHAR}, 
+      #{fillDate,jdbcType=TIMESTAMP}, #{amount,jdbcType=DOUBLE}, #{outAccountId,jdbcType=INTEGER}, 
+      #{inAccountId,jdbcType=INTEGER}, #{relativeNo,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.LnAccountFillDetail" >
+    insert into ln_account_fill_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="partnerCode != null" >
+        partner_code,
+      </if>
+      <if test="fillType != null" >
+        fill_type,
+      </if>
+      <if test="fillDate != null" >
+        fill_date,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="outAccountId != null" >
+        out_account_id,
+      </if>
+      <if test="inAccountId != null" >
+        in_account_id,
+      </if>
+      <if test="relativeNo != null" >
+        relative_no,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="partnerCode != null" >
+        #{partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fillType != null" >
+        #{fillType,jdbcType=VARCHAR},
+      </if>
+      <if test="fillDate != null" >
+        #{fillDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="outAccountId != null" >
+        #{outAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="inAccountId != null" >
+        #{inAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="relativeNo != null" >
+        #{relativeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.LnAccountFillDetailExample" resultType="java.lang.Integer" >
+    select count(*) from ln_account_fill_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ln_account_fill_detail
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.partnerCode != null" >
+        partner_code = #{record.partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fillType != null" >
+        fill_type = #{record.fillType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fillDate != null" >
+        fill_date = #{record.fillDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.outAccountId != null" >
+        out_account_id = #{record.outAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="record.inAccountId != null" >
+        in_account_id = #{record.inAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="record.relativeNo != null" >
+        relative_no = #{record.relativeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ln_account_fill_detail
+    set id = #{record.id,jdbcType=INTEGER},
+      partner_code = #{record.partnerCode,jdbcType=VARCHAR},
+      fill_type = #{record.fillType,jdbcType=VARCHAR},
+      fill_date = #{record.fillDate,jdbcType=TIMESTAMP},
+      amount = #{record.amount,jdbcType=DOUBLE},
+      out_account_id = #{record.outAccountId,jdbcType=INTEGER},
+      in_account_id = #{record.inAccountId,jdbcType=INTEGER},
+      relative_no = #{record.relativeNo,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.LnAccountFillDetail" >
+    update ln_account_fill_detail
+    <set >
+      <if test="partnerCode != null" >
+        partner_code = #{partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fillType != null" >
+        fill_type = #{fillType,jdbcType=VARCHAR},
+      </if>
+      <if test="fillDate != null" >
+        fill_date = #{fillDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="outAccountId != null" >
+        out_account_id = #{outAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="inAccountId != null" >
+        in_account_id = #{inAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="relativeNo != null" >
+        relative_no = #{relativeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.LnAccountFillDetail" >
+    update ln_account_fill_detail
+    set partner_code = #{partnerCode,jdbcType=VARCHAR},
+      fill_type = #{fillType,jdbcType=VARCHAR},
+      fill_date = #{fillDate,jdbcType=TIMESTAMP},
+      amount = #{amount,jdbcType=DOUBLE},
+      out_account_id = #{outAccountId,jdbcType=INTEGER},
+      in_account_id = #{inAccountId,jdbcType=INTEGER},
+      relative_no = #{relativeNo,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="sumAmount" resultType="java.lang.Double" parameterType="Map">
+    SELECT IFNULL(SUM(amount),0) FROM
+    ln_account_fill_detail
+    where partner_code= #{partnerCode}
+    AND fill_type= #{fillType}
+    AND DATE(fill_date) = #{fillDate}
+    AND status = #{status}
+  </select>
+
+  <resultMap id="BaseResultMapVO" type="com.pinting.business.model.vo.LnAccountFillDetailVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="partner_code" property="partnerCode" jdbcType="VARCHAR" />
+    <result column="fill_type" property="fillType" jdbcType="VARCHAR" />
+    <result column="fill_date" property="fillDate" jdbcType="TIMESTAMP" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="out_account_id" property="outAccountId" jdbcType="INTEGER" />
+    <result column="in_account_id" property="inAccountId" jdbcType="INTEGER" />
+    <result column="relative_no" property="relativeNo" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="partner_loan_id" property="partnerLoanId" jdbcType="VARCHAR" />
+    <result column="partner_repay_id" property="partnerRepayId" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getList" resultMap="BaseResultMapVO" parameterType="Map" >
+    SELECT a.*,b.partner_loan_id,d.partner_repay_id
+    FROM ln_account_fill_detail a,ln_loan b,ln_repay_schedule d
+    WHERE cast(a.relative_no as SIGNED INTEGER) = d.id AND d.loan_id = b.id
+    AND a.partner_code= #{partnerCode}
+    AND a.fill_type= #{fillType}
+    AND DATE(a.fill_date) = #{fillDate}
+    AND a.status = #{status}
+  </select>
+</mapper>

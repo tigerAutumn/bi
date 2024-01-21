@@ -1,0 +1,201 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/agent/user/qhdIndex.htm')" method="post">
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+		<input type="hidden" name="numPerPage" value="$!numPerPage" />
+        <input type="hidden" id="queryFlag" name="queryFlag" value="QUERYDATA" />
+	<div class="searchBar">
+		
+			<table class="searchContent">
+				<tr>
+					<td>
+						手机号：<input id="mobile" type="text" name="mobile" value="$!req.mobile"  maxlength="11"/>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						姓名：<input id="userName" type="text" name="userName" value="$!req.userName"   maxlength="10"  />
+					</td>
+					<td>
+					注册日期：
+						<input name="startRegisterTime" maxdate="{%y}-%M-{%d}" type="text" id="startRegisterTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.startRegisterTime)" />
+    					&nbsp;&nbsp;到  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    					<input name="endRegisterTime" maxdate="{%y}-%M-{%d}" type="text" id="endRegisterTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.endRegisterTime)" />
+    				</td>
+				</tr>
+                <tr>
+                    <td>
+                    #if("$!mAgentId" == "" || "$!mAgentId" == "54")	
+						注册终端：
+                        <select name="regTerminal" >
+                            <option value="99" #if("$!req.regTerminal"=="99") selected #end>全部</option>
+                            <option value="1" #if("$!req.regTerminal"=="1") selected  #end>H5端</option>
+                            <option value="2" #if("$!req.regTerminal"=="2") selected #end>PC端</option>
+                        </select>
+                    #else
+                    	注册终端：
+                        <select name="regTerminal" >
+                            <option value="99" #if("$!req.regTerminal"=="99") selected  #end>H5端</option>
+                        </select>
+                    #end    
+						 
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    	分销渠道：
+                        #if("$!mAgentId" == "")	
+							<select name="distributionChannel" >
+								<option value="999" #if("$!req.distributionChannel"=="999") selected #end>全部</option>
+								<option value="51" #if("$!req.distributionChannel"=="51") selected #end>交通广播</option>
+								<option value="52" #if("$!req.distributionChannel"=="52") selected #end>新闻891</option>
+								<option value="54" #if("$!req.distributionChannel"=="54") selected #end>视听之友</option>
+								<option value="53" #if("$!req.distributionChannel"=="53") selected #end>电视台今日报道</option>
+								<option value="55" #if("$!req.distributionChannel"=="55") selected #end>私家车广播</option>
+							</select>
+						#else
+							#if("$!mAgentId" == "51")	
+								<select name="distributionChannel" >
+									<option value="51" #if("$!req.distributionChannel"=="51") selected #end>交通广播</option>
+								</select>
+							#elseif("$!mAgentId" == "52")	
+								<select name="distributionChannel" >
+									<option value="52" #if("$!req.distributionChannel"=="52") selected #end>新闻891</option>
+								</select>
+							#elseif("$!mAgentId" == "54")	
+								<select name="distributionChannel" >
+									<option value="54" #if("$!req.distributionChannel"=="54") selected #end>视听之友</option>
+								</select>
+							#elseif("$!mAgentId" == "53")	
+								<select name="distributionChannel" >
+									<option value="53" #if("$!req.distributionChannel"=="53") selected #end>电视台今日报道</option>
+								</select>
+							#elseif("$!mAgentId" == "55")
+								<select name="distributionChannel" >
+									<option value="55" #if("$!req.distributionChannel"=="55") selected #end>私家车广播</option>
+								</select>
+							#end
+						#end
+						
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<span style="margin-left:15px;">
+							<button  onclick="func()" type="button">查询</button>
+							<button  onclick="exp()" type="button">导出</button>
+                        </span>
+                    </td>
+                </tr>
+			</table>
+	
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+
+	<table class="table" width="1296" layoutH="148">
+		<thead>
+			<tr>
+				<th width="120">手机号</th>
+				<th width="100">姓名</th>
+				<th width="120">总资产</th>
+				<th width="120">可提现金额</th>
+				<th width="120">预期投资收益</th>
+				<th width="120">当前投资本金</th>
+				<th width="120">累计投资收益</th>
+				<th width="180">注册日期</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $users)
+			<tr target="sid_user" rel="1">
+				<td>#if("$!grid.mobile" != "" && $!grid.mobile.length() == 11) 
+				$!grid.mobile.substring(0,3)****$!grid.mobile.substring(7,11)
+				#else 
+				 $!grid.mobile
+				#end</td>
+				<td>#if("$!grid.userName" != "") 
+				$!grid.userName.substring(0,1)**
+				#else 
+					$!grid.userName
+				#end</td>
+				<td>$!money.format($!grid.totalBalance)</td>  
+				<td>$!money.format($!grid.canWithdraw)</td>
+				<td>$!money.format($!grid.currentInterest)</td>
+				<td>$!money.format($!grid.authBalance)</td>  
+				<td>$!money.format($!grid.totalInterest)</td>
+				<td>$!date.format($!grid.registerTime)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+function func(){
+	var beginTime = $("#startRegisterTime").val();
+	var overTime = $("#endRegisterTime").val();
+	
+	if(beginTime != "" && (overTime == "" || overTime == null)){
+		alertMsg.warn("请输入结束时间！");
+		return false;
+	}
+	
+	if((beginTime == ""|| beginTime == null)&& overTime != ""){
+		alertMsg.warn("请输入开始时间！");
+		return false;
+	}
+	
+	if(beginTime != "" && overTime != ""){
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alertMsg.warn("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	var url = $("#APP_ROOT_PATH").val() + "/agent/user/qhdIndex.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+	var beginTime = $("#startRegisterTime").val();
+	var overTime = $("#endRegisterTime").val();
+	
+	if(beginTime != "" && overTime == ""){
+		alertMsg.warn("请输入结束时间！");
+		return false;
+	}
+	
+	if(beginTime == "" && overTime != ""){
+		alertMsg.warn("请输入开始时间！");
+		return false;
+	}
+	
+	if(beginTime != "" && overTime != ""){
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alertMsg.warn("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	var url = $("#APP_ROOT_PATH").val() + "/agent/user/qhdAgentExportXls.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+  
+</script>

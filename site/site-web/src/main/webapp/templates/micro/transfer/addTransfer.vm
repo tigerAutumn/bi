@@ -1,0 +1,93 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾理财官网_安心可靠互联网金融投资理财平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#Head("end")
+
+
+<body>
+<!-- website wrapper starts -->
+<div style="min-height: 57px;" class="websiteWrapper"> 
+		#Header("我要转让")
+  </div>
+  
+  <div class="newrow">
+    <input type="hidden" id="subAccountId" name="subAccountId" value="$!transfer.subAccountId" />
+	<input type="hidden" id="investAmount" name="investAmount" value="$!amount" />
+    <div style="overflow: hidden; visibility: visible; list-style: outside none none; position: relative;" class="newbox" id="slider1"> 
+      <!--banner切换s-->
+      <!--banner切换e-->
+      
+    <ul class="bigbox">
+		<li class=" li_list5">
+		   
+		   
+		   
+		   <div class="dq1">
+      
+                    <div class="dq3">
+						<h5>
+							<img src="$!env.getWebURL('')/resources/micro/images/sd.png" width="80" height="75"/>投资金额：<span>$!transfer.investAmount</span>
+						</h5>
+                    <div class="dq3l">
+                    <ul>
+						<li>
+							投资时间：
+							<br />
+							<span>$!date.formatDateTime($!transfer.investBeginDate,'yyyy.MM.dd')</span>
+						</li>
+						<li>
+							到期时间：
+							<br	/>
+							<span>到期时间：<span>$!date.formatDateTime($!transfer.investOverDate,'yyyy.MM.dd')</span>
+						</li>
+						<li>
+							已投资时长：
+							<span>$!transfer.investDay</span>天
+						</li>
+                    </ul>
+                </div>
+                    <div class="dq3r" style="font-size: 18px;">
+						现利息基数
+						<br />
+						<span style="font-size: 36px; line-height: 70px;">$!transfer.investRate%</span>
+						<br />
+						#if($!invest.status == 1 || $!invest.status == 2)
+							<a href="$!env.getWebURL('/micro/regular/transfer/addTransfer')?operateType=add&id=$!invest.id" >立即转让</a>
+						#elseif($!invest.status == 4)
+							<a href="$!env.getWebURL('/micro/regular/transfer/addTransfer')?operateType=update&id=$!invest.id">修改转让金额</a>
+						#elseif($!invest.status == 5)
+							<a href="javascript:void(-1)" style="background-color:#ccc">已转让</a>
+						#elseif($!invest.status == 6)
+							<a href="javascript:void(-1)" style="background-color:#ccc">已结算</a>
+						#end
+                    </div>
+                    </div>   
+        	
+				</div>
+		   
+		   
+		   
+            <div class="sh1">
+				<p> 截止今天您目前获得本息为：<span>$!amount 元</span></p>
+                <p>为使您能够快速转让，可以将转让金额适当降低.</p>
+				  <p>
+					转让金额：
+					<input name="" type="text" placeholder="转让金额不得超过$!amount元" id="amount" onkeyup="onlyNum(this);">
+                  </p>
+		  </div>
+		  <div class="wz4" style="margin-bottom:50px;">
+			<input id="transfer"  class="go_btn3" type="button"  value="立即转让" style="color:#fff;margin-top:20px;">
+          </div>
+ 		 </li>
+  		</ul>
+  </div>
+   <!-- footer wrapper starts -->
+    #LoadJS("resources/micro/scripts/transfer/transfer")
+#Footer("4")
+<!-- footer wrapper ends --> 
+  <!-- footer wrapper ends --> 
+</div>
+                    
+</body>
+</html>
+<!-- website wrapper ends -->

@@ -1,0 +1,59 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾理财官网_安心可靠互联网金融投资理财平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#Head("end")
+	
+<body>
+
+    <!-- website wrapper starts -->
+    <div class="websiteWrapper"> 
+      
+      #Header("交易明细","","","micro/wealth/index")
+      
+      <!-- notification starts -->
+      
+      <!-- notification ends --> 
+      
+      <!--tab-s-->
+      
+      <div class="pageWrapper contactPageWrapper"> 
+           <div class="txj">
+           <ul>
+           <li>交易用途/时间</li>
+            <li>金额（￥）</li>
+            <!-- <li>可用余额（￥）</li>-->
+		   <li>交易结果</li>
+           </ul>
+           
+           </div>
+		   	<input type="hidden" id="pageIndex" name="pageIndex" value="$!pageIndex" />
+			<input type="hidden" id="totalCount" name="totalCount" value="$!totalCount" />
+           <div id="mainContent" style="margin-bottom:50px;" url='/micro/wealth/trans_detail_content'>
+				#foreach($!grid in $!transsList)
+                	<div class="txj3">
+                		<ul>
+                			<li>$!grid.transName<br />
+                				<span>$!date.formatDateTime($!grid.transTime,'yyyy-MM-dd HH:mm')</span></li>
+                			<li><span style=" font-size:14px;color:#if($!grid.cdFlag1==1)#F60;">+#else#12DA2A;">-#end$!money.format($!grid.transAmount)</span></li>
+                			<!-- <li>$!money.format($!grid.afterAvialableBlance)</li>-->
+							<li>交易成功</li>
+                		</ul>
+                	</div>
+                #end
+           </div>
+		   <div class="wz" style="color:#666;" id="showmore">查看更多</div>
+           </div>
+        </div>
+
+
+	  <!--tab-e-->
+
+      
+      #Footer("4")
+      
+    </div>
+	<!-- website wrapper ends -->
+		#LoadJS("resources/micro/scripts/common/detail_pagination")
+</body>
+
+#Html("end")

@@ -1,0 +1,144 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenJS("/resources/gen2.0/scripts/echarts")
+#LoadGenJS("/resources/gen2.0/scripts/switchable")
+#LoadGenJS("/resources/gen2.0/scripts/textSlider")
+#LoadGenJS("/resources/gen2.0/scripts/index_style")
+#LoadGenCSS("/resources/gen2.0/styles/recharge/recharge_first")
+#LoadGenJS("/resources/common/scripts/global_validate")
+#LoadGenJS("/resources/gen2.0/scripts/recharge/recharge_first")
+#parse("/agreement_pay.vm")
+#parse("/agreement_account.vm")
+#GenHead("end")
+<body>
+
+<!--header -s-->
+#LoadGenCSS("/resources/gen2.0/styles/login_header")
+#LoadGenJS("/resources/gen2.0/scripts/fix")
+#Gen2Header("assets")
+
+<div class="con_gm">
+	<div class="con_g">
+		<div class="gcon_top">
+			<span>
+				充值金额： <i class="spani">$!number.format("0.00", $!rechargeAmount)</i>
+				元
+			</span>
+		</div>
+		<div class="gcon_bottom">
+			<span class="gcon_bspanl">快捷支付</span>
+			<span class="gcon_bspanr">
+				支付
+				<a>$!number.format("0.00", $!rechargeAmount)</a>
+				元
+			</span>
+			<p class="gcon_main">
+				为了保障您的资金安全，您首次成功支付的银行卡将作为<i class="zcon_maini">安全卡</i>。后续仅可使用此卡进行买入和取出。
+			</p>
+			<div class="gcon_m">
+				<div class="gcon_mr">
+					<ul class="cul_1">
+						<li>姓名</li>
+						<li>身份证</li>
+						<li>银行卡号</li>
+						<li>银行类型</li>
+						<li style="margin-top:-35px;margin-bottom: 0px;"></li>
+						<li>预留手机号</li>
+					</ul>
+                    <form id="generalForm" action="$!env.get('gen.server.web')/gen2.0/recharge/recharge_first" method="post"> 
+						<input type="hidden" id="token" name="token" value="$!token" />
+						<input type="hidden" value="$!rechargeAmount" id="rechargeAmount" name="rechargeAmount" />
+						<input type="hidden" name="orderNo" id="orderNo" value="$!orderNo">
+					<ul  class="cul_2">
+						<li>
+							<p>
+								<span></span>
+								<input type="text"  name="userName" id="userName" maxLength="30" placeholder="请输入持卡人姓名"></p>
+						</li>
+						<li>
+							<p style="position:relative;">
+								<span></span>
+								<input type="text" name="idCard" id="idCard" maxLength="18" oninput="oninputCardIs()" onblur="onblurCardIs()" placeholder="请输入持卡人身份证">
+								<span id="warn" style="position:absolute;width:180px; left:100%;text-align:center;font-size:12px; color:red;display:none;">请输入正确的身份证！</span>
+                           </p>
+						</li>
+						<li>
+							<p style="position:relative;">
+								<span></span>
+								<input type="text" name="cardNo" id="cardNo" maxLength="20" placeholder="请输入银行卡号(仅借记卡)" oninput="cardbin()">
+								<span style="position:absolute;width:128px; left:100%;text-align:center;font-size:12px; color:red;display: none;"id = "cardType">仅借记卡！</span>
+							</p>
+						</li>
+						<li>
+							<p>
+								<select id="bankName" name="bankName">
+									<option style="font-size:14px;padding:5px 0 5px 0" value="-1">请选择银行</option>
+									#foreach($bank in $bankList)
+            							#if($bank.isAvailable == 1)
+    									<option style="font-size:14px;padding:5px 0 5px 0" value="$!bank.bankId" isAvailable="$!bank.isAvailable" oneTop="$!bank.oneTop" dayTop="$!bank.dayTop" notice="$!bank.notice">$!{bank.bankName}</option>
+    									#else
+    									<option style="font-size:14px;padding:5px 0 5px 0" value="$!bank.bankId" isAvailable="$!bank.isAvailable" oneTop="$!bank.oneTop" dayTop="$!bank.dayTop" notice="$!bank.notice">$!{bank.bankName}(暂不可用)</option>
+    									#end
+            						#end
+								</select>
+							</p>
+						</li>
+						<div style=" width:100%; height:35px;margin-top: -20px;text-align: left;">
+							<span id="limit" style="display:none; font-size:12px; width:100%">
+								<span>单笔限额</span><span id="onelimit" style="float: none;color:red;font-weight:bold"></span><span>万元，</span>
+								<span>单日限额</span><span id="daylimit" style="float: none;color:red;font-weight:bold"></span><span>万元 </span>
+								<br>
+								<span class="rech_tt" style="font-size: 12px;color:#ff6633;" id="notice"></span>
+							</span>
+						</div>
+						<li>
+							<p>
+								<span></span>
+								<input type="text" name="mobile" id="mobile" maxLength="11" placeholder="请输入预留手机号"></p>
+						</li>
+						<button class="buut" type="button" id="pay_submit">确认支付</button>
+						<h2 class="clas">点击确认支付即表示您同意<a name="pay_agree_div">《支付协议》</a></h2>
+                        <h2 class="clas"><a name="account_agree_div">《账户服务协议》</a></h2>
+					</ul>
+					
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--footer -s-->
+#Gen2Footer()
+<!--footer -e-->
+
+<div class="cpm_warp" >
+	<div class="cpm">
+		<div class="cpm_title">
+			<span class="title_ft">支付验证</span>
+			<i class="off"></i>
+		</div>
+		<div class="cpm_phone">
+			<div class="phone_ft">
+				已向您的手机号
+				<span class="mobile_send">$!mobile</span>
+			</div>
+			<div class="phone_ft2">发送验证码短信，请注意查收</div>
+		</div>
+		<div class="cpm_put">
+            			<span class="put_left" style="border: 22px none;font-size: 16px;height: 44px;left: 60px;line-height: 43px;padding: 0 10px;position: absolute;">验证码</span>
+            			<div class="put_wrp" style="border: 1px solid #bbbbbb;display: inline-block;height: 44px;left: 74px;position: relative;width: 250px;">
+				<input class="put_text" type="text" name="mobileCode" id="mobileCode" maxLength="6" placeholder="请输入短信验证码">
+				<span id="sendCode" class="retransmission" count='60'>
+					重发(<span class="retransmission_time">59</span>)
+				</span>
+			</div>
+		</div>
+		<a class="cpm_btn" id="code_sub" href="javascript:void(0)">确定</a>
+	</div>
+</div>
+			<div id="reapal_form" >	
+			</div>
+</body>
+#Html("end")

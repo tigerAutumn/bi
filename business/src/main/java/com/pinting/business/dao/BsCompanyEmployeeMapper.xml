@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsCompanyEmployeeMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsCompanyEmployee" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="employee_code" property="employeeCode" jdbcType="VARCHAR" />
+    <result column="employee_name" property="employeeName" jdbcType="VARCHAR" />
+    <result column="dept_id" property="deptId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="BsCompanyEmployeeVOMap" type="com.pinting.business.model.vo.BsCompanyEmployeeVO" extends="BaseResultMap">
+    	 <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, employee_code, employee_name, dept_id, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsCompanyEmployeeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_company_employee
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_company_employee
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_company_employee
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsCompanyEmployeeExample" >
+    delete from bs_company_employee
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsCompanyEmployee" >
+    insert into bs_company_employee (id, employee_code, employee_name, 
+      dept_id, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{employeeCode,jdbcType=VARCHAR}, #{employeeName,jdbcType=VARCHAR}, 
+      #{deptId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsCompanyEmployee" >
+    insert into bs_company_employee
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="employeeCode != null" >
+        employee_code,
+      </if>
+      <if test="employeeName != null" >
+        employee_name,
+      </if>
+      <if test="deptId != null" >
+        dept_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="employeeCode != null" >
+        #{employeeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeName != null" >
+        #{employeeName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null" >
+        #{deptId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsCompanyEmployeeExample" resultType="java.lang.Integer" >
+    select count(*) from bs_company_employee
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_company_employee
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.employeeCode != null" >
+        employee_code = #{record.employeeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.employeeName != null" >
+        employee_name = #{record.employeeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deptId != null" >
+        dept_id = #{record.deptId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_company_employee
+    set id = #{record.id,jdbcType=INTEGER},
+      employee_code = #{record.employeeCode,jdbcType=VARCHAR},
+      employee_name = #{record.employeeName,jdbcType=VARCHAR},
+      dept_id = #{record.deptId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsCompanyEmployee" >
+    update bs_company_employee
+    <set >
+      <if test="employeeCode != null" >
+        employee_code = #{employeeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeName != null" >
+        employee_name = #{employeeName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null" >
+        dept_id = #{deptId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsCompanyEmployee" >
+    update bs_company_employee
+    set employee_code = #{employeeCode,jdbcType=VARCHAR},
+      employee_name = #{employeeName,jdbcType=VARCHAR},
+      dept_id = #{deptId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+   <select id="queryCompanyEmployeeIndex" resultMap="BsCompanyEmployeeVOMap" parameterType="java.util.Map" >
+		SELECT 
+			a.*,b.dept_name
+		FROM 
+		bs_company_employee a
+		LEFT JOIN bs_company_dept b ON a.dept_id = b.id
+		where 1=1
+     	<if test="employeeCode != null and employeeCode != ''" >
+       	AND a.employee_code like concat(concat('%', #{employeeCode}),'%')
+     	</if>
+     	<if test="employeeName != null and employeeName != ''" >
+       	AND a.employee_name like concat(concat('%', #{employeeName}),'%')
+     	</if>
+     	<if test="deptId != null and deptId != ''" >
+       	AND a.dept_id = #{deptId}
+     	</if>
+     	<if test="deptName != null and deptName != ''" >
+       	AND b.dept_name like concat(concat('%', #{deptName}),'%')
+     	</if>
+     	<if test="startTime != null and startTime != ''"> 
+			<![CDATA[
+				AND a.create_time >= #{startTime}
+			]]>
+		</if>
+		<if test="endTime != null and endTime != ''"> 
+			<![CDATA[
+				AND a.create_time <= #{endTime}
+			]]>
+		</if>
+		order by a.update_time desc
+     	limit #{start},#{numPerPage}
+ 	</select>
+ 	
+  <select id="queryCompanyEmployeeCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		SELECT 
+			count(*)
+		FROM 
+		bs_company_employee a
+		LEFT JOIN bs_company_dept b ON a.dept_id = b.id
+		where 1=1
+     	<if test="employeeCode != null and employeeCode != ''" >
+       	AND a.employee_code like concat(concat('%', #{employeeCode}),'%')
+     	</if>
+     	<if test="employeeName != null and employeeName != ''" >
+       	AND a.employee_name like concat(concat('%', #{employeeName}),'%')
+     	</if>
+     	<if test="deptId != null and deptId != ''" >
+       	AND a.dept_id = #{deptId}
+     	</if>
+     	<if test="deptName != null and deptName != ''" >
+       	AND b.dept_name like concat(concat('%', #{deptName}),'%')
+     	</if>
+		<if test="startTime != null and startTime != ''"> 
+			<![CDATA[
+				AND a.create_time >= #{startTime}
+			]]>
+		</if>
+		<if test="endTime != null and endTime != ''"> 
+			<![CDATA[
+				AND a.create_time <= #{endTime}
+			]]>
+		</if>
+ 	</select>
+  
+</mapper>

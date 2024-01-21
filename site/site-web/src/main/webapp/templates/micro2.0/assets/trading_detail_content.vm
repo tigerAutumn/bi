@@ -1,0 +1,28 @@
+#LoadJS("resources/micro2.0/scripts/assets/trading_detail")
+#foreach($!grid in $!transsList)
+	#if($!grid.transType == "ZAN_RETURN")
+    <div class="zan_num">
+        <div class="i_one">
+            <p class="p_i_one">
+                <span class="span">$!grid.transName</span>
+                <span class="span1">$!date.formatDateTime($!grid.transTime,'yyyy-MM-dd HH:mm')</span>
+            </p>
+            <p class="i_p i_p_1 z_number zan_money" time="$!date.formatDateTime($!grid.transTime,'yyyy-MM-dd HH:mm')">+$!money.format($!grid.transAmount)<i class="zan_moneyimg zan_moneydown"></i></p>
+            <p class="i_p z_ft">交易$!grid.transStatus</p>
+        </div>
+	##下拉框
+        <div class="zan_bottom" style="display:none;" onmousewheel="return scroll(event,this)">
+
+        </div>
+    </div>
+	#else
+    <div class="i_one">
+        <p class="p_i_one">
+            <span class="span">$!grid.transName</span>
+            <span class="span1">$!date.formatDateTime($!grid.transTime,'yyyy-MM-dd HH:mm')</span>
+        </p>
+        <p class="#if($!grid.transAmount>0)i_p i_p_1">+#else i_p  i_p_two">#end$!money.format($!grid.transAmount)</p>
+        <p class="i_p z_ft">交易$!grid.transStatus</p>
+    </div>
+	#end
+#end

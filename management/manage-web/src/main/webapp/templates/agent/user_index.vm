@@ -1,0 +1,280 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="userId" value="$!userId" />
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/agent/user/index.htm')" method="post">
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	##<input type="hidden" name="pageNum" value="$!pageNum" />
+	##<input type="hidden" name="numPerPage" value="$!numPerPage" />
+        <input type="hidden" name="totalRows" value="$!totalRows" />
+        <input type="hidden" id="queryDateFlag" name="queryDateFlag" value="QUERYDATA" />
+	<div class="searchBar">
+		
+			<table class="searchContent">
+				<tr>
+					<td>
+						手机号码：<input id="search" type="mobile" name="searchMobile" value="$!search"  maxlength="11"/>
+					</td>
+					
+					<td>
+						姓名：<input id="sName" type="text" name="sName" value="$!sName"   maxlength="10"  />
+					</td>
+					<td >
+					注册日期：
+							<input name="sregistTime" maxdate="{%y}-%M-{%d}"   type="text"  id="sregistTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!sregistTime)" />
+                        	<i style="color: red">*</i>
+					</td >
+    				<td>	到  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input name="eregistTime" maxdate="{%y}-%M-{%d}" type="text" id="eregistTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!eregistTime)" />
+                        	<i style="color: red">*</i>
+    				</td>
+					<td>
+						#if($!mAgentId == "36" || $!mAgentId == "46" || $!mAgentId == "47")
+                            <button  onclick="func()" type="button">查询</button>
+						#end
+
+						#if($!mAgentId == "36" || $!mAgentId == "46" || $!mAgentId == "47")
+                            <button  onclick="exp()" type="button">导出excel</button>
+						#end
+					</td>
+				</tr>
+				#if($!mAgentId == "15")
+                    <tr>
+                        <td>
+                            <label >注册终端：</label>
+                            <select name="regTerminal" >
+                                <option value="888" #if("$!regTerminal"=="888") selected #end>全部</option>
+                                <option value="2" #if("$!regTerminal"=="2") selected #end>PC端</option>
+                                <option value="1" #if("$!regTerminal"=="1") selected  #end>H5端</option>
+                            </select>
+                        </td>
+                        <td>
+                            <label >分销渠道：</label>
+                            <select name="distributionChannel" >
+                                <option value="15" #if("$!distributionChannel"=="15") selected #end>钱报</option>
+                                <option value="999" #if("$!distributionChannel"=="999") selected #end>全部</option>
+                                <option value="36" #if("$!distributionChannel"=="36") selected #end>柯桥日报</option>
+                                <option value="47" #if("$!distributionChannel"=="47") selected #end>瑞安日报</option>
+                                <option value="46" #if("$!distributionChannel"=="46") selected #end>海宁日报</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button  onclick="func()" type="button">查询</button>
+                            <button  onclick="exp()" type="button">导出excel</button>
+                        </td>
+                    </tr>
+				#end
+
+			</table>
+	
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li class="line">line</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="148">
+		<thead>
+			<tr>
+				<th width="70">手机号</th>
+				<th width="50">姓名</th>
+				#if($!mAgentId != "" && $!mAgentId == "15")
+                    <th width="90">身份证</th>
+				#end
+				<th orderfield="total_balance"  class=#if("$!total_balance" != "") $!total_balance #else "asc" #end width="90">总资产</th>
+				<th orderfield="recommendNum"  class=#if("$!recommendNum" != "") $!recommendNum #else "asc" #end width="90">推荐次数</th>
+				<th  orderfield="can_withdraw"  class=#if("$!can_withdraw" != "") $!can_withdraw #else "asc" #end   width="90">可提现金额</th>
+				<th  orderfield="current_interest"  class=#if("$!current_interest" != "") $!current_interest #else "asc" #end  width="90">投资收益</th>
+				<th  orderfield="total_balance"  class=#if("$!total_balance" != "") $!total_balance #else "asc" #end  width="90">当前投资本金</th>
+				<th  orderfield="total_bonus"  class=#if("$!total_bonus" != "") $!total_bonus #else "asc" #end  width="90">累计推荐奖励</th>
+				<th  orderfield="total_interest"  class=#if("$!total_interest" != "") $!total_interest #else "asc" #end  width="90">累计投资收益</th>
+				<th width="146">注册日期</th>
+				#if($!mAgentId != "" && $!mAgentId == "15")
+					<th width="60">注册终端</th>
+					<th width="60">分销渠道</th>
+				#end
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $users)
+				<td>#if("$!grid.mobile" != "") $!grid.mobile#end</td>
+				<td>#if("$!grid.name" != "") $!grid.name#end</td>
+				#if($!grid.mUserAgentId != "" && $!grid.mUserAgentId == "15")
+                	<td>$!grid.idCard</td>
+				#end
+				<td ><div class="gridCol">$!money.format($!grid.sumBalance)</div></td>
+				<td>$!grid.recommendNum</td>
+				<td><div class="gridCol">$!money.format($!grid.canWithdraw)</div></td>
+				<td><div class="gridCol">$!money.format($!grid.currentInterest)</div></td>
+				<td><div class="gridCol">$!money.format($!grid.currentBanlace)</div></td>
+				<td><div class="gridCol">$!money.format($!grid.totalBonus)</div></td>
+				<td><div class="gridCol">$!money.format($!grid.totalInterest)</div></td>
+				<td>$!date.format($!grid.registTime)</td>
+				#if($!grid.mUserAgentId != "" && $!grid.mUserAgentId == "15")
+					<td>
+						#if($!grid.regTerminal == "1")
+							H5端
+						#elseif($!grid.regTerminal == "2")
+							PC端
+						#else
+						#end
+					</td>
+					<td>
+						#if($!grid.agentId == "15")
+                            钱报
+						#elseif($!grid.agentId == "36")
+                            柯桥日报
+						#elseif($!grid.agentId == "46")
+                            海宁日报
+						#elseif($!grid.agentId == "47")
+                            瑞安日报
+						#else
+						#end
+					</td>
+				#end
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+<script>
+$(function () {
+    var beginTime = $("#sregistTime").val();
+    var overTime = $("#eregistTime").val();
+	if (beginTime == "") {
+        $("#sregistTime").val(addMonth(new Date(), -1));
+	}
+
+    if (overTime == "") {
+        $("#eregistTime").val(dateFormatYYYYMMDD(new Date()));
+    }
+});
+
+
+function func(){
+	var beginTime = $("#sregistTime").val();
+	var overTime = $("#eregistTime").val();
+
+    if(beginTime == ""){
+        alert("请输入开始时间！");
+        return false;
+    }
+
+	if(overTime == ""){
+		alert("请输入结束时间！");
+		return false;
+	}
+	
+	if(beginTime != "" && overTime != "") {
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+
+		if (getDateDiff(overTime, addMonth(beginTime, 1)) > 0) {
+            alert("时间间隔不能超过一个月！！");
+            return false;
+		}
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/agent/user/index.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+	var beginTime = $("#sregistTime").val();
+	var overTime = $("#eregistTime").val();
+
+    if(beginTime == ""){
+        alert("请输入开始时间！");
+        return false;
+    }
+
+    if(overTime == ""){
+        alert("请输入结束时间！");
+        return false;
+    }
+	
+	if(beginTime != "" && overTime != ""){
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	var url = $("#APP_ROOT_PATH").val() + "/agent/user/exportXls.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+
+// 日期，在原有日期基础上，增加月数
+function dateFormatYYYYMMDD(date) {
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    return date.getFullYear() + '-' + getFormatDate(month) + '-' + getFormatDate(day);
+}
+
+// 日期，在原有日期基础上，增加月数
+function addMonth(date, months) {
+    var dateTemp;
+    if (date instanceof Date) {
+        dateTemp = date;
+	} else {
+        dateTemp = new Date(Date.parse(date.replace(/-/g,   "/")))
+	}
+    dateTemp.setMonth(dateTemp.getMonth() + months);
+    var month = dateTemp.getMonth() + 1;
+    var day = dateTemp.getDate();
+    return dateTemp.getFullYear() + '-' + getFormatDate(month) + '-' + getFormatDate(day);
+}
+
+// 日期月份/天的显示，如果是1位数，则在前面加上'0'
+function getFormatDate(arg) {
+    if (arg == undefined || arg == '') {
+        return '';
+    }
+
+    var re = arg + '';
+    if (re.length < 2) {
+        re = '0' + re;
+    }
+    return re;
+}
+
+// 计算2个日期间隔天数
+function getDateDiff(startDate, endDate) {
+    var startTime = new Date(Date.parse(startDate.replace(/-/g,   "/"))).getTime();
+    var endTime = new Date(Date.parse(endDate.replace(/-/g,   "/"))).getTime();
+    var dates = (startTime - endTime)/(1000*60*60*24);
+    return  dates;
+}
+
+
+</script>

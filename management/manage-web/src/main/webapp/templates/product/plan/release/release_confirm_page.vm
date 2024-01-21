@@ -1,0 +1,97 @@
+<style type="text/css" >
+	.dd{
+		width:134px;
+		height:30px;
+		display:inline-block;
+	}
+	
+	.dd_user_select{
+		width:134px;
+		height:30px;
+		display:inline-block;
+	}
+</style>
+<div class="pageContent" >
+	<form method="post" id="dialogForm" action="$!env.getWebURL('')/product/release/release.htm" onsubmit="return validateCallback(this, thisDialogAjaxDone)">
+		<input type="hidden" name="productId" id="productIdConfirm" value="$!productId"/>
+		<input type="hidden" name="realStartTime" id="realStartTime" value="$!date.format($!startTime)"/>
+		<input type="hidden" name="realEndTime" id="realEndTime" value="$!date.format($!endTime)"/>
+		<div class="pageFormContent" layoutH="56">
+            <div style="padding: 10px;">
+				<span style="font-size: 16px;">计划名称：</span>
+				<span style="font-size: 16px;">$!name</span>
+			</div>
+            <div style="padding: 10px;">
+				<span style="font-size: 16px;">金额：</span>
+				<span style="font-size: 16px;">$!money.format($!maxTotalAmount)元</span>
+			</div>
+			<div style="padding: 10px;">
+				<span style="font-size: 16px;">期限：</span>
+				<span style="font-size: 16px;">
+					#set($Integer = 0)
+					
+				    #if(0 > $Integer.parseInt("$!term"))
+						 #set($termNum = $Integer.parseInt("$!term")*-1 ) $!termNum 天
+                    #else
+						 $!term 个月
+                    #end
+					
+				</span>
+			</div>
+			<div style="padding: 10px;">
+				<span style="font-size: 16px;">利率：</span>
+				<span style="font-size: 16px;">$!baseRate %</span>
+			</div style="padding: 10px;">
+			<div style="padding: 10px;">
+				<span style="font-size: 16px;float: left;">开始时间：</span>
+				<span style="font-size: 16px;">
+					<input type="text" id="startTime" name="startTime" value="$!date.formatDateTime($!startTime, 'yyyy-MM-dd HH:mm')" class="date textInput readonly" datefmt="yyyy-MM-dd HH:mm" readonly="true">
+				</span>
+			</div>
+			<div style="padding-top: 26px; padding-left: 10px;">
+				<span style="font-size: 16px;float: left;">结束时间：</span>
+				<span style="font-size: 16px;">
+					#if($!endTime)
+						<input type="text" id="endTime" name="endTime" value="$!date.formatDateTime($!endTime, 'yyyy-MM-dd HH:mm')" class="date textInput readonly" datefmt="yyyy-MM-dd HH:mm" readonly="true">
+					#else
+						<input type="text" id="endTime" name="endTime" class="date textInput readonly" datefmt="yyyy-MM-dd HH:mm" readonly="true">
+					#end
+					
+				</span>
+			</div>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li>
+					<div class="buttonActive">
+						<div class="buttonContent">
+							<button type="button" onclick="confirm(this)" >确定</button>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
+							<button type="button" class="close">取消</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	function confirm(obj) {
+		$("#dialogForm").submit();
+	}
+	
+	function thisDialogAjaxDone(json){
+      if (json.statusCode == "200"){
+			alertMsg.correct(json.message);
+			$.pdialog.closeCurrent();
+			navTab.reload("$!env.getWebURL('/product/release/release_index.htm')");
+      } else {
+		alertMsg.error(json.message);
+	  }
+	}
+</script>

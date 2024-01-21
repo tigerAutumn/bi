@@ -1,0 +1,137 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!product.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!product.numPerPage" />
+	<input type="hidden" name="orderField" value="$!{param.orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{param.orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" method="post" rel="pagerForm" action="$env.getWebURL('/account/checkError/index.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" name="pageNum" value="$!product.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!product.numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+			<tbody><tr>
+				<td>
+					开始日期：<input type="text" readonly="true" class="date textInput readonly" name="beginTime" id="beginTime" value="$!date.format($!product.beginTime)">
+				</td>
+				<td>
+					结束日期：<input type="text" readonly="true" class="date textInput readonly" name="overTime" id="overTime" value="$!date.format($!product.overTime)">
+				</td>
+				<td>
+					<input type="button" id="search" onclick="func()" value="查询"/>
+                </td>
+				<td>
+						 <a target="dialog" href="$!env.getWebURL('/account/acctTransRepeatSend/index.htm')" target="ajax" rel="jbsxBox">差错产品转账购买重发</a>
+					
+                </td>
+				<td>
+						 <a title="该操作将会统计前一天所有已对账的用户产品，并发起19付钱包转账和达飞理财购买！！！确定发起转账购买？" target="ajaxTodo" href="$!env.getWebURL('/account/acctTransAllSend.htm')" target="ajax" rel="jbsxBox">前一天所有已对账产品转账购买触发</a>
+					
+                </td>
+                <td>
+                    <a target="navTab" href="$!env.getWebURL('/account/sysReturnMoneyNotice/index.htm')" target="ajax" rel="jbsxBox">系统回款通知触发</a>
+                </td>
+			</tr>
+		</tbody></table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="8%">记账流水号</th>
+				<th width="8%">对账流水号</th>
+                <th width="8%">用户名</th>
+				<th width="4%">系统状态</th>
+				<th width="6%">对账文件状态</th>
+				<th width="5%">是否已处理</th>
+				<th width="7%">处理人</th>
+				<th width="7%">对账文件编号</th>
+				<th width="10%">处理时间</th>
+				<th width="20%">差错信息</th>
+				<th width="8%">备注</th>
+				<th width="9%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($product in $accountList)
+			<tr target="sid_user" rel="1">
+                <td>
+					<a target="dialog" href="$!env.getWebURL('/account/transfer/detail.htm')?id=$!product.transJnlId" target="ajax" rel="jbsxBox" width="1190" height="600">$!product.transJnlId (查看详情)</a>
+				</td>
+				<td><a target="dialog" href="$!env.getWebURL('/account/checkJnl/detail.htm')?id=$!product.checkJnlId" target="ajax" rel="jbsxBox">$!product.checkJnlId (查看详情)</a></td>
+				<td>
+					<a target="dialog" href="$!env.getWebURL('/bsuser/detail.htm')?userId=$!product.userId" target="ajax" rel="jbsxBox">$!product.bsUserName (查看详情)
+				</td>
+                <td>#if($!product.sysStatus == 1)成功 #elseif($!product.sysStatus == 2) 失败 #elseif($!product.sysStatus == 3) 超时 #elseif($!product.sysStatus == 4)处理中 #end</td>
+	            <td>#if($!product.checkFileStatus == 1)文件有记录 金额不符合#elseif($!product.checkFileStatus == 2) 文件有记录 系统无记录 #else 文件无记录  #end</td>
+                <td>#if($!product.isDeal == 1) 未处理 #else 已处理 #end</td>
+				<td>
+					#if($!product.mUserName)
+						<a target="dialog" href="$!env.getWebURL('/user/management/detail.htm')?flag=update&op=none&id=$!product.dealUserId" target="ajax" rel="jbsxBox">$!product.mUserName (查看详情)</a>
+					#end
+                 </td>
+				<td>$!product.checkFileId</td>
+				<td>$!date.format($!product.dealTime)</td>
+				<td>$!product.info</td>
+				<td>$!product.note</td>
+				<td>
+					#if($!product.isDeal == 1)
+						<a title="是否确认要处理？" target="ajaxTodo" href="$env.getWebURL('/account/checkError/check.htm')?id=$!product.id" class="btnSelect">我要处理</a>
+					#else
+						已受理
+					#end
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!product.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!product.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!product.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!product.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!product.totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!product.totalRows" numPerPage="$!product.numPerPage" currentPage="$!product.pageNum"></div>
+
+	</div>
+</div>
+	
+<script>
+function acctTrans(){
+	
+}
+
+function func(){
+	var beginTime = $("#beginTime").val();
+	var overTime = $("#overTime").val();
+	
+	if(beginTime != "" && overTime == ""){
+		alert("请输入结束时间！");
+		return false;
+	}
+	
+	if(beginTime == "" && overTime != ""){
+		alert("请输入开始时间！");
+		return false;
+	}
+	
+	if(beginTime != "" && overTime != ""){
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	$("#myform").submit();
+}
+
+</script>

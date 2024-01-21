@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.mall.dao.MallAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.mall.model.MallAccount" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="account_type" property="accountType" jdbcType="VARCHAR" />
+    <result column="balance" property="balance" jdbcType="BIGINT" />
+    <result column="avaliable_balance" property="avaliableBalance" jdbcType="BIGINT" />
+    <result column="freeze_balance" property="freezeBalance" jdbcType="BIGINT" />
+    <result column="total_gain_points" property="totalGainPoints" jdbcType="BIGINT" />
+    <result column="total_used_points" property="totalUsedPoints" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, account_type, balance, avaliable_balance, freeze_balance, total_gain_points, 
+    total_used_points, status, note, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.mall.model.MallAccountExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from mall_account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from mall_account
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from mall_account
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.mall.model.MallAccountExample" >
+    delete from mall_account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.mall.model.MallAccount" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mall_account (id, user_id, account_type, 
+      balance, avaliable_balance, freeze_balance, 
+      total_gain_points, total_used_points, status, 
+      note, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{accountType,jdbcType=VARCHAR}, 
+      #{balance,jdbcType=BIGINT}, #{avaliableBalance,jdbcType=BIGINT}, #{freezeBalance,jdbcType=BIGINT}, 
+      #{totalGainPoints,jdbcType=BIGINT}, #{totalUsedPoints,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, 
+      #{note,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.mall.model.MallAccount" useGeneratedKeys="true" keyProperty="id">
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mall_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="accountType != null" >
+        account_type,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="avaliableBalance != null" >
+        avaliable_balance,
+      </if>
+      <if test="freezeBalance != null" >
+        freeze_balance,
+      </if>
+      <if test="totalGainPoints != null" >
+        total_gain_points,
+      </if>
+      <if test="totalUsedPoints != null" >
+        total_used_points,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="accountType != null" >
+        #{accountType,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=BIGINT},
+      </if>
+      <if test="avaliableBalance != null" >
+        #{avaliableBalance,jdbcType=BIGINT},
+      </if>
+      <if test="freezeBalance != null" >
+        #{freezeBalance,jdbcType=BIGINT},
+      </if>
+      <if test="totalGainPoints != null" >
+        #{totalGainPoints,jdbcType=BIGINT},
+      </if>
+      <if test="totalUsedPoints != null" >
+        #{totalUsedPoints,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.mall.model.MallAccountExample" resultType="java.lang.Integer" >
+    select count(*) from mall_account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update mall_account
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.accountType != null" >
+        account_type = #{record.accountType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.balance != null" >
+        balance = #{record.balance,jdbcType=BIGINT},
+      </if>
+      <if test="record.avaliableBalance != null" >
+        avaliable_balance = #{record.avaliableBalance,jdbcType=BIGINT},
+      </if>
+      <if test="record.freezeBalance != null" >
+        freeze_balance = #{record.freezeBalance,jdbcType=BIGINT},
+      </if>
+      <if test="record.totalGainPoints != null" >
+        total_gain_points = #{record.totalGainPoints,jdbcType=BIGINT},
+      </if>
+      <if test="record.totalUsedPoints != null" >
+        total_used_points = #{record.totalUsedPoints,jdbcType=BIGINT},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update mall_account
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      account_type = #{record.accountType,jdbcType=VARCHAR},
+      balance = #{record.balance,jdbcType=BIGINT},
+      avaliable_balance = #{record.avaliableBalance,jdbcType=BIGINT},
+      freeze_balance = #{record.freezeBalance,jdbcType=BIGINT},
+      total_gain_points = #{record.totalGainPoints,jdbcType=BIGINT},
+      total_used_points = #{record.totalUsedPoints,jdbcType=BIGINT},
+      status = #{record.status,jdbcType=INTEGER},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.mall.model.MallAccount" >
+    update mall_account
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="accountType != null" >
+        account_type = #{accountType,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=BIGINT},
+      </if>
+      <if test="avaliableBalance != null" >
+        avaliable_balance = #{avaliableBalance,jdbcType=BIGINT},
+      </if>
+      <if test="freezeBalance != null" >
+        freeze_balance = #{freezeBalance,jdbcType=BIGINT},
+      </if>
+      <if test="totalGainPoints != null" >
+        total_gain_points = #{totalGainPoints,jdbcType=BIGINT},
+      </if>
+      <if test="totalUsedPoints != null" >
+        total_used_points = #{totalUsedPoints,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.mall.model.MallAccount" >
+    update mall_account
+    set user_id = #{userId,jdbcType=INTEGER},
+      account_type = #{accountType,jdbcType=VARCHAR},
+      balance = #{balance,jdbcType=BIGINT},
+      avaliable_balance = #{avaliableBalance,jdbcType=BIGINT},
+      freeze_balance = #{freezeBalance,jdbcType=BIGINT},
+      total_gain_points = #{totalGainPoints,jdbcType=BIGINT},
+      total_used_points = #{totalUsedPoints,jdbcType=BIGINT},
+      status = #{status,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  	<select id="selectMallAccountByIdForLock" resultMap="BaseResultMap">
+  		SELECT a.* FROM mall_account a WHERE a.id = #{pAcctId} FOR UPDATE
+  	</select>
+
+  <select id="selectMallUserPointsList" resultType="com.pinting.mall.model.vo.MallUserPointsVO" parameterType="com.pinting.mall.model.vo.MallUserPointsVO" >
+    SELECT
+      a.id, b.mobile, a.total_gain_points, a.avaliable_balance
+    FROM mall_account a, bs_user b
+    <where>
+      a.user_id = b.id
+      <if test="searchMobile != null and searchMobile != ''">
+        AND b.mobile like concat(concat('%', #{searchMobile,jdbcType=VARCHAR}),'%')
+      </if>
+      <if test="startTotalGainPoints != null and startTotalGainPoints != ''">
+        AND a.total_gain_points >= #{startTotalGainPoints}
+      </if>
+      <if test="endTotalGainPoints != null and endTotalGainPoints != ''">
+        AND a.total_gain_points &lt;= #{endTotalGainPoints}
+      </if>
+      <if test="startAvaliableBalance != null and startAvaliableBalance != ''">
+        AND a.avaliable_balance >= #{startAvaliableBalance}
+      </if>
+      <if test="endAvaliableBalance != null and endAvaliableBalance != ''">
+        AND a.avaliable_balance &lt;= #{endAvaliableBalance}
+      </if>
+    </where>
+    ORDER BY a.update_time DESC
+  </select>
+
+  <select id="selectMallUserPointsCount" resultType="java.lang.Integer" parameterType="com.pinting.mall.model.vo.MallUserPointsVO" >
+    SELECT
+      COUNT(a.id)
+    FROM mall_account a, bs_user b
+    <where>
+      a.user_id = b.id
+      <if test="searchMobile != null and searchMobile != ''">
+         AND b.mobile like concat(concat('%', #{searchMobile,jdbcType=VARCHAR}),'%')
+      </if>
+      <if test="startTotalGainPoints != null and startTotalGainPoints != ''">
+        AND a.total_gain_points >= #{startTotalGainPoints}
+      </if>
+      <if test="endTotalGainPoints != null and endTotalGainPoints != ''">
+        AND a.total_gain_points &lt;= #{endTotalGainPoints}
+      </if>
+      <if test="startAvaliableBalance != null and startAvaliableBalance != ''">
+        AND a.avaliable_balance >= #{startAvaliableBalance}
+      </if>
+      <if test="endAvaliableBalance != null and endAvaliableBalance != ''">
+        AND a.avaliable_balance &lt;= #{endAvaliableBalance}
+      </if>
+    </where>
+  </select>
+
+</mapper>

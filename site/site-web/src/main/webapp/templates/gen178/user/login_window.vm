@@ -1,0 +1,68 @@
+<!--beijing-->
+<div class="body_bg_regular"></div>
+<div class="login_list" id="login_window">
+    <h3 class="login_list_title"><span>登录</span></h3>
+    <form class="login_list_trform" action="$!env.get('gen.server.web')/gen178/user/login" method="post" id="generalForm">
+        <div class="login_input">
+            <label class="top_p">
+                <i class="Z_imgi Z_name"></i>
+                <span class="top_p_line"></span>
+                <span class="account_error error"></span>
+                <input type="text" id="nick" name="nick" value="$!NICK" maxlength="16" placeholder="手机号/用户名" class="login_list_trtxt top_input"/>
+			</label>
+		</div>
+        <div class="login_input">
+            <label class="top_p">
+                <span class="pasword_interface"></span>
+                <i class="Z_imgi Z_password"></i>
+                <span class="top_p_line"></span>
+                <span class="password_error error"></span>
+        		<input type="password" id="password" name="password" maxlength="16" placeholder="密码" class="login_list_trpwd top_input"/>
+            </label>
+        </div>
+    </form>
+    <div class="login_list_tra msg" id="msg"></div>
+    <div class="login_list_trabtn" type="button" id="subbt">登&nbsp;&nbsp;录</div>
+
+    <div class="login_list_interface">
+        <div class="login_list_interface_tleft">
+            没有账号？<a href="$!env.get('gen.server.web')/gen178/user/register_first_new_index" class="login_list_trap">立即注册</a>
+        </div>
+        <div class="login_list_interface_tright">
+            <a href="$!env.get('gen.server.web')/gen178/user/forget_password_first" class="login_list_trap">忘记密码？</a>
+        </div>
+	</div>
+    <div class="login_list_tratxt">
+        <img src="$!env.get('gen.server.web')/resources/gen178/images/regular/login_list_safe.png" style="position:relative;top:1px;margin-right: 5px;">您的信息已使用SSL加密技术，数据传输安全
+    </div>
+    <div class="login_closed">
+        <div class="closed_line"></div>
+        <div class="closed_btn_bom">
+            <div class="closed_btn"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function clickme(){
+        //输入框单击变黄 失去焦点变黑
+        $('.top_input').focus(function(){
+            $(this).parent('.top_p').addClass("label_focuse");
+            $(this).siblings(".error").hide();
+        });
+        $('.top_input').blur(function(){
+            $(this).parent('.top_p').removeClass("label_focuse");
+        });
+
+        //显示、隐藏密码
+        $(".pasword_interface").click(function(){
+            if($("#password").attr("type") == "password"){
+                $("#password").attr("type","text");
+                $(this).addClass("interface_show");
+            }else{
+                $("#password").attr("type","password");
+                $(this).removeClass("interface_show");
+            }
+        })
+    })
+</script>

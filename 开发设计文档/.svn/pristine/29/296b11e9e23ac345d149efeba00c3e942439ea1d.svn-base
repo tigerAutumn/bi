@@ -1,0 +1,49 @@
+# 退票订单查询
+## 需求背景
++ 退票资金均为向财务借款，财务提前充值到归集户给运营执行退票
++ 退票时归集户代发到存管户为批量代发，退票数据参杂在各个批次中，财务无法知道哪些退票数据在哪个批次中，无法查找出对应的出款凭证
++ 故开发此功能，以期财务人员可以顺利自行对应出退票数据所在代发批次
+
+## 需求说明
++ 查询退票数据
++ 查询退票数据对应的代发批次号和代发金额
++ 提供导出
+
+## 实现逻辑
+### 插入菜单
+```
+    -- m_menu
+    INSERT INTO `m_menu` (`url`, `parent_id`, `order_num`, `name`, `note`) VALUES ('/financial/rebateOrderQueryIndex.htm', 70, 44, '退票数据批量订单号查询', NULL);
+```
+### 查询语句
+```
+    -- 查询退票条数
+    SELECT COUNT(1) 
+        FROM ln_deposition_repay_schedule 
+        WHERE partner_repay_id like 'RGCL%'
+            AND DATE_FORMAT(finish_time,'%Y-%m-%d') >= '2018-05-16'
+            AND DATE_FORMAT(finish_time,'%Y-%m-%d') <= '2018-05-16'
+
+    -- 查询退票列表
+    SELECT b.partner_loan_id, b.approve_amount, a.dk_order_no, s.plan_total, a.finish_time 
+            FROM ln_deposition_repay_schedule a, ln_loan b,
+            (SELECT a1.dk_order_no, sum(a1.plan_total) plan_total
+                FROM ln_deposition_repay_schedule a1
+                WHERE a1.partner_repay_id like 'RGCL%'
+                    AND DATE_FORMAT(a1.finish_time,'%Y-%m-%d') >= '2018-05-16'
+                    AND DATE_FORMAT(a1.finish_time,'%Y-%m-%d') <= '2018-05-16'
+                GROUP BY a1.dk_order_no
+                ) s
+            WHERE a.loan_id = b.id
+            AND s.dk_order_no = a.dk_order_no
+            AND a.partner_repay_id like 'RGCL%'
+            AND DATE_FORMAT(a.finish_time,'%Y-%m-%d') >= '2018-05-16'
+            AND DATE_FORMAT(a.finish_time,'%Y-%m-%d') <= '2018-05-16'
+            ORDER BY a.finish_time DESC
+
+    -- 资产端借款编号  partner_loan_id
+    -- 借款金额  approve_amount
+    -- 批量代付订单号  dk_order_no
+    -- 代付金额  plan_total
+    -- 代付日期  finish_time
+```

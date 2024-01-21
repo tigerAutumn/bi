@@ -1,0 +1,160 @@
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	<form id="detailModifiPageForm" method="post" action="$env.getWebURL('/userAddressInfo/detailSave.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+        #Hidden("detailAddressInfoId", "$!bsUserAddressInfo.id")
+        #Hidden("detailUserId", "$!detailModifiUserId")
+        #Hidden("isDefault_id","$!bsUserAddressInfo.isDefault")
+        #Hidden("isDefaultVal", "")
+        <div class="pageFormContent nowrap" layoutH="97">
+			<dl>
+				<dt >
+                    姓名：
+                </dt>
+				<dd >
+					<input type="text" id="detailUserName_id" class="required" readonly="true" name="detailUserName" maxlength="4" value="$!detailModifiUserName" style="width:250px; height:16px" />
+                </dd>
+			</dl>
+            <dl>
+                <dt >
+                    手机号：
+                </dt>
+                <dd >
+                    <input type="text" id="detailMobile_id" class="required" readonly="true" name="detailMobile" maxlength="11" value="$!detailModifiMobile" style="width:250px; height:16px" />
+                </dd>
+            </dl>
+            <dl>
+                <dt >
+                    收货人：
+                </dt>
+                <dd >
+                    <input type="text" id="detailConsignee_id" class="required" name="detailConsignee" maxlength="15" value="$!bsUserAddressInfo.consignee" style="width:250px; height:16px" />
+                </dd>
+            </dl>
+            <dl>
+                <dt >
+                    收货手机号：
+                </dt>
+                <dd >
+                    <input type="text" id="detailConsigneeMobile_id" class="required" name="detailConsigneeMobile" maxlength="11" value="$!bsUserAddressInfo.consigneeMobile" style="width:250px; height:16px" />
+                </dd>
+            </dl>
+            <dl>
+                <dt >
+                    地址：
+                </dt>
+                <dd >
+                    <textarea class="required textInput" id="detailConsigneeAddress_id" rows="2" cols="25"  class="required" name="detailConsigneeAddress" >$!bsUserAddressInfo.consigneeAddress</textarea>
+                </dd>
+            </dl>
+            <dl>
+                <dt >
+                    默认地址：<i style="color: red">*</i></dt>
+                <input type="radio" id="is_default_yes" name="isDefault" value="YES" />是
+                <input type="radio" id="is_default_no" name="isDefault" value="NO" checked="checked" />否
+                </dt>
+            </dl>
+
+		</div>
+		<div class="formBar">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_detailModifiPageForm()">保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+    // 单选框回显
+    var isDefaultValue = $.trim($('#isDefault_id').val());
+    if(isDefaultValue == "YES"){
+        $("#is_default_yes").attr("checked","true");
+    }else if(isDefaultValue == "NO") {
+        $("#is_default_no").attr("checked","true");
+    }
+
+	function submit_detailModifiPageForm(){
+        var detailUserId = $("#detailUserId");
+        var detailAddressInfoId = $("#detailAddressInfoId");
+
+        var detailUserName = $.trim($("#detailUserName_id").val());
+        var detailMobile = $.trim($("#detailMobile_id").val());
+        var detailConsignee = $.trim($("#detailConsignee_id").val());
+        var detailConsigneeMobile = $.trim($("#detailConsigneeMobile_id").val());
+        var detailConsigneeAddress = $.trim($("#detailConsigneeAddress_id").val());
+
+        var isDefaultVal= $('input:radio[name="isDefault"]:checked').val();
+        $("#isDefaultVal").val(isDefaultVal);
+
+        // 内容正则
+        var regContent = /^[a-zA-Z0-9\u4E00-\u9FA5]+$/;
+        // 手机号码正则
+        var regMobile = new RegExp("^[1][34587]\\d{9}$");
+
+		// 1、非空校验
+		if((detailUserName == null || detailUserName == "")){
+		    alertMsg.warn("姓名不能为空，请输入对应的信息！");
+        	return false;
+		}
+        // 2、格式校验
+        if(!regContent.test(detailUserName)) {
+            alertMsg.warn("姓名不能含有特殊字符，请重新输入！");
+            return false;
+        }
+
+        if((detailMobile == null || detailMobile == "")){
+            alertMsg.warn("手机号不能为空，请输入对应的信息！");
+            return false;
+        }
+        if(!regMobile.test(detailMobile)) {
+            alertMsg.warn("手机号格式不正确，请重新输入！");
+            return false;
+        }
+
+        if((detailConsignee == null || detailConsignee == "")){
+            alertMsg.warn("收货人不能为空，请输入对应的信息！");
+            return false;
+        }
+
+        if(!regContent.test(detailConsignee)) {
+            alertMsg.warn("收货人不能含有特殊字符，请重新输入！");
+            return false;
+        }
+
+        if((detailConsigneeMobile == null || detailConsigneeMobile == "")){
+            alertMsg.warn("收货手机号不能为空，请输入对应的信息！");
+            return false;
+        }
+        if(!regMobile.test(detailConsigneeMobile)) {
+            alertMsg.warn("收货手机号格式不正确，请重新输入！");
+            return false;
+        }
+
+        if((detailConsigneeAddress == null || detailConsigneeAddress == "")){
+            alertMsg.warn("地址不能为空，请输入对应的信息！");
+            return false;
+        }
+
+        $("#detailModifiPageForm").submit();
+	}
+
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "301") {
+            alertMsg.warn(json.message);
+		}else if(json.statusCode == "302"){
+            alertMsg.warn(json.message);
+        }else if (json.statusCode == "200") {
+			alertMsg.correct('操作成功!');
+            $.pdialog.closeCurrent();
+            var userId = json.userId;
+            navTab.reload("$env.getWebURL('/userAddressInfo/detail_review.htm?userId=')"+userId);
+##            navTab.reload("$env.getWebURL('/userAddressInfo/getList.htm')");
+		} else {
+			alertMsg.error('操作失败!');
+		}
+	}
+
+
+	
+</script>

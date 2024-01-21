@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsActiveUserRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsActiveUserRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="terminal_type" property="terminalType" jdbcType="VARCHAR" />
+    <result column="login_date" property="loginDate" jdbcType="DATE" />
+    <result column="src_url" property="srcUrl" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+   <resultMap id="BaseResultVOMap" type="com.pinting.business.model.vo.BsActiveUserRecordVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="terminal_type" property="terminalType" jdbcType="VARCHAR" />
+    <result column="login_date" property="loginDate" jdbcType="DATE" />
+    <result column="src_url" property="srcUrl" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="sum" property="sum" jdbcType="INTEGER" />
+    <result column="h5num" property="h5num" jdbcType="INTEGER" />
+    <result column="pcnum" property="pcnum" jdbcType="INTEGER" />
+    <result column="appnum" property="appnum" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, terminal_type, login_date, src_url, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsActiveUserRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_active_user_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_active_user_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_active_user_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsActiveUserRecordExample" >
+    delete from bs_active_user_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsActiveUserRecord" >
+    insert into bs_active_user_record (id, user_id, terminal_type, 
+      login_date, src_url, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{terminalType,jdbcType=VARCHAR}, 
+      #{loginDate,jdbcType=DATE}, #{srcUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsActiveUserRecord" >
+    insert into bs_active_user_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="terminalType != null" >
+        terminal_type,
+      </if>
+      <if test="loginDate != null" >
+        login_date,
+      </if>
+      <if test="srcUrl != null" >
+        src_url,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="terminalType != null" >
+        #{terminalType,jdbcType=VARCHAR},
+      </if>
+      <if test="loginDate != null" >
+        #{loginDate,jdbcType=DATE},
+      </if>
+      <if test="srcUrl != null" >
+        #{srcUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsActiveUserRecordExample" resultType="java.lang.Integer" >
+    select count(*) from bs_active_user_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_active_user_record
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.terminalType != null" >
+        terminal_type = #{record.terminalType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginDate != null" >
+        login_date = #{record.loginDate,jdbcType=DATE},
+      </if>
+      <if test="record.srcUrl != null" >
+        src_url = #{record.srcUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_active_user_record
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      terminal_type = #{record.terminalType,jdbcType=VARCHAR},
+      login_date = #{record.loginDate,jdbcType=DATE},
+      src_url = #{record.srcUrl,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsActiveUserRecord" >
+    update bs_active_user_record
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="terminalType != null" >
+        terminal_type = #{terminalType,jdbcType=VARCHAR},
+      </if>
+      <if test="loginDate != null" >
+        login_date = #{loginDate,jdbcType=DATE},
+      </if>
+      <if test="srcUrl != null" >
+        src_url = #{srcUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsActiveUserRecord" >
+    update bs_active_user_record
+    set user_id = #{userId,jdbcType=INTEGER},
+      terminal_type = #{terminalType,jdbcType=VARCHAR},
+      login_date = #{loginDate,jdbcType=DATE},
+      src_url = #{srcUrl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+   <select id="selectByRecord" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsActiveUserRecord" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_active_user_record
+    where user_id = #{userId,jdbcType=INTEGER} 
+    and terminal_type = #{terminalType,jdbcType=VARCHAR}
+    and login_date = #{loginDate,jdbcType=DATE}
+  </select>
+  
+  
+  <select id="selectList" resultMap="BaseResultVOMap" parameterType="map" >
+    select t.sum sum ,t.login_date login_date,sum(t.h5num) h5num,sum(t.pcnum) pcnum,sum(t.appnum) appnum from
+    (select aa.*,CASE when bb.terminal_type ='H5' then  num else 0 end as h5num,
+		CASE when bb.terminal_type ='PC' then  num else 0 end as pcnum,
+		CASE when bb.terminal_type ='APP' then  num else 0 end as appnum from (
+			select count(DISTINCT a.user_id) sum,a.login_date from bs_active_user_record a,
+			bs_user b where b.id = a.user_id 
+			<!--  -->
+			<if test="agentsFlag != null and agentsFlag == '-2'">
+			<!-- 普通用户和渠道用户 -->
+			 				and (
+					b.agent_id in
+				 	<foreach collection="agentIds" item="agentId" index="index"
+		            open="(" close=")" separator=",">
+		            #{agentId}
+		        	</foreach>
+		        	OR b.agent_id is null
+				)
+			 </if>
+			 <if test="agentsFlag != null and agentsFlag == '-1'">
+				 <!-- 普通用户 -->
+			 	and b.agent_id is null 
+			 </if>
+			 <if test="agentsFlag == null and agentIds != null">
+				 <!-- 渠道用户 -->
+			 	and b.agent_id in
+			 	<foreach collection="agentIds" item="agentId" index="index"
+	            open="(" close=")" separator=",">
+	            #{agentId}
+	        	</foreach>
+			 </if>
+			GROUP BY a.login_date)aa
+		left join 
+			(select count(DISTINCT a1.user_id) num,a1.login_date,a1.terminal_type from bs_active_user_record a1,
+			 bs_user b1 where b1.id = a1.user_id 
+			 <if test="agentsFlag != null and agentsFlag == '-2'">
+			 				and (
+					b1.agent_id in
+				 	<foreach collection="agentIds" item="agentId" index="index"
+		            open="(" close=")" separator=",">
+		            #{agentId}
+		        	</foreach>
+		        	OR b1.agent_id is null
+				)
+			 </if>
+			 <if test="agentsFlag != null and agentsFlag == '-1'">
+			 	and b1.agent_id is null 
+			 </if>
+			 <if test="agentsFlag == null and agentIds != null">
+			 	and b1.agent_id in
+			 	<foreach collection="agentIds" item="agentId" index="index"
+	            open="(" close=")" separator=",">
+	            #{agentId}
+	        	</foreach>
+			 </if>
+			 GROUP BY a1.login_date,a1.terminal_type)bb 
+		on aa.login_date = bb.login_date 
+	)t where 1=1 
+	<if test="startDate != null and startDate != ''">
+		and t.login_date >= DATE_FORMAT(#{startDate},'%Y-%m-%d')
+	</if>
+	<if test="endDate != null and endDate != ''">
+		and t.login_date &lt;= DATE_FORMAT(#{endDate},'%Y-%m-%d')
+	</if>
+	GROUP BY t.login_date order by t.login_date desc 
+  LIMIT #{start}, #{numPerPage}
+  </select>
+  
+   <select id="countList" resultType="java.lang.Integer" parameterType="map" >
+   select count(*) from (
+   select t.sum,t.login_date,sum(t.h5num),sum(t.pcnum),sum(t.appnum) from
+    (select aa.*,CASE when bb.terminal_type ='H5' then  num else 0 end as h5num,
+		CASE when bb.terminal_type ='PC' then  num else 0 end as pcnum,
+		CASE when bb.terminal_type ='APP' then  num else 0 end as appnum from (
+			select count(DISTINCT a.user_id) sum,a.login_date from bs_active_user_record a,
+			bs_user b where b.id = a.user_id 
+			<if test="agentsFlag != null and agentsFlag == '-2'">
+				and (
+					b.agent_id in
+				 	<foreach collection="agentIds" item="agentId" index="index"
+		            open="(" close=")" separator=",">
+		            #{agentId}
+		        	</foreach>
+		        	OR b.agent_id is null
+				)
+			 </if>
+			 <if test="agentsFlag != null and agentsFlag == '-1'">
+			 	and b.agent_id is null 
+			 </if>
+			 <if test="agentsFlag == null and agentIds != null">
+			 	and b.agent_id in
+			 	<foreach collection="agentIds" item="agentId" index="index"
+	            open="(" close=")" separator=",">
+	            #{agentId}
+	        	</foreach>
+			 </if>
+			GROUP BY a.login_date)aa
+		left join 
+			(select count(DISTINCT a1.user_id) num,a1.login_date,a1.terminal_type from bs_active_user_record a1,
+			 bs_user b1 where b1.id = a1.user_id 
+			 <if test="agentsFlag != null and agentsFlag == '-2'">
+				and (
+					b1.agent_id in
+				 	<foreach collection="agentIds" item="agentId" index="index"
+		            open="(" close=")" separator=",">
+		            #{agentId}
+		        	</foreach>
+		        	OR b1.agent_id is null
+				)
+			 </if>
+			 <if test="agentsFlag != null and agentsFlag == '-1'">
+			 	and b1.agent_id is null 
+			 </if>
+			 <if test="agentsFlag == null and agentIds != null">
+			 	and b1.agent_id in
+				<foreach collection="agentIds" item="agentId" index="index"
+	            open="(" close=")" separator=",">
+	            #{agentId}
+	        	</foreach>
+			 </if>
+			 GROUP BY a1.login_date,a1.terminal_type)bb 
+		on aa.login_date = bb.login_date 
+	)t
+	where 1=1 
+	<if test="startDate != null and startDate != ''">
+		and t.login_date >= DATE_FORMAT(#{startDate},'%Y-%m-%d')
+	</if>
+	<if test="endDate != null and endDate != ''">
+		and t.login_date &lt;= DATE_FORMAT(#{endDate},'%Y-%m-%d')
+	</if> 
+	GROUP BY t.login_date) tab
+   </select>
+</mapper>

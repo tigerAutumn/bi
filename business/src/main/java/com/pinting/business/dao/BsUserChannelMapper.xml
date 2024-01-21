@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsUserChannelMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsUserChannel" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="bank_channel_id" property="bankChannelId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="BaseResultMapVO" type="com.pinting.business.model.vo.BsUserChannelVO" extends="BaseResultMap" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="payId" property="payId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="bank_id" property="bankId" jdbcType="INTEGER" />
+    <result column="pay19_bank_code" property="pay19BankCode" jdbcType="VARCHAR" />
+    <result column="channel" property="channel" jdbcType="VARCHAR" />
+    <result column="channel_priority" property="channelPriority" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, bank_channel_id, create_time
+  </sql>
+  <!-- 用户优先支付渠道是否已存在 -->
+  <sql id="Base_UserChannel" >
+      <if test="id != null and id != 0" >
+        and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="userId != null and userId != '' and bankChannelId != null and bankChannelId != '' " >
+        and user_id = #{userId,jdbcType=VARCHAR} and bank_channel_id = #{bankChannelId,jdbcType=VARCHAR}
+    </if>
+  </sql>
+  <sql id="Base_UserChannel_List" >
+   	<if test="userName != null and userName != '' " >
+   		and u.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+   	</if>
+	<if test="mobile != null and mobile != '' " >
+   		and u.mobile like concat(concat('%', #{mobile,jdbcType=VARCHAR}),'%')
+   	</if>
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsUserChannelExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_user_channel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+<!--   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_user_channel
+    where id = #{id,jdbcType=INTEGER}
+  </select> -->
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMapVO" parameterType="java.lang.Integer" >
+    select 
+  	b.id,b.user_id,b.bank_channel_id,b.create_time,u.user_name userName 
+    from bs_user_channel b, bs_user u 
+    where b.id = #{id,jdbcType=INTEGER} and b.user_id = u.id 
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_user_channel
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsUserChannelExample" >
+    delete from bs_user_channel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsUserChannel" >
+    insert into bs_user_channel (id, user_id, bank_channel_id, 
+      create_time)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{bankChannelId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsUserChannel" >
+    insert into bs_user_channel
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="bankChannelId != null" >
+        bank_channel_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="bankChannelId != null" >
+        #{bankChannelId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsUserChannelExample" resultType="java.lang.Integer" >
+    select count(*) from bs_user_channel
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_user_channel
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bankChannelId != null" >
+        bank_channel_id = #{record.bankChannelId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_user_channel
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      bank_channel_id = #{record.bankChannelId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsUserChannel" >
+    update bs_user_channel
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="bankChannelId != null" >
+        bank_channel_id = #{bankChannelId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsUserChannel" >
+    update bs_user_channel
+    set user_id = #{userId,jdbcType=INTEGER},
+      bank_channel_id = #{bankChannelId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 用户优先支付渠道列表 -->
+  <select id="selectUserChannelListPageInfo" resultMap="BaseResultMapVO" parameterType="com.pinting.business.model.vo.BsUserChannelVO" >
+  	SELECT 
+		u.id as uid ,u.user_name as userName, u.mobile as mobile,
+		b.bank_id as bankId, b.pay19_bank_code as pay19BankCode, b.channel as channel,b.channel_priority as channelPriority,
+		c.create_time , c.bank_channel_id as bankChannelId, c.id, 
+		k.name as name 
+	FROM bs_user_channel c LEFT JOIN bs_user u ON u.id = c.user_id LEFT JOIN bs_19pay_bank b ON c.bank_channel_id = b.id LEFT JOIN bs_bank k ON b.bank_id = k.id 
+	WHERE b.pay_type = 1  
+  		<include refid="Base_UserChannel_List" />
+  		<!-- <if test="orderDirection!=null and orderDirection != ''  and orderField != ''  and orderField!=null ">   
+    	 	order by ${orderField} ${orderDirection}
+    	</if> -->
+    	order by c.create_time desc
+  		<include refid="sql-global.pagination" />
+  </select>
+  
+  <!--  用户优先支付渠道统计 -->
+  <select id="selectCountUserChannel" resultType="java.lang.Integer" parameterType="com.pinting.business.model.vo.BsUserChannelVO" >
+ 	SELECT 
+		count(*) 
+    FROM bs_user_channel c LEFT JOIN bs_user u ON u.id = c.user_id LEFT JOIN bs_19pay_bank b ON c.bank_channel_id = b.id LEFT JOIN bs_bank k ON b.bank_id = k.id 
+	WHERE b.pay_type = 1  
+  		<include refid="Base_UserChannel_List" />
+  </select>
+  
+  <!-- 查询用户优先支付渠道是否已存在 -->
+  
+	<select id="selectUserChananel" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsUserChannel" >
+	 SELECT
+		<include refid="Base_Column_List" />
+	 FROM bs_user_channel 
+	 WHERE 1 = 1 
+		<include refid="Base_UserChannel" /> 
+	 LIMIT 0,1
+	</select>
+  
+  <!-- 查找19付银行对应的银行名称-渠道类型-通道优先级  -->
+  <select id="select19payCardNameChannelPriority" resultMap="BaseResultMapVO" parameterType="com.pinting.business.model.vo.BsUserChannelVO" >
+	SELECT
+		b.id as payId,b.channel,b.channel_priority as channelPriority,k.name 
+	FROM bs_19pay_bank b LEFT JOIN bs_bank k ON b.bank_id = k.id 
+	WHERE b.pay_type = 1 
+  </select>
+  
+</mapper>

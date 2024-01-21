@@ -1,0 +1,149 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/default")
+#LoadGenCSS("/resources/gen2.0/styles/agree/agree-print")
+#LoadGenCSS("/resources/gen2.0/styles/match/tan_zan")
+#LoadGenJS("/resources/gen2.0/scripts/match/my_match_zan")
+#LoadGenJS("/resources/gen2.0/scripts/common/common")
+#parse("/gen2.0/match/match_repay_detail_zan.vm")
+#GenHead("end")
+<body>
+	<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')"/>
+	<form id="generalForm" method="post" action="$!env.get('gen.server.web')/gen2.0/match/myMatch">
+		<input type="hidden" id="product_id" name="productId" value="$!productId"/>
+		<input type="hidden" id="subAccountId" name="subAccountId" value="$!subAccountId"/>
+		<input type="hidden" id="pageIndex" name="pageIndex" value="$!pageIndex"/>
+	</form>
+		<input type="hidden" name="totalPages" value="$!pageNum" class="totalPages"/>
+	<div class="">
+  		<div class="agess win_fo" id="agree_content">
+			<!--startprint1-->
+  			<div class="agess_title">
+  				<span class="agess_ft">债权明细 </span>
+				<span >&nbsp&nbsp&nbsp&nbsp</span>
+                <span >当前持有债权：
+					#if("$!entrustStatus"=="RETURN_OVER")
+                        <font color="red">0.00</font>元
+					#elseif("$!entrustStatus"=="ENTRUST_OVER")
+                        <font color="red">0.00</font>元
+					#else
+                        <font color="red">$!money.format($!entrustAmount)</font>元
+					#end
+				</span>
+  				<i class="agess_off close"></i>
+  			</div>
+
+            #if("$!entrustStatus"=="ENTRUST_OVER")
+			<div class="tan_msg">很抱歉系统暂时没有匹配到符合您委托意向的债权，您可以重新购买委托计划哦~（如有疑问，可详询客服热线400-806-1230）</div>
+            #elseif("$!entrustStatus"=="ENTRUSTING" && $!total == 0)
+			 <div class="tan_msg">系统正在为您寻找最优债权配对，请耐心等候...（如有疑问，可详询客服热线400-806-1230）</div>
+            #else
+
+            <div class="tan_msg">该产品计划所投向的合作产品为赞分期的小微借款业务，该业务向借款人授予一个信用额度，
+						借款人可以在该额度内进行借还款。借款人的每笔借款均与出借人的投资对应，您的该笔出借对应关系如下表所示：（如有疑问，可详询客服热线400-806-1230）
+            </div>
+			<div class="tan_list">
+
+				<ul class="tan_list_ul">
+                    <li class="tan_list_width1">借款人</li>
+                    <li>债权金额</li>
+                    <li>应收本息</li>
+                    <li>已收本息</li>
+                    <li>已还期数/总期数</li>
+                    <li>交易日期</li>
+                    <li class="tan_list_ulli_t">最近还款日期</li>
+                    <li class="tan_list_ulli">还款状态</li>
+                    <li class="tan_list_ulli_b">还款查询</li>
+					<li class="tan_list_null"></li>
+    			</ul>
+					#foreach($data in $!dataList)
+        			<div class="tan_list_div">
+        				<div class="tan_list_width1">$data.borrowerName</div>
+        				<div>$!money.format($!data.approveAmount)</div>
+        				<div>$!money.format($!data.planTotal)</div>
+        				<div>
+							$!money.format($!data.realTotal)
+        				</div>
+        				<div>$!{data.repayedPeriodCount} / $!{data.period}</div>
+        				<div>
+        					#if(!$data.loanTime)
+        						
+        					#else
+        						$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd')
+							#end
+        				</div>
+        				<div class="tan_list_divli_t">
+							#if(!$data.latestRepayTime)
+        					#else
+        						$!date.formatDateTime($!data.latestRepayTime,'yyyy-MM-dd')
+							#end
+        				</div>
+        				<div class="tan_list_divli" class="tan_list_divli">
+							#if("$!data.status" == "PAYING")
+                			放款中
+                			#elseif("$!data.status" == "SUCCESS")
+                			还款中
+                			#elseif("$!data.status" == "FAIL")
+                			放款失败
+							#elseif("$!data.status" == "REPAID")
+							还款结束
+							#end
+						</div>
+        				<div class="tan_list_divli_b"><a href="javascript:matchDetail($!data.id)">查询</a></div>
+						
+                        #if($!data.transCount > 0)
+							<div class="tan_list_div_null1">
+								#if(("$!data.status" == "SUCCESS") || ("$!data.status" == "REPAID"))
+									<a onclick="loanPrint(this);" data-datas="loanRelationId=$!data.id" class="tan_list_div_null2a">《借款协议》</a>
+								#end
+								#if(("$!propertySymbol" != "YUN_DAI") && ("$!propertySymbol" != "7_DAI"))
+									<a onclick="borrowerDetail(this)" data-datas="loanRelationId=$!data.id&partnerCode=ZAN"  class="tan_list_div_null2a">《借款详情》</a>
+								#end
+                                <a onclick="claimsPrint(this);" data-datas="loanRelationId=$!data.id" class="tan_list_div_null2a">《债权转让协议》</a>
+                            </div>
+						#else
+							<div class="tan_list_div_null1">
+								#if(("$!data.status" == "SUCCESS") || ("$!data.status" == "REPAID"))
+									<a onclick="loanPrint(this);" data-datas="loanRelationId=$!data.id" class="tan_list_div_null2a">《借款协议》</a>
+								#end
+								#if(("$!propertySymbol" != "YUN_DAI") && ("$!propertySymbol" != "7_DAI"))
+									<a onclick="borrowerDetail(this)" data-datas="loanRelationId=$!data.id&partnerCode=ZAN" class="tan_list_div_null2a">《借款详情》</a>
+								#end
+							</div>
+						#end
+
+        			</div>
+        			#end
+
+			
+        			<!--fenye-->
+        			<div class="fenye">
+        				#set($nextPage = $pageIndex + 1)
+        				#set($prePage = $pageIndex - 1)
+        				<a href="javascript:void(0)" onclick="prePage(0)" class="fy_l">首页</a>
+        				<a href="javascript:void(0)" onclick="prePage($prePage)" class="fy_ll">上一页</a>
+        				<a href="javascript:void(0)" class="fy_c">$!nextPage</a>
+        				<a href="javascript:void(0)" onclick="nextPage($nextPage)" class="fy_rr">下一页</a>
+        				<!--<a href="" class="fy_r">尾页</a>-->
+        			</div>
+		</div>
+		#end	
+		
+		
+        </div>
+<script>
+$(function(){
+	var close=$(".close");
+	
+	close.on("click",off);
+	function off(){
+		window.close();
+	}
+});
+
+
+</script>
+</body>
+	
+#Html("end")

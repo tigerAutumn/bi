@@ -1,0 +1,31 @@
+#foreach($data in $!dataList)
+    	<tr>
+    		<td>$data.borrowerName</td>
+    		<td>$!money.format($!data.amount)</td>
+    		<td>
+				#if($!propertySymbol == "YUN_DAI_SELF" || $!propertySymbol == "ZSD" || $!propertySymbol == "7_DAI_SELF" || $!propertySymbol == "FREE")
+					#if($!data.repayStatus == "PAYING")
+						借款中
+					#elseif($!data.repayStatus == "TRANSFERRED" || $!data.repayStatus == "REPAID")
+						已还完
+					#end
+				#else
+					#if($!debtDetailsFlag == 'AUTH_YUN_FLAG' || $!debtDetailsFlag == 'AUTH_7_FLAG')
+						#if($!data.repayStatus == "PAYING")
+                            借款中
+						#elseif($!data.repayStatus == "TRANSFERRED" || $!data.repayStatus == "REPAID")
+                            已还完
+						#end
+					#else
+						#if($!data.repayStatus == 1)
+                            借款中
+						#elseif($!data.repayStatus == 2)
+                            部分还款
+						#elseif($!data.repayStatus == 3)
+                            已还完
+						#end
+					#end
+				#end
+			</td>
+		</tr>
+#end

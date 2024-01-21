@@ -1,0 +1,55 @@
+#foreach($!grid in $!res.dataList)
+    #if($!req.status == "INIT")
+        <li class="red_pack init_li">
+			<img class="pack_img" src="$!{env.getWebURL('')}/resources/micro2.0/images/red_pack/red_bg01.png" alt="">
+			<div class="orange">			
+				<div class="pack_money" onclick="go_buy()">
+					<i class="choose_icon">立即使用</i>
+					<span class="money_small">¥</span>$!money.format($!grid.subtract)
+				</div>
+				<div class="gray_full">$!grid.serialName</div>
+				<div class="red_money">
+					<div class="pace_full">										
+						<i class="pack_spot2"></i>#if($!grid.isWan == "yes")满$!number.format("0.00",$!grid.full)万元减#else满$!number.format("0.00",$!grid.full)元减#end$!number.format("0.00",$!grid.subtract)元
+					</div>      
+					<span class="pace_tlimit"><i class="pack_spot2"></i>$!grid.termLimitMsg</span>
+				</div>
+				<span class="pace_time"><i class="pack_spot2"></i>$!date.formatYYYYMMDD($!grid.useTimeStart)至$!date.formatYYYYMMDD($!grid.useTimeEnd)</span>
+			</div>	                           
+          </li>
+    #elseif($!req.status == "USED")
+        <li class="red_pack used_li">
+			<img class="pack_img" src="$!{env.getWebURL('')}/resources/micro2.0/images/red_pack/red_bg02.png" alt="">
+			<div class="orange1">
+				<div class="pack_money">
+					<span class="money_small">¥</span>$!money.format($!grid.subtract)
+				</div>
+				<div class="gray_full">$!grid.serialName</div>
+				<div class="red_money">
+					<div class="pace_full">										
+						<i class="pack_spot1"></i>#if($!grid.isWan == "yes")满$!number.format("0.00",$!grid.full)万元减#else满$!number.format("0.00",$!grid.full)元减#end$!number.format("0.00",$!grid.subtract)元
+					</div>      
+					<span class="pace_tlimit"><i class="pack_spot1"></i>$!grid.termLimitMsg</span>
+				</div>
+				<span class="pace_time"><i class="pack_spot1"></i>$!date.formatYYYYMMDD($!grid.useTimeStart)至$!date.formatYYYYMMDD($!grid.useTimeEnd)</span>
+			</div>
+        </li>
+    #else
+        <li class="red_pack over_li">
+			<img class="pack_img" src="$!{env.getWebURL('')}/resources/micro2.0/images/red_pack/red_bg02.png" alt="">
+			<div class="orange1">
+				<div class="pack_money">
+					<span class="money_small">¥</span>$!money.format($!grid.subtract)
+				</div>
+				<div class="gray_full">$!grid.serialName</div>
+				<div class="red_money">
+					<div class="pace_full">										
+						<i class="pack_spot1"></i>#if($!grid.isWan == "yes")满$!number.format("0.00",$!grid.full)万元减#else满$!number.format("0.00",$!grid.full)元减#end$!number.format("0.00",$!grid.subtract)元
+					</div>      
+					<span class="pace_tlimit"><i class="pack_spot1"></i>$!grid.termLimitMsg</span>
+				</div>
+				<span class="pace_time"><i class="pack_spot1"></i>$!date.formatYYYYMMDD($!grid.useTimeStart)至$!date.formatYYYYMMDD($!grid.useTimeEnd)</span>
+			</div>                           
+        </li>
+    #end        
+#end

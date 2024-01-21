@@ -1,0 +1,184 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/account/order/orderDetail.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" id="queryFlag" name="queryFlag" value="QUERY"/>
+	<div class="searchBar">
+		<table class="searchContent">
+				<tr>
+					<td>
+						手机号：<input  id="mobile" type="text" name="mobile" value="$!req.mobile" size="15"/>
+						用户名：<input id="userName" type="text" name="userName" value="$!req.userName" />
+						订单号：<input  id="orderNo" type="text" name="orderNo" value="$!req.orderNo" />
+						交易类型：
+						<select name="transType" > 
+							<option value="" #if("$!req.transType"=="") selected #end>全部</option>
+							<option value="CARD_BUY_PRODUCT" #if("$!req.transType"=="CARD_BUY_PRODUCT") selected #end>卡购买</option>
+        					<option value="BALANCE_BUY_PRODUCT" #if("$!req.transType"=="BALANCE_BUY_PRODUCT") selected  #end>余额购买</option>
+							<option value="TOP_UP" #if("$!req.transType"=="TOP_UP") selected  #end>充值</option>
+							<option value="RETURN_2_BANK_CARD" #if("$!req.transType"=="RETURN_2_BANK_CARD") selected  #end>回款到银行卡</option>
+							<option value="BONUS_WITHDRAW" #if("$!req.transType"=="BONUS_WITHDRAW") selected  #end>奖励金提现</option>
+							<option value="BALANCE_WITHDRAW" #if("$!req.transType"=="BALANCE_WITHDRAW") selected  #end>余额提现</option>
+        				</select>
+						订单状态：
+						<select name="status" > 
+							<option value="" #if("$!req.status"=="") selected #end>全部</option>
+							<option value="1" #if("$!req.status"=="1") selected #end>创建</option>
+							<option value="2" #if("$!req.status"=="2") selected #end>通讯失败</option>
+							<option value="3" #if("$!req.status"=="3") selected #end>预下单成功</option>
+							<option value="4" #if("$!req.status"=="4") selected #end>预下单失败</option>
+							<option value="5" #if("$!req.status"=="5") selected #end>支付处理中</option>
+							<option value="6" #if("$!req.status"=="6") selected #end>支付成功</option>
+							<option value="7" #if("$!req.status"=="7") selected #end>支付失败</option>
+        				</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						创建时间： <input name="beginTime"  maxdate="{%y}-%M-{%d}"  type="text" id="beginTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.beginTime)" /> 到 <input name="overTime" maxdate="{%y}-%M-{%d}"  type="text" id="overTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.overTime)" />
+						更新时间： <input name="startUpdateTime"  maxdate="{%y}-%M-{%d}"  type="text" id="startUpdateTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.startUpdateTime)" /> 到 <input name="endUpdateTime" maxdate="{%y}-%M-{%d}"  type="text" id="endUpdateTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.endUpdateTime)" />
+						<span style="margin-left:20px;">
+							<button onclick="func()" type="button">查询</button>
+                        </span>
+					</td>	
+                </tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	
+	<table class="table" width="2280" layoutH="138">
+		<thead>
+			<tr>
+				<th width="70">订单编号</th>
+	            <th width="100">手机号</th>
+				<th width="50">用户名</th>
+				<th width="210">订单号</th>
+				
+				<th width="80">交易代码</th>
+				<th width="90">渠道交易类型</th>
+				<th width="100">交易金额</th>
+				<th width="135">系统时间</th>
+				<th width="135">渠道时间</th>
+				<th width="170">渠道流水号</th>
+				
+				<th width="60">用户编号</th>
+				<th width="80">子账户编号</th>
+				<th width="200">子账户编码</th>
+				<th width="60">返回码</th>
+				<th width="210">返回信息</th>
+				<th width="100">备注</th>
+				<th width="135">创建时间</th>
+				
+				<th width="135">更新时间</th>
+				<th width="80">交易类型</th>
+				<th width="80">订单状态</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($product in $orderDetailList)
+			<tr target="sid_user" rel="1" >
+				<td>$!product.id</td>
+                <td>$!product.mobile</td>
+				<td>$!product.userName</td>
+				<td>$!product.orderNo</td>
+				
+				<td>$!message.get("ACCOUNT_ORDERS_JNL_TRANS_CODE_$!product.transCode")</td>
+				<td>$!message.get("ACCOUNT_ORDER_CHANNEL_TRANS_$!product.channelTransType")</td>
+				<td>$!money.format($!product.transAmount)</td>
+				<td>$!date.format($!product.sysTime)</td>
+				<td>$!date.format($!product.channelTime)</td>
+				<td>$!product.channelJnlNo</td>
+				
+				<td>$!product.userId</td>
+				<td>$!product.subAccountId</td>
+				<td>$!product.subAccountCode</td>
+				<td>$!product.returnCode</td>
+				<td>$!product.returnMsg</td>
+				<td>$!product.note</td>
+				<td>$!date.format($!product.createTime)</td>
+				
+				<td>$!date.format($!product.updateTime)</td>
+				<td>$!message.get("ACCOUNT_JNL_TRANS_CODE_$!product.transType")</td>
+				<td>$!message.get("ACCOUNT_ORDER_STATUS_$!product.status")</td>
+				
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+<script>
+
+function func(){
+	var beginTime = $("#beginTime").val();
+	var overTime = $("#overTime").val();
+	var startUpdateTime = $("#startUpdateTime").val();
+	var endUpdateTime = $("#endUpdateTime").val();
+	
+	if(beginTime != "" && overTime == ""){
+		alert("请输入结束时间！");
+		return false;
+	}
+	
+	if(beginTime == "" && overTime != ""){
+		alert("请输入开始时间！");
+		return false;
+	}
+	
+	if(beginTime != "" && overTime != ""){
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	if(startUpdateTime != "" && endUpdateTime == ""){
+		alert("请输入结束时间！");
+		return false;
+	}
+	
+	if(startUpdateTime == "" && endUpdateTime != ""){
+		alert("请输入开始时间！");
+		return false;
+	}
+	
+	if(startUpdateTime != "" && endUpdateTime != ""){
+		var result = Date.parse(endUpdateTime.replace(/-/g,"/"))- Date.parse(startUpdateTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	var url = $("#APP_ROOT_PATH").val() + "/account/order/orderDetail.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+
+}
+
+</script>

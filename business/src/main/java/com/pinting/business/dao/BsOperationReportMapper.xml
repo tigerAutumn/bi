@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsOperationReportMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsOperationReport" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="report_name" property="reportName" jdbcType="VARCHAR" />
+    <result column="display_time" property="displayTime" jdbcType="VARCHAR" />
+    <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="storage_address" property="storageAddress" jdbcType="VARCHAR" />
+    <result column="is_sugguest" property="isSugguest" jdbcType="VARCHAR" />
+    <result column="show_terminal" property="showTerminal" jdbcType="VARCHAR" />
+    <result column="op_user_id" property="opUserId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, report_name, display_time, img_url, storage_address, is_sugguest, show_terminal, 
+    op_user_id, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsOperationReportExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_operation_report
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_operation_report
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_operation_report
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsOperationReportExample" >
+    delete from bs_operation_report
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsOperationReport" >
+    insert into bs_operation_report (id, report_name, display_time, 
+      img_url, storage_address, is_sugguest, 
+      show_terminal, op_user_id, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{reportName,jdbcType=VARCHAR}, #{displayTime,jdbcType=VARCHAR}, 
+      #{imgUrl,jdbcType=VARCHAR}, #{storageAddress,jdbcType=VARCHAR}, #{isSugguest,jdbcType=VARCHAR}, 
+      #{showTerminal,jdbcType=VARCHAR}, #{opUserId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsOperationReport" >
+    insert into bs_operation_report
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="reportName != null" >
+        report_name,
+      </if>
+      <if test="displayTime != null" >
+        display_time,
+      </if>
+      <if test="imgUrl != null" >
+        img_url,
+      </if>
+      <if test="storageAddress != null" >
+        storage_address,
+      </if>
+      <if test="isSugguest != null" >
+        is_sugguest,
+      </if>
+      <if test="showTerminal != null" >
+        show_terminal,
+      </if>
+      <if test="opUserId != null" >
+        op_user_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="reportName != null" >
+        #{reportName,jdbcType=VARCHAR},
+      </if>
+      <if test="displayTime != null" >
+        #{displayTime,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null" >
+        #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="storageAddress != null" >
+        #{storageAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="isSugguest != null" >
+        #{isSugguest,jdbcType=VARCHAR},
+      </if>
+      <if test="showTerminal != null" >
+        #{showTerminal,jdbcType=VARCHAR},
+      </if>
+      <if test="opUserId != null" >
+        #{opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsOperationReportExample" resultType="java.lang.Integer" >
+    select count(*) from bs_operation_report
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_operation_report
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.reportName != null" >
+        report_name = #{record.reportName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.displayTime != null" >
+        display_time = #{record.displayTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imgUrl != null" >
+        img_url = #{record.imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.storageAddress != null" >
+        storage_address = #{record.storageAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isSugguest != null" >
+        is_sugguest = #{record.isSugguest,jdbcType=VARCHAR},
+      </if>
+      <if test="record.showTerminal != null" >
+        show_terminal = #{record.showTerminal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.opUserId != null" >
+        op_user_id = #{record.opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_operation_report
+    set id = #{record.id,jdbcType=INTEGER},
+      report_name = #{record.reportName,jdbcType=VARCHAR},
+      display_time = #{record.displayTime,jdbcType=VARCHAR},
+      img_url = #{record.imgUrl,jdbcType=VARCHAR},
+      storage_address = #{record.storageAddress,jdbcType=VARCHAR},
+      is_sugguest = #{record.isSugguest,jdbcType=VARCHAR},
+      show_terminal = #{record.showTerminal,jdbcType=VARCHAR},
+      op_user_id = #{record.opUserId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsOperationReport" >
+    update bs_operation_report
+    <set >
+      <if test="reportName != null" >
+        report_name = #{reportName,jdbcType=VARCHAR},
+      </if>
+      <if test="displayTime != null" >
+        display_time = #{displayTime,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null" >
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="storageAddress != null" >
+        storage_address = #{storageAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="isSugguest != null" >
+        is_sugguest = #{isSugguest,jdbcType=VARCHAR},
+      </if>
+      <if test="showTerminal != null" >
+        show_terminal = #{showTerminal,jdbcType=VARCHAR},
+      </if>
+      <if test="opUserId != null" >
+        op_user_id = #{opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsOperationReport" >
+    update bs_operation_report
+    set report_name = #{reportName,jdbcType=VARCHAR},
+      display_time = #{displayTime,jdbcType=VARCHAR},
+      img_url = #{imgUrl,jdbcType=VARCHAR},
+      storage_address = #{storageAddress,jdbcType=VARCHAR},
+      is_sugguest = #{isSugguest,jdbcType=VARCHAR},
+      show_terminal = #{showTerminal,jdbcType=VARCHAR},
+      op_user_id = #{opUserId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <resultMap id="OperationReportVOMap" type="com.pinting.business.model.vo.BsOperationReportVO" extends = "BaseResultMap" >
+	 <result column="operation_name" property="operationName" jdbcType="VARCHAR" />
+	 <result column="rowno" property="rowno" jdbcType="INTEGER" />
+	 <result column="display_year" property="displayYear" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="queryOperationReportList"  resultMap="OperationReportVOMap" >
+   	SELECT
+    (@rowNO := @rowNo + 1) rowno,
+    t.*
+    FROM
+    (SELECT @rowNO := #{start}) b,
+    (
+	    select a.*,b.name operation_name  from 
+	    bs_operation_report a,m_user b
+	    where a.op_user_id = b.id
+	    ORDER BY a.is_sugguest DESC,a.update_time DESC
+	    LIMIT  #{start},#{numPerPage}
+    ) t 
+
+  </select>
+  <select id="queryOperationReportCount"  resultType="java.lang.Integer" >
+    select count(*) from bs_operation_report
+  </select>
+  
+  <select id="selectByYear" parameterType="java.lang.String" resultMap="OperationReportVOMap">
+  		select a.*,left(a.display_time, 4) as display_year from bs_operation_report a where 1=1
+  			<if test="year != null and year != ''" >
+			   	 AND left(a.display_time, 4) = #{year,jdbcType=VARCHAR}
+			</if>
+  		order by is_sugguest DESC, update_time DESC
+  		LIMIT #{start}, #{numPerPage}
+  </select>
+  
+</mapper>

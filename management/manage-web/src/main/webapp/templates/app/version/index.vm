@@ -1,0 +1,111 @@
+#LoadJS("resources/js/ajaxfileupload")
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('app/version/index.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="$env.getWebURL('/app/version/add_version_page.htm')" target="dialog" mask="true" rel="createBack" height="390"><span>新增</span></a></li>
+		</ul>
+	</div>
+	<table class="table" width="1082" layoutH="138">
+		<thead>
+			<tr>
+				<th width="7%">app类型</th>
+				<th width="7%">app版本</th>
+				<th width="40%">app上线内容</th>
+				<th width="10%">更新机制</th>
+				<th width="10%">URL</th>
+				<th width="16%">创建时间</th>
+				<th width="10%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($version in $versions)
+					
+			<tr target="sid_user" rel="1">
+				<td>$!version.appType</td>	
+				<td>$!version.version</td>	
+				<td>$!version.content</td>	
+				<td>#if($!version.isMandatory == 1) 强制更新  #else 非强制更新 #end</td>
+				#if($!version.appType == "android")
+					<td><a href="$!env.get('gen.web')$!version.url" target="_blank">$!version.url</a></td>
+				#else
+					<td>$!version.url</td>
+				#end
+				<td>$!date.format($!version.createTime)</td>
+				<td>
+					<a title="确认删除当前版本？" name="delVersion" target="ajaxTodo" href="$env.getWebURL('/app/version/deleteVersion.htm')?id=$!version.id" class="btnDel">删除版本</a>
+					#if($!version.appType == 'android') 
+						<input type="file" name="fileField" id="fileField$!version.id" onchange="fileUpload(this)" version_id='$!version.id'>
+					#else
+					#end
+					##<a title="编辑" target="dialog" href="$env.getWebURL('/app/version/detail.htm?id=')$!version.id" class="btnEdit" mask="true" rel="createBack" height="300" width="500">编辑</a>
+				</td>	
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+function navTabAjaxDone(json) {
+	if (json.statusCode == 200) {
+		alertMsg.correct(json.message);
+		navTab.closeCurrentTab();
+		navTab.reload("$env.getWebURL('/app/version/index.htm')");
+	} else {
+		alertMsg.error(json.message);
+	}
+}
+
+function fileUpload(obj){
+	var version_id = $(obj).attr('version_id');
+	 var url = $("#APP_ROOT_PATH").val() + "/app/version/apkFileUpload.htm?id="+version_id;
+     $.ajaxFileUpload
+	 ({
+           url:url,
+           secureuri :false,
+           fileElementId :'fileField'+version_id,
+           dataType :'json',
+           success : function (data){
+			  if(data.code == 1){
+			     alertMsg.correct("文件上传成功");
+				 navTab.reload("$env.getWebURL('/app/version/index.htm')");
+			  }else{
+				  alertMsg.warn(data.msg);
+			  }
+           },
+           error: function(data){
+			 alertMsg.error("操作失败！");
+           }
+     });
+}
+
+</script>

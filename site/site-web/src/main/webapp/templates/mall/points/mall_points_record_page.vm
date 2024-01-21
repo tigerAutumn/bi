@@ -1,0 +1,24 @@
+
+#foreach($record in $!recordList)
+    #if($!record.points > 0)
+    <div class="history_card">
+        <div class="history_card_left">
+            <p class="history_note">$!record.transName</p>
+            <p class="history_date">$!date.formatDateTime($!record.transTime,'yyyy-MM-dd HH:mm')</p>
+        </div>
+        <div class="history_card_right">
+            <p class="history_num income">+$!money.format($!record.points).replace(".00","")</p>
+        </div>
+    </div>
+    #else
+    <div class="history_card">
+        <div class="history_card_left">
+            <p class="history_note">$!record.transName</p>
+            <p class="history_date">$!date.formatDateTime($!record.transTime,'yyyy-MM-dd HH:mm')</p>
+        </div>
+        <div class="history_card_right">
+            <p class="history_num output">$!money.format($!record.points).replace(".00","")</p>
+        </div>
+    </div>
+    #end
+#end

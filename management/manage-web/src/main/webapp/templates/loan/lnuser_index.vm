@@ -1,0 +1,172 @@
+<form id="pagerForm" method="post" action="#rel#">
+##<input type="hidden" name="userId" value="$!userId" />
+    <input type="hidden" name="pageNum" value="$!loanUserDTO.pageNum"/>
+    <input type="hidden" name="numPerPage" value="$!loanUserDTO.numPerPage"/>
+</form>
+
+<div class="pageHeader">
+    <form rel="pagerForm" id="loanUserform" class="pageForm required-validate" onsubmit="return navTabSearch(this);"
+          action="$env.getWebURL('/loan/user_index.htm')" method="post">
+        <input type="hidden" name="numPerPage" value="$!loanUserDTO.numPerPage"/>
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="pageNum" value="$!loanUserDTO.pageNum"/>
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        用户id：<input id="userId" type="text" name="userId" maxlength="10" value="$!loanUserDTO.userId"
+                                    class="clear num"/>
+                    </td>
+                    <td>
+                        借款业务合作方：<select name="partner" class="valid">
+                        <option value="">请选择</option>
+                        <option value="ZAN" #if("$!loanUserDTO.partner"=="ZAN") selected  #end>赞分期</option>
+                    </select>
+                    </td>
+                    <td>注册时间：<input style="width:70px;" name="createTimeStart" maxdate="{%y}-%M-{%d}" type="text"
+                                    id="createTimeStart" class=" date textInput readonly" readonly="true"
+                                    value="$!date.formatYYYYMMDD($!loanUserDTO.createTimeStart)"/>
+                        到
+                        <input style="width:70px;" name="createTimeEnd" maxdate="{%y}-%M-{%d}" type="text"
+                               id="createTimeEnd" class=" date textInput readonly" readonly="true"
+                               value="$!date.formatYYYYMMDD($!loanUserDTO.createTimeEnd)"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>当前未还金额：<input style="width:70px;" name="noReturnStart" type="text"  maxlength="10" id="noReturnStart"
+                                    class="clear" value="$!loanUserDTO.noReturnStart"/>
+                        到
+                        <input style="width:70px;" name="noReturnEnd" type="text"  maxlength="10" id="noReturnEnd" class="clear"
+                               value="$!loanUserDTO.noReturnEnd"/>
+                    </td>
+                    <td>当前逾期金额：<input style="width:70px;" name="breakStart" type="text" id="breakStart" maxlength="10"
+                                      class="clear" value="$!loanUserDTO.breakStart"/>
+                        到
+                        <input style="width:70px;" name="breakEnd" type="text" id="breakEnd" class="clear" maxlength="10"
+                               value="$!loanUserDTO.breakEnd"/>
+                    </td>
+                    <td>历史借款金额：<input style="width:70px;" name="historyStart" type="text" id="historyStart" maxlength="10"
+                                      class="clear" value="$!loanUserDTO.historyStart"/>
+                        到
+                        <input style="width:70px;" name="historyEnd" type="text" id="historyEnd" class="clear" maxlength="10"
+                               value="$!loanUserDTO.historyEnd"/>
+                    </td>
+                    <td>
+                        <button onclick="func()" type="button">查询</button>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <table class="table" width="1000" layoutH="108">
+        <thead>
+        <tr>
+            <th width="20">用户ID</th>
+            <th width="25">借款业务合作方</th>
+            <th width="30">当前未还笔数</th>
+            <th width="30">当前未还金额</th>
+            <th width="30">当前逾期金额</th>
+            <th width="30">历史借款总额</th>
+            <th width="30">历史逾期总额</th>
+            <th width="50">注册时间</th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach($user in $list)
+            <tr target="sid_user" rel="1">
+                <td>$!user.userId</td>
+                <td>
+                    #if($!user.partnerCode=='ZAN') 赞分期
+                    #else 其他
+                    #end</td>
+                <td>$!user.noReturnNum</td>
+                <td>$!money.format($!user.noReturnAmount)</td>
+                <td>
+                    $!money.format($!user.lateNotAmount)
+                </td>
+                <td>
+                    $!money.format($!user.historyLoanAmount)
+                </td>
+                <td>
+                    $!money.format($!user.lateAmount)
+                </td>
+
+                <td>$!date.format($!user.createTime)</td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+                <option #if("$!loanUserDTO.numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!loanUserDTO.numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!loanUserDTO.numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!loanUserDTO.numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!totalRows条</span>
+        </div>
+
+        <div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!loanUserDTO.numPerPage"
+             currentPage="$!loanUserDTO.pageNum"></div>
+
+    </div>
+</div>
+#LoadJS("/resources/js/global_validate")
+<script>
+
+    function func() {
+
+        var sNoReturn = $("#noReturnStart").val();
+        var eNoReturn = $("#noReturnEnd").val();
+        if(sNoReturn != "" && eNoReturn != ""){
+            var result = eNoReturn-sNoReturn;
+            if(result < 0){
+                alert("应还金额结束值不能比开始值小！！");
+                return false;
+            }
+        }
+
+        var sBreak = $("#breakStart").val();
+        var eBreak = $("#breakEnd").val();
+        if(sBreak != "" && eBreak != ""){
+            var result = eBreak-sBreak;
+            if(result < 0){
+                alert("当前逾期金额结束值不能比开始值小！！");
+                return false;
+            }
+        }
+
+        var sHistory = $("#historyStart").val();
+        var eHistory = $("#historyEnd").val();
+        if(eHistory != "" && sHistory != ""){
+            var result = eHistory-sHistory;
+            if(result < 0){
+                alert("历史借款金额结束值不能比开始值小！！");
+                return false;
+            }
+        }
+
+
+        var beginTime = $("#createTimeStart").val();
+        var overTime = $("#createTimeEnd").val();
+        if(beginTime != "" && overTime != ""){
+            var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+            if(result < 0){
+                alert("注册开始时间不能在结束时间之后！！");
+                return false;
+            }
+        }
+
+        var url = $("#APP_ROOT_PATH").val() + "/loan/user_index.htm";
+        $("#loanUserform").attr("action", url);
+        $("#loanUserform").attr("onsubmit", "return navTabSearch(this);");
+        $("#loanUserform").submit();
+    }
+
+
+</script>

@@ -1,0 +1,38 @@
+#Html("begin")
+#Head("begin","平台公告,币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("平台公告【币港湾官网】")
+#LoadJS("/resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("/resources/micro2.0/styles/platform/notice.min")
+#WeChatShare()
+#Head("end")
+<body id="body">
+    <div class="header">
+        <a class="header_arrow" href="javascript:history.go(-1)"></a>
+        <h1 class="heade_ft color_bg">平台公告</h1>
+    </div>
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="qianbao" name="qianbao" value="$!qianbao" />
+    <input type="hidden" id="page" name="page" value="1" />
+    <input type="hidden" id="totalCount" name="totalCount" value="$!count" />
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+    <div class="main" id="id_content">
+    	#foreach($!data in $!dataGrid)
+    		<div class="notice">
+    			<a class="notice_box" href="javascript:void(0)" onclick='go_detail($!data.id)'>
+    				<div class="notice_time">
+                        <span class="notice_year">$!data.publishTimeYM</span>
+                        <span class="notice_day">$!data.publishTimeD</span>
+                    </div>
+                    <div class="notice_content">
+                        <span class="notice_title">$!data.subject</span>
+                        <span class="notice_txt">$!data.summary</span>
+                    </div>
+                </a>
+    		</div>
+    	#end
+    </div>
+	<div id="info_load" class="info_load"><span class="info_load_line info_load_right"></span>查看更多<span class="info_load_line info_load_left"></span></div>
+#LoadJS("/resources/micro2.0/scripts/platform/notice_info")
+</body>
+#Html("end")

@@ -1,0 +1,45 @@
+<div class="pageFormContent" layoutH="70">
+	<form method="post" action="$!env.getWebURL('/sys/rolemenu/update.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<input type="hidden" name="roleId" id="roleId" value="$!roleId" />
+	#foreach($!menu in $!menuList)
+	<fieldset>
+		<legend>$!menu.name</legend>
+		#foreach($!child in $!menu.childMenus)
+			<label style="vertical-align: middle;display: inline-block;font-family: tahoma;">
+				<input type="checkbox" #if("$!child.assignedFlag" == "true") checked=true #end name="menuIds" value="$!child.id" style="margin: 3px 3px 0 0;padding: 0;outline: medium none;display: inline-block;float: left;"/>&nbsp;$!child.name
+			</label>
+		#end
+	</fieldset>
+	<div class="divider"></div>
+	#end
+	<div class="formBar" style="background:#fff;">
+    	<ul>
+    		<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+    		<!-- 
+			<li>
+    			<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+    		</li>
+			-->
+    	</ul>
+	</div>
+	</form>
+</div>
+<script >
+	function navTabAjaxDone(json) {
+	var roleId = $("#roleId").val();
+		if (json.statusCode == 200) {
+			alertMsg.correct('您的数据提交成功!');
+			navTab.closeCurrentTab();
+			if(roleId == '1'){
+    			setTimeout(function(){
+    				location.href="$env.getWebURL('/home/index.htm')";
+    			},2000);
+			}else{
+				navTab.reload("$env.getWebURL('/sys/rolemenu/index.htm')");
+			}
+			   
+		} else {
+			alertMsg.error('保存失败！');
+		}
+	}
+</script>

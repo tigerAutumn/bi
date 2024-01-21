@@ -1,0 +1,51 @@
+## 财务管理-每日日终账户查询 ##
+- 开发分支：business.fr.20180605.qianbao
+- 代码上线分支：（business schedule site） fr.20180705.mongodb
+<pre>
+
+财务管理-每日日终账务查询，站岗户金额查询与财务管理-财务总账查询，恒丰账户，查询站岗户余额保持一致，
+bs_sys_balance_daily_snap快照表中存入的类型保持不变；
+CW_HF BGW_AUTH_7
+CW_HF BGW_AUTH_YUN
+CW_HF BGW_AUTH_ZAN
+CW_HF BGW_AUTH_ZSD
+4个账户的数据查询bs_sub_account表中的站岗户数据；
+
+
+
+1. SysBalanceDailySnapTask 系统余额快照记录表定时
+2. 系统余额快照记录表bs_sys_balance_daily_snap，
+3. SysBalanceDailyFileTask 系统余额快照日终中生成文件，数据落库bs_sys_balance_daily_file
+</pre>
+
+<pre>
+1、云贷站岗户余额 
+SELECT 
+	SUM(IFNULL(balance, 0)) AS balance, 
+	SUM(IFNULL(freeze_balance, 0)) AS freeze_balance,
+	SUM(IFNULL(available_balance, 0)) AS available_balance  
+FROM bs_sub_account WHERE product_type = 'AUTH_YUN' AND `status` = 2;
+
+2、7贷站岗户余额
+SELECT 
+	SUM(IFNULL(balance, 0)) AS balance, 
+	SUM(IFNULL(freeze_balance, 0)) AS freeze_balance,
+	SUM(IFNULL(available_balance, 0)) AS available_balance  
+FROM bs_sub_account WHERE product_type = 'AUTH_7' AND `status` = 2；
+
+3、赞时贷站岗户余额
+SELECT 
+	SUM(IFNULL(balance, 0)) AS balance, 
+	SUM(IFNULL(freeze_balance, 0)) AS freeze_balance,
+	SUM(IFNULL(available_balance, 0)) AS available_balance  
+FROM bs_sub_account WHERE product_type = 'AUTH_ZSD' AND `status` = 2；
+
+4、赞分期站岗户余额
+SELECT 
+	SUM(IFNULL(balance, 0)) AS balance, 
+	SUM(IFNULL(freeze_balance, 0)) AS freeze_balance,
+	SUM(IFNULL(available_balance, 0)) AS available_balance  
+FROM bs_sub_account WHERE product_type = 'AUTH' AND `status` = 2；
+
+</pre>
+

@@ -1,0 +1,103 @@
+#Html("begin")
+#GenHead("begin","币港湾平台活动,币港湾,币港湾官网","关注币港湾,活动不停歇!币港湾官网为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("周周乐【币港湾官网】")
+#LoadGenCSS("/resources/gen2.0/styles/index/default")
+#LoadGenJS("/resources/gen2.0/scripts/jquery-1.11.1.min")
+#LoadGenCSS("/resources/gen2.0/styles/activity/weekhay")
+#LoadGenJS("/resources/gen2.0/scripts/activity/weekhay")
+#GenHead("end")
+<body id="body">
+	#Gen2Header("home")
+	<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')"/>
+	<input type="hidden" id="button_1_status" value="$!button_1"/>
+	<input type="hidden" id="button_2_status" value="$!button_2"/>
+	<input type="hidden" id="button_3_status" value="$!button_3"/>
+	<input type="hidden" id="countdown" value="$!countdown"/>
+	<input type="hidden" id="reminde_status" value="$!button_remind"/>
+	<input type="hidden" id="reminde_countdown" value="$!reminde_countdown"/>
+	 <div class="weekly_banner">
+        <div class="weekly_banner_dot">
+			<div class="banner_text"></div>
+		</div>
+    </div>
+<div class="weekly_content">
+    <div class="weekly_content_bgico"></div>
+    <div class="weekly_content_text">
+        <h2>限时加息标上线，疯狂秒杀尽在<span>本周四！</span></h2>
+        <div class="weekly_text_wrap">
+            <div class="weekly_text__title">
+                本周四
+            </div>
+            <div class="clearfix">
+                <div class="weekly_project">
+                    <div class="weekly_project_time" style="background-image: url($!env.get('gen.server.web')/resources/gen2.0/images/activity/weekhay/pc_time_01.jpg)"></div>
+						#if($!button_1 == 'notBegin')
+							<a id="button_1" class="weekly_project_btn ready" onclick="go_regular_list(this)">未开始</a>
+						#elseif($!button_1 == 'buying')
+							<a id="button_1" class="weekly_project_btn" onclick="go_regular_list(this)">查看秒杀标的</a>
+						#else
+							<a id="button_1" class="weekly_project_btn finished" onclick="go_regular_list(this)">已结束</a>
+						#end  
+					
+                </div>
+                <div class="weekly_project">
+                    <div class="weekly_project_time" style="background-image: url($!env.get('gen.server.web')/resources/gen2.0/images/activity/weekhay/pc_time_02.jpg)"></div>
+						#if($!button_2 == 'notBegin')
+							<a id="button_2" class="weekly_project_btn ready" onclick="go_regular_list(this)">未开始</a>
+						#elseif($!button_2 == 'buying')
+							<a id="button_2" class="weekly_project_btn" onclick="go_regular_list(this)">查看秒杀标的</a>
+						#else
+							<a id="button_2" class="weekly_project_btn finished" onclick="go_regular_list(this)">已结束</a>
+						#end  
+                </div>
+                <div class="weekly_project">
+                    <div class="weekly_project_time" style="background-image: url($!env.get('gen.server.web')/resources/gen2.0/images/activity/weekhay/pc_time_03.jpg)"></div>
+						#if($!button_3 == 'notBegin')
+							<a id="button_3" class="weekly_project_btn ready" onclick="go_regular_list(this)">未开始</a>
+						#elseif($!button_3 == 'buying')
+							<a id="button_3" class="weekly_project_btn" onclick="go_regular_list(this)">查看秒杀标的</a>
+						#else
+							<a id="button_3" class="weekly_project_btn finished" onclick="go_regular_list(this)">已结束</a>
+						#end  
+                </div>
+            </div>
+            <div class="weekly_project_ico"></div>
+        </div>
+        <div class="send_message">
+			<input type="hidden" id="remind_me_text" value="$!button_remind"/>
+            <a class="send_message_btn" id="remind_me">
+				#if($!button_remind == 'hasRemind')
+					已设置短信提醒
+				#elseif($!button_remind == 'last')
+					最后一轮进行中
+				#elseif($!button_remind == 'end')
+					本期已结束
+				#else
+					短信提醒我
+				#end
+			</a>
+        </div>
+        <div class="weekly_text_wrap">
+            <div class="weekly_rule">
+                <h5>活动规则：</h5>
+                <p>1、活动时间：本周四上午10:00，下午14:00，晚上20:00开始；</p>
+                <p>2、活动对象：币港湾注册用户；</p>
+                <p>3、活动期间，每个时间段加息标的售完即止，先购先得。</p>
+                <h5 style="margin-top:30px;">温馨提示：</h5>
+                <p>为确保您成功争标，请先将资金充值到账户余额，做好争标准备。</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!--短信提示弹窗-->
+<div class="weekly_cover">
+    <div class="cover_wrap">
+        <div class="cover_content">
+			<img class="cover_img" src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/weekhay/pc_cover_ico.png">
+            <p class="cover_text" id="remind_note">本时段活动即将开始，请您锁定页面，下一时段活动开始前5分钟您将收到短信提醒。</p>
+            <a class="cover_btn" onclick="coverHide()">知道了</a>
+		</div>
+	</div>
+</div>
+</body>
+#Html("end")

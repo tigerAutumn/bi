@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
+	
+	<!-- 方便根据 bean name 获得bean实例 -->
+	<bean id="springBeanUtil" class="com.pinting.core.util.SpringBeanUtil"></bean>
+	
+	<!-- 国际化 -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    	<property name="basename" value="globalMessages" />
+    	<property name="useCodeAsDefaultMessage" value="true" />
+    </bean>
+    
+	<!-- 配置placeholder.properties文件的位置信息-->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations" value="classpath:placeholder.properties"></property>
+	</bean>
+	
+	<!-- 
+		================================================================================
+		==========由于暂定无数据库，以下暂时注释==================================================
+		================================================================================
+	 -->
+	
+	<!-- 数据源配置（c3p0数据连接） -->
+	<!-- <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${dataSource.driver}" />
+		<property name="jdbcUrl" value="${dataSource.url}"/>
+        <property name="user" value="${dataSource.username}"/>
+        <property name="password" value="${dataSource.password}"/>
+        
+        <property name="acquireIncrement" value="${dataSource.acquireIncrement}" />
+        <property name="acquireRetryAttempts" value="${dataSource.acquireRetryAttempts}" />
+        <property name="acquireRetryDelay" value="${dataSource.acquireRetryAttempts}" />
+        <property name="autoCommitOnClose" value="${dataSource.autoCommitOnClose}" />
+        <property name="checkoutTimeout" value="${dataSource.checkoutTimeout}" />
+        <property name="idleConnectionTestPeriod" value="${dataSource.idleConnectionTestPeriod}" />
+        <property name="initialPoolSize" value="${dataSource.initialPoolSize}" />
+        <property name="maxIdleTime" value="${dataSource.maxIdleTime}" />
+        <property name="maxPoolSize" value="${dataSource.maxPoolSize}" />
+        <property name="numHelperThreads" value="${dataSource.numHelperThreads}" />
+	</bean> -->
+	
+	<!-- 配置SqlSessionFactory -->
+	<!-- <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+	    <property name="dataSource" ref="dataSource" />
+	    配置xml映射文件 
+	    <property name="mapperLocations" value="classpath:META-INF/sqlmap/sql-*.xml" />
+	</bean> -->
+	
+	<!-- 配置SqlSessionTemplate -->
+	<!-- <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+  		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean> -->
+	
+	<!-- 配置事务 -->
+	<!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+    	<property name="dataSource" ref="dataSource" />  
+	</bean> -->
+	
+	<!-- 声明式事务配置 -->
+	<!-- <tx:advice id="txAdivce" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="query*" read-only="true" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="modify*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut expression="execution(* com.pinting.site.*.service..*.*(..))" id="txPoint"/>
+		<aop:advisor advice-ref="txAdivce" pointcut-ref="txPoint"/>
+	</aop:config> -->
+	
+	<!-- 配置编程式事务支持 -->
+	<!-- <bean id ="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+       <property name="transactionManager" ref="transactionManager"/>
+	</bean> -->
+	<!-- lanjieqi -->
+  	<import resource="classpath:META-INF/spring/spr-interceptor.xml"/>
+  	<import resource="classpath:META-INF/spring/spr-quartz.xml"/>
+  	<import resource="classpath:META-INF/spring/spr-redis-beans.xml"/>
+</beans>

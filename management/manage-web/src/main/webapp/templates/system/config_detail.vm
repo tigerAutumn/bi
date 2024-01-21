@@ -1,0 +1,170 @@
+<style>
+	.hide_div {
+		display: none;
+	}
+	.show_div {
+		display: block;
+	}
+</style>
+<div class="pageContent">
+    #Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+    #Hidden("serverToken", $!serverToken)
+    <input type='hidden' id='updRuleId' value='$!payLimit.id'>
+
+    <form id="financeForm" method="post" action="$env.getWebURL('/sys/payLimit/operateConfig.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+        
+        <div class="pageFormContent nowrap" layoutH="97" >
+	        	<dl>	
+	        		<dt id="timeText">时间：</dt>
+				        <select id="timeType" name="timeType" #if("$!payLimit.timeType"!="") disabled='disabled' #end>
+				            <option value="DEFAULT" #if("$!payLimit.timeType"=="DEFAULT") selected #end >默认 </option>
+							<option value="MONDAY" #if("$!payLimit.timeType"=="MONDAY") selected #end >周一</option>
+							<option value="TUESDAY" #if("$!payLimit.timeType"=="TUESDAY") selected #end >周二</option>
+							<option value="WEDNESDAY" #if("$!payLimit.timeType"=="WEDNESDAY") selected #end >周三</option>
+							<option value="THURSDAY" #if("$!payLimit.timeType"=="THURSDAY") selected #end >周四</option>
+							<option value="FRIDAY" #if("$!payLimit.timeType"=="FRIDAY") selected #end >周五</option>
+							<option value="SATURDAY" #if("$!payLimit.timeType"=="SATURDAY") selected #end >周六</option>
+							<option value="SUNDAY" #if("$!payLimit.timeType"=="SUNDAY") selected #end >周日</option>
+							<option value="HOLIDAY" #if("$!payLimit.timeType"=="HOLIDAY") selected #end >节假日</option>
+				        </select>
+				    #if("$!payLimit.timeType"=="")    
+				    	<div id="triggerTime" class="content_div hide_div">   
+				    #else
+				    	<div id="triggerTime" class="content_div show_div">   
+				    #end 
+				    	
+				    		#if("$!payLimit.timeType"!="DEFAULT")
+								<input name="triggerTimeStart" type="text" size="15" id="triggerTimeStart" class=" date textInput readonly" readonly="true" datefmt="HH:mm:ss" value="$!timeStart" />
+								<label style="width:15px">至</label>
+								<input name="triggerTimeEnd" type="text" size="15" id="triggerTimeEnd" class=" date textInput readonly" readonly="true" datefmt="HH:mm:ss" value="$!timeEnd" /> 
+							#end
+						</div>	
+				</dl>
+				<br/><br/><br/>
+		        <dl>
+		        	<dt>限制条件：</dt>
+		        		<select id="limitType" name="limitType">
+							<option value="AMOUNT" #if("$!payLimit.limitType"=="AMOUNT") selected #end >金额</option>
+							<option value="NUMBER" #if("$!payLimit.limitType"=="NUMBER") selected #end >笔数</option>
+				        </select>
+				        &nbsp;&nbsp; &nbsp;&nbsp;
+		        		<select id="limitEquleType" name="limitEquleType">
+				            <option value="MORE_THEN_OR_EQULE_TO" #if("$!payLimit.limitEquleType"=="MORE_THEN_OR_EQULE_TO") selected #end >大于等于 </option>
+							<option value="LESS_THEN_OR_EQULE_TO" #if("$!payLimit.limitEquleType"=="LESS_THEN_OR_EQULE_TO") selected #end >小于等于</option>
+							<option value="MORE_THEN" #if("$!payLimit.limitEquleType"=="MORE_THEN") selected #end >大于</option>
+							<option value="LESS_THEN" #if("$!payLimit.limitEquleType"=="LESS_THEN") selected #end >小于</option>
+							<option value="EQULE_TO" #if("$!payLimit.limitEquleType"=="EQULE_TO") selected #end >等于</option>
+				        </select>
+		        		&nbsp;&nbsp; &nbsp;&nbsp;
+		        		<input type="text" id="limitVaule" name="limitVaule" maxlength="15" value="$!payLimit.limitVaule" style="float:none;" />
+		        		&nbsp;&nbsp;
+				</dl>	
+        </div>
+        
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+                </li>
+                #if("$!payLimit.id" == "")
+                	<li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_ruleForm('add')">保存</button></div></div></li>
+            	#else
+            		<li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_ruleForm('update')">保存</button></div></div></li>
+				#end
+            </ul>
+        </div>
+    </form>
+</div>
+<script>
+
+	// 时间控件取消
+	$('button').click(function(){
+		$('#calendar').hide();
+	});
+	
+	$('#timeType').change(function() {
+		if ($(this).val() != "DEFAULT") {
+			$('#triggerTime').addClass('show_div').removeClass('hide_div');
+		}
+	});
+            	
+    function submit_ruleForm(operateFlag) {
+        
+        var regAmount = /^[0-9]*[1-9][0-9]*$/;
+        var triggerTimeStart = $('input[name="triggerTimeStart"]').val();
+        var triggerTimeEnd = $('input[name="triggerTimeEnd"]').val();
+        var limitVaule = $.trim($("#limitVaule").val());
+
+        var serverToken = $.trim($("#serverToken").val());
+		var timeType = $.trim($("#timeType option:selected").val());
+		var limitType = $.trim($("#limitType option:selected").val());
+		var limitEquleType = $.trim($("#limitEquleType option:selected").val());
+		var operateFlag = operateFlag;
+		var updRuleId = $.trim($("#updRuleId").val());
+		  
+        if (timeType != "DEFAULT") {
+        	if((triggerTimeStart == null || triggerTimeStart == "") || 
+        		(triggerTimeEnd == null || triggerTimeEnd == "")){
+            	alertMsg.warn("时间不能为空！");
+            	return false;
+        	}
+        }
+        
+        if (limitType== "AMOUNT") {
+        	if((limitVaule == null || limitVaule == "")){
+            	alertMsg.warn("限制金额值不能为空！");
+            	return false;
+	        }
+	        if(!regAmount.test(limitVaule)) {
+	            alertMsg.warn("限制金额值必须是正整数！");
+	            return false;
+	        }
+        }        
+    	if (limitType== "NUMBER") {
+	    	 if((limitVaule == null || limitVaule == "")){
+	            alertMsg.warn("限制笔数值不能为空！");
+	            return false;
+	        }
+	        if(!regAmount.test(limitVaule)) {
+	            alertMsg.warn("限制笔数值必须是正整数！");
+	            return false;
+	        }
+    	}  
+    	
+        alertMsg.confirm("你确定提交此配置？", {
+            okCall: function () {
+	        jQuery.ajax({
+	            url: $('#APP_ROOT_PATH').val() + '/sys/payLimit/operateConfig.htm',
+	            data:{
+	                timeType: timeType,
+	                limitType: limitType,
+	                limitEquleType: limitEquleType,
+	                operateFlag: operateFlag,
+	               	timeStart: triggerTimeStart,
+	               	timeEnd: triggerTimeEnd,
+	               	ruleId: updRuleId,
+	               	limitVaule: limitVaule
+	            },
+	            type:'post',
+	            success: function(data){
+	                
+	                if (data.statusCode == "200") {
+	                    alertMsg.correct('操作成功!');
+	                    $.pdialog.closeCurrent();
+	                    $("#serverToken").val(data.serverToken);
+	                    navTab.reload("$env.getWebURL('/sys/payLimit/index.htm')");
+	                } else {
+	                    if (data.message) {
+	                        alertMsg.error(data.message);
+	                    } else {
+	                        alertMsg.error("操作失败");
+	                    }
+	                }
+	                
+	            }
+	        })
+	      } 
+	    }); 
+    }
+	
+</script>

@@ -1,0 +1,28 @@
+﻿-- 库表修改
+-- bs_sub_account表新增字段left_plan_interest剩余应付利息
+ALTER TABLE `bs_sub_account`
+ADD COLUMN `left_plan_interest`  double(15,2) NULL DEFAULT NULL COMMENT '剩余应付利息：目前只针对AUTH_FREE' AFTER `freeze_balance`;
+
+-- ln_finance_repay_schedule表新增字段left_plan_interest剩余应付利息
+ALTER TABLE `ln_finance_repay_schedule`
+ADD COLUMN `left_plan_interest`  double(15,2) NULL DEFAULT NULL COMMENT '剩余应付利息：目前只针对AUTH_FREE' AFTER `diff_amount`;
+
+-- ln_daily_amount表新增字段，修改注释
+ALTER TABLE `ln_daily_amount`
+MODIFY COLUMN `termx_amount`  double(15,2) NULL DEFAULT NULL COMMENT '不定期限汇总资金' AFTER `term12_left_amount`,
+MODIFY COLUMN `termx_left_amount`  double(15,2) NULL DEFAULT NULL COMMENT '不定期限剩余资金' AFTER `termx_amount`,
+ADD COLUMN `free_rate`  double(15,2) NULL DEFAULT NULL COMMENT '自由资金比例' AFTER `termx_left_amount`,
+ADD COLUMN `free_amount`  double(15,2) NULL DEFAULT NULL COMMENT '自由资金总额度' AFTER `free_rate`,
+ADD COLUMN `partner_amount`  double(15,2) NULL DEFAULT NULL COMMENT '合作方老产品总额度' AFTER `free_amount`,
+ADD COLUMN `status`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '可用状态：INIT-初始值；AVAILABLE-可用' AFTER `partner_amount`,
+ADD COLUMN `available_end_time`  datetime NULL DEFAULT NULL COMMENT '有效截止时间' AFTER `status`;
+
+-- 新增菜单
+INSERT INTO `m_menu` (`url`, `parent_id`, `order_num`, `name`, `note`) SELECT '/dailyOperations/loanAmountManage/index.htm' as url, t.id as parent_id, '27' as order_num, '放款资金管理' as name, '' as note FROM m_menu t where t.`name` = '日常业务';
+
+
+-- bs_sys_config表数据新增自由资金VIP理财人用户编号
+INSERT INTO `bs_sys_config` VALUES ('FREE_SUPER_FINANCE_USER_ID', '35893', '自由资金VIP理财人用户编号', '自由资金VIP理财人用户编号');
+
+-- bs_sys_config表数据新增自由资金VIP理财VIP专享产品编号-----需要在新增产品修改修改id
+INSERT INTO `bs_sys_config` VALUES ('FREE_SUPER_PRODUCT_ID', '1884', '自由资金VIP理财VIP专享产品编号 ','自由资金VIP理财VIP专享产品编号');

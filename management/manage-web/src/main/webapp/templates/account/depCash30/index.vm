@@ -1,0 +1,82 @@
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!product.pageNum" />
+    <input type="hidden" name="numPerPage" value="$!product.numPerPage" />
+    <input type="hidden" name="orderField" value="$!{param.orderField}" />
+    <input type="hidden" name="orderDirection" value="$!{param.orderDirection}" />
+</form>
+<div class="pageHeader">
+    <form id="myform" method="post"  rel="pagerForm" action="$env.getWebURL('/account/depCash30/index.htm')" onsubmit="return navTabSearch(this);">
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="pageNum" value="$!product.pageNum" />
+        <input type="hidden" name="numPerPage" value="$!product.numPerPage" />
+        <div class="searchBar">
+            <table class="searchContent">
+                <tbody>
+                <tr>
+                    <td >
+                        <select name="partnerCode" onchange="changeFun(this)">
+                            <option value="YUN_DAI_SELF" #if("$!partnerCode"=="YUN_DAI_SELF") selected  #end>云贷</option>
+                            ##<option value="ZSD" #if("$!partnerCode"=="ZSD") selected  #end>赞时贷</option>
+                            <option value="7_DAI_SELF" #if("$!partnerCode"=="7_DAI_SELF") selected  #end>七贷</option>
+                            <option value="FREE" #if("$!partnerCode"=="FREE") selected  #end>自由</option>
+                        </select>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+					<span style="margin-left:10px;">
+						<font color="red">当前VIP持有债权剩余本金：#if("$!vipAmount" != "") $!money.format($!vipAmount) 元#else 0.00 元 #end</font>
+					</span>
+            <span style="margin-left:10px;">
+						<font color="red">当前VIP站岗余额：#if("$!vipStandAmount" != "") $!money.format($!vipStandAmount) 元#else 0.00 元 #end</font>
+					</span>
+            <span style="margin-left:10px;">
+						<font color="red">当前站岗户余额：#if("$!partnerStandAmount" != "") $!money.format($!partnerStandAmount) 元#else 0.00 元 #end</font>
+					</span>
+        </ul>
+    </div>
+    <table class="table" width="1396" layoutH="138">
+        <thead>
+        <tr>
+            <th width="10%">兑付日期</th>
+            <th width="15%">预计退出债权总额</th>
+            <th width="15%">预计前日回到站岗户资金</th>
+            <th width="15%">预计VIP转让债权利息</th>
+            <th width="15%">应预备资金</th>
+            <th width="30%"></th>
+        </tr>
+        </thead>
+        <tbody>
+			#foreach($data in $depCash)
+            <tr target="sid_user" rel="1">
+                <td>$!date.formatYYYYMMDD($!data.cashDate)</td>
+                <td>$!money.defaultRound($!money.add($!data.quitPrincipal,$!data.quitInterest))</td>
+                <td>$!money.defaultRound($!data.repayBalance)</td>
+                <td>$!money.defaultRound($!data.vipInterest)</td>
+                <td>$!money.defaultRound($!data.prepareBalance)</td>
+                <td></td>
+            </tr>
+			#end
+        </tbody>
+    </table>
+
+</div>
+<script>
+
+    function changeFun(obj){
+        var opt = obj.options[obj.selectedIndex];
+        var url = $("#APP_ROOT_PATH").val() + "/account/depCash30/index.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+
+</script>
+	

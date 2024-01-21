@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinting.business.dao.BsSmsPlatformsConfigMapper">
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsSmsPlatformsConfig">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="platforms_name" jdbcType="VARCHAR" property="platformsName" />
+    <result column="platforms_code" jdbcType="VARCHAR" property="platformsCode" />
+    <result column="platforms_type" jdbcType="VARCHAR" property="platformsType" />
+    <result column="priority" jdbcType="INTEGER" property="priority" />
+    <result column="platforms_act" jdbcType="VARCHAR" property="platformsAct" />
+    <result column="platforms_pass" jdbcType="VARCHAR" property="platformsPass" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, platforms_name, platforms_code, platforms_type, priority, platforms_act, platforms_pass, 
+    note, create_time, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.pinting.business.model.BsSmsPlatformsConfigExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_sms_platforms_config
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bs_sms_platforms_config
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bs_sms_platforms_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsSmsPlatformsConfigExample">
+    delete from bs_sms_platforms_config
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsSmsPlatformsConfig">
+    insert into bs_sms_platforms_config (id, platforms_name, platforms_code, 
+      platforms_type, priority, platforms_act, 
+      platforms_pass, note, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{platformsName,jdbcType=VARCHAR}, #{platformsCode,jdbcType=VARCHAR}, 
+      #{platformsType,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, #{platformsAct,jdbcType=VARCHAR}, 
+      #{platformsPass,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsSmsPlatformsConfig">
+    insert into bs_sms_platforms_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="platformsName != null">
+        platforms_name,
+      </if>
+      <if test="platformsCode != null">
+        platforms_code,
+      </if>
+      <if test="platformsType != null">
+        platforms_type,
+      </if>
+      <if test="priority != null">
+        priority,
+      </if>
+      <if test="platformsAct != null">
+        platforms_act,
+      </if>
+      <if test="platformsPass != null">
+        platforms_pass,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="platformsName != null">
+        #{platformsName,jdbcType=VARCHAR},
+      </if>
+      <if test="platformsCode != null">
+        #{platformsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="platformsType != null">
+        #{platformsType,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="platformsAct != null">
+        #{platformsAct,jdbcType=VARCHAR},
+      </if>
+      <if test="platformsPass != null">
+        #{platformsPass,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsSmsPlatformsConfigExample" resultType="java.lang.Integer">
+    select count(*) from bs_sms_platforms_config
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update bs_sms_platforms_config
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.platformsName != null">
+        platforms_name = #{record.platformsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.platformsCode != null">
+        platforms_code = #{record.platformsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.platformsType != null">
+        platforms_type = #{record.platformsType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.priority != null">
+        priority = #{record.priority,jdbcType=INTEGER},
+      </if>
+      <if test="record.platformsAct != null">
+        platforms_act = #{record.platformsAct,jdbcType=VARCHAR},
+      </if>
+      <if test="record.platformsPass != null">
+        platforms_pass = #{record.platformsPass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null">
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update bs_sms_platforms_config
+    set id = #{record.id,jdbcType=INTEGER},
+      platforms_name = #{record.platformsName,jdbcType=VARCHAR},
+      platforms_code = #{record.platformsCode,jdbcType=VARCHAR},
+      platforms_type = #{record.platformsType,jdbcType=VARCHAR},
+      priority = #{record.priority,jdbcType=INTEGER},
+      platforms_act = #{record.platformsAct,jdbcType=VARCHAR},
+      platforms_pass = #{record.platformsPass,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsSmsPlatformsConfig">
+    update bs_sms_platforms_config
+    <set>
+      <if test="platformsName != null">
+        platforms_name = #{platformsName,jdbcType=VARCHAR},
+      </if>
+      <if test="platformsCode != null">
+        platforms_code = #{platformsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="platformsType != null">
+        platforms_type = #{platformsType,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        priority = #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="platformsAct != null">
+        platforms_act = #{platformsAct,jdbcType=VARCHAR},
+      </if>
+      <if test="platformsPass != null">
+        platforms_pass = #{platformsPass,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsSmsPlatformsConfig">
+    update bs_sms_platforms_config
+    set platforms_name = #{platformsName,jdbcType=VARCHAR},
+      platforms_code = #{platformsCode,jdbcType=VARCHAR},
+      platforms_type = #{platformsType,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=INTEGER},
+      platforms_act = #{platformsAct,jdbcType=VARCHAR},
+      platforms_pass = #{platformsPass,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  
+  <resultMap id="BaseResultMapVO" type="com.pinting.business.model.vo.BsSmsPlatformsConfigVO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="platforms_name" jdbcType="VARCHAR" property="platformsName" />
+    <result column="platforms_code" jdbcType="VARCHAR" property="platformsCode" />
+    <result column="platforms_type" jdbcType="VARCHAR" property="platformsType" />
+    <result column="priority" jdbcType="INTEGER" property="priority" />
+    <result column="platforms_act" jdbcType="VARCHAR" property="platformsAct" />
+    <result column="platforms_pass" jdbcType="VARCHAR" property="platformsPass" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="rate" jdbcType="DOUBLE" property="rate" />
+  </resultMap>
+  
+  <select id="selectAllList" resultMap="BaseResultMapVO">
+  SELECT a.*,IFNULL(t.rate,-1) as rate
+  from bs_sms_platforms_config a LEFT JOIN (
+	select succ.platforms_id,
+		CASE WHEN msg.msgNum &gt; 20 THEN ROUND(succ.succNum/msg.msgNum*100,2) ELSE -1 END rate
+		from
+	(select platforms_id,count(*) succNum from bs_sms_record_jnl where send_time BETWEEN DATE_ADD(NOW(),INTERVAL -60 MINUTE) AND NOW() AND status_msg='DELIVRD' GROUP BY platforms_id) succ,
+	(select platforms_id,count(*) msgNum from bs_sms_record_jnl where send_time BETWEEN DATE_ADD(NOW(),INTERVAL -60 MINUTE) AND NOW() AND status_msg IS NOT NULL GROUP BY platforms_id ) msg
+	where msg.platforms_id=succ.platforms_id
+	)t on t.platforms_id = a.id
+	order by platforms_type desc,priority asc
+  </select>
+</mapper>

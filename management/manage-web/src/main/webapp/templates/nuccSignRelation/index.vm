@@ -1,0 +1,220 @@
+#LoadJS("resources/js/ajaxfileupload")
+
+<div class="pageHeader">
+	<div class="searchBar">
+		<table class="searchContent">
+			<tr height="50px;">
+                <td width="20%">
+					<span>预览导入：</span><input type="file" accept="text/plain" name="fileFieldCheck" id="fileFieldCheck" onchange="fileUploadCheck()" value="导入">
+				</td>
+                <td width="20%">用户类型：
+                    <select name="userType" id="userType">
+                        <option value="" ></option>
+                        <option value="$!sevenDaiSelf" >7贷自主放款</option>
+                        <option value="$!yunDaiSelf" >云贷自主放款</option>
+                        <option value="$!bgw" >币港湾理财人</option>
+                    </select>
+                </td>
+                <td width="20%">商户号：
+                    <select name="merchantType" id="merchantType">
+                        <option value="$!bgwBaofooAssist">宝付辅助商户</option>
+                    </select>
+                </td>
+                <td width="20%">
+                    <a class="icon" href="$!env.getWebURL('')/nuccSignRelation/exportTxt.htm" target="dwzExport" targetType="navTab">
+                        <input type="button" value="下载模板">
+                    </a>
+                </td>
+				<td width="20%">
+					 <span>确认导入：</span><input type="file" accept="text/plain" name="fileField" id="fileField" onchange="fileUpload()" value="导入">
+				</td>
+			</tr>
+        </table>
+    </div>
+</div>
+<div class="pageContent">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" id="checkFlag" value="false"/>
+	<table class="table" width="1200" layoutH="140" >
+		<thead>
+			<tr>
+                <th width="10%">银行卡号</th>
+                <th width="10%">网联协议号</th>
+                <th width="10%">用户编号</th>
+                <th width="10%">错误信息</th>
+			</tr>
+		</thead>
+	
+		<tbody id="tableBody">
+			
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span id="sizeShow">共上传0条数据</span>
+		</div>
+	</div>
+</div>
+	
+<script>
+/*上传预览*/
+	function fileUploadCheck(){
+        var userType = $("#userType").val();
+        var merchantType = $("#merchantType").val();
+
+        if (userType == undefined || userType == '') {
+            alertMsg.error('请选择用户类型');
+            var obj = document.getElementById('fileFieldCheck') ;
+            obj.outerHTML=obj.outerHTML;
+            return;
+        }
+
+        var fileFieldCheck = $("#fileFieldCheck").val();
+        var fileFieldCheckName = getFileName(fileFieldCheck);
+
+        if (fileFieldCheckName == undefined || fileFieldCheckName == '') {
+            var obj = document.getElementById('fileFieldCheck') ;
+            obj.outerHTML=obj.outerHTML;
+            $("#tableBody").html('');
+            $("#sizeShow").html('共上传0条数据');
+            alertMsg.error('请选择导入文件！');
+            return;
+        }
+
+		var url = $("#APP_ROOT_PATH").val() + "/nuccSignRelation/readExcelCheck.htm" + "?userType=" + userType + "&merchantType=" + merchantType;
+
+		$.ajaxFileUpload
+		({
+			url:url,
+            type: 'post',
+			secureuri :false,
+			fileElementId :'fileFieldCheck',
+			dataType :'json',
+			success : function (data) {
+                $("#tableBody").html("");
+                $("#sizeShow").html("共上传0条数据");
+                var showStr = '';
+                $("#checkFlag").val("false");
+                for (var i = 0; i < data.nuccSignRelationList.length; i++) {
+
+                    var dataInfo = data.nuccSignRelationList[i];
+
+                    showStr = showStr + '<tr target="sid_user" rel="1">';
+                    if (dataInfo.cardNoFlag == 'error') {
+                        showStr = showStr + '<td style="color:red;">';
+                    } else {
+                        showStr = showStr + '<td>';
+                    }
+                    showStr = showStr + dataInfo.cardNo + '</td>';
+
+                    if (dataInfo.protocolNoFlag == 'error') {
+                        showStr = showStr + '<td style="color:red;">';
+                    } else {
+                        showStr = showStr + '<td>';
+                    }
+                    showStr = showStr + dataInfo.protocolNo + '</td>';
+
+                    if (dataInfo.userIdStr != null && dataInfo.userIdStr != '') {
+                        showStr = showStr + '<td>'+ dataInfo.userIdStr + '</td>';
+                    } else {
+                        showStr = showStr + '<td></td>';
+                    }
+
+                    if (dataInfo.errorMsg != '校验通过' && dataInfo.errorMsg != null) {
+                        showStr = showStr + '<td style="color:red;">';
+                    } else {
+                        showStr = showStr + '<td style="color:greed;">';
+                    }
+                    showStr = showStr + dataInfo.errorMsg + '</td></tr>';
+                }
+                $("#tableBody").html(showStr);
+                if (data.errorMsg != '') {
+                    alertMsg.error(data.errorMsg);
+                } else if (data.errorSize > 0) {
+                    alertMsg.error("部分导入数据校验失败，请处理");
+                    window.location.href = $("#APP_ROOT_PATH").val() + "/nuccSignRelation/exportFailFile.htm";
+				} else {
+                	$("#checkFlag").val("true");
+					alertMsg.correct("通过校验，可以上传");
+				}
+
+				if(data.showSize != 0){
+					$("#sizeShow").html("共上传"+data.showSize+"条数据");
+				}
+            },
+			error: function(data){
+				alertMsg.error("操作失败！");
+			}
+         });
+    }
+	
+	/*真正导入*/
+	function fileUpload(){
+        var fileFieldCheck = $("#fileFieldCheck").val();
+        var fileFieldCheckName = getFileName(fileFieldCheck);
+        var fileField = $("#fileField").val();
+        var fileFieldName = getFileName(fileField);
+
+        if (fileFieldCheckName != fileFieldName) {
+            alertMsg.error('导入文件与预览文件不一致');
+            var obj = document.getElementById('fileField') ;
+            obj.outerHTML=obj.outerHTML;
+            return;
+		}
+
+		if($("#checkFlag").val() == 'true'){
+
+            var userType = $("#userType").val();
+            var merchantType = $("#merchantType").val();
+
+            if (userType == undefined || userType == '') {
+                alertMsg.error('请选择用户类型');
+                var obj = document.getElementById('fileField') ;
+                obj.outerHTML=obj.outerHTML;
+                return;
+            }
+
+			var url = $("#APP_ROOT_PATH").val() + "/nuccSignRelation/readExcel.htm" + "?userType=" + userType + "&merchantType=" + merchantType;
+            var userType = $("#userType").val();
+            var merchantType = $("#merchantType").val();
+
+            if (userType == undefined || userType == '') {
+                alertMsg.error('请选择用户类型');
+                return;
+            }
+			$.ajaxFileUpload
+			({
+    			url:url,
+    			secureuri :false,
+    			fileElementId :'fileField',
+    			dataType :'json',
+    			success : function (data){
+    				if(data.errorMsg != ''){
+    					alertMsg.error(data.errorMsg + "请重新进行预览");
+						$("#checkFlag").val("false");
+                    } else if (data.errorSize > 0) {
+                        alertMsg.error("部分数据导入成功，请检查导入失败数据文件");
+                        window.location.href = $("#APP_ROOT_PATH").val() + "/nuccSignRelation/exportFailFile.htm";
+    				}else{
+    					alertMsg.correct("导入成功！");
+						$("#tableBody").html("");
+						$("#checkFlag").val("false");
+						$("#sizeShow").html("共上传0条数据");
+    				}
+                },
+    			error: function(data){
+    				alertMsg.error("操作失败！");
+    			}
+         	});
+		}else{
+			alertMsg.error("预览校验通过才能确认导入，请先进行预览");
+			var obj = document.getElementById('fileField') ; 
+			obj.outerHTML=obj.outerHTML; 
+		}
+	}
+
+function getFileName(o) {
+    var pos=o.lastIndexOf("\\");
+    return o.substring(pos+1);
+}
+</script>

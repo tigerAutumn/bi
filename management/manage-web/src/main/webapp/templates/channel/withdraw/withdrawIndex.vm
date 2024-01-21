@@ -1,0 +1,98 @@
+<style >
+	.btn_fail{
+        background-color:#ccc;
+		font-size: 20px;
+        cursor: pointer;
+        border: 0;color:#fff;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+		width: 150px;
+		margin-right: 20px;
+	}
+	
+	.btn_succ{
+		background-color:#5cb85c;
+		font-size: 20px;
+		color:#fff;
+		cursor: pointer;
+		border: 0;
+		padding-left: 10px;
+		padding-right: 10px;
+		padding-top: 7px;
+		padding-bottom: 7px;
+		width: 150px;
+		margin-right: 20px;
+	}
+</style>
+
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<input type="hidden"/>
+<form id="pagerForm" method="post" action="$env.getWebURL('/channelWithdraw/withdrawIndex.htm')" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	
+</form>
+<div class="pageHeader">
+</div>
+<div class="page unitBox">
+    <div class="pageContent"  layoutH="10">
+    	<div class="panel">
+			<div>
+                <span>
+					<label style="font-size: 20px;position: relative;top: 4px;">金额：</label>
+					<input type="text" id="amount" name="amount" value="$!amount" readonly style="padding: 10px 0 10px 10px;"/>
+				</span>
+				<span>
+					<label style="font-size: 20px;position: relative;top: 4px;">支付渠道：</label>
+					<select id="channelType" name="channelType" style="padding: 10px 0 10px 10px;width: 100px;">
+						<option value="REAPAL" #if("$!req.channelType" == "REAPAL") selected #end>融宝</option>
+						##foreach($!channel in $!channelList)
+    					##	<option value="$!channel.code" #if("$!req.channelType" == "$!channel.code") selected #end>$!channel.description</option>
+						##end
+                    </select>
+				</span>
+				<span>
+					<label style="font-size: 20px;position: relative;top: 4px;">银行卡：</label>
+					<select id="channelBankCard" name="channelBankCard" style="padding: 10px 0 10px 10px;">
+						#foreach($!channelBankCard in $!channelBankCardList)
+							<option value="$!channelBankCard.id" #if("$!req.channelBankCardId" == "$!channelBankCard.id") selected #end>$!channelBankCard.bankName ($!string.right($!channelBankCard.cardNo,4))</option>
+						#end
+                    </select>
+				</span>
+			</div>
+			<div id="top">
+				<label style="color:red;font-size:20px">该渠道单日单卡限额: $!dayTop</label>&nbsp;&nbsp;&nbsp;&nbsp;
+				<label style="color:red;font-size:20px">该渠道单卡单笔限额: $!oneTop</label>
+			</div>
+			<div>
+				<span>
+					#if("$!withdrawStatus" == "CONFIRM_OVER")
+						<input type="button" value="完成提现" class="btn_fail" />
+    				#elseif("$!withdrawStatus" == "WITHDRAW")
+    					<input type="button" onclick='withdraw()' value="取现" class="btn_succ" />
+    				#elseif("$!withdrawStatus" == "OVER")
+    					<input type="button" value="完成提现" class="btn_fail" />
+    				#elseif("$!withdrawStatus" == "PROCESS")
+    					<input type="button" value="处理中..." class="btn_fail" />
+    				#else
+						<input type="button" value="提现" class="btn_fail" />
+					#end
+				</span>
+    			<span>
+					#if("$!withdrawStatus" == "CONFIRM_OVER")
+						<input type="button" value="完成确认转账" class="btn_fail"/>
+    				#elseif("$!withdrawStatus" == "WITHDRAW")
+						<input type="button" value="确认转账" class="btn_fail"/>
+    				#elseif("$!withdrawStatus" == "OVER")
+    					<input type="button" onclick='confirmTransfer()' value="确认转账" class="btn_succ" />
+    				#elseif("$!withdrawStatus" == "PROCESS")
+    					<input type="button" value="确认转账" class="btn_fail"/>
+    				#else
+						<input type="button" value="确认转账" class="btn_fail" />
+					#end
+				</span>
+			</div>
+    	</div>
+    </div>
+</div>
+#LoadJS("/resources/js/withdraw_index")

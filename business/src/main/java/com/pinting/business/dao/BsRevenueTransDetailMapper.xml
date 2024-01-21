@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsRevenueTransDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsRevenueTransDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="partner_code" property="partnerCode" jdbcType="VARCHAR" />
+    <result column="trans_type" property="transType" jdbcType="VARCHAR" />
+    <result column="loan_id" property="loanId" jdbcType="INTEGER" />
+    <result column="repay_serial" property="repaySerial" jdbcType="INTEGER" />
+    <result column="revenue_trans_id" property="revenueTransId" jdbcType="INTEGER" />
+    <result column="repay_schedule_id" property="repayScheduleId" jdbcType="INTEGER" />
+    <result column="repay_id" property="repayId" jdbcType="INTEGER" />
+    <result column="repay_amount" property="repayAmount" jdbcType="DOUBLE" />
+    <result column="deposit" property="deposit" jdbcType="DOUBLE" />
+    <result column="bgw_service_fee" property="bgwServiceFee" jdbcType="DOUBLE" />
+    <result column="commission_fee" property="commissionFee" jdbcType="DOUBLE" />
+    <result column="other_fee" property="otherFee" jdbcType="DOUBLE" />
+    <result column="revenue_amount" property="revenueAmount" jdbcType="DOUBLE" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, partner_code, trans_type, loan_id, repay_serial, revenue_trans_id, repay_schedule_id, 
+    repay_id, repay_amount, deposit, bgw_service_fee, commission_fee, other_fee, revenue_amount, 
+    create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsRevenueTransDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_revenue_trans_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_revenue_trans_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_revenue_trans_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsRevenueTransDetailExample" >
+    delete from bs_revenue_trans_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsRevenueTransDetail" >
+    insert into bs_revenue_trans_detail (id, partner_code, trans_type, 
+      loan_id, repay_serial, revenue_trans_id, 
+      repay_schedule_id, repay_id, repay_amount, 
+      deposit, bgw_service_fee, commission_fee, 
+      other_fee, revenue_amount, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{partnerCode,jdbcType=VARCHAR}, #{transType,jdbcType=VARCHAR}, 
+      #{loanId,jdbcType=INTEGER}, #{repaySerial,jdbcType=INTEGER}, #{revenueTransId,jdbcType=INTEGER}, 
+      #{repayScheduleId,jdbcType=INTEGER}, #{repayId,jdbcType=INTEGER}, #{repayAmount,jdbcType=DOUBLE}, 
+      #{deposit,jdbcType=DOUBLE}, #{bgwServiceFee,jdbcType=DOUBLE}, #{commissionFee,jdbcType=DOUBLE}, 
+      #{otherFee,jdbcType=DOUBLE}, #{revenueAmount,jdbcType=DOUBLE}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsRevenueTransDetail" >
+    insert into bs_revenue_trans_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="partnerCode != null" >
+        partner_code,
+      </if>
+      <if test="transType != null" >
+        trans_type,
+      </if>
+      <if test="loanId != null" >
+        loan_id,
+      </if>
+      <if test="repaySerial != null" >
+        repay_serial,
+      </if>
+      <if test="revenueTransId != null" >
+        revenue_trans_id,
+      </if>
+      <if test="repayScheduleId != null" >
+        repay_schedule_id,
+      </if>
+      <if test="repayId != null" >
+        repay_id,
+      </if>
+      <if test="repayAmount != null" >
+        repay_amount,
+      </if>
+      <if test="deposit != null" >
+        deposit,
+      </if>
+      <if test="bgwServiceFee != null" >
+        bgw_service_fee,
+      </if>
+      <if test="commissionFee != null" >
+        commission_fee,
+      </if>
+      <if test="otherFee != null" >
+        other_fee,
+      </if>
+      <if test="revenueAmount != null" >
+        revenue_amount,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="partnerCode != null" >
+        #{partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="transType != null" >
+        #{transType,jdbcType=VARCHAR},
+      </if>
+      <if test="loanId != null" >
+        #{loanId,jdbcType=INTEGER},
+      </if>
+      <if test="repaySerial != null" >
+        #{repaySerial,jdbcType=INTEGER},
+      </if>
+      <if test="revenueTransId != null" >
+        #{revenueTransId,jdbcType=INTEGER},
+      </if>
+      <if test="repayScheduleId != null" >
+        #{repayScheduleId,jdbcType=INTEGER},
+      </if>
+      <if test="repayId != null" >
+        #{repayId,jdbcType=INTEGER},
+      </if>
+      <if test="repayAmount != null" >
+        #{repayAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="deposit != null" >
+        #{deposit,jdbcType=DOUBLE},
+      </if>
+      <if test="bgwServiceFee != null" >
+        #{bgwServiceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="commissionFee != null" >
+        #{commissionFee,jdbcType=DOUBLE},
+      </if>
+      <if test="otherFee != null" >
+        #{otherFee,jdbcType=DOUBLE},
+      </if>
+      <if test="revenueAmount != null" >
+        #{revenueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsRevenueTransDetailExample" resultType="java.lang.Integer" >
+    select count(*) from bs_revenue_trans_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_revenue_trans_detail
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.partnerCode != null" >
+        partner_code = #{record.partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.transType != null" >
+        trans_type = #{record.transType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loanId != null" >
+        loan_id = #{record.loanId,jdbcType=INTEGER},
+      </if>
+      <if test="record.repaySerial != null" >
+        repay_serial = #{record.repaySerial,jdbcType=INTEGER},
+      </if>
+      <if test="record.revenueTransId != null" >
+        revenue_trans_id = #{record.revenueTransId,jdbcType=INTEGER},
+      </if>
+      <if test="record.repayScheduleId != null" >
+        repay_schedule_id = #{record.repayScheduleId,jdbcType=INTEGER},
+      </if>
+      <if test="record.repayId != null" >
+        repay_id = #{record.repayId,jdbcType=INTEGER},
+      </if>
+      <if test="record.repayAmount != null" >
+        repay_amount = #{record.repayAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.deposit != null" >
+        deposit = #{record.deposit,jdbcType=DOUBLE},
+      </if>
+      <if test="record.bgwServiceFee != null" >
+        bgw_service_fee = #{record.bgwServiceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="record.commissionFee != null" >
+        commission_fee = #{record.commissionFee,jdbcType=DOUBLE},
+      </if>
+      <if test="record.otherFee != null" >
+        other_fee = #{record.otherFee,jdbcType=DOUBLE},
+      </if>
+      <if test="record.revenueAmount != null" >
+        revenue_amount = #{record.revenueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_revenue_trans_detail
+    set id = #{record.id,jdbcType=INTEGER},
+      partner_code = #{record.partnerCode,jdbcType=VARCHAR},
+      trans_type = #{record.transType,jdbcType=VARCHAR},
+      loan_id = #{record.loanId,jdbcType=INTEGER},
+      repay_serial = #{record.repaySerial,jdbcType=INTEGER},
+      revenue_trans_id = #{record.revenueTransId,jdbcType=INTEGER},
+      repay_schedule_id = #{record.repayScheduleId,jdbcType=INTEGER},
+      repay_id = #{record.repayId,jdbcType=INTEGER},
+      repay_amount = #{record.repayAmount,jdbcType=DOUBLE},
+      deposit = #{record.deposit,jdbcType=DOUBLE},
+      bgw_service_fee = #{record.bgwServiceFee,jdbcType=DOUBLE},
+      commission_fee = #{record.commissionFee,jdbcType=DOUBLE},
+      other_fee = #{record.otherFee,jdbcType=DOUBLE},
+      revenue_amount = #{record.revenueAmount,jdbcType=DOUBLE},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsRevenueTransDetail" >
+    update bs_revenue_trans_detail
+    <set >
+      <if test="partnerCode != null" >
+        partner_code = #{partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="transType != null" >
+        trans_type = #{transType,jdbcType=VARCHAR},
+      </if>
+      <if test="loanId != null" >
+        loan_id = #{loanId,jdbcType=INTEGER},
+      </if>
+      <if test="repaySerial != null" >
+        repay_serial = #{repaySerial,jdbcType=INTEGER},
+      </if>
+      <if test="revenueTransId != null" >
+        revenue_trans_id = #{revenueTransId,jdbcType=INTEGER},
+      </if>
+      <if test="repayScheduleId != null" >
+        repay_schedule_id = #{repayScheduleId,jdbcType=INTEGER},
+      </if>
+      <if test="repayId != null" >
+        repay_id = #{repayId,jdbcType=INTEGER},
+      </if>
+      <if test="repayAmount != null" >
+        repay_amount = #{repayAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="deposit != null" >
+        deposit = #{deposit,jdbcType=DOUBLE},
+      </if>
+      <if test="bgwServiceFee != null" >
+        bgw_service_fee = #{bgwServiceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="commissionFee != null" >
+        commission_fee = #{commissionFee,jdbcType=DOUBLE},
+      </if>
+      <if test="otherFee != null" >
+        other_fee = #{otherFee,jdbcType=DOUBLE},
+      </if>
+      <if test="revenueAmount != null" >
+        revenue_amount = #{revenueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsRevenueTransDetail" >
+    update bs_revenue_trans_detail
+    set partner_code = #{partnerCode,jdbcType=VARCHAR},
+      trans_type = #{transType,jdbcType=VARCHAR},
+      loan_id = #{loanId,jdbcType=INTEGER},
+      repay_serial = #{repaySerial,jdbcType=INTEGER},
+      revenue_trans_id = #{revenueTransId,jdbcType=INTEGER},
+      repay_schedule_id = #{repayScheduleId,jdbcType=INTEGER},
+      repay_id = #{repayId,jdbcType=INTEGER},
+      repay_amount = #{repayAmount,jdbcType=DOUBLE},
+      deposit = #{deposit,jdbcType=DOUBLE},
+      bgw_service_fee = #{bgwServiceFee,jdbcType=DOUBLE},
+      commission_fee = #{commissionFee,jdbcType=DOUBLE},
+      other_fee = #{otherFee,jdbcType=DOUBLE},
+      revenue_amount = #{revenueAmount,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="sumDeductAmount" resultType="java.lang.Double" parameterType="Map">
+    SELECT IFNULL(SUM(a.revenue_amount),0) FROM
+    bs_revenue_trans_detail a
+    where a.trans_type='REVENUE_DEDUCT' AND a.update_time BETWEEN #{startTime} AND #{endTime}
+
+  </select>
+
+  <select id="sumIncomeAmount" parameterType="Map" resultType="java.lang.Double">
+    SELECT IFNULL(SUM(a.revenue_amount),0) FROM
+    bs_revenue_trans_detail a
+    where a.trans_type='REVENUE_INCOME'
+    AND a.partner_code=#{partnerCode}
+    AND a.update_time BETWEEN #{startTime} AND #{endTime}
+  </select>
+
+  <select id="sumFeeAmountDaily" parameterType="Map" resultType="java.lang.Double">
+    SELECT IFNULL(SUM(a.revenue_amount),0) FROM
+    bs_revenue_trans_detail a
+    WHERE a.trans_type=#{transType}
+    AND DATE(a.update_time) = #{today}
+    AND a.partner_code = #{partnerCode}
+  </select>
+
+  <resultMap id="RevenueTransDetailVOMap" type="com.pinting.business.model.vo.RevenueTransDetailVO">
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="trans_type" jdbcType="VARCHAR" property="transType" />
+    <result column="apply_amount" jdbcType="DOUBLE" property="applyAmount" />
+    <result column="revenue_amount" jdbcType="DOUBLE" property="revenueAmount" />
+    <result column="trans_amount" jdbcType="DOUBLE" property="transAmount" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+  <select id="selectYunHeadFeeList" parameterType="java.util.Map" resultMap="RevenueTransDetailVOMap">
+    SELECT tab.* FROM
+    (
+      (SELECT
+        c.user_name, c.mobile, a.trans_type, b.apply_amount,
+        a.revenue_amount, null trans_amount, a.create_time
+      FROM bs_revenue_trans_detail a, ln_loan b, ln_user c
+      WHERE a.loan_id = b.id AND b.ln_user_id = c.id
+      AND a.partner_code = 'YUN_DAI_SELF' AND a.trans_type = 'HEAD_FEE_INCOME')
+      UNION
+      (SELECT
+        null user_name, null mobile, 'DAIFU' trans_type, null apply_amount,
+        null revenue_amount, trans_amount, trans_time AS create_time
+      FROM `bs_sys_account_jnl`
+      WHERE sub_account_code2 = 'DEP_HEADFEE_YUN')
+    ) tab
+    <where>
+      <if test="userName != '' and userName != null">
+        AND tab.user_name LIKE concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+      </if>
+      <if test="mobile != '' and mobile != null">
+        AND tab.mobile = #{mobile}
+      </if>
+      <if test="transType != '' and transType != null">
+        AND tab.trans_type = #{transType}
+      </if>
+      <if test="startTime != '' and startTime != null">
+        AND DATE(tab.create_time) >= DATE(#{startTime})
+      </if>
+      <if test="endTime != '' and endTime != null">
+        AND DATE(tab.create_time) &lt;= DATE(#{endTime})
+      </if>
+    </where>
+    ORDER BY tab.create_time DESC
+    LIMIT #{start}, #{numPerPage}
+  </select>
+
+  <select id="countYunHeadFee" parameterType="java.util.Map" resultType="java.lang.Long">
+    SELECT COUNT(*) FROM
+    (
+      (SELECT
+      c.user_name, c.mobile, a.trans_type, b.apply_amount,
+      a.revenue_amount, null trans_amount, a.create_time
+      FROM bs_revenue_trans_detail a, ln_loan b, ln_user c
+      WHERE a.loan_id = b.id AND b.ln_user_id = c.id
+      AND a.partner_code = 'YUN_DAI_SELF' AND a.trans_type = 'HEAD_FEE_INCOME')
+      UNION
+      (SELECT
+      null user_name, null mobile, 'DAIFU' trans_type, null apply_amount,
+      null revenue_amount, trans_amount, trans_time AS create_time
+      FROM `bs_sys_account_jnl`
+      WHERE sub_account_code2 = 'DEP_HEADFEE_YUN')
+    ) tab
+    <where>
+      <if test="userName != '' and userName != null">
+        AND tab.user_name LIKE concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+      </if>
+      <if test="mobile != '' and mobile != null">
+        AND tab.mobile = #{mobile}
+      </if>
+      <if test="transType != '' and transType != null">
+        AND tab.trans_type = #{transType}
+      </if>
+      <if test="startTime != '' and startTime != null">
+        AND DATE(tab.create_time) >= DATE(#{startTime})
+      </if>
+      <if test="endTime != '' and endTime != null">
+        AND DATE(tab.create_time) &lt;= DATE(#{endTime})
+      </if>
+    </where>
+  </select>
+
+  <select id="sumFeeOfDS" parameterType="java.util.Map" resultType="java.lang.Double">
+    SELECT
+      SUM(tab.revenue_amount) AS total_revenue_amount
+    FROM
+    (
+      SELECT
+      c.user_name, c.mobile, a.trans_type, a.revenue_amount, a.create_time
+      FROM bs_revenue_trans_detail a, ln_loan b, ln_user c
+      WHERE a.loan_id = b.id AND b.ln_user_id = c.id
+      AND a.partner_code = 'YUN_DAI_SELF' AND a.trans_type = 'HEAD_FEE_INCOME'
+    ) tab
+    <where>
+      <if test="userName != '' and userName != null">
+        AND tab.user_name LIKE concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+      </if>
+      <if test="mobile != '' and mobile != null">
+        AND tab.mobile = #{mobile}
+      </if>
+      <if test="transType != '' and transType != null">
+        AND tab.trans_type = #{transType}
+      </if>
+      <if test="startTime != '' and startTime != null">
+        AND DATE(tab.create_time) >= DATE(#{startTime})
+      </if>
+      <if test="endTime != '' and endTime != null">
+        AND DATE(tab.create_time) &lt;= DATE(#{endTime})
+      </if>
+    </where>
+  </select>
+
+  <select id="sumFeeOfDF" parameterType="java.util.Map" resultType="java.lang.Double">
+    SELECT
+      SUM(tab.trans_amount) AS total_trans_amount
+    FROM
+    (
+      SELECT
+      null user_name, null mobile, 'DAIFU' trans_type, null apply_amount,
+      null revenue_amount, trans_amount, trans_time AS create_time
+      FROM `bs_sys_account_jnl`
+      WHERE sub_account_code2 = 'DEP_HEADFEE_YUN'
+    ) tab
+    <where>
+      <if test="userName != '' and userName != null">
+        AND tab.user_name LIKE concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+      </if>
+      <if test="mobile != '' and mobile != null">
+        AND tab.mobile = #{mobile}
+      </if>
+      <if test="transType != '' and transType != null">
+        AND tab.trans_type = #{transType}
+      </if>
+      <if test="startTime != '' and startTime != null">
+        AND DATE(tab.create_time) >= DATE(#{startTime})
+      </if>
+      <if test="endTime != '' and endTime != null">
+        AND DATE(tab.create_time) &lt;= DATE(#{endTime})
+      </if>
+    </where>
+  </select>
+  
+   <select id="sumOverdueRevenueAmount" resultType="java.lang.Double" parameterType="Map">
+    SELECT IFNULL(SUM(a.revenue_amount),0) FROM
+    bs_revenue_trans_detail a
+    where a.trans_type='OVERDUE_REVENUE_INCOME' AND a.update_time BETWEEN #{startTime} AND #{endTime}
+  </select>
+
+  <select id="sumDeductAmountByTimeAndType" resultType="java.lang.Double"  parameterType="java.util.Map">
+	SELECT IFNULL(SUM(a.revenue_amount),0) FROM
+    bs_revenue_trans_detail a
+    <where>
+    	<if test="transType != '' and transType != null">
+        	a.trans_type = #{transType}
+      	</if>
+      	<if test="partnerCode != '' and partnerCode != null">
+        	AND a.partner_code = #{partnerCode}
+      	</if>
+    	<if test="startTime != '' and startTime != null">
+       		AND DATE(a.create_time) &gt;= DATE(#{startTime})
+      	</if>
+      	<if test="endTime != '' and endTime != null">
+        	AND DATE(a.create_time) &lt;= DATE(#{endTime})
+      	</if>
+    </where>
+  </select>
+
+
+  <resultMap id="LnAccountFillDetailMAP" type="com.pinting.business.model.vo.LnAccountFillDetailVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="partner_code" property="partnerCode" jdbcType="VARCHAR" />
+    <result column="fill_date" property="fillDate" jdbcType="TIMESTAMP" />
+    <result column="partner_loan_id" property="partnerLoanId" jdbcType="VARCHAR" />
+    <result column="partner_repay_id" property="partnerRepayId" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getList" parameterType="java.util.Map" resultMap="LnAccountFillDetailMAP">
+    select a.trans_type, a.partner_code, a.id, b.partner_loan_id,  c.partner_repay_id, a.update_time as fill_date
+    from bs_revenue_trans_detail a, ln_loan b, ln_repay_schedule c
+    where a.partner_code = #{partnerCode} and a.trans_type = 'REVENUE_INCOME' and a.loan_id = b.id and a.repay_schedule_id = c.id
+    and DATE(a.update_time) = #{yesterday}
+  </select>
+</mapper>

@@ -1,0 +1,111 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!userVO.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!userVO.numPerPage" />
+	<input type="hidden" name="orderField" value="$!{userVO.orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{userVO.orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	 <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/user/management/index.htm')" method="post">
+	<input type="hidden" name="pageNum" value="$!userVO.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!userVO.numPerPage" />
+	<div class="searchBar">
+		<ul class="searchContent">
+            <table class="searchContent">
+				<tr>
+					<td>
+						手机号：<input  id="mobile" type="text" name="mobile" value="$!userVO.mobile" size="15" maxlength="11"/>
+					</td>
+					<td>
+						姓名：<input id="name" type="text" name="name" value="$!userVO.name" />
+					</td>
+					<td>
+                            <label style="width:55px;">角色权限：</label>
+							<select class="combox" name="roleId" >
+								<option  value="" #if("$!userVO.status"=="") selected  #end >全部</option>
+								#foreach($mRole in $!mRoleList)
+								<option value="$!mRole.id" #if("$!userVO.roleId"=="$!mRole.id") selected  #end >$!mRole.name</option>
+								#end
+							</select>
+					</td>
+					<td>
+						<label style="width:20px;">&nbsp</label>
+						<select class="combox" name="status" >
+								<option  value="1" #if("$!userVO.status"=="1") selected  #end >在用用户</option>
+								<option value="2" #if("$!userVO.status"=="2") selected  #end >销户用户</option>
+                            	<option value="3" #if("$!userVO.status"=="3") selected  #end >冻结用户</option>
+								<option value="-1" #if("$!userVO.status"=="-1") selected  #end>全部用户</option>
+							</select>
+					</td>
+					<td><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></td>
+				</tr>
+			</table>
+		</ul>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="$env.getWebURL('user/management/detail.htm?flag=create')" target="dialog" mask="true" rel="createBack" height="350"><span>新增</span></a></li>
+			<li class="line">line</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="3%">用户编号</th>
+				<th width="7%">账户名称</th>
+				<th width="7%">昵称</th>
+				<th width="15%">邮箱</th>
+				<th width="8%">手机</th>
+				<th width="7%">权限</th>
+				<th width="7%">状态</th>
+				<th width="7%">渠道</th>
+				<th width="11%">创建日期</th>
+				<th width="11%">登录日期</th>
+				<th width="9%">备注</th>
+				<th width="8%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $userGrid)
+			<tr target="sid_user" rel="1">
+				<td>$!grid.id</td>
+				<td>$!grid.name</td>
+				<td>$!grid.nick</td>
+				<td>$!grid.email</td>
+				<td>$!grid.mobile</td>
+				<td>$!grid.roleName</td>
+				<td><span style="color:#if("$!grid.status" == "2") red">已经失效#elseif("$!grid.status" == "3") red">冻结用户 #else green">正在使用</span> #end</td>
+				<td>$!grid.agentName</td>
+				<td>$!date.format($!grid.createTime)</td>
+				<td>$!date.format($!grid.loginTime)</td>
+				<td>$!grid.note</td>
+				<td>
+					<a title="销户?" target="ajaxTodo" href="$env.getWebURL('user/management/delete.htm')?id=$!grid.id" class="btnDel">删除</a>
+					<a title="编辑?" target="dialog" href="$env.getWebURL('user/management/detail.htm?flag=update&id=')$!grid.id" class="btnEdit" mask="true" rel="createBack" height="380">编辑</a>
+					<a title="重置密码并启用?" target="ajaxTodo" href="$env.getWebURL('user/management/update.htm?flag=updatePasswd&id=')$!grid.id" class="btnSelect" mask="true" rel="createBack" height="170" width="520">重置密码</a>
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+    	
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!userVO.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!userVO.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!userVO.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!userVO.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!userVO.totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!userVO.totalRows" numPerPage="$!userVO.numPerPage" currentPage="$!userVO.pageNum"></div>
+
+	</div>
+</div>
+	

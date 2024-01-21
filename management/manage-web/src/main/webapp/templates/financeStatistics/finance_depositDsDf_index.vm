@@ -1,0 +1,137 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+	
+<div class="page unitBox">	
+	<div class="pageHeader">
+    	<form id="generalForm" method="post"  rel="pagerForm" action="$env.getWebURL('/financeStatistics/depositDsDf.htm')" onsubmit="return navTabSearch(this);">
+        	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+        	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+            <input type="hidden" name="queryFlag" value="QUERY" />
+        	<div class="searchBar">
+        		<table class="searchContent">
+        			<tbody>
+        				<tr>
+							<td >
+								<select name="partnerCode" class="valid">
+                    				<option value="ZAN" #if("$!req.partnerCode"=="ZAN") selected  #end>赞分期</option>
+                                    <option value="ZSD" #if("$!req.partnerCode"=="ZSD") selected  #end>赞时贷</option>
+                    			</select>
+                            </td>
+							
+            				<td >
+            					姓名：<input type="text" name="userName" maxlength="20" value="$!req.userName"  class="clear"/>
+                            </td>
+            				<td>
+            					手机号：<input type="text" name="userMobile" maxlength="11" value="$!req.userMobile" class="clear num"/>
+            				</td>
+							<td >
+            					类型：
+								<select name="dsdfType" class="valid">
+									#if("$!req.partnerCode"=="ZSD")
+										<option value="计提" #if("$!req.dsdfType"=="计提") selected  #end>计提</option>
+									#else
+            						<option value="" #if("$!req.dsdfType"=="") selected  #end>全部</option>
+            						<option value="计提" #if("$!req.dsdfType"=="计提") selected  #end>计提</option>
+                    				<option value="逾期回款" #if("$!req.dsdfType"=="逾期回款") selected  #end>逾期回款</option>
+									<option value="逾期垫付" #if("$!req.dsdfType"=="逾期垫付") selected  #end>逾期垫付</option>
+									#end
+                    			</select>
+                            </td>
+							<td>
+            					生成日期：<input type="text" readonly="true" class="date textInput readonly" name="beginTime" id="beginTime" value="$!date.formatYYYYMMDD($!req.beginTime)" />
+            				</td>
+            				<td>
+            					到&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type="text" readonly="true" class="date textInput readonly" name="overTime" id="overTime" value="$!date.formatYYYYMMDD($!req.overTime)" />
+            				</td>
+							<td>
+            					<button onclick="searchFunction()" type="button">查询</button>
+                            </td>
+							<td>
+								<button  onclick="exportFun()" type="button">导出Excel</button>
+							</td>
+                       </tr>
+                       <tr height="35px;">
+                            <td>代收总额（元）：$!money.format($!sumAmount.sumDsAmount) 元</td>
+    						<td>代付总额（元）：$!money.format($!sumAmount.sumDfAmount) 元</td>
+    						<td></td>
+							<td></td>
+    						<td></td>
+							<td></td>
+					   </tr>
+					   
+        			</tbody>
+    			</table>
+    		</div>
+        </form>
+	</div>
+	<div class="pageContent">
+		<table class="table" width="97%" layoutH="150">
+    		<thead>
+    			<tr>
+					<th width="7%">序号</th>
+    				<th width="10%">融资客户名称</th>
+    				<th width="10%">手机号</th>
+    				<th width="10%">融资客户代码</th>
+					<th width="10%">类型</th>
+    				<th width="10%">代收金额（元）</th>
+					<th width="10%">代付金额（元）</th>
+					<th width="10%">产生日期</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			#foreach($grid in $list)
+    			<tr target="sid_user" rel="1">
+					<td>$grid.rowno</td>
+					<td>$grid.lnUserName</td>
+					<td>$grid.lnUserMobile</td>
+					<td>$grid.lnUserCode</td>
+					<td>$grid.dsdfType</td>
+					<td>$!money.format($!grid.dsAmount)</td>
+					<td>$!money.format($!grid.dfAmount)</td>
+					<td>$!date.formatYYYYMMDD($!grid.doneTime)</td>
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+    			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!count条</span>
+    	</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+    </div>
+</div>
+	
+
+<script>  
+	function searchFunction(){
+    	var startTime = $("#beginTime").val();
+    	var endTime = $("#overTime").val();
+    	if(startTime && endTime && startTime>endTime){
+    		alertMsg.error("开始时间不能晚于结束时间！");
+    		return false;
+    	}
+		var url = $("#APP_ROOT_PATH").val() + "/financeStatistics/depositDsDf.htm";
+		$("#generalForm").attr("action",url);
+		$("#generalForm").attr("onsubmit","return navTabSearch(this);");
+    	$("#generalForm").submit();
+    }
+	
+	function exportFun(){
+    	var url = $("#APP_ROOT_PATH").val() + "/financeStatistics/depositDsDfExport.htm";
+    	$("#generalForm").attr("action",url);
+    	$("#generalForm").attr("onsubmit","");
+    	$("#generalForm").submit();
+	}
+	
+</script> 

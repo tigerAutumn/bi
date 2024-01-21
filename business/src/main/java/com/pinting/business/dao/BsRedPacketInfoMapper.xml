@@ -1,0 +1,758 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsRedPacketInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsRedPacketInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="apply_no" property="applyNo" jdbcType="VARCHAR" />
+    <result column="serial_no" property="serialNo" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="use_time_start" property="useTimeStart" jdbcType="TIMESTAMP" />
+    <result column="use_time_end" property="useTimeEnd" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, apply_no, serial_no, user_id, status, amount, order_no, use_time_start, use_time_end, 
+    create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsRedPacketInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_red_packet_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_red_packet_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_red_packet_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsRedPacketInfoExample" >
+    delete from bs_red_packet_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsRedPacketInfo" >
+    insert into bs_red_packet_info (id, apply_no, serial_no, 
+      user_id, status, amount, 
+      order_no, use_time_start, use_time_end, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{applyNo,jdbcType=VARCHAR}, #{serialNo,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{amount,jdbcType=DOUBLE}, 
+      #{orderNo,jdbcType=VARCHAR}, #{useTimeStart,jdbcType=TIMESTAMP}, #{useTimeEnd,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsRedPacketInfo" keyProperty="id" useGeneratedKeys="true">
+    insert into bs_red_packet_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="applyNo != null" >
+        apply_no,
+      </if>
+      <if test="serialNo != null" >
+        serial_no,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="useTimeStart != null" >
+        use_time_start,
+      </if>
+      <if test="useTimeEnd != null" >
+        use_time_end,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="applyNo != null" >
+        #{applyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNo != null" >
+        #{serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="useTimeStart != null" >
+        #{useTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useTimeEnd != null" >
+        #{useTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsRedPacketInfoExample" resultType="java.lang.Integer" >
+    select count(*) from bs_red_packet_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_red_packet_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.applyNo != null" >
+        apply_no = #{record.applyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serialNo != null" >
+        serial_no = #{record.serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.orderNo != null" >
+        order_no = #{record.orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.useTimeStart != null" >
+        use_time_start = #{record.useTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.useTimeEnd != null" >
+        use_time_end = #{record.useTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_red_packet_info
+    set id = #{record.id,jdbcType=INTEGER},
+      apply_no = #{record.applyNo,jdbcType=VARCHAR},
+      serial_no = #{record.serialNo,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      amount = #{record.amount,jdbcType=DOUBLE},
+      order_no = #{record.orderNo,jdbcType=VARCHAR},
+      use_time_start = #{record.useTimeStart,jdbcType=TIMESTAMP},
+      use_time_end = #{record.useTimeEnd,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsRedPacketInfo" >
+    update bs_red_packet_info
+    <set >
+      <if test="applyNo != null" >
+        apply_no = #{applyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNo != null" >
+        serial_no = #{serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="useTimeStart != null" >
+        use_time_start = #{useTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useTimeEnd != null" >
+        use_time_end = #{useTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsRedPacketInfo" >
+    update bs_red_packet_info
+    set apply_no = #{applyNo,jdbcType=VARCHAR},
+      serial_no = #{serialNo,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DOUBLE},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      use_time_start = #{useTimeStart,jdbcType=TIMESTAMP},
+      use_time_end = #{useTimeEnd,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  
+
+  <resultMap id="BsRedPacketInfoVOMap" type="com.pinting.business.model.vo.BsRedPacketInfoVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="rp_name" property="rpName" jdbcType="VARCHAR" />
+    <result column="serial_no" property="serialNo" jdbcType="VARCHAR" />
+    <result column="serial_name" property="serialName" jdbcType="VARCHAR" />
+    <result column="distribute_type" property="distributeType" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="full" property="full" jdbcType="DOUBLE" />
+    <result column="subtract" property="subtract" jdbcType="DOUBLE" />
+    <result column="use_time_start" property="useTimeStart" jdbcType="TIMESTAMP" />
+    <result column="use_time_end" property="useTimeEnd" jdbcType="TIMESTAMP" />
+    <result column="distribute_time" property="distributeTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="agent_name" property="agentName" jdbcType="VARCHAR" />
+    <result column="trigger_type" property="triggerType" jdbcType="VARCHAR" />
+    
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="invest_days" property="investDays" jdbcType="INTEGER" />
+    <result column="invest_amount" property="investAmount" jdbcType="DOUBLE" />
+    <result column="used_time" property="usedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectRedPacketInfoGrid" resultMap="BsRedPacketInfoVOMap" parameterType="java.util.Map" >
+    SELECT aa.*,e.rp_name FROM (
+    SELECT a.id, a.apply_no,c.mobile, b.serial_no, b.serial_name, b.distribute_type,
+		a.amount, b.`full`, b.subtract, a.use_time_start, a.use_time_end, a.create_time AS distribute_time,
+		a.`status`, d.agent_name, f.trigger_type,c.id user_id,
+		CASE WHEN g.id is NOT NULL THEN h.open_balance ELSE 0 END as invest_amount,
+		CASE WHEN g.id is NOT NULL THEN  
+			CASE i.term WHEN -7 THEN 7 
+			WHEN 12 THEN 365
+			ELSE i.term*30 END
+		END as invest_days,
+		CASE WHEN g.id is NOT NULL THEN g.update_time END as used_time
+	FROM bs_red_packet_info a 
+		LEFT JOIN bs_red_packet_check b ON a.serial_no = b.serial_no 
+		LEFT JOIN bs_auto_red_packet_rule f ON f.serial_no = b.serial_no
+		LEFT JOIN bs_user c ON a.user_id = c.id 
+		LEFT JOIN bs_agent d ON c.agent_id = d.id
+		LEFT JOIN bs_pay_orders g on a.order_no = g.order_no 
+			and g.trans_type in ('CARD_BUY_PRODUCT','BALANCE_BUY_PRODUCT')
+			and g.`status` = 6 and a.order_no is not null and a. STATUS = 'USED'
+		LEFT JOIN bs_sub_account h on g.sub_account_id = h.id
+		LEFT JOIN bs_product i on h.product_id = i.id
+	<where>
+		<if test="usedTimeStart != null and usedTimeStart != ''">
+			AND DATE(g.update_time) >= #{usedTimeStart}
+		</if>
+		<if test="usedTimeEnd != null and usedTimeEnd != ''">
+			AND DATE(g.update_time) &lt;= #{usedTimeEnd}
+		</if>
+		<if test="useTimeStart != null and useTimeStart != ''">
+			AND DATE(a.use_time_end) >= #{useTimeStart}
+		</if>
+		<if test="useTimeEnd != null and useTimeEnd != ''">
+			AND DATE(a.use_time_start) &lt;= #{useTimeEnd}
+		</if>
+		<if test="distributeTimeStart != null and distributeTimeStart != ''">
+			AND DATE(a.create_time) >= #{distributeTimeStart}
+		</if>
+		<if test="distributeTimeEnd != null and distributeTimeEnd != ''">
+			AND DATE(a.create_time) &lt;= #{distributeTimeEnd}
+		</if>
+		<if test="agentIds != null and agentIds !='' and (nonAgentId == null or nonAgentId == '')">
+			and c.agent_id in 
+			<foreach collection="agentIds" item="agentId" index="index"
+	            open="(" close=")" separator=",">
+	            #{agentId}
+	        </foreach>
+		</if>
+		<if test="(agentIds == null or agentIds =='' ) and nonAgentId != null and nonAgentId != ''">
+			and c.agent_id is null
+		</if>
+		<if test="agentIds != null and agentIds !='' and nonAgentId != null and nonAgentId != ''">
+			and (c.agent_id in 
+			<foreach collection="agentIds" item="agentId" index="index"
+	            open="(" close=")" separator=",">
+	            #{agentId}
+	        </foreach>
+	        or c.agent_id is null)
+		</if>
+		<if test="distributeType != null and distributeType != '' and distributeType != 'ALL'">
+			AND b.distribute_type = #{distributeType}
+		</if>
+		<if test="triggerType != null and triggerType != '' ">
+			AND f.trigger_type = #{triggerType}
+		</if>
+		<if test="status != null and status != '' and status != 'OVER' ">
+			<if test="status == 'INIT'">
+				AND a.status = #{status} AND a.use_time_end > NOW()
+			</if>
+			<if test="status != 'INIT'">
+				AND a.status = #{status}
+			</if>
+		</if>
+		<if test="status != null and status != '' and status == 'OVER' ">
+			AND a.status = 'INIT' AND a.use_time_end &lt;= NOW()
+		</if>
+		<if test="mobile != null and mobile != '' ">
+			AND c.mobile LIKE CONCAT(CONCAT('%', #{mobile}),'%')
+		</if>
+		<if test="serialNo != null and serialNo != '' ">
+			AND b.serial_no LIKE CONCAT(CONCAT('%', #{serialNo}),'%')
+		</if>
+		<if test="redPacketName != null and redPacketName != '' ">
+			AND b.serial_name LIKE CONCAT(CONCAT('%', #{redPacketName}),'%') 
+			<if test="redPacketNameFlag != null and redPacketNameFlag != '' ">
+				ESCAPE '/' 
+			</if>
+		</if>
+	</where>
+		ORDER BY a.id DESC
+		LIMIT #{start}, #{numPerPage}
+	)aa LEFT JOIN bs_red_packet_apply e ON aa.apply_no = e.apply_no
+  </select>
+  <select id="countRedPacketInfoGrid" resultType="java.lang.Integer" parameterType="java.util.Map" >
+    SELECT COUNT(a.id)
+	FROM bs_red_packet_info a 
+		LEFT JOIN bs_red_packet_check b ON a.serial_no = b.serial_no 
+		LEFT JOIN bs_auto_red_packet_rule f ON f.serial_no = b.serial_no
+		LEFT JOIN bs_user c ON a.user_id = c.id 
+		LEFT JOIN bs_agent d ON c.agent_id = d.id 
+		LEFT JOIN bs_pay_orders g on a.order_no = g.order_no 
+	<where>
+		<if test="usedTimeStart != null and usedTimeStart != ''">
+			AND DATE(g.update_time) >= #{usedTimeStart}
+		</if>
+		<if test="usedTimeEnd != null and usedTimeEnd != ''">
+			AND DATE(g.update_time) &lt;= #{usedTimeEnd}
+		</if>
+		<if test="useTimeStart != null and useTimeStart != ''">
+			AND DATE(a.use_time_end) >= #{useTimeStart}
+		</if>
+		<if test="useTimeEnd != null and useTimeEnd != ''">
+			AND DATE(a.use_time_start) &lt;= #{useTimeEnd}
+		</if>
+		<if test="distributeTimeStart != null and distributeTimeStart != ''">
+			AND DATE(a.create_time) >= #{distributeTimeStart}
+		</if>
+		<if test="distributeTimeEnd != null and distributeTimeEnd != ''">
+			AND DATE(a.create_time) &lt;= #{distributeTimeEnd}
+		</if>
+		<if test="agentIds != null and agentIds !='' and (nonAgentId == null or nonAgentId == '')">
+			and c.agent_id in 
+			<foreach collection="agentIds" item="agentId" index="index"
+	            open="(" close=")" separator=",">
+	            #{agentId}
+	        </foreach>
+		</if>
+		<if test="(agentIds == null or agentIds =='' ) and nonAgentId != null and nonAgentId != ''">
+			and c.agent_id is null
+		</if>
+		<if test="agentIds != null and agentIds !='' and nonAgentId != null and nonAgentId != ''">
+			and (c.agent_id in 
+			<foreach collection="agentIds" item="agentId" index="index"
+	            open="(" close=")" separator=",">
+	            #{agentId}
+	        </foreach>
+	        or c.agent_id is null)
+		</if>
+		<if test="distributeType != null and distributeType != '' and distributeType != 'ALL'">
+			AND b.distribute_type = #{distributeType}
+		</if>
+		<if test="triggerType != null and triggerType != '' ">
+			AND f.trigger_type = #{triggerType}
+		</if>
+		<if test="status != null and status != '' and status != 'OVER' ">
+			<if test="status == 'INIT'">
+				AND a.status = #{status} AND a.use_time_end > NOW()
+			</if>
+			<if test="status != 'INIT'">
+				AND a.status = #{status}
+			</if>
+		</if>
+		<if test="status != null and status != '' and status == 'OVER' ">
+			AND a.status = 'INIT' AND a.use_time_end &lt;= NOW()
+		</if>
+		<if test="mobile != null and mobile != '' ">
+			AND c.mobile LIKE CONCAT(CONCAT('%', #{mobile}),'%')
+		</if>
+		<if test="serialNo != null and serialNo != '' ">
+			AND b.serial_no LIKE CONCAT(CONCAT('%', #{serialNo}),'%')
+		</if>
+		<if test="redPacketName != null and redPacketName != '' ">
+			AND b.serial_name LIKE CONCAT(CONCAT('%', #{redPacketName}),'%')
+			<if test="redPacketNameFlag != null and redPacketNameFlag != '' ">
+				ESCAPE '/' 
+			</if>
+		</if>
+	</where>
+  </select>
+  
+  <!-- PC||H5 红包 -->
+  <resultMap id="RedPacketInfoVOMap" type="com.pinting.business.model.vo.RedPacketInfoVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="amount" property="amount" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="serial_name" property="serialName" jdbcType="VARCHAR" />
+    <result column="full" property="full" jdbcType="DOUBLE" />
+    <result column="subtract" property="subtract" jdbcType="DOUBLE" />
+    <result column="use_time_start" property="useTimeStart" jdbcType="TIMESTAMP" />
+    <result column="use_time_end" property="useTimeEnd" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="term_limit" property="termLimit" jdbcType="VARCHAR" />
+    <result column="term_limit_msg" property="termLimitMsg" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectRedPacketList" resultMap="RedPacketInfoVOMap" parameterType="java.util.Map" >
+  	SELECT a.id, a.user_id, b.serial_name, b.`full`, b.term_limit,
+		b.subtract, a.use_time_start, a.use_time_end, a.`status`
+	FROM bs_red_packet_info a, bs_red_packet_check b
+      <if test="productId != null">
+          , (select id, term from bs_product where id = #{productId}) c
+      </if>
+	WHERE a.serial_no = b.serial_no AND a.user_id = #{userId}
+	<if test="status != '' and status != null">
+		<if test="status == 'INIT'">
+			AND a.`status` = 'INIT' AND a.use_time_end >= NOW() AND a.use_time_start &lt;= NOW()
+		</if>
+		<if test="status == 'OVER'">
+			AND a.`status` = 'INIT' AND a.use_time_end &lt; NOW()
+		</if>
+		<if test="status == 'PC_MY_RED_PACKET'">
+			AND a.`status` = 'INIT' AND a.use_time_end >= NOW() AND a.use_time_start &lt;= NOW()
+		</if>
+		<if test="status != 'INIT' and status != 'OVER' and status != 'PC_MY_RED_PACKET'">
+			AND a.`status` = #{status}
+		</if>
+	</if>
+	<if test="status == null">
+		AND (a.`status` = 'INIT' OR a.`status` = 'BUYING')
+	</if>
+	<if test="amount != null and amount > 0">
+		AND b.`full` &lt;= #{amount}
+	</if>
+    <if test="productId != null">
+        AND FIND_IN_SET(c.term, b.term_limit)
+    </if>
+	ORDER BY a.id DESC
+  </select>
+    <select id="selectRedPacketListNew" resultMap="RedPacketInfoVOMap" parameterType="java.util.Map" >
+        SELECT a.id, a.user_id, b.serial_name, b.`full`, b.term_limit, CONCAT('限', b.term_limit, '个月产品使用') AS term_limit_msg,
+        b.subtract, a.use_time_start, a.use_time_end,
+        CASE
+            WHEN a.`status` = 'INIT' AND a.use_time_end >= NOW() AND a.use_time_start &lt;= NOW() THEN 'INIT'
+            WHEN a.`status` = 'INIT' AND a.use_time_end &lt; NOW() THEN 'OVER'
+            ELSE 'USED'
+        END AS status
+        FROM bs_red_packet_info a, bs_red_packet_check b
+        WHERE a.serial_no = b.serial_no AND a.user_id = #{userId}
+        <if test="status != '' and status != null">
+            <if test="status == 'INIT'">
+                AND a.`status` = 'INIT' AND a.use_time_end >= NOW() AND a.use_time_start &lt;= NOW()
+                ORDER BY b.subtract DESC, a.use_time_end ASC
+            </if>
+            <if test="status == 'OVER'">
+                AND a.`status` = 'INIT' AND a.use_time_end &lt; NOW() AND DATE(a.use_time_end) >= ADDDATE(DATE(NOW()),-89)
+                ORDER BY a.use_time_end DESC, b.subtract DESC
+            </if>
+            <if test="status == 'USED'">
+                AND a.`status` = 'USED' AND DATE(a.update_time) >= ADDDATE(DATE(NOW()),-89)
+                ORDER BY a.update_time DESC, b.subtract DESC
+            </if>
+        </if>
+        LIMIT #{start}, #{numPerPage}
+    </select>
+  <select id="selectByIdAndUserId" resultMap="RedPacketInfoVOMap" parameterType="java.util.Map" >
+  	SELECT a.id, a.user_id, b.serial_name, b.`full`, 
+		b.subtract, a.use_time_start, a.use_time_end, a.`status`
+	FROM bs_red_packet_info a, bs_red_packet_check b
+	WHERE a.serial_no = b.serial_no AND a.user_id = #{userId} AND a.id = #{id}
+  </select>
+  <!-- 已使用红包 -->
+  <select id="selectUsedRedPaktAmount" resultType="java.lang.Double">
+  	SELECT sum(amount) FROM bs_red_packet_info
+	WHERE status='USED'
+  </select>
+  <!-- 未使用红包 -->
+  <select id="selectUnUsedRedPaktAmount" resultType="java.lang.Double">
+  	SELECT sum(amount) FROM bs_red_packet_info
+	WHERE status!='USED' and use_time_end > now()
+  </select>
+  <!-- 已逾期红包 -->
+  <select id="selectExpiryAmount" resultType="java.lang.Double">
+  	SELECT sum(amount) FROM bs_red_packet_info
+	WHERE status= 'INIT' and use_time_end &lt; now()
+  </select>
+  
+  <!-- 用户注册获得红包 -->
+  <select id="selectUserRegistRedPackets" resultMap="RedPacketInfoVOMap" parameterType="java.lang.Integer">
+  	SELECT a.id, a.user_id, b.serial_name, b.`full`, 
+		b.subtract, a.use_time_start, a.use_time_end, a.`status`
+	FROM 
+		bs_red_packet_info a, bs_red_packet_check b, bs_auto_red_packet_rule c
+	WHERE 
+		a.serial_no = b.serial_no and b.serial_no=c.serial_no 
+		and c.trigger_type='NEW_USER' AND a.user_id = #{userId} 
+  </select>
+  
+   <!-- 已发放的过期未使用红包总金额 -->
+  <select id="selectExpiryAmountByApplyNo" resultType="java.lang.Double" parameterType="java.util.Map">
+  	select case when sum(a.amount) is null then 0 else sum(a.amount)end from bs_red_packet_info a
+	where a.apply_no = #{applyNo} and a.`status` = 'INIT' 
+	and a.use_time_end &lt; #{nowTime} 
+  </select>
+  
+  <!-- autoRule表中已停用，且未发送给用户的总金额 -->
+  <select id="selectDisableUnSendAmountByApplyNo" resultType="java.lang.Double" parameterType="java.util.Map">
+  	select case when sum(a.amount) is null then sum(c.amount*c.total)
+	else sum(c.amount*c.total) - sum(a.amount) end as amount from bs_auto_red_packet_rule b,bs_red_packet_check c 
+	left join bs_red_packet_info a on a.serial_no = c.serial_no 
+	where c.apply_no = #{applyNo} and c.serial_no = b.serial_no and c.check_status !='REFUSE' 
+	and (b.`status` = 'DISABLE' or b.distribute_time_end &lt; #{nowTime})
+  </select>
+  
+  <select id="selectRedInfoByIdForLock" resultMap="BaseResultMap">
+  	select * from bs_red_packet_info where id = #{id} and status = #{status} for update
+  </select>
+  
+  <select id="countByRedPacketMotherDay" resultType="java.lang.Integer" parameterType="java.util.Map" >
+	SELECT COUNT(info.user_id) FROM bs_red_packet_info info 
+	LEFT JOIN bs_red_packet_check a ON a.serial_no = info.serial_no
+	LEFT JOIN bs_auto_red_packet_rule b ON b.serial_no = a.serial_no
+	WHERE a.check_status = 'PASS' AND a.distribute_type = 'AUTO' 
+	AND b.trigger_type = '318_GAME_OLD_USER' AND b.`status` = 'AVAILABLE' 
+	AND b.distribute_time_start &lt;= NOW() AND b.distribute_time_end >= NOW()
+	AND DATE(info.create_time) = DATE(NOW())
+	AND info.user_id = #{userId}
+  </select>
+  
+  <!--红包发放统计 S -->
+  <resultMap id="userRedPacketPublishStatisticsMap" type="com.pinting.business.model.vo.UserRedPublishStatisticsVO">
+  	<result column="row_no" property="rowNo" jdbcType="INTEGER" />
+  	<result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+  	<result column="dept" property="dept" jdbcType="VARCHAR" />
+  	<result column="customer_code" property="customerCode" jdbcType="VARCHAR" />
+  	<result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+  	<result column="amount" property="amount" jdbcType="DOUBLE" />
+  	<result column="id" property="id" jdbcType="INTEGER" />
+  	<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="userRedPacketPublishStatistics" resultMap="userRedPacketPublishStatisticsMap">
+SELECT
+	(@row_no := @row_no + 1) AS row_no,
+	a.*
+FROM
+	(
+		SELECT
+			aa.order_no,
+			'101' AS dept,
+			concat("3.",bb.id) customer_code,
+			bb.user_name customer_name,
+			aa.amount,
+			aa.id,
+			aa.create_time,
+			aa.update_time
+		FROM
+			bs_red_packet_info aa
+			LEFT JOIN bs_user bb ON aa.user_id = bb.id
+		WHERE
+			aa.`status` = 'USED'
+		<if test="customerName != null and customerName != ''"> 
+			AND bb.user_name LIKE CONCAT(CONCAT('%', #{customerName}),'%')
+		</if>
+		<if test="startTime != null and startTime != ''"> 
+			<![CDATA[
+				AND aa.update_time >= #{startTime}
+			]]>
+		</if>
+		<if test="endTime != null and endTime != ''"> 
+			<![CDATA[
+				AND aa.update_time <= #{endTime}
+			]]>
+		</if>
+		ORDER BY aa.update_time DESC
+		LIMIT #{position}, #{offset}
+	) AS a, (SELECT @row_no := #{position}) b
+  </select>
+  <select id="userRedPacketPublishStatisticsCount" resultType="java.lang.Integer">
+  	SELECT COUNT(aa.id)
+	FROM bs_red_packet_info aa
+	LEFT JOIN bs_user bb ON aa.user_id = bb.id
+	WHERE aa.`status` = 'USED'
+	<if test="customerName != null and customerName != ''"> 
+		AND bb.user_name LIKE CONCAT(CONCAT('%', #{customerName}),'%')
+	</if>
+	<if test="startTime != null and startTime != ''"> 
+		<![CDATA[
+			AND aa.update_time >= #{startTime}
+		]]>
+	</if>
+	<if test="endTime != null and endTime != ''"> 
+		<![CDATA[
+			AND aa.update_time <= #{endTime}
+		]]>
+	</if>
+  </select>
+  
+   <select id="userRedPacketPublishStatisticsTotalAmount" resultType="java.lang.Double">
+  	SELECT 
+  	SUM(aa.amount)
+	FROM bs_red_packet_info aa
+	LEFT JOIN bs_user bb ON aa.user_id = bb.id
+	WHERE aa.`status` = 'USED'
+	<if test="customerName != null and customerName != ''"> 
+		AND bb.user_name LIKE CONCAT(CONCAT('%', #{customerName}),'%')
+	</if>
+	<if test="startTime != null and startTime != ''"> 
+		<![CDATA[
+			AND aa.update_time >= #{startTime}
+		]]>
+	</if>
+	<if test="endTime != null and endTime != ''"> 
+		<![CDATA[
+			AND aa.update_time <= #{endTime}
+		]]>
+	</if>
+  </select>
+<!--红包发放统计 S -->
+
+<!--根据用户id和时间查询某日使用红包的金额  -->
+<select id="getSumAmountByUserTime" resultType="java.lang.Double">
+Select sum(a.amount)
+from bs_red_packet_info a,bs_pay_orders b
+where a.order_no = b.order_no and a.user_id=#{userId} and a.`status`='USED'
+and b.create_time >= #{useDate}
+
+</select>
+
+
+
+
+
+ <select id="selectOptimalRedPacket" resultMap="RedPacketInfoVOMap" parameterType="java.util.Map" >
+  	SELECT a.id, a.user_id, b.serial_name, b.`full`, b.term_limit,
+		b.subtract, a.use_time_start, a.use_time_end, a.`status`
+	FROM bs_red_packet_info a, bs_red_packet_check b
+	WHERE a.serial_no = b.serial_no AND a.user_id = #{userId}
+	AND a.`status` = 'INIT' AND a.use_time_end >= NOW() AND a.use_time_start &lt;= NOW()
+	AND FIND_IN_SET(#{term},b.term_limit)
+	ORDER BY  b.subtract DESC ,b.`full` ASC,a.use_time_end DESC
+	LIMIT 0,1
+ </select>
+
+    <select id="getUsedSumAmount" resultType="java.lang.Double" parameterType="java.util.Map" >
+        <![CDATA[
+            SELECT
+                IFNULL(sum(amount),0)
+            FROM
+                bs_red_packet_info
+            WHERE
+                status = #{useStatus}
+            AND update_time >= #{beginTime}
+            AND update_time <= #{endTime}
+        ]]>
+    </select>
+</mapper>

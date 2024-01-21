@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsPayLimitMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsPayLimit" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pay_business_type" property="payBusinessType" jdbcType="VARCHAR" />
+    <result column="time_type" property="timeType" jdbcType="VARCHAR" />
+    <result column="time_start" property="timeStart" jdbcType="VARCHAR" />
+    <result column="time_end" property="timeEnd" jdbcType="VARCHAR" />
+    <result column="limit_type" property="limitType" jdbcType="VARCHAR" />
+    <result column="limit_equle_type" property="limitEquleType" jdbcType="VARCHAR" />
+    <result column="limit_vaule" property="limitVaule" jdbcType="INTEGER" />
+    <result column="is_delete" property="isDelete" jdbcType="VARCHAR" />
+    <result column="m_user_id" property="mUserId" jdbcType="INTEGER" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, pay_business_type, time_type, time_start, time_end, limit_type, limit_equle_type, 
+    limit_vaule, is_delete, m_user_id, note, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsPayLimitExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_pay_limit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_pay_limit
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_pay_limit
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsPayLimitExample" >
+    delete from bs_pay_limit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsPayLimit" >
+    insert into bs_pay_limit (id, pay_business_type, time_type, 
+      time_start, time_end, limit_type, 
+      limit_equle_type, limit_vaule, is_delete, 
+      m_user_id, note, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{payBusinessType,jdbcType=VARCHAR}, #{timeType,jdbcType=VARCHAR}, 
+      #{timeStart,jdbcType=VARCHAR}, #{timeEnd,jdbcType=VARCHAR}, #{limitType,jdbcType=VARCHAR}, 
+      #{limitEquleType,jdbcType=VARCHAR}, #{limitVaule,jdbcType=INTEGER}, #{isDelete,jdbcType=VARCHAR}, 
+      #{mUserId,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsPayLimit" >
+    insert into bs_pay_limit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="payBusinessType != null" >
+        pay_business_type,
+      </if>
+      <if test="timeType != null" >
+        time_type,
+      </if>
+      <if test="timeStart != null" >
+        time_start,
+      </if>
+      <if test="timeEnd != null" >
+        time_end,
+      </if>
+      <if test="limitType != null" >
+        limit_type,
+      </if>
+      <if test="limitEquleType != null" >
+        limit_equle_type,
+      </if>
+      <if test="limitVaule != null" >
+        limit_vaule,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="mUserId != null" >
+        m_user_id,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="payBusinessType != null" >
+        #{payBusinessType,jdbcType=VARCHAR},
+      </if>
+      <if test="timeType != null" >
+        #{timeType,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStart != null" >
+        #{timeStart,jdbcType=VARCHAR},
+      </if>
+      <if test="timeEnd != null" >
+        #{timeEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="limitType != null" >
+        #{limitType,jdbcType=VARCHAR},
+      </if>
+      <if test="limitEquleType != null" >
+        #{limitEquleType,jdbcType=VARCHAR},
+      </if>
+      <if test="limitVaule != null" >
+        #{limitVaule,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=VARCHAR},
+      </if>
+      <if test="mUserId != null" >
+        #{mUserId,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsPayLimitExample" resultType="java.lang.Integer" >
+    select count(*) from bs_pay_limit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_pay_limit
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.payBusinessType != null" >
+        pay_business_type = #{record.payBusinessType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.timeType != null" >
+        time_type = #{record.timeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.timeStart != null" >
+        time_start = #{record.timeStart,jdbcType=VARCHAR},
+      </if>
+      <if test="record.timeEnd != null" >
+        time_end = #{record.timeEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.limitType != null" >
+        limit_type = #{record.limitType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.limitEquleType != null" >
+        limit_equle_type = #{record.limitEquleType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.limitVaule != null" >
+        limit_vaule = #{record.limitVaule,jdbcType=INTEGER},
+      </if>
+      <if test="record.isDelete != null" >
+        is_delete = #{record.isDelete,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mUserId != null" >
+        m_user_id = #{record.mUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_pay_limit
+    set id = #{record.id,jdbcType=INTEGER},
+      pay_business_type = #{record.payBusinessType,jdbcType=VARCHAR},
+      time_type = #{record.timeType,jdbcType=VARCHAR},
+      time_start = #{record.timeStart,jdbcType=VARCHAR},
+      time_end = #{record.timeEnd,jdbcType=VARCHAR},
+      limit_type = #{record.limitType,jdbcType=VARCHAR},
+      limit_equle_type = #{record.limitEquleType,jdbcType=VARCHAR},
+      limit_vaule = #{record.limitVaule,jdbcType=INTEGER},
+      is_delete = #{record.isDelete,jdbcType=VARCHAR},
+      m_user_id = #{record.mUserId,jdbcType=INTEGER},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsPayLimit" >
+    update bs_pay_limit
+    <set >
+      <if test="payBusinessType != null" >
+        pay_business_type = #{payBusinessType,jdbcType=VARCHAR},
+      </if>
+      <if test="timeType != null" >
+        time_type = #{timeType,jdbcType=VARCHAR},
+      </if>
+      <if test="timeStart != null" >
+        time_start = #{timeStart,jdbcType=VARCHAR},
+      </if>
+      <if test="timeEnd != null" >
+        time_end = #{timeEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="limitType != null" >
+        limit_type = #{limitType,jdbcType=VARCHAR},
+      </if>
+      <if test="limitEquleType != null" >
+        limit_equle_type = #{limitEquleType,jdbcType=VARCHAR},
+      </if>
+      <if test="limitVaule != null" >
+        limit_vaule = #{limitVaule,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=VARCHAR},
+      </if>
+      <if test="mUserId != null" >
+        m_user_id = #{mUserId,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsPayLimit" >
+    update bs_pay_limit
+    set pay_business_type = #{payBusinessType,jdbcType=VARCHAR},
+      time_type = #{timeType,jdbcType=VARCHAR},
+      time_start = #{timeStart,jdbcType=VARCHAR},
+      time_end = #{timeEnd,jdbcType=VARCHAR},
+      limit_type = #{limitType,jdbcType=VARCHAR},
+      limit_equle_type = #{limitEquleType,jdbcType=VARCHAR},
+      limit_vaule = #{limitVaule,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=VARCHAR},
+      m_user_id = #{mUserId,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectBfDfByTimeType" resultMap="BaseResultMap">
+  	select id, pay_business_type, time_type, time_start, time_end, limit_type, limit_equle_type, 
+    limit_vaule, is_delete from bs_pay_limit where pay_business_type='BF_DF' and
+	time_type=#{timeType} and time_start &lt;= DATE_FORMAT(NOW(),'%H:%i')
+	and time_end >= DATE_FORMAT(NOW(),'%H:%i') and is_delete='NO'
+  </select>
+  
+  <!--查询运营数据微信用户管理列表-->
+  <select id="findSysPayLimitList" resultType="com.pinting.business.model.vo.SysPayLimitVO" >
+     SELECT
+     (@rowNO := @rowNo + 1) rowno,
+     t.* 
+     FROM 
+     (SELECT @rowNO := #{position}) b,
+     (
+    SELECT b.name as operateName, a.*
+    	FROM bs_pay_limit a
+    	left join m_user b on a.m_user_id=b.id
+    <where>
+   		a.is_delete = 'NO'
+    </where> 
+    ) t   
+    ORDER BY t.update_time DESC
+    LIMIT #{position}, #{offset}
+  </select>
+  
+</mapper>

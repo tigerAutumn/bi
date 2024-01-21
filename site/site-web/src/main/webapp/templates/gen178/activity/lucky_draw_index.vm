@@ -1,0 +1,313 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenJS("/resources/gen178/scripts/common/common")
+#LoadGenCSS("/resources/gen178/styles/activity/common")
+#LoadGenCSS("/resources/gen178/styles/activity/main")
+#LoadGenCSS("/resources/gen178/styles/activity/index_lottery")
+#LoadGenCSS("/resources/gen178/styles/activity/lottery")
+#LoadGenCSS("/resources/gen178/styles/activity/xz_lottery")
+#LoadGenCSS("/resources/gen178/styles/activity/zz_lottery")
+#LoadGenCSS("/resources/gen178/styles/activity/number_phone")
+#LoadGenJS("/resources/gen178/scripts/activity/six")
+#LoadGenJS("/resources/gen178/scripts/activity/Custom")
+#LoadGenJS("/resources/gen178/scripts/activity/lucky_draw_index")
+#Gen178Header()
+#GenHead("end")
+#LoadGenCSS("/resources/gen178/styles/activity/User_lotter")
+#LoadGenCSS("/resources/gen178/styles/activity/new_user")
+#LoadGenCSS("/resources/gen178/styles/activity/lottery_succed_info")
+
+<style>
+	.item_right {
+		text-align: left;
+		padding-left: 200px;
+    }
+</style>
+
+<body style="background: #ffd601">
+	<input type="hidden" value='$!jsonLuckyDraws' id="jsonLuckyDraws" />
+	<input type="hidden" value='$!token' id="token" name="token"/>
+<div class="recom_bg">
+	<div class="share">
+		<!-- <img class="monkey" src="images/small_monkey.png" alt=""> -->
+		<ul class="share_ul" name="egg_list" id="egg_list">
+			<li class="share_icon">
+				<a class="tem share_tem1" href="javascript:;" title="" activityBatchNo="$!res.normal.id">
+					<img src="$!env.get('gen.server.web')/resources/gen178/images/small_pb_egg.png" alt="">
+				</a>
+				<div class="pb_egg">金蛋</div>
+				<div class="egg_number">$!res.normal.leftTimes 次机会</div>
+			</li>
+			<li class="share_icon">
+				<img class="qiao" src="$!env.get('gen.server.web')/resources/gen178/images/qiao.png" alt="">
+				<a class="tem share_tem2" href="javascript:;" title="" activityBatchNo="$!res.setAuger.id">
+					<img src="$!env.get('gen.server.web')/resources/gen178/images/small_xz_egg.png" alt="">
+				</a>
+				<div class="pb_egg">镶钻金蛋</div>
+				<div class="egg_number">$!res.setAuger.leftTimes 次机会</div>
+			</li>
+			<li class="share_icon in_lot_top">
+				<a class="tem share_tem3" href="javascript:;" title="" activityBatchNo="$!res.supreme.id">
+					<img src="$!env.get('gen.server.web')/resources/gen178/images/small_zz_egg.png" alt="">
+				</a>
+				<div class="pb_egg">至尊金蛋</div>
+				<div class="egg_number">$!res.supreme.leftTimes 次机会</div>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="lottery_warp">
+	<!-- 中奖名单 -->
+	#if($!rowDatas.size() == 0)
+		<div class="name_info">
+    		<div class="lott_title">中奖名单</div>
+    	</div>
+		<div class="lott_main">
+    		<ul class="lott_ul">
+				<li class="lott_item">
+    				<div class="item ">
+    					<p  style="text-align:center;">
+							暂无中奖记录
+						</p>
+    				</div>
+    			</li>
+            </ul>
+        </div>
+	#else
+    	<div class="name_info">
+    		<div class="lott_title">中奖名单</div>
+    	</div>
+    	<div class="lott_main">
+    		<ul class="lott_ul">
+    			#if($!rowDatas.size() > 0)
+    			<li class="lott_item">
+    				<div class="item item_right">
+    					<p >
+                            <span id="mobile1">$!rowDatas[0].mobile1</span>&nbsp;&nbsp;<span id="text_get1">获得</span>&nbsp;&nbsp;<span id="content1">$!rowDatas[0].content1</span>	
+    					</p>
+    				</div>
+    			</li>
+    			#end
+    			#if($!rowDatas.size() > 0)
+    				#if($!rowDatas[0].mobile2)
+    					<li class="lott_item">
+            				<div class="item item_right">
+            					<p>
+                                    <span id="mobile2">$!rowDatas[0].mobile2</span>&nbsp;&nbsp;<span id="text_get2">获得</span>&nbsp;&nbsp;<span id="content2">$!rowDatas[0].content2</span>	
+            					</p>
+            				</div>
+            			</li>
+    				#end
+    			#end
+    		</ul>
+    	</div>
+	#end
+	
+	
+	#if($!res.myBonuses.size() == 0)
+	#else
+		<div class="name_info">
+    		<div class="lott_title">我的中奖</div>
+    	</div>
+    	<div class="lott_main">
+    		<ul class="lott_ul">
+    			#if($!res.myBonuses.size() > 0)
+    				#foreach($!data in $!res.myBonuses)
+        			<li class="lott_item">
+        				<div class="item item_right" id="item_1">
+        					<p>
+        						<span>$!date.formatDateTime($!data.createtime,'yyyy年MM月dd日')</span>&nbsp;&nbsp;获得&nbsp;&nbsp;<span>$!data.content  $!data.createTime</span>	
+        					</p>
+        				</div>
+        			</li>
+        			#end
+    			#end
+    		</ul>
+    	</div>
+	#end
+	
+	<div class="name_info">
+		<div class="lott_title">活动时间</div>
+	</div>
+	<div class="active_time">
+		<i class="left_icon"></i>
+		<i class="left_money"></i>
+		<span class="actvie_ft">2016年1月29日-2016年2月15日</span>
+	</div>
+	<div class="active_standard"></div>
+	<div class="main_one">
+		<div class="one_ftwp">
+			<div class="ft_tem">活动起投金额：5万元起</div>
+			<div class="ft_tem">活动购买期限：12个月</div>
+			<div class="ft_bom">
+				<i class="money_bi"></i>
+				<span class="ft_color">立即注册拿钱！</span>
+				<i class="arror"></i>
+				<div class="btn go_lucky_draw">
+					<div class="btn_ft">立即砸蛋抽奖</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="active_dle"></div>
+	<div class="dle_main">
+		<div class="main_wp">
+			<ul class="main1_ul">
+				<li class="main1_item">
+					<i class="item_icon"></i>
+					<div class="item_ft">金蛋：</div>
+					<div class="item_font">5元、10元、20元、50元话费（高中奖率）</div>
+				</li>
+
+				<li class="main1_item">
+					<i class="item_icon icon_3"></i>
+					<div class="item_ft">至尊蛋：</div>
+					<div class="item_font">200元-2000元面值不等的京东卡、iPad mini 4、iPhone 6、iPhone 6s（100%中奖）</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="active_dle_two"></div>
+	<div class="dle_main_two">
+		<div class="main2_wp">
+			<ul class="main2_ul">
+				<li class="main2_item">1、已投资用户默认获得1次“金蛋”抽奖机会；</li>
+				<li class="main2_item">2、单笔投资12个月5万（包含）以上获得1次“至尊金蛋”抽奖机会，100%中奖，次数不限；</li>
+				<li class="main2_item">3、单笔投资金额越高，中奖的奖品价值也越高。</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="actvie_jianp_time"></div>
+	<div class="time_on">2016年2月22日统一发放</div>
+	<div class="time_on">币港湾拥有本次活动的最终解释权</div>
+</div>
+<!-- 1、输入手机号（未登录用户）开始 -->
+<div class="succed_wp number_phone" style="display:none;">
+    <div class="succ_bg">
+      <img class="user_bg" src="$!env.get('gen.server.web')/resources/gen178/images/user_lott_login.png" alt="">
+      <img class="monkey" src="$!env.get('gen.server.web')/resources/gen178/images/monkey.png" alt="">
+      <div class="info_dialog">
+        <img class="piaodai" src="$!env.get('gen.server.web')/resources/gen178/images/piaodai.png" alt="">
+        <img class="succ_close close" src="$!env.get('gen.server.web')/resources/gen178/images/succ_close.png" alt="">
+        <span class="piao_title">注意啦</span>
+        <div class="succ_main">
+          <h2 class="main_title">钱报-币港湾送您1枚金蛋。输入手机号领取啦~</h2>
+		<input class="main_ft" name="mobile" id="mobile" type="tel" maxLength="11" placeholder="输入手机号" oninput="onlyNumber(this)">
+        </div>
+        <div class="phone_btn" id="phone_btn">立即参加</div>
+      </div>
+    </div>
+</div>
+<!-- 1、输入手机号（未登录用户）结束 -->
+<!-- 2、登录开始  -->
+<div class="succed_wp login_layer" style="display:none;">
+    <div class="succ_bg">
+      <img class="user_bg" src="$!env.get('gen.server.web')/resources/gen178/images/user_lott_login.png" alt="">
+      <img class="monkey" src="$!env.get('gen.server.web')/resources/gen178/images/monkey.png" alt="">
+      <div class="info_dialog">
+        <img class="piaodai" src="$!env.get('gen.server.web')/resources/gen178/images/piaodai.png" alt="">
+        <img class="succ_close login_close" src="$!env.get('gen.server.web')/resources/gen178/images/succ_close.png" alt="">
+        <span class="piao_title">登录赢大奖</span>
+        <div class="succ_main">
+          <h2 class="main_title">登录赢大奖哦~</h2>
+          <div class="main_ft show_mobile"></div>
+          <input class="main_ft_pwd password login_pwd" type="password" name="password" maxLength="16" placeholder="输入密码，赢大奖">
+        </div>
+        <div class="pwd_btn" id="login_btn">我知道了</div>
+      </div>
+    </div>
+</div>  
+<!-- 2、登录结束 -->
+<!-- 3、注册开始 -->
+	<div class="succed_wp register_layer" style="display:none;">
+    <div class="succ_bg">
+      <img class="user_bg" src="$!env.get('gen.server.web')/resources/gen178/images/user_lott_login.png" alt="">
+      <img class="monkey" src="$!env.get('gen.server.web')/resources/gen178/images/monkey.png" alt="">
+      <div class="info_dialog">
+        <img class="piaodai" src="$!env.get('gen.server.web')/resources/gen178/images/piaodai.png" alt="">
+        <img class="succ_close register_close" src="$!env.get('gen.server.web')/resources/gen178/images/succ_close.png" alt="">
+        <span class="piao_title">注册</span>
+        <div class="succ_main">
+          <h2 class="main_title">注册赢大奖哦~~</h2>
+          <input class="main_ft register_mobile" type="tel" name="mobile" readonly placeholder="">
+          <div class="yz">
+		  <input class="main_ft" type="tel" name="mobileCode" id="mobileCode" oninput="onlyNumber(this)" maxlength="4" placeholder="验证码">
+		  <div class="btn_yz" id="sendCode" count="60">验证码</div>
+          </div>
+          <input class="main_ft register_pwd" type="password" name="password" value="" maxLength="16" placeholder="设置密码，赢大奖">
+        </div>
+        <div class="register_btn" id="register_btn">立即参加</div>
+      </div>
+    </div>
+</div> 
+<!-- 3、注册结束 -->
+
+	<!-- 砸蛋浮层开始(已登录用户) -->
+	<!-- 1、金蛋砸蛋浮层：默认隐藏 -->
+<div class="lotter" style="display:none;">
+	<div class="lotter_egg_warp">
+		<div class="lotter_pb_egg" >
+			<div class="fc_pb_egg" activityBatchNo="$!res.normal.id">
+				<div class="WuKong pb_wukong">
+					<div class="stick"></div>
+				</div>
+			</div>
+			<div class="normal_btn btn_two invest_btn">继续投资获得更多砸蛋机会</div>
+		</div>
+	</div>
+</div> 
+
+<!-- 2、镶钻金蛋砸蛋浮层：默认隐藏 -->
+<div class="lotter" style="display:none;">
+	<div class="lotter_egg_warp">
+		<div class="lotter_xz_egg">
+			<div class="xz_egg" activityBatchNo="$!res.setAuger.id">
+				<div class="WuKong xz_wukong">
+					<div class="stick"></div>
+				</div>
+			</div>
+			<div class="xz_btn btn_two invest_btn">继续投资获得更多砸蛋机会</div>
+		</div>
+	</div>
+</div>
+<!-- 3、至尊金蛋砸蛋浮层：默认隐藏 -->
+<div class="lotter" style="display:none;">
+	<div class="lotter_egg_warp">
+		<div class="lotter_zz_egg">
+			<div class="zz_egg" activityBatchNo="$!res.supreme.id">
+				<div class="WuKong zz_wukong">
+					<div class="stick"></div>
+				</div>
+			</div>
+			<div class="zz_btn btn_two invest_btn">继续投资获得更多砸蛋机会</div>
+		</div>
+	</div>
+</div>
+<!-- 砸蛋浮层结束 -->
+<!-- 获奖结果开始 -->
+<div class="succed_wp award_result_layer" style="display:none;">
+	<div class="succ_bg">
+		<img src="$!env.get('gen.server.web')/resources/gen178/images/succ_bg.png" alt="">
+		<div class="info_dialog">
+			<img class="piaodai" src="$!env.get('gen.server.web')/resources/gen178/images/piaodai.png" alt="">
+			<img class="succ_close award_close" src="$!env.get('gen.server.web')/resources/gen178/images/succ_close.png" alt="">
+			<span class="piao_title result_title">获奖信息</span>
+			<div class="succ_main">
+				<h2 class="main_title award_title"></h2>
+				<div style="font-size: 35px;line-height: 35px; color:#5f2502;">
+					<span class="award_content"></span>
+				</div>
+			</div>
+			<div class="btn_result award_btn">我知道了</div>
+			<img class="monkey_result" src="$!env.get('gen.server.web')/resources/gen178/images/monkey.png" alt="">
+		</div>
+	</div>
+</div>	
+<!-- 获奖结果结束 -->
+
+
+
+</body>
+#Html("end")

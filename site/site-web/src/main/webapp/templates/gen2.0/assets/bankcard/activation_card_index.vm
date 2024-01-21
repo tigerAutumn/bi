@@ -1,0 +1,88 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/assets/bankcard/head")
+#LoadGenCSS("/resources/gen2.0/styles/assets/bankcard/default")
+#LoadGenCSS("/resources/gen2.0/styles/assets/bankcard/index")
+#LoadGenJS("/resources/gen2.0/scripts/common/common")
+#LoadGenJS("/resources/gen2.0/scripts/assets/bankcard/activate")
+#parse("/hfCustody_account_service.vm")
+#GenHead("end")
+<body class="body">
+
+    #Gen2Header("home")
+<!--main-->
+<form id="" action="" method="post">
+    <div class="main">
+        <div class="main_content">
+            <div class="card_bind">
+                <ul class="card_bind_ul">
+                    <li class="card_bind_li">
+                        <div class="card_bind_left">持卡人：</div>
+                        <div class="card_bind_right"><input type="text" maxlength="10" name="userName" id="userName" value="$!result.userName" disabled="true" placeholder="请输入持卡人真实姓名" class="card_bind_rightinput" /></div>
+                    </li>
+                    <li class="card_bind_li">
+                        <div class="card_bind_left">身份证号：</div>
+                        <div class="card_bind_right"><input type="text" maxlength="18" name="idCard" id="idCard" value="$!result.idCard" disabled="true" placeholder="仅支持中国大陆身份证号" class="card_bind_rightinput" /></div>
+                    </li>
+                    <li class="card_bind_li">
+                        <div class="card_bind_left">银行卡号：</div>
+                        <div class="card_bind_right"><input type="text" maxlength="20" name="cardNo" id="cardNo" value="$!result.cardNo" disabled="true" placeholder="请输入储蓄卡卡号" class="card_bind_rightinput" /></div>
+                    </li>
+                    <li class="card_bind_li">
+                        <div class="card_bind_left">类型：</div>
+                        <div class="card_bind_right"><input type="text" maxlength="20" name="bankName" id="bankName" value="$!result.bankName" disabled="true" placeholder="请输入储蓄卡类型" class="card_bind_rightinput" /></div>
+                    </li>
+                    <li class="card_bind_li">
+                        <div class="card_bind_left">手机号：</div>
+                        <div class="card_bind_right"><input type="text" maxlength="11" name="mobile" id="mobile" value="$!result.mobile" disabled="true" placeholder="请输入银行预留手机号" class="card_bind_rightinput" /></div>
+                    </li>
+                    <li class="card_bind_li">
+                        <div class="card_bind_left">个人存管账户：</div>
+                        <div class="card_bind_right"><input type="text" maxlength="19" name="hfUserId" id="hfUserId" value="$!result.hfUserId" disabled="true" placeholder="请输入个人存管账号" class="card_bind_rightinput" /></div>
+                    </li>
+                    <li class="card_bind_li">
+                        <div class="card_bind_left">验证码：</div>
+                        <div class="card_bind_right"><input type="text" maxlength="4" name="verifyCode" id="verifyCode" placeholder="请输入短信验证码" class="card_bind_rightinputcopy" />
+                            <span class="card_bind_rightspan sendCode">获取验证码</span>
+                        </div>
+                    </li>
+                    <li class="card_bind_btntxt"></li>
+                    <li class="card_bind_btn">
+                        <div class="card_bind_btnl"></div>
+                        <div class="card_bind_btnr">
+                            <a class="card_bind_btnra go_activate">立即激活</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="HF-content">
+                <div class="HF-content-txt" style="margin-bottom: 10px;">1.点击“立即激活”即表示您同意<a name="hfCustody_div"><span class="HF-content-color">《网络交易资金存管账户服务协议》</span></a>，系统将为您自动激活恒丰银行个人存管账户；</div>
+                <div class="HF-content-txt">1.为保障您的资金安全，默认开通存管时使用的银行卡为“安全卡”，后续仅可使用磁卡进行充值和提现。</div>
+            </div>
+            <div class="HF-security">
+                <span></span>
+                <img src="$!env.get('gen.server.web')/resources/gen2.0/images/HF-security.png" class="HF-security-img"/>
+                <p>您的信息已使用SSL加密技术，数据传输安全</p>
+                <span></span>
+            </div>
+            <div class="payment_Quick">
+                <h3 class="payment_Quick_title">支持银行</h3>
+                #foreach($bank in $!bankList)
+                    <div class="payment_Quick_card">
+                        <div class="payment_Qcright">
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/z_netbank_s_$!{bank.bankId}.png" class="payment_cardimg" />
+                        </div>
+                    </div>
+                #end
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')"/>
+</form>
+<!--footer-->
+    #Gen2Footer()
+
+
+</body>
+#Html("end")

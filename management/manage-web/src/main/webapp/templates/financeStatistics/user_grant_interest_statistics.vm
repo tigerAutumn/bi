@@ -1,0 +1,148 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" method="post" action="$env.getWebURL('/financeStatistics/queryGrantInterest.htm')">
+		<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						客户名称：<input id="customerName" type="text" name="customerName" maxlength="20" value="$!customerName" class="clear"/>
+					</td>
+					<td >发放日期：<input name="startTime" type="text" id="startTime" class=" date textInput readonly" readonly="true" value="$!startTime" dateFmt="yyyy-MM-dd" maxdate="{%y}-%M-{%d-1}"/></td >
+					<td>到  &nbsp;&nbsp;&nbsp;&nbsp;
+						<input name="endTime" type="text" id="endTime" class=" date textInput readonly" readonly="true" value="$!endTime" dateFmt="yyyy-MM-dd" maxdate="{%y}-%M-{%d-1}"/>
+					</td>
+					<td >
+						资产方：
+						<select name="propertySymbol" class="valid">
+							<option value="YUN_DAI" #if("$!propertySymbol"=="YUN_DAI") selected  #end>云贷老产品</option>
+							<option value="7_DAI" #if("$!propertySymbol"=="7_DAI") selected  #end>7贷老产品</option>
+							<option value="ZAN" #if("$!propertySymbol"=="ZAN") selected  #end>赞分期</option>
+                    	</select>
+                    </td>
+					<td>
+						<button  onclick="func()" type="button">查询</button>
+						<button  onclick="exp()" type="button">导出excel</button>
+					</td>
+				</tr>
+			</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li>		
+				<span style="margin-left:10px;">
+    				<font color="red">本金合计：#if(!$!totalGrantInterest.totalBalance)0.00 #else $!money.format($!totalGrantInterest.totalBalance) #end 元</font>
+                </span>
+			</li>
+			<li>		
+				<span style="margin-left:10px;">
+    				<font color="blue">应付个人客户利息合计：#if(!$!totalGrantInterest.totalInterest)0.00 #else $!money.format($!totalGrantInterest.totalInterest) #end 元</font>
+                </span>
+			</li>
+		</ul>
+	</div>
+
+	<table class="table" width="1396" layoutH="120">
+		<thead>
+			<tr>
+				<th width="80">序号</th>
+				<th width="100">单据编号</th>
+				<th width="100">客户代码</th>
+				<th width="100">客户名称</th>
+				<th width="100">本金</th>
+				<th width="100">应付个人客户利息</th>
+				<th width="100">本息合计</th>
+				<th width="150">发放日期</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+			#foreach($data in $dataGrid)
+			<tr>
+				<td>$!data.rowNo</td>
+				<td>$!data.orderNo</td>
+				<td>$!data.customerCode</td>
+				<td>$!data.customerName</td>
+				<td>$!money.format($!data.balance)</td>
+				<td>$!money.format($!data.interest)</td>
+				<td>$!money.format($!data.amount)</td>
+				<td>$!date.format($!data.updateTime)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+#LoadJS("/resources/js/global_validate")
+<script>
+
+function func(){
+	var beginTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	if(!beginTime) {
+		alertMsg.warn("开始时间不能为空！");
+		return;
+	}
+	if(!endTime) {
+		alertMsg.warn("结束时间不能为空！");
+		return;
+	}
+    var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+	if(result < 0){
+		alertMsg.warn("开始时间不能在结束时间之后！");
+		return;
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/financeStatistics/queryGrantInterest.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+	var beginTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	if(!beginTime) {
+		alertMsg.warn("开始时间不能为空！");
+		return;
+	}
+	if(!endTime) {
+		alertMsg.warn("结束时间不能为空！");
+		return;
+	}
+    var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+	if(result < 0){
+		alertMsg.warn("开始时间不能在结束时间之后！");
+		return;
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/financeStatistics/exportGrantInterest.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+</script>

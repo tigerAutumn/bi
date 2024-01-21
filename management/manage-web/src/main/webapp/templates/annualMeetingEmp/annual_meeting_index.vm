@@ -1,0 +1,190 @@
+#LoadJS("resources/js/ajaxfileupload")
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/annualMeetingEmployee/annualMeeting/index.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.web')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="totalRows" value="$!totalRows" />
+	<div class="searchBar">
+		<table class="searchContent">
+			<tr>
+				<td>
+					姓名：<input  id="employeeName" type="text" name="employeeName" value="$!req.employeeName" maxlength="20" />
+					<td>
+						<label >是否中奖：</label>
+						<select name="isWin" > 
+							<option value="" #if("$!req.isWin"=="") selected #end>全部</option>
+							<option value="-1" #if("$!req.isWin"=="-1") selected  #end>已中奖</option>
+							<option value="-2" #if("$!req.isWin"=="-2") selected  #end>未中奖</option>
+						</select>
+					</td>
+					<td>
+						<label >奖项：</label>
+						<select name="activityAwardId" > 
+							<option value="" #if("$!req.activityAwardId"=="") selected #end>全部</option>
+							<option value="104" #if("$!req.activityAwardId"=="104") selected  #end>幸运奖</option>
+							<option value="103" #if("$!req.activityAwardId"=="103") selected  #end>三等奖</option>
+							<option value="102" #if("$!req.activityAwardId"=="102") selected  #end>二等奖</option>
+							<option value="101" #if("$!req.activityAwardId"=="101") selected  #end>一等奖</option>
+        				</select>
+					</td>
+					<td>
+						<span style="margin-left:20px;cursor:pointer;">
+							<button onclick="func()" type="button" style="cursor: pointer;">查询</button>
+                        </span>
+					</td>
+                	<td style="height:10px"></td>
+			</tr>
+			   
+               <td style="height:10px"></td>
+			   
+			   <tr>
+					<td>
+						<button onclick="exp()" type="button">下载模板</button>
+					</td>
+					<td>
+						<input type="file" name="fileField" id="fileField" onchange="fileUpload()">
+					</td>
+                   <td>
+						<span style="margin-left:20px;cursor:pointer;">
+							<button type="button" onclick="revert_draw_result()">重置抽奖结果</button>
+                        </span>
+                   </td>
+					<td>
+						<span style="margin-left:20px;cursor:pointer;">
+							<a target="_blank" href="$!env.get('gen.web')/gen2.0/activity/2018_lucky_draw"><button type="button">进入抽奖页面</button></a>
+                        </span>
+					</td>
+			   </tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="128" >
+		<thead>
+			<tr>
+				<th width="5%">编号</th>
+                <th width="19%">公司</th>
+                <th width="19%">姓名</th>
+				<th width="19%">是否中奖</th>
+				<th width="19%">中奖时间</th>
+				<th width="19%">奖项</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $annualMeetingEmpList)
+    			<tr target="sid_user" rel="1" >
+					#if($!numPerPage == 20)
+						#set($a=$!velocityCount + 20 * ($!pageNum - 1))
+						<td>$a</td>
+					#elseif($!numPerPage == 50)
+						#set($b=$!velocityCount + 50 * ($!pageNum - 1))
+						<td>$b</td>
+					#elseif($!numPerPage == 100)
+						#set($c=$!velocityCount + 100 * ($!pageNum - 1))
+						<td>$c</td>
+					#elseif($!numPerPage == 200)
+						#set($d=$!velocityCount + 200 * ($!pageNum - 1))
+						<td>$d</td>
+					#end
+                    <td>$!grid.companyName</td>
+                    <td>$!grid.employeeName</td>
+					<td>
+    					#if($!grid.isWin == 'Y')
+    						已中奖
+    					#else
+    						未中奖
+    					#end
+					</td>
+					<td>$!date.format($!grid.backDrawTime)</td>
+					<td>$!grid.content</td>
+    			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+
+<script>
+    function func(){
+		var employeeName = $('#employeeName').val();
+        if(employeeName) {
+            if(employeeName.indexOf('%') != -1) {
+                alertMsg.error('请输入正确的姓名');
+				return false;
+            }
+        }
+    	var url = $("#APP_ROOT_PATH").val() + "/annualMeetingEmployee/annualMeeting/index.htm";
+    	$("#myform").attr("action",url);
+    	$("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+	
+    function exp(){
+        location.href = $("#APP_ROOT_PATH").val() + "/annualMeetingEmployee/xls.htm";
+    }
+
+    function revert_draw_result() {
+        alertMsg.confirm("本功能仅用于清空试用数据！年会上产生的正式抽奖结果请勿清空！确定清空请点【确定】，不清空请点【取消】！", {
+            okCall: function(){
+                var root = $("#APP_ROOT_PATH").val();
+                $.ajax({
+                    url : root + "/annualMeetingEmployee/revert.htm",
+                    type:'post',
+                    dataType:'json',
+                    success: function(data) {
+                        if(data.statusCode == "200") {
+                            navTab.reload($("#pagerForm").attr('action'));
+                            alertMsg.correct('重置成功');
+                        } else {
+                            alertMsg.error(data.message);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+	function fileUpload(){
+    	 var url = $("#APP_ROOT_PATH").val() + "/annualMeetingEmployee/readExcel.htm";
+         $.ajaxFileUpload
+		 ({
+               url:url,
+               secureuri :false,
+               fileElementId :'fileField',
+               dataType :'json',
+               success : function (data){
+				  
+				  if(data.code == 1){
+				     alertMsg.correct("文件读取成功，数据已存库");
+					 func();
+				  }else{
+				     alertMsg.warn("文件格式错误或文件内容为空！");
+				  }
+               },
+               error: function(data){
+    			 alertMsg.error("操作失败！");
+               }
+         });
+    }
+</script>

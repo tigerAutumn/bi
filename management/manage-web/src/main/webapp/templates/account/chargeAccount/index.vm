@@ -1,0 +1,188 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/account/chargeAccount/index.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" id="queryFlag" name="queryFlag" value="QUERY"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+				<tr>
+					<td>
+						用户名：<input id="userName" type="text" name="userName" value="$!req.userName" />
+						手机号：<input id="mobile" type="text" name="mobile" value="$!req.mobile" size="15"/>
+						交易时间：<input name="beginTime"  maxdate="{%y}-%M-{%d}"  type="text" id="beginTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.beginTime)" /> 到 <input name="overTime" maxdate="{%y}-%M-{%d}"  type="text" id="overTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.overTime)" />
+						账务时间：<input name="startTransTime"  maxdate="{%y}-%M-{%d}"  type="text" id="startTransTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.startTransTime)" /> 到 <input name="endTransTime" maxdate="{%y}-%M-{%d}"  type="text" id="endTransTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.endTransTime)" />
+						<span style="margin-left:20px;">
+							<button onclick="func()" type="button">查询</button>
+                        </span>
+					</td>
+				</tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	
+	<table class="table" width="3515" layoutH="138">
+		<thead>
+			<tr>
+				<th width="50">编号</th>
+				<th width="50">用户名</th>
+				<th width="100">手机号</th>
+				
+				<th width="135">账务时间</th>
+				<th width="100">交易代码</th>
+				<th width="100">交易类型</th>
+				<th width="155">交易名称</th>
+				<th width="100">交易余额</th>
+				<th width="135">交易时间</th>
+				<th width="135">渠道时间</th>
+				<th width="170">渠道流水号</th>
+				
+				<th width="80">借贷标识1</th>
+				<th width="200">子账户编码1</th>
+				<th width="100">交易前余额1</th>
+				<th width="100">交易后余额1</th>
+				<th width="100">交易前可用余额1</th>
+				<th width="100">交易后可用余额1</th>
+				<th width="100">交易前冻结余额1</th>
+				<th width="100">交易后冻结余额1</th>
+				
+				<th width="80">借贷标识2</th>
+				<th width="200">子账户编码2</th>
+				<th width="100">交易前余额2</th>
+				<th width="100">交易后余额2</th>
+				<th width="100">交易前可用余额2</th>
+				<th width="100">交易后可用余额2</th>
+				<th width="100">交易前冻结余额2</th>
+				<th width="100">交易后冻结余额2</th>
+				
+				<th width="50">手续费</th>
+				<th width="70">状态</th>
+				<th width="100">响应码</th>
+				<th width="100">响应信息</th>
+				<th width="100">关联流水号</th>
+				<th width="100">备注</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $changeAmountList)
+			<tr target="sid_user" rel="1" >
+				<td>$!grid.id</td>
+				<td>$!grid.userName</td>
+				<td>$!grid.mobile</td>
+				
+				<td>$!date.format($!grid.transTime)</td>
+				<td>$!message.get("ACCOUNT_JNL_TRANS_CODE_$!grid.transCode")</td>
+				<td>$!message.get("ACCOUNT_JNL_TRANS_TYPE_$!grid.transType")</td>
+				<td>$!grid.transName</td>
+				<td>$!money.format($!grid.transAmount)</td>
+				<td>$!date.format($!grid.sysTime)</td>
+				<td>$!date.format($!grid.channelTime)</td>
+				<td>$!grid.channelJnlNo</td>
+				
+				<td>$!grid.cdFlag1</td>
+				<td>$!grid.subAccountCode1</td>
+				<td>$!money.format($!grid.beforeBalance1)</td>
+				<td>$!money.format($!grid.afterBalance1)</td>
+				<td>$!money.format($!grid.beforeAvialableBalance1)</td>
+				<td>$!money.format($!grid.afterAvialableBalance1)</td>
+				<td>$!money.format($!grid.beforeFreezeBalance1)</td>
+				<td>$!money.format($!grid.afterFreezeBalance1)</td>
+				
+				<td>$!grid.cdFlag2</td>
+				<td>$!grid.subAccountCode2</td>
+				<td>$!money.format($!grid.beforeBalance2)</td>
+				<td>$!money.format($!grid.afterBalance2)</td>
+				<td>$!money.format($!grid.beforeAvialableBalance2)</td>
+				<td>$!money.format($!grid.afterAvialableBalance2)</td>
+				<td>$!money.format($!grid.beforeFreezeBalance2)</td>
+				<td>$!money.format($!grid.afterFreezeBalance2)</td>
+				
+				<td>$!grid.fee</td>
+				<td>$!message.get("ACCOUNT_JNL_STATUS_$!grid.status")</td>
+				<td>$!grid.respCode</td>
+				<td>$!grid.respMsg</td>
+				<td>$!grid.relativeJnl</td>
+				<td>$!grid.note</td>
+				
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+<script>
+
+function func(){
+	var beginTime = $("#beginTime").val();
+	var overTime = $("#overTime").val();
+	var startTransTime = $("#startTransTime").val();
+	var endTransTime = $("#endTransTime").val();
+	
+	if(beginTime != "" && overTime == ""){
+		alert("请输入结束时间！");
+		return false;
+	}
+	
+	if(beginTime == "" && overTime != ""){
+		alert("请输入开始时间！");
+		return false;
+	}
+	
+	if(beginTime != "" && overTime != ""){
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	
+	
+	if(startTransTime != "" && endTransTime == ""){
+		alert("请输入结束时间！");
+		return false;
+	}
+	
+	if(startTransTime == "" && endTransTime != ""){
+		alert("请输入开始时间！");
+		return false;
+	}
+	
+	if(startTransTime != "" && endTransTime != ""){
+		var result = Date.parse(endTransTime.replace(/-/g,"/"))- Date.parse(startTransTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	var url = $("#APP_ROOT_PATH").val() + "/account/chargeAccount/index.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+
+}
+
+</script>

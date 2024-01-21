@@ -1,0 +1,134 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadCSS("resources/micro2.0/styles/activity/11-11active")
+#LoadJS("resources/micro2.0/scripts/activity/scale")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/activity/double11active")
+#WeChatShare()
+#Head("end")
+<body>
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')">
+<!-- 头部 -->
+<div class="header">
+##    <div class="header_time">活动时间：$!date.formatDateTime($!date.parseDateTime($!{res.startTime}), "MM.dd")-$!date.formatDateTime($!date.parseDateTime($!{res.endTime}), "MM.dd")</div>
+    <div class="header_time">活动时间：11.07-11.11</div>
+    <img class="header_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/double11/icon1.jpg" alt="">
+</div>
+<div class="main_padding">
+    <div class="lott_times">还剩<span class="times_num" id="afterTimes">$!{res.userLuckyNum}</span>次抽奖机会</div>
+    <div class="main">
+        <div class="bg_mvoe"></div>
+        <div class="lotter_wp">
+            <div class="num"></div>
+            <div class="num"></div>
+            <div class="num"></div>
+        </div>
+        <div class="btn_lotter">开始抽奖</div>
+        <div class="name_lotter">
+            <div class="name_over">
+                <ul class="name_ul">
+                    #foreach($luckyPerson in $!res.luckyList)
+                        <li class="name_li">恭喜$!{luckyPerson.mobile}获得$!{luckyPerson.awardContent}</li>
+                    #end
+                </ul>
+            </div>
+        </div>
+        <div class="my_lotter">我的奖品</div>
+    </div>
+    <div class="main_ft">当前已有$!{res.luckyNum}人参与了抽奖</div>
+    <div class="bg_lotter_ft">
+        <div class="small_wrap">
+            <div class="lotter_title">参与资格</div>
+            <p class="lotter_info_ft">
+                每使用双11活动红包投资一笔，得到一次抽奖机会，投资金额越高，中大奖概率越大。
+            </p>
+            <div class="btn go_buy">点我去投资</div>
+        </div>
+    </div>
+    <div class="bg_lotter_ft">
+        <div class="small_wrap">
+            <div class="lotter_title">活动规则</div>
+            <ul class="lotter_info_ul">
+                <li class="lotter_info_li">1、活动时间为11月7日-11月11日；</li>
+                <li class="lotter_info_li">2、活动红包一次只能使用一个，即不能叠加使用；</li>
+                <li class="lotter_info_li">3、活动结束后剩余抽奖次数和活动红包失效；</li>
+                <li class="lotter_info_li">4、获得实物奖励的用户，客服将在活动结束后5个工作日内与您取得联系，请保持手机畅通。如因您自身原因错过通知，则视为放弃奖励；</li>
+                <li class="lotter_info_li">5、本次活动的实物奖励不能折现。我们将在核实用户信息后的5个工作日内安排奖品寄送等事宜；</li>
+                <li class="lotter_info_li">6、奖励金将在活动结束后五个工作日内发放至用户账户，移动端可在【我的资产】-【我的奖励】中查看，pc端在【我的账户】-【邀请好友】-【我的奖励】中查看；</li>
+                <li class="lotter_info_li">7、奖励金可转出到余额直接提现；</li>
+                <li class="lotter_info_li">8、本次活动不与平台其他活动叠加。</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer_ft pad-top">本次活动的最终解释权归币港湾所有</div>
+    <div class="footer_ft">如有疑问可致电币港湾客服：<a href="tel:400-806-1230">400-806-1230</a></div>
+</div>
+
+
+
+<!-- 弹窗 -->
+#if($!isDrawed161Packet)
+<div class="dialog_flex dialog_hide">
+    <!--  -->
+##    <div class="alert_info alertOne_info" style="display: none">
+##        <div class="btnOne"></div>
+##        <i class="close closeOne">
+##            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/double11/closeTwo.png" alt="">
+##        </i>
+##    </div>
+    <div class="alert_info alertOne_info" style="display: none;">
+    </div>
+    <div class="alert_info alertTwo_info" style="display: none">
+        <div class="alert_title">恭喜您</div>
+        <div class="alert_main" id="showAwardContent">获得161元红包+免费抽奖机会</div>
+        <div class="alert_btn btn_win">去抽奖</div>
+        <i class="close">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/double11/close.png" alt="">
+        </i>
+    </div>
+
+</div>
+#else
+<div class="dialog_flex dialog_show">
+    <!--  -->
+##    <div class="alert_info alertOne_info">
+##        <div class="btnOne"></div>
+##        <i class="close closeOne">
+##            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/double11/closeTwo.png" alt="">
+##        </i>
+##    </div>
+    <div class="alert_info alertOne_info">
+    </div>
+    <div class="alert_info alertTwo_info">
+        <div class="alert_title">恭喜您</div>
+        <div class="alert_main" id="showAwardContent">获得161元红包+免费抽奖机会</div>
+        <div class="alert_btn btn_win">去抽奖</div>
+        <i class="close">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/double11/close.png" alt="">
+        </i>
+    </div>
+</div>
+#end
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Html("end")

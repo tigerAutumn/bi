@@ -1,0 +1,200 @@
+<div class="pageContent">
+    <form id="myform_save" method="post" action="$env.getWebURL('/mallCommodityInfo/saveCommodity.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, reloadPage)">
+        <div class="pageFormContent nowrap" layoutH="50">
+            <dl>
+                <dt>商品名称：<i style="color: red">*</i></dt>
+                <input type="text" id="commName" name="commName" size="20" maxlength="20" value="$!info.commName" class="required"
+                       onkeyup="value=value.replace(/[^\u4E00-\uFA29\uE7C7-\uE7F3a-zA-Z0-9\\.\\%]*/g,'')" />
+                <div style="float: left;padding-left: 5px;margin-top: 9px;">最多20个字，允许中英文和数字</div>
+            </dl>
+            <dl>
+                <dt>商品类别：<i style="color: red">*</i></dt>
+                <dd style="width:100px;">
+                    <select name="commTypeId" id="commTypeId"
+                            style="float:left;width:100px;">
+                        #foreach($enumKey in $!mallCommodityTypeEnum.keySet())
+                            <option value="$!enumKey" #if("$!info.commTypeId"=="$!enumKey") selected #end >$!mallCommodityTypeEnum.get($!enumKey)</option>
+                        #end
+                    </select>
+                </dd>
+            </dl>
+            <dl>
+                <dt>属性：<i style="color: red">*</i></dt>
+                <dd style="width:100px;">
+                    <input type="radio" id="commProperty1" name="commProperty" value="REAL" #if("$!info.commProperty"=="REAL") checked #end>实体</input>
+                    <input type="radio" id="commProperty2" name="commProperty" value="EMPTY" #if("$!info.commProperty"=="EMPTY") checked #end>虚拟</input>
+                </dd>
+            </dl>
+            <dl>
+                <dt>所需积分：<i style="color: red">*</i></dt>
+                <input type="text" id="points" name="points" size="20" maxlength="9" value="$!info.points" class="required number"
+                       onkeyup="value=value.replace(/((^\s*)[^\d]*)|([^\d]*(\s*$))/g,'').replace(/\./g,'')" />
+            </dl>
+            <dl>
+                <dt>剩余库存：<i style="color: red">*</i></dt>
+                <input type="text" id="leftCount" name="leftCount" size="20" maxlength="9" value="$!info.leftCount" class="required number"
+                       onkeyup="value=value.replace(/((^\s*)[^\d]*)|([^\d]*(\s*$))/g,'').replace(/\./g,'')" />
+            </dl>
+            <dl>
+                <dt>推荐：<i style="color: red">*</i></dt>
+                <dd style="width:100px;">
+                <input type="radio" id="isRecommend1" name="isRecommend" value="YES" #if("$!info.isRecommend"=="YES") checked #end>是</input>
+                <input type="radio" id="isRecommend2" name="isRecommend" value="NO" #if("$!info.isRecommend"=="NO") checked #end>否</input>
+                </dd>
+            </dl>
+            <dl>
+                <dt>商品主图（750 x 520）：<i style="color: red">*</i></dt>
+                <dd>
+                    <input id="imgPathBanner" value="$!info.commPictureUrl" name="commPictureUrl" type="hidden"/>
+                    <div id="uploader-demo">
+                        <!--用来存放item-->
+                        <div id="fileThumb" class="uploader-list">
+                            #if(!$!info.commPictureUrl || $!info.commPictureUrl == '')
+                                <div class="file-item thumbnail" style="display:none;">
+                                    <img/><div class="info"></div>
+                                </div>
+                            #else
+                                <div class="file-item thumbnail">
+                                    <img src="$!mUrl$!info.commPictureUrl"/><div class="info"></div>
+                                </div>
+                            #end
+                        </div>
+                        <div id="filePicker">选择图片</div>
+                    </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt>兑换需知：<i style="color: red">*</i></dt>
+                <dd>
+                   <textarea name="exchangeNote" id="exchangeNote" class="editor textInput" rows="50" cols="115"
+                             tools="Blocktag,Fontface,FontSize,Bold,Italic,Underline,Strikethrough,Align,List,|,Link,About">
+                       $!info.exchangeNote
+                   </textarea>
+                </dd>
+            </dl>
+            <dl>
+                <dt>商品详情：<i style="color: red">*</i></dt>
+                <dd>
+                   <textarea name="commDetails" id="commDetails" class="editor" rows="50" cols="115" tools="simple" upImgUrl="$env.getWebURL('/upload/mallCommodityImg.htm')" upImgExt="jpg,jpeg,gif,png">
+                       $!info.commDetails
+                   </textarea>
+                </dd>
+            </dl>
+        </div>
+        <div class="formBar">
+            <ul style="float:left;">
+                <li><div class="buttonActive"><div class="buttonContent"><button onclick="formSubmit()" type="button">保存</button></div></div></li>
+                <li><div class="button"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div></li>
+            </ul>
+        </div>
+    </form>
+    #LoadJS("/resources/js/global_validate")
+    <script>
+        (function() {
+            // 上传图片相关
+            var width = 750;
+            var height = 520;
+
+            _global.uploadSingleImg("/upload/mallCommodityImg.htm", '#filePicker', width, height, width/2, height/2, '#fileThumb', function (file, data) {
+                if (data.err == "") {
+                    $('#imgPathBanner').val(data.msg.pathUrl);
+                } else {
+                    alertMsg.error(data.msg);
+                    $('#fileThumb').children('div').children('img').attr('src', '');
+                    $('#fileThumb').children('div').hide();
+                }
+            }, function(file, data) {
+                $('#fileThumb').children('div').children('img').attr('src', '');
+                $('#fileThumb').children('div').hide();
+                $('#imgPathBanner').val('');
+                alertMsg.error("上传图片失败");
+            });
+        })();
+
+        function formSubmit() {
+            var commName = $("#commName").val();
+            var commTypeId = $("#commTypeId").val();
+            var commProperty = $("[name='commProperty']").filter(":checked").val();
+            var points = $("#points").val();
+            var leftCount = $("#leftCount").val();
+            var isRecommend = $("[name='isRecommend']").filter(":checked").val();
+            var commPictureUrl = $("#imgPathBanner").val();
+            var exchangeNote = $("#exchangeNote").val();
+            var commDetails = $("#commDetails").val();
+
+            if (commName == '') {
+                alertMsg.warn("请填写商品名称！");
+                return false;
+            }
+            if (commTypeId == '') {
+                alertMsg.warn("请选择商品类别！");
+                return false;
+            }
+            if (commProperty == undefined || commProperty == '') {
+                alertMsg.warn("请选择商品属性！");
+                return false;
+            }
+            if (points == '') {
+                alertMsg.warn("请填写所需积分！");
+                return false;
+            }
+            if (points != '') {
+                if (parseInt(points) <= parseInt(0)) {
+                    alertMsg.warn("所需积分必须大于0！");
+                    return false;
+                }
+            }
+            if (leftCount == '') {
+                alertMsg.warn("请填写剩余库存！");
+                return false;
+            }
+            if (leftCount != '') {
+                if (parseInt(leftCount) < parseInt(0)) {
+                    alertMsg.warn("剩余库存不能小于0！");
+                    return false;
+                }
+            }
+            if (isRecommend == undefined || isRecommend == '') {
+                alertMsg.warn("请选择是否推荐！");
+                return false;
+            }
+            if (commPictureUrl == '') {
+                alertMsg.warn("请上传商品主图！");
+                return false;
+            }
+            if (exchangeNote == '') {
+                alertMsg.warn("请填写兑换需知！");
+                return false;
+            }
+            if (commDetails == '') {
+                alertMsg.warn("请填写商品详情！");
+                return false;
+            }
+            //检查是否存在赋值粘贴的图片（base64）
+            if((exchangeNote.indexOf("data:image") != -1) && (exchangeNote.indexOf("base64") != -1)) {
+                alertMsg.warn("图片必须上传方式加载，请勿直接粘贴！");
+                return false;
+            }
+
+            //检查是否存在赋值粘贴的图片（base64）
+            if((commDetails.indexOf("data:image") != -1) && (commDetails.indexOf("base64") != -1)) {
+                alertMsg.warn("图片必须上传方式加载，请勿直接粘贴！");
+                return false;
+            }
+
+            $('#myform_save').submit();
+        }
+
+        function reloadPage(json) {
+            if (json.statusCode == 200) {
+                navTab.closeCurrentTab();
+                alertMsg.correct(json.message);
+                navTab.reload("$env.getWebURL('/mallCommodityInfo/getList.htm')");
+            } else {
+                alertMsg.error(json.message);
+            }
+        }
+
+
+    </script>
+</div>

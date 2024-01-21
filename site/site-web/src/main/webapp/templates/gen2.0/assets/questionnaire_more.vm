@@ -1,0 +1,83 @@
+#Html("begin")
+#GenHead("begin","互联网金融平台，互联网金融，币港湾，币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/assets/questionnaire")
+#GenHead("end")
+<body>
+<div class="assest_result">
+    #if($!questionMoreMsg.hasQuestionnaire==1)
+        <div class="question-result">
+            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/assets/questionnaire/question_assest_result_bg.png"  alt="">
+            <div class="result-content">
+                <div class="result-content-main">
+                    <div class="result-img">
+                        #if($!questionMoreMsg.assessType == "conservative")
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/assets/questionnaire/bs.png" alt="保守">
+                        #elseif($!questionMoreMsg.assessType == "steady")
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/assets/questionnaire/wj.png" alt="稳健">
+                        #elseif($!questionMoreMsg.assessType == "balanced")
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/assets/questionnaire/ph.png" alt="平衡">
+                        #elseif($!questionMoreMsg.assessType == "aggressive")
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/assets/questionnaire/jq.png" alt="进取">
+                        #elseif($!questionMoreMsg.assessType == "radical")
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/assets/questionnaire/jj.png" alt="激进">
+                        #else
+                            <div class="result-none">未测评</div>
+                        #end
+                    </div>
+                    <div class="result-title">
+                        风险承受能力评测结果
+                    </div>
+                    #if($!hfDepGuideInfo.riskStatus == 'expire')
+                        <div class="isexpire">
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/assets/questionnaire/expired.png">
+                        </div>
+                    #else
+                        <p>有效期截止时间：$!questionMoreMsg.expireTime</p>
+                    #end
+                </div>
+            </div>
+        </div>
+    #else
+    #end
+    <div class="result-des">
+        #if($!questionMoreMsg.hasQuestionnaire==1)
+            <p class="result-destext">
+                #if($!questionMoreMsg.assessType == "conservative")
+                    在参与任何产品项目中，保证本金不受损失和保持资产的流动性是您的首要目标。您对参与产品项目的态度是希望收益极度稳定，不愿承担高风险以换取高收益，不愿意承受太大波动对心理的煎熬，追求稳定。
+                #elseif($!questionMoreMsg.assessType == "steady")
+                    在参与任何产品项目中，稳定是您首要考虑的因素。您希望在保证本金安全的基础上能有一些增值收入。追求较低的风险，对回报的要求不高。
+                #elseif($!questionMoreMsg.assessType == "balanced")
+                    在参与任何产品项目中，在风险较小的情况下获得一定的收益是您主要目的。您通常愿意面临一定的风险，但在做决定时，会仔细地对将要面临的风险进行认真的分析。您对风险总是客观存在有清楚的认识。
+                #elseif($!questionMoreMsg.assessType == "aggressive")
+                    在参与任何产品项目中，您渴望有较高的收益，但又不愿承受较大的风险；可以承受一定的资金波动，但是希望自己的资金风险小于市场的整体风险。您有较高的收益目标，且对风险有清醒的认识。
+                #elseif($!questionMoreMsg.assessType == "radical")
+                    在参与任何产品项目中，您通常专注于资本的长期增值，并愿意为此承受较大的风险。短期的资金波动并不会对您造成大的影响，追求超高的回报才是您关注的目标。
+                #end
+            </p>
+        #else
+            <p class="result_null">您尚未进行风险承受能力测评！</p>
+        #end
+        <div class="result-btn">
+            <a href="$!env.get('gen.server.web')/gen2.0/assets/questionnaire">
+                #if($!questionMoreMsg.hasQuestionnaire==1)
+                    重新测评
+                #else
+                    立即测评
+                #end
+            </a>
+        </div>
+        <p class="result-tips">测评结果仅供参考，请结合自身情况选择产品！</p>
+    </div>
+</div>
+    <script>
+        $(document).ready(function () {
+            $('.body_bg').stop().hide();
+            $(".HF-bank").hide();
+        })
+    </script>
+
+    #LoadGenJS("/resources/gen2.0/scripts/jquery-1.11.1.min")
+    #LoadGenJS("/resources/gen2.0/scripts/assets/questionnaire")
+</body>
+#Html("end")

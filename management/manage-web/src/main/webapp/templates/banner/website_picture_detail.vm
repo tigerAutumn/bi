@@ -1,0 +1,261 @@
+<h2 class="contentTitle">#if("add"=="$!type")添加banner#else 修改banner #end -
+#if($!showPageLabel == "INVEST") 我要投资（1920 x 300）#elseif($!showPageLabel == "USERENTRY") 登录注册忘记密码（1920 x 580）
+#end
+</h2>
+<div class="pageContent">
+	
+	<form id="flashForm" method="post" action="$env.getWebURL('/banner/website/addOrUpdate.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("type", "$!type")
+		#Hidden("newChannel", "$!newChannel")
+		#Hidden("id", "$!banner.id")
+		#Hidden("showpushType","$!pushType")
+		#Hidden("showappPage","$!appPage")
+		<div class="pageFormContent nowrap" layoutH="97">
+			
+			<dl>
+				<dt>位置：</dt>
+				<dd>
+					<select name="showPage" id="showPage">
+						#if($!showPageLabel == "INVEST")	
+							<option value="DEPSUBJECT" #if($!banner.showPage == 'DEPSUBJECT') selected="selected" #end >存管专题</option>
+							<option value="ZANSTAGES" #if($!banner.showPage == 'ZANSTAGES') selected="selected" #end >赞分期</option>
+							<option value="ESTUARYPLAN" #if($!banner.showPage == 'ESTUARYPLAN') selected="selected" #end >港湾计划</option>
+						#else
+							<option value="REGISTER" #if($!banner.showPage == 'REGISTER') selected="selected" #end >注册</option>
+							<option value="LOGIN" #if($!banner.showPage == 'LOGIN') selected="selected" #end >登录</option>
+							<option value="FORGET_PASSWORD" #if($!banner.showPage == 'FORGET_PASSWORD') selected="selected" #end >忘记密码</option>
+						#end
+					</select>				
+				</dd>
+			</dl>
+			
+			<dl>
+				<dt>顺序：</dt>
+				<dd>
+					<input id="priCount" value="$!count" name="priCount" type="hidden"/>
+					#if($!count == 6)
+					#set($count = 5)
+					#elseif($!count == 0)
+					#set($count = 1)
+					#end
+
+					<select name="priority" class="required combox">
+						#foreach($foo in [1..1])
+							<option value=$foo #if("$!banner.priority"==$foo) selected  #end>第1幕</option>
+						#end
+						<option value="-1" #if("$!banner.priority"=="-1") selected  #end>不显示</option>
+					</select>
+				</dd>
+			</dl>
+				
+			<dl>
+				<dt>备注：</dt>
+				<dd>
+					<input type="text" id="subjects" name="subject" size="30" class="required" maxlength="10" value="$!banner.subject" />(10字以内，允许中英文数字)
+				</dd>
+			</dl>
+			
+			<dl>
+				<dt>渠道：</dt>
+				<dd>
+					<select name="channel" id="newChannel">
+						<option value="GEN" #if($!banner.channel == 'GEN') selected="selected" #end >币港湾</option>
+						<option value="GEN178" #if($!banner.channel == 'GEN178') selected="selected" #end >钱报</option>
+						<option value="GENKQ" #if($!banner.channel == 'GENKQ') selected="selected" #end >柯桥日报</option>
+						<option value="GENRUIAN" #if($!banner.channel == 'GENRUIAN') selected="selected" #end >瑞安日报</option>
+						<option value="GENHN" #if($!banner.channel == 'GENHN') selected="selected" #end >海宁日报</option>
+						<option value="GENSTZY" #if($!banner.channel == 'GENSTZY') selected="selected" #end >视听之友</option>
+					</select>				
+				</dd>
+			</dl>
+					
+			<dl>
+				<dt>上传图片：</dt>
+				<dd>
+                    <input id="imgPathBanner" name="imgPath" value="$!banner.imgPath" type="hidden"/>
+                    <div id="uploader-demo">
+                        <!--用来存放item-->
+                        <div id="fileThumb" class="uploader-list">
+							#if("$!banner.imgPath" == "")
+                                <div class="file-item thumbnail" style="display: none;">
+                                    <img/><div class="info"></div>
+                                </div>
+							#else
+                                <div class="file-item thumbnail">
+                                    <img src="$!mUrl$!banner.imgPath"/><div class="info"></div>
+                                </div>
+							#end
+                        </div>
+                        <div id="filePicker">选择图片</div>
+                    </div>
+				</dd>
+			</dl>
+			
+			<dl>
+				<dt>点击链接：</dt>
+				<dd>
+					<input type="text" name="url" id="url" size="100"  maxlength="200" value="$!banner.url" />&nbsp;&nbsp;（绝对路径请输入“http://”,如百度：http://www.baidu.com）
+				</dd>
+			</dl>
+			
+		</div>
+		<div class="formBar">
+			<ul style="float:left;">
+				<li><div class="buttonActive"><div class="buttonContent"><button onclick="formsubmint()" type="button">保存</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+<script>
+   (function() {
+	   // 上传图片相关
+	   var constants = {
+		   GEN: 'GEN',
+		   GEN178: 'GEN178',
+		   GENKQ: 'GENKQ',
+		   GENHN: 'GENHN',
+		   GENRUIAN: 'GENRUIAN',
+		   GENSTZY:'GENSTZY',
+			   
+           DEPSUBJECT: 'DEPSUBJECT',
+           ZANSTAGES: 'ZANSTAGES',
+           ESTUARYPLAN: 'ESTUARYPLAN'
+	   }
+	   var width = 0;
+	   var height = 0;
+       var channel = $('#newChannel').val();
+       var showPage = $("#showPage").val();
+	   switch (channel) {
+           case constants.GEN:
+           case constants.GEN178:
+           case constants.GENKQ:
+           case constants.GENHN:
+           case constants.GENRUIAN:
+           case constants.GENSTZY:	   
+			   switch (showPage) {
+				   case constants.DEPSUBJECT:
+				   case constants.ZANSTAGES:
+				   case constants.ESTUARYPLAN:
+					   width = 1920;
+					   height = 300;
+					   break;
+				   default:
+					   width = 1920;
+					   height = 580;
+					   break;
+			   }
+               _global.uploadSingleImg("/upload/bannerImg.htm", '#filePicker', width, height, width/2, height/2, '#fileThumb', function (file, data) {
+                   $('#imgPathBanner').val(data.msg.pathUrl);
+               }, function(file, data) {
+                   $('#filePicker').children('div').children('img').attr('src', '');
+                   $('#imgPathBanner').val('');
+               });
+               break;
+		   default: break;
+	   }
+   })();
+
+
+	$("select[name=pushType]").on('change',function(){
+		var pushType = this.value;
+		if(pushType == 'url') {
+			$(".native_content").html("<input name='appPage' type='text'  size='100' maxlength='200' value='"+$.trim($('#appPage').val())+"'/>"
+				+"&nbsp;&nbsp;（绝对路径请输入“http://”,如百度：http://www.baidu.com）");
+		}else if(pushType == 'APP') {
+			var options = "<select id='page' name='appPage' class='combox'> "
+					+ "<option value='1'"+dealAppPage(1)+">首页</option>"
+					+ "<option value='2'"+dealAppPage(2)+">理财产品</option>"
+					+ "<option value='3'"+dealAppPage(3)+">我的资产</option>"
+					+ "<option value='4'"+dealAppPage(4)+">更多</option>"
+					+ "<option value='5'"+dealAppPage(5)+">推荐奖励金</option>"
+					+ "<option value='6'"+dealAppPage(6)+">安全保障</option>"
+					+ "<option value='7'"+dealAppPage(7)+">我的推荐</option>"
+					+ "<option value='8'"+dealAppPage(8)+">帮助中心</option>"
+					+ "<option value='9'"+dealAppPage(9)+">意见反馈</option>"
+					+ "<option value='11'"+dealAppPage(11)+">我的投资页面</option>"
+					+ "<option value='12'"+dealAppPage(12)+">交易明细页面</option>"
+					+ "<option value='13'"+dealAppPage(13)+">安全中心</option>"
+					+ "<option value='14'"+dealAppPage(14)+">银行卡界面</option>"
+					+ "<option value='15'"+dealAppPage(15)+">我的红包列表</option>"
+					+ "<option value='17'"+dealAppPage(17)+">关注币港湾</option>"
+				+ "</select>";
+				
+				$(".native_content").html(options);
+		}
+	});
+	
+	 $(function(){
+    	var pushType = $.trim($('#showpushType').val());
+		if(pushType == 'url') {
+			$(".native_content").html("<input name='appPage' type='text' size='100' maxlength='200' value='"+$.trim($('#showappPage').val())+"'/>"
+				+"&nbsp;&nbsp;（绝对路径请输入“http://”,如百度：http://www.baidu.com）");
+		}else if(pushType == 'APP') {
+			var options = "<select id='page' name='appPage' class='combox'> "
+					+ "<option value='1'"+dealAppPage(1)+">首页</option>"
+					+ "<option value='2'"+dealAppPage(2)+">理财产品</option>"
+					+ "<option value='3'"+dealAppPage(3)+">我的资产</option>"
+					+ "<option value='4'"+dealAppPage(4)+">更多</option>"
+					+ "<option value='5'"+dealAppPage(5)+">推荐奖励金</option>"
+					+ "<option value='6'"+dealAppPage(6)+">安全保障</option>"
+					+ "<option value='7'"+dealAppPage(7)+">我的推荐</option>"
+					+ "<option value='8'"+dealAppPage(8)+">帮助中心</option>"
+					+ "<option value='9'"+dealAppPage(9)+">意见反馈</option>"
+					+ "<option value='11'"+dealAppPage(11)+">我的投资页面</option>"
+					+ "<option value='12'"+dealAppPage(12)+">交易明细页面</option>"
+					+ "<option value='13'"+dealAppPage(13)+">安全中心</option>"
+					+ "<option value='14'"+dealAppPage(14)+">银行卡界面</option>"
+					+ "<option value='15'"+dealAppPage(15)+">我的红包列表</option>"
+					+ "<option value='17'"+dealAppPage(17)+">关注币港湾</option>"
+				+ "</select>";
+				
+				$(".native_content").html(options);
+		}
+    })
+	
+	function dealAppPage(page) {
+		var appPage = $.trim($('#showappPage').val());
+		if(appPage == page) {
+			return 'selected';
+		}else {
+			return "";
+		}
+	}
+	
+	function formsubmint(){
+		var subject = $("#subjects").val();
+		if(subject == ''){
+			alertMsg.warn('请输入名称！!');
+			return false;
+		}
+		var path=$("#imgPathBanner").val();
+		if(!path){
+			alertMsg.warn('请上传图片！!');
+			return false;
+		}
+		$("#flashForm").submit();
+    }
+	function navTabAjaxDone(json) {
+		var channel=$("#newChannel").val();
+		var showPage = $("#showPage").val();
+		if(showPage=="DEPSUBJECT" || showPage=="ZANSTAGES" || showPage=="ESTUARYPLAN") {
+			showPage="INVEST";
+		} else {
+			showPage="USERENTRY";
+		}
+		if (json.statusCode == 200) {
+			navTab.closeCurrentTab();
+			alertMsg.correct(json.message);
+			navTab.reload("$env.getWebURL('/banner/website_picture.htm?cc=')"+showPage);
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+	$(function(){
+	
+});
+</script>
+</div>

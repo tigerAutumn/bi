@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dafy.mapper.SimFinancingMapper" >
+  <!--
+    - =======================================================
+ 	- SimFinancing对象
+ 	- @author yanwl
+ 	- @date 2015-11-19
+ 	- ======================================================= 
+  -->
+  <resultMap id="BaseResultMap" type="SimFinancing" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="request_time" property="requestTime" jdbcType="TIMESTAMP" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="pay_order_no" property="payOrderNo" jdbcType="VARCHAR" />
+    <result column="pay_finish_time" property="payFinishTime" jdbcType="TIMESTAMP" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="pay_platform" property="payPlatform" jdbcType="VARCHAR" />
+    <result column="merchant_id" property="merchantId" jdbcType="VARCHAR" />
+    <result column="pay_req_time" property="payReqTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <!--
+    - =======================================================
+ 	- 基本列
+ 	- @author yanwl
+ 	- @date 2015-11-19
+ 	- ======================================================= 
+  -->
+  <sql id="Base_Column_List" >
+    id, request_time, customer_id, pay_order_no, pay_finish_time, amount, status, create_time, 
+    update_time, pay_platform, merchant_id, pay_req_time
+  </sql>
+  
+  <!--
+    - =======================================================
+ 	- 根据主键查询SimFinancing对象
+ 	- @author yanwl
+ 	- @date 2015-11-19
+ 	- ======================================================= 
+  -->
+  <select id="selectSimFinancingById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sim_financing
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <!--
+    - =======================================================
+ 	- 根据多条件分页查询list<SimFinancing>对象
+ 	- @author yanwl
+ 	- @date 2015-11-19
+ 	- ======================================================= 
+  -->
+  <select id="selectAllSimFinancings" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from sim_financing
+    where 1=1
+     <include refid="com.dafy.mapper.global-sql.orderBy"></include>
+    <!--  <include refid="com.dafy.mapper.global-sql.pagination"></include>-->
+  </select>
+  
+  <!--
+    - =======================================================
+ 	- 根据多条件查询SimFinancing对象总数
+ 	- @author yanwl
+ 	- @date 2015-11-23
+ 	- ======================================================= 
+  -->
+  <select id="countSimFinancings" resultType="java.lang.Integer" parameterType="java.util.Map" >
+    select count(*)
+    from sim_financing
+    where 1=1
+  </select>
+  
+  <!--
+    - =======================================================
+ 	- 删除SimFinancing对象
+ 	- @author yanwl
+ 	- @date 2015-11-19
+ 	- ======================================================= 
+  -->
+  <delete id="deleteSimFinancing" parameterType="java.lang.Integer" >
+    delete from sim_financing
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <!--
+    - =======================================================
+ 	- 新增SimFinancing对象
+ 	- @author yanwl
+ 	- @date 2015-11-19
+ 	- ======================================================= 
+  -->
+  <insert id="insertSimFinancing" parameterType="SimFinancing" keyProperty="id" useGeneratedKeys="true">
+    insert into sim_financing
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="requestTime != null" >
+        request_time,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="payOrderNo != null" >
+        pay_order_no,
+      </if>
+      <if test="payFinishTime != null" >
+        pay_finish_time,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="payPlatform != null" >
+        pay_platform,
+      </if>
+      <if test="merchantId != null" >
+        merchant_id,
+      </if>
+      <if test="payReqTime != null" >
+        pay_req_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="requestTime != null" >
+        #{requestTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="payOrderNo != null" >
+        #{payOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payFinishTime != null" >
+        #{payFinishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payPlatform != null" >
+        #{payPlatform,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantId != null" >
+        #{merchantId,jdbcType=VARCHAR},
+      </if>
+      <if test="payReqTime != null" >
+        #{payReqTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <!--
+    - =======================================================
+ 	- 更新SimFinancing对象
+ 	- @author yanwl
+ 	- @date 2015-11-19
+ 	- ======================================================= 
+  -->
+  <update id="updateSimFinancing" parameterType="SimFinancing" >
+    update sim_financing
+    set request_time = #{requestTime,jdbcType=TIMESTAMP},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      pay_order_no = #{payOrderNo,jdbcType=VARCHAR},
+      pay_finish_time = #{payFinishTime,jdbcType=TIMESTAMP},
+      amount = #{amount,jdbcType=DOUBLE},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      pay_platform = #{payPlatform,jdbcType=VARCHAR},
+      merchant_id = #{merchantId,jdbcType=VARCHAR},
+      pay_req_time = #{payReqTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  
+  <!--
+    - =======================================================
+ 	- 模拟恒丰标的出账回调通知-根据合作方订单号查询借款订单信息
+ 	- @author 龙猫
+ 	- @date 2015-11-19
+ 	- ======================================================= 
+  -->
+    <resultMap id="LoanInfoVOMap" type="com.dafy.model.vo.LoanInfoVO">
+      <result column="partner_order_no" jdbcType="VARCHAR" property="partnerOrderNo" />
+      <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+      <result column="apply_amount" jdbcType="DOUBLE" property="applyAmount" />
+      <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+      <result column="pay19_bank_code" jdbcType="VARCHAR" property="pay19BankCode" />
+      <result column="bank_card_no" jdbcType="VARCHAR" property="bankCardNo" />
+      <result column="user_name" jdbcType="VARCHAR" property="userName" />
+      <result column="status" jdbcType="VARCHAR" property="status" />
+      <result column="hf_user_id" jdbcType="VARCHAR" property="hfUserId" />
+    </resultMap>
+  <select id="selectLoanInfoByPartnerOrderNo" resultMap="LoanInfoVOMap" parameterType="java.lang.String" >
+		SELECT 
+		a.partner_order_no,
+		b.order_no,
+		a.apply_amount,
+		b.bank_name,
+		c.pay19_bank_code,
+		b.bank_card_no,
+		b.user_name,
+		a.`status`,
+		d.hf_user_id
+		FROM 
+		`ln_loan` a,
+		ln_pay_orders b,
+		bs_19pay_bank c,
+		ln_user d
+		WHERE 
+		a.pay_order_no = b.order_no
+		AND b.bank_id = c.bank_id
+		AND a.ln_user_id = d.id
+		AND c.channel = 'BAOFOO'
+		AND c.pay_type = '1'
+		AND a.partner_order_no = #{orderNo}
+		limit 0,1
+  </select>
+</mapper>

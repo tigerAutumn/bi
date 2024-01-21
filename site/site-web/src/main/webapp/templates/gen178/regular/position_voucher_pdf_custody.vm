@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+<body>
+    <p>
+		<span>
+           <table border="1" cellspacing="0" cellpadding="10" width="100%">
+				<tr>
+					<td width="100%" colspan="2">投资者：$!userName</td>
+				</tr>
+				<tr>
+					<td width="50%" >产品名称：$!name</td>
+					<td width="50%" >产品代码：BGW$!code</td>
+				</tr>
+				<tr>
+					<td width="50%" >产品起息日：$!times</td>
+					<td width="50%" >产品到期日：$!endTime</td>
+				</tr>
+				<tr>
+					<td width="50%">
+						持仓金额：$!money.digitUppercase($!openBalance)
+						<br/>
+						小写：$!money.format($!openBalance)元
+					</td>
+					<td width="50%" >
+						#if($!interestAmount > 0)
+                            预期收益：$!interest元
+                            <br/>
+                            预期加息收益：$!money.format($!interestAmount)元
+						#else
+                            预期收益：$!interest元
+						#end
+					</td>
+				</tr>
+				<tr>
+					<td width="100%" colspan="2">发行机构：杭州币港湾科技有限公司</td>
+				</tr>
+				<tr>
+					#if($!date.getDiffeSeconds($!date.parse($!nowTime, "yyyy年MM月dd日 HH:mm:ss"), $!date.parse("2017年03月09日 00:00:00", "yyyy年MM月dd日 HH:mm:ss")) >= 0)
+                        <td width="100%" colspan="2">托管机构：恒丰银行</td>
+					#else
+                        <td width="100%" colspan="2">托管机构：恒丰银行</td>
+					#end
+				</tr>
+				<tr>
+					#if($!date.getDiffeSeconds($!date.parse($!nowTime, "yyyy年MM月dd日 HH:mm:ss"), $!date.parse("2017年03月09日 00:00:00", "yyyy年MM月dd日 HH:mm:ss")) >= 0)
+                        <td width="100%" colspan="2">资金监管机构：恒丰银行</td>
+					#else
+                        <td width="100%" colspan="2">资金监管机构：恒丰银行</td>
+					#end
+				</tr>
+				<tr>
+					<td width="100%" colspan="2">
+						声明：<br/>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、本凭证仅作为投资者在查询时点时认购或持有产品的情况说明，若后续发生“投资行为”或“投资回款”，则以浙江品听资产管理有限公司所运营的“币港湾（www.bigangwan.com）”平台账户实际资产情况为准。 <br/>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、该产品的信息披露通过币港湾网站或其他指定渠道进行，也可致电客户服务热线 400-806-1230。 <br/>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3、投资有风险，理财须谨慎。 <br/>
+					</td>
+				</tr>
+				<tr>
+					<td style="border-right: 0px solid black;">
+						查询时点：$!nowTime<br/>
+						查询人：$!userName
+					</td>
+					<td style="border-left: 0px solid black;">
+						<img width="60%" src="$!env.get('gen.server.web')/resources/gen2.0/images/bgw_gz_1.png"/>
+					</td>
+				</tr>
+		   </table>
+		</span>
+	</p>
+</body>
+</html>

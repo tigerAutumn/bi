@@ -1,0 +1,202 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadCSS("resources/gen2.0/styles/agree/default")
+#LoadCSS("resources/gen2.0/styles/agree/agree")
+#LoadGenCSS("/resources/gen2.0/styles/match/borrower")
+
+#Head("end")
+
+<body>
+<div class="borrower_wrap">
+
+    <h4>借款人基本信息</h4>
+
+    <div class="borrower_ifo">
+        <p class="ifo_title">主体性质：</p>自然人
+    </div>
+    <div class="borrower_ifo">
+        <p class="ifo_title">姓名：</p>$!borrowerInfo.userName
+    </div>
+    <div class="borrower_ifo">
+        <p class="ifo_title">性别：</p>$!borrowerInfo.sex
+    </div>
+    <div class="borrower_ifo">
+        <p class="ifo_title">年龄：</p>$!borrowerInfo.age
+    </div>
+    <div class="borrower_ifo">
+        <p class="ifo_title">证件号码：</p>$!borrowerInfo.idCard
+    </div>
+    <div class="borrower_ifo">
+        <p class="ifo_title">平台历史逾期次数：</p>$!borrowerInfo.historyOverdueTimes 次
+    </div>
+    <div class="borrower_ifo">
+        <p class="ifo_title">平台历史逾期金额：</p>$!number.format('0.00', $!{borrowerInfo.historyOverdueAmount}) 元
+    </div>
+    <div class="borrower_ifo">
+        <p class="ifo_title">平台当前逾期金额：</p>$!number.format('0.00', $!{borrowerInfo.currentOverdueAmount}) 元
+    </div>
+
+</div>
+
+<div class="borrower_wrap">
+    <h4>融资信息</h4>
+    <div class="borrower_ifo">
+        <p class="ifo_title">项目名称：</p>$!borrowerInfo.loanId
+    </div>
+    <div class="borrower_ifo">
+        <p class="ifo_title">项目进度：</p>100%
+    </div>
+
+    <div class="borrower_ifo">
+        <p class="ifo_title">借款金额：</p>$!borrowerInfo.loanAmount 元
+    </div>
+    <div class="borrower_ifo">
+        #if($!req.partnerCode == "ZAN")
+            <p class="ifo_title">借款期限：</p>$!{borrowerInfo.period}个月
+        #elseif($!req.partnerCode == "ZSD")
+            <p class="ifo_title">借款期限：</p>$!{borrowerInfo.period}天
+        #elseif($!req.partnerCode == "7_DAI_SELF")
+            <p class="ifo_title">借款期限：</p>
+            #if("$!{borrowerInfo.partnerBusinessFlag}" == "REPAY_ANY_TIME")
+                <td>$!{borrowerInfo.period}日</td>
+            #else
+                <td>$!{borrowerInfo.period}期</td>
+            #end
+        #elseif($!req.partnerCode == "FREE")
+            #if($!borrowerInfo.partnerCode == "YUN_DAI_SELF")
+                #if("$!{borrowerInfo.partnerBusinessFlag}" == "REPAY_ANY_TIME")
+                    <p class="ifo_title">借款期限：</p><span id="term"></span>天
+                    <script>
+                        var termInt = parseInt("$!borrowerInfo.period") * 30;
+                        $('#term').text(termInt);
+                    </script>
+                #elseif("$!{borrowerInfo.partnerBusinessFlag}" == "FIXED_INSTALLMENT")
+                    <p class="ifo_title">借款期限：</p><span id="term"></span>个月
+                    <script>
+                        var termInt = parseInt("$!borrowerInfo.period");
+                        $('#term').text(termInt);
+                    </script>
+                #elseif("$!{borrowerInfo.partnerBusinessFlag}" == "FIXED_PRINCIPAL_INTEREST")
+                    <p class="ifo_title">借款期限：</p><span id="term"></span>个月
+                    <script>
+                        var termInt = parseInt("$!borrowerInfo.period");
+                        $('#term').text(termInt);
+                    </script>
+                #end
+            #elseif($!borrowerInfo.partnerCode == "7_DAI_SELF")
+                <p class="ifo_title">借款期限：</p>
+                #if("$!{borrowerInfo.partnerBusinessFlag}" == "REPAY_ANY_TIME")
+                    <td>$!{borrowerInfo.period}日</td>
+                #else
+                    <td>$!{borrowerInfo.period}期</td>
+                #end
+            #end
+        #else
+            #if($!req.partnerCode == "YUN_DAI_SELF")
+                #if($!borrowerInfo.partnerCode == "ZSD")
+                    <p class="ifo_title">借款期限：</p>$!{borrowerInfo.period}天
+                #else
+                    #if("$!{borrowerInfo.partnerBusinessFlag}" == "FIXED_INSTALLMENT")
+                        <p class="ifo_title">借款期限：$!{borrowerInfo.period}期</p>
+                    #elseif("$!{borrowerInfo.partnerBusinessFlag}" == "FIXED_PRINCIPAL_INTEREST")
+                        <p class="ifo_title">借款期限：$!{borrowerInfo.period}期</p>
+                    #else
+                        #if("$!borrowerInfo.period" == "12")
+                            #set($days = $!{borrowerInfo.period} * 30)
+                            <p class="ifo_title">借款期限：</p>365天
+                        #else
+                            <p class="ifo_title">借款期限：</p><span id="term"></span>天
+                            <script>
+                                var termInt = parseInt("$!borrowerInfo.period") * 30;
+                                $('#term').text(termInt);
+                            </script>
+                        #end
+                    #end
+                #end
+            #else
+                #if("$!borrowerInfo.period" == "12")
+                    #set($days = $!{borrowerInfo.period} * 30)
+                    <p class="ifo_title">借款期限：</p>365天
+                #else
+                    <p class="ifo_title">借款期限：</p><span id="term"></span>天
+                    <script>
+                        var termInt = parseInt("$!borrowerInfo.period") * 30;
+                        $('#term').text(termInt);
+                    </script>
+                #end
+            #end
+        #end
+    </div>
+    <div class="borrower_ifo">
+        <p class="ifo_title">起息日：</p>#if($!borrowerInfo.loanTime)$!date.format($!{borrowerInfo.loanTime})#end
+    </div>
+    <div class="borrower_ifo">
+        <p class="ifo_title">还款来源：</p>个人收入
+    </div>
+    <div class="borrower_ifo">
+        <p class="ifo_title">还款保障：</p>个人信用
+    </div>
+    <div class="borrower_ifo">
+        <p class="ifo_title">借款用途：</p>个人借款
+    </div>
+    #if($!req.partnerCode == "ZAN")
+        <div class="borrower_ifo">
+            <p class="ifo_title">还款方式：</p>等额本息
+        </div>
+        <div class="borrower_ifo" style="padding-left: 280px;">
+            借款金额为X，年利率为Y，借款期限为Z月，月还款本息为T，则第一个月应还利息计算公式为：X*Y/12,第二个月应还利息计算公式为：（X-(T-第一个月应还利息））*Y/12，各月以此类推，应还总利息计算公式为：第一个月应还利息+第二个月应还利息+…第Z个月的应还利息。应还本金为X。每月按30天算。
+        </div>
+    #else
+        #if("$!{borrowerInfo.partnerBusinessFlag}" == "FIXED_INSTALLMENT")
+            <div class="borrower_ifo">
+                <p class="ifo_title">还款方式：</p>等额本息
+            </div>
+            <div class="borrower_ifo" style="padding-left: 200px;">
+                借款金额为X，年利率为Y，借款期限为Z月，月还款本息为T，则第一个月应还利息计算公式为：X*Y/12,第二个月应还利息计算公式为：（X-(T-第一个月应还利息））*Y/12，各月以此类推，应还总利息计算公式为：第一个月应还利息+第二个月应还利息+…第Z个月的应还利息。应还本金为X。每月按30天算。
+            </div>
+        #elseif("$!{borrowerInfo.partnerBusinessFlag}" == "FIXED_PRINCIPAL_INTEREST")
+            <div class="borrower_ifo">
+                <p class="ifo_title">还款方式：</p>等本等息
+            </div>
+            <div class="borrower_ifo" style="padding-left: 200px;">
+                借款金额为X，月利率为Y，借款期限为Z月，则每月应还利息计算公式为：X*Y，应还总利息计算公式为：X*Y*Z。应还本金为X。每月按30天算。
+            </div>
+        #else
+            <div class="borrower_ifo">
+                <p class="ifo_title">还款方式：</p>一次还本付息
+            </div>
+            <div class="borrower_ifo" style="padding-left: 200px;">
+                借款金额为X，年利率为Y，借款期限为Z天，则应还总利息计算公式为：X*Y/365*Z天。应还本金为X。
+            </div>
+        #end
+
+    #end
+</div>
+<div class="borrower_wrap">
+    <h4>其他相关信息</h4>
+    <div class="borrower_ifo">
+        <p class="ifo_title">借款资金运用情况：</p>已受理提现
+    </div>
+    <div class="borrower_ifo">
+        <p class="ifo_title">借款人财务状况：</p>良好
+    </div>
+    <div class="borrower_ifo">
+        <p class="ifo_title">借款人还款能力变化：</p>暂无变化
+    </div>
+    <div class="borrower_ifo">
+        <p class="ifo_title">借款人涉诉及受行政处罚情况：</p>暂未获取
+    </div>
+    <div class="borrower_ifo">
+        <p class="ifo_title">借款人在其他网络借贷平台借款情况：</p>暂未获取
+    </div>
+</div>
+<div class="borrower_wrap">
+    <h4>风险评估及可能产生的风险结果</h4>
+    <div class="borrower_ifo">
+        根据借款人当前情况评估，其个人所得可以覆盖还款；但不排除未来因宏观经济、市场环境波动等因素导致借款人个人财务状况恶化，从而发生逾期的可能。
+    </div>
+</div>
+</body>
+
+#Html("end")

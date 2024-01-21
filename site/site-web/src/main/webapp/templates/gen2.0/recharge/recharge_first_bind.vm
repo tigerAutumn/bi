@@ -1,0 +1,138 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenJS("/resources/gen2.0/scripts/echarts")
+#LoadGenJS("/resources/gen2.0/scripts/switchable")
+#LoadGenJS("/resources/gen2.0/scripts/textSlider")
+#LoadGenJS("/resources/gen2.0/scripts/recharge/recharge_first_bind")
+#parse("/agreement_pay.vm")
+#parse("/agreement_account.vm")
+#parse("/agreement_pay_new.vm")
+#GenHead("end")
+<body>
+
+<!--header -s-->
+	#LoadGenCSS("/resources/gen2.0/styles/recharge/trade_public")
+	#LoadGenCSS("/resources/gen2.0/styles/recharge/recharge_first_bind")
+	#LoadGenJS("/resources/gen2.0/scripts/fix")
+	#Gen2Header("assets")
+
+<!--main  s-->
+<div class="trade_wrap">
+
+	#set($cardId = 0)
+	#set($mobile = "")
+	#set($isAvailable = 0)
+    <div class="recharge_sure">
+        <div class="recharge_data">
+            <p>充值金额：</p>
+            <span class="color_font">$!money.format($!{rechargeAmount})</span>元
+        </div>
+        <div class="recharge_data">
+            <p>实际到账金额：</p>
+            <span class="color_font" id="actRechargeAmount">$!money.format($!{rechargeAmount})</span>元
+        </div>
+        <div class="payment_Quick">
+            <h5>快捷支付</h5>
+            <div class="payment_Quick_card card_focuse">
+                <div class="payment_Qcleft" pay_type="quick_pay" card_id="$!cardId">
+                    <span></span>
+                </div>
+                <div class="payment_Qcright" style="width: 700px;">
+					#foreach($!bank in $!bankList)
+						#if($!bank.isFirst == 1)
+							#set($cardId = $!bank.id)
+							#set($mobile = $!bank.mobile)
+							#set($isAvailable = $!bank.isAvailable)
+                            <div class="payment_Qcright_img">
+                                <img src="$!env.get('gen.server.web')/$!bank.smallLogo"
+                                     class="payment_Qcright_conimg1"/>
+                                <span class="payment_Qcright_conspan1">$!bank.bankName
+                                    （$!string.right($!bank.cardNo, 4)）</span>
+                                <img src="$!env.get('gen.server.web')/resources/gen2.0/images/quick.png"
+                                     class="payment_Qcright_conimg2"/>
+                            </div>
+							#if($!bank.dailyNotice && "" != $!bank.dailyNotice)
+                                单笔限额<span class="color_font">$!{bank.oneTop}万元</span>，单日限额<span
+                                    class="color_font">$!{bank.dayTop}万元</span>
+                                <span class="color_font">$!bank.dailyNotice</span>
+							#else
+                                单笔限额<span class="color_font">$!{bank.oneTop}万元</span>，单日限额<span
+                                    class="color_font">$!{bank.dayTop}万元</span>
+							#end
+
+						#end
+					#end
+                </div>
+            </div>
+            <div class="payment_banklist">
+                <h5 class="payment_Quick_title">网银支付</h5>
+                <div class="row">
+					#foreach($netBankList in $!netBankList)
+                        <div class="payment_bankcard">
+                            <div class="payment_Quick_card">
+                                <div class="payment_Qcleft" pay_type="net_pay" card_id="$!{netBankList.id}"><span></span></div>
+                                <div class="payment_Qcright">
+                                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/z_netbank_s_$!{netBankList.bankId}.png"/>
+                                </div>
+                            </div>
+                        </div>
+					#end
+                </div>
+            </div>
+        </div>
+        <div class="trade_submit">
+            <form id="recharge_form">
+                <input type="hidden" id="cardId" name="cardId" value="$!cardId"/>
+                <input type="hidden" id="isAvailable" name="isAvailable" value="$!isAvailable"/>
+                <input type="hidden" id="rechargeAmount" name="rechargeAmount" value="$!rechargeAmount"/>
+                <input type="hidden" id="token" name="token" value="$!token" />
+                <input type="hidden" id="orderNo" name="orderNo" value="$!orderNo"  />
+                <input type="hidden" id="mpOrderNo" name="mpOrderNo" value="$!mpOrderNo"/>
+                <input type="hidden" id="actPayAmountFee" name="actPayAmountFee" value="$!actPayAmountFee"/>
+            </form>
+            <button id="sub_pay">立即充值</button>
+            <div class="payment_Quick_btntxt">
+                点击立即充值即表示您同意<a class="Use_redbtn_txta rech_ok" name="newPay_financial_div"><span class="color_font">《支付协议》</span>和<span class="color_font">《授权委托书》</span></a>
+			##<span class="payment_Quick_btnspan">《账户服务协议》</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!--main  s-->
+
+<!--footer -s-->
+	#Gen2Footer()
+<!--footer -e-->
+
+<!--弹窗背景-->
+<div class="body_bg" style="display: none;"></div>
+
+<!--快捷支付弹窗-->
+
+<div id="alert_listthree_three" class="alert_listthree" style="display: none;">
+    <h3 class="alert_listthree_h3">支付验证<a class="alert_listthree_btn" href="javascript:;"></a></h3>
+    <div class="alert_listthree_txt">
+        <div class="alert_listthree_success">已向你的手机号 <span class="color_font">$!mobile</span> </div>
+        <div class="alert_listthree_success">发送验证码短信，请注意查收</div>
+        <div class="cpm_put">
+            <div class="put_wrp">
+                <input class="put_text" type="text" name="mobileCode" id="mobileCode" maxlength="6" placeholder="请输入短信验证码">
+                <span class="input-back"></span>
+				<span id="sendCode" class="retransmission btn_success" count="60">
+					重发(<span class="retransmission_time">59</span>)
+				</span>
+            </div>
+        </div>
+    </div>
+    <div class="alert_listthree_btnd">
+        <a class="alert_listthree_btnl" id="code_sub" href="javascript:void(0)">确定</a>
+    </div>
+</div>
+
+<div id="reapal_form">
+</div>
+
+</body>
+
+#Html("end")

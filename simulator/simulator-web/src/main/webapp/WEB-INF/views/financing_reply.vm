@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+	<form class="form-horizontal">
+	   <input type="hidden" value="$!obj.id" name="id" />
+	   <div class="form-group ">
+	      <label for="result" class="col-sm-3 control-label">支付成功标记</label>
+	      <div class="col-sm-3">
+			 <select id="result" name="result" class="form-control" style="width: 100%;">
+				<option value="1">成功</option>
+				<option value="2">失败</option>
+             </select>
+	      </div>
+	   </div>
+	   <div class="form-group ">
+	      <label class="col-sm-3 control-label" for="textarea">失败原因</label>
+		  <div class="col-sm-3">
+              <textarea class="input-xlarge" id="errorMsg" name="errorMsg" rows="4" cols="30"></textarea>
+           </div>
+		  <!--<label for="errorMsg" class="col-sm-3 control-label">失败原因</label>
+	      <div class="col-sm-9">
+			 <input type="text" class="form-control" id="errorMsg" name="errorMsg" />
+		  </div>-->
+	   </div>
+	   <div class="form-group ">
+	      <div class="col-sm-offset-2 col-sm-9 text-center">
+	         <button type="submit" class="btn btn-default" style="width:100px">提交</button>
+	      </div>
+	   </div>
+	</form>
+	<script>
+	$(function(){
+		$('form').validationEngine('attach', {
+			    onValidationComplete: function(form, status){
+			    	if(status){
+			    		var result = $("#result").val(),
+							errorMsg = $("#errorMsg").val();
+						if(result == 2) {
+							if(errorMsg == null || errorMsg == '') {
+								$.alert("失败原因不能为空！",'错误提示',function(){});
+								return;
+							}
+						}
+					
+						$(":submit").attr("disabled",true);
+						var data = $(form).serialize();
+						$.ajax({
+							url: "/financing_detail/reply",
+						    type: 'post',
+						    data: data,
+							async:false,
+						    dataType: 'json',
+						    success:function(data){
+						    	var title = "错误提示";
+								if(data.code == 'SUCC'){
+						    		title = "成功提示";
+						    	}
+								$.alert(data.msg,title,function(){
+						    		window.location.reload();
+						    	});
+						    }
+						})
+			    	}
+			    }
+    		});
+	})
+    </script>
+</body>
+</html>

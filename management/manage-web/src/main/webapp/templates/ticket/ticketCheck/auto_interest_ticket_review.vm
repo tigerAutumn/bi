@@ -1,0 +1,178 @@
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	#Hidden("checkId", "$!interestTicket.checkId")
+    <div class="pageFormContent nowrap" layoutH="97">
+        <dl>
+            <dt>
+                申请人：
+            </dt>
+            <dd>
+				$!interestTicket.applicantName
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                加息券名称：
+            </dt>
+            <dd>
+				$!interestTicket.serialName
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                使用条件：
+            </dt>
+            <dd >
+                单笔投资满$!number.format("0", $!interestTicket.investLimit)元启用
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                加息幅度：
+            </dt>
+            <dd >
+				$!interestTicket.ticketApr%
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                发放数量：
+            </dt>
+            <dd >
+				$!interestTicket.grantTotal
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                渠道：
+            </dt>
+            <dd class="content_dd" content="$!autoRedPocket.agentIdsDesc" title="$!autoRedPocket.agentIdsDesc">
+				$!interestTicket.agentIdsDesc
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                产品限制：
+            </dt>
+            <dd >
+				#foreach ($element in $!interestTicket.productLimit.split(","))
+					#if($element == 'BIGANGWAN_SERIAL')
+                        港湾系列
+					#elseif($element == 'YONGJIN_SERIAL')
+                        涌金系列
+					#elseif($element == 'KUAHONG_SERIAL')
+                        跨虹系列
+					#elseif($element == 'BAOXIN_SERIAL')
+                        保信系列
+					#else
+                        &nbsp
+					#end
+					#if($velocityCount != $!interestTicket.productLimit.split(",").size())
+                        ,
+					#end
+				#end
+            </dd>
+        </dl>
+        <dl>
+            <dt>
+                期限限制：
+            </dt>
+            <dd >
+				$!interestTicket.termLimit（天）
+            </dd>
+        </dl>
+
+		#if($!interestTicket.triggerType == 'HAPPY_BIRTHDAY')
+            <dl>
+                <dt >
+                    触发条件：
+                </dt>
+                <dd >
+                    生日福利
+                </dd>
+            </dl>
+            <dl>
+                <dt >
+                    触发时间：
+                </dt>
+                <dd >
+					$!interestTicket.triggerTimeStart.substring(0,19) 至  $!interestTicket.triggerTimeEnd.substring(0,19)
+                </dd>
+            </dl>
+		#elseif($!interestTicket.triggerType == 'EXCHANGE_4MALL')
+            <dl>
+                <dt >
+                    触发条件：
+                </dt>
+                <dd >
+                   积分商城兑换
+                </dd>
+            </dl>
+            <dl>
+                <dt >
+                    触发时间：
+                </dt>
+                <dd >
+					$!interestTicket.triggerTimeStart.substring(0,19) 至  $!interestTicket.triggerTimeEnd.substring(0,19)
+                </dd>
+            </dl>
+		#end
+        <dl>
+			#if($!interestTicket.validTermType == 'AFTER_RECEIVE')
+                <dt >
+                    加息券有效期：
+                </dt>
+                <dd >
+                    发放后 $!interestTicket.availableDays 日
+                </dd>
+
+			#elseif($!interestTicket.validTermType == 'FIXED')
+                <dt >
+                    加息券有效期：
+                </dt>
+                <dd >
+					$!interestTicket.useTimeStart.substring(0,19) 至 $!interestTicket.useTimeEnd.substring(0,19)
+                </dd>
+			#end
+        </dl>
+
+        <dl>
+            <dt >
+                通知渠道：
+            </dt>
+            <dd >
+				#foreach ($element in $!interestTicket.notifyChannel.split(","))
+					#if($element == 'WECHAT')
+                        微信
+					#elseif($element == 'SMS')
+                        短信
+					#elseif($element == 'APP')
+                        app通知
+					#else
+                        &nbsp
+					#end
+					#if($velocityCount != $!interestTicket.notifyChannel.split(",").size())
+                        ,
+					#end
+				#end
+            </dd>
+        </dl>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li>
+                <div class="button"><div class="buttonContent"><button type="button" class="close">确定</button></div></div>
+            </li>
+        </ul>
+    </div>
+</div>
+<script>
+    $('.content_dd').each(function(){
+        var content = $(this).attr('content');
+        var size = content.length;
+        if(size > 17) {
+            var contentStr = content.substr(0, 17);
+            $(this).html(contentStr + "...");
+        }
+    });
+</script>

@@ -1,0 +1,156 @@
+#Html("begin")
+#GenHead("begin","币港湾活动，大礼包，币港湾，币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/activity/default")
+#LoadGenCSS("/resources/gen2.0/styles/activity/2017/youfu/index")
+#GenHead("end")
+
+<body class="body">
+#Gen2Header("home")
+<div class="banner"></div>
+<div class="new-main">
+    <div class="new-content">
+        <h3 class="new-title">
+            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/youfu/new-title.png"/>
+        </h3>
+        <div class="new-subtitle">同时享最高1%邀请奖励金！奖励额度调整前的最后机会！</div>
+        <div class="new-ranking rounded">
+            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/youfu/new-horn.png" class="new-ran-img" />
+            <ul class="new-ran-title">
+                <li class="new-ran-name">排名</li>
+                <li>名额</li>
+                <li>推荐人奖励</li>
+                <li class="new-ran-reward">被推荐人奖励
+                    <p class="new-ran-p">（总推荐新用户平分）</p>
+                </li>
+            </ul>
+            <ul class="new-ran-title gold">
+                <li>金牌推荐人</li>
+                <li>1人</li>
+                <li>800元</li>
+                <li class="new-ran-gold">800元</li>
+            </ul>
+            <ul class="new-ran-title silver">
+                <li>银牌推荐人</li>
+                <li>2人</li>
+                <li>400元</li>
+                <li class="new-ran-silver">400元</li>
+            </ul>
+            <ul class="new-ran-title gold">
+                <li class="new-gold-name">铜牌推荐人</li>
+                <li>3人</li>
+                <li>100元</li>
+                <li class="new-ran-copper">100元</li>
+            </ul>
+            <div class="new-ran-txt">在活动期间，推荐人所邀请的新用户产生的<span class="new-ran-color">累计年化投资额排名前6位者</span><br/> （被邀请新用户累计年化投资额10W起，方可进入排名），及其所邀请的新用户均可获得奖励。</div>
+        </div>
+        <div class="new-recommend">
+            <div class="new-rec-left rounded">
+                <h3 class="new-rec-title rounded">金牌推荐人排行榜</h3>
+                <div class="new-rec-lbox">
+                    <ul class="new-rec-name">
+                        <li>排名</li>
+                        <li>推荐人</li>
+                        <li>推荐人数</li>
+                        <li>累计年化投资额</li>
+                    </ul>
+                    #if($!rankList.size() > 0)
+                        #foreach($!rank in $!rankList)
+                            <ul class="new-rec-number">
+                                <li><i>$!rank.rank</i><i>$!rank.userName</i><i>$!rank.recommendedNum</i><i>$!number.format("0.00", $!{rank.balance})元</i></li>
+                            </ul>
+                        #end
+                    #else
+                        <div class="new-rec-img">
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/youfu/new-none.png" class="new-rec-none-img"/>
+                        </div>
+                    #end
+                </div>
+            </div>
+            <div class="new-rec-right rounded">
+                <h3 class="new-rec-title rounded rec-left">我的战绩</h3>
+                <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/youfu/new-rec1.png" class=""/>
+                #if($!isStart == "not_start")
+                    <div class="new-rec-rbox new-rec-none">暂无记录</div>
+                #else
+                    #if($!isLogin == "yes")
+                        <ul class="new-rec-rbox">
+                            #if($!result.qualify == "YES")
+                                <li class="new-rec-my"><i>我的排名：</i><span class="new-people">$!result.rank</span></li>
+                            #else
+                                <li class="new-rec-my new-rec-not"><i>我的排名：</i><span>您尚未达到进入排行榜资格</span></li>
+                            #end
+                            <li class="new-rec-num"><i>推荐人数（人）：</i>
+                                <span>
+                                    #if($!result.recommendedNum)
+                                        $!result.recommendedNum
+                                    #else
+                                        0
+                                    #end
+                                </span>
+                            </li>
+                            <li class="new-rec-money"><i>累计年化投资额（元）：</i>
+                                <span>
+                                    #if($!result.balance)
+                                        $!number.format("0.00", $!result.balance)
+                                    #else
+                                        0.00
+                                    #end
+                                </span>
+                            </li>
+                        </ul>
+                    #else
+                        <div class="new-rec-rbox mylist_null">
+                            登录可查看自己的战绩
+                        </div>
+                    #end
+                #end
+                #if($!isLogin == "yes")
+                    #if($!isStart == "not_start")
+                        <div class="new-btn-none rounded">活动未开始</div>
+                    #elseif($!isStart == "end")
+                        <div class="new-btn-none rounded">活动已结束</div>
+                    #else
+                        <div class="new-btn-start rounded join_activity">立即参与活动</div>
+                    #end
+                #else
+                    #if($!isStart == "not_start")
+                        <div class="new-btn-none rounded">活动未开始</div>
+                    #else
+                        <div class="new-btn-start rounded go_login">立即登录</div>
+                    #end
+                #end
+            </div>
+        </div>
+        <div class="new-rule">
+            <div class="new-tule-box rounded">
+                <h3 class="new-rec-title rounded rec-left">活动规则</h3>
+                <div class="new-rule-txt"><i class="new-rule-number rounded">1</i>活动时间：$!{startTime}-$!{endTime}；</div>
+                <div class="new-rule-txt"><i class="new-rule-number rounded">2</i>活动期间，推荐人与被推荐用户将同时享受原有的推荐奖励金，登录我的账户，点击“邀请好友”可查看；</div>
+                <div class="new-rule-txt"><i class="new-rule-number rounded">3</i>推荐人需在活动期间邀请新用户完成注册并投资，方可参与金牌推荐人活动；</div>
+                <div class="new-rule-txt"><i class="new-rule-number rounded">4</i>本次金牌推荐人活动除赞分期系列标的（被邀请用户投资赞分期系列产品将不计入累计年化投资额）；</div>
+                <div class="new-rule-txt"><i class="new-rule-number rounded">5</i>在活动期间，推荐人所邀请的新用户产生的累计年化投资额排名前6位者（被邀请新用户累计年化投资额10W起方可进入排名），及其所邀请的新用户均可获得相应奖励；<br/>年化投资额计算公式=投资金额*投资期限/365天</div>
+                <div class="new-rule-txt"><i class="new-rule-number rounded">6</i>金牌推荐人排行榜的的前6位，相应推荐人名下所有在活动期间被邀请的投资用户将平分与该推荐人同等的现金奖励；<br/>举例：张先生获得金牌推荐人，获得现金奖励800元，活动期间张先生共邀请了5位新用户参与投资，那么这5位被邀请用户将平分另一份800元现金奖励：800/5=160元现金奖；</div>
+                <div class="new-rule-txt"><i class="new-rule-number rounded">7</i>活动期间，金牌推荐人排行榜如遇累计年化投资额相同，则以达到该金额的时间顺序为准计算排名；</div>
+                <div class="new-rule-txt"><i class="new-rule-number rounded">8</i>平台将在活动结束后的5个工作日内发放金牌推荐人排行榜的奖励现金，奖励将发放至每位用户的奖励金账户，您可以通过我的资产-我的奖励查看。</div>
+            </div>
+        </div>
+    </div>
+</div>
+#LoadGenJS("/resources/gen2.0/scripts/activity/2017/youfu/youfu")
+    <!--[if lte IE 8]>
+    <script src="$!env.get('gen.server.web')/resources/gen2.0/scripts/activity/2017/youfu/PIE.js" type="text/javascript" charset="utf-8"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        $(function() {
+            if(window.PIE) {
+                $('.rounded').each(function() {
+                    PIE.attach(this);
+                });
+            }
+            $('.new-rec-number > li:even').css('background', '#9cc9ff');
+            $('.new-rec-number > li:odd').css('background', '#add2ff');
+        });
+    </script>
+</body>
+</html>

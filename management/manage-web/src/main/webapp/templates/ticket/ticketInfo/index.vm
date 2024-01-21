@@ -1,0 +1,238 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/interestTicket/ticketInfo/index.htm')" method="post" id="myform" class="pageForm required-validate">
+    	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+    	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    	<input type="hidden" name="pageNum" value="$!pageNum" />
+    	<input type="hidden" id="queryFlag" name="queryFlag" value="QUERY"/>
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						用户id：<input id="userId" type="text" name="userId" value="$!userId" size="16"/>&nbsp;&nbsp;
+						手机号：<input id="mobile" type="text" name="mobile" value="$!mobile" size="16"/>&nbsp;&nbsp;
+						发放类型：
+						<select name="distributeType" >
+							<option value="" #if("$!distributeType"=="") selected #end>全部</option>
+							<option value="MANUAL" #if("$!distributeType"=="MANUAL") selected  #end>手动</option>
+							<option value="AUTO" #if("$!distributeType"=="AUTO") selected  #end>自动</option>
+						</select>
+						&nbsp;&nbsp;
+						加息券名称：<input id="serialName" type="text" name="serialName" value="$!serialName" size="26"/>&nbsp;&nbsp;
+						有效期： 
+					   	<input name="useValidTimeStart"  type="text"  dateFmt="yyyy-MM-dd HH:mm:ss" id="useValidTimeStart" class="date dateInitStart textInput readonly valid" readonly="true" size="15"  value="$!useValidTimeStart" /> 到
+					   	<input name="useValidTimeEnd"  type="text"  dateFmt="yyyy-MM-dd HH:mm:ss" id="useValidTimeEnd" class="date dateInitEnd textInput readonly valid" readonly="true" size="15"  value="$!useValidTimeEnd" />
+						&nbsp;&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td>
+					   	发放时间： 
+					   	<input name="distributeTimeStart"  type="text" dateFmt="yyyy-MM-dd HH:mm:ss" id="distributeTimeStart" class="date dateInitStart textInput readonly valid" readonly="true" size="15"  value="$!distributeTimeStart" /> 到
+					   	<input name="distributeTimeEnd"  type="text" dateFmt="yyyy-MM-dd HH:mm:ss" id="distributeTimeEnd" class="date dateInitEnd textInput readonly valid" readonly="true" size="15"  value="$!distributeTimeEnd" />
+						&nbsp;&nbsp;
+                     	 状态：
+						<select name="status" >
+							<option value="" #if("$!status"=="") selected #end>全部</option>
+							<option value="USED" #if("$!status"=="USED") selected  #end>已使用</option>
+							<option value="INIT" #if("$!status"=="INIT") selected  #end>未使用</option>
+							<option value="OVER" #if("$!status"=="OVER") selected  #end>已过期</option>
+						</select>&nbsp;&nbsp;
+						使用时间： 
+					   	<input name="useTimeStart"  type="text"  dateFmt="yyyy-MM-dd HH:mm:ss" id="useTimeStart" class="date dateInitStart textInput readonly valid" readonly="true" size="15"  value="$!useTimeStart" /> 到
+					   	<input name="useTimeEnd"  type="text"  dateFmt="yyyy-MM-dd HH:mm:ss" id="useTimeEnd" class="date dateInitEnd textInput readonly valid" readonly="true" size="15"  value="$!useTimeEnd" />
+						&nbsp;&nbsp;
+						加息收益发放时间： 
+					   	<input name="lastFinishInterestDateStart"  type="text"  dateFmt="yyyy-MM-dd HH:mm:ss" id="lastFinishInterestDateStart" class="date dateInitStart textInput readonly valid" readonly="true" size="15"  value="$!lastFinishInterestDateStart" /> 到
+					   	<input name="lastFinishInterestDateEnd"  type="text"  dateFmt="yyyy-MM-dd HH:mm:ss" id="lastFinishInterestDateEnd" class="date dateInitEnd textInput readonly valid" readonly="true" size="15"  value="$!lastFinishInterestDateEnd" />
+						&nbsp;&nbsp;
+					</td>
+				</tr>	
+				<tr>
+					<td>	
+						加息收益发放 状态：
+						<select name="distributeStatus" >
+							<option value="" #if("$!distributeStatus"=="") selected #end>全部</option>
+							<option value="5" #if("$!distributeStatus"=="5") selected  #end>已发放</option>
+							<option value="7" #if("$!distributeStatus"=="7") selected  #end>未发放</option>
+						</select>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<span style="margin-left:20px;">
+							<button  onclick="func()" type="button">查询</button> &nbsp;&nbsp;
+                        </span>
+					</td>
+				</tr>	
+			</table>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li>		
+				<span style="margin-left:10px;">
+    				<font color="red">加息收益：#if(!$!interestTotal)0.00 #else $!money.format($!interestTotal) #end 元</font>
+                </span>
+			</li>
+		</ul>
+	</div>
+	<table class="table" width="1686" layoutH="162">
+		<thead>
+			<tr>
+                <th width="4%">用户id</th>
+                <th width="5%">手机号</th>
+				<th width="5%">加息券批次号</th>
+				<th width="4%">发放类型</th>
+				<th width="5%">加息券名称</th>
+				<th width="15%">有效期</th>
+				<th width="4%">产品限制</th>
+				<th width="6%">期限限制（天）</th>
+				<th width="4%">使用条件</th>
+				<th width="4%">加息幅度</th>
+				<th width="7%">发放时间</th>
+				<th width="4%">状态</th>
+				<th width="7%">使用时间</th>
+				<th width="8%">订单编号</th>
+				<th width="4%">加息收益</th>
+				<th width="7%">加息收益发放时间</th>
+				<th width="7%">加息收益发放状态</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $interestTicketList)
+			<tr target="sid_user" rel="1">
+				<td>$!grid.userId</td>
+				<td>
+				#if("$!grid.mobile" != "" && $!grid.mobile.length() == 11) 
+					$!grid.mobile.substring(0,3)****$!grid.mobile.substring(7,11)
+				#else 
+					 $!grid.mobile
+				#end
+				</td>
+				<td>$!grid.serialNo</td>
+				<td>
+					#if($!grid.distributeType == "AUTO")
+						自动
+					#elseif($!grid.distributeType == "MANUAL")
+						手动
+					#end	
+				</td>
+				<td>$!grid.serialName</td>	
+				<td>$!date.format($!grid.startUseValidTime) 至 $!date.format($!grid.endUseValidTime)</td>
+				<td>
+					#foreach ($element in $!grid.productLimit.split(","))
+						#if($element == 'BIGANGWAN_SERIAL')
+                            港湾系列
+						#elseif($element == 'YONGJIN_SERIAL')
+                            涌金系列
+						#elseif($element == 'KUAHONG_SERIAL')
+                            跨虹系列
+						#elseif($element == 'BAOXIN_SERIAL')
+                            保信系列
+						#else
+                            &nbsp
+						#end
+						#if($velocityCount != $!grid.productLimit.split(",").size())
+                            ,
+						#end
+					#end
+				</td>
+				<td>$!grid.termLimit</td>	
+				<td>满$!number.format("0", $!grid.investLimit)元启用</td>
+				<td>$!number.format("0.00", $!grid.ticketApr)%</td>
+				<td>$!date.format($!grid.distributeTime)</td>	
+				<td>
+					#if($!grid.status == "INIT")
+						未使用
+					#elseif($!grid.status == "USED")
+						已使用
+					#elseif($!grid.status == "OVER")
+						已过期
+					#end	
+				</td>
+				<td>$!date.format($!grid.useTime)</td>
+				<td>$!grid.orderNo</td>
+				<td>$!grid.interestAmount</td>
+				<td>$!date.format($!grid.lastFinishInterestDate)</td>
+				<td>
+					#if($!grid.distributeStatus == "5")
+						已发放
+					#else
+						未发放
+					#end	
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+function func(){
+	var startTime = $("#useValidTimeStart").val();
+	var endTime = $("#useValidTimeEnd").val();
+
+	var distributeTimeStart = $("#distributeTimeStart").val();
+	var distributeTimeEnd = $("#distributeTimeEnd").val();
+	var useTimeStart = $("#useTimeStart").val();
+	var useTimeEnd = $("#useTimeEnd").val();
+	var lastFinishInterestDateStart = $("#lastFinishInterestDateStart").val();
+	var lastFinishInterestDateEnd = $("#lastFinishInterestDateEnd").val();
+	
+	if(startTime != "" && endTime != ""){
+		var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(startTime.replace(/-/g,"/"));
+		if(result < 0){
+			alertMsg.info("有效期开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	if(distributeTimeStart != "" && distributeTimeEnd != ""){
+		var result = Date.parse(distributeTimeEnd.replace(/-/g,"/"))- Date.parse(distributeTimeStart.replace(/-/g,"/"));
+		if(result < 0){
+			alertMsg.info("发放开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	if(useTimeStart != "" && useTimeEnd != ""){
+		var result = Date.parse(useTimeEnd.replace(/-/g,"/"))- Date.parse(useTimeStart.replace(/-/g,"/"));
+		if(result < 0){
+			alertMsg.info("使用开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	if(lastFinishInterestDateStart != "" && lastFinishInterestDateEnd != ""){
+		var result = Date.parse(lastFinishInterestDateEnd.replace(/-/g,"/"))- Date.parse(lastFinishInterestDateStart.replace(/-/g,"/"));
+		if(result < 0){
+			alertMsg.info("加息收益发放开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/interestTicket/ticketInfo/index.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+</script>

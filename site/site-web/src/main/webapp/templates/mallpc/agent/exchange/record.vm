@@ -1,0 +1,65 @@
+#Html("begin")
+#GenHead("begin")
+#Title("币港湾官网_国资系互联网金融服务平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#LoadGenCSS("/resources/mallpc/styles/agent/common/default")
+#LoadGenCSS("/resources/mallpc/styles/agent/exchange/record")
+#Mall178Header("integral")
+
+<body class="body">
+<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')" />
+<input type="hidden" value="$!totalPage" id="totalPage"/>
+<input type="hidden" value="$!agentViewFlag" id="agentViewFlag"/>
+	<div class="recordMain">
+		<div class="recordMainBanner">
+			<div class="recordTxt">积分</div>			
+			#if($!recordList)
+			<div class="recordNum">$!money.format($!points).replace(".00","")</div>
+			#else
+			<div class="recordNum">--</div>
+			#end
+			<div class="recordBtn"></div>
+		</div>		
+		#if($!recordList)
+		<div class="recordHave">
+			<div class="recordHaveTitle">
+				<div class="recordHaveTitleList">积分场景</div>
+				<div class="recordHaveTitleList">时间</div>
+				<div class="recordHaveTitleList">积分</div>
+			</div>
+			<ul class="recordHaveTable">
+				#foreach($grid in $!recordList)
+					#if($!grid.points > 0)
+    				<li class="recordHaveTableList">
+    					<div class="recordHaveTableListScene">$!grid.transName</div>
+    					<div class="recordHaveTableListTime">$!date.formatDateTime($!grid.transTime,'yyyy-MM-dd HH:mm')</div>
+    					<div class="recordHaveTableListRecord">+$!money.format($!grid.points).replace(".00","")</div>
+    				</li>
+					#else
+					<li class="recordHaveTableList">
+    					<div class="recordHaveTableListScene">$!grid.transName</div>
+    					<div class="recordHaveTableListTime">$!date.formatDateTime($!grid.transTime,'yyyy-MM-dd HH:mm')</div>
+    					<div class="recordHaveTableListRecordGreen">$!money.format($!grid.points).replace(".00","")</div>
+    				</li>
+					#end
+				#end
+			</ul>
+			#if($!totalPage > 1)
+			<div id="pagination_3"></div>
+			#end
+		</div>
+		#else
+		<div class="recordNone">
+			<img class="recordNoneImg" src="$!env.get('gen.server.web')/resources/mallpc/images/exchange/record03.png"/>
+			<div class="recordNoneTxt">暂无积分记录</div>
+		</div>
+		#end
+	</div>
+	<!--footer -s-->
+	#Gen178Footer()
+	<!--footer -e-->
+#LoadGenJS("/resources/mallpc/scripts/agent/common/jquery-1.11.1.min")
+#LoadGenJS("/resources/mallpc/scripts/agent/common/common")
+#LoadGenJS("/resources/mallpc/scripts/agent/exchange/page")
+#LoadGenJS("/resources/mallpc/scripts/agent/exchange/record")
+</body>
+#Html("end")

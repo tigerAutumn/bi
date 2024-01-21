@@ -1,0 +1,112 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/pinting/account/index.htm')" method="post" id="myform" class="pageForm required-validate">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						时间段： <input name="startDate"  type="text" id="startDate" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!startDate)" /> 到 <input name="endDate"  type="text" id="endDate" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!endDate)" />
+					</td>	
+                </tr>
+				<tr>
+					<td>
+						操作类别：
+						<select name="transType" >
+							<option value="001" #if("$!transType"=="001") selected #end>用户提现转出</option>
+							<option value="002" #if("$!transType"=="002") selected  #end>网新提现</option>
+							<option value="003" #if("$!transType"=="003") selected  #end>营销费转入</option>
+							<option value="004" #if("$!transType"=="004") selected #end>服务费转入</option>
+                            </option>
+        				</select>
+						<span style="margin-left:130px;">
+							网新账户当前余额：$!money.format($!Balance) 元
+                        </span>
+						<span style="margin-left:130px;">
+							<button  onclick="func()" type="button">查询</button>
+                        </span>
+					</td>
+					</tr>
+			</table>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="148">
+		<thead>
+			<tr>
+				<th width="20%">交易时间</th>
+				<th width="20%">付款人账号</th>
+				<th width="20%">收款人账号</th>
+				<th width="20%">交易金额</th>
+				<th width="20%">交易类型</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $List)
+			<tr target="sid_user" rel="1">
+				<td>$!date.format($!grid.transTime)</td>
+				<td>$!grid.payAcNo</td>
+                <td>$!grid.payeeAcNo</td>
+				<td>$!money.format($!grid.amount)</td>
+			
+				<td>$!message.get("TRANS_TYPE_$!transType")</td>
+			
+				
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+<script>
+
+function func(){
+	var beginTime2 = $("#startDate").val();
+	var overTime2 = $("#endDate").val();
+
+
+	if(beginTime2 == "" ){
+		alert("请输入开始时间！");
+		return false;
+	}
+	
+	if(overTime2 == "" ){
+		alert("请输入结束时间！");
+		return false;
+	}
+	
+	if(beginTime2 != "" && overTime2 != ""){
+		var result = Date.parse(overTime2.replace(/-/g,"/"))- Date.parse(beginTime2.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	
+	$("#myform").submit();
+}
+
+</script>

@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsAdjustJnlMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsAdjustJnl" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="trans_jnl_id" property="transJnlId" jdbcType="INTEGER" />
+    <result column="check_jnl_id" property="checkJnlId" jdbcType="INTEGER" />
+    <result column="sys_status" property="sysStatus" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="check_file_status" property="checkFileStatus" jdbcType="INTEGER" />
+    <result column="check_file_id" property="checkFileId" jdbcType="INTEGER" />
+    <result column="is_adjust" property="isAdjust" jdbcType="INTEGER" />
+    <result column="adjust_user_id" property="adjustUserId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="adjust_time" property="adjustTime" jdbcType="TIMESTAMP" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, trans_jnl_id, check_jnl_id, sys_status, user_id, check_file_status, check_file_id, 
+    is_adjust, adjust_user_id, create_time, adjust_time, note
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsAdjustJnlExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_adjust_jnl
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_adjust_jnl
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_adjust_jnl
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsAdjustJnlExample" >
+    delete from bs_adjust_jnl
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsAdjustJnl" >
+    insert into bs_adjust_jnl (id, trans_jnl_id, check_jnl_id, 
+      sys_status, user_id, check_file_status, 
+      check_file_id, is_adjust, adjust_user_id, 
+      create_time, adjust_time, note
+      )
+    values (#{id,jdbcType=INTEGER}, #{transJnlId,jdbcType=INTEGER}, #{checkJnlId,jdbcType=INTEGER}, 
+      #{sysStatus,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{checkFileStatus,jdbcType=INTEGER}, 
+      #{checkFileId,jdbcType=INTEGER}, #{isAdjust,jdbcType=INTEGER}, #{adjustUserId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{adjustTime,jdbcType=TIMESTAMP}, #{note,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsAdjustJnl" >
+    insert into bs_adjust_jnl
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="transJnlId != null" >
+        trans_jnl_id,
+      </if>
+      <if test="checkJnlId != null" >
+        check_jnl_id,
+      </if>
+      <if test="sysStatus != null" >
+        sys_status,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="checkFileStatus != null" >
+        check_file_status,
+      </if>
+      <if test="checkFileId != null" >
+        check_file_id,
+      </if>
+      <if test="isAdjust != null" >
+        is_adjust,
+      </if>
+      <if test="adjustUserId != null" >
+        adjust_user_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="adjustTime != null" >
+        adjust_time,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="transJnlId != null" >
+        #{transJnlId,jdbcType=INTEGER},
+      </if>
+      <if test="checkJnlId != null" >
+        #{checkJnlId,jdbcType=INTEGER},
+      </if>
+      <if test="sysStatus != null" >
+        #{sysStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="checkFileStatus != null" >
+        #{checkFileStatus,jdbcType=INTEGER},
+      </if>
+      <if test="checkFileId != null" >
+        #{checkFileId,jdbcType=INTEGER},
+      </if>
+      <if test="isAdjust != null" >
+        #{isAdjust,jdbcType=INTEGER},
+      </if>
+      <if test="adjustUserId != null" >
+        #{adjustUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adjustTime != null" >
+        #{adjustTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsAdjustJnlExample" resultType="java.lang.Integer" >
+    select count(*) from bs_adjust_jnl
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_adjust_jnl
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.transJnlId != null" >
+        trans_jnl_id = #{record.transJnlId,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkJnlId != null" >
+        check_jnl_id = #{record.checkJnlId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sysStatus != null" >
+        sys_status = #{record.sysStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkFileStatus != null" >
+        check_file_status = #{record.checkFileStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkFileId != null" >
+        check_file_id = #{record.checkFileId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isAdjust != null" >
+        is_adjust = #{record.isAdjust,jdbcType=INTEGER},
+      </if>
+      <if test="record.adjustUserId != null" >
+        adjust_user_id = #{record.adjustUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.adjustTime != null" >
+        adjust_time = #{record.adjustTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_adjust_jnl
+    set id = #{record.id,jdbcType=INTEGER},
+      trans_jnl_id = #{record.transJnlId,jdbcType=INTEGER},
+      check_jnl_id = #{record.checkJnlId,jdbcType=INTEGER},
+      sys_status = #{record.sysStatus,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      check_file_status = #{record.checkFileStatus,jdbcType=INTEGER},
+      check_file_id = #{record.checkFileId,jdbcType=INTEGER},
+      is_adjust = #{record.isAdjust,jdbcType=INTEGER},
+      adjust_user_id = #{record.adjustUserId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      adjust_time = #{record.adjustTime,jdbcType=TIMESTAMP},
+      note = #{record.note,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsAdjustJnl" >
+    update bs_adjust_jnl
+    <set >
+      <if test="transJnlId != null" >
+        trans_jnl_id = #{transJnlId,jdbcType=INTEGER},
+      </if>
+      <if test="checkJnlId != null" >
+        check_jnl_id = #{checkJnlId,jdbcType=INTEGER},
+      </if>
+      <if test="sysStatus != null" >
+        sys_status = #{sysStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="checkFileStatus != null" >
+        check_file_status = #{checkFileStatus,jdbcType=INTEGER},
+      </if>
+      <if test="checkFileId != null" >
+        check_file_id = #{checkFileId,jdbcType=INTEGER},
+      </if>
+      <if test="isAdjust != null" >
+        is_adjust = #{isAdjust,jdbcType=INTEGER},
+      </if>
+      <if test="adjustUserId != null" >
+        adjust_user_id = #{adjustUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adjustTime != null" >
+        adjust_time = #{adjustTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsAdjustJnl" >
+    update bs_adjust_jnl
+    set trans_jnl_id = #{transJnlId,jdbcType=INTEGER},
+      check_jnl_id = #{checkJnlId,jdbcType=INTEGER},
+      sys_status = #{sysStatus,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      check_file_status = #{checkFileStatus,jdbcType=INTEGER},
+      check_file_id = #{checkFileId,jdbcType=INTEGER},
+      is_adjust = #{isAdjust,jdbcType=INTEGER},
+      adjust_user_id = #{adjustUserId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      adjust_time = #{adjustTime,jdbcType=TIMESTAMP},
+      note = #{note,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

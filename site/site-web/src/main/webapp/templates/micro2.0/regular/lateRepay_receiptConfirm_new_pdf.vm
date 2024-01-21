@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+		<center><h4>确&nbsp;&nbsp;认&nbsp;&nbsp;函&nbsp;&nbsp;（服务费）</h4></center>	
+    <br/><br/>
+    <span >致：鑫诚达资产管理(北京)有限公司</span>
+    <br/>
+    <span>
+      <br/><br/>
+      鉴于，  出借人   在杭州币港湾科技有限公司（以下简称“我司”）提供的信息中介服务下，向达飞云贷科技（北京）有限公司（以下简称“云贷公司”）推荐的借款人进行了资金出借并签署了《借款协议》及其他一系列与借款有关的协议（以下统称“借款协议”）。
+      <br/><br/>
+    根据我司与贵司于2017年9月20日签署的《担保函》约定，贵司应对云贷公司推荐的借款人逾期未偿还的借款债务（包括借款本金、利息等）承担连带责任担保。
+   	  <br/><br/>	
+   	  现本公司确认：贵司已经根据贵我双方约定，对附件所列的各借款人应偿还的借款债务分别履行了担保责任，出借人已收到贵司为各借款人向出借人代偿的款项（详见附件一担保还款支付列表）。
+      <br/><br/>
+      
+      附件一：担保还款支付列表
+      <br/><br/>
+      <br/>
+      <br/><span >   杭州币港湾科技有限公司   （签章）</span>
+      <br/>
+      <br/>
+      <br/><span >$!createTime</span>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+    </span>
+    <br/><br/>  
+      
+    <span >附件一：</span>
+    <br/><br/>
+      <br/><br/>
+      <table border="1" cellspacing="0" cellpadding="0" width="100%">
+          <tr>
+              <td colspan="8" style="text-align:center;">担保还款支付列表</td>
+          </tr>
+          <tr>
+              <td>序号</td>
+              <td>借款人姓名及身份证号</td>
+              <td>《借款协议》编号</td>
+              <td>借款金额及利率</td>
+              <td>借款期限</td>
+              <td>支付价格 （人民币：元）</td>
+              <td>单笔担保债权服务费</td>
+              <td>支付时间</td>
+          </tr>
+          #foreach($data in $!dataGrid)
+              <tr>
+                  #set($a=$!velocityCount)
+                  <td>$!a</td>
+                  <td>$!data.loanUserName $!data.loanIdCard</td>
+                  <td>$!data.loanAgreementNumber</td>
+                  <td>$!money.format($!data.approveAmount) 元 $!money.format($!data.agreementRate) %</td>
+                  <td>
+                      #if($!partnerEnum == "YUN_DAI_SELF")
+                          $!data.period 天
+                      #else
+                          $!data.sevenPeriod 期
+                      #end
+                  </td>
+                  <td>$!money.format($!data.transferCreditorAmount)</td>
+                  <td>$!money.format($!data.debtServiceFee)</td>
+                  <td>$!data.lateRepayDate</td>
+              </tr>
+          #end
+      </table>
+    <br/><br/>
+    
+</body>
+</html>

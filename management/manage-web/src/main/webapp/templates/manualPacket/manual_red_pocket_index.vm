@@ -1,0 +1,137 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="red_packet_form" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/manualPacket/userSearch.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!req.pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+					最后购买时间
+						<input name="sLastBuyTime" maxdate="{%y}-%M-{%d}"   type="text"  id="sLastBuyTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.sLastBuyTime)" size="10"/>
+						-<input name="eLastBuyTime" maxdate="{%y}-%M-{%d}"   type="text"  id="eLastBuyTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.eLastBuyTime)" size="10"/>
+					
+					&nbsp;&nbsp;首次购买时间
+						<input name="sFirstBuyTime" maxdate="{%y}-%M-{%d}"   type="text"  id="sFirstBuyTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.sFirstBuyTime)" size="10"/>
+						-<input name="eFirstBuyTime" maxdate="{%y}-%M-{%d}"   type="text"  id="eFirstBuyTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.eFirstBuyTime)" size="10"/>
+					</td >
+				</tr>
+				<tr>
+					<td >累计推荐奖励
+						<input name="sTotalBonus" type="text"  id="sTotalBonus" value="$!req.sTotalBonus" size="10"  onkeyup="value=value.replace(/\.\d{2,}$/,value.substr(value.indexOf('.'),3))" maxlength="10"/>
+						-<input name="eTotalBonus" type="text"  id="eTotalBonus" value="$!req.eTotalBonus" size="10" onkeyup="value=value.replace(/\.\d{2,}$/,value.substr(value.indexOf('.'),3))" maxlength="10"/>
+					
+					&nbsp;&nbsp;在投金额
+						<input name="sInvestMoney" type="text"  id="sInvestMoney" value="$!req.sInvestMoney" size="10" class="num" maxlength="10"/>
+						-<input name="eInvestMoney" type="text"  id="eInvestMoney" value="$!req.eInvestMoney" size="10" class="num" maxlength="10"/>
+					</td >
+					
+				</tr>
+				<tr>
+					<td >总购买额
+						<input name="sInvestTotalMoney" type="text"  id="sInvestTotalMoney" value="$!req.sInvestTotalMoney" size="10" class="num" maxlength="10"/>
+						-<input name="eInvestTotalMoney" type="text"  id="eInvestTotalMoney" value="$!req.eInvestTotalMoney" size="10" class="num" maxlength="10"/>
+					
+					&nbsp;&nbsp;注册时间
+						<input name="sRegistTime" maxdate="{%y}-%M-{%d}"   type="text"  id="sRegistTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.sRegistTime)" size="10"/>
+						-<input name="eRegistTime" maxdate="{%y}-%M-{%d}"   type="text"  id="eRegistTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.eRegistTime)" size="10"/>
+					
+						<a class="add" href="$env.getWebURL('/manualPacket/all_agent.htm')" target="dialog" mask="true" rel="createBack" height="390" width="600"><span><button type="button">选择渠道</button></span></a>
+						<input type="hidden" id="agentTotal" name="agentTotal" value="$!agentTotal"/>
+						<input type="hidden" id="agentIds" name="agentIds" value="$!req.agentIds"/>
+						<input type="hidden" id="nonAgentId" name="nonAgentId" value="$!req.nonAgentId"/>
+						<button type="button" onclick="formSubmit()">查询</button>
+						<button type="button" onclick="openRedPacketDialog()">发红包</button>
+					</td>
+				</tr>
+				
+			</table>
+	
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1082" layoutH="140">
+		<thead>
+			<tr>
+				<th width="43">序号</th>
+				##<th width="73">手机号</th>
+				<th width="30">持仓金额</th>
+				<th width="73">总购买额</th>
+				<th width="40">累计推荐奖励</th>
+				<th width="72">注册时间</th>
+				<th width="72">首次购买时间</th>
+				<th width="72">最后购买时间</th>
+				<th width="62">渠道</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($operate in $operateList)
+			<tr target="sid_user" rel="1">
+				<td>$!operate.userId</td>
+				##<td>#if("$!operate.mobile" != "") $!operate.mobile#end</td>
+				<td>$!money.format($!operate.investMoney)</td>
+				<td>$!money.format($!operate.investTotalMoney)</td>
+				<td>$!money.format($!operate.totalBonus)</td>
+				<td>$!date.format($!operate.registerTime)</td>
+				<td>$!date.format($!operate.firstBuyTime)</td>
+				<td>$!date.format($!operate.lastBuyTime)</td>
+				<td>#if("$!operate.agentName" != "") $!operate.agentName#end</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+
+	</div>
+</div>
+#LoadJS("/resources/js/global_validate")
+<script>
+function openRedPacketDialog() {
+	var params = "sLastBuyTime=" + $('#sLastBuyTime').val() + "&eLastBuyTime=" + $('#eLastBuyTime').val() +
+	           "&sFirstBuyTime=" + $('#sFirstBuyTime').val() + "&eFirstBuyTime=" + $('#eFirstBuyTime').val() + "&sTotalBonus=" + $('#sTotalBonus').val() + "&eTotalBonus=" + $('#eTotalBonus').val() + 
+			   "&sInvestMoney=" + $('#sInvestMoney').val() + "&eInvestMoney=" + $('#eInvestMoney').val() + "&sInvestTotalMoney=" + $('#sInvestTotalMoney').val() + "&eInvestTotalMoney=" + $('#eInvestTotalMoney').val() + 
+			   "&sRegistTime=" + $('#sRegistTime').val() + "&eRegistTime=" + $('#eRegistTime').val() + "&agentIds=" + $('#agentIds').val() + "&nonAgentId=" + $('#nonAgentId').val();
+
+	var options = {"mask":true,"close":"function","height":490, "width":677};
+	$.pdialog.open($('#APP_ROOT_PATH').val()+"/manualPacket/redPacketSend.htm?"+params, "manual_red_pocket", "发红包", options);
+}
+
+function formSubmit() {
+	var sTotalBonus = $.trim($('#sTotalBonus').val()),
+		eTotalBonus = $.trim($('#eTotalBonus').val());
+		
+		if(sTotalBonus != '') {
+			if(!BGW.check.isDecimal(sTotalBonus)) {
+				alertMsg.warn("累计推荐奖励起始值必须是浮点型！");
+				return false;
+			}
+		}
+		if(eTotalBonus != '') {
+			if(!BGW.check.isDecimal(eTotalBonus)) {
+				alertMsg.warn("累计推荐奖励结束值必须是浮点型！");
+				return false;
+			}
+		}
+		
+	$("#red_packet_form").submit();
+}
+</script>

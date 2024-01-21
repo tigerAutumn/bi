@@ -1,0 +1,890 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.LnCreditTransferMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.LnCreditTransfer" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="out_loan_relation_id" property="outLoanRelationId" jdbcType="INTEGER" />
+    <result column="in_loan_relation_id" property="inLoanRelationId" jdbcType="INTEGER" />
+    <result column="out_user_id" property="outUserId" jdbcType="INTEGER" />
+    <result column="in_user_id" property="inUserId" jdbcType="INTEGER" />
+    <result column="out_sub_account_id" property="outSubAccountId" jdbcType="INTEGER" />
+    <result column="in_sub_account_id" property="inSubAccountId" jdbcType="INTEGER" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="in_amount" property="inAmount" jdbcType="DOUBLE" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="discount_amount" property="discountAmount" jdbcType="DOUBLE" />
+  </resultMap>
+
+  <resultMap id="BaseResultMapVO" type="com.pinting.business.model.vo.BsLoanRelationTransferVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="out_loan_relation_id" property="outLoanRelationId" jdbcType="INTEGER" />
+    <result column="in_loan_relation_id" property="inLoanRelationId" jdbcType="INTEGER" />
+    <result column="out_user_id" property="outUserId" jdbcType="INTEGER" />
+    <result column="in_user_id" property="inUserId" jdbcType="INTEGER" />
+    <result column="out_sub_account_id" property="outSubAccountId" jdbcType="INTEGER" />
+    <result column="in_sub_account_id" property="inSubAccountId" jdbcType="INTEGER" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="in_amount" property="inAmount" jdbcType="DOUBLE" />
+    <result column="out_user_name" property="outUserName" jdbcType="VARCHAR" />
+    <result column="in_user_name" property="inUserName" jdbcType="VARCHAR" />
+    <result column="out_user_mobile" property="outUserMobile" jdbcType="VARCHAR" />
+    <result column="in_user_mobile" property="inUserMobile" jdbcType="VARCHAR" />
+    <result column="out_user_idCardNo" property="outUserIdCardNo" jdbcType="VARCHAR" />
+    <result column="in_user_idCardNo" property="inUserIdCardNo" jdbcType="VARCHAR" />
+    <result column="borrow_user_name" property="borrowUserName" jdbcType="VARCHAR" />
+    <result column="borrow_user_idCardNo" property="borrowUserIdCardNo" jdbcType="VARCHAR" />
+    <result column="first_repay_date" property="firstRepayDate" jdbcType="DATE" />
+	<result column="repay_amount4_month" property="repayAmount4Month" jdbcType="DOUBLE" />
+	<result column="repay_amount4_all" property="repayAmount4All" jdbcType="DOUBLE" />
+	<result column="term" property="term" jdbcType="INTEGER" />
+	<result column="first_term" property="firstTerm" jdbcType="INTEGER" />
+   	<result column="transfer_time" property="transferTime" jdbcType="TIMESTAMP" />
+   	<result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="approve_amount" property="approveAmount" jdbcType="DOUBLE" />
+    <result column="partner_business_flag" property="partnerBusinessFlag" jdbcType="VARCHAR" />
+  </resultMap>
+
+    <resultMap id="BaseResultMapVONew" type="com.pinting.business.model.vo.BsLoanRelationTransferVO" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="out_loan_relation_id" property="outLoanRelationId" jdbcType="INTEGER" />
+        <result column="in_loan_relation_id" property="inLoanRelationId" jdbcType="INTEGER" />
+        <result column="out_user_id" property="outUserId" jdbcType="INTEGER" />
+        <result column="in_user_id" property="inUserId" jdbcType="INTEGER" />
+        <result column="out_sub_account_id" property="outSubAccountId" jdbcType="INTEGER" />
+        <result column="in_sub_account_id" property="inSubAccountId" jdbcType="INTEGER" />
+        <result column="amount" property="amount" jdbcType="DOUBLE" />
+        <result column="in_amount" property="inAmount" jdbcType="DOUBLE" />
+        <result column="out_user_name" property="outUserName" jdbcType="VARCHAR" />
+        <result column="in_user_name" property="inUserName" jdbcType="VARCHAR" />
+        <result column="out_user_mobile" property="outUserMobile" jdbcType="VARCHAR" />
+        <result column="in_user_mobile" property="inUserMobile" jdbcType="VARCHAR" />
+        <result column="out_user_idCardNo" property="outUserIdCardNo" jdbcType="VARCHAR" />
+        <result column="in_user_idCardNo" property="inUserIdCardNo" jdbcType="VARCHAR" />
+        <result column="borrow_user_name" property="borrowUserName" jdbcType="VARCHAR" />
+        <result column="borrow_user_idCardNo" property="borrowUserIdCardNo" jdbcType="VARCHAR" />
+        <result column="first_repay_date" property="firstRepayDate" jdbcType="DATE" />
+        <result column="repay_amount4_month" property="repayAmount4Month" jdbcType="DOUBLE" />
+        <result column="repay_amount4_all" property="repayAmount4All" jdbcType="DOUBLE" />
+        <result column="term" property="term" jdbcType="INTEGER" />
+        <result column="first_term" property="firstTerm" jdbcType="INTEGER" />
+        <result column="transfer_time" property="transferTime" jdbcType="TIMESTAMP" />
+        <result column="product_name" property="productName" jdbcType="VARCHAR" />
+        <result column="discount_amount" property="discountAmount" jdbcType="DOUBLE" />
+        <result column="product_rate" property="productRate" jdbcType="DOUBLE"/>
+        <result column="interest_begin_date" property="interestBeginDate" jdbcType="DATE" />
+    	<result column="partner_business_flag" property="partnerBusinessFlag" jdbcType="VARCHAR" />
+    </resultMap>
+  
+  <resultMap id="BaseResultMapManageVO" type="com.pinting.business.model.vo.LnCreditTransferMVO" >    
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="rowno" property="rowno" jdbcType="INTEGER"/>
+    <result column="out_loan_relation_id" property="outLoanRelationId" jdbcType="INTEGER" />
+    <result column="in_loan_relation_id" property="inLoanRelationId" jdbcType="INTEGER" />
+    <result column="out_user_id" property="outUserId" jdbcType="INTEGER" />
+    <result column="in_user_id" property="inUserId" jdbcType="INTEGER" />
+    <result column="out_sub_account_id" property="outSubAccountId" jdbcType="INTEGER" />
+    <result column="in_sub_account_id" property="inSubAccountId" jdbcType="INTEGER" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="in_amount" property="inAmount" jdbcType="DOUBLE" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="out_user_name" property="outUserName" jdbcType="VARCHAR" />
+    <result column="in_user_name" property="inUserName" jdbcType="VARCHAR" />
+    <result column="out_user_mobile" property="outUserMobile" jdbcType="VARCHAR" />
+    <result column="in_user_mobile" property="inUserMobile" jdbcType="VARCHAR" />
+    <result column="total_amount" property="totalAmount" jdbcType="DOUBLE" />
+    <result column="service_amount" property="serviceAmount" jdbcType="DOUBLE" />
+    <result column="out_amount" property="outAmount" jdbcType="DOUBLE" />
+    <result column="partner_code" property="partnerCode" jdbcType="VARCHAR" />
+    <result column="partner_business_flag" property="partnerBusinessFlag" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, out_loan_relation_id, in_loan_relation_id, out_user_id, in_user_id, out_sub_account_id, 
+    in_sub_account_id, amount, in_amount, create_time, update_time,discount_amount
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.LnCreditTransferExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ln_credit_transfer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ln_credit_transfer
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ln_credit_transfer
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.LnCreditTransferExample" >
+    delete from ln_credit_transfer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.LnCreditTransfer" >
+    insert into ln_credit_transfer (id, out_loan_relation_id, in_loan_relation_id, 
+      out_user_id, in_user_id, out_sub_account_id, 
+      in_sub_account_id, amount, in_amount, 
+      create_time, update_time,discount_amount)
+    values (#{id,jdbcType=INTEGER}, #{outLoanRelationId,jdbcType=INTEGER}, #{inLoanRelationId,jdbcType=INTEGER}, 
+      #{outUserId,jdbcType=INTEGER}, #{inUserId,jdbcType=INTEGER}, #{outSubAccountId,jdbcType=INTEGER}, 
+      #{inSubAccountId,jdbcType=INTEGER}, #{amount,jdbcType=DOUBLE}, #{inAmount,jdbcType=DOUBLE}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},#{discountAmount,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.LnCreditTransfer" >
+    insert into ln_credit_transfer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="outLoanRelationId != null" >
+        out_loan_relation_id,
+      </if>
+      <if test="inLoanRelationId != null" >
+        in_loan_relation_id,
+      </if>
+      <if test="outUserId != null" >
+        out_user_id,
+      </if>
+      <if test="inUserId != null" >
+        in_user_id,
+      </if>
+      <if test="outSubAccountId != null" >
+        out_sub_account_id,
+      </if>
+      <if test="inSubAccountId != null" >
+        in_sub_account_id,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="inAmount != null" >
+        in_amount,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="discountAmount != null" >
+          discount_amount,
+      </if>
+        <if test="updateTime != null" >
+            update_time,
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="outLoanRelationId != null" >
+        #{outLoanRelationId,jdbcType=INTEGER},
+      </if>
+      <if test="inLoanRelationId != null" >
+        #{inLoanRelationId,jdbcType=INTEGER},
+      </if>
+      <if test="outUserId != null" >
+        #{outUserId,jdbcType=INTEGER},
+      </if>
+      <if test="inUserId != null" >
+        #{inUserId,jdbcType=INTEGER},
+      </if>
+      <if test="outSubAccountId != null" >
+        #{outSubAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="inSubAccountId != null" >
+        #{inSubAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="inAmount != null" >
+        #{inAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+        <if test="discountAmount != null" >
+            #{discountAmount,jdbcType=DOUBLE},
+        </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.LnCreditTransferExample" resultType="java.lang.Integer" >
+    select count(*) from ln_credit_transfer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ln_credit_transfer
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.outLoanRelationId != null" >
+        out_loan_relation_id = #{record.outLoanRelationId,jdbcType=INTEGER},
+      </if>
+      <if test="record.inLoanRelationId != null" >
+        in_loan_relation_id = #{record.inLoanRelationId,jdbcType=INTEGER},
+      </if>
+      <if test="record.outUserId != null" >
+        out_user_id = #{record.outUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.inUserId != null" >
+        in_user_id = #{record.inUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.outSubAccountId != null" >
+        out_sub_account_id = #{record.outSubAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="record.inSubAccountId != null" >
+        in_sub_account_id = #{record.inSubAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.inAmount != null" >
+        in_amount = #{record.inAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+        <if test="record.discountAmount != null" >
+            discount_amount= #{record.discountAmount,jdbcType=DOUBLE},
+        </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ln_credit_transfer
+    set id = #{record.id,jdbcType=INTEGER},
+      out_loan_relation_id = #{record.outLoanRelationId,jdbcType=INTEGER},
+      in_loan_relation_id = #{record.inLoanRelationId,jdbcType=INTEGER},
+      out_user_id = #{record.outUserId,jdbcType=INTEGER},
+      in_user_id = #{record.inUserId,jdbcType=INTEGER},
+      out_sub_account_id = #{record.outSubAccountId,jdbcType=INTEGER},
+      in_sub_account_id = #{record.inSubAccountId,jdbcType=INTEGER},
+      amount = #{record.amount,jdbcType=DOUBLE},
+      in_amount = #{record.inAmount,jdbcType=DOUBLE},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      discount_amount= #{record.discountAmount,jdbcType=DOUBLE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.LnCreditTransfer" >
+    update ln_credit_transfer
+    <set >
+      <if test="outLoanRelationId != null" >
+        out_loan_relation_id = #{outLoanRelationId,jdbcType=INTEGER},
+      </if>
+      <if test="inLoanRelationId != null" >
+        in_loan_relation_id = #{inLoanRelationId,jdbcType=INTEGER},
+      </if>
+      <if test="outUserId != null" >
+        out_user_id = #{outUserId,jdbcType=INTEGER},
+      </if>
+      <if test="inUserId != null" >
+        in_user_id = #{inUserId,jdbcType=INTEGER},
+      </if>
+      <if test="outSubAccountId != null" >
+        out_sub_account_id = #{outSubAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="inSubAccountId != null" >
+        in_sub_account_id = #{inSubAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="inAmount != null" >
+        in_amount = #{inAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+        <if test="discountAmount != null" >
+            discount_amount= #{discountAmount,jdbcType=DOUBLE},
+        </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.LnCreditTransfer" >
+    update ln_credit_transfer
+    set out_loan_relation_id = #{outLoanRelationId,jdbcType=INTEGER},
+      in_loan_relation_id = #{inLoanRelationId,jdbcType=INTEGER},
+      out_user_id = #{outUserId,jdbcType=INTEGER},
+      in_user_id = #{inUserId,jdbcType=INTEGER},
+      out_sub_account_id = #{outSubAccountId,jdbcType=INTEGER},
+      in_sub_account_id = #{inSubAccountId,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DOUBLE},
+      in_amount = #{inAmount,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      discount_amount= #{discountAmount,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="selectVOByLoanRelationId" resultMap="BaseResultMapVO">
+        select  a.id, a.out_loan_relation_id, a.in_loan_relation_id, a.out_user_id, a.in_user_id, a.out_sub_account_id,
+        a.in_sub_account_id, a.amount, a.in_amount, a.create_time transfer_time,
+        uout.user_name out_user_name,uin.user_name in_user_name,uout.mobile out_user_mobile,
+        uin.mobile in_user_mobile,uout.id_card out_user_idCardNo,uin.id_card in_user_idCardNo,
+        c.user_name borrow_user_name,c.id_card borrow_user_idCardNo,b.plan_date first_repay_date,
+        (b.plan_principal + b.plan_interest) AS repay_amount4_month,
+        e.period term,d.first_term first_term,
+        a.discount_amount,bsa.product_rate
+        from ln_credit_transfer a, ln_finance_repay_schedule b, ln_user c,
+        ln_loan_relation d, ln_loan e,
+        bs_user uin, bs_user uout, bs_sub_account bsa, bs_product bsp
+        where a.out_user_id = uout.id and a.in_user_id = uin.id
+        and a.in_loan_relation_id = d.id and d.ln_user_id = c.id
+        and d.loan_id = e.id
+        and a.in_sub_account_id = bsa.id and bsa.product_id = bsp.id
+        and b.relation_id = a.in_loan_relation_id and b.repay_serial = 1
+        and a.in_loan_relation_id = #{inLoanRelationId}
+    </select>
+
+    <select id="selectVOByLoanRelationIdNew" resultMap="BaseResultMapVONew">
+        select  a.id, a.out_loan_relation_id, a.in_loan_relation_id, a.out_user_id, a.in_user_id, a.out_sub_account_id,
+        a.in_sub_account_id, a.amount, a.in_amount, a.create_time transfer_time,
+        uout.user_name out_user_name,uin.user_name in_user_name,uout.mobile out_user_mobile,
+        uin.mobile in_user_mobile,uout.id_card out_user_idCardNo,uin.id_card in_user_idCardNo,
+        c.user_name borrow_user_name,c.id_card borrow_user_idCardNo,b.plan_date first_repay_date,
+        (b.plan_principal + b.plan_interest) AS repay_amount4_month,e.period term,d.first_term first_term,
+        a.discount_amount,bsa.product_rate,bsa.interest_begin_date
+        from ln_credit_transfer a, ln_finance_repay_schedule b, ln_user c,
+        ln_loan_relation d, ln_loan e,
+        bs_user uin, bs_user uout, bs_sub_account bsa, bs_product bsp
+        where a.out_user_id = uout.id and a.in_user_id = uin.id
+        and a.in_loan_relation_id = d.id and d.ln_user_id = c.id
+        and d.loan_id = e.id
+        and a.in_sub_account_id = bsa.id and bsa.product_id = bsp.id
+        and b.relation_id = a.in_loan_relation_id and b.repay_serial = 1
+        and a.in_loan_relation_id = #{inLoanRelationId}
+    </select>
+
+    <select id="selectLnCreditTransferVO4Manage" resultMap="BaseResultMapManageVO"
+            parameterType="com.pinting.business.model.vo.LnCreditTransferMQueryVO">
+        SELECT
+        (@rowNO := @rowNo + 1) rowno,
+        t.*
+        FROM
+        (SELECT @rowNO := #{start}) b,
+        (select a.*,
+        uout.user_name out_user_name,uin.user_name in_user_name,
+        uout.mobile out_user_mobile,uin.mobile in_user_mobile,
+        lr.total total_amount
+        from ln_credit_transfer a,bs_user uin, bs_user uout,
+        	ln_user lu,ln_loan_relation b,
+        (select lf.relation_id,sum(IFNULL(lf.plan_principal,0)+IFNULL(lf.plan_interest,0)) total 
+        from ln_finance_repay_schedule lf GROUP BY lf.relation_id) lr
+        where a.out_user_id = uout.id and a.in_user_id = uin.id
+        and lr.relation_id = a.in_loan_relation_id
+        and a.out_loan_relation_id = b.id
+		and b.ln_user_id = lu.id
+		and lu.partner_code='ZAN'
+        <if test="beginTime != null and beginTime != ''">
+            and a.create_time >= #{beginTime}
+        </if>
+        <if test="overTime != null and overTime!= '' ">
+            and DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= #{overTime}
+        </if>
+        <if test="inUserName != null and inUserName != '' ">
+            and uin.user_name like concat(concat('%', #{inUserName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="inUserMobile != null and inUserMobile != '' ">
+            and uin.mobile like concat(concat('%', #{inUserMobile,jdbcType=VARCHAR}),'%')
+        </if>
+		order by a.create_time DESC
+        )t
+        <include refid="sql-global.pagination"/>
+    </select>
+
+    <select id="countLnCreditTransferVO4Manage" resultType="java.lang.Integer"
+            parameterType="com.pinting.business.model.vo.LnCreditTransferMQueryVO">
+        select count(a.id)
+        from ln_credit_transfer a,bs_user uin, bs_user uout,
+        	ln_user lu,ln_loan_relation b,
+        	(select lf.relation_id,sum(IFNULL(lf.plan_principal,0)+IFNULL(lf.plan_interest,0)) total 
+        	from ln_finance_repay_schedule lf GROUP BY lf.relation_id) lr
+        where a.out_user_id = uout.id and a.in_user_id = uin.id
+        	and lr.relation_id = a.in_loan_relation_id
+        	and a.out_loan_relation_id = b.id
+			and b.ln_user_id = lu.id
+			and lu.partner_code='ZAN'
+        <if test="beginTime != null and beginTime != ''">
+            and a.create_time >= #{beginTime}
+        </if>
+        <if test="overTime != null and overTime!= '' ">
+            and DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= #{overTime}
+        </if>
+        <if test="inUserName != null and inUserName != '' ">
+            and uin.user_name like concat(concat('%', #{inUserName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="inUserMobile != null and inUserMobile != '' ">
+            and uin.mobile like concat(concat('%', #{inUserMobile,jdbcType=VARCHAR}),'%')
+        </if>
+    </select>
+
+    <select id="transSumPrincipal" resultType="java.lang.Double"
+            parameterType="com.pinting.business.model.vo.LnCreditTransferMQueryVO">
+        select sum(a.amount)
+        from ln_credit_transfer a,bs_user uin, bs_user uout,
+        	ln_user lu,ln_loan_relation b,
+        	(select lf.relation_id,sum(IFNULL(lf.plan_principal,0)+IFNULL(lf.plan_interest,0)) total 
+        	from ln_finance_repay_schedule lf GROUP BY lf.relation_id) lr
+        where a.out_user_id = uout.id and a.in_user_id = uin.id
+        	and lr.relation_id = a.in_loan_relation_id
+        	and a.out_loan_relation_id = b.id
+			and b.ln_user_id = lu.id
+			and lu.partner_code='ZAN'
+        <if test="beginTime != null and beginTime != ''">
+            and a.create_time >= #{beginTime}
+        </if>
+        <if test="overTime != null and overTime!= '' ">
+            and DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= #{overTime}
+        </if>
+        <if test="inUserName != null and inUserName != '' ">
+            and uin.user_name like concat(concat('%', #{inUserName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="inUserMobile != null and inUserMobile != '' ">
+            and uin.mobile like concat(concat('%', #{inUserMobile,jdbcType=VARCHAR}),'%')
+        </if>
+    </select>
+
+    <select id="transSumInterest" resultType="java.lang.Double"
+            parameterType="com.pinting.business.model.vo.LnCreditTransferMQueryVO">
+        select SUM(lr.total)-sum(a.amount)
+        from ln_credit_transfer a,bs_user uin, bs_user uout,ln_user lu,ln_loan_relation b,
+        (select lf.relation_id,sum(IFNULL(lf.plan_principal,0)+IFNULL(lf.plan_interest,0)) total 
+        	from ln_finance_repay_schedule lf GROUP BY lf.relation_id) lr
+        where a.out_user_id = uout.id and a.in_user_id = uin.id
+        	and lr.relation_id = a.in_loan_relation_id
+        	and a.out_loan_relation_id = b.id
+			and b.ln_user_id = lu.id
+			and lu.partner_code='ZAN'
+        <if test="beginTime != null and beginTime != ''">
+            and a.create_time >= #{beginTime}
+        </if>
+        <if test="overTime != null and overTime!= '' ">
+            and DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= #{overTime}
+        </if>
+        <if test="inUserName != null and inUserName != '' ">
+            and uin.user_name like concat(concat('%', #{inUserName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="inUserMobile != null and inUserMobile != '' ">
+            and uin.mobile like concat(concat('%', #{inUserMobile,jdbcType=VARCHAR}),'%')
+        </if>
+    </select>
+
+
+    <select id="selectLnCreditTransferVO2VIP" resultMap="BaseResultMapManageVO"
+            parameterType="com.pinting.business.model.vo.LnCreditTransferMQueryVO">
+        SELECT
+        (@rowNO := @rowNo + 1) rowno,
+        t.*
+        FROM
+        (SELECT @rowNO := #{start}) b,
+        (select a.*,
+        uout.user_name out_user_name,uin.user_name in_user_name,
+        uout.mobile out_user_mobile,uin.mobile in_user_mobile
+        from ln_credit_transfer a,bs_user uin, bs_user uout,ln_user lu,ln_loan_relation b
+        where a.out_user_id = uout.id and a.in_user_id = uin.id
+        	and a.out_loan_relation_id = b.id
+			and b.ln_user_id = lu.id
+			and lu.partner_code='ZAN'
+        <if test="beginTime != null and beginTime != ''">
+            and a.create_time >= #{beginTime}
+        </if>
+        <if test="overTime != null and overTime!= '' ">
+            and DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= #{overTime}
+        </if>
+        <if test="inUserName != null and inUserName != '' ">
+            and uin.user_name like concat(concat('%', #{inUserName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="inUserMobile != null and inUserMobile != '' ">
+            and uin.mobile like concat(concat('%', #{inUserMobile,jdbcType=VARCHAR}),'%')
+        </if>
+        	order by a.create_time DESC
+        )t
+        <include refid="sql-global.pagination"/>
+    </select>
+
+    <select id="countLnCreditTransferVO2VIP" resultType="java.lang.Integer"
+            parameterType="com.pinting.business.model.vo.LnCreditTransferMQueryVO">
+        select count(a.id)
+        from ln_credit_transfer a,bs_user uin, bs_user uout,ln_user lu,ln_loan_relation b
+        where a.out_user_id = uout.id and a.in_user_id = uin.id
+        	and a.out_loan_relation_id = b.id
+			and b.ln_user_id = lu.id
+			and lu.partner_code='ZAN'
+        <if test="beginTime != null and beginTime != ''">
+            and a.create_time >= #{beginTime}
+        </if>
+        <if test="overTime != null and overTime!= '' ">
+            and DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= #{overTime}
+        </if>
+        <if test="inUserName != null and inUserName != '' ">
+            and uin.user_name like concat(concat('%', #{inUserName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="inUserMobile != null and inUserMobile != '' ">
+            and uin.mobile like concat(concat('%', #{inUserMobile,jdbcType=VARCHAR}),'%')
+        </if>
+    </select>
+
+    <select id="transSumAmount2VIP" resultType="java.lang.Double"
+            parameterType="com.pinting.business.model.vo.LnCreditTransferMQueryVO">
+        select SUM(a.in_amount)
+        from ln_credit_transfer a,bs_user uin, bs_user uout,ln_user lu,ln_loan_relation b
+        where a.out_user_id = uout.id and a.in_user_id = uin.id
+        	and a.out_loan_relation_id = b.id
+			and b.ln_user_id = lu.id
+			and lu.partner_code='ZAN'
+        <if test="beginTime != null and beginTime != ''">
+            and a.create_time >= #{beginTime}
+        </if>
+        <if test="overTime != null and overTime!= '' ">
+            and DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= #{overTime}
+        </if>
+        <if test="inUserName != null and inUserName != '' ">
+            and uin.user_name like concat(concat('%', #{inUserName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="inUserMobile != null and inUserMobile != '' ">
+            and uin.mobile like concat(concat('%', #{inUserMobile,jdbcType=VARCHAR}),'%')
+        </if>
+    </select>
+
+    <select id="selectCustodyTransferClaims" resultMap="BaseResultMapVO" parameterType="java.util.Map">
+        SELECT
+        a.in_sub_account_id, b.first_term first_term,
+        a.amount, a.in_amount, a.create_time transfer_time,
+        uout.id out_user_id, uin.id in_user_id,
+        uout.user_name out_user_name, uin.user_name in_user_name,
+        uout.id_card out_user_idCardNo, uin.id_card in_user_idCardNo,
+        c.user_name borrow_user_name, c.id_card borrow_user_idCardNo,
+        d.period term, d.approve_amount, d.agreement_rate, d.partner_business_flag
+        FROM ln_credit_transfer a,
+        ln_loan_relation b,
+        bs_user uin, bs_user uout,
+        ln_user c, ln_loan d
+        WHERE a.out_user_id = uout.id AND a.in_user_id = uin.id
+        AND b.id=a.in_loan_relation_id AND b.ln_user_id=c.id
+        AND b.loan_id = d.id
+        AND (a.in_loan_relation_id = #{lnLoanRelationId} OR a.out_loan_relation_id = #{lnLoanRelationId})
+        ORDER BY a.create_time DESC limit 1
+    </select>
+    
+        <!-- ===================债转及支付 存管后，云贷/赞时贷 START=========================== -->
+    <select id="selectLnCreditTransferPayYunZSD" resultMap="BaseResultMapManageVO"
+            parameterType="com.pinting.business.model.vo.LnCreditTransferMQueryVO">
+        SELECT
+        (@rowNO := @rowNo + 1) rowno,
+        t.*
+        FROM
+        (SELECT @rowNO := #{start}) b,
+		(select o.user_name out_user_name,i.user_name in_user_name,a.in_user_id,a.out_user_id,
+			a.amount,a.in_amount,c.partner_code,a.out_sub_account_id,
+			IFNULL(sys_jnl.trans_amount,0) service_amount,in_amount-amount-IFNULL(sys_jnl.trans_amount,0) out_amount,
+			a.create_time,a.in_loan_relation_id,a.out_loan_relation_id, d.partner_business_flag
+		from ln_credit_transfer a 
+			LEFT JOIN (select trans_amount,op_id 
+				from bs_sys_account_jnl 
+				where 1 = 1
+				<if test="partnerCode == 'YUN_DAI_SELF'">
+					and trans_code='DEP_BGW_REVENUE_YUN'
+				</if>
+				<if test="partnerCode == 'ZSD'">
+					and trans_code='DEP_BGW_REVENUE_ZSD'
+				</if>
+				<if test="partnerCode == '7_DAI_SELF'">
+					and trans_code='DEP_BGW_REVENUE_7'
+				</if>
+				<if test="beginTime != null and beginTime != ''">
+		            and trans_time >= #{beginTime}
+		        </if>
+		        <if test="overTime != null and overTime!= '' ">
+		            and DATE_FORMAT(trans_time,'%Y-%m-%d') &lt;= #{overTime}
+		        </if>
+				
+			)sys_jnl
+			on sys_jnl.op_id=a.out_loan_relation_id,
+		ln_loan_relation b,ln_user c,ln_loan d,
+		bs_user o,bs_user i
+		where a.in_loan_relation_id = b.id and b.ln_user_id = c.id
+		and b.loan_id=d.id and a.out_user_id = o.id and a.in_user_id = i.id
+		<if test="beginTime != null and beginTime != ''">
+            and a.create_time >= #{beginTime}
+        </if>
+        <if test="overTime != null and overTime!= '' ">
+            and DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= #{overTime}
+        </if>
+        <if test="outUserName != null and outUserName != '' ">
+            and o.user_name like concat(concat('%', #{outUserName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag !='777' and queryPartnerBusinessFlag !='888' and queryPartnerBusinessFlag !='999' ">
+            AND d.partner_business_flag = #{queryPartnerBusinessFlag}
+        </if>
+        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='777' ">
+            AND d.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+        </if>
+        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='888' ">
+            AND d.partner_business_flag IN ('现金循环贷', 'REPAY_ANY_TIME')
+        </if>
+		and c.partner_code=#{partnerCode}
+		ORDER BY a.create_time desc)t
+		<include refid="sql-global.pagination"/>
+	</select>
+	
+	<select id="countLnCreditTransferPayYunZSD" resultType="java.lang.Integer"
+            parameterType="com.pinting.business.model.vo.LnCreditTransferMQueryVO">
+        select count(*) FROM
+		(select o.user_name out_user_name,i.user_name in_user_name,a.in_user_id,a.out_user_id,
+			a.amount,a.in_amount,c.partner_code,a.out_sub_account_id,
+			a.create_time
+		from ln_credit_transfer a,
+		ln_loan_relation b,ln_user c,ln_loan d,
+		bs_user o,bs_user i
+		where a.in_loan_relation_id = b.id and b.ln_user_id = c.id
+		and b.loan_id=d.id and a.out_user_id = o.id and a.in_user_id = i.id
+		<if test="beginTime != null and beginTime != ''">
+            and a.create_time >= #{beginTime}
+        </if>
+        <if test="overTime != null and overTime!= '' ">
+            and DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= #{overTime}
+        </if>
+        <if test="outUserName != null and outUserName != '' ">
+            and o.user_name like concat(concat('%', #{outUserName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag !='777' and queryPartnerBusinessFlag !='888' and queryPartnerBusinessFlag !='999' ">
+            AND d.partner_business_flag = #{queryPartnerBusinessFlag}
+        </if>
+        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='777' ">
+            AND d.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+        </if>
+        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='888' ">
+            AND d.partner_business_flag IN ('现金循环贷', 'REPAY_ANY_TIME')
+        </if>
+		and c.partner_code=#{partnerCode}
+		)t
+	</select>
+	
+	<select id="transSumAmountYunZSD" resultMap="BaseResultMapManageVO"
+            parameterType="com.pinting.business.model.vo.LnCreditTransferMQueryVO">
+        select IFNULL(sum(t.service_amount),0) service_amount, IFNULL(sum(t.out_amount),0) out_amount FROM
+		(select o.user_name out_user_name,i.user_name in_user_name,a.in_user_id,a.out_user_id,
+			a.amount,a.in_amount,c.partner_code,a.out_sub_account_id,
+			IFNULL(sys_jnl.trans_amount,0) service_amount,in_amount-amount-IFNULL(sys_jnl.trans_amount,0) out_amount,
+			a.create_time
+		from ln_credit_transfer a 
+			LEFT JOIN (select trans_amount,op_id 
+				from bs_sys_account_jnl 
+				where 1 = 1
+				<if test="partnerCode == 'YUN_DAI_SELF'">
+					and trans_code='DEP_BGW_REVENUE_YUN'
+				</if>
+				<if test="partnerCode == 'ZSD'">
+					and trans_code='DEP_BGW_REVENUE_ZSD'
+				</if>
+				<if test="partnerCode == '7_DAI_SELF'">
+					and trans_code='DEP_BGW_REVENUE_7'
+				</if>
+				<if test="beginTime != null and beginTime != ''">
+		            and trans_time >= #{beginTime}
+		        </if>
+		        <if test="overTime != null and overTime!= '' ">
+		            and DATE_FORMAT(trans_time,'%Y-%m-%d') &lt;= #{overTime}
+		        </if>
+			)sys_jnl
+			on sys_jnl.op_id=a.out_loan_relation_id,
+		ln_loan_relation b,ln_user c,ln_loan d,
+		bs_user o,bs_user i
+		where a.in_loan_relation_id = b.id and b.ln_user_id = c.id
+		and b.loan_id=d.id and a.out_user_id = o.id and a.in_user_id = i.id
+		<if test="beginTime != null and beginTime != ''">
+            and a.create_time >= #{beginTime}
+        </if>
+        <if test="overTime != null and overTime!= '' ">
+            and DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= #{overTime}
+        </if>
+        <if test="outUserName != null and outUserName != '' ">
+            and o.user_name like concat(concat('%', #{outUserName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag !='777' and queryPartnerBusinessFlag !='888' and queryPartnerBusinessFlag !='999' ">
+            AND d.partner_business_flag = #{queryPartnerBusinessFlag}
+        </if>
+        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='777' ">
+            AND d.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+        </if>
+        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='888' ">
+            AND d.partner_business_flag IN ('现金循环贷', 'REPAY_ANY_TIME')
+        </if>
+		and c.partner_code=#{partnerCode}
+		)t
+	</select>
+	
+	<!-- =====================债转及支付 存管后   11月8日之前的云贷========================= -->
+	<select id="selectLnCreditTransferPayYun" resultMap="BaseResultMapManageVO"
+            parameterType="com.pinting.business.model.vo.LnCreditTransferMQueryVO">
+         SELECT
+        (@rowNO := @rowNo + 1) rowno,
+        t.*
+        FROM
+        (SELECT @rowNO := #{start}) b,
+		(select o.user_name out_user_name,i.user_name in_user_name,a.in_user_id,a.out_user_id,
+			a.amount,a.in_amount,c.partner_code,a.out_sub_account_id,
+				ROUND( ROUND((in_amount-amount)*36500/13/amount) *o_p.base_rate/36500*amount,2) out_amount,
+				(in_amount-amount-ROUND( ROUND((in_amount-amount)*36500/13/amount) *o_p.base_rate/36500*amount,2))service_amount,
+			a.create_time,a.in_loan_relation_id,a.out_loan_relation_id, d.partner_business_flag
+		from ln_credit_transfer a,
+		ln_loan_relation b,ln_user c,ln_loan d,
+		bs_user o,bs_user i,bs_sub_account o_s,bs_product o_p
+		where a.in_loan_relation_id = b.id and b.ln_user_id = c.id
+		and b.loan_id=d.id and a.out_user_id = o.id and a.in_user_id = i.id
+		and a.out_sub_account_id = o_s.id and o_s.product_id = o_p.id
+		<if test="beginTime != null and beginTime != ''">
+            and a.create_time >= #{beginTime}
+        </if>
+        <if test="overTime != null and overTime!= '' ">
+            and DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= #{overTime}
+        </if>
+        <if test="outUserName != null and outUserName != '' ">
+            and o.user_name like concat(concat('%', #{outUserName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag !='777' and queryPartnerBusinessFlag !='888' and queryPartnerBusinessFlag !='999' ">
+            AND d.partner_business_flag = #{queryPartnerBusinessFlag}
+        </if>
+        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='777' ">
+            AND d.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+        </if>
+        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='888' ">
+            AND d.partner_business_flag IN ('消费贷', '现金循环贷', 'REPAY_ANY_TIME')
+        </if>
+		and c.partner_code=#{partnerCode}
+		ORDER BY a.create_time desc)t
+		<include refid="sql-global.pagination"/>
+	</select>
+	
+	<select id="transSumAmountYun" resultMap="BaseResultMapManageVO"
+            parameterType="com.pinting.business.model.vo.LnCreditTransferMQueryVO">
+        select IFNULL(sum(t.service_amount),0) service_amount, IFNULL(sum(t.out_amount),0) out_amount FROM
+		(select o.user_name out_user_name,i.user_name in_user_name,a.in_user_id,a.out_user_id,
+			a.amount,a.in_amount,c.partner_code,a.out_sub_account_id,
+				ROUND( ROUND((in_amount-amount)*36500/13/amount) *o_p.base_rate/36500*amount,2) out_amount,
+				(in_amount-amount-ROUND( ROUND((in_amount-amount)*36500/13/amount) *o_p.base_rate/36500*amount,2))service_amount,
+		a.create_time
+		from ln_credit_transfer a, 
+		ln_loan_relation b,ln_user c,ln_loan d,
+		bs_user o,bs_user i,bs_sub_account o_s,bs_product o_p
+		where a.in_loan_relation_id = b.id and b.ln_user_id = c.id
+		and b.loan_id=d.id and a.out_user_id = o.id and a.in_user_id = i.id
+		and a.out_sub_account_id = o_s.id and o_s.product_id = o_p.id
+		<if test="beginTime != null and beginTime != ''">
+            and a.create_time >= #{beginTime}
+        </if>
+        <if test="overTime != null and overTime!= '' ">
+            and DATE_FORMAT(a.create_time,'%Y-%m-%d') &lt;= #{overTime}
+        </if>
+        <if test="outUserName != null and outUserName != '' ">
+            and o.user_name like concat(concat('%', #{outUserName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag !='777' and queryPartnerBusinessFlag !='888' and queryPartnerBusinessFlag !='999' ">
+            AND d.partner_business_flag = #{queryPartnerBusinessFlag}
+        </if>
+        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='777' ">
+            AND d.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+        </if>
+        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='888' ">
+            AND d.partner_business_flag IN ('现金循环贷', 'REPAY_ANY_TIME')
+        </if>
+		and c.partner_code=#{partnerCode}
+		)t
+	</select>
+	<!-- ===================债转及支付 存管后，云贷/赞时贷 END=========================== -->
+    <select id="selectLatestByLoanId" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select a.* from ln_credit_transfer a, ln_loan_relation b
+        where a.out_loan_relation_id = b.id and b.loan_id = #{loanId}
+        order by a.create_time desc, a.id desc
+        limit 1
+    </select>
+
+</mapper>

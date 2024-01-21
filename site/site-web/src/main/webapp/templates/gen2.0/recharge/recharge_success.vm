@@ -1,0 +1,40 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/login_header")
+#LoadGenJS("/resources/gen2.0/scripts/echarts")
+#LoadGenJS("/resources/gen2.0/scripts/switchable")
+#LoadGenJS("/resources/gen2.0/scripts/textSlider")
+#LoadGenJS("/resources/gen2.0/scripts/index_style")
+#LoadGenCSS("/resources/gen2.0/styles/recharge/recharge_first")
+#LoadGenJS("/resources/gen2.0/scripts/recharge/recharge_first")
+#GenHead("end")
+<body>
+<!--header -s-->
+	#Gen2Header("assets")
+<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')"/>
+<div class="trade_result">
+    <div class="trade_result_bg"></div>
+    <div class="trade_result_content">
+		<p style="font-size: 16px;;">币港湾已收到您的充值申请，正在处理中，请稍等</p>
+	##							#if($!isNeedCheck == 'true')
+	##                    		，预计到账时间为$!date.formatDateTime($!time,'yyyy年MM月dd日 HH:mm') 之前
+	##                    		#else
+	##                    			<br />
+	##                    		#end
+		<p class="color_font">（结果将以短信通知）</p>
+		<div class="trade_result_btn">
+			<button style="cursor:pointer;" id="go_assets" url="$!env.get('gen.server.web')/gen2.0/assets/assets">查看我的账户</button>
+		</div>
+    </div>
+</div>
+<script >
+    $("#go_assets").click(function(){
+        location.href = $(this).attr('url');
+    });
+</script>
+
+</body>
+#Gen2Footer()
+<!--footer -e-->
+#Html("end")

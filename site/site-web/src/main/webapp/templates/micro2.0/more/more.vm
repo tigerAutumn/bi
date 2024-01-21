@@ -1,0 +1,259 @@
+#Html("begin")
+#Head("begin","关于币港湾,币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("更多关于币港湾【币港湾官网】")
+#WeChatShare()
+#Head("end")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/more/more.min")
+#if("$!qianbao" == "qianbao")
+	#LoadCSS("resources/micro2.0/styles/footer-qianbao.min")
+#else
+	#LoadCSS("resources/micro2.0/styles/footer.min")
+#end
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+    <div class="more">
+    	#if("$!qianbao" != "qianbao")
+            <img class="more_img" src="$!env.getWebURL('')/resources/micro2.0/images/more/more_qb_bg.png" alt="" style="height: 340px;"/>
+            <div class="mall_enter">
+                <div class="mall_enter_wrap">
+                    <a href="$!env.getWebURL('/h5/mall/homeIndex')">积分商城<img src="$!env.getWebURL('')/resources/micro2.0/images/more/mall_arrow.png"></a>
+                    <img class="mall_ico" src="$!env.getWebURL('')/resources/micro2.0/images/more/mall_icon.png">
+                </div>
+            </div>
+			<div class="more_recommend">
+                <ul class="more_box">
+                    <li style="border-right: dashed 1px #e5e5e5;">
+                        <a class="down_link" href="$!env.getWebURL('/micro2.0/more/toRecommend')" title="">
+                            <em class="more_reimg"><img src="$!env.getWebURL('')/resources/micro2.0/images/more/reward.png"></em><i class="more_retxt">推荐赢奖励</i>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="down_link" href="$!env.getWebURL('/micro2.0/more/myRecommend')" title="">
+                            <em class="more_reimg"><img src="$!env.getWebURL('')/resources/micro2.0/images/more/recommend.png"></em><i class="more_retxt">我的推荐</i>
+                        </a>
+                    </li>
+                </ul>
+                <div class="more_money"><span class="prompt_line prompt_right"></span>
+					#if("$!userId"!="")
+                        您已累计获得推荐奖励<span class="prompt_color">
+						#if($!recommendResMsg.recommendAmountTotal>=0) $!number.format("0.00",$!recommendResMsg.recommendAmountTotal)
+						#else 0.00
+						#end</span>元
+					#else
+                        以老带新，月月加薪
+					#end
+                    <span class="prompt_line prompt_left"></span>
+                </div>
+			</div>
+    	#else
+            <img class="more_qb_img" src="$!env.getWebURL('')/resources/micro2.0/images/more/more_qb_bg.png" alt=""/>
+            <div class="mall_enter">
+                <div class="mall_enter_wrap">
+                    <a href="$!env.getWebURL('')/h5/mall/homeIndex?qianbao=qianbao&agentViewFlag=$!agentViewFlag">积分商城<img src="$!env.getWebURL('')/resources/micro2.0/images/more/mall_arrow.png"></a>
+                    <img class="mall_ico" src="$!env.getWebURL('')/resources/micro2.0/images/more/mall_icon.png">
+                </div>
+            </div>
+    	#end  
+    </div>
+    #*<div class="more">
+        #if("$!qianbao" != "qianbao")
+            <img class="more_img" src="$!env.getWebURL('')/resources/micro2.0/images/more/more_bg.png" alt=""/>
+            <ul class="more_box">
+                <li class="more_reward">
+                    <a class="down_link" href="$!env.getWebURL('/micro2.0/more/toRecommend')" title="">
+                        <em class="more_reimg"><img src="$!env.getWebURL('')/resources/micro2.0/images/more/reward.png"></em><i class="more_retxt">推荐赢奖励</i>
+                    </a>
+                </li>
+                <li class="more_line"></li>
+                <li class="more_recommend" style="margin-bottom: 20px;">
+                    <a class="down_link" href="$!env.getWebURL('/micro2.0/more/myRecommend')" title="">
+                        <em class="more_reimg"><img src="$!env.getWebURL('')/resources/micro2.0/images/more/recommend.png"></em><i class="more_retxt">我的推荐</i>
+                    </a>
+                </li>
+            </ul>
+            <div class="more_money"><span class="prompt_line prompt_right"></span>
+                #if("$!userId"!="")
+                    您已累计获得推荐奖励<span class="prompt_color">
+                    #if($!recommendResMsg.recommendAmountTotal>=0) $!number.format("0.00",$!recommendResMsg.recommendAmountTotal)
+                    #else 0.00
+                    #end</span>元
+                #else
+                    以老带新，月月加薪
+                #end
+                <span class="prompt_line prompt_left"></span>
+            </div>
+        #else
+            <img class="more_qb_img" src="$!env.getWebURL('')/resources/micro2.0/images/more/more_qb_bg.png" alt=""/>
+        #end
+    </div>*#
+    <div class="more1">
+        <ul class="more_content">
+    		#if("$!qianbao" != "qianbao")
+			<li class="p">
+    		#else
+			<li class="">
+    		#end
+				#if("$!qianbao" == "qianbao")
+					<a class="down_link" href="$!env.getWebURL('/micro2.0/more/aboutBiGangWan')?qianbao=qianbao&agentViewFlag=$!agentViewFlag" title="">
+						<em class="more_conimg1"></em><i class="more_contxt">关于我们</i>
+					</a>
+				#else
+					<a class="down_link" href="$!env.getWebURL('/micro2.0/more/aboutBiGangWan')" title="">
+						<em class="more_conimg1"></em><i class="more_contxt">关于我们</i>
+					</a>
+				#end
+			</li>    
+            <li class="">
+    			#if("$!qianbao" == "qianbao")
+                    <a class="down_link" href="$!env.getWebURL('/micro2.0/platform/noticeInfo/index')?qianbao=qianbao&agentViewFlag=$!agentViewFlag" title="">
+                        <em class="more_conimg2"></em><i class="more_contxt">平台公告</i>
+                    </a>
+    			#else
+                    <a class="down_link" href="$!env.getWebURL('/micro2.0/platform/noticeInfo/index')" title="">
+                        <em class="more_conimg2"></em><i class="more_contxt">平台公告</i>
+                    </a>
+    			#end
+            </li>
+            <li class="p">
+    			#if("$!qianbao" == "qianbao")
+                    <a class="down_link" href="$!env.getWebURL('/micro2.0/more/help')?qianbao=qianbao&agentViewFlag=$!agentViewFlag" title="">
+                        <em class="more_conimg4"></em><i class="more_contxt">帮助中心</i>
+                    </a>
+    			#else
+                    <a class="down_link" href="$!env.getWebURL('/micro2.0/more/help')" title="">
+                        <em class="more_conimg4"></em><i class="more_contxt">帮助中心</i>
+                    </a>
+    			#end
+            </li>
+        </ul>
+        <ul class="more_content">
+            <li class="">
+    			#if("$!qianbao" == "qianbao")
+                    <a class="down_link" href="$!env.getWebURL('/micro2.0/platform/gw_info/index')?qianbao=qianbao&agentViewFlag=$!agentViewFlag" title="">
+                        <em class="more_conimg3"></em><i class="more_contxt">港湾资讯</i>
+                    </a>
+    			#else
+                    <a class="down_link" href="$!env.getWebURL('/micro2.0/platform/gw_info/index')" title="">
+                        <em class="more_conimg3"></em><i class="more_contxt">港湾资讯</i>
+                    </a>
+    			#end
+            </li>
+            <li class="p">
+    			#if($!questionResMsg.hasQuestionnaire==1)
+    				#if($!questionResMsg.isExpired==1)
+    					#if("$!qianbao" == "qianbao")
+                            <a class="down_link" href="$!env.getWebURL('/micro2.0/assets/questionnaire')?qianbao=qianbao&agentViewFlag=$!agentViewFlag" title="">
+                                <em class="more_conimg5"></em><span class="more_mintxt">已过期</span><i class="more_contxt">风险测评</i>
+                            </a>
+    					#else
+                            <a class="down_link" href="$!env.getWebURL('/micro2.0/assets/questionnaire')" title="">
+                                <em class="more_conimg5"></em><span class="more_mintxt">已过期</span><i class="more_contxt">风险测评</i>
+                            </a>
+    					#end
+    				#else
+    						#if("$!qianbao" == "qianbao")
+    							<a class="down_link" href="$!env.getWebURL('/micro2.0/assets/questionnaireMore')?qianbao=qianbao&agentViewFlag=$!agentViewFlag" title="">
+                           	#else
+                            	<a class="down_link" href="$!env.getWebURL('/micro2.0/assets/questionnaireMore')" title="">
+                            #end
+                            <em class="more_conimg5"></em><span class="more_mintxt">
+    						#if($!questionResMsg.assessType == "conservative")
+								保守型
+    						#elseif($!questionResMsg.assessType == "steady")
+								稳健型
+    						#elseif($!questionResMsg.assessType == "balanced")
+								平衡型
+    						#elseif($!questionResMsg.assessType == "aggressive")
+								进取型
+    						#elseif($!questionResMsg.assessType == "radical")
+								激进型
+    						#end
+							</span><i class="more_contxt">风险测评</i>
+                        </a>    
+    				#end
+    			#else
+    				#if("$!userId"!="")
+	    				#if("$!qianbao" == "qianbao")
+	                        <a class="down_link" href="$!env.getWebURL('/micro2.0/assets/questionnaireMore')?qianbao=qianbao&agentViewFlag=$!agentViewFlag" title="">
+	                            <em class="more_conimg5"></em><span class="more_mintxt">未测评</span><i class="more_contxt">风险测评</i>
+	                        </a>
+	    				#else
+	                        <a class="down_link" href="$!env.getWebURL('/micro2.0/assets/questionnaireMore')" title="">
+	                            <em class="more_conimg5"></em><span class="more_mintxt">未测评</span><i class="more_contxt">风险测评</i>
+	                        </a>
+	    				#end
+	    			#else
+	    				#if("$!qianbao" == "qianbao")
+	                        <a class="down_link" href="$!env.getWebURL('')/micro2.0/user/login/index?qianbao=qianbao&agentViewFlag=$!agentViewFlag&burl=/micro2.0/assets/questionnaireMore" title="">
+	                            <em class="more_conimg5"></em><span class="more_mintxt">未测评</span><i class="more_contxt">风险测评</i>
+	                        </a>
+	    				#else
+	                        <a class="down_link" href="$!env.getWebURL('')/micro2.0/user/login/index?burl=/micro2.0/assets/questionnaireMore" title="">
+	                            <em class="more_conimg5"></em><span class="more_mintxt">未测评</span><i class="more_contxt">风险测评</i>
+	                        </a>
+	    				#end
+	    			#end	
+    			#end
+            </li>
+            <li class="p">
+				#if("$!userId"!="")
+        			#if("$!qianbao" == "qianbao")
+                        <a class="down_link" href="$!env.getWebURL('/micro2.0/more/feedback')?qianbao=qianbao&agentViewFlag=$!agentViewFlag" title="">
+                            <em class="more_conimg6"></em><i class="more_contxt">意见反馈</i>
+                        </a>
+        			#else
+                        <a class="down_link" href="$!env.getWebURL('/micro2.0/more/feedback')" title="">
+                            <em class="more_conimg6"></em><i class="more_contxt">意见反馈</i>
+                        </a>
+					#end
+				#else
+					#if("$!qianbao" == "qianbao")
+                        <a class="down_link" href="$!env.getWebURL('')/micro2.0/user/login/index?qianbao=qianbao&agentViewFlag=$!agentViewFlag&burl=/micro2.0/more/feedback" title="">
+                            <em class="more_conimg6"></em><i class="more_contxt">意见反馈</i>
+                        </a>
+        			#else
+                        <a class="down_link" href="$!env.getWebURL('')/micro2.0/user/login/index?burl=/micro2.0/more/feedback" title="">
+                            <em class="more_conimg6"></em><i class="more_contxt">意见反馈</i>
+                        </a>
+					#end
+				#end
+            </li>
+        </ul>
+        <ul class="more_content">
+            <li class="p">
+    			#if("$!qianbao" == "qianbao")
+                    <a class="down_link" href="$!env.getWebURL('/micro2.0/more/biGangWanURL')?qianbao=qianbao&agentViewFlag=$!agentViewFlag" title="">
+                        <em class="more_conimg7"></em><i class="more_contxt">联系我们</i>
+                    </a>
+    			#else
+                    <a class="down_link" href="$!env.getWebURL('/micro2.0/more/biGangWanURL')" title="">
+                        <em class="more_conimg7"></em><i class="more_contxt">联系我们</i>
+                    </a>
+    			#end
+            </li>
+            <li class="p">
+                <a class="down_link" href="http://hzbgw.114ct.cn/udesktop/imh5/index.html?loginType=6&queueName=" title="">
+                    <em class="more_conimg8"></em><i class="more_contxt">在线客服</i>
+                </a>
+            </li>
+            <li></li>
+        </ul>
+    </div>
+	<div class="more_prompt"><span class="prompt_line prompt_right"></span>更多内容请登录币港湾官网查看<span class="prompt_line prompt_left"></span></div>
+    <div class="foot_placeholde"></div>
+    <script type="text/javascript">
+        function qianbao(url) {
+            var root = $("#APP_ROOT_PATH").val();
+            location.href = root + url + '?qianbao=qianbao' + '&agentViewFlag=' + $('#agentViewFlag').val();
+        }
+    </script>
+	#if("$!qianbao" == "qianbao")
+		#FooterQianBao("3")
+	#else
+		#Footer2("4")
+	#end
+</body>
+#Html("end")

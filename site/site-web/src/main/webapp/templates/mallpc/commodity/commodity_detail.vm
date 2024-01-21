@@ -1,0 +1,113 @@
+#Html("begin")
+#GenHead("begin")
+#Title("币港湾官网_国资系互联网金融服务平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#LoadGenCSS("/resources/mallpc/styles/common/default")
+#LoadGenCSS("/resources/mallpc/styles/commodity/commodityDetails")
+#Mall2Header("mall")
+
+<body>
+<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')" />
+<input type="hidden" value="$!commodityDetail.id" id="id"/>
+	<div class="detailsMain">
+		<div class="detailsBox">
+			<div class="detailsIndex">
+				<img class="detailsIndexImg" src="$!commodityDetail.commPictureUrl" />
+			</div>
+			<div class="detailsTitle">
+				<div class="detailsTitleName">$!commodityDetail.commName</div>
+				<div class="detailsTitleNum">所需积分：<span class="detailsTitleNumTxt">$!money.format($!commodityDetail.points).replace(".00","")积分</span></div>
+				#if($!commodityDetail.status == "FOR_SALE")
+					#if($!commodityDetail.leftCount > 0)
+						<div class="detailsTitleBtn">立即兑换</div>
+					#else
+						<div class="detailsTitleBtnNone">已售罄</div>
+					#end
+				#else
+					<div class="detailsTitleBtnNone">已下架</div>
+    			#end
+			</div>
+		</div>
+		<div class="detailsRule">
+			<div class="detailsRuleTitle"><span class="detailsRuleTitleIcon"></span>兑换需知</div>
+			<div class="detailsRuleTxt">
+				$!commodityDetail.exchangeNote
+			</div>
+		</div>
+		<div class="detailsRule">
+			<div class="detailsRuleTitle"><span class="detailsRuleTitleIcon"></span>商品详情</div>
+			<div class="detailsRuleTxt">
+				$!commodityDetail.commDetails
+			</div>
+		</div>
+	</div>
+	<div class="detailsBg" style="display:none;"></div>
+	<!--积分不足-->
+	<div class="detailsAlert" id="insufficient">
+		<h3 class="detailsAlertTitle">提示<div class="detailsAlertClose CloseBtn"></div></h3>
+		<div class="detailsAlertTxt01">当前积分不足，可以加入产品获得积分哦！</div>
+		<div class="detailsAlertBtn">
+			<div class="detailsAlertBtnCancel CloseBtn">取消</div>
+			<div class="detailsAlertBtnJoin go_buy">立即加入</div>
+		</div>
+	</div>
+	<!--兑换前确认信息-->
+	<div class="detailsAlert" id="fictitious">
+		<h3 class="detailsAlertTitle">兑换前确认信息<div class="detailsAlertClose CloseBtn"></div></h3>
+		<div class="detailsAlertTxt02">兑换到：<span class="detailsAlertTxt02mobile"></span></div>
+		<div class="detailsAlertTxt03">注：虚拟商品平台将发放至注册手机号账号内。</div>
+		<div class="detailsAlertBtn">
+			<div class="detailsAlertBtnCancel CloseBtn">取消</div>
+			<div class="detailsAlertBtnJoin" id="go_exchange_none">确认兑换</div>
+		</div>
+	</div>
+	<!--兑换前确认信息-->
+	<div class="detailsAlert" id="entity">
+		<h3 class="detailsAlertTitle">兑换前确认收货地址<div class="detailsAlertClose CloseAddressBtn"></div></h3>
+		<div class="detailsAlertTxt04">
+			<div class="detailsAlertTxt04Left">收货人：</div>
+			<div class="detailsAlertTxt04Right">
+				<input id="detailsName" type="text" class="detailsAlertTxt04Input" placeholder="请输入收货人" maxlength="8" />
+			</div>
+		</div>
+		<div class="detailsAlertTxt04">
+			<div class="detailsAlertTxt04Left">手机号：</div>
+			<div class="detailsAlertTxt04Right">
+				<input id="detailsMobile" type="text" class="detailsAlertTxt04Input" placeholder="请输入手机号" maxlength="11" />
+			</div>
+		</div>
+		<div class="detailsAlertTxt04">
+			<div class="detailsAlertTxt04Left">选择地区：</div>
+			<div class="detailsAlertTxt04Right">
+				<!--选择地区-->
+					<div class="detailsAlertTxt04Btn" id="expressArea"><input id="detailsArea" class="alert_big" placeholder="选择地区：" readonly="readonly" unselectable='on' onfocus="this.blur()"/><span class="detailsAlertTxt04BtnIcon"></span></div>
+				<!--选择地区弹层-->
+				<div class="layBox">
+					<div id="areaLayer" class="express-area-box">
+    					<div id="areaBox">
+    						<ul id="areaList" class="area-list"></ul>
+    					</div>
+    				</div>
+				</div>
+			</div>
+		</div>
+		<div class="detailsAlertTxt05">
+			<div class="detailsAlertTxt04Left">收货地址：</div>
+			<div class="detailsAlertTxt04Right">
+				<textarea id="detailsAddress" class="detailsAlertTxt05Input" placeholder="请输入详细地址"></textarea>
+			</div>
+		</div>
+		<div class="detailsAlertBtn">
+			<div class="detailsAlertBtnCancel CloseAddressBtn">取消</div>
+			<div class="detailsAlertBtnJoin" id="go_exchange">确认兑换</div>
+		</div>
+	</div>
+	<!--footer -s-->
+	#Gen2Footer()
+	<!--footer -e-->
+#LoadGenJS("/resources/mallpc/scripts/common/jquery-1.11.1.min")
+#LoadGenJS("/resources/mallpc/scripts/common/common")
+#LoadGenJS("/resources/mallpc/scripts/commodity/commodityCity")
+#LoadGenJS("/resources/mallpc/scripts/commodity/commodityDetails")
+</body>
+
+#Html("end")

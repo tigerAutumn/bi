@@ -1,0 +1,181 @@
+<div class="pageContent">
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <form method="post" name="detail_form" action="$env.getWebURL('')"
+          class="pageForm required-validate" >
+        <div class="pageFormContent" layoutH="56">
+            <input type="hidden" id="trans_id" value=""/>
+            <p>
+                <label>用户名称：</label>
+                <input id="idHolder" name="idHolder" type="text" size="10" maxlength="15" class="required textInput"
+                       />
+            </p>
+            <p>
+                <label>身份证号：</label>
+                <input id="idCard" name="idCard" type="text" size="18" class="required" maxlength="18" />
+            </p>
+
+            <p>
+                <label>银行卡号：</label>
+                <input id="accNo" type="text" name="accNo" size="18" class="required"  maxlength="20"
+                       />
+                <span style="position:absolute; left:104%;width:200px;;display: none;font-size:12px; color:red;" id = "cardType">仅借记卡！</span>
+            </p>
+            <p>
+                <label>卡类型：</label>
+                <select  id="payCode">
+                    <option  value="-1">请选择银行</option>
+                    #foreach($bank in $bankList.keySet())
+                            <option  value="$!bank">$!{bankList.get($!bank)}</option>
+                    #end
+                </select>
+            </p>
+            <p>
+                <label>预留手机号：</label>
+                <input id="mobile" type="text" name="mobile" class="required phone" size="11"/>
+            </p>
+            <p id="vaildDiv" hidden="hidden">
+                <label id="vaild" style="width: auto"></label>
+            </p>
+            <p id="code" hidden="hidden">
+                <label id="lab" hidden="hidden">验证码：</label>
+                <input id="smsCode" type="text" class="required" size="11" value="" hidden="hidden"/>
+                <button id="confirm" type="button" hidden>确定</button>
+            </p>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="buttonActive">
+                        <div class="buttonContent">
+                            <button id="sub" type="button">保存</button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button type="button" class="close">取消</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </form>
+</div>
+<script>
+    $(function () {
+
+        $("#accNo").on('input', function(){
+            cardbin();
+        });
+    });
+
+    //卡bin开始
+    var backup = "";
+    function cardbin() {
+        var root = $("#APP_ROOT_PATH").val();
+        var cardNo = $("#accNo").val();
+        var reg = /^[0-9]*$/;
+        if(!reg.test(cardNo)) {
+            $("#accNo").val("");
+            return;
+        }
+        if(backup && cardNo.indexOf(backup) != -1 && cardNo.length<13) {
+            return;
+        }
+        $.post(root+"/baofoo/regular/queryCardBank.htm",{cardNo:cardNo},function(data){
+            if(data.bin.bankId) {
+                if($.trim($("#payCode").val()) != data.bin.bankId){
+                    $("#payCode").find("option").each(function(index, domEle){
+                        if(data.bin.bankId == $(domEle).attr("value")) {
+                            $("#payCode").val(data.bin.bankId);
+//                            $("#onelimit").text(parseFloat($(domEle).attr("oneTop")).toFixed(2));
+//                            $("#daylimit").text(parseFloat($(domEle).attr("dayTop")).toFixed(2));
+//                            $("#notice").text($(domEle).attr("notice"));
+//                            $("#limit").show("slow");
+                            if(data.type && data.type == "no"){
+                                $("#cardType").show("slow");
+                            }
+                            backup = cardNo;
+                            return false;
+                        }
+                        else {
+                            $("#payCode").val("-1");
+//                            $("#limit").hide("slow");
+                            $("#cardType").hide("slow");
+                            backup = "";
+                        }
+                    });
+                }
+            }
+            else {
+                $("#payCode").val("-1");
+//                $("#limit").hide("slow");
+                $("#cardType").hide("slow");
+                backup = "";
+            }
+        },"json");
+    };
+
+    function navTabAjaxDone(json) {
+    }
+
+    $("#sub").click(function () {
+
+        $.ajax({
+            type: 'POST',
+            url: $("#APP_ROOT_PATH").val() + "/baofoo/pre/bind_card.htm",
+            data: {
+                "idHolder": $("#idHolder").val(), "idCard": $("#idCard").val(), "accNo": $("#accNo").val(),
+                "payCode": $("#payCode").val(), "mobile": $("#mobile").val()
+            },
+            success: function (data) {
+                if (data == "000000") {
+                    $("#vaild").html("已向您的手机号" + $("#mobile").val() + "发送了短信验证码，请注意查收");
+                    $("#vaildDiv").show();
+                    $("#smsCode").show();
+                    $("#confirm").show();
+                    $("#code").show();
+                    $("#lab").show();
+                }else if(data=="961003"){
+                    alertMsg.error("此卡已绑定");
+                }else if(data=="920001"){
+                    alertMsg.error("支付平台错误");
+                }else {
+                    alertMsg.error("预绑卡失败");
+                }
+            },
+            dataType: "json"
+        });
+    });
+
+
+    $("#confirm").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: $("#APP_ROOT_PATH").val() + "/baofoo/bind_card.htm",
+            data: {
+                "smsCode": $("#smsCode").val(),"accNo": $("#accNo").val()
+            },
+            success: function (data) {
+                if (data == "000000") {
+                    alertMsg.info("绑卡成功");
+                }else if(data=="900001"){
+                    alertMsg.error("没有预绑卡");
+                }else if(data=="920001"){
+                    alertMsg.error("支付平台错误");
+                }else if(data=="961003"){
+                    alertMsg.error("此卡已绑定");
+                }else {
+                    alertMsg.error("绑卡失败");
+                }
+                $.pdialog.closeCurrent();
+                navTab.reload("$env.getWebURL('baofoo/bind_card/index.htm')");
+            },
+            dataType: "json"
+        });
+    });
+
+
+</script>

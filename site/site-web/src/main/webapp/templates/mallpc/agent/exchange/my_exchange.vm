@@ -1,0 +1,95 @@
+#Html("begin")
+#GenHead("begin")
+#Title("币港湾官网_国资系互联网金融服务平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#LoadGenCSS("/resources/mallpc/styles/agent/common/default")
+#LoadGenCSS("/resources/mallpc/styles/agent/exchange/myExchange")
+#Mall178Header("exchange")
+
+<body class="body">
+<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')" />
+<input type="hidden" value="$!totalCount" id="totalCount"/>
+	<div class="exchangeMain">
+		<div class="exchangeBox">
+			<div class="exchangeTitle">
+				<div class="exchangeTitleProduct">商品</div>
+				<div class="exchangeTitleExpenditure">支出积分</div>
+				<div class="exchangeTitleCollectGoods">收货信息</div>
+				<div class="exchangeTitleState">订单状态</div>
+				<div class="exchangeTitleDeliverGoods">发货信息</div>
+			</div>
+			#if($!totalCount == 0)
+			<div class="exchangeNone">
+				<img class="exchangeNoneImg" src="$!env.get('gen.server.web')/resources/mallpc/images/exchange/exchange01.png"/>
+				<div class="exchangeNoneTxt">暂无兑换记录</div>
+			</div>
+			#else
+			<ul class="exchangeHave">
+				#foreach($!grid in $!exchangeList)
+				<li class="exchangeHaveList">
+					<div class="exchangeHaveListTitle">
+						<div class="exchangeHaveListTitleTxt">兑换时间：$!date.formatDateTime($!grid.exchangeTime,'yyyy-MM-dd HH:mm')</div>
+						<div class="exchangeHaveListTitleTxt">
+							#if($!grid.sendStatus == "FINISHED")
+                				#if($!grid.sendCommodityTime)
+									发货时间：$!date.formatDateTime($!grid.sendCommodityTime,'yyyy-MM-dd HH:mm')
+                				#else
+                					发货时间：暂无
+            					#end
+            				#else
+            					发货时间：暂无
+            				#end
+							
+						</div>
+					</div>
+					<div class="exchangeHaveListContent">
+						<div class="exchangeHaveListContentProduct"><img class="exchangeHaveListContentImg" src="$!grid.commPictureUrl" /></div>
+						<div class="exchangeHaveListContentName">$!grid.commName</div>
+						<div class="exchangeHaveListContentExpenditure">$!grid.payPoints积分</div>
+						<div class="exchangeHaveListContentCollectGoods">
+							#if($!grid.commProperty == "REAL")
+							$!grid.recName，$!grid.recMobile
+							<span class="exchangeHaveListContentCollectGoodsImg"></span>
+							<div class="exchangeHaveListContentCollectGoodsBox">
+								<span class="exchangeHaveListContentCollectGoodsAddress">收货信息：$!grid.recName，$!grid.recMobile，$!grid.recAdress，$!grid.recAdressDetail</span>
+							</div>
+							#else
+							$!grid.mobile
+							#end
+						</div>
+						#if($!grid.sendStatus == "FINISHED")
+							<div class="exchangeHaveListContentState StatusColor">已发货</div>
+    						#if("$!grid.deliveryNote" == "")
+                               <div class="exchangeHaveListContentDeliverGoods">暂无</div>
+        					#elseif($!grid.deliveryNote)
+								#if($!grid.commProperty == "REAL")
+        						<div class="exchangeHaveListContentDeliverGoods StatusColor">$!grid.deliveryNote</div>
+								#else
+								<div class="exchangeHaveListContentDeliverGoods StatusColor StatusTxt">$!grid.deliveryNote</div>
+								#end
+        					#else
+                                <div class="exchangeHaveListContentDeliverGoods">暂无</div>
+        					#end						
+						#else
+							<div class="exchangeHaveListContentState">未发货</div>
+							<div class="exchangeHaveListContentDeliverGoods">暂无</div>
+						#end						
+					</div>
+				</li>
+				#end
+			</ul>
+			#if($!totalCount > 1)
+			<div id="pagination_3"></div>
+			#end
+			#end			
+		</div>
+	</div>
+	<!--footer -s-->
+	#Gen178Footer()
+	<!--footer -e-->
+#LoadGenJS("/resources/mallpc/scripts/agent/common/jquery-1.11.1.min")
+#LoadGenJS("/resources/mallpc/scripts/agent/common/common")
+#LoadGenJS("/resources/mallpc/scripts/agent/exchange/page")
+#LoadGenJS("/resources/mallpc/scripts/agent/exchange/myExchange")
+</body>
+
+#Html("end")

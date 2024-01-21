@@ -1,0 +1,535 @@
+#Html("begin")
+#GenHead("begin","互联网金融平台，互联网金融，币港湾，币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/index/default")
+#LoadGenCSS("/resources/gen2.0/styles/index/homepage")
+#LoadGenCSS("/resources/gen2.0/styles/index/idangerous.swiper")
+#GenHead("end")
+<body>
+<!--[if lte IE 6]
+<style>
+    .header{
+        border-bottom: solid 1px #e5e5e5;
+    }
+    .pagination .swiper-active-switch {
+        border-bottom: solid 2px #ff6633;
+    }
+    .pagination .swiper-pagination-switch{
+        background:#000;
+        opacity:.5;
+        filter:alpha(opacity=50);
+    }
+</style>
+[endif]-->
+<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')"/>
+    #Gen2Header("home")
+
+<div class="homepage_container">
+    <!-- banner -->
+    <div class="homepage_banner">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                #foreach($banner in $!bannerList.bannerList)
+                    #if($string.isNotBlank($!banner.url))
+                        <div class="swiper-slide">
+                            <a style="background: url($!env.get('gen.server.web')/$!banner.imgPath) no-repeat center;background-size: cover;" #if($string.startsWith($!banner.url,"http")) href="$!banner.url" #else href="$!env.get('gen.server.web')/$!banner.url" #end target="_blank"></a>
+                        </div>
+                    #else
+                        <div class="swiper-slide"><a style="background: url($!env.get('gen.server.web')/$!banner.imgPath) no-repeat center;background-size: cover;"></a></div>
+                    #end
+                #end
+            </div>
+            <div class="pagination">
+                #foreach($banner in $!bannerList.bannerList)
+                    #if($!banner.url != "")
+                        <a class="swiper-btn" #if($string.startsWith($!banner.url,"http")) href="$!banner.url" #else href="$!env.get('gen.server.web')/$!banner.url" #end target="_blank"><span class="swiper-pagination-switch">$!banner.subject</span></a>
+                    #else
+                        <a class="swiper-btn"><span class="swiper-pagination-switch">$!banner.subject</span></a>
+                    #end
+                #end
+            </div>
+        </div>
+    </div>
+
+    <div class="homepage_feature">
+        <div class="feature_list">
+            <div class="feature_card">
+                <div class="feature_ico" style="background-image: url($!env.get('gen.server.web')/resources/gen2.0/images/homepage/feature_01.png)"></div>
+                <div class="feature_content">
+                    <h5>国资背景</h5>
+                    <p>杭商资产倾力打造</p>
+                </div>
+            </div>
+            <div class="feature_card">
+                <div class="feature_ico" style="background-image: url($!env.get('gen.server.web')/resources/gen2.0/images/homepage/feature_02.png)"></div>
+                <div class="feature_content">
+                    <h5>银行存管</h5>
+                    <p>恒丰银行存管保障</p>
+                </div>
+            </div>
+            <div class="feature_card">
+                <div class="feature_ico" style="background-image: url($!env.get('gen.server.web')/resources/gen2.0/images/homepage/feature_03.png)"></div>
+                <div class="feature_content">
+                    <h5>信息透明</h5>
+                    <p>银行级信息合规平台</p>
+                </div>
+            </div>
+            <div class="feature_card">
+                <div class="feature_ico" style="background-image: url($!env.get('gen.server.web')/resources/gen2.0/images/homepage/feature_04.png)"></div>
+                <div class="feature_content">
+                    <h5>灵活可靠</h5>
+                    <p>千元起投次日起息</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="homepage_date">
+        <div class="date_list" onclick="clickPlatformData()">
+            <div class="date_card">
+                <p>加入币港湾的用户（<span>人</span>）</p>
+                <p class="date_Num join_Num">$!money.format($!totalReqUser).replace(".00","")</p>
+            </div>
+            <div class="date_card">
+                <p>平台累计成交金额（<span>元</span>）</p>
+                <p class="date_Num deal_Num">$!money.format($!totalInvestAmount).substring(0,$!money.format($!totalInvestAmount).indexOf("."))</p>
+            </div>
+            <div class="date_card">
+                <p>用户累计收益（<span>元</span>）</p>
+                <p class="date_Num profit_Num">$!money.format($!totalIncome).replace(".00","")</p>
+            </div>
+            <div class="date_card">
+                <p>平台已合规运营（<span>天</span>）</p>
+                <p class="date_Num operate_days"></p>
+            </div>
+        </div>
+
+        <div class="homepage_adversment">
+            <div class="adversment_frame">
+                <a href="$!env.get('gen.server.web')/gen2.0/assets/assets?invite=invite"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/home/adversment/01.png"></a>
+            </div>
+            <div class="adversment_frame adversment_margin">
+                <a href="$!env.get('gen.server.web')/gen2.0/static/depository_project"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/home/adversment/02.png"></a>
+            </div>
+            <div class="adversment_frame">
+                <a href="$!env.get('gen.server.web')/gen2.0/static/purchase_process"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/home/adversment/03.png"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="homepage_product">
+        #if("$!recommendProduct.activityType" == "NEW_BUYER")
+            #if("$!recommendProduct.flag" == "countdown" || "$!recommendProduct.flag" == "buy")
+                <div class="product_rokies">
+                    <h3>
+                        新手专享
+                    </h3>
+                    <p class="product_tips">
+                        <span></span>Novice exclusive<span></span>
+                    </p>
+                    <div class="rokie_enjoy">
+                        <div class="rokie_plan" onclick="go_buy($!recommendProduct.id)">
+                            <div class="rokie_plan_img">
+                                <h5 class="serial_name" #if(!$!recommendProduct.serialName) name="$!recommendProduct.name" #end>
+                                    #if($!recommendProduct.serialName)
+                                $!recommendProduct.serialName
+                            #else
+                                        $!recommendProduct.name
+                                    #end
+                                </h5>
+                        <span class="serial">
+                            #if($!{recommendProduct.serialOrder})
+                                #if($!{recommendProduct.serialOrder} < 10)
+                                    000$!{recommendProduct.serialOrder}期
+                                #elseif($!{recommendProduct.serialOrder} < 100)
+                                    00$!{recommendProduct.serialOrder}期
+                                #elseif($!{recommendProduct.serialOrder} < 1000)
+                                    0$!{recommendProduct.serialOrder}期
+                                #else
+                                    $!{recommendProduct.serialOrder}期
+                                #end
+                            #else
+                                0001期
+                            #end
+                        </span>
+                                <img src="$!env.get('gen.server.web')/resources/gen2.0/images/homepage/rokie_plan_new.png" alt="">
+                            </div>
+                            <div class="rokie_plan_ifo">
+                                <div class="rokie_plan_ifo_card">
+                                    <p class="rokie_plan_return"><span>$!money.format($!{recommendProduct.rate})</span>%</p>
+                                    <p>预期年化收益</p>
+                                </div>
+                                <div class="rokie_plan_ifo_card">
+                                    #if("$!recommendProduct.propertySymbol" == "ZAN")
+                                        <p>产品期限：<strong>$!{recommendProduct.term}个月内</strong></p>
+                                        <p>起投金额：<strong>
+                                            #if($!recommendProduct.minInvestAmount)
+                                                $number.format("0",$!recommendProduct.minInvestAmount)
+                                            #end
+                                            元</strong></p>
+                                    #else
+                                        <p>产品期限：<strong>$!{recommendProduct.term}天</strong></p>
+                                        <p>起投金额：<strong>
+                                            #if($!recommendProduct.minInvestAmount)
+                                                $number.format("0",$!recommendProduct.minInvestAmount)
+                                            #end
+                                            元</strong></p>
+                                    #end
+                                </div>
+                                <div class="rokie_plan_ifo_card" style="width: 30%;padding: 15px;">
+                                    <div class="plans_card_prog">
+                                        #if("$!recommendProduct.flag" == "finish")
+                                            <div class="plans_prog_speed">
+
+                                            </div>
+                                        #else
+                                            <div class="plans_prog_speed">
+                                                <div class="prog_speed_main" style="width: $!{recommendProduct.progress}%;">
+                                                    <div class="prog_speed_out"></div>
+                                                </div>
+                                            </div>
+                                        #end
+                                        <div class="plans_prog_ifo">
+                                            <p class="prog_ifo_data" style="margin-bottom: 0;">
+                                                #if("$!recommendProduct.flag" == "finish")
+                                                    $string.replace($!money.format($!{recommendProduct.currTotalAmount}),".00","")
+                                                    /$string.replace($!money.format($!{recommendProduct.maxTotalAmount}),".00","")
+                                                #elseif("$!recommendProduct.flag" == "countdown")
+                                                    $string.replace($!money.format($!{recommendProduct.currTotalAmount}),".00","")
+                                                    /$string.replace($!money.format($!{recommendProduct.maxTotalAmount}),".00","")
+                                                #else
+                                                    进度：
+                                                    <span>$string.replace($!money.format($!{recommendProduct.currTotalAmount}),".00","")</span>
+                                                    /$string.replace($!money.format($!{recommendProduct.maxTotalAmount}),".00","")
+                                                #end
+                                            </p>
+                                            <p class="pro_ifo_percent">
+                                                #if("$!recommendProduct.flag" == "finish")
+                                                    <strong style="color: #999;">已完成</strong>
+                                                #elseif("$!recommendProduct.flag" == "countdown")
+                                                    <span style="color: #999;">$!number.format('0',$!{recommendProduct.progress})%</span>
+                                                #else
+                                                    <span>$!number.format('0',$!{recommendProduct.progress})</span>%
+                                                #end
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rokie_plan_ifo_card" style="border-right: none; width: 25%;">
+                                    #if("$!recommendProduct.flag" == "buy")
+                                        <a href="javascript:void(0)" class="Nl_rbtn recommed_btn">立即加入</a>
+                                    #elseif("$!recommendProduct.flag" == "countdown")
+                                        <a href="javascript:void(0)" class="Nl_rbtn recommed_btn">
+                                            #if($!date.isSameDay($!date.parseDateTime("$!recommendProduct.startTime"), $!now))
+                                                今日$!date.formatDateTime($!date.parseDateTime("$!recommendProduct.startTime"), "HH时mm分")开始
+                                            #elseif($!date.isSameDay($!date.parseDateTime("$!recommendProduct.startTime"), $!tomorrow))
+                                                明日$!date.formatDateTime($!date.parseDateTime("$!recommendProduct.startTime"), "HH时mm分")开始
+                                            #else
+                                                $!date.formatDateTime($!date.parseDateTime("$!recommendProduct.startTime"), "MM月dd日HH时mm分")开始
+                                            #end
+                                        </a>
+                                    #elseif("$!recommendProduct.flag" == "finish")
+                                        <a href="javascript:void(0)" class="Nl_rbtn recommed_btn disabled">查看详情</a>
+                                    #end
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            #else
+            ## 新手标的状态是未开放已发布（预热中）或者进行中的状态时，才显示新手标模块，否则新手标模块隐藏掉
+            #end
+        #else
+        #end
+
+        <div class="product_plans">
+            <h3>精选产品</h3>
+            <p class="product_tips">
+                <span></span>Featured products<span></span>
+            </p>
+            #foreach($!pro in $!recommendProductList)
+                <div class="plans_list">
+                    <div class="plans_card" onclick="go_buy($!pro.id)">
+                        #if("$!pro.isSuggest" == "YES") ##推荐标
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/regular/regular_index/Recommend.png" style="position:absolute;top:-4px;left:-3px;"/>
+                        #elseif("$!pro.activityType" == "NEW_BUYER")	## 新手标
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/regular/regular_index/Novice.png" style="position:absolute;top:-4px;left:-3px;"/>
+                        #elseif("$!pro.flag" == "countdown")
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/regular/regular_index/yure.png" style="position:absolute;top:-4px;left:-3px;"/>
+                        #end
+                        <h4>$!pro.name</h4>
+                        <div class="plans_card_ifo">
+                            <div class="card_ifo_expect">
+                                #if($!pro.interestRatesTagContent)
+                                    #if($!pro.remindTagContent)
+                                        <div class="card_ifo_expect_left">
+                                            $!money.format($!{pro.rate})<span class="md_thrspan">%</span>
+                                        </div>
+                                        <div class="card_ifo_expect_right">
+                                            <p class="activity_tag"><span>$!pro.remindTagContent</span></p>
+                                            <p class="redpack_tag">$!pro.interestRatesTagContent</p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    #else
+                                        <div class="card_ifo_expect_left">
+                                            $!money.format($!{pro.rate})<span class="md_thrspan">%</span>
+                                        </div>
+                                        <div class="card_ifo_expect_right">
+                                            <p class="redpack_tag redpack_tag_middle">$!pro.interestRatesTagContent</p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    #end
+                                #elseif($!pro.remindTagContent)
+                                    #if($!pro.interestRatesTagContent)
+                                        <div class="card_ifo_expect_left">
+                                            $!money.format($!{pro.rate})<span class="md_thrspan">%</span>
+                                        </div>
+                                        <div class="card_ifo_expect_right">
+                                            <p class="activity_tag"><span>$!pro.remindTagContent</span></p>
+                                            <p class="redpack_tag">$!pro.interestRatesTagContent</p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    #else
+                                        <div class="card_ifo_expect_left">
+                                            $!money.format($!{pro.rate})<span class="md_thrspan">%</span>
+                                        </div>
+                                        <div class="card_ifo_expect_right">
+                                            <p class="activity_tag activity_tag_middle"><span>$!pro.remindTagContent</span></p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    #end
+                                #else
+                                    $!money.format($!{pro.rate})<span class="md_thrspan">%</span>
+                                #end
+                            </div>
+                            <p>预期年化收益</p>
+                        </div>
+                        <div class="plans_card_standard">
+                            #if("$!pro.propertySymbol" == "ZAN")
+                                <p><strong>$!pro.term</strong>个月内</p>
+                            #else
+                                <p><strong>$!pro.term</strong>天期限</p>
+                            #end
+                            <p><strong>$number.format("0",$!pro.minInvestAmount)</strong>元起投</p>
+                        </div>
+                        <div class="plans_card_prog">
+                            <div class="plans_prog_speed">
+                                #if("$!pro.flag" == "buy")
+                                    <div class="prog_speed_main" style="width: $!{pro.progress}%;">
+                                        <div class="prog_speed_out"></div>
+                                    </div>
+                                #else
+                                #end
+                            </div>
+                            <div class="plans_prog_ifo">
+                                <p class="prog_ifo_data">
+                                    #if("$!pro.flag" == "buy")
+                                        进度：<span>$string.replace($!money.format($!{pro.currTotalAmount}),".00","")</span>/$string.replace($!money.format($!{pro.maxTotalAmount}),".00","")
+                                    #else
+                                        进度：$string.replace($!money.format($!{pro.currTotalAmount}),".00","")/$string.replace($!money.format($!{pro.maxTotalAmount}),".00","")
+                                    #end
+                                </p>
+                                <p class="pro_ifo_percent">
+                                    #if("$!pro.flag" == "finish")
+                                        <strong style="color: #999;">已完成</strong>
+                                    #elseif("$!pro.flag" == "countdown")
+                                        <span style="color: #999;">$!number.format('0',$!{pro.progress})%</span>
+                                    #else
+                                        <span>$!number.format('0',$!{pro.progress})</span>%
+                                    #end
+                                </p>
+                            </div>
+                        </div>
+                        <div class="plans_card_btn">
+                            #if("$!pro.flag" == "buy")
+                                <a href="javascript:void(0)">立即加入</a>
+                            #elseif("$!pro.flag" == "countdown")
+                                <a href="javascript:void(0)">
+                                    #if($!date.isSameDay($!date.parseDateTime("$!pro.startTime"), $!now))
+                                        今日$!date.formatDateTime($!date.parseDateTime("$!pro.startTime"), "HH时mm分")开始
+                                    #elseif($!date.isSameDay($!date.parseDateTime("$!pro.startTime"), $!tomorrow))
+                                        明日$!date.formatDateTime($!date.parseDateTime("$!pro.startTime"), "HH时mm分")开始
+                                    #else
+                                        $!date.formatDateTime($!date.parseDateTime("$!pro.startTime"), "MM月dd日HH时mm分")开始
+                                    #end
+                                </a>
+                            #elseif("$!pro.flag" == "finish")
+                                <a href="javascript:void(0)" class="disabled">查看详情</a>
+                            #end
+                        </div>
+                    </div>
+                </div>
+            #end
+        </div>
+    </div>
+    <div class="homepage_about">
+        <h3>平台相关</h3>
+        <p class="product_tips">
+            <span></span>About Plantform<span></span>
+        </p>
+        <div class="about_ifo">
+            <div class="about_ifo_left">
+                <div class="about_ifo_card ifo_notice">
+                    <div class="ifo_card_title">
+                        <h5>平台公告</h5>
+                        <a href="$!env.get('gen.server.web')/gen2.0/platform/info/notice/index">更多</a>
+                    </div>
+                    <div class="notice_list">
+                        #if($!news)
+                            #foreach($notice in $!news)
+                                <div class="notice_card">
+                                    <a href="$!env.get('gen.server.web')/gen2.0/platform/info/notice_detail/index?id=$!notice.id">
+                                        $!notice.subject
+                                    </a>
+                                    <span>$!date.formatDateTime($!notice.publishTime, "MM-dd")</span>
+                                </div>
+                            #end
+                        #end
+                    </div>
+                </div>
+
+                <div class="about_ifo_card ifo_reports">
+                    <div class="ifo_card_title">
+                        <h5>运营报告</h5>
+                        <a href="$!env.get('gen.server.web')/gen2.0/platform/info/report/index">更多</a>
+                    </div>
+                    <div class="reports_list">
+                        #foreach($!report in $!reportList)
+                            <div class="reports_card" onclick="go_report_detail('$!env.get("gen.server.web")$!report.storageAddress')">
+                                <span><img src="$!env.get('gen.server.web')/resources/gen2.0/images/homepage/reports_ico.png" alt=""></span>
+                                <a href="javascript:void(0)" onclick="go_report_detail('$!env.get("gen.server.web")$!report.storageAddress')">$!report.displayTime</a>
+                            </div>
+                        #end
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="about_ifo_right">
+                <div class="about_ifo_card ifo_news">
+                    <div class="ifo_card_title">
+                        <ul>
+                            <li class="ifo_title_list title_focuse" id="about_dynamic" url="$!env.get('gen.server.web')/gen2.0/platform/about/company_dynamics/index">公司动态</li>
+                            <li class="ifo_title_list" id="about_news" url="$!env.get('gen.server.web')/gen2.0/platform/about/media/index">媒体报道</li>
+                            <li class="ifo_title_list" id="about_active" url="$!env.get('gen.server.web')/gen2.0/platform/about/wfans_activity/index">湾粉活动</li>
+                        </ul>
+                        <a href="$!env.get('gen.server.web')/gen2.0/platform/about/company_dynamics/index" class="go_more">更多</a>
+                    </div>
+                    <div class="ifo_news_text">
+                        <div class="ifo_news_wrap about_dynamic">
+                            #if($!hasCDNews == true)
+                                #foreach($!cdNews in $!companyDynamicsNews)
+                                    <a href="javascript:go_company_detail($!cdNews.id)" class="ifo_news_list">
+                                        <div class="news_img">
+                                            <img src="$!cdNews.subjectImg" alt="">
+                                        </div>
+                                        <div class="news_text">
+                                            <h5>$!cdNews.subject</h5>
+                                            <p>$!cdNews.summary</p>
+                                            <p class="news_date">发布时间：<span>$!date.formatDateTime($!cdNews.publishTime, "YYYY-MM-dd")</span></p>
+                                        </div>
+                                    </a>
+                                #end
+                            #end
+                        </div>
+                        <div class="ifo_news_wrap about_news hidden">
+                            #if($!hasMCNews == true)
+                                #foreach($!mcNews in $!mediaCoverageNews)
+                                    <a href="javascript:go_news($!mcNews.id)" class="ifo_news_list">
+                                        <div class="news_img">
+                                            <img src="$!mcNews.subjectImg" alt="">
+                                        </div>
+                                        <div class="news_text">
+                                            <h5>$!mcNews.subject</h5>
+                                            <p>$!mcNews.summary</p>
+                                            <p class="news_date">发布时间：<span>$!date.formatDateTime($!mcNews.publishTime, "YYYY-MM-dd")</span></p>
+                                        </div>
+                                    </a>
+                                #end
+                            #end
+                        </div>
+                        <div class="ifo_news_wrap about_active hidden">
+                            #if($!wfansActivityList)
+                                #foreach($wfansActivity in $!wfansActivityList)
+                                    <a href="$!env.get('gen.server.web')/gen2.0/platform/about/wfans_activity/detail?id=$!wfansActivity.id" class="ifo_news_list">
+                                        <div class="news_img">
+                                            <img src="$!wfansActivity.subjectImg" alt="">
+                                        </div>
+                                        <div class="news_text">
+                                            <h5>$!wfansActivity.subject</h5>
+                                            <p>$!wfansActivity.summary</p>
+                                            <p class="news_date">发布时间：<span>$!date.formatDateTime($!wfansActivity.publishTime, "YYYY-MM-dd")</span></p>
+                                        </div>
+                                    </a>
+                                #end
+                            #end
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="homepage_partner">
+        <h3><span></span>合作伙伴<span></span></h3>
+        <div class="partner_show">
+            <div id="featureContainer">
+                <div id="feature">
+                    <div id="block">
+                        <div id="botton-scroll">
+                            <ul class="featureul">
+                                <li class="featureBox">
+                                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/homepage/partner/11.png"/>
+                                </li>
+                                <li class="featureBox">
+                                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/homepage/partner/22.png" />
+                                </li>
+                                <li class="featureBox">
+                                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/homepage/partner/hengfeng.png" />
+                                </li>
+                                <li class="featureBox">
+                                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/homepage/partner/33.png" />
+                                </li>
+                                <li class="featureBox">
+                                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/homepage/partner/44.png" />
+                                </li>
+                                <li class="featureBox">
+                                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/homepage/partner/66.png" />
+                                </li>
+                                <li class="featureBox">
+                                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/homepage/partner/77.png" />
+                                </li>
+                                <li class="featureBox">
+                                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/homepage/partner/88.png" />
+                                </li>
+                                <li class="featureBox">
+                                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/homepage/partner/99.png" />
+                                </li>
+                                <li class="featureBox">
+                                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/homepage/partner/100.png" />
+                                </li>
+                                <li class="featureBox">
+                                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/homepage/partner/101.png" />
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <A class="prev" href="javascript:void(0);"></A>
+                    <A class="next" href="javascript:void(0);"></A>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    #Gen2Footer()
+    #LoadGenJS("/resources/gen2.0/scripts/home/idangerous.swiper")
+    #LoadGenJS("/resources/gen2.0/scripts/home/jquery.rotate.min")
+    #LoadGenJS("/resources/gen2.0/scripts/home/lrscroll")
+    #LoadGenJS("/resources/gen2.0/scripts/home/index")
+</body>
+#Html("end")

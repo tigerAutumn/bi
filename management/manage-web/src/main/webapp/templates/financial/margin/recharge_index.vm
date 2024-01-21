@@ -1,0 +1,72 @@
+
+#Hidden("APP_ROOT_PATH",$!env.getWebURL(''))
+<form id="preForm" method="post" action="$env.getWebURL('/financial/margin_recharge_pre.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+    <div class="pageFormContent nowrap">
+        <input type="hidden" name="bindId" id="bindId" value="20170724103813304107263"/>
+
+        <label style="width: 60px;">姓名：</label>
+        <label for="">徐娅芳</label>
+        <div style="height: 40px;"></div>
+
+
+        <label style="width: 100px;">注册手机号：</label>
+        <label style="width: 60px;">15757101135</label>
+        <div style="height: 40px;"></div>
+
+        <label style="width: 100px;">预留手机号：</label>
+        <label style="width: 60px;">13376814602</label>
+        <div style="height: 40px;"></div>
+
+        <label style="width: 60px;">卡号：</label>
+        <input type="text" name="cardNo"  value="6217001540015548710" readonly="readonly" style="margin-right: 40px;"/>
+        <div style="height: 40px;"></div>
+
+        <label style="width: 60px;">金额：</label>
+        <input type="text" name="amount" id="amount" class="amount" maxLength="12" oninput="onlyPositiveNum(this)"/>
+        <div style="height: 40px;"></div>
+
+        <br><br>
+        <ul>
+            <li>
+                <div class="buttonActive" style="margin:30px;">
+                    <div class="buttonContent">
+                        <button onclick="formsubmint()" type="button">提交</button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <br><br>
+        <div style="margin:45px;">
+            <font style="color: red; font-size:18px; font-weight:800">此功能资金充值到宝付，资金落账到赞分期的风险保证金虚拟账户中。</font>
+        </div>
+
+    </div>
+
+</form>
+
+<script>
+    function onlyPositiveNum(input_obj) {
+        // \d{2}$/
+        input_obj.value = input_obj.value.match(/\d{1,}\.{0,1}\d{0,2}/);
+    }
+    function formsubmint(){
+        if($('.amount').val() == 0 || $('.amount').val() == "0") {
+            alertMsg.info('金额必须大于0元');
+        } else {
+            if($('.amount').val()) {
+                $("#preForm").submit();
+            } else if(!$('.amount').val()) {
+                alertMsg.info('请输入金额！');
+            }
+        }
+    }
+    function navTabAjaxDone(json) {
+        if (json.statusCode == 200) {
+            $.pdialog.open("$env.getWebURL('financial/margin_recharge_modal.htm?bindId="+$("#bindId").val()+"&amount="+$("#amount").val()+"&transId="+json.transId+"')",
+                    "topUp", "输入验证码","width:100px,height:100px,max:true,mask:true,mixable:true,minable:true,resizable:true,drawable:true,fresh:true,close:”function”, param:”{msg:’message’}");
+        } else {
+            alertMsg.error('保存失败：'+json.message);
+        }
+    }
+</script>

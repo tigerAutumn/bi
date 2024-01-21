@@ -1,0 +1,93 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('statistics/userInvest/index.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!req.pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+		
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						起始日期：<input name="startTime" maxdate="{%y}-%M-{%d}"   type="text"  id="startTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.startTime)" size="10"/>
+					</td>
+					<td>
+						结束日期：<input name="endTime" maxdate="{%y}-%M-{%d}"   type="text"  id="endTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.endTime)" size="10"/>
+					</td>
+					<td>
+						<button  type="button" onclick="dataSearch()">查询</button>
+						<button  type="button" onclick="dataExport()">导出excel</button>
+					</td>
+				</tr>
+			</table>
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<table class="table" width="1082" layoutH="138">
+		<thead>
+			<tr>
+				<th width="10%">日期</th>
+				<th width="10%">新增投资用户数</th>
+				<th width="10%">新增投资笔数</th>
+				<th width="10%">新增投资金额</th>
+				<th width="10%">新增年化</th>
+				<th width="10%">投资用户数</th>
+				<th width="10%">投资笔数</th>
+				<th width="15%">投资金额</th>
+				<th width="15%">年化金额</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($userInvest in $userInvestList)
+			<tr target="sid_user" rel="1">
+				<td>$!date.formatYYYYMMDD($!userInvest.date)</td>	
+				<td>$!userInvest.todayUserNum</td>	
+				<td>$!userInvest.todayInvestNum</td>	
+				<td>$!money.format($!userInvest.todayInvestAmount)</td>	
+				<td>$!money.format($!userInvest.todayAnnualAmount)</td>	
+				<td>$!userInvest.totalUserNum</td>	
+				<td>$!userInvest.totalInvestNum</td>	
+				<td>$!money.format($!userInvest.totalInvestAmount)</td>	
+				<td>$!money.format($!userInvest.totalAnnualAmount)</td>	
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+
+	</div>
+</div>
+
+	<script>
+	function dataExport() {
+		var url = $("#APP_ROOT_PATH").val().trim() + "/statistics/userInvest/exportXls.htm";
+		$("#myform").attr("action",url);
+		$("#myform").attr("onsubmit","");
+		$("#myform").submit();
+	}
+	function dataSearch() {
+		var url = $("#APP_ROOT_PATH").val().trim() + "/statistics/userInvest/index.htm";
+		$("#myform").attr("action",url);
+		$("#myform").attr("onsubmit","return navTabSearch(this);");
+		$("#myform").submit();
+	}
+	</script>

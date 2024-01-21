@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinting.business.dao.LnCompensateAgreementAddressMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.LnCompensateAgreementAddress" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="partner_code" property="partnerCode" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="partner_loan_id" property="partnerLoanId" jdbcType="VARCHAR" />
+    <result column="agreement_type" property="agreementType" jdbcType="VARCHAR" />
+    <result column="download_url" property="downloadUrl" jdbcType="VARCHAR" />
+    <result column="download_num" property="downloadNum" jdbcType="INTEGER" />
+    <result column="is_open" property="isOpen" jdbcType="VARCHAR" />
+    <result column="inform_status" property="informStatus" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, partner_code, order_no, partner_loan_id, agreement_type, download_url, download_num,
+    is_open, inform_status, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.LnCompensateAgreementAddressExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ln_compensate_agreement_address
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from ln_compensate_agreement_address
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ln_compensate_agreement_address
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.LnCompensateAgreementAddressExample" >
+    delete from ln_compensate_agreement_address
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.LnCompensateAgreementAddress" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ln_compensate_agreement_address (partner_code, order_no, partner_loan_id,
+    agreement_type, download_url, download_num,
+    is_open, inform_status, create_time,
+    update_time)
+    values (#{partnerCode,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{partnerLoanId,jdbcType=VARCHAR},
+    #{agreementType,jdbcType=VARCHAR}, #{downloadUrl,jdbcType=VARCHAR}, #{downloadNum,jdbcType=INTEGER},
+    #{isOpen,jdbcType=VARCHAR}, #{informStatus,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+    #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.LnCompensateAgreementAddress" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ln_compensate_agreement_address
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="partnerCode != null" >
+        partner_code,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="partnerLoanId != null" >
+        partner_loan_id,
+      </if>
+      <if test="agreementType != null" >
+        agreement_type,
+      </if>
+      <if test="downloadUrl != null" >
+        download_url,
+      </if>
+      <if test="downloadNum != null" >
+        download_num,
+      </if>
+      <if test="isOpen != null" >
+        is_open,
+      </if>
+      <if test="informStatus != null" >
+        inform_status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="partnerCode != null" >
+        #{partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerLoanId != null" >
+        #{partnerLoanId,jdbcType=VARCHAR},
+      </if>
+      <if test="agreementType != null" >
+        #{agreementType,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadUrl != null" >
+        #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadNum != null" >
+        #{downloadNum,jdbcType=INTEGER},
+      </if>
+      <if test="isOpen != null" >
+        #{isOpen,jdbcType=VARCHAR},
+      </if>
+      <if test="informStatus != null" >
+        #{informStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.LnCompensateAgreementAddressExample" resultType="java.lang.Integer" >
+    select count(*) from ln_compensate_agreement_address
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ln_compensate_agreement_address
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.partnerCode != null" >
+        partner_code = #{record.partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderNo != null" >
+        order_no = #{record.orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.partnerLoanId != null" >
+        partner_loan_id = #{record.partnerLoanId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agreementType != null" >
+        agreement_type = #{record.agreementType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.downloadUrl != null" >
+        download_url = #{record.downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.downloadNum != null" >
+        download_num = #{record.downloadNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.isOpen != null" >
+        is_open = #{record.isOpen,jdbcType=VARCHAR},
+      </if>
+      <if test="record.informStatus != null" >
+        inform_status = #{record.informStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ln_compensate_agreement_address
+    set id = #{record.id,jdbcType=INTEGER},
+    partner_code = #{record.partnerCode,jdbcType=VARCHAR},
+    order_no = #{record.orderNo,jdbcType=VARCHAR},
+    partner_loan_id = #{record.partnerLoanId,jdbcType=VARCHAR},
+    agreement_type = #{record.agreementType,jdbcType=VARCHAR},
+    download_url = #{record.downloadUrl,jdbcType=VARCHAR},
+    download_num = #{record.downloadNum,jdbcType=INTEGER},
+    is_open = #{record.isOpen,jdbcType=VARCHAR},
+    inform_status = #{record.informStatus,jdbcType=VARCHAR},
+    create_time = #{record.createTime,jdbcType=TIMESTAMP},
+    update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.LnCompensateAgreementAddress" >
+    update ln_compensate_agreement_address
+    <set >
+      <if test="partnerCode != null" >
+        partner_code = #{partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerLoanId != null" >
+        partner_loan_id = #{partnerLoanId,jdbcType=VARCHAR},
+      </if>
+      <if test="agreementType != null" >
+        agreement_type = #{agreementType,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadUrl != null" >
+        download_url = #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadNum != null" >
+        download_num = #{downloadNum,jdbcType=INTEGER},
+      </if>
+      <if test="isOpen != null" >
+        is_open = #{isOpen,jdbcType=VARCHAR},
+      </if>
+      <if test="informStatus != null" >
+        inform_status = #{informStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.LnCompensateAgreementAddress" >
+    update ln_compensate_agreement_address
+    set partner_code = #{partnerCode,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      partner_loan_id = #{partnerLoanId,jdbcType=VARCHAR},
+      agreement_type = #{agreementType,jdbcType=VARCHAR},
+      download_url = #{downloadUrl,jdbcType=VARCHAR},
+      download_num = #{downloadNum,jdbcType=INTEGER},
+      is_open = #{isOpen,jdbcType=VARCHAR},
+      inform_status = #{informStatus,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectCompenAgreeAddressList" parameterType="map" resultType="java.lang.String">
+	  SELECT download_url FROM ln_compensate_agreement_address
+   	  WHERE partner_code = #{partnerCode} AND agreement_type = #{agreementType}
+      AND partner_loan_id = #{partnerLoanId}
+      ORDER BY create_time DESC
+  </select>
+
+  <select id="selectCompensateTime" parameterType="map" resultMap="BaseResultMap">
+    SELECT * FROM ln_compensate_agreement_address
+    WHERE partner_code = #{partnerCode}
+    AND partner_loan_id = #{loanId}
+    AND order_no = #{orderNo}
+  </select>
+
+  <select id="selectCompensateAgreementList" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+       c.id, c.order_no, c.partner_code, c.agreement_type, c.download_url
+    FROM ln_compensate a, ln_compensate_detail b, ln_compensate_agreement_address c
+    WHERE a.id = b.compensate_id AND b.compensate_id = #{compensateId}
+    AND a.order_no = c.order_no AND b.partner_loan_id = c.partner_loan_id AND b.partner_loan_id = #{partnerLoanId}
+    AND c.agreement_type = #{agreementType}
+  </select>
+
+  <select id="selectCompensateDebtTransferAgreementList" parameterType="map" resultMap="BaseResultMap">
+    select
+	  a.order_no, a.partner_code, a.agreement_type
+    from
+      (
+        SELECT
+          a.order_no, c.partner_code, c.agreement_type, b.compensate_id, b.partner_loan_id, count(c.agreement_type) as succ_times
+        FROM ln_compensate a, ln_compensate_detail b, ln_compensate_agreement_address c
+        WHERE a.id = b.compensate_id AND b.compensate_id = #{compensateId}
+        AND a.order_no = c.order_no AND b.partner_loan_id = c.partner_loan_id AND b.partner_loan_id = #{partnerLoanId}
+        AND c.agreement_type = #{agreementType}
+      ) as a,
+      (
+        SELECT
+          e.partner_loan_id, count(e.partner_loan_id) as count_c
+          FROM ln_compensate_relation a, ln_deposition_repay_schedule b, bs_user c, ln_loan_relation d, ln_loan e
+          WHERE a.dep_plan_id = b.id
+          AND d.id = a.loan_relation_id
+          AND c.id = d.bs_user_id
+          and d.loan_id = e.id
+          group by e.partner_loan_id
+      ) as b
+      where a.partner_loan_id = b.partner_loan_id and a.succ_times = b.count_c
+  </select>
+
+  <select id="selectCompensateServiceFeeTransList" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    a.order_no, c.partner_code, c.agreement_type
+    FROM ln_compensate a, ln_compensate_detail b, ln_compensate_agreement_address c
+    WHERE a.id = b.compensate_id AND b.compensate_id = #{compensateId}
+    AND a.order_no = c.order_no
+    AND c.agreement_type = #{agreementType}
+  </select>
+
+  <select id="selectWaitNotifyDownloadAgreement" parameterType="map" resultMap="BaseResultMap">
+      SELECT
+          *
+      FROM
+          (
+              SELECT
+                  a.id,
+                  a.order_no,
+                  a.partner_loan_id,
+                  a.partner_code
+              FROM
+                  (
+                      SELECT
+                          a.id,
+                          a.order_no,
+                          a.partner_loan_id,
+                          a.partner_code
+                      FROM
+                          (
+                              SELECT
+                                  a.id,
+                                  a.order_no,
+                                  a.partner_loan_id,
+                                  a.partner_code
+                              FROM
+                                  ln_compensate_agreement_address a
+                              WHERE
+                                  a.inform_status = 'INIT'
+                              AND a.partner_code = 'YUN_DAI_SELF'
+                              AND a.download_url IS NOT NULL
+                              AND a.agreement_type IN (
+                                  'DEBT_TRANS_NOTICES',
+                                  'DEBT_TRANS_CONFIRM'
+                                  )
+                            <if test="maxId != null and maxId != 0" >
+                              AND a.id &lt; #{maxId}
+                            </if>
+                              AND a.update_time BETWEEN (#{startTime})
+                              AND (#{endTime})
+                          ) a
+                      INNER JOIN ln_compensate_detail b ON b.`status` = 'SUCC'
+                      AND b.agreement_generate_status = 'SUCC'
+                      AND b.partner_loan_id = a.partner_loan_id
+                      ORDER BY
+                          a.id DESC
+                  ) a
+              GROUP BY
+                  a.partner_loan_id
+          ) a
+    ORDER BY
+        a.id DESC
+    LIMIT #{selectNum}
+  </select>
+</mapper>

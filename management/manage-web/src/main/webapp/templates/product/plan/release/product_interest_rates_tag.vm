@@ -1,0 +1,104 @@
+<style type="text/css" >
+	.dd{
+		width:134px;
+		height:30px;
+		display:inline-block;
+	}
+	
+	.dd_user_select{
+		width:134px;
+		height:30px;
+		display:inline-block;
+	}
+</style>
+<div class="pageContent" >
+	<form method="post" id="dialogInterestRatesTagForm" action="$!env.getWebURL('')/product/release/addProductTag.htm" onsubmit="return validateCallback(this, thisDialogAjaxDone)">
+        <input type="hidden" name="productId" id="productId" value="$!productId"/>
+        <input type="hidden" name="productTagType" id="productTagType" value="INTEREST_RATES_TAG"/>
+		<div class="pageFormContent" layoutH="56">
+            <div style="padding: 10px;">
+                <span style="font-size: 16px;float: left;">加息标签内容：</span>
+				<span style="font-size: 16px;">
+					<input type="text" id="content" name="content" maxlength="12" value="$!content" ></br>
+				</span>
+			</div>
+            <span style="font-size: 13.5px;float: left;">（格式参考：9.50+0.20%）</span>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li>
+					<div class="buttonActive">
+						<div class="buttonContent">
+							<button type="button" onclick="confirm(this)" >确定</button>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
+							<button type="button" class="close">取消</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	function confirm(obj) {
+        var content = $.trim($("#content").val());
+        if((content == null || content == "")){
+
+        }else {
+			if(content.indexOf('+') > 0 && content.indexOf('%') > 0) {
+                var array = content.split('+');
+				var base_rate = array[0];
+				var add_rate = array[1].split('%')[0];
+                if(isNaN(base_rate)) {
+                    alertMsg.warn("加息的值只能为数字！");
+                    return false;
+                }
+                if(isNaN(add_rate)) {
+                    alertMsg.warn("加息的值只能为数字！");
+                    return false;
+                }
+                var numberArray1 = base_rate.split('.');
+                if(numberArray1.length > 1) {
+                    if(numberArray1[1].length != 2) {
+                        alertMsg.warn("加息的值必须保留小数点后2位，请重新输入！");
+                        return false;
+                    }
+                }else {
+                    alertMsg.warn("加息的值必须保留小数点后2位，请重新输入！");
+                    return false;
+				}
+                var numberArray2 = add_rate.split('.');
+                if(numberArray2.length > 1) {
+                    if(numberArray2[1].length != 2) {
+                        alertMsg.warn("加息的值必须保留小数点后2位，请重新输入！");
+                        return false;
+                    }
+                }else {
+                    alertMsg.warn("加息的值必须保留小数点后2位，请重新输入！");
+                    return false;
+				}
+
+			}else {
+                alertMsg.warn("加息标签的格式不对，请参考格式示例！");
+                return false;
+			}
+        }
+
+		$("#dialogInterestRatesTagForm").submit();
+	}
+	
+	function thisDialogAjaxDone(json){
+      if (json.statusCode == "200"){
+			alertMsg.correct(json.message);
+			$.pdialog.closeCurrent();
+			navTab.reload("$!env.getWebURL('/product/release/release_index.htm')");
+      } else {
+		alertMsg.error(json.message);
+	  }
+	}
+</script>

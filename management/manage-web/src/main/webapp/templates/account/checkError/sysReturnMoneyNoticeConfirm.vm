@@ -1,0 +1,78 @@
+<div class="pageContent">
+	<form method="post" name="detail_form" action="$env.getWebURL('/account/sysReturnMoneyNotice.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		#Hidden("userId", "$!user.userId")
+		#Hidden("sendBatchId", "$!plan.productOrderNo")
+        #if("$!plan.productOrderNo" != "")
+        <div class="pageFormContent" layoutH="56">
+			<p>
+				<label>回款批次号：</label>
+                <label>$!plan.productOrderNo</label>
+			</p>
+            <p>
+                <label>该批次购买本金：</label>
+                <label>$!plan.productPrincipal</label>
+            </p>
+            <p>
+                <label>回款方：</label>
+                <label>$!plan.propertySymbol</label>
+            </p>
+            <p>
+                <label>产品编码：</label>
+                <label>$!plan.productCode</label>
+            </p>
+            <p>
+                <label>支付订单号：</label>
+                <label>$!plan.payOrderNo</label>
+            </p>
+            <p>
+                <label>支付日期：</label>
+                <label>$!date.formatYYYYMMDD($!plan.payReqTime)</label>
+            </p>
+            <p>
+                <label>回款期次：</label>
+                <label>$!plan.productReturnTerm</label>
+            </p>
+            <p>
+                <label>回款金额：</label>
+                <label>$!plan.amount</label>
+            </p>
+            <p>
+                <label>回款本金：</label>
+                <label>$!plan.productAmount</label>
+            </p>
+            <p>
+                <label>回款利息：</label>
+                <label>$!plan.productInterest</label>
+            </p>
+            <p>请确认通知地址：$!plan.noticeUrl</p>
+        </div>
+        #else
+            <div class="pageFormContent" layoutH="56">
+                <p>
+                    <label>错误信息：</label>
+                    <label><font color="red">$!errMsg</font></label>
+                </p>
+		    </div>
+        #end
+		<div class="formBar" style="display:$!op">
+			<ul>
+			#if("$!plan.productOrderNo" != "")
+                <li><div class="buttonActive"><div class="buttonContent"><button type="submit">确认回款</button></div></div></li>
+			#end
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "200") {
+			alertMsg.correct(json.message);
+			$.pdialog.closeCurrent();
+		} else {
+			alertMsg.error(json.message);
+		}
+	}
+</script>

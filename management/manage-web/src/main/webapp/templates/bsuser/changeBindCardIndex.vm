@@ -1,0 +1,192 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/bsuser/changeBindCardIndex.htm')" method="post" id="myform" class="pageForm required-validate">
+    	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+    	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    	<input type="hidden" id="queryFlag" name="queryFlag" value="query"/>
+    	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						姓名：<input id="userName" type="text" name="userName" value="$!req.userName" size="20"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						申请时间：
+						<input name="applyStartTime"  type="text" id="applyStartTime" class="date textInput readonly" readonly="true" size="15"  value="$!req.applyStartTime" /> -
+					   	<input name="applyEndTime"  type="text" id="applyEndTime" class="date textInput readonly" readonly="true" size="15"  value="$!req.applyEndTime" />
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						检测结果：
+						<select name="verifyResult" >
+							<option value="all" #if("$!req.verifyResult"=="") selected #end>全部</option>
+							<option value="success" #if("$!req.verifyResult"=="success") selected  #end>成功</option>
+							<option value="fail" #if("$!req.verifyResult"=="fail") selected  #end>失败</option>
+						</select>
+					</td>
+				</tr>	
+				<tr>	
+					<td>
+						手机号：<input id="mobile" type="text" name="mobile" value="$!req.mobile" size="20"/>&nbsp;&nbsp;&nbsp;&nbsp;
+						操作时间：
+						<input name="checkStartTime"  type="text" id="checkStartTime" class="date textInput readonly" readonly="true" size="15"  value="$!req.checkStartTime" /> -
+					   	<input name="checkEndTime"  type="text" id="checkEndTime" class="date textInput readonly" readonly="true" size="15"  value="$!req.checkEndTime" />
+						&nbsp;&nbsp;&nbsp;&nbsp;	
+						状态：
+						<select name="checkStatus" >
+							<option value="ALL" #if("$!req.checkStatus"=="") selected #end>全部</option>
+							<option value="UNCHECKED" #if("$!req.checkStatus"=="UNCHECKED") selected  #end>待审核</option>
+							<option value="PASS" #if("$!req.checkStatus"=="PASS") selected  #end>已通过</option>
+							<option value="REFUSE" #if("$!req.checkStatus"=="REFUSE") selected  #end>未通过</option>
+						</select>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<span style="margin-left:20px;">
+							<button  onclick="func()" type="button">查询</button> &nbsp;&nbsp;
+                        </span>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="128">
+		<thead>
+			<tr>
+                <th width="8%">姓名</th>
+                <th width="8%">手机号</th>
+				<th width="10%">身份证号</th>
+				<th width="6%">检测结果</th>
+				<th width="6%">分数</th>
+				<th width="6%">审核材料</th>
+				<th width="12%">申请时间</th>
+				<th width="12%">操作时间</th>
+				<th width="6%">状态</th>
+				<th width="10%">反馈信息</th>
+				<th width="8%">操作客服</th>
+				<th width="8%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $userList)
+			<tr target="sid_user" rel="1">
+				<td>$!grid.userName</td>
+				<td>$!grid.mobile</td>
+				<td>$!grid.idCard</td>	
+				<td>
+					#if("$!grid.verifyResult" !="" )
+						#if($!grid.verifyResult == "success")
+							成功
+						#elseif($!grid.verifyResult == "fail")
+							失败
+						#end
+					#else
+						
+					#end
+				</td>
+				<td>$!grid.score</td>	
+				<td><a class="add" title="审核材料" style="color:blue;" href="$env.getWebURL('/bsuser/verifyUnBindCardInfoPage.htm?verifyId=')$!grid.id" target="navtab" mask="true" rel="createBack" ><span>查看</span></a></td>
+				<td>$!date.format($!grid.applyTime)</td>	
+				<td>
+					#if("$!grid.checkTime" !="" )
+						$!date.format($!grid.checkTime)
+					#else
+						暂无
+					#end
+				</td>
+				<td>
+					#if("$!grid.checkStatus" !="" )
+						#if($!grid.checkStatus == "UNCHECKED")
+							待审核
+						#elseif($!grid.checkStatus == "PASS")
+							已通过
+						#elseif($!grid.checkStatus == "REFUSE")
+							未通过
+						#end
+					#else
+						暂无
+					#end
+				</td>	
+				<td>
+					#if("$!grid.feedback" !="" )
+						$!grid.feedback
+					#else
+						暂无
+					#end
+				</td>	
+				<td>
+					#if("$!grid.checkUser" !="" )
+						$!grid.checkUser
+					#else
+						暂无
+					#end
+				</td>	
+				<td>
+					#if("$!grid.checkStatus" != "" && $!grid.checkStatus != "PASS")
+						<a title="审核" style="color:blue;" target="dialog" href="$env.getWebURL('/bsuser/changeBindCardInfoPage.htm?id=')$!grid.id" mask="true" rel="createBack">审核</a>&nbsp;&nbsp;
+		            #end
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+		
+	</div>
+</div>
+
+<script>
+	function func(){
+		var applyStartTime = $("#applyStartTime").val();
+		var applyEndTime = $("#applyEndTime").val();
+		var checkStartTime = $("#checkStartTime").val();
+		var checkEndTime = $("#checkEndTime").val();
+		
+		if(applyEndTime && applyEndTime != ""){
+			if(!applyStartTime || applyStartTime == ""){
+				alertMsg.info('请输入申请开始时间');
+				return false;
+			}
+		}
+		if(checkEndTime && checkEndTime != ""){
+			if(!checkStartTime || checkStartTime == ""){
+				alertMsg.info('请输入操作开始时间');
+				return false;
+			}
+		}
+		
+		if(applyStartTime != "" && applyEndTime != ""){
+			var result = Date.parse(applyEndTime.replace(/-/g,"/"))- Date.parse(applyStartTime.replace(/-/g,"/"));
+			if(result < 0){
+				alertMsg.warn("申请开始时间不能在结束时间之后！！");
+				return false;
+			}
+		}
+		
+		if(checkStartTime != "" && checkEndTime != ""){
+			var result = Date.parse(checkEndTime.replace(/-/g,"/"))- Date.parse(checkStartTime.replace(/-/g,"/"));
+			if(result < 0){
+				alertMsg.warn("操作开始时间不能在结束时间之后！！");
+				return false;
+			}
+		}
+		
+		var url = $("#APP_ROOT_PATH").val() + "/bsuser/changeBindCardIndex.htm";
+		$("#myform").attr("action",url);
+		$("#myform").attr("onsubmit","return navTabSearch(this);");
+		$("#myform").submit();
+	}
+
+</script>

@@ -1,0 +1,109 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!product.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!product.numPerPage" />
+	<input type="hidden" name="orderField" value="$!{param.orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{param.orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" method="post"  rel="pagerForm" action="$env.getWebURL('/account/profitLoss/index.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" name="pageNum" value="$!product.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!product.numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+			<tbody><tr>
+				<td>
+					开始日期：<input type="text" readonly="true" class="date textInput readonly" name="beginTime" id="beginTime" value="$!date.formatYYYYMMDD($!product.beginTime)">
+				</td>
+				<td>
+					结束日期：<input type="text" readonly="true" class="date textInput readonly" name="overTime" id="overTime" value="$!date.formatYYYYMMDD($!product.overTime)">
+				</td>
+				<td>
+					<input type="button" id="search" onclick="func()" value="查询"/>
+                </td>
+			</tr>
+		</tbody></table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="11%">结算日期</th>
+				<th width="8%">周期内本金</th>
+                <th width="8%">周期内产品利息</th>
+				<th width="8%">周期内品听应得收益</th>
+				<th width="8%">达飞应付营销费用</th>
+				<th width="8%">周期内品听累计收益</th>
+				<th width="8%">周期内用户应提奖励金</th>
+				<th width="7%">用户剩余待提奖励金</th>
+				<th width="7%">周期内用户已提奖励金</th>
+				<th width="7%">达飞应付收益金</th>
+				<th width="7%">达飞实际转账金额</th>
+				<th width="13%">创建时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($product in $accountList)
+			<tr target="sid_user" rel="1">
+				<td>$!date.format($!product.clearDate)</td>
+				<td>$!money.defaultRound($!product.principal)</td>
+				<td>$!money.defaultRound($!product.interest)</td>
+				<td>$!money.defaultRound($!product.sysInterest)</td>
+				<td>$!money.defaultRound($!product.dafy2Percent)</td>
+				<td>$!money.defaultRound($!product.pintingProfit)</td>
+				<td>$!money.defaultRound($!product.shouldBonus)</td>
+				<td>$!money.defaultRound($!product.surplusBonus)</td>
+				<td>$!money.defaultRound($!product.bonus)</td>
+				<td>$!money.defaultRound($!product.dafyShouldProfit)</td>
+				<td>$!money.defaultRound($!product.dafySendProfit)</td>
+				<td>$!date.format($!product.createTime)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!product.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!product.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!product.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!product.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!product.totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!product.totalRows" numPerPage="$!product.numPerPage" currentPage="$!product.pageNum"></div>
+
+	</div>
+</div>
+	
+<script>
+
+function func(){
+	var beginTime = $("#beginTime").val();
+	var overTime = $("#overTime").val();
+	
+	if(beginTime != "" && overTime == ""){
+		alert("请输入结束时间！");
+		return false;
+	}
+	
+	if(beginTime == "" && overTime != ""){
+		alert("请输入开始时间！");
+		return false;
+	}
+	
+	if(beginTime != "" && overTime != ""){
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	$("#myform").submit();
+}
+
+</script>

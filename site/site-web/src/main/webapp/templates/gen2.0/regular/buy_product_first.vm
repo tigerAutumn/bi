@@ -1,0 +1,198 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/login_header")
+#LoadGenCSS("/resources/gen2.0/styles/user/purchase_pack")
+#LoadGenJS("/resources/gen2.0/scripts/echarts")
+#LoadGenJS("/resources/gen2.0/scripts/switchable")
+#LoadGenJS("/resources/gen2.0/scripts/textSlider")
+#LoadGenJS("/resources/gen2.0/scripts/index_style")
+#LoadGenJS("/resources/common/scripts/global_validate")
+#LoadGenJS("/resources/gen2.0/scripts/regular/regular_product_firstBuy")
+#parse("/agreement_pay.vm")
+#parse("/agreement_account.vm")
+#parse("/financial.vm")
+#parse("/financial_new.vm")
+#parse("/financial_new_7dai.vm")
+#GenHead("end")
+	<body>
+	<input type="hidden" value="$!id" id="id" />
+	<input type="hidden" value="$!name" id="name" />
+	<input type="hidden" value="$!rate" id="rate" />
+	<input type="hidden" value="$!term" id="term" />
+	<input type="hidden" value="$!buy_money" id="buy_money" />
+	<input type="hidden" value="$!redPacketId" id="redPacketId" />
+	<input type="hidden" value="$!propertyType" id="propertyType" />
+	<input type="hidden" id="regular_token" name="regularToken" value="$!token" />
+	<input type="hidden" value="$!propertySymbol" id="propertySymbol" />
+	<!--header -s-->
+	#Gen2Header("product")
+    #LoadGenCSS("/resources/gen2.0/styles/login_header")
+    #LoadGenJS("/resources/gen2.0/scripts/fix")
+
+		<div class="con_gm">
+			<div class="con_g pack_height">
+				<div class="gcon_top">
+					<span>购买金额：<i class="spani">$!buy_money </i>元</span>
+					<span style="float: right;">计划名称：<em class="spanem">$!productName </em></span>
+				</div>
+				<div class="gcon_bottom gao_auto">
+					<span class="gcon_bspanl">快捷支付</span>
+					<span class="gcon_bspanr">支付<a> $!buy_money </a>元</span>
+					<p class="gcon_main">为了保障您的资金安全，您首次成功支付的银行卡将作为<i class="zcon_maini">安全卡</i>。后续仅可使用此卡进行买入和取出。</p>
+				<div class="gcon_m gao_auto">
+				<div class="gcon_mr gao_auto">
+					<ul class="cul_1">
+						<li>姓名</li>
+						<li>身份证</li>
+						<li>银行卡号</li>
+						<li>银行类型</li>
+						<li>预留手机号</li>
+					</ul>
+					<ul  class="cul_2">
+						<li><p><span></span><input type="text"  name="userName" id="userName" maxlength="10" placeholder="请输入持卡人姓名"></p></li>
+						<li><p style="position:relative"><span></span><input type="text" name="idCard" id="idCard" maxlength="18" oninput="oninputCardIs()" onblur="onblurCardIs()"  placeholder="请输入持卡人身份证">
+							<span style="position:absolute; left:104%;width:200px;;display: inline-table;font-size:12px; color:red;display:none;" id = "warn">请输入正确的身份证！</span></p></li>
+						<li><p style="position:relative"><span></span><input type="text" name="cardNo" id="cardNo" maxlength="20" placeholder="请输入银行卡号(仅借记卡)">
+							<span style="position:absolute; left:104%;width:200px;;display: none;font-size:12px; color:red;" id = "cardType">仅借记卡！</span></p></li>
+						<li style="margin-bottom:40px;"><p id="select_a"><!--<input type="text" placeholder="请选择银行">-->
+        					<select  id="selbank">
+        						<option  value="-1">请选择银行</option>
+        						#foreach($bank in $bankList)
+        							#if($bank.isAvailable == 1)
+        								<option  value="$!bank.bankId" isAvailable="$!bank.isAvailable" oneTop="$!bank.oneTop" dayTop="$!bank.dayTop" notice="$!bank.notice">$!{bank.bankName} </option>
+        							#else
+        								<option  value="$!bank.bankId" isAvailable="$!bank.isAvailable" oneTop="$!bank.oneTop" dayTop="$!bank.dayTop" notice="$!bank.notice">$!{bank.bankName}(暂不可用)</option>
+        							#end
+        						#end
+        					</select>
+							</p>
+						</li>
+						<li style="margin-top:-38px;margin-bottom: 0px;width: auto;float:left;height:30px;">
+							<p style="border:0;width: auto;height:35px;line-height: normal;">
+								<span id="limit" style="display:none; font-size:12px;width: auto;float: none;height: auto;">
+									<span id="span_1" style="width: auto;height: auto;float: none;">单笔限额<strong id="onelimit" style="float: none;color:red;"></strong>万元，</span>
+									<span id="span_2" style="width: auto;height: auto;float: none;">单日限额<strong id="daylimit" style="float: none;color:red;"></strong>万元</span>
+									<br>
+									<span class="rech_tt" style="width: auto;height: auto;float: none;font-size: 12px;color:#ff6633;" id="notice"></span>
+								</span>
+							</p>
+						</li>
+						<li><p><span></span><input type="text"  name="mobile" id="mobile" maxlength="11" placeholder="请输入预留手机号"></p></li>
+					</ul>
+					<div class="pack_wrap">
+						<span class="pack_ft">使用红包</span>
+						<div class="pack_select">
+							<div class="pack_active">
+								#if($!redPackets.size() > 0)
+									<span class="full_sub" red_packet_id="$!redPackets[0].id" subtract="$!redPackets[0].subtract" full="$!redPackets[0].full">
+
+										#if($money.subtract("$!redPackets[0].full", "100000") >= 0)
+                                            满 $!number.format("0", $money.divide("$!redPackets[0].full", "10000"))万元
+                        				#else
+                                            满 $!number.format("0", $!redPackets[0].full)元
+										#end
+										- $!redPackets[0].subtract 元
+									</span>
+								#else
+									<span class="full_sub" red_packet_id="" subtract="" full="">
+										暂不存在可用红包
+									</span>
+								#end
+							</div>
+							<ul class="pack_ul">
+								#foreach($!grid in $!redPackets)
+									<li class="pack_list">
+										<span class="full_sub" red_packet_id="$!grid.id" subtract="$!grid.subtract" full="$!grid.full">
+
+											#if($money.subtract("$!grid.full", "100000") >= 0)
+                                                满 $!number.format("0", $money.divide("$!grid.full", "10000"))万元
+                            				#else
+                                                满 $!number.format("0", $!grid.full)元
+											#end
+											- $!grid.subtract 元
+										</span>
+									</li>
+								#end
+								#if($!redPackets.size() > 0)
+									<li class="pack_list">
+    									<span class="full_sub" red_packet_id="" subtract="0" full="0">
+    										不使用红包
+    									</span>
+    								</li>
+								#end
+							</ul>
+						</div>
+						<div class="pack_num_wrap">
+							<ul class="pack_num_ul">
+								<li class="pack_num_li">
+									<div class="pack_float">
+										<span class="pk_ft">投资金额：</span>
+										<span>$!buy_money 元</span>
+									</div>
+								</li>
+								<li class="pack_num_li">
+									<div class="pack_float">
+										<span class="pk_ft">红包：</span>
+										#if($!redPackets.size() > 0)
+											<span class="red_pack_sub">-$!redPackets[0].subtract 元</span>
+										#else
+											<span class="red_pack_sub">-0 元</span>
+										#end
+									</div>
+								</li>
+								<li class="pack_num_li">
+									<div class="pack_float">
+										<span class="pk_ft">共需支付：</span>
+										<span class="all_monery red_pack_all">
+											#if($!redPackets.size() > 0)
+												$!money.subtract("$!buy_money", "$!redPackets[0].subtract")
+    										#else
+												$!buy_money
+    										#end
+											元
+										</span>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<button class="buut" id= "pro_buy_buut" style="display: block;margin: 0 auto;">确认购买</button>
+                    <h2 class="clas" style="text-align: center;">点击确认购买即表示您同意<a  name="pay_agree_div">《支付协议》</a></h2>
+                    <h2 class="clas" style="text-align: center;"><a  name="pay_agree_div">《账户服务协议》</a>
+						<a  name="financial_div">《出借服务协议》</a></h2>
+				</div>
+				</div>
+				</div>
+			</div>
+		</div>
+		
+	<!--footer -s-->
+	#Gen2Footer()
+	<!--footer -e-->
+	
+	<div class="cpm_warp" >
+			<div class="cpm">
+				<div class="cpm_title">
+					<span class="title_ft">支付验证</span>
+					<i class="off"></i>
+				</div>
+				<div class="cpm_phone">
+					<div class="phone_ft">已向您的手机号 <span id= "sendCodeMobile"></span></div>
+					<div class="phone_ft2">发送验证码短信，请注意查收</div>
+				</div>
+				<div class="cpm_put">
+            			<span class="put_left" style="border: 22px none;font-size: 16px;height: 44px;left: 60px;line-height: 43px;padding: 0 10px;position: absolute;">验证码</span>
+            			<div class="put_wrp" style="border: 1px solid #bbbbbb;display: inline-block;height: 44px;left: 74px;position: relative;width: 250px;">
+						<input class="put_text" id="mobileCode" type="text" name="mobileCode" placeholder="请输入短信验证码">
+						<span class="retransmission" id="sendCode" count="60">重发</span></span>
+					</div>
+
+				</div>
+				<a class="cpm_btn" id= "buy_buut">确定</a>
+			</div>
+		</div>
+			<div id="reapal_form" >	
+			</div>
+	</body>
+#Html("end")

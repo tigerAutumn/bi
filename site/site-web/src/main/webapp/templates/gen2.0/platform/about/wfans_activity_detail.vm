@@ -1,0 +1,42 @@
+#Html("begin")
+#Head("begin","币港湾湾粉活动,币港湾官网","")
+#set($strTitle="$!{details.subject}【币港湾官网】")
+#Title("$!strTitle")
+#LoadGenCSS("/resources/gen2.0/styles/platform/about/company_dynamics")
+#Head("end")
+<body>
+	<!-- header -->
+	#Gen2Header("info")
+	<!-- main -->
+	<div class="main">
+		<div class="main_banner"></div>
+		<div class="main_center">
+        #**
+         * subnav
+         **#
+            #Gen2InfoSubNav()
+
+            <div class="main_cright">
+                <div class="main_cr_down">
+                ###if($!details.subject.length() >= 34)  .substring(0,34)... #else $!details.subject #end
+                    <h3 class="main_cr_center_h31">$!details.subject</h3>
+                    <div class="main_cr_center_txt1">
+                        $!details.content
+                    </div>
+                    <div class="main_cr_center_trtxta1">
+                        发布时间：$!date.formatYYYYMMDD($!details.publishTime)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- footer -->
+	#Gen2Footer()
+    <script>
+        $(document).ready(function () {
+            var subNav = $($(".main_cl_ul1")[1]).children("a");
+            $(subNav[2]).addClass("main_clul_lione");
+        })
+    </script>
+</body>
+#Html("end")

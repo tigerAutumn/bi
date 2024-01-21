@@ -1,0 +1,184 @@
+<script src="$env.getWebURL('')/resources/js/activity/benison.js"></script>
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/activity/benison/list.htm')" onsubmit="return navTabSearch(this);">
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+		<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+			<tr>
+				<td>
+					<div class="buttonActive">
+						<div class="buttonContent">
+							<button onclick="checkPass()" type="button">审核通过</button>
+						</div>
+					</div>
+				</td>
+                <td>
+                    <div class="buttonActive">
+                        <div class="buttonContent">
+                            <button onclick="checkRefuse()" type="button">审核拒绝</button>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="buttonActive">
+                        <div class="buttonContent">
+                            <button onclick="checkRemove()" type="button">选中删除</button>
+                        </div>
+                    </div>
+                </td>
+			</tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="100%" layoutH="120" >
+		<thead>
+			<tr>
+				<th width="10%">选择</th>
+				<th width="10%">状态</th>
+				<th width="10%">祝福人</th>
+				<th width="10%">祝福内容</th>
+			</tr>
+		</thead>
+	
+		<tbody>
+			#foreach($benison in $list)
+                <span class="benison_span">
+				<tr target="rid" rel="1" class="asda">
+                    <td>
+						#if($!benison.checkStatus == "INIT")
+                            <input type="checkbox" name="checked_benison" benison_id="$!benison.id">
+						#end
+					</td>
+					<td>
+						#if($!benison.checkStatus == "INIT")
+							待审核
+						#elseif($!benison.checkStatus == "PASS")
+							通过
+						#elseif($!benison.checkStatus == "REFUSE")
+							拒绝
+						#end
+					</td>
+					<td>$!benison.note</td>
+					<td>$!benison.content</td>
+				</tr>
+                </span>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!count条</span>
+		</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+<script>
+    function checkPass() {
+		var checked = [];
+        $('input[name=checked_benison]:checked').each(function() {
+            checked.push($(this).attr('benison_id'));
+		});
+		if(checked.length <= 0) {
+            alertMsg.warn('请选择需要通过的记录!');
+			return false;
+		}
+        alertMsg.confirm('审核通过', {
+            okCall: function(){
+                jQuery.ajax({
+                    url: $('#APP_ROOT_PATH').val() + '/activity/benison/check.htm',
+                    data:{
+                        content: checked.toString(),
+						checkStatus: 'PASS'
+                    },
+                    type:'post',
+                    success: function(data){
+                        if(data.statusCode == '200'){
+                            alertMsg.correct('操作成功！');
+                            navTab.reload("$env.getWebURL('/activity/benison/list.htm')");
+                        }else{
+                            alertMsg.error('操作失败!'+ data.message);
+                            navTab.reload("$env.getWebURL('/activity/benison/list.htm')");
+                        }
+                    }
+                });
+            }
+        });
+    }
+    function checkRefuse() {
+        var checked = [];
+        $('input[name=checked_benison]:checked').each(function() {
+            checked.push($(this).attr('benison_id'));
+        });
+        if(checked.length <= 0) {
+            alertMsg.warn('请选择需要拒绝的记录!');
+            return false;
+        }
+        alertMsg.confirm('审核拒绝', {
+            okCall: function(){
+                jQuery.ajax({
+                    url: $('#APP_ROOT_PATH').val() + '/activity/benison/check.htm',
+                    data:{
+                        content: checked.toString(),
+                        checkStatus: 'REFUSE'
+                    },
+                    type:'post',
+                    success: function(data){
+                        if(data.statusCode == '200'){
+                            alertMsg.correct('操作成功！');
+                            navTab.reload("$env.getWebURL('/activity/benison/list.htm')");
+                        }else{
+                            alertMsg.error('操作失败!'+ data.message);
+                            navTab.reload("$env.getWebURL('/activity/benison/list.htm')");
+                        }
+                    }
+                });
+            }
+        });
+    }
+    function checkRemove() {
+        var checked = [];
+        $('input[name=checked_benison]:checked').each(function() {
+            checked.push($(this).attr('benison_id'));
+        });
+        if(checked.length <= 0) {
+            alertMsg.warn('请选择需要删除的记录!');
+            return false;
+        }
+        alertMsg.confirm('删除', {
+            okCall: function(){
+                jQuery.ajax({
+                    url: $('#APP_ROOT_PATH').val() + '/activity/benison/check.htm',
+                    data:{
+                        content: checked.toString(),
+                        checkStatus: 'REMOVE'
+                    },
+                    type:'post',
+                    success: function(data){
+                        if(data.statusCode == '200'){
+                            alertMsg.correct('操作成功！');
+                            navTab.reload("$env.getWebURL('/activity/benison/list.htm')");
+                        }else{
+                            alertMsg.error('操作失败!'+ data.message);
+                            navTab.reload("$env.getWebURL('/activity/benison/list.htm')");
+                        }
+                    }
+                });
+            }
+        });
+    }
+</script>

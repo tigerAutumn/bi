@@ -1,0 +1,211 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾官网_安心可靠互联网金融投资理财服务平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadCSS("resources/micro2.0/styles/activity/2017/yfInvite/yfInvite")
+#LoadJS("resources/micro2.0/scripts/activity/six")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/app/scripts/activity/youfu/youfu")
+#WeChatShare()
+#Head("end")
+<body>
+<input type="hidden" id="client" value="$!client">
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<div class="yfinvite">
+    <div class="yfinvite_banner">
+        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/yfinvite/yfinvite_banner.jpg">
+    </div>
+    <div class="yfinvite_content">
+        <div class="yfinvite_line" style="top: 100px;">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/yfinvite/line_01.png">
+        </div>
+        <div class="yfinvite_line" style="top: 400px;">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/yfinvite/line_02.png">
+        </div>
+        <div class="yfinvite_line" style="top: 820px;">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/yfinvite/line_03.png">
+        </div>
+        <div class="yfinvite_line" style="top: 1710px;">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/yfinvite/line_04.png">
+        </div>
+        <div class="yfinvite_title">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/yfinvite/yfinvite_title.png">
+        </div>
+        <div class="yfinvite_subtitle">同时享最高1%邀请奖励金！<br>奖励额度调整前的最后机会！</div>
+        <div class="yfinvite_frame yfinvite_prize">
+            <table>
+                <thead>
+                <tr>
+                    <th>
+                        <p style="position: relative;top: 6px;">排名</p>
+                    </th>
+                    <th>
+                        <p style="position: relative;top: 6px;">名额</p>
+                    </th>
+                    <th><p style="position: relative;top: 6px;">推荐人奖励</p></th>
+                    <th>
+                        <p style="line-height: 18px;">
+                            被推荐人奖励<br><span>（总推荐新用户平分）</span>
+                        </p>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>金牌推荐人</td>
+                    <td>1人</td>
+                    <td>800元</td>
+                    <td>800元</td>
+                </tr>
+                <tr>
+                    <td>银牌推荐人</td>
+                    <td>2人</td>
+                    <td>400元</td>
+                    <td>400元</td>
+                </tr>
+                <tr>
+                    <td>铜牌推荐人</td>
+                    <td>3人</td>
+                    <td>100元</td>
+                    <td>100元</td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="yfinvite_des">在活动期间，推荐人所邀请的新用户产生的<span>累计年化投资额排名前6位者</span>（被邀请新用户累计年化投资额10W起，方可进入排名），及其所邀请的新用户均可获得奖励。</p>
+        </div>
+        <div class="yfinvite_frame">
+            <div class="yfinvite_frame_title">
+                <span>金牌推荐人排行榜</span>
+            </div>
+            <div class="inviter_list">
+                <ul class="inviter_list_title">
+                    <li style="width: 15%">排名</li>
+                    <li style="width: 30%">推荐人</li>
+                    <li style="width: 20%">推荐人数</li>
+                    <li style="width: 35%">累计年化投资额</li>
+                </ul>
+                #if($!rankList.size() > 0)
+                    #foreach($!rank in $!rankList)
+                        <div class="inviter_list_card">
+                            <ul>
+                                <li>$!rank.rank</li>
+                                <li>$!rank.userName</li>
+                                <li>$!rank.recommendedNum</li>
+                                <li>$!number.format("0.00", $!{rank.balance})元</li>
+                            </ul>
+                        </div>
+                    #end
+                #else
+                    <div class="prize_list_null">
+                        <div><img src="$!env.getWebURL('')/resources/micro2.0/images/activity/yfinvite/yfinvite_listnull.png"></div>
+                    </div>
+                #end
+            </div>
+        </div>
+        <div class="yfinvite_frame">
+            <div class="yfinvite_frame_title">
+                <span>我的战绩</span>
+            </div>
+            <div class="mylist_ico">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/yfinvite/yfinvite_tableico_mylist.png">
+            </div>
+            <div class="yfinvite_frame_ico">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/yfinvite/yfinvite_tableico.png" style="height: 115px;">
+            </div>
+            <div class="yfinvite_mylist">
+                #if($!isStart == "not_start")
+                    <div class="mylist_null">
+                        暂无记录
+                    </div>
+                #else
+                    #if($!isLogin == "yes")
+                        <ul id="self_info">
+                            <li style="background: #83b7f8;">
+                                <p>我的排名：</p>
+                                #if($!result.qualify == "YES")
+                                    <span id="rank" class="myNum">$!result.rank</span>
+                                #else
+                                    <span id="rank">您尚未达到进入排行榜资格</span>
+                                #end
+                            </li>
+                            <li style="background: #9cc9ff;">
+                                <p>活动推荐人数（人）：</p>
+                                <span id="recommendedNum">
+                                    #if($!result.recommendedNum)
+                                        $!result.recommendedNum
+                                    #else
+                                        0
+                                    #end
+                                </span>
+                            </li>
+                            <li style="background: #add2ff;">
+                                <p>活动累计年化投资额（元）：</p>
+                                <span id="balance">
+                                    #if($!result.balance)
+                                        $!number.format("0.00", $!result.balance)
+                                    #else
+                                        0.00
+                                    #end
+                                </span>
+                            </li>
+                        </ul>
+                    #else
+                        <div class="mylist_null">
+                            登录可查看自己的战绩
+                        </div>
+                    #end
+                #end
+            </div>
+            <div class="yfinvite_button">
+                #if($!isLogin == "yes")
+                    #if($!isStart == "not_start")
+                        <a class="yfinvite_link yfinvite_link_disabled">
+                            活动未开始
+                        </a>
+                    #elseif($!isStart == "end")
+                        <a class="yfinvite_link yfinvite_link_disabled">
+                            活动已结束
+                        </a>
+                    #else
+                        <a class="yfinvite_link join_activity" href=javascript:void(0)>
+                            立即参与活动
+                        </a>
+                    #end
+                #else
+                    #if($!isStart == "not_start")
+                        <a class="yfinvite_link yfinvite_link_disabled">
+                            活动未开始
+                        </a>
+                    #else
+                        <a class="yfinvite_link go_login" href="javascript:void(0)">
+                            立即登录
+                        </a>
+                    #end
+                #end
+            </div>
+        </div>
+        <div class="yfinvite_frame" style="margin-top: 170px;">
+            <div class="yfinvite_frame_title">
+                <span>活动规则</span>
+            </div>
+            <div class="yfinvite_rule">
+                <p><span>1</span>活动时间：$!{startTime}-$!{endTime}；</p>
+                <p><span>2</span>活动期间，推荐人与被推荐用户将同时享受原有的推荐奖励金，登录我的账户，点击“邀请好友”可查看；</p>
+                <p><span>3</span>推荐人需在活动期间邀请新用户完成注册并投资，方可参与金牌推荐人活动；</p>
+                <p><span>4</span>本次金牌推荐人活动除赞分期系列标的（被邀请用户投资赞分期系列产品将不计入累计年化投资额）；</p>
+                <p>
+                    <span>5</span>在活动期间，推荐人所邀请的新用户产生的累计年化投资额排名前6位者（被邀请新用户累计年化投资额10W起方可进入排名），及其所邀请的新用户均可获得相应奖励；<br>
+                    年化投资额计算公式=投资金额*投资期限/365天
+                </p>
+                <p>
+                    <span>6</span>金牌推荐人排行榜的的前6位，相应推荐人名下所有在活动期间被邀请的投资用户将平分与该推荐人同等的现金奖励；<br>
+                    举例：张先生获得金牌推荐人，获得现金奖励800元，活动期间张先生共邀请了5位新用户参与投资，那么这5位被邀请用户将平分另一份800元现金奖励：800/5=160元现金奖；
+                </p>
+                <p><span>7</span>活动期间，金牌推荐人排行榜如遇累计年化投资额相同，则以达到该金额的时间顺序为准计算排名；</p>
+                <p><span>8</span>平台将在活动结束后的5个工作日内发放金牌推荐人排行榜的奖励现金，奖励将发放至每位用户的奖励金账户，您可以通过我的资产-我的奖励查看。</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+#Html("end")

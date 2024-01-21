@@ -1,0 +1,165 @@
+#Html("begin")
+#Head("begin","币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("我的资产【币港湾官网】")
+#LoadJS("resources/micro2.0/scripts/six_new")
+#LoadCSS("/resources/micro2.0/styles/default")
+#LoadCSS("/resources/micro2.0/styles/red_pack/info.min")
+#WeChatShare()
+#Head("end")
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="qianbao" value="$!qianbao"/>
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+    <input type="hidden" id="initPageNum" name="initPageNum" value="$!initPageNum">
+    <input type="hidden" id="overPageNum" name="overPageNum" value="$!overPageNum">
+    <input type="hidden" id="usedPageNum" name="usedPageNum" value="$!usedPageNum">
+    <input type="hidden" id="initTotalPages" name="initTotalPages" value="$!initTotalPages">
+    <input type="hidden" id="overTotalPages" name="overTotalPages" value="$!overTotalPages">
+    <input type="hidden" id="usedTotalPages" name="usedTotalPages" value="$!usedTotalPages">
+		##加息券
+	<input type="hidden" id="inittPageNum" name="inittPageNum" value="$!inittPageNum">
+    <input type="hidden" id="overtPageNum" name="overtPageNum" value="$!overtPageNum">
+    <input type="hidden" id="usedtPageNum" name="usedtPageNum" value="$!usedtPageNum">
+    <input type="hidden" id="inittTotalPages" name="inittTotalPages" value="$!inittTotalPages">
+    <input type="hidden" id="overtTotalPages" name="overtTotalPages" value="$!overtTotalPages">
+    <input type="hidden" id="usedtTotalPages" name="usedtTotalPages" value="$!usedtTotalPages">		
+    <input type="hidden" id="status" value="INIT"/>
+    <body id="body">
+    <!--头部导航-->
+	<div class="header_fixed">
+        <div class="header">
+            <a class="header_arrow" href="javascript:history.go(-1)"></a>
+            <h1 class="heade_ft oran_color">优惠券</h1>
+    		<div class="headerInfo" onclick="go_interes()">
+                <img class="InfoImg" src="$!{env.getWebURL('')}/resources/micro2.0/images/regular/listInfo.png">
+            </div>
+        </div>
+        <div class="classify">
+    		<div class="fy_dl fy_dlclick" status="INIT">抵扣红包<span class="fy-line fy-line-active"></span></div>
+            <div class="fy_dl" status="INITt">加息券<span class="fy-line"></span></div>
+        </div>
+	</div>
+	<div class="fixed_height"></div>
+    <div class="null_box">
+        <!--红包-->
+       #if($!initResult.dataGrid.size() > 0)
+            <div class="null_img" style="display:block;">
+                <ul class="Acc_img init_ul">
+                    #foreach($!grid in $!initResult.dataGrid)
+                        <li class="red_pack init_li">
+							<img class="pack_img" src="$!{env.getWebURL('')}/resources/micro2.0/images/red_pack/red_bg01.png" alt="">
+							<div class="orange">			
+								<div class="pack_money" onclick="go_buy(this)">
+									<i class="choose_icon">立即使用</i>
+                                    <span class="money_small">¥</span>$!money.format($!grid.subtract)
+                                </div>
+								<div class="gray_full">$!grid.serialName</div>
+								<div class="red_money">
+                                    <div class="pace_full">										
+                                        <i class="pack_spot2"></i>#if($!grid.isWan == "yes")满$!number.format("0.00",$!grid.full)万元减#else满$!number.format("0.00",$!grid.full)元减#end$!number.format("0.00",$!grid.subtract)元
+                                    </div>      
+									<span class="pace_tlimit"><i class="pack_spot2"></i>$!grid.termLimitMsg</span>
+                                </div>
+								<span class="pace_time"><i class="pack_spot2"></i>$!date.formatYYYYMMDD($!grid.useTimeStart)至$!date.formatYYYYMMDD($!grid.useTimeEnd)</span>
+							</div>	                           
+                        </li>
+                    #end
+                </ul>
+                <div id="show_more_init" style="display: none"></div>
+				<div class="red_go_btn float_btn">
+    				<div class="red_center_line"></div>
+    				<div class="red_go_li">
+    					<div class="red_USED">查看已使用红包</div>
+    				</div>
+    				<div class="red_go_li">					
+    					<div class="red_OVER">查看已过期红包</div>
+    				</div>
+    			</div>
+            </div>			
+        #else
+            <div class="null_img" style="display:block;">
+                <div class="Acc_null_img red_init_bg"></div>
+                <h2 class="ACC_null_title1">暂无可用红包</h2>
+				<div class="red_go_btn float_btn">
+    				<div class="red_center_line"></div>
+    				<div class="red_go_li">
+    					<div class="red_USED">查看已使用红包</div>
+    				</div>
+    				<div class="red_go_li">					
+    					<div class="red_OVER">查看已过期红包</div>
+    				</div>
+    			</div>
+            </div>
+		#end
+		##加息券
+		#if($!initTicketResult.dataList.size() > 0)
+            <div class="null_img">
+				<ul class="Acc_img initt_ul">
+					#foreach($!grid in $!initTicketResult.dataList)
+						<li class="red_pack init_li">
+							<img class="pack_img" src="$!{env.getWebURL('')}/resources/micro2.0/images/red_pack/Increase_bg01.png" alt="">
+							<div class="orange">
+								<div class="pack_money" onclick="go_buy(this)">
+									<i class="choose_icon">立即使用</i>
+                                    <span class="money_small">+</span>$!money.format($!grid.rate)%
+                                </div>
+								<div class="gray_full inc_full">$!grid.serialName</div>
+								<div class="ticket_btn" id="ticket_btn"> 	
+        							#if($money.subtract("$!grid.full", "10000") >= 0)
+    									<i class="pack_spot"></i><span class="ticker_txt">限$!grid.termLimit天产品使用，单笔加入满$!number.format("0.00", $money.divide("$!grid.full", "10000"))万元启用</span>
+    								#else
+    									<i class="pack_spot"></i><span class="ticker_txt">限$!grid.termLimit天产品使用，单笔加入满$!number.format("0.00", $!grid.full)元启用</span>
+    								#end
+        							<span class="increase_img"></span>
+        							<input type="hidden" id="productLimit" name="productLimit" value="$!grid.productLimit" />
+                				</div>
+								<div class="alert_info">
+                					<div class="alert_title">提示</div>
+                					<div class="alert_ul">
+										#if($money.subtract("$!grid.full", "10000") >= 0)
+                						$!money.format($!grid.rate)%$!grid.serialName，限$!grid.termLimit天产品使用，单笔加入满$!number.format("0.00", $money.divide("$!grid.full", "10000"))万元启用，<span class="bgw_name"></span>产品适用。加息收益将会在加入的产品到期后以奖励金的形式发放。
+										#else
+										$!money.format($!grid.rate)%$!grid.serialName，限$!grid.termLimit天产品使用，单笔加入满$!number.format("0.00", $!grid.full)元启用，<span class="bgw_name"></span>产品适用。加息收益将会在加入的产品到期后以奖励金的形式发放。
+										#end
+                					</div>
+                					<div class="btn_group">
+                						<div class="top_line close_btn">我知道了</div>
+                					</div>
+                				</div>
+								<span class="pace_time inc_time"><i class="pack_spot1"></i>$!date.formatYYYYMMDD($!grid.useTimeStart)至$!date.formatYYYYMMDD($!grid.useTimeEnd)</span>
+							</div>																								
+						</li>
+					#end
+				</ul>
+				<div class="red_go_btn float_btn">
+    				<div class="red_center_line"></div>
+    				<div class="red_go_li">
+    					<div class="ticket_USED">查看已使用加息券</div>
+    				</div>
+    				<div class="red_go_li">					
+    					<div class="ticket_OVER">查看已过期加息券</div>
+    				</div>
+    			</div>
+			</div>
+		#else
+			<div class="null_img">
+                <div class="Acc_null_img ticket_init_bg"></div>
+                <h2 class="ACC_null_title1">暂无可用加息券</h2>
+				<div class="red_go_btn float_btn">
+    				<div class="red_center_line"></div>
+    				<div class="red_go_li">
+    					<div class="ticket_USED">查看已使用加息券</div>
+    				</div>
+    				<div class="red_go_li">					
+    					<div class="ticket_OVER">查看已过期加息券</div>
+    				</div>
+    			</div>
+            </div>
+		#end
+		<div class="float_bg"></div>
+    </div>
+	<div class="dialog_notice alert_hide"></div>
+#LoadJS("/resources/micro2.0/scripts/common/common")
+#LoadJS("/resources/micro2.0/scripts/red_pack/red_pack")
+</body>
+#Html("end")

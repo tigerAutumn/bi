@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsUserSessionConnectionInfoMapper">
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsUserSessionConnectionInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="terminal" jdbcType="VARCHAR" property="terminal" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="session_id" jdbcType="VARCHAR" property="sessionId" />
+    <result column="device_token" jdbcType="VARCHAR" property="deviceToken" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="forced_logout" jdbcType="VARCHAR" property="forcedLogout" />
+    <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_id, terminal, ip, session_id, device_token, status, forced_logout, login_time,
+    expire_time, create_time, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.pinting.business.model.BsUserSessionConnectionInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from bs_user_session_connection_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from bs_user_session_connection_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bs_user_session_connection_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsUserSessionConnectionInfoExample">
+    delete from bs_user_session_connection_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsUserSessionConnectionInfo">
+    insert into bs_user_session_connection_info (id, user_id, terminal,
+    ip, session_id, device_token,
+    status, forced_logout, login_time,
+    expire_time, create_time, update_time
+    )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{terminal,jdbcType=VARCHAR},
+    #{ip,jdbcType=VARCHAR}, #{sessionId,jdbcType=VARCHAR}, #{deviceToken,jdbcType=VARCHAR},
+    #{status,jdbcType=VARCHAR}, #{forcedLogout,jdbcType=VARCHAR}, #{loginTime,jdbcType=TIMESTAMP},
+    #{expireTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsUserSessionConnectionInfo">
+    insert into bs_user_session_connection_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="terminal != null">
+        terminal,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="sessionId != null">
+        session_id,
+      </if>
+      <if test="deviceToken != null">
+        device_token,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="forcedLogout != null">
+        forced_logout,
+      </if>
+      <if test="loginTime != null">
+        login_time,
+      </if>
+      <if test="expireTime != null">
+        expire_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="terminal != null">
+        #{terminal,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="sessionId != null">
+        #{sessionId,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceToken != null">
+        #{deviceToken,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="forcedLogout != null">
+        #{forcedLogout,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null">
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expireTime != null">
+        #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsUserSessionConnectionInfoExample" resultType="java.lang.Integer">
+    select count(*) from bs_user_session_connection_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update bs_user_session_connection_info
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.terminal != null">
+        terminal = #{record.terminal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ip != null">
+        ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sessionId != null">
+        session_id = #{record.sessionId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deviceToken != null">
+        device_token = #{record.deviceToken,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.forcedLogout != null">
+        forced_logout = #{record.forcedLogout,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginTime != null">
+        login_time = #{record.loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.expireTime != null">
+        expire_time = #{record.expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update bs_user_session_connection_info
+    set id = #{record.id,jdbcType=INTEGER},
+    user_id = #{record.userId,jdbcType=INTEGER},
+    terminal = #{record.terminal,jdbcType=VARCHAR},
+    ip = #{record.ip,jdbcType=VARCHAR},
+    session_id = #{record.sessionId,jdbcType=VARCHAR},
+    device_token = #{record.deviceToken,jdbcType=VARCHAR},
+    status = #{record.status,jdbcType=VARCHAR},
+    forced_logout = #{record.forcedLogout,jdbcType=VARCHAR},
+    login_time = #{record.loginTime,jdbcType=TIMESTAMP},
+    expire_time = #{record.expireTime,jdbcType=TIMESTAMP},
+    create_time = #{record.createTime,jdbcType=TIMESTAMP},
+    update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsUserSessionConnectionInfo">
+    update bs_user_session_connection_info
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="terminal != null">
+        terminal = #{terminal,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="sessionId != null">
+        session_id = #{sessionId,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceToken != null">
+        device_token = #{deviceToken,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="forcedLogout != null">
+        forced_logout = #{forcedLogout,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null">
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expireTime != null">
+        expire_time = #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsUserSessionConnectionInfo">
+    update bs_user_session_connection_info
+    set user_id = #{userId,jdbcType=INTEGER},
+    terminal = #{terminal,jdbcType=VARCHAR},
+    ip = #{ip,jdbcType=VARCHAR},
+    session_id = #{sessionId,jdbcType=VARCHAR},
+    device_token = #{deviceToken,jdbcType=VARCHAR},
+    status = #{status,jdbcType=VARCHAR},
+    forced_logout = #{forcedLogout,jdbcType=VARCHAR},
+    login_time = #{loginTime,jdbcType=TIMESTAMP},
+    expire_time = #{expireTime,jdbcType=TIMESTAMP},
+    create_time = #{createTime,jdbcType=TIMESTAMP},
+    update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="countTotalSessionNumber" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select ifnull(sum(a.each_ip_count), 0) as total from (
+        select count(id) as each_ip_count, ip from bs_user_session_connection_info where user_id = #{userId} and terminal in ('PC', 'H5') and `status` = 'login' and forced_logout = 'no'
+        group by ip
+    ) as a
+  </select>
+
+  <select id="countTotalIPSessionNumber" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(a.each_ip_count) as total from (
+        select count(id) as each_ip_count, ip from bs_user_session_connection_info where user_id = #{userId} and terminal in ('PC', 'H5') and `status` = 'login' and forced_logout = 'no'
+        group by ip
+    ) as a
+  </select>
+
+  <select id="countTotalDeviceNumber" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select ifnull(sum(a.each_ip_count), 0) as total from (
+        select count(id) as each_ip_count, ip from bs_user_session_connection_info where user_id = #{userId} and terminal in ('IOS', 'ANDROID') and `status` = 'login' and forced_logout = 'no'
+        group by ip
+    ) as a
+  </select>
+
+  <select id="countTotalIPDeviceNumber" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(a.each_ip_count) as total from (
+        select count(id) as each_ip_count, ip from bs_user_session_connection_info where user_id = #{userId} and terminal in ('IOS', 'ANDROID') and `status` = 'login' and forced_logout = 'no'
+        group by ip
+    ) as a
+  </select>
+
+  <select id="selectEarliestLoginRecord" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List" />
+    from bs_user_session_connection_info where user_id = #{userId} and terminal in ('PC', 'H5') and `status` = 'login' and forced_logout = 'no'
+      <if test="ip != null">
+        and ip = #{ip}
+      </if>
+    order by login_time asc limit 1
+  </select>
+
+  <select id="countSameIPSessionNumber" parameterType="java.util.Map" resultType="java.lang.Integer">
+    <if test="ip == null">
+      select count(distinct ip) as each_ip_count from bs_user_session_connection_info
+      where user_id = #{userId} and terminal in ('PC', 'H5') and `status` = 'login' and forced_logout = 'no'
+    </if>
+    <if test="ip != null">
+      select count(id) as each_ip_count from bs_user_session_connection_info where user_id = #{userId} and terminal in ('PC', 'H5') and `status` = 'login' and forced_logout = 'no'
+      and ip = #{ip}
+    </if>
+  </select>
+
+  <select id="countSameIPDeviceNumber" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(id) as each_ip_count from bs_user_session_connection_info where user_id = #{userId} and terminal in ('IOS', 'ANDROID') and `status` = 'login' and forced_logout = 'no'
+    <if test="ip != null">
+      and ip = #{ip}
+    </if>
+  </select>
+
+  <select id="selectEarliestDeviceLoginRecord" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from bs_user_session_connection_info where user_id = #{userId} and terminal in ('IOS', 'ANDROID') and `status` = 'login' and forced_logout = 'no'
+    <if test="ip != null">
+      and ip = #{ip}
+    </if>
+    order by login_time asc limit 1
+  </select>
+</mapper>

@@ -1,0 +1,24 @@
+#foreach($record in $!investRecord)
+<li class="slide3_li">
+	<div class="name">$!record.userName </div>
+	<div class="name_right">
+			#if($!record.balance >= 10000)
+				#if($!record.balance %10000 >0 && $!record.balance %1000>0)
+					#set($balanceAmount = $!record.balance/10000)
+					$!number.format("0.00",$balanceAmount)万
+				#elseif($!record.balance %10000 >0 && $!record.balance %1000==0)
+					#set($balanceAmount = $!record.balance/10000)
+					$!number.format("0.0",$balanceAmount)万
+				#else
+					#set($balanceAmount = $!record.balance/10000)
+					$!number.format("0",$balanceAmount)万
+				#end
+			#elseif($!record.balance >=100 && $!record.balance <10000)
+				$!number.format("0",$!record.balance)元
+			#else
+				0 元
+			#end
+	</div>
+	<div class="name_time">$!date.format($!record.openTime)</div>	
+</li>
+#end

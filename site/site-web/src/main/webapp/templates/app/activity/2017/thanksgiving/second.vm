@@ -1,0 +1,290 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾官网_安心可靠互联网金融投资理财服务平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#LoadJS("resources/micro2.0/scripts/activity/six_new")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadCSS("resources/micro2.0/styles/activity/2017/thanksgiven/thanksgiven")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/app/scripts/activity/thanksgiven/thanksgiven")
+#WeChatShare()
+#Head("end")
+<body>
+<input type="hidden" id="userId" value="$!userId"/>
+<input type="hidden" id="client" value="$!client"/>
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<input type="hidden" id="have_address" value="$!giftNumber.get(0).haveAddress">
+<input type="hidden" id="isLogin" value="$!giftNumber.get(0).isLogin">
+	#if($!giftNumber.get(0).luckyDrawId)
+    <input type="hidden" id="luckyDrawId" value="$!giftNumber.get(0).luckyDrawId">
+	#elseif($!giftNumber.get(1).luckyDrawId)
+    <input type="hidden" id="luckyDrawId" value="$!giftNumber.get(1).luckyDrawId">
+	#elseif($!giftNumber.get(2).luckyDrawId)
+    <input type="hidden" id="luckyDrawId" value="$!giftNumber.get(2).luckyDrawId">
+	#elseif($!giftNumber.get(3).luckyDrawId)
+    <input type="hidden" id="luckyDrawId" value="$!giftNumber.get(3).luckyDrawId">
+	#end
+<div class="T-second">
+    <div class="T-first-title">
+        <div class="T-first-title-txt">感恩第二步：够诚意！</div>
+    </div>
+    <div class="T-index-title">
+        <img src="$!env.getWebURL('resources/micro2.0/images/activity/2017/thanksgiven/title1.png')" alt="" />
+        <div class="T-index-title-txt">
+            <h3 class="T-index-mtitle">达标兑礼你来选！</h3>
+            <div class="T-index-stitle">礼品有限，先兑先得！</div>
+        </div>
+    </div>
+    <div class="T-first-red">
+        <div class="T-first-red-box">
+            <div class="T-second-red-top">
+                <div class="T-second-red-top-gift-box T-second-red-gift-margin">
+                    <div class="T-second-red-gift">
+                        <div class="T-second-red-gift-title">毛巾礼盒</div>
+                        <img src="$!env.getWebURL('resources/micro2.0/images/activity/2017/thanksgiven/gift1.jpg')" />
+                        <p>投资港湾计划短期乐</p>
+                        <p>≥5万元</p>
+                        <span class="T-second-red-gift-number">礼品仅剩：${giftNumber.get(0).number}份</span>
+                    </div>
+
+					#if($!giftNumber.get(0).isLogin == "yes")
+						#if($!giftNumber.get(0).isStart == "not_start")
+						## <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">活动未开始</a>
+						#elseif($!giftNumber.get(0).isStart == "end")
+							#if($!giftNumber.get(0).status == "YES")
+                                <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">已兑礼品</a>
+							#else
+                                <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">活动已结束</a>
+							#end
+						#else
+							#if(${giftNumber.get(0).number} > 0)
+								#if($!giftNumber.get(0).status == "YES")
+                                    <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">已兑礼品</a>
+								#elseif($!giftNumber.get(0).status == "NO")
+                                    <a href="javascript:void(0);" class="T-second-red-exchange T-second-red-gift-margin exchange_gift" term="1" lucky_draw_id="$!giftNumber.get(0).luckyDrawId" have_address="$!giftNumber.get(0).haveAddress" award_id="78">
+                                        立即兑换
+                                    </a>
+                                #elseif($!giftNumber.get(0).status == "CAN_NOT_JOIN")
+                                    <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">您已用完兑奖次数</a>
+                                #else
+                                    <a href="javascript:void(0);" class="T-second-red-exchange T-second-red-gift-margin go_invest">立即投资参与</a>
+								#end
+							#else
+								#if($!giftNumber.get(0).status == "YES")
+                                    <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">已兑礼品</a>
+								#else
+                                    <a href="javascript:void(0);" class="T-second-red-exchange T-second-red-gift-margin">礼品已被兑完</a>
+								#end
+							#end
+
+						#end
+					#end
+                </div>
+                <div class="T-second-red-top-gift-box">
+                    <div class="T-second-red-gift">
+                        <div class="T-second-red-gift-title">养生壶</div>
+                        <img src="$!env.getWebURL('resources/micro2.0/images/activity/2017/thanksgiven/gift2.jpg')" />
+                        <p>投资港湾计划安心投</p>
+                        <p>≥10万元</p>
+                        <span class="T-second-red-gift-number">礼品仅剩：${giftNumber.get(1).number}份</span>
+                    </div>
+					#if($!giftNumber.get(1).isLogin == "yes")
+						#if($!giftNumber.get(1).isStart == "not_start")
+						##<a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">活动未开始</a>
+						#elseif($!giftNumber.get(1).isStart == "end")
+							#if($!giftNumber.get(1).status == "YES")
+                                <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">已兑礼品</a>
+							#else
+                                <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">活动已结束</a>
+							#end
+						#else
+							#if(${giftNumber.get(1).number} > 0)
+								#if($!giftNumber.get(1).status == "YES")
+                                    <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">已兑礼品</a>
+								#elseif($!giftNumber.get(1).status == "NO")
+                                    <a href="javascript:void(0);" class="T-second-red-exchange T-second-red-gift-margin exchange_gift" term="3" lucky_draw_id="$!giftNumber.get(1).luckyDrawId" have_address="$!giftNumber.get(1).haveAddress" award_id="79">
+                                        立即兑换
+                                    </a>
+                                #elseif($!giftNumber.get(1).status == "CAN_NOT_JOIN")
+                                    <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">您已用完兑奖次数</a>
+                                #else
+                                    <a href="javascript:void(0);" class="T-second-red-exchange T-second-red-gift-margin go_invest">立即投资参与</a>
+								#end
+							#else
+								#if($!giftNumber.get(1).status == "YES")
+                                    <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">已兑礼品</a>
+								#else
+                                    <a href="javascript:void(0);" class="T-second-red-exchange T-second-red-gift-margin">礼品已被兑完</a>
+								#end
+							#end
+						#end
+					#end
+                </div>
+                <div class="T-second-red-top-gift-box T-second-red-gift-margin">
+                    <div class="T-second-red-gift">
+                        <div class="T-second-red-gift-title">铁皮石斛礼盒</div>
+                        <img src="$!env.getWebURL('resources/micro2.0/images/activity/2017/thanksgiven/gift3.jpg')" />
+                        <p>投资港湾计划稳定收</p>
+                        <p>≥20万元</p>
+                        <span class="T-second-red-gift-number">礼品仅剩：${giftNumber.get(2).number}份</span>
+                    </div>
+					#if($!giftNumber.get(2).isLogin == "yes")
+						#if($!giftNumber.get(2).isStart == "not_start")
+						##<a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">活动未开始</a>
+						#elseif($!giftNumber.get(2).isStart == "end")
+							#if($!giftNumber.get(2).status == "YES")
+                                <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">已兑礼品</a>
+							#else
+                                <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">活动已结束</a>
+							#end
+						#else
+							#if(${giftNumber.get(2).number} > 0)
+								#if($!giftNumber.get(2).status == "YES")
+                                    <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">已兑礼品</a>
+								#elseif($!giftNumber.get(2).status == "NO")
+                                    <a href="javascript:void(0);" class="T-second-red-exchange T-second-red-gift-margin exchange_gift" term="6" lucky_draw_id="$!giftNumber.get(2).luckyDrawId" have_address="$!giftNumber.get(2).haveAddress" award_id="80">
+                                        立即兑换
+                                    </a>
+                                #elseif($!giftNumber.get(2).status == "CAN_NOT_JOIN")
+                                    <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">您已用完兑奖次数</a>
+                                #else
+                                    <a href="javascript:void(0);" class="T-second-red-exchange T-second-red-gift-margin go_invest">立即投资参与</a>
+								#end
+							#else
+								#if($!giftNumber.get(2).status == "YES")
+                                    <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">已兑礼品</a>
+								#else
+                                    <a href="javascript:void(0);" class="T-second-red-exchange T-second-red-gift-margin">礼品已被兑完</a>
+								#end
+							#end
+						#end
+					#end
+                </div>
+                <div class="T-second-red-top-gift-box">
+                    <div class="T-second-red-gift">
+                        <div class="T-second-red-gift-title">燕窝礼盒</div>
+                        <img src="$!env.getWebURL('resources/micro2.0/images/activity/2017/thanksgiven/gift4.jpg')" />
+                        <p>投资港湾计划长安赢</p>
+                        <p>≥50万元</p>
+                        <span class="T-second-red-gift-number">礼品仅剩：${giftNumber.get(3).number}份</span>
+                    </div>
+					#if($!giftNumber.get(3).isLogin == "yes")
+						#if($!giftNumber.get(3).isStart == "not_start")
+						##<a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">活动未开始</a>
+						#elseif($!giftNumber.get(3).isStart == "end")
+							#if($!giftNumber.get(3).status == "YES")
+                                <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">已兑礼品</a>
+							#else
+                                <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">活动已结束</a>
+							#end
+						#else
+							#if(${giftNumber.get(3).number} > 0)
+								#if($!giftNumber.get(3).status == "YES")
+                                    <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">已兑礼品</a>
+								#elseif($!giftNumber.get(3).status == "NO")
+                                    <a href="javascript:void(0);" class="T-second-red-exchange T-second-red-gift-margin exchange_gift" term="12" lucky_draw_id="$!giftNumber.get(3).luckyDrawId" have_address="$!giftNumber.get(3).haveAddress" award_id="81">
+                                        立即兑换
+                                    </a>
+                                #elseif($!giftNumber.get(3).status == "CAN_NOT_JOIN")
+                                    <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">您已用完兑奖次数</a>
+                                #else
+                                    <a href="javascript:void(0);" class="T-second-red-exchange T-second-red-gift-margin go_invest">立即投资参与</a>
+								#end
+							#else
+								#if($!giftNumber.get(3).status == "YES")
+                                    <a href="javascript:void(0);" class="T-second-red-immediately T-second-red-gift-margin">已兑礼品</a>
+								#else
+                                    <a href="javascript:void(0);" class="T-second-red-exchange T-second-red-gift-margin">礼品已被兑完</a>
+								#end
+							#end
+						#end
+					#end
+                </div>
+                #if($!giftNumber.get(0).isStart == "not_start")
+                    <a href="javascript:void(0);" class="T-second-red-btn-stop">活动未开始</a>
+                #else
+                    #if($!giftNumber.get(0).isLogin != "yes")
+                        #if($!giftNumber.get(0).isStart == "end")
+                            <a href="javascript:void(0);" class="T-second-red-btn-start go_login">登录查看已兑礼品</a>
+                        #else
+                            <a href="javascript:void(0);" class="T-second-red-btn-start go_login">立即登录</a>
+                        #end
+                    #end
+                #end
+            </div>
+            <div class="T-second-red-bottom">
+                <div class="T-second-red-rule">
+                    <div class="T-first-red-rule-title">活动规则：</div>
+                    <div class="T-first-red-rule-content">
+                        <i>①</i>活动期间，单个用户累计购买指定标的达到指定金额即有机会兑换好礼，礼品数量有限，兑完即止，先兑先得；
+                    </div>
+                    <div class="T-first-red-rule-content">
+                        <i>②</i>活动期间，每位用户仅可兑换两份礼品，每个品类礼品仅可兑换一次；
+                    </div>
+                    <div class="T-first-red-rule-content">
+                        <i>③</i>符合兑奖的用户，请您在2017年11月23日23:59:59前完成兑换，否则兑换礼品资格将自动作废；
+                    </div>
+                    <div class="T-first-red-rule-content">
+                        <i>④</i>平台客服将在活动结束后的5个工作日内与成功兑换礼品的用户取得联系，与您核实收件信息后，安排发放事宜。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="T-second-bottom-txt">（礼品图片仅供参考，具体以实物为准）</div>
+</div>
+<!--弹窗-->
+<div class="T-second-windows-first windows-hide">
+    <!--第一次弹窗-->
+    <div class="T-second-windows-box">
+		<div class="T-second-windows-box-btn"></div>
+        <img src="$!env.getWebURL('resources/micro2.0/images/activity/2017/thanksgiven/bg1.png')" />
+        <div class="T-second-windows-put">
+            <div class="T-second-windows-title">请填写收货地址（地址填写后不可修改）</div>
+            <div class="T-second-windows-name">
+                <i>收货人：</i><input type="text" name="name" id="" value=""  maxlength="20"/>
+            </div>
+            <div class="T-second-windows-name">
+                <i>手机号码：</i><input type="text" name="telephone" id="" value="" class="phone" maxlength="11" />
+            </div>
+            <div class="T-second-windows-address">
+                <i>详细地址：</i><textarea name="address" maxlength="150" rows="" cols=""></textarea>
+            </div>
+            <div class="T-second-windows-btn add_address" lucky_draw_id>确定</div>
+            <div class="T-second-windows-txt">礼品将于活动结束后统一安排发放，请您耐心等待！</div>
+        </div>
+    </div>
+</div>
+	#if(!$!giftNumber.get(0).haveAddress && $!giftNumber.get(0).isLogin == "yes" && $!giftNumber.get(0).isStart == "start")
+    <div class="T-second-windows-second">
+        <!--第二次弹窗-->
+        <div class="T-second-windows-copy">
+			<div class="T-second-windows-box-btn"></div>
+            <img src="$!env.getWebURL('resources/micro2.0/images/activity/2017/thanksgiven/bg2.png')" />
+            <div class="T-second-windows-title-txt">尊敬的用户您好，检测到您已兑换了礼品，<br />但尚未填写收货地址。</div>
+            <div class="T-second-windows-put">
+                <div class="T-second-windows-title">请填写收货地址（地址填写后不可修改）</div>
+                <div class="T-second-windows-name">
+                    <i>收货人：</i><input type="text" name="name" id="" value="" maxlength="20"/>
+                </div>
+                <div class="T-second-windows-name">
+                    <i>手机号码：</i><input type="text" name="telephone" id="" value="" class="phone" maxlength="11"/>
+                </div>
+                <div class="T-second-windows-address">
+                    <i>详细地址：</i><textarea name="address" maxlength="150" rows="" cols=""></textarea>
+                </div>
+                <div class="T-second-windows-btn add_address" lucky_draw_id>确定</div>
+				<div class="T-second-windows-txt">礼品将于活动结束后统一安排发放，请您耐心等待！</div>
+            </div>
+        </div>
+    </div>
+	#end
+<div class="T-second-windows-third windows-hide">
+    <!--兑换成功-->
+    <div class="T-second-windows-success">
+        <div class="T-second-windows-success-title">恭喜您兑换成功！</div>
+        <div class="T-second-windows-success-txt">礼品将于活动结束后统一安排发放，请您耐心等待！</div>
+        <div class="T-second-windows-btn" id="determinethird">确定</div>
+    </div>
+</div>
+</body>
+#Html("end")

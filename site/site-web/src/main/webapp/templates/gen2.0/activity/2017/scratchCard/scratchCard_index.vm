@@ -1,0 +1,194 @@
+#Html("begin")
+#GenHead("begin","币港湾平台活动,币港湾,币港湾官网","关注币港湾,活动不停歇!币港湾官网为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("周周乐【币港湾官网】")
+#LoadGenCSS("/resources/gen2.0/styles/index/default")
+#LoadGenCSS("/resources/gen2.0/styles/activity/2017/scratchCard/scratchCard")
+#LoadGenJS("/resources/gen2.0/scripts/jquery-1.11.1.min")
+#LoadGenJS("/resources/gen2.0/scripts/activity/2017/scratchCard/scratchCard")
+#LoadGenJS("/resources/gen2.0/scripts/activity/2017/scratchCard/scrollForever")
+#GenHead("end")
+
+<body>
+<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')"/>
+<input type="hidden" id="userId" value="$!userId" />
+<input type="hidden" id="ticketsPlayStatus" value="$!ticketsPlayStatus" />
+<input type="hidden" id="hasScratchChance" value="$!hasScratchChance" />
+<input type="hidden" id="userAwardCount" value="$!userAwardCount" />
+<input type="hidden" id="isScratch" value="$!isScratch" />
+<input type="hidden" id="systemFormatTime" value="$!systemFormatTime" />
+
+#Gen2Header("home")
+<div class="ggle">
+    <div class="ggle_banner"></div>
+    <div class="ggle_container">
+        <div class="ggle_tickets">
+
+        #if($!ticketsPlayStatus == 'isNotStart')
+            <div class="ggle_tickets_content" id="ggle_tickets_content_isNotStart">
+                <h4>刮奖区</h4>
+            </div>
+
+            <div class="ggle_tickets_result" id="ggle_tickets_text_isNotStart" style="display: none;">
+                <div class="ggle_tickets_text">
+                    <h5>恭喜您获得</h5>
+                    <p id="prizes_name_isNotStart"></p>
+                </div>
+            </div>
+
+        #elseif($!ticketsPlayStatus == 'isStart')
+            #if($!userAwardCount == "1")
+
+                <div class="ggle_tickets_result" id="ggle_tickets_result_isStart">
+                    <div class="ggle_tickets_text">
+                        <h5>恭喜您获得</h5>
+                        #if($!prizeContent.indexOf('元') >= 1)
+                            #set($index=$!prizeContent.indexOf('元')+1)
+                            #set($length=$!prizeContent.length())
+                            #set($prizeSize=$!prizeContent.substring(0, $index))
+                            #set($prizeName=$!prizeContent.substring($index, $length))
+                            <p id="prizes_name"><span>$!prizeSize</span>$!prizeName</p>
+
+                        #elseif($!prizeContent.indexOf('M') >= 1)
+                            #set($index=$!prizeContent.indexOf('M')+1)
+                            #set($length=$!prizeContent.length())
+                            #set($prizeSize=$!prizeContent.substring(0, $index))
+                            #set($prizeName=$!prizeContent.substring($index, $length))
+                            <p id="prizes_name"><span>$!prizeSize</span>$!prizeName</p>
+                        #else
+                            <p id="prizes_name">$!prizeContent</p>
+                        #end
+
+                    </div>
+                </div>
+
+            #else
+                <div class="ggle_tickets_result wrap_hide" id="ggle_tickets_result_isStart">
+                    <div class="ggle_tickets_text">
+                        <h5>恭喜您获得</h5>
+                        <p id="prizes_name_result"></p>
+                    </div>
+                </div>
+                <div class="ggle_tickets_content" id="isStart_tickets_content">
+                    <h4>刮奖区</h4>
+                </div>
+
+                <div class="ggle_tickets_result" id="ggle_tickets_text_isEnd" style="display: none;">
+                    <div class="ggle_tickets_text">
+                        <h5>恭喜您获得</h5>
+                        <p id="prizes_name_show"></p>
+                    </div>
+                </div>
+
+                <div class="ggle_tickets_result" id="notStart_to_start" style="display: none;">
+                    <div class="ggle_tickets_text">
+                        <h5>登录可查看</h5>
+                        <p>获奖奖品</p>
+                    </div>
+                </div>
+
+                <div class="ggle_tickets_content" id="notStart_to_end" style="display: none;">
+                    <div class="ggle_tickets_text">
+                        <h5>您本期尚未</h5>
+                        <p>参与刮奖</p>
+                    </div>
+                </div>
+
+            #end
+        #else
+
+            #if($!userId == "")
+                <div class="ggle_tickets_result">
+                    <div class="ggle_tickets_text">
+                        <h5>登录可查看</h5>
+                        <p>获奖奖品</p>
+                    </div>
+                </div>
+            #else
+                #if($!isScratch == "yes")
+                <div class="ggle_tickets_result" id="playResult">
+                    <div class="ggle_tickets_text">
+                        <h5>恭喜您获得</h5>
+
+                        #if($!prizeContent.indexOf('元') >= 1)
+                            #set($index=$!prizeContent.indexOf('元')+1)
+                            #set($length=$!prizeContent.length())
+                            #set($prizeSize=$!prizeContent.substring(0, $index))
+                            #set($prizeName=$!prizeContent.substring($index, $length))
+                            <p id="prizes_name"><span>$!prizeSize</span>$!prizeName</p>
+
+                        #elseif($!prizeContent.indexOf('M') >= 1)
+                            #set($index=$!prizeContent.indexOf('M')+1)
+                            #set($length=$!prizeContent.length())
+                            #set($prizeSize=$!prizeContent.substring(0, $index))
+                            #set($prizeName=$!prizeContent.substring($index, $length))
+                            <p id="prizes_name"><span>$!prizeSize</span>$!prizeName</p>
+                        #else
+                            <p id="prizes_name">$!prizeContent</p>
+                        #end
+                    </div>
+                </div>
+                #else
+                <div class="ggle_tickets_content">
+                    <div class="ggle_tickets_text">
+                        <h5>您本期尚未</h5>
+                        <p>参与刮奖</p>
+                    </div>
+                </div>
+                #end
+            #end
+
+        #end
+
+        ##可点击按钮
+        #if($!ticketsPlayStatus == 'isNotStart')
+            <div class="ggle_btn btn_disabled" id="ticketsPlay">本期尚未开始</div>
+            <div class="ggle_btn" id="ticketsPlay_start" style="display: none;"></div>
+        #elseif($!ticketsPlayStatus == 'isStart')
+            <div class="ggle_btn" id="ticketsPlay_start"></div>
+            <div class="ggle_btn btn_disabled" id="alreadyPlay">您已参与</div>
+        #else
+            #if($!userId == "")
+                <a href="$!env.get('gen.server.web')/gen2.0/user/login/index?burl=/gen2.0/activity/weekhay_index">
+                    <div class="ggle_btn">立即登录</div>
+                </a>
+            #else
+                #if($!isScratch == "yes" || $!isScratch == "no")
+                    <div class="ggle_btn btn_disabled">本期已结束</div>
+                #end
+            #end
+        #end
+        <p class="game_des">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/2017/scratchCard/bulb.png">即刮即开，100%中奖！
+        </p>
+        </div>
+        <div class="winner_list">
+            <div class="winner_title"></div>
+            <div class="list_warp_out">
+                <div class="list_warp">
+                    <div class="winnerlist_title">
+                        <ul class="clearfix">
+                            <li>获奖时间</li>
+                            <li>手机号码</li>
+                            <li>奖品</li>
+                        </ul>
+                    </div>
+                    <div class="winnerlist_content" id="winnerList">
+                        <ul>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="active_rule">
+            <ul>
+                <li>活动时间：本周四0:00:00-24:00:00；</li>
+                <li>活动标的：仅限港湾计划系列标的（除港湾新手计划）；</li>
+                <li>活动资格：每位用户仅首笔投资可获得一次刮奖资格（仅限当日刮奖，逾期作废）；</li>
+                <li>用户中奖后，奖品将于活动结束后的3个工作日内由客服人员与您取得联系确认收货信息后，安排发放或寄出。（红包/奖励金类奖品将在3个工作日内发放至您的账户，请在【我的资产】-【我的红包】/【我的奖励】中查看）。</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+#Html("end")

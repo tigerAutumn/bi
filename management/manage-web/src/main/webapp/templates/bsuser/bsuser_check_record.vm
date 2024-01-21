@@ -1,0 +1,53 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{param.orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{param.orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/bsuser/checkRecord.htm')" method="post">
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+	    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<input type="hidden" name="userId" value="$!userId" />
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+		</ul>
+	</div>
+	<table class="table" width="130%" layoutH="148">
+		<thead>
+			<tr>
+				<th width="10%">提交时间</th>
+				<th width="5%">提交人</th>
+				<th width="85%">回访记录</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $record)
+			<tr target="sid_user" rel="1">
+				<td>$!date.format($!grid.submitTime)</td>
+				<td>$!grid.submitter</td>
+                <td>$!grid.content</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>

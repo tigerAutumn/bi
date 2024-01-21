@@ -1,0 +1,49 @@
+<div class="pageContent">
+	<form method="post" id="detail_form" action="$env.getWebURL('/app/version/updateVersion.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		#Hidden("id", "$!appVersion.id")
+		#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+		<div class="pageFormContent" layoutH="56">
+            <p>
+				<label>app类型：</label>
+				<select name="appType" class="required combox">
+					<option value="ios" #if($!appVersion.appType == 'ios') selected=selected #end>ios</option>
+					<option value="android" #if($!appVersion.appType == 'android') selected=selected #end>android</option>
+				</select>
+			</p>
+			<p>
+				<label>app版本：</label>
+				<input name="version" type="text"  size="30" class="required textInput" alt="请输入app版本号" value="$!appVersion.version"/>
+			</p>
+			<p>
+				<label>更新机制：</label>
+				<select name="isMandatory" class="required combox">
+					<option value="1" #if($!appVersion.isMandatory == 1) selected=selected #end>强制更新</option>
+					<option value="2" #if($!appVersion.isMandatory == 2) selected=selected #end>非强制更新</option>
+				</select>
+			</p>
+			<p>
+				<label>app更新内容：</label>
+				<textarea class="required textInput valid" rows="5" cols="25" name="content">$!appVersion.content</textarea><span color="red">注意句子换行用英文";"分割</span>
+			</p>
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="submit" >保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "200") {
+			alertMsg.correct(json.message);
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('app/version/index.htm')");
+		} else {
+			alertMsg.error(json.message);
+		}
+	}
+</script>

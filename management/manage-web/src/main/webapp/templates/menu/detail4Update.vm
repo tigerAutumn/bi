@@ -1,0 +1,51 @@
+<div class="pageContent">
+	<form method="post" name="detail_form" action="$env.getWebURL('wx/menu/updateMenu.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<div class="pageFormContent" layoutH="56">
+			<input name="id" type="hidden" value="$!mWxMenu.id"/>
+			<input name="parentId" type="hidden" value="$!mWxMenu.parentId"/>
+			<input name="orderNum" type="hidden" value="$!mWxMenu.orderNum"/>
+			<p>
+				<label>名称：</label>
+				<input name="name" type="text" size="30" maxlength="32" class="required textInput" value="$!mWxMenu.name" />
+			</p>
+			<p>
+				<label>类型：</label>
+				<select name="type" class="required combox">
+					<option value="view" #if("$!mWxMenu.type" == "view") selected #end>链接跳转</option>
+					<option value="click" #if("$!mWxMenu.type" == "click") selected #end>事件响应</option>
+				</select>
+			</p>
+			<p style="width:600px;">
+				<label>KEY/URL：</label>
+				<input name="url" type="text"  size="70" class="required textInput" alt="请输入KEY值或者URL" value="$!mWxMenu.url"/>
+			</p>
+			<p>
+				<label>父菜单：</label>
+				<label>$!mWxMenu.parentId</label>
+			</p>
+			<p>
+				<label>排序：</label>
+				<label>$!mWxMenu.orderNum</label>
+			</p>
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "200") {
+			alertMsg.correct(json.message);
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('wx/menu/index.htm')");
+		} else {
+			alertMsg.error(json.message);
+		}
+	}
+</script>

@@ -1,0 +1,112 @@
+#Html("begin")
+#Head("begin","币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("我的资产【币港湾官网】")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/assets/my_award.min")
+#WeChatShare()
+#Head("end")
+<body>
+    #if($!totalCount == 0)
+		<div class="header">
+			<a class="header_arrow" href="javascript:history.go(-1)"></a>
+			<h1 class="heade_ft">我的奖励</h1>
+		</div>
+		<div class="my-award-none"><p>暂时还没有奖励哦</p><p>赶紧去邀请好友吧~</p></div>
+    	<div class="award_null_img"></div>
+    	#if("$!qianbao" != "qianbao")
+    		<a class="invite" href="$!env.getWebURL('/micro2.0/more/toRecommend')" title="">邀请好友</a>
+    	#end
+    #else
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="bonus" value="$!bonus"/>
+    <input type="hidden" id="qianbao" value="$!qianbao"/>
+    <input type="hidden" id="token" name="token" value="$!token" />
+    <div class="container">
+		<div class="header header-none">
+			<a class="header_arrow-none" href="javascript:history.go(-1)"></a>
+			<h1 class="heade_ft-none">我的奖励</h1>
+			<span class="header_company">单位：元</span>
+		</div>
+    	<div class="my-award-money">$!money.format($!bonus)</div>
+		<h3 class="conta_h3">奖励</h3>
+    	#if($!haveSpecial == 'false')
+    		#if($!bonus > 0 )
+    			<a class="my-award-btn" href="javascript:bonus2jsh();" title="">提现到银行卡</a>
+    		#else
+    			<a class="my-award-btn" href="javascript:nonebouns();" title="">提现到银行卡</a>
+    		#end
+    	#else
+        <h4 class="my-award-prompt">您有一笔 $!specialAmout 元的奖励金正在转余额处理中，请耐心等待</h4>
+    	#end
+    </div>
+    <div class="main">
+		<div class="my-award-box">
+			<span class="my-award-title titl_max">时间</span>
+			<span class="my-award-title titl_men">金额（元）</span>
+			<span class="my-award-title titl_win">摘要</span>
+		</div>
+    	<input type="hidden" id="pageIndex" name="pageIndex" value="$!pageIndex" />
+    	<input type="hidden" id="totalCount" name="totalCount" value="$!totalCount" />
+    	<div class="my-award-content" id="mainContent" url='/micro2.0/assets/my_bonus_content?withdrawFlag=$!withdrawFlag'>
+    		#foreach($!grid in $!bonusList)
+    		<div class="my-award-warp">
+    			<span class="my-award-title titl_max">$!date.formatDateTime($!grid.earningsDate,'yyyy-MM-dd')</span>    			   			
+    				#if($!grid.bonusType == 'ACTIVITY' && (!$!grid.note || $!grid.note == ''))
+						<span class="my-award-title titl_men oran_color">+$!money.format($!grid.amount)</span>
+    					<span class="my-award-title titl_win">活动奖励</span>
+    				#elseif($!grid.bonusType == 'ACTIVITY' && $!grid.note && $!grid.note != '')
+						<span class="my-award-title titl_men oran_color">+$!money.format($!grid.amount)</span>
+    					<span class="my-award-title titl_win">$!grid.note</span>	
+    				#elseif($!grid.bonusType == 'RECOMMEND')
+						<span class="my-award-title titl_men oran_color">+$!money.format($!grid.amount)</span>
+    					<span class="my-award-title titl_win">推荐奖励</span>
+    				#elseif($!grid.bonusType == 'DEP_FILL_INTEREST')
+						<span class="my-award-title titl_men oran_color">+$!money.format($!grid.amount)</span>
+    					<span class="my-award-title titl_win">奖励金返还</span>
+    				#elseif($!grid.bonusType == 'BONUS_WITHDRAW')
+						<span class="my-award-title titl_men green_color">$!money.format($!grid.amount)</span>
+                        <span class="my-award-title titl_win">提现到银行卡</span>
+    				#elseif($!grid.amount < 0)
+						<span class="my-award-title titl_men green_color">$!money.format($!grid.amount)</span>
+                        <span class="my-award-title titl_win">转出</span>
+                    #elseif($!grid.bonusType == 'INTEREST_TICKET')
+						<span class="my-award-title titl_men oran_color increase_money">+$!money.format($!grid.amount)						
+						<img class="increase_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/zan_money02.png" alt=""/></span>
+						<div class="alert_info">
+							<div class="alert_title">加息收益详情</div>
+							<div class="alert_ul">
+								$!grid.detail
+							</div>
+							<div class="btn_group">
+								<div class="top_line close_btn">我知道了</div>
+							</div>
+						</div>
+                        <span class="my-award-title titl_win">加息收益</span>
+    				#end
+    		</div>
+    		#end
+    	</div>
+		<div id="showmore">查看更多</div>
+    </div>
+	#end
+	<div class="dialog_notice alert_hide"></div>
+#LoadJS("resources/micro2.0/scripts/zepto.min")
+#LoadJS("resources/micro2.0/scripts/assets/custom")
+#LoadJS("resources/micro2.0/scripts/common/more_detail_pagination")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/assets/bonus2JSH")
+<script>
+	$(function(){
+		$(".increase_money").click(function(){
+			$(".dialog_notice").addClass("alert_show").removeClass("alert_hide");
+			$(this).next(".alert_info").stop().show();
+		});
+		$(".close_btn").click(function(){
+    		$(".dialog_notice").addClass("alert_hide").removeClass("alert_show");
+    		$(".alert_info").stop().hide();
+    	})
+	})
+</script>
+</body>
+#Html("end")

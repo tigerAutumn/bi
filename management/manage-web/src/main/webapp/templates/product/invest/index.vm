@@ -1,0 +1,108 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/productInvest/index.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>统计日期：<input name="startTime"   type="text"  id="startTime" class=" date textInput readonly" readonly="true" value="$!startTime" dateFmt="yyyy-MM-dd"/></td >
+					<td>到  &nbsp;&nbsp;&nbsp;&nbsp;
+						<input name="endTime" type="text" id="endTime" class=" date textInput readonly" readonly="true" value="$!endTime" dateFmt="yyyy-MM-dd"/>
+					</td>
+					<td>
+						<button  onclick="func()" type="button">查询</button>
+						<button  onclick="exp()" type="button">导出excel</button>
+					</td>
+				</tr>
+			</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1240" layoutH="138">
+		<thead>
+			<tr>
+				<th width="100">日期</th>
+				<th width="110">新用户投资7天金额</th>
+				<th width="80">7天销售额</th>
+				<th width="110">新用户投资30天金额</th>
+				<th width="80">30天销售额</th>
+				<th width="110">新用户投资90天金额</th>
+				<th width="80">90天销售额</th>
+				<th width="110">新用户投资180天金额</th>
+				<th width="80">180天销售额</th>
+				<th width="110">新用户投资270天金额</th>
+				<th width="80">270天销售额</th>
+				<th width="110">新用户投资365天金额</th>
+				<th width="80">365天销售额</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($invest in $investList)
+			<tr>
+				<td>$!date.formatYYYYMMDD($!invest.date)</td>
+				<td>#if($!invest.todayInvest7) $!money.format($!invest.todayInvest7) #else 0.00 #end</td>
+				<td>#if($!invest.totalInvest7) $!money.format($!invest.totalInvest7) #else 0.00 #end</td>
+				<td>#if($!invest.todayInvest30) $!money.format($!invest.todayInvest30) #else 0.00 #end</td>
+				<td>#if($!invest.totalInvest30) $!money.format($!invest.totalInvest30) #else 0.00 #end</td>
+				<td>#if($!invest.todayInvest90) $!money.format($!invest.todayInvest90) #else 0.00 #end</td>
+				<td>#if($!invest.totalInvest90) $!money.format($!invest.totalInvest90) #else 0.00 #end</td>
+				<td>#if($!invest.todayInvest180) $!money.format($!invest.todayInvest180) #else 0.00 #end</td>
+				<td>#if($!invest.totalInvest180) $!money.format($!invest.totalInvest180) #else 0.00 #end</td>
+				<td>#if($!invest.todayInvest270) $!money.format($!invest.todayInvest270) #else 0.00 #end</td>
+				<td>#if($!invest.totalInvest270) $!money.format($!invest.totalInvest270) #else 0.00 #end</td>
+				<td>#if($!invest.todayInvest365) $!money.format($!invest.todayInvest365) #else 0.00 #end</td>
+				<td>#if($!invest.totalInvest365) $!money.format($!invest.totalInvest365) #else 0.00 #end</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+<script>
+
+function func(){
+	var beginTime = $("#startTime").val();
+	var overTime = $("#endTime").val();
+    if(beginTime != "" && overTime != ""){
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alertMsg.warn("开始时间不能在结束时间之后！");
+			return false;
+		}
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/productInvest/index.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+	var url = $("#APP_ROOT_PATH").val() + "/productInvest/xls.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+</script>

@@ -1,0 +1,143 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/payOrders/serve/indexCustomer.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+				<tr>
+					<td>
+						注册手机号：<input  id="userMobile" type="text" name="userMobile" value="$!userMobile" size="18" maxlength="11" style="width:120px; height:16px" />
+						预留手机号：<input  id="mobile" type="text" name="mobile" value="$!mobile" size="18" maxlength="11" style="width:120px; height:16px" />
+						身份证：<input  id="idCard" type="text" name="idCard" value="$!idCard" size="18" placeholder="请输入身份证后四位" maxlength="4" style="width:120px; height:16px" />
+						<span style="margin-left:20px;">
+							<button onclick="func()" type="button">查询</button>
+                        </span>
+					</td>	
+                </tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	
+	<table class="table" width="1500" layoutH="138">
+		<thead>
+			<tr>
+	            <th width="7%">注册手机号</th>
+				<th width="7%">预留手机号</th>
+				<th width="5%">用户名</th>
+				<th width="14%">订单号</th>
+				<th width="5%">金额</th>
+				<th width="5%">交易类型</th>
+				<th width="5%">期限</th>
+				<th width="5%">利率</th>
+				<th width="5%">支付方式</th>
+				<th width="5%">状态</th>
+				<th width="5%">返回码</th>
+				<th width="10%">返回信息</th>
+				<th width="6%">终端类型</th>
+				<th width="7%">银行类型</th>
+				<th width="12%">交易时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($payOrderss in $payOrdersList)
+				<td>$!payOrderss.userMobile</td>
+                <td>$!payOrderss.mobile</td>
+				<td>$!payOrderss.userName</td>
+				<td>$!payOrderss.orderNo</td>
+				<td>$!payOrderss.amount</td>
+				<td>$!message.get("ACCOUNT_JNL_TRANS_CODE_$!payOrderss.transType")</td>
+				<td>
+					#set($Integer = 0)
+					#if($!payOrderss.term)
+						#if($!payOrderss.term == 1)
+    						30
+    					#elseif($!payOrderss.term == 3)
+    						90
+    					#elseif($!payOrderss.term == 6)
+    						180
+    					#elseif($!payOrderss.term == 12)
+    						365
+						#elseif(0 > $Integer.parseInt("$!payOrderss.term"))
+							#set($termNum = $Integer.parseInt("$!payOrderss.term")*-1 ) $!termNum
+    					#end
+					#end
+				</td>
+				<td>
+					#if($!payOrderss.baseRate)
+						$!payOrderss.baseRate %
+					#end
+				</td>
+				<td>
+					#if("$!payOrderss.channelTransType" == "TRANSFER")
+						钱包转账
+					#elseif("$!payOrderss.channelTransType" == "DF")
+						代付
+					#elseif("$!payOrderss.channelTransType" == "DK")
+						代扣
+					#elseif("$!payOrderss.channelTransType" == "NETBANK")
+						网银
+					#elseif("$!payOrderss.channelTransType" == "QUICK_PAY")
+						快捷
+					#else
+						$!payOrderss.channelTransType
+					#end
+				</td>
+				<td  style="color:
+						#if("$!payOrderss.status" == "6") green;font-weight:bolder ">
+						#elseif("$!payOrderss.status" == "7") red ">
+						#else ">
+						#end
+					$!message.get("ACCOUNT_ORDER_STATUS_$!payOrderss.status")</td>
+                <td>$!payOrderss.returnCode</td>
+				<td>$!payOrderss.returnMsg</td>
+				##<td>$!message.get("ACCOUNT_ORDERS_TERMINAL_TYPE_$!payOrderss.terminalType")</td>
+				<td >#if($!payOrderss.terminalType == 1)H5端
+				     #elseif($!payOrderss.terminalType == 2) PC端
+					 #elseif($!payOrderss.terminalType == 3) Android端
+					 #elseif($!payOrderss.terminalType == 4) IOS端
+					 #end	
+				</td>
+				<td>$!payOrderss.bankName</td>
+				<td>$!date.format($!payOrderss.createTime)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+
+<script>
+    function func(){
+        var mobile = $("#mobile").val();
+    	var idCard = $("#idCard").val();
+		var userMobile = $("#userMobile").val();
+		if((mobile == '' || mobile == null) && (userMobile == null || userMobile == '')){
+		    alertMsg.warn("手机号码与预留手机号码必须输入一个！");
+    		return false;
+		
+		}
+    	var url = $("#APP_ROOT_PATH").val() + "/payOrders/serve/indexCustomer.htm";
+    	$("#myform").attr("action",url);
+    	$("#myform").attr("onsubmit","return navTabSearch(this);");
+    	$("#myform").submit();
+    }
+</script>

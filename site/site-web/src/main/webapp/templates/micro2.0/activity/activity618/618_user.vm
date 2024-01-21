@@ -1,0 +1,45 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadCSS("resources/micro2.0/styles/activity/618_my_lotter")
+#LoadJS("resources/micro2.0/scripts/more/jquery")
+#LoadJS("resources/micro2.0/scripts/activity/scale")
+#LoadJS("resources/micro2.0/scripts/activity/618_lottery")
+#LoadJS("resources/micro2.0/scripts/common/detail_pagination")
+#WeChatShare()
+#Head("end")
+<body>
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" id="pageIndex" name="pageIndex" value="$!pageIndex" />
+		<input type="hidden" id="totalCount" name="totalCount" value="$!totalCount" />
+<div class="header">
+	<a class="header_arrow" href="javascript:history.go(-1)"></a>
+	<h1 class="heade_ft color_bg">我的奖品</h1>
+</div>
+<div class="palace_holder"></div>
+<table  cellspacing="0" border="1" bordercolor="#000000">
+	<tbody id="mainContent" url='/micro2.0/activity/1111/myAwardsMore'>
+		<tr>
+			<td class="bg_gray">时间</td>
+			<td class="bg_gray">中奖情况</td>
+		</tr>
+		#foreach($userLucky in $userLuckyList)
+		<tr class="bg_white">
+			<td>
+				$!date.formatDateTime($!userLucky.userDrawTime,'yyyy-MM-dd HH:mm:ss')
+			</td>
+			<td>
+				获得$!userLucky.awardContent
+			</td>
+		</tr>
+		#end
+	</tbody>
+</table>
+#if(!$userLuckyList)
+#else
+	<div class="i_last" id="showmore">查看更多</div>
+#end
+
+</body>
+#Html("end")

@@ -1,0 +1,74 @@
+<div class="pageContent">
+    #Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+    <input id="bsUserId" type="hidden" value="$!bsUserId">
+    <input id="bsUserId" type="hidden" value="$!bsUserId">
+    #Hidden("mUserId",$!mUserId)
+    <form id="applyForm" method="post" action="$env.getWebURL('/bsuser/applyChangeMobile.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+        <div class="pageFormContent nowrap" layoutH="97" >
+            <dl>
+                <dt >用户姓名：</dt>
+                <dd style="width:0px;">
+                    <input type="text" id="userName" name="userName" value="$!userName" disabled="disabled" style="width:245px; height:16px" />
+                </dd>
+            </dl>
+            <dl>
+                <dt >当前手机号：</dt>
+                <dd style="width:0px;">
+                    <input type="text" id="mobile" name="mobile" value="$!mobile" disabled="disabled" style="width:245px; height:16px" />
+                </dd>
+            </dl>
+            <dl>
+                <dt >申请更改为：</dt>
+                <dd style="width:0px;">
+                    <input type="text" id="newMobile" name="newMobile"  value="" maxlength="11" style="width:245px; height:16px" />
+                </dd>
+            </dl>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_applyForm()">确认</button></div></div></li>
+            </ul>
+        </div>
+    </form>
+</div>
+<script>
+    function submit_applyForm(){
+        var userId = $("#bsUserId").val();
+        var mUserId = $("#mUserId").val();
+        var newMobile = $.trim($("#newMobile").val());
+
+        var regMobile = /0?(13|14|15|18|17)[0-9]{9}/;
+        if((newMobile == null || newMobile == "")){
+            alertMsg.warn("申请更改的手机号不能为空！");
+            return false;
+        }
+        if(!regMobile.test(newMobile)) {
+            alertMsg.warn("申请更改的手机号不合法！");
+            return false;
+        }
+
+        jQuery.ajax({
+            url: $('#APP_ROOT_PATH').val() + '/bsuser/applyChangeMobile.htm',
+            data:{
+                userId: userId,
+                mUserId: mUserId,
+                newMobile: newMobile
+            },
+            type:'post',
+            success: function(data){
+                if(data.statusCode == "200") {
+                    alertMsg.correct('申请已提交!');
+                    $.pdialog.closeCurrent();
+                    navTab.reload("$env.getWebURL('/bsuser/applyChangeUserMobileIndex.htm')");
+                }else if(data.statusCode == "300") {
+                    alertMsg.warn(data.message);
+                    $.pdialog.closeCurrent();
+                }else {
+                    alertMsg.error('申请已失败，请重试!');
+                }
+            }
+        });
+
+    }
+
+</script>

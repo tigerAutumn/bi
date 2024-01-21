@@ -1,0 +1,51 @@
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	<form id="areementFeeDetailForm" method="post" action="" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						<span style="margin-right:20px;">
+							<button onclick="expDetaill()" type="button">导出excel</button>
+						</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</form>
+
+    <table class="table" width="100%" layoutH="98">
+        <thead>
+        <tr>
+            <th width="25%">订单编号</th>
+            <th width="25%">交易金额</th>
+            <th width="25%">交易手续费</th>
+            <th width="25%">时间</th>
+        </tr>
+        </thead>
+        <tbody>
+			#foreach($grid in $detailList)
+				<tr>
+					<td>$!grid.orderNo</td>
+					<td>$!money.format($!grid.amount)</td>
+					<td>$!money.format($!grid.agreementFeeAmount)</td>
+					<td>$!date.format($!grid.updateTime)</td>
+				</tr>
+			#end
+        </tbody>
+    </table>
+
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+    </div>
+</div>
+
+<script>
+    function expDetaill(){
+        var url = $("#APP_ROOT_PATH").val() + "/financeStatistics/queryAgreementFeeDetail/exportXls.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","");
+        $("#myform").submit();
+    }
+</script>

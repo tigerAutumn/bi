@@ -1,0 +1,497 @@
+#Html("begin")
+#GenHead("begin","互联网金融平台，互联网金融，币港湾，币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/activity/default")
+#LoadGenCSS("/resources/gen2.0/styles/activity/2017/thanksgiven/thanksgiven")
+#GenHead("end")
+
+<body class="body">
+#Gen2Header("home")
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.get('gen.server.web')"/>
+<input type="hidden" id="have_address" value="$!giftNumber.get(0).haveAddress">
+<input type="hidden" id="isLogin" value="$!giftNumber.get(0).isLogin">
+#if($!giftNumber.get(0).luckyDrawId)
+    <input type="hidden" id="luckyDrawId" value="$!giftNumber.get(0).luckyDrawId">
+#elseif($!giftNumber.get(1).luckyDrawId)
+    <input type="hidden" id="luckyDrawId" value="$!giftNumber.get(1).luckyDrawId">
+#elseif($!giftNumber.get(2).luckyDrawId)
+    <input type="hidden" id="luckyDrawId" value="$!giftNumber.get(2).luckyDrawId">
+#elseif($!giftNumber.get(3).luckyDrawId)
+    <input type="hidden" id="luckyDrawId" value="$!giftNumber.get(3).luckyDrawId">
+#end
+<div class="thanksgiven">
+    <div class="thanksgiven_banner"></div>
+    <div class="thanksgiven_wrap wrap_01">
+        <div class="thanksgiven_inside">
+            <div class="target_link">
+                <img src="$!qrImage">
+            </div>
+            <div class="thanksgiven_content">
+                <h4>活动规则</h4>
+                <p><span>①</span>活动期间，用户每天首次分享活动至微信（朋友圈/朋友），可随机获得一个感恩红包；</p>
+                <p><span>②</span>感恩红包当天到账，您可在我的资产-我的红包处查看。</p>
+            </div>
+        </div>
+    </div>
+    <div class="thanksgiven_wrap wrap_02">
+        <div class="thanksgiven_inside">
+            <div class="thanksgiven_content" style="padding: 30px 15px;margin-bottom: 30px;">
+                <div class="prize_list">
+                    <div class="prize_card_box">
+                        <div class="prize_card">
+                            <h5>毛巾礼盒</h5>
+                            <div class="prize_content">
+                                <div class="prize_pic">
+                                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/thanksgiven/thanksgiven_prize_03.jpg">
+                                </div>
+                                <p>投资港湾计划短期乐≥5万元</p>
+                                <div class="prize_num">
+                                    <span>礼品仅剩：${giftNumber.get(0).number}份</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="prize_card_box">
+                        <div class="prize_card">
+                            <h5>养生壶</h5>
+                            <div class="prize_content">
+                                <div class="prize_pic">
+                                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/thanksgiven/thanksgiven_prize_05.jpg">
+                                </div>
+                                <p>投资港湾计划安心投≥10万元</p>
+                                <div class="prize_num">
+                                    <span>礼品仅剩：${giftNumber.get(1).number}份</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="prize_card_box">
+                        <div class="prize_card">
+                            <h5>铁皮石斛礼盒</h5>
+                            <div class="prize_content">
+                                <div class="prize_pic">
+                                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/thanksgiven/thanksgiven_prize_07.jpg">
+                                </div>
+                                <p>投资港湾计划稳定收≥20万元</p>
+                                <div class="prize_num">
+                                    <span>礼品仅剩：${giftNumber.get(2).number}份</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="prize_card_box">
+                        <div class="prize_card">
+                            <h5>燕窝礼盒</h5>
+                            <div class="prize_content">
+                                <div class="prize_pic">
+                                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/thanksgiven/thanksgiven_prize_09.jpg">
+                                </div>
+                                <p>投资港湾计划长安赢≥50万元</p>
+                                <div class="prize_num">
+                                    <span>礼品仅剩：${giftNumber.get(3).number}份</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="prize_btn">
+                    #if($!giftNumber.get(0).isStart == "not_start")
+                        <div class="btn_disabled">
+                            活动未开始
+                        </div>
+                    #elseif($!giftNumber.get(0).isStart == "end")
+                        #if($!giftNumber.get(0).isLogin == "no")
+                            <div class="btn_disabled go_login">
+                                登录查看已兑礼品
+                            </div>
+                        #else
+                            <div class="btn_exchange">
+                            ### 已结束
+                                #if($!giftNumber.get(0).status == "YES")
+                                    <span>已兑礼品</span>
+                                #else
+                                    <span>活动已结束</span>
+                                #end
+                            </div>
+                            <div class="btn_exchange">
+                            ### 已结束
+                                #if($!giftNumber.get(1).status == "YES")
+                                    <span>已兑礼品</span>
+                                #else
+                                    <span>活动已结束</span>
+                                #end
+                            </div>
+                            <div class="btn_exchange">
+                            ### 已结束
+                                #if($!giftNumber.get(2).status == "YES")
+                                    <span>已兑礼品</span>
+                                #else
+                                    <span>活动已结束</span>
+                                #end
+                            </div>
+                            <div class="btn_exchange">
+                            ### 已结束
+                                #if($!giftNumber.get(3).status == "YES")
+                                    <span>已兑礼品</span>
+                                #else
+                                    <span>活动已结束</span>
+                                #end
+                            </div>
+                        #end
+                    #else
+                        #if($!giftNumber.get(0).isLogin == "no")
+                            <div class="btn_disabled go_login">
+                                立即登录
+                            </div>
+                        #else
+                            <div class="btn_exchange">
+                            ### 已开始
+                                #if(${giftNumber.get(0).number} > 0)
+                                    #if($!giftNumber.get(0).status == "YES")
+                                        <span>已兑礼品</span>
+                                    #elseif($!giftNumber.get(0).status == "NO")
+                                        <span class="exchange exchange_gift" term="1" lucky_draw_id="$!giftNumber.get(0).luckyDrawId" have_address="$!giftNumber.get(0).haveAddress" award_id="78">立即兑换</span>
+                                    #elseif($!giftNumber.get(0).status == "CAN_NOT_JOIN")
+                                        <span>您已用完兑奖次数</span>
+                                    #else
+                                        <span class="exchange go_invest">立即投资参与</span>
+                                    #end
+                                #else
+                                    #if($!giftNumber.get(0).status == "YES")
+                                        <span>已兑礼品</span>
+                                    #else
+                                        <span class="exchange">礼品已被兑完</span>
+                                    #end
+                                #end
+                            </div>
+                            <div class="btn_exchange">
+                            ### 已开始
+                                #if(${giftNumber.get(1).number} > 0)
+                                    #if($!giftNumber.get(1).status == "YES")
+                                        <span>已兑礼品</span>
+                                    #elseif($!giftNumber.get(1).status == "NO")
+                                        <span class="exchange exchange_gift" term="3" lucky_draw_id="$!giftNumber.get(1).luckyDrawId" have_address="$!giftNumber.get(0).haveAddress" award_id="79">立即兑换</span>
+                                    #elseif($!giftNumber.get(1).status == "CAN_NOT_JOIN")
+                                        <span>您已用完兑奖次数</span>
+                                    #else
+                                        <span class="exchange go_invest">立即投资参与</span>
+                                    #end
+                                #else
+                                    #if($!giftNumber.get(1).status == "YES")
+                                        <span>已兑礼品</span>
+                                    #else
+                                        <span class="exchange">礼品已被兑完</span>
+                                    #end
+                                #end
+                            </div>
+                            <div class="btn_exchange">
+                            ### 已开始
+                                #if(${giftNumber.get(2).number} > 0)
+                                    #if($!giftNumber.get(2).status == "YES")
+                                        <span>已兑礼品</span>
+                                    #elseif($!giftNumber.get(2).status == "NO")
+                                        <span class="exchange exchange_gift" term="6" lucky_draw_id="$!giftNumber.get(2).luckyDrawId" have_address="$!giftNumber.get(0).haveAddress" award_id="80">立即兑换</span>
+                                    #elseif($!giftNumber.get(2).status == "CAN_NOT_JOIN")
+                                        <span>您已用完兑奖次数</span>
+                                    #else
+                                        <span class="exchange go_invest">立即投资参与</span>
+                                    #end
+                                #else
+                                    #if($!giftNumber.get(2).status == "YES")
+                                        <span>已兑礼品</span>
+                                    #else
+                                        <span class="exchange">礼品已被兑完</span>
+                                    #end
+                                #end
+                            </div>
+                            <div class="btn_exchange">
+                            ### 已开始
+                                #if(${giftNumber.get(3).number} > 0)
+                                    #if($!giftNumber.get(3).status == "YES")
+                                        <span>已兑礼品</span>
+                                    #elseif($!giftNumber.get(3).status == "NO")
+                                        <span class="exchange exchange_gift" term="12" lucky_draw_id="$!giftNumber.get(3).luckyDrawId" have_address="$!giftNumber.get(0).haveAddress" award_id="81">立即兑换</span>
+                                    #elseif($!giftNumber.get(3).status == "CAN_NOT_JOIN")
+                                        <span>您已用完兑奖次数</span>
+                                    #else
+                                        <span class="exchange go_invest">立即投资参与</span>
+                                    #end
+                                #else
+                                    #if($!giftNumber.get(3).status == "YES")
+                                        <span>已兑礼品</span>
+                                    #else
+                                        <span class="exchange">礼品已被兑完</span>
+                                    #end
+                                #end
+                            </div>
+                        #end
+                    #end
+                </div>
+            </div>
+            <div class="thanksgiven_content">
+                <h4>活动规则</h4>
+                <p><span>①</span>活动期间，单个用户累计购买指定标的达到指定金额即有机会兑换好礼，礼品数量有限，兑完即止，先兑先得；</p>
+                <p><span>②</span>活动期间，每位用户仅可兑换两份礼品，每个品类礼品仅可兑换一次；</p>
+                <p><span>③</span>符合兑奖的用户，请您在2017年11月23日23:59:59前完成兑换，否则兑换礼品资格将自动作废；</p>
+                <p><span>④</span>平台客服将在活动结束后的5个工作日内与成功兑换礼品的用户取得联系，与您核实收件信息后，安排发放事宜。</p>
+            </div>
+        </div>
+    </div>
+    <div class="thanksgiven_wrap wrap_03">
+        <div class="thanksgiven_inside">
+            <div class="thanksgiven_content" style="padding: 60px 40px 30px;margin-bottom: 30px;">
+                #if($!isStartThird == "not_start")
+                    ##14号以前
+                    <div class="step03_img">
+                        <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/thanksgiven/thanksgiven_prize.png">
+                    </div>
+                    <div class="prize_btn">
+                        <div class="btn_disabled">活动未开始</div>
+                    </div>
+                #elseif($!isStartThird == "start" || $!isStartThird == "end")
+                    #if($!isLogin == "yes")
+                        <div class="lottery">
+                            #if(!$!luckyNumber)
+                            #elseif($!luckyNumber.size() < 2)
+                                <h5>开奖幸运号</h5>
+                                <p><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/thanksgiven/thinksgiven_lottery_time.jpg">$!luckyNumber[0].key
+                                    #if($!isStartThird == "start")
+                                        <span>明日公布，敬请期待！</span>
+                                    #end
+                                    </p>
+                                <div class="lottery_num">
+                                    #if($!luckyNumber[0].value == "未产生")
+                                        <span class="lottery_num_ball ball_null" style="font-size: 14px;">
+                                            未产生
+                                        </span>
+                                    #else
+                                        <span class="lottery_num_ball ball_null">
+                                            #if($!luckyNumber[0].value)
+                                                $!luckyNumber[0].value
+                                            #else
+                                                ?
+                                            #end
+                                        </span>
+                                    #end
+
+                                </div>
+                            #else
+                                <h5>开奖幸运号</h5>
+                                <p><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/thanksgiven/thinksgiven_lottery_time.jpg">$!luckyNumber[0].key</p>
+                                <div class="lottery_num">
+                                #if($!luckyNumber[0].value == "未产生")
+                                    <span class="lottery_num_ball" style="font-size: 14px;">未产生</span>
+                                #else
+                                    <span class="lottery_num_ball">$!luckyNumber[0].value</span>
+                                #end
+                                </div>
+                                <p><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/thanksgiven/thinksgiven_lottery_time.jpg">$!luckyNumber[1].key
+                                #if($!isStartThird == "start")
+                                    <span>明日公布，敬请期待！</span>
+                                #end
+                                </p>
+                                <div class="lottery_num">
+                                    <span class="lottery_num_ball ball_null">?</span>
+                                </div>
+                            #end
+                        </div>
+                        <div class="lottery_history">
+                            <div class="history_title">
+                                <div class="history_text">日期</div>
+                                <div class="history_text">我的投资号码</div>
+                                <div class="history_text">幸运号码</div>
+                                <div class="history_text">中奖用户</div>
+                            </div>
+                            #foreach($!luckyNum in $!luckyNumberList)
+                                <div class="history_content">
+                                    <div class="history_text">$!date.formatDateTime($!luckyNum.investDate, "MM-dd")</div>
+                                    <div class="history_text">$!luckyNum.investNumber</div>
+                                    <div class="history_text"><span>$!luckyNum.luckyNumber</span></div>
+                                    <div class="history_text">$!luckyNum.luckyUser</div>
+                                </div>
+                            #end
+                        </div>
+                        #if($!isStartThird == "end")
+                            <div class="prize_btn">
+                                <div class="btn_disabled">活动已结束</div>
+                            </div>
+                        #else
+                            #if($!waitPublish == "YES")
+                                <div class="prize_btn">
+                                    <div class="btn_disabled">
+                                        等待公布
+                                    </div>
+                                </div>
+                            #else
+                                <div class="prize_btn">
+                                    <div class="btn_disabled go_invest">
+                                        立即投资参与
+                                    </div>
+                                </div>
+                            #end
+                        #end
+                    #else
+                        <div class="step03_img">
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/thanksgiven/thanksgiven_phone.png">
+                            <div class="thanksgiven_login go_login">
+                                #if($!isStartThird == "end")
+                                    登录查看投资号码
+                                #else
+                                    立即登录
+                                #end
+                            </div>
+                        </div>
+                    #end
+                #end
+            </div>
+
+            <div class="thanksgiven_content">
+                <h4>活动规则</h4>
+                <p><span>①</span>幸运投资号活动仅限港湾计划产品、赞分期系列产品，新手标除外；</p>
+                <p><span>②</span>活动期间，每位用户按每天首笔投资的时间排序，生成对应的投资号；</p>
+                <p>
+                    <span>③</span>活动期间，平台将于次日00：00时，在活动页面公布前一天的幸运投资号，及前一天的幸运用户，每天的幸运用户可获得平台发放的100元现金奖励；<br>
+                    举例：11月14日，张先生首笔投资后产生号码牌为15，次日平台所公布的幸运投资号为15，则张先生可获得100元现金奖励；
+                </p>
+                <p><span>④</span>每位获得幸运号的中奖用户都将在1个工作日内，收到来自币港湾平台客服的电话通知，请您保持好电话畅通；</p>
+                <p><span>⑤</span>每日幸运号码牌中奖用户的现金奖励，将以奖励金的形式于活动结束后的5个工作日内发放至您的奖励金账户，您可在我的资产-我的奖励金处查看。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+##加载页面发现礼物已兑换但未填写地址
+#if(!$!giftNumber.get(0).haveAddress && $!giftNumber.get(0).isLogin == "yes" && $!giftNumber.get(0).isStart == "start")
+    <div class="over_bg" style="display: block;"></div>
+#else
+    <div class="over_bg"></div>
+#end
+
+##兑换礼物填写地址
+<div class="over_wrap exchange_step01">
+    <div class="over_box">
+        <div class="over_title">
+            <a href="javascript:()" class="over_wrap_closed"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/thanksgiven/address_close.png"></a>
+        </div>
+        <div class="over_content">
+            <div class="over_ifo">
+                <div class="over_ifo_inside">
+                    <h5>请填写收货地址(地址填写后不可修改)</h5>
+                    <div class="exchange_ifo">
+                        <form>
+                            <label>
+                                <p>收货人：</p>
+                                <input type="text" name="name" id="name" maxlength="20">
+                            </label>
+                            <label>
+                                <p>手机号码：</p>
+                                <input type="tel" name="telephone" id="telephone" maxlength="11">
+                            </label>
+                            <label class="address">
+                                <p>详细地址：</p>
+                                <textarea name="address" id="address" maxlength="150"></textarea>
+                            </label>
+                            <div>
+                                <button type="button" class="exchange_ifo_submit add_address" lucky_draw_id>确定</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="over_bottom"></div>
+    </div>
+</div>
+##加载页面发现礼物已兑换但未填写地址
+#if(!$!giftNumber.get(0).haveAddress && $!giftNumber.get(0).isLogin == "yes" && $!giftNumber.get(0).isStart == "start")
+    <div class="over_wrap exchange_step02" style="display: block;">
+        <div class="over_box" style="margin-top: -265px;">
+            <div class="over_title_supply">
+                <a href="javascript:void()" class="over_wrap_closed"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/thanksgiven/address_close.png"></a>
+                <p>尊敬的用户您好，检测到您已兑换了礼品，<br>但尚未填写收货地址。</p>
+            </div>
+            <div class="over_content">
+                <div class="over_ifo">
+                    <div class="over_ifo_inside">
+                        <h5>请填写收货地址（地址填写后不可修改）</h5>
+                        <div class="exchange_ifo">
+                            <form>
+                                <label>
+                                    <p>收货人：</p>
+                                    <input type="text" name="name" id="name" maxlength="20">
+                                </label>
+                                <label>
+                                    <p>手机号码：</p>
+                                    <input type="tel" name="telephone" id="telephone" maxlength="11">
+                                </label>
+                                <label class="address">
+                                    <p>详细地址：</p>
+                                    <textarea name="address" id="address" maxlength="150"></textarea>
+                                </label>
+                                <div>
+                                    <button type="button" class="exchange_ifo_submit add_address" lucky_draw_id>确定</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="over_bottom"></div>
+        </div>
+    </div>
+#else
+    <div class="over_wrap exchange_step02">
+        <div class="over_box" style="margin-top: -265px;">
+            <div class="over_title_supply">
+                <a href="javascript:void()" class="over_wrap_closed"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/thanksgiven/address_close.png"></a>
+                <p>尊敬的用户您好，检测到您已兑换了礼品，<br>但尚未填写收货地址。</p>
+            </div>
+            <div class="over_content">
+                <div class="over_ifo">
+                    <div class="over_ifo_inside">
+                        <h5>请填写收货地址（地址填写后不可修改）</h5>
+                        <div class="exchange_ifo">
+                            <form>
+                                <label>
+                                    <p>收货人：</p>
+                                    <input type="text" name="name" id="name" maxlength="20">
+                                </label>
+                                <label>
+                                    <p>手机号码：</p>
+                                    <input type="tel" name="telephone" id="telephone" maxlength="11">
+                                </label>
+                                <label class="address">
+                                    <p>详细地址：</p>
+                                    <textarea name="address" id="address" maxlength="150"></textarea>
+                                </label>
+                                <div>
+                                    <button type="button" class="exchange_ifo_submit add_address" lucky_draw_id>确定</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="over_bottom"></div>
+        </div>
+    </div>
+#end
+
+##地址提交成功/兑换成功
+<div class="over_wrap exchange_step03" style="margin-top: -100px;">
+    <div class="over_box" style="padding-bottom: 20px;">
+        <div class="exchange_success">
+            <a href="javascript:void()" class="over_wrap_closed"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/thanksgiven/address_close.png"></a>
+            <h4>
+                恭喜您兑换成功
+            </h4>
+            <p style="margin-bottom: 40px;">礼品将于活动结束后统一安排发放，请您耐心等待！</p>
+        </div>
+        <div>
+            <button type="button" class="exchange_ifo_submit close_btn">确定</button>
+        </div>
+    </div>
+</div>
+#LoadGenJS("/resources/gen2.0/scripts/activity/2017/thanksgiven/thanksgiven")
+</body>
+#Html("end")

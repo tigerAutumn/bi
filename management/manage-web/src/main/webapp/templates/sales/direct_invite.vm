@@ -1,0 +1,46 @@
+<form id="pagerForm" method="post" action="$env.getWebURL('sales/directInviteUsers.htm')">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="salesId" value="$!salesId" />
+</form>
+
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="70">姓名</th>
+				<th width="60">手机号</th>
+				<th width="60">注册时间</th>
+				<th width="60">邀请人</th>
+				<th width="66">邀请时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($user in $users)
+			<tr>
+				<td>$!user.userName</td>
+				<td>$!user.mobile</td>
+				<td>$!date.format($!user.registerTime)</td>
+				<td>$!user.salesName</td>
+				<td>$!date.format($!user.createTime)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+<script>
+
+</script>

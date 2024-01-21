@@ -1,0 +1,129 @@
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	<form id="userAddressForm" method="post" action="$env.getWebURL('/userAddressInfo/saveSingle.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<div class="pageFormContent nowrap" layoutH="97">
+			<dl>
+				<dt >
+                    姓名：
+                </dt>
+				<dd >
+					<input type="text" id="userName_id" class="required" name="userName" maxlength="4" value="$!userName" style="width:250px; height:16px" />
+                </dd>
+			</dl>
+            <dl>
+                <dt >
+                    手机号：
+                </dt>
+                <dd >
+                    <input type="text" id="mobile_id" class="required" name="mobile" maxlength="11" value="$!mobile" style="width:250px; height:16px" />
+                </dd>
+            </dl>
+            <dl>
+                <dt >
+                    收货人：
+                </dt>
+                <dd >
+                    <input type="text" id="consignee_id" class="required" name="consignee" maxlength="15" value="$!consignee" style="width:250px; height:16px" />
+                </dd>
+            </dl>
+            <dl>
+                <dt >
+                    收货手机号：
+                </dt>
+                <dd >
+                    <input type="text" id="consigneeMobile_id" class="required" name="consigneeMobile" maxlength="11" value="$!consigneeMobile" style="width:250px; height:16px" />
+                </dd>
+            </dl>
+            <dl>
+                <dt >
+                    地址：
+                </dt>
+                <dd >
+                    <textarea class="required textInput" id="consigneeAddress_id" rows="2" cols="25"  class="required" name="consigneeAddress" >$!consigneeAddress</textarea>
+                </dd>
+            </dl>
+		</div>
+		<div class="formBar">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_userAddressForm()">保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	function submit_userAddressForm(){
+        var userName = $.trim($("#userName_id").val());
+        var mobile = $.trim($("#mobile_id").val());
+        var consignee = $.trim($("#consignee_id").val());
+        var consigneeMobile = $.trim($("#consigneeMobile_id").val());
+        var consigneeAddress = $.trim($("#consigneeAddress_id").val());
+
+        // 内容正则
+        var regContent = /^[a-zA-Z0-9\u4E00-\u9FA5]+$/;
+        // 手机号码正则
+        var regMobile = new RegExp("^[1][34587]\\d{9}$");
+
+		// 1、非空校验
+		if((userName == null || userName == "")){
+		    alertMsg.warn("姓名不能为空，请输入对应的信息！");
+        	return false;
+		}
+        // 2、格式校验
+        if(!regContent.test(userName)) {
+            alertMsg.warn("姓名不能含有特殊字符，请重新输入！");
+            return false;
+        }
+
+        if((mobile == null || mobile == "")){
+            alertMsg.warn("手机号不能为空，请输入对应的信息！");
+            return false;
+        }
+        if(!regMobile.test(mobile)) {
+            alertMsg.warn("手机号格式不正确，请重新输入！");
+            return false;
+        }
+
+        if((consignee == null || consignee == "")){
+            alertMsg.warn("收货人不能为空，请输入对应的信息！");
+            return false;
+        }
+        if(!regContent.test(consignee)) {
+            alertMsg.warn("收货人不能含有特殊字符，请重新输入！");
+            return false;
+        }
+
+        if((consigneeMobile == null || consigneeMobile == "")){
+            alertMsg.warn("收货手机号不能为空，请输入对应的信息！");
+            return false;
+        }
+        if(!regMobile.test(consigneeMobile)) {
+            alertMsg.warn("收货手机号格式不正确，请重新输入！");
+            return false;
+        }
+
+        if((consigneeAddress == null || consigneeAddress == "")){
+            alertMsg.warn("地址不能为空，请输入对应的信息！");
+            return false;
+        }
+
+        $("#userAddressForm").submit();
+	}
+
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "301") {
+            alertMsg.warn(json.message);
+		}else if(json.statusCode == "302"){
+            alertMsg.warn(json.message);
+        }else if (json.statusCode == "200") {
+			alertMsg.correct('操作成功!');
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('/userAddressInfo/getList.htm')");
+		} else {
+			alertMsg.error('操作失败!');
+		}
+	}
+	
+</script>

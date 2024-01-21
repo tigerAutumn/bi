@@ -1,0 +1,76 @@
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="pageHeader">
+    <form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/mallCommodityType/getList.htm')" onsubmit="return navTabSearch(this);">
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="pageNum" value="$!pageNum" />
+        <input type="hidden" name="numPerPage" value="$!numPerPage" />
+        <div class="searchBar">
+            <table class="searchContent">
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li><a class="add" href="$env.getWebURL('/mallCommodityType/detail.htm')" target="dialog" mask="true" rel="createBack" height="300" width="680"><span>新增</span></a></li>
+            <li class="line">line</li>
+        </ul>
+    </div>
+    <table class="table" width="1396" layoutH="98">
+        <thead>
+        <tr>
+            <th width="10%">序号</th>
+            <th width="22.5%">商品类别</th>
+            <th width="22.5%">推荐</th>
+            <th width="22.5%">修改时间</th>
+            <th width="22.5%">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+            #set($index = $!offset)
+            #foreach($grid in $mallCommodityTypeList)
+            <tr target="sid_user" rel="1" >
+                #set($index = $index + 1)
+                <td>$!index</td>
+                <td>$!grid.commTypeName</td>
+                <td>
+                    #if("$!grid.isRecommend"=="YES")是
+                    #elseif("$!grid.isRecommend"=="NO")否
+                    #else
+                    #end
+                </td>
+                <td>$!date.format($!grid.updateTime)</td>
+                <td>
+                    <a title="编辑" target="dialog" href="$env.getWebURL('/mallCommodityType/detail.htm?commodityTypeId=')$!grid.id" class="" mask="true" rel="createBack" height="300" width="680">编辑</a>
+                </td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!count条</span>
+        </div>
+        <div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+    </div>
+</div>
+
+<script>
+    function func(){
+        var url = $("#APP_ROOT_PATH").val() + "/mallCommodityType/getList.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+</script>

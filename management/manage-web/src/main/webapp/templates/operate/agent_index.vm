@@ -1,0 +1,131 @@
+<style type="text/css" >
+.dd{width:134px; height:30px;display:inline-block;}
+</style>
+<div class="pageContent">
+	<form method="post" id="detail_form" action="">
+		<div class="pageFormContent" layoutH="56">
+			#foreach($agent in $!agents)
+				<div class="dd">
+				<input type="checkbox" value="$agent.id" name="agent"/> $agent.agentName
+				</div>
+			#end
+			<div class="dd">
+				<input type="checkbox" value="0" id="nonAgent"/> 非渠道用户
+			</div>
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li style="margin-top: 3px; margin-right: 423px"><input type="checkbox" id="checkedAll"/> 全选</li>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="checkAgent()" class="close">确定</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	function checkAgent() {
+		var ids = "";
+		$("input[name=agent]:checkbox").each(function(){
+			if($(this).attr("checked")) {
+				ids += $(this).attr('value') + ",";
+			}
+		})
+		$("#agentIds").val(ids);
+		if($('#nonAgent').attr("checked")) {
+			$("#nonAgentId").val($.trim($('#nonAgent').val()));
+		}else {
+			$("#nonAgentId").val('');
+		}
+	}
+	
+	$(function(){
+		var agentTotal = $.trim($('#agentTotal').val());
+		var agents = $("#agentIds").val();
+		var arr = agents.split(",");
+		var arrLength = 0;
+		for(var i=0; i<arr.length; i++) {
+			if(arr[i] != null && arr[i] != '') {
+				$("input[name=agent]:checkbox").each(function(){
+					if($(this).attr('value') == arr[i]) {
+						$(this).prop('checked',true);
+        			}
+        		})
+				arrLength = parseInt(arrLength) + 1;
+			}
+		}
+		var nonAgentId = $.trim($("#nonAgentId").val());
+		if(nonAgentId != null && nonAgentId != '') {
+			$("#nonAgent").prop('checked',true);
+			arrLength = parseInt(arrLength) + 1;
+		}
+		arrLength = parseInt(arrLength) - 1;
+		if(arrLength == agentTotal) {
+			$('#checkedAll').prop('checked',true);
+		}
+		
+		$('#checkedAll').on('click',function(){
+			if($('#checkedAll').attr('checked')) {
+				$("input[name=agent]:checkbox").each(function(){
+        			$(this).prop('checked',true);
+        		})
+    			$('#nonAgent').prop('checked',true);
+    		}else {
+    			$("input[name=agent]:checkbox").each(function(){
+					$(this).prop('checked',false);
+        		})
+    			$('#nonAgent').prop('checked',false);
+    		}
+		})
+		
+		$("input[name=agent]:checkbox").on('click',function(){
+			if($(this).attr('checked')) {
+				var len = 0;
+    			$("input[name=agent]:checkbox").each(function(){
+    				if($(this).attr('checked')) {
+    					len = parseInt(len) + 1;
+    				}
+            	})
+    			
+    			if($("#nonAgent").attr('checked')) {
+    				len = parseInt(len) + 1;
+    			}
+    			
+    			len = parseInt(len) - 1;
+    			if(len == agentTotal) {
+    				$('#checkedAll').prop('checked',true);
+    			}else {
+    				$('#checkedAll').prop('checked',false);
+    			}
+			}else {
+				$('#checkedAll').prop('checked',false);
+			}
+		})
+		
+		$("#nonAgent").on('click',function(){
+			if($(this).attr('checked')) {
+				var len = 0;
+    			$("input[name=agent]:checkbox").each(function(){
+    				if($(this).attr('checked')) {
+    					len = parseInt(len) + 1;
+    				}
+            	})
+    			
+    			if($("#nonAgent").attr('checked')) {
+    				len = parseInt(len) + 1;
+    			}
+    			
+    			len = parseInt(len) - 1;
+    			if(len == agentTotal) {
+    				$('#checkedAll').prop('checked',true);
+    			}else {
+    				$('#checkedAll').prop('checked',false);
+    			}
+			}else {
+				$('#checkedAll').prop('checked',false);
+			}
+			
+		})
+	})
+</script>

@@ -1,0 +1,520 @@
+# 设计文档
+## 需求背景
+平台稳健发展，现开发加息券需求
+
+## 项目内容
+### 原型：
+[svn://114.215.203.101/pinting/doc/项目需求/原型/2018年需求/3月份-加息券](svn://114.215.203.101/pinting/doc/项目需求/原型/2018年需求/3月份-加息券)
+
+### 加息券规则
+```
+加息券：对使用了加息券的每笔投资的利息奖励。
+产品类型：定期类产品
+限制：期数、过期时间、产品类型、单笔加入金额、红包和加息券互斥、排除新手专享产品
+获得：手动发放；自动发放：生日触发
+发放形式：以奖励金的形式到期回款时一次性发放。
+计息公式：投资本金 * 加息利率 * 投资期限 / 365
+```
+### 管理台
+1. 理财计划管理
+
+### PC（官网、钱报系）
+1. 账户中心-优惠券：页面增加加息券的展示
+2. 购买
+
+### H5（官网、钱报系、七店）
+1. 我的资产-我的红包：页面增加加息券的展示
+2. 购买
+
+### H5（钱报APP）
+1. 购买
+
+### APP（官网）
+相关接口
+
+## 项目设计
+### 表设计
+```
+-- 1. bs_product表添加是否支持加息字段。字典：{YES-支持；No或者空字符串或者NULL-不支持}     
+alter table bs_product add is_support_incr_interest varchar(10);
+
+-- 加息券相关表
+-- 卡券发放批次计划审核表
+drop table if exists bs_ticket_grant_plan_check;
+
+/*==============================================================*/
+/* Table: bs_ticket_grant_plan_check                            */
+/*==============================================================*/
+create table bs_ticket_grant_plan_check
+(
+   id                   int not null auto_increment comment '编号',
+   serial_no            varchar(32) comment '批次号',
+   serial_name          varchar(128) comment '发放计划名称',
+   ticket_type          varchar(32) comment '卡券福利类型:
+            INTEREST_TICKET：加息券',
+   distribute_type      varchar(32) comment 'AUTO 自动\r\n            MANUAL 手动',
+   applicant            int not null comment '申请人',
+   apply_time           datetime comment '申请时间',
+   check_status         varchar(32) comment 'UNCHECKED 待审核\r\n            PASS 已通过\r\n            REFUSE 不通过',
+   grant_status         varchar(32) comment '发放状态:
+            INIT 未发放
+            PROCESS 发放中
+            FINISH 发放结束
+            CLOSE 已停用',
+   checker              int comment '审核人',
+   check_time           datetime comment '审核时间',
+   note                 varchar(256) comment '备注说明',
+   create_time          datetime comment '创建时间',
+   update_time          datetime comment '更新时间',
+   primary key (id)
+);
+
+alter table bs_ticket_grant_plan_check comment '卡券发放批次计划审核表';
+
+/*==============================================================*/
+/* Index: ticket_serialNo_uindex                                */
+/*==============================================================*/
+create unique index ticket_serialNo_uindex on bs_ticket_grant_plan_check
+(
+   serial_no
+);
+
+alter table bs_ticket_grant_plan_check add constraint FK_Reference_225 foreign key (applicant)
+      references m_user (id) on delete restrict on update restrict;
+
+alter table bs_ticket_grant_plan_check add constraint FK_Reference_226 foreign key (checker)
+      references m_user (id) on delete restrict on update restrict;
+
+-- 加息券发放批次属性表
+drop table if exists bs_interest_ticket_grant_attribute;
+
+/*==============================================================*/
+/* Table: bs_interest_ticket_grant_attribute                    */
+/*==============================================================*/
+create table bs_interest_ticket_grant_attribute
+(
+   id                   int not null auto_increment comment '编号',
+   serial_no            varchar(32) comment '批次号',
+   ticket_name          varchar(128) comment '加息券名称',
+   ticket_apr           double(15,2) comment '加息幅度(基于本金的加息率%)',
+   grant_total          int comment '发放加息券总数',
+   grant_num            int comment '已发放加息券数量',
+   valid_term_type      varchar(32) comment '加息券发放有效期类型:
+            FIXED 固定时间段生效\r\n            AFTER_RECEIVE 发放后有效天数',
+   use_time_start       datetime comment 'FIXED 固定时间段：使用有效期开始',
+   use_time_end         datetime comment 'FIXED 固定时间段：使用有效期结束',
+   available_days       int comment 'AFTER_RECEIVE 发放后有效天数：使用',
+   notify_channel       varchar(32) comment 'WECHAT 微信\r\n            SMS 短信\r\n            APP app通知\r\n\r\n            可以多个，以逗号隔开',
+   invest_limit         double(15,2) comment '达到投资金额加息券才能使用(单笔投资满多少元)',
+   product_limit        varchar(128) comment 'BIGANGWAN_SERIAL（港湾系列）\r\nYONGJIN_SERIAL（涌金系列）\r\nKUAHONG_SERIAL（跨虹系列）\r\nBAOXIN_SERIAL（保信系列）\r\n多个产品限制用逗号隔开',
+   term_limit           varchar(32) comment '30,90,180,365（天）\r\n            多个产品期限限制用逗号隔开',
+   note                 varchar(256) comment '备注说明',
+   create_time          datetime comment '创建时间',
+   update_time          datetime comment '更新时间',
+   primary key (id)
+);
+
+alter table bs_interest_ticket_grant_attribute comment '加息券发放批次属性表';
+
+-- 自动加息券规则表
+drop table if exists bs_auto_interest_ticket_rule;
+
+/*==============================================================*/
+/* Table: bs_auto_interest_ticket_rule                          */
+/*==============================================================*/
+create table bs_auto_interest_ticket_rule
+(
+   id                   int not null auto_increment comment '编号',
+   serial_no            varchar(32) comment '批次号',
+   agent_ids            varchar(256) comment '支持多个，用逗号隔开\r\n            -1，全部渠道\r\n            0，普通用户',
+   trigger_type         varchar(32) comment '触发条件类型：HAPPY_BIRTHDAY（生日快乐）',
+   trigger_time_start   datetime comment 'HAPPY_BIRTHDAY：触发开始时间',
+   trigger_time_end     datetime comment 'HAPPY_BIRTHDAY：触发结束时间',
+   create_time          datetime comment '创建时间',
+   update_time          datetime comment '更新时间',
+   primary key (id)
+);
+
+alter table bs_auto_interest_ticket_rule comment '自动加息券规则表';
+
+-- 手工卡券预发用户明细表
+drop table if exists bs_ticket_pre_detail;
+
+/*==============================================================*/
+/* Table: bs_ticket_pre_detail                                  */
+/*==============================================================*/
+create table bs_ticket_pre_detail
+(
+   id                   int not null auto_increment comment '编号',
+   serial_no            varchar(32) comment '批次号',
+   user_id              int comment '用户编号ID',
+   create_time          datetime comment '创建时间',
+   update_time          datetime comment '更新时间',
+   primary key (id)
+);
+
+alter table bs_ticket_pre_detail comment '手工卡券预发用户明细表';
+
+/*==============================================================*/
+/* Index: ticket_userId_index                                   */
+/*==============================================================*/
+create index ticket_userId_index on bs_ticket_pre_detail
+(
+   user_id
+);
+
+/*==============================================================*/
+/* Index: ticket_serialNo_index                                 */
+/*==============================================================*/
+create index ticket_serialNo_index on bs_ticket_pre_detail
+(
+   serial_no
+);
+alter table bs_ticket_pre_detail add constraint FK_Reference_229 foreign key (user_id)
+      references bs_user (id) on delete restrict on update restrict;
+
+-- 加息券信息表
+drop table if exists bs_interest_ticket_info;
+
+/*==============================================================*/
+/* Table: bs_interest_ticket_info                               */
+/*==============================================================*/
+create table bs_interest_ticket_info
+(
+   id                   int not null auto_increment comment '编号',
+   serial_no            varchar(32) comment '批次号',
+   user_id              int comment '用户编号ID',
+   status               varchar(32) comment 'INIT 未使用\r\n            BUYING 购买使用中\r\n            USED 已使用\r\n',
+   ticket_apr           double(15,2) comment '基于本金的加息率(%)',
+   auth_account_id      int comment '站岗户ID',
+   order_no             varchar(32) comment '购买订单号',
+   interest_amount      double(15,2) comment '购买成功后收益金额',
+   use_time             datetime comment '加息券使用时间',
+   use_time_start       datetime comment '使用有效期开始时间',
+   use_time_end         datetime comment '使用有效期结束时间',
+   msg_status           varchar(32) comment '消息发送状态：\r\nNOT 未发送\r\nFINISHED 已发送',
+   create_time          datetime comment '创建时间',
+   update_time          datetime comment '更新时间',
+   primary key (id)
+);
+
+alter table bs_interest_ticket_info comment '加息券信息表';
+
+/*==============================================================*/
+/* Index: interest_ticket_userId_index                          */
+/*==============================================================*/
+create index interest_ticket_userId_index on bs_interest_ticket_info
+(
+   user_id
+);
+
+/*==============================================================*/
+/* Index: interest_ticket_serialNo_index                        */
+/*==============================================================*/
+create index interest_ticket_serialNo_index on bs_interest_ticket_info
+(
+   serial_no
+);
+
+alter table bs_interest_ticket_info add constraint FK_Reference_227 foreign key (user_id)
+      references bs_user (id) on delete restrict on update restrict;
+
+alter table bs_interest_ticket_info add constraint FK_Reference_228 foreign key (auth_account_id)
+      references bs_sub_account (id) on delete restrict on update restrict;
+
+-- 管理台新增权限菜单
+INSERT INTO `m_menu` (`url`, `parent_id`, `order_num`, `name`, `note`) VALUES ('/ticket/ticketGrantManagementIndex.htm', '82', '10', '加息券发放管理', '');
+INSERT INTO `m_menu` (`url`, `parent_id`, `order_num`, `name`, `note`) VALUES ('/ticket/interestTicketCheck/index.htm', '82', '11', '加息券发放审核', '');
+INSERT INTO `m_menu` (`url`, `parent_id`, `order_num`, `name`, `note`) VALUES ('/interestTicket/ticketInfo/index.htm', '82', '12', '加息券查询', '');
+
+-- 加息券相关定时任务
+
+INSERT INTO `bs_schedule_config` (`job_name`, `job_group`, `job_status`, `cron_expression`, `bean_class`, `method_name`, `bean_id`, `is_concurrent`, `description`, `create_time`, `update_time`) VALUES ('happyBirthdayTaskTime', 'SCHEDULE', 'RUNNING', '0 0 8 * * ?', 'com.pinting.business.dayend.task.HappyBirthdayTask', 'ticket', 'happyBirthdayTask', 'NO', '用户生日触发相关活动业务定时', '2018-04-08 09:43:27', '2018-04-08 09:45:51');
+INSERT INTO `bs_schedule_config` (`job_name`, `job_group`, `job_status`, `cron_expression`, `bean_class`, `method_name`, `bean_id`, `is_concurrent`, `description`, `create_time`, `update_time`) VALUES ('interestTicketNotifyTaskTime', 'SCHEDULE', 'RUNNING', '*/30 * * * * ?', 'com.pinting.business.dayend.task.TicketNotifyTask', 'interestTicketNotify', 'ticketNotifyTask', 'NO', '加息券信息提醒通知用户定时', '2018-04-09 09:44:32', '2018-04-09 11:31:52');
+
+
+```
+
+### 理财计划管理
+理财计划申请管理-新增理财计划：添加是否支持加息券的下拉框   
+理财计划申请管理-编辑理财计划：添加是否支持加息券的下拉框   
+理财计划申请管理-详情：添加是否支持加息券展示   
+理财计划申请管理-克隆：添加是否支持加息券的下拉框   
+涉及表：`bs_product.is_support_incr_interest`
+
+
+### H5（官网、钱报系、钱报APP、七店）
+#### 1. 账户中心我的红包-添加加息券的查询
+- 我的红包文案 改为 优惠券
+- 查询可用红包个数 改为 查询可用红包+可用加息券的个数
+- 添加加息券列表查询 bs_interest_ticket_info
+加息券查询展示规则：
+    1. 已使用和已过期加息券，仅显示最近90天内的记录
+    2. 每页展示10条
+    3. 显示顺序，涉及表字段：bs_interest_ticket_info{status, use_time_end, use_time}：
+
+未使用 | 已使用 | 已过期
+---|---|---
+先到期 > 后到期 | 后使用 > 先使用 | 后到期 > 先到期
+
+
+
+#### 2. 购买页面，添加加息券的选中规则
+- 添加可用加息券查询服务，根据输入金额和选中的产品匹配最优，无分页（查询出入参如上）
+- 最优优惠券规则：
+    - 加息收益 > 红包满减金额，推荐加息券
+    - 红包满减金额 > 加息收益，推荐红包
+    - 收益一致，默认红包
+    - 优惠多 > 优惠一样 > 先到期 > 后到期
+- 涉及表字段：
+    - bs_interest_ticket_info{status, full, ticket_apr, use_time_end, use_time}
+    - bs_red_packet_info{status, full, subtract, use_time_end, update_time}
+
+##### 链接`/gen2.0/regular/bind`, `/gen178/regular/bind`, `/micro2.0/regular/bind`
+```
+// 1. 优惠券相关入参
+{
+    id: 223 // 产品ID
+}
+// 2. 优惠券相关出参
+{
+    redCount: 10, // 可用红包个数
+    // 红包
+    redPacketList: [{
+        Integer id;         // 红包、加息券ID
+        String  type;       // RED_PACKET-红包; INTEREST_TICKET-加息券
+        String  status;     // 状态：INIT-未使用；USED-已使用；OVER-已过期
+        String  full;       // 满额
+        String  subtract;   // 减额
+        String  serialName; // 优惠券名称
+        String  useTimeStart;   // 使用有效开始时间（yyyy-MM-dd HH:mm:ss）
+        String  useTimeEnd;     // 使用有效结束时间（yyyy-MM-dd HH:mm:ss）
+        string  useTime;        // 使用时间（yyyy-MM-dd HH:mm:ss）
+        String  termLimitMsg;   // 标的，限1个月产品使用
+        Integer term;           // 当前产品期限
+    }]
+    // 加息券
+    ticketCount: 10, // 可用加息券个数
+    ticketList[{
+        Integer id;         // 红包、加息券ID
+        String  type;       // RED_PACKET-红包; INTEREST_TICKET-加息券
+        String  status;     // 状态：INIT-未使用；USED-已使用；OVER-已过期
+        String  rate;       // 加息利率（%）
+        String  full;       // 满额
+        String  subtract;   // 减额
+        String  serialName; // 优惠券名称
+        String  useTimeStart;   // 使用有效开始时间（yyyy-MM-dd HH:mm:ss）
+        String  useTimeEnd;     // 使用有效结束时间（yyyy-MM-dd HH:mm:ss）
+        string  useTime;        // 使用时间（yyyy-MM-dd HH:mm:ss）
+        String  termLimit;      // 标的，限30天产品使用
+        Integer term;           // 当前产品期限
+        Double  interest;       // 加息利息
+        String  productName;    // 已使用产品名称
+    }]
+}
+
+```
+
+
+#### 3. 购买页面跳转到的红包-加息券选取页面
+- 添加可用加息券查询服务，无分页（查询出入参如上）
+- 加息券排序：加息收益多 > 加息收益一样 > 先到期 > 后到期
+- 由于加息券和红包只能用一个
+    - 计划不支持任何优惠券，账户无优惠券，符合条件的优惠券个数为0，则提示：无可用优惠券
+    - 计划支持红包，且选中可用红包，显示：已勾选满xx元减x元红包
+    - 计划支持加息券，且选中可用加息券，显示：已勾选x%加息券，预期加息收益xx.xx元
+    - 计划支持红包或加息券，且未选择任何优惠券，显示：未选择优惠券
+##### 链接`/micro2.0/redPacket/chooseRedPacketList`
+```
+// 1. 优惠券相关入参
+{
+    productId: 223,     // 产品ID
+    amount: 1000.00,    // 投资金额
+}
+// 2. 优惠券相关出参
+{
+    redCount: 10, // 可用红包个数
+    // 红包
+    redPacketList: [{
+        Integer id;         // 红包、加息券ID
+        String  type;       // RED_PACKET-红包; INTEREST_TICKET-加息券
+        String  status;     // 状态：INIT-未使用；USED-已使用；OVER-已过期
+        String  full;       // 满额
+        String  subtract;   // 减额
+        String  serialName; // 优惠券名称
+        String  useTimeStart;   // 使用有效开始时间（yyyy-MM-dd HH:mm:ss）
+        String  useTimeEnd;     // 使用有效结束时间（yyyy-MM-dd HH:mm:ss）
+        string  useTime;        // 使用时间（yyyy-MM-dd HH:mm:ss）
+        String  target;         // 标的，限1个月产品使用
+        Integer term;           // 当前产品期限
+    }]
+    // 加息券
+    ticketCount: 10, // 可用加息券个数
+    ticketList[{
+        Integer id;         // 红包、加息券ID
+        String  type;       // RED_PACKET-红包; INTEREST_TICKET-加息券
+        String  status;     // 状态：INIT-未使用；USED-已使用；OVER-已过期
+        String  rate;       // 加息利率（%）
+        String  full;       // 满额
+        String  subtract;   // 减额
+        String  serialName; // 优惠券名称
+        String  useTimeStart;   // 使用有效开始时间（yyyy-MM-dd HH:mm:ss）
+        String  useTimeEnd;     // 使用有效结束时间（yyyy-MM-dd HH:mm:ss）
+        string  useTime;        // 使用时间（yyyy-MM-dd HH:mm:ss）
+        String  termLimit;      // 标的，限30天产品使用
+        Integer term;           // 当前产品期限
+        Double  interest;       // 加息利息
+        String  productLimit;   // 产品系列限制：BIGANGWAN_SERIAL（港湾系列）YONGJIN_SERIAL（涌金系列）KUAHONG_SERIAL（跨虹系列）BAOXIN_SERIAL（保信系列）多个产品限制用逗号隔开
+    }]
+}
+
+```
+
+#### 4. 购买后台业务
+##### 链接`micro2.0/regular/balanceBuy`, `gen178/regular/balance_buy`, `gen178/regular/balance_buy`
+```
+// 入参
+request {
+    String  ticketType;     // RED_PACKET-红包; INTEREST_TICKET-加息券
+    Integer redPacketId;    // 优惠券ID（红包ID、加息券ID）
+}
+
+// 购买后台业务
+if(ticketType) {
+   switch (ticketType) {
+       case RED_PACKET: ;// 原有的红包业务
+       case INTEREST_TICKET: ;
+           // 加息券业务
+           1. 校验用户所选加息券是否满足条件
+                1. 产品是否支持使用加息券
+                2. 加息券是否支持该产品系列
+                3. 排除新手专享产品
+                4. 产品期数
+                5. 加入金额是否满足
+                6. 加息券是否过期是否未开始是否已使用
+           2. 更新 bs_interest_ticket_info 表 {
+                interest_amount,    // 购买之后加息收益
+                auth_account_id,    // 加入站岗子账户ID
+                use_time,           // 使用时间
+                update_time,        // 更新时间
+                status              // USED
+           }
+   }
+}
+```
+
+### APP（官网）
+#### 1. 优惠券接口（新增，原本的红包列表接口保持不变给老包使用）`/asset/tickets/v_1.0.0`
+> 原本的两个红包接口`/asset/redPacketList/v_1.0.0` `/asset/myRedPacketList/v_1.0.0`不动，新增一个统一的优惠券接口。
+```
+// 入参
+TicketListRequest {
+    Integer userId;     // 用户ID
+    String  bizType;    // 业务类型：BUY-投资加入；TICKET-优惠券列表
+    String  type;       // （优惠券列表）类型：RED_PACKET-红包; INTEREST_TICKET-加息券
+    String  status;     // 使用状态：INIT-未使用；USED-已使用；OVER-已过期
+    Integer pageNum;    // （优惠券列表）页码，当前页面，默认传1
+    Integer numPerPage; // （优惠券列表）每页显示条数
+    Double  amount;     // （投资加入）加入金额
+    Integer productId;  // （投资加入）产品ID
+}
+
+// 出参
+TicketListResponse {
+    Integer userId;
+    String  type;   // RED_PACKET-红包; INTEREST_TICKET-加息券
+    Integer count;  // 优惠券条数
+    List<Ticket>    dataList: [{    // 详情
+        Integer id;         // 红包、加息券ID
+        String  type;       // RED_PACKET-红包; INTEREST_TICKET-加息券
+        String  status;     // 状态：INIT-未使用；USED-已使用；OVER-已过期
+        String  rate;       // 加息利率（%）
+        String  full;       // 满额
+        String  subtract;   // 减额
+        String  serialName; // 优惠券名称
+        String  useTimeStart;   // 使用有效开始时间（yyyy-MM-dd）
+        String  useTimeEnd;     // 使用有效结束时间（yyyy-MM-dd）
+        String  useTime;        // 使用时间（yyyy-MM-dd HH:mm:ss）
+        String  target;         // 标的，限1个月产品使用，限30天产品使用
+        String  productLimit;   // 产品系列限制：BIGANGWAN_SERIAL（港湾系列）\r\nYONGJIN_SERIAL（涌金系列）\r\nKUAHONG_SERIAL（跨虹系列）\r\nBAOXIN_SERIAL（保信系列）\r\n多个产品限制用逗号隔开
+
+    }];
+}
+
+```
+
+#### 2. 购买加入接口（原接口上修改）`/product/balanceBuy/v_1.0.1`
+```
+// 入参：
+BalanceBuyRequest {
+    Integer     userId;         // 用户ID
+    Double      amount;         // 购买金额
+    Integer     productId;      // 购买产品ID
+    String      verifyCode;     // 短信验证码
+    String      terminalType;   // 来源(3:android,4:ios)
+    Integer     redPacketId;    // 优惠券ID（红包、加息券）
+    
+    String      type;           // 类型：RED_PACKET-红包; INTEREST_TICKET-加息券；其他-未用优惠券
+}
+
+// 出参
+BalanceBuyResponse {
+    String   isAutoRedPocket;    // 是否获得了购买满额红包（yes:是  no:否）
+}
+```
+
+### PC（官网、钱报系）
+同H5
+
+### 后台定时
+1. 生日触发加息券定时（HappyBirthdayTask）
+    - 每日八点运行
+2. 退出回款发放使用的加息券奖励金（DepFixedReturnMoneyTask）
+
+## 备注
+### PC（官网、钱报系）
+1. 优惠券，加息券以及红包相关展示
+2. 购买页面，展示满足条件的加息券，以及加息券的选中规则
+3. 账户中心-计划管理-定期类计划，加上加息收益
+4. 账户中心-奖励金账户，查询加息收益的奖励
+5. 加息券落地页
+
+### H5（官网、钱报系、钱报APP、七店）
+1. 账户中心我的红包-添加加息券的查询
+2. 购买页面，添加加息券的选中规则
+3. 购买页面跳转到的红包-加息券选取页面
+4. 账户中心-计划管理-定期类计划，加上加息收益
+5. 账户中心-奖励金账户，查询加息收益的奖励
+6. 加息券落地页
+
+### APP（官网）
+1. 账户中心我的红包-添加加息券的查询
+2. 购买页面，添加加息券的选中规则
+3. 购买页面跳转到的红包-加息券选取页面
+4. 账户中心-计划管理-定期类计划，加上加息收益
+5. 账户中心-奖励金账户，查询加息收益的奖励
+6. 加息券落地页
+7. 购买结果页面加息券相关
+
+### 后台
+1. 回款定时或者每日奖励金发放定时添加加息券奖励金发放
+
+### 管理台
+1. 理财计划申请，新增理财计划添加加息券内容
+2. 加息券发放
+    1. 加息券查询
+    2. 加息券申请
+        1. 手动发放
+        2. 自动发放
+    3. 加息券发放
+    4. 加息券克隆
+    5. 加息券停用
+    6. 加息券预览
+3. 加息券审核
+    1. 加息券查询
+    2. 加息券预览
+    3. 加息券通过
+    4. 加息券拒绝
+4. 加息券查询
+
+

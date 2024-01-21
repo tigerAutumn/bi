@@ -1,0 +1,122 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/assets/six")
+#LoadCSS("resources/micro2.0/styles/assets/default")
+#LoadCSS("resources/micro2.0/styles/assets/bankcard/bind_card_index.min")
+#WeChatShare()
+#Head("end")
+<body>
+    <!-- 头部 -->
+    <div class="header">
+    	#if($!backUrl != '')
+    		<a class="header_arrow" href="$!backUrl"></a>
+    	#else
+    		<a class="header_arrow" href="javascript:history.go(-1)"></a>
+    	#end
+        <h1 class="heade_ft color_bg">开通恒丰银行存管账户</h1>
+        <div class="right_title"></div>
+    </div>
+    <!-- main -->
+    
+    <form id="go_bind_list" action="" method="get">
+        <div class="main">
+            <div class="open-bank">
+                <div class="open-bank-wrap">
+                    <div class="open-bank-box">
+                        <div class="open-bank-name">持卡人</div>
+                        <input class="former_btn inpt_left" maxlength="10" type="text" name="userName" id="userName" value="$!{userName}" placeholder="请输入持卡人姓名">
+                    </div>
+                    <div class="line"></div>
+                    <div class="open-bank-box">
+                        <div class="open-bank-name">身份证号</div>
+                        <input class="former_btn inpt_left" maxlength="18" type="text" name="idCard" id="idCard" value="$!{idCard}" placeholder="请输入身份证号">
+                    </div>
+                </div>
+                <div class="waring_div">
+                    请输入正确的身份证号
+                </div>
+            </div>
+            <div class="open-bank">
+                <div class="open-bank-wrap">
+                    <div class="open-bank-box">
+                        <div class="open-bank-name">银行卡号</div>
+                        <input class="former_btn inpt_left" maxlength="20" type="tel" name="cardNo" id="cardNo" value="$!{cardNo}" placeholder="请输入银行卡号（仅借记卡）">
+                    </div>
+                    <div class="line"></div>
+                    <div class="open-bank-box" id="card_choose_btn">
+                        <div class="open-bank-name">类型</div>
+                        ##<div class="card_choose" id="card_choose" bank_id="$!{bankId}" >请选择银行</div>
+						<input class="former_btn card_choose_bg" placeholder="请选择银行" disabled="disabled" id="card_choose" bank_id="$!{bankId}">
+                        <img class="arrow" src="$!{env.getWebURL('')}/resources/micro2.0/images/assets/bankcard/buy_arrow.png" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="open-bank">
+                <div class="open-bank-wrap">
+                    <div class="open-bank-box">
+                        <div class="open-bank-name">手机号</div>
+                        <input class="former_btn inpt_left" maxlength="11" type="tel" name="mobile" id="mobile" value="$!{mobile}" placeholder="请输入银行卡预留手机号">
+                    </div>
+                    <div class="line"></div>
+                </div>
+            </div>
+            <div class="show_bank_limit hide_bank_limit">单笔限额<span class="top_text one_top_text"></span>万元，单日限额<span class="top_text day_top_text"></span>万元</div>
+            <div class="show_bank_notice hide_bank_notice"></div>
+            <div class="Exit_login">立即开通</div>
+            <div class="prompt-txt">
+                <p>1、点击“立即开通”即表示您同意
+                    <a class="rech_ok agreement" href="javascript:void(0)"><span class="prompt-txt-color">《网络交易资金存管账户服务协议》</span></a>，系统将为您自动开通恒丰银行个人存管账户；
+                </p>
+                <p>2、为保障您的资金安全，默认开通存管时使用的银行卡为“安全卡”，后续仅可使用此卡进行充值和提现。</p>
+            </div>
+        </div>
+        <input type="hidden" id="entry" value="$!entry">
+        <input type="hidden" id="qianbao" name="qianbao" value="$!qianbao" />
+        <input type="hidden" id="bankId" name="bankId" value="$!bankId" />
+        <input type="hidden" id="smsCode" name="smsCode" value="$!smsCode" />
+        <input type="hidden" id="bankName" name="bankName" value="$!bankName" />
+        <input type="hidden" id="oneTop" name="oneTop" value="$!oneTop" />
+        <input type="hidden" id="dayTop" name="dayTop" value="$!dayTop" />
+        <input type="hidden" id="notice" name="notice" value="$!notice" />
+        <input type="hidden" id="orderNo" name="orderNo" value="$!orderNo">
+        <input type="hidden" id="productId" name="productId" value="$!productId">
+        <input type="hidden" id="client" name="client" value="$!client">
+        <input type="hidden" id="from" name="from" value="$!from">
+    	<input type="hidden" id="backUrl" name="backUrl" value="$!backUrl">   
+    </form>
+    #* 弹出框 *#
+    <div class="dialog_flex alert_hide">
+        <div class="deposit_dialog">
+            <h3 class="deposit_info_title">验证信息</h3>
+            <div class="yz_info">已向您的手机号<span id="show_mobile"></span><br>发送验证短信，请注意查收</div>
+            <div class="yz_warp">
+                <input class="pass_input" maxlength="4" type="text" name="verifyCode" id="verifyCode" value="" placeholder="请输入短信验证码">
+                <div class="phone_time btn_bgNO">重发(<span>60</span>)</div>
+            </div>
+    		<div class="open-card-btn">
+    			<i class="close">取消</i>
+    			<a class="down_ok" href="javascript:void(0)" title=""><div class="top_line btn_bgNO">确定</div></a>
+    		</div>
+    	</div>
+    </div>
+    <!-- 弹窗 -->
+    <div class="dialog_notice">
+        <div class="alert_info">
+            <div class="alert_title">提示</div>
+            <ul class="alert_ul">
+                <li class="alert_list">
+                    开通恒丰银行存管账户完成后可加入产品、充值、提现
+                </li>
+            </ul>
+            <div class="btn_group">
+                <div class="top_line btn_bgNO close_btn">知道了</div>
+            </div>
+        </div>
+    </div>
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')">
+<input type="hidden" id="bankList" value='$!bankList'>
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/app/178/scripts/bankcard/bind_card_index")
+</body>
+#Html("end")

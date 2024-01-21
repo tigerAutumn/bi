@@ -1,0 +1,23 @@
+package com.pinting.business.hessian.site.message;
+
+import com.pinting.core.hessian.msg.ResMsg;
+
+public class ResMsg_User_Questionnaire extends ResMsg {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1753131581577993581L;
+
+	/** 风险测评类型  */
+	private String assessType;
+
+	public String getAssessType() {
+		return assessType;
+	}
+
+	public void setAssessType(String assessType) {
+		this.assessType = assessType;
+	}
+	
+}

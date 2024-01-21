@@ -1,0 +1,222 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/account/sysAccount/index.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" id="queryFlag" name="queryFlag" value="QUERY"/>
+	<div class="searchBar">
+		<table class="searchContent">
+				<tr>
+					<td>
+						交易类型：
+						<select name="transOtherCode" > 
+							<option value="" #if("$!req.transOtherCode"=="") selected #end>全部</option>
+        					<option value="SYS_FREEZE" #if("$!req.transOtherCode"=="SYS_FREEZE") selected  #end>冻结</option>
+							<option value="SYS_UNFREEZE" #if("$!req.transOtherCode"=="SYS_UNFREEZE") selected  #end>解冻</option>
+							<option value="SYS_TOP_UP" #if("$!req.transOtherCode"=="SYS_TOP_UP") selected #end>系统充值（到JSH）</option>
+							<option value="SYS_BUY" #if("$!req.transOtherCode"=="SYS_BUY") selected  #end>系统购买达飞产品（从REG）</option>
+							<option value="SYS_RETURN" #if("$!req.transOtherCode"=="SYS_RETURN") selected  #end>系统回款（达飞到RETURN）</option>
+							<option value="SYS_RETURN_INTEREST" #if("$!req.transOtherCode"=="SYS_RETURN_INTEREST") selected  #end>达飞回款系统获得利息(RETURN->JSH)</option>
+							<option value="SYS_WITHDRAW" #if("$!req.transOtherCode"=="SYS_WITHDRAW") selected  #end>系统提现（从JSH）</option>
+							<option value="USER_TOP_UP" #if("$!req.transOtherCode"=="USER_TOP_UP") selected  #end>用户充值（到USER）</option>
+							<option value="USER_BALANCE_BUY" #if("$!req.transOtherCode"=="USER_BALANCE_BUY") selected  #end>用户余额购买（USER->REG）</option>
+							<option value="USER_CARD_BUY" #if("$!req.transOtherCode"=="USER_CARD_BUY") selected  #end>用户卡购买（卡到REG）</option>
+							<option value="USER_BONUS_2_BALANCE" #if("$!req.transOtherCode"=="USER_BONUS_2_BALANCE") selected  #end>用户奖励金转余额（JSH->USER）</option>
+							<option value="USER_RETURN_2_BALANCE" #if("$!req.transOtherCode"=="USER_RETURN_2_BALANCE") selected  #end>用户回款到余额（本金+利息）(RETURN->USER)</option>
+							<option value="USER_RETURN_2_CARD" #if("$!req.transOtherCode"=="USER_RETURN_2_CARD") selected  #end>用户回款到银行卡（本金+利息）(从RETURN)</option>
+							<option value="USER_WITHDRAW" #if("$!req.transOtherCode"=="USER_WITHDRAW") selected  #end>用户提现(从USER)</option>
+							<option value="SYS_CHANNEL_WITHDRAW" #if("$!req.transOtherCode"=="SYS_CHANNEL_WITHDRAW") selected  #end>融宝提现到中转卡</option>
+        				</select>
+						交易金额： <input id="startTransAmount" type="text" name="startTransAmount" #if($!req.startTransAmount != 0) value="$!number.format("0",$!req.startTransAmount)" #end size="15"/> 到 <input id="endTransAmount" type="text" name="endTransAmount" #if($!req.endTransAmount != 0) value="$!number.format("0",$!req.endTransAmount)" #end size="15"/>
+						状态：
+						<select name="status" > 
+							<option value="" #if("$!req.status"=="") selected #end>全部</option>
+							<option value="1" #if("$!req.status"=="1") selected #end>成功</option>
+							<option value="2" #if("$!req.status"=="2") selected #end>失败</option>
+							<option value="3" #if("$!req.status"=="3") selected #end>处理中</option>
+        				</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						系统时间： <input name="beginTime"  maxdate="{%y}-%M-{%d}"  type="text" id="beginTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.beginTime)" /> 到 <input name="overTime" maxdate="{%y}-%M-{%d}"  type="text" id="overTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.overTime)" />
+						账务时间： <input name="startTransTime"  maxdate="{%y}-%M-{%d}"  type="text" id="startTransTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.startTransTime)" /> 到 <input name="endTransTime" maxdate="{%y}-%M-{%d}"  type="text" id="endTransTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.endTransTime)" />
+						<span style="margin-left:20px;">
+							<button onclick="func()" type="button">查询</button>
+                        </span>
+					</td>	
+                </tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	
+	<table class="table" width="2915" layoutH="138">
+		<thead>
+			<tr>
+				<th width="50">编号</th>
+				<th width="70">操作员编号</th>
+				<th width="120">账务日期</th>
+				<th width="65">交易代码</th>
+				<th width="65">交易类型</th>
+				<th width="65">交易余额</th>
+				<th width="120">系统时间</th>
+				<th width="120">渠道时间</th>
+				<th width="150">渠道流水号</th>
+				
+				<th width="70">借贷标识1</th>
+				<th width="80">子账户编码1</th>
+				<th width="100">交易前余额1</th>
+				<th width="100">交易后余额1</th>
+				<th width="100">交易前可用余额1</th>
+				<th width="100">交易后可用余额1</th>
+				<th width="100">交易前冻结余额1</th>
+				<th width="100">交易后冻结余额1</th>
+				
+				<th width="70">借贷标识2</th>
+				<th width="80">子账户编码2</th>
+				<th width="100">交易前余额2</th>
+				<th width="100">交易后余额2</th>
+				<th width="100">交易前可用余额2</th>
+				<th width="100">交易后可用余额2</th>
+				<th width="100">交易前冻结余额2</th>
+				<th width="100">交易后冻结余额2</th>
+				
+				<th width="50">手续费</th>
+				<th width="60">状态</th>
+				<th width="60">响应码</th>
+				<th width="60">响应信息</th>
+				<th width="60">备注</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $sysAccountList)
+			<tr target="sid_user" rel="1" >
+				<td>$!grid.id</td>
+				<td>$!grid.opId</td>
+				<td>$!date.format($!grid.transTime)</td>
+				<td>$!grid.transCode</td>
+				<td>$!grid.transName</td>
+				<td>$!money.format($!grid.transAmount)</td>
+				<td>$!date.format($!grid.sysTime)</td>
+				<td>$!date.format($!grid.channelTime)</td>
+				<td>$!grid.channelJnlNo</td>
+				
+				<td>$!grid.cdFlag1</td>
+				<td>$!grid.subAccountCode1</td>
+				<td>$!money.format($!grid.beforeBalance1)</td>
+				<td>$!money.format($!grid.afterBalance1)</td>
+				<td>$!money.format($!grid.beforeAvialableBalance1)</td>
+				<td>$!money.format($!grid.afterAvialableBalance1)</td>
+				<td>$!money.format($!grid.beforeFreezeBalance1)</td>
+				<td>$!money.format($!grid.afterFreezeBalance1)</td>
+				
+				<td>$!grid.cdFlag2</td>
+				<td>$!grid.subAccountCode2</td>
+				<td>$!money.format($!grid.beforeBalance2)</td>
+				<td>$!money.format($!grid.afterBalance2)</td>
+				<td>$!money.format($!grid.beforeAvialableBalance2)</td>
+				<td>$!money.format($!grid.afterAvialableBalance2)</td>
+				<td>$!money.format($!grid.beforeFreezeBalance2)</td>
+				<td>$!money.format($!grid.afterFreezeBalance2)</td>
+				
+				<td>$!grid.fee</td>
+				<td>$!message.get("ACCOUNT_JNL_STATUS_$!grid.status")</td>
+				<td>$!grid.respCode</td>
+				<td>$!grid.respMsg</td>
+				<td>$!grid.note</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+<script>
+
+function func(){
+	var beginTime = $("#beginTime").val();
+	var overTime = $("#overTime").val();
+	var startTransTime = $("#startTransTime").val();
+	var endTransTime = $("#endTransTime").val();
+	var snum1 =  $("#startTransAmount").val();
+	var enum1 =  $("#endTransAmount").val();
+	
+	if(beginTime != "" && overTime == ""){
+		alert("请输入结束时间！");
+		return false;
+	}
+	
+	if(beginTime == "" && overTime != ""){
+		alert("请输入开始时间！");
+		return false;
+	}
+	
+	if(beginTime != "" && overTime != ""){
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	if(startTransTime != "" && endTransTime == ""){
+		alert("请输入结束时间！");
+		return false;
+	}
+	
+	if(startTransTime == "" && endTransTime != ""){
+		alert("请输入开始时间！");
+		return false;
+	}
+	
+	if(startTransTime != "" && endTransTime != ""){
+		var result = Date.parse(endTransTime.replace(/-/g,"/"))- Date.parse(startTransTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	if(snum1<0||enum1<0)
+    	{
+    		alert("输入金额不能小于0！");
+    		return false;
+    	}
+	if(snum1 != "" && enum1 != ""){
+    
+    	if(snum1>enum1)
+    	{
+    		alert("输入金额不能小于0！");
+    		return false;
+    	}
+	}
+	var url = $("#APP_ROOT_PATH").val() + "/account/sysAccount/index.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+
+}
+
+</script>

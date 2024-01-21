@@ -1,0 +1,143 @@
+#foreach($pro in $item)
+	#if("$!pro.flag" != "finish")
+    <section class="manage_main">
+        <input type="hidden" name="id" class="id" value="$!pro.id"/>
+        <input type="hidden" name="term" class="term" value="$!pro.term"/>
+        <input type="hidden" name="rate" class="rate" value="$!pro.rate"/>
+        <input type="hidden" name="name" class="name" value="$!pro.name"/>
+        <input type="hidden" name="minInvestAmount" class="minInvestAmount" value="$!pro.minInvestAmount"/>
+        <input type="hidden" name="userType" class="userType" value="$!userType"/>
+
+        <div class="manage_title" onclick="selPro(this)">$pro.name
+			#if("$!pro.activityType" == "NEW_BUYER")
+                <span class="manage_txt"><i class="small_i">新手专享</i></span>
+			#elseif("$!pro.activityType" == "ACTIVITY") 
+            	<span class="manage_txt"><i class="small_i">限时活动</i></span>
+			#end
+			#if($!pro.remindTagContent)
+				<span class="manage_txt"><i class="small_i">$!pro.remindTagContent</i></span>
+			#else
+			#end
+        </div>
+        <div class="manage_list" onclick="selPro(this)">
+			#if($!pro.interestRatesTagContent)
+				<span class="numberTicket">$!pro.interestRatesTagContent</span>
+			#else
+			#end
+            <div class="number_num">
+                <div class="num">$!{pro.rate}</div>
+                <div class="num_pt">%</div>
+            </div>
+            <div class="number_info">预期年化收益</div>
+        </div>
+        <div class="manage_list list_two" onclick="selPro(this)">
+            <div class="number_num">
+                <div class="num">$!{pro.term}</div>
+                #if($!pro.propertySymbol == "ZAN")
+                    <div class="num_pt">个月内</div>
+                #else
+                    <div class="num_pt">天</div>
+                #end
+            </div>
+            #if($!pro.propertySymbol == "ZAN")
+                <div class="number_info">委托意向</div>
+            #else
+                <div class="number_info">产品期限</div>
+            #end
+        </div>
+        #if("$!pro.flag" == "buy")
+            <div class="manage_list manage_list_height">
+                #if("$!pro.activityType" == "NEW_BUYER")
+                    <div class="number_btn" onclick="selPro1(this)">
+                        #if($!pro.maxSingleInvestAmount)
+                            <div class="new_btn_ft">
+                                <div class="new_ft1">立即加入</div>
+                                ##<div class="new_ft2"> 限购$!{pro.maxSingleInvestAmount}万</div>
+                            </div>
+                        #else
+                            <div class="new_btn_ft" style="top:25px;">
+                                <div class="new_ft1">立即加入</div>
+                            </div>
+                        #end
+                    </div>
+                #else
+                    <div class="number_btn" onclick="gobuy(this)">立即加入</div>
+                #end
+            </div>
+        #elseif("$!pro.flag" == "countdown")
+            #if("$!pro.isSameDay" == "yes")
+                <div class="manage_list manage_list_height" onclick="selPro(this)">
+                    <div class="number_btn purchase_btn">
+                        <div class="today">今日</div>
+                        <div class="do_time">$!date.formatDateTime($!date.parseDateTime("$!pro.startTime"), "HH:mm")开始</div>
+                    </div>
+                </div>
+            #elseif("$!pro.isTomorrow" == "yes")    
+                 <div class="manage_list manage_list_height" onclick="selPro(this)">
+                    <div class="number_btn purchase_btn">
+                        <div class="today">明日</div>
+                        <div class="do_time">$!date.formatDateTime($!date.parseDateTime("$!pro.startTime"), "HH:mm")开始</div>
+                    </div>
+                </div>    
+            #else
+                <div class="manage_list manage_list_height" onclick="selPro(this)">
+                    <div class="number_btn purchase_btn">
+                        <div class="today">$!date.formatDateTime($!date.parseDateTime("$!pro.startTime"), "MM月dd日")</div>
+                        <div class="do_time">$!date.formatDateTime($!date.parseDateTime("$!pro.startTime"), "HH:mm")开始</div>
+                    </div>
+                </div>
+            #end
+        #end
+    </section>
+	#else
+    <section class="manage_main end_color">
+        <input type="hidden" name="id" class="id" value="$!pro.id"/>
+        <input type="hidden" name="term" class="term" value="$!pro.term"/>
+        <input type="hidden" name="rate" class="rate" value="$!pro.rate"/>
+        <input type="hidden" name="name" class="name" value="$!pro.name"/>
+        <input type="hidden" name="minInvestAmount" class="minInvestAmount" value="$!pro.minInvestAmount"/>
+        <input type="hidden" name="userType" class="userType" value="$!userType"/>
+        <div class="manage_title" onclick="selPro(this)">$pro.name
+			#if("$!pro.activityType" == "NEW_BUYER")
+                <span class="manage_txt"><i class="small_i">新手专享</i></span>
+			#elseif("$!pro.activityType" == "ACTIVITY") 
+            	<span class="manage_txt"><i class="small_i">限时活动</i></span>
+			#end
+			#if($!pro.remindTagContent)
+				<span class="manage_txt"><i class="small_i">$!pro.remindTagContent</i></span>
+			#else
+			#end
+        </div>
+        <div class="manage_list" onclick="selPro(this)">
+			#if($!pro.interestRatesTagContent)
+				<span class="numberTicket">$!pro.interestRatesTagContent</span>
+			#else
+			#end
+            <div class="number_num">
+                <div class="num">$!{pro.rate}</div>
+                <div class="num_pt">%</div>
+            </div>
+            <div class="number_info" onclick="selPro(this)">预期年化收益</div>
+        </div>
+        <div class="manage_list list_two" onclick="selPro(this)">
+            <div class="number_num">
+                <div class="num">$!{pro.term}</div>
+                #if($!pro.propertySymbol == "ZAN")
+                    <div class="num_pt">个月内</div>
+                #else
+                    <div class="num_pt">天</div>
+                #end
+            </div>
+            #if($!pro.propertySymbol == "ZAN")
+                <div class="number_info">委托意向</div>
+            #else
+                <div class="number_info">产品期限</div>
+            #end
+        </div>
+        <div class="manage_list manage_list_height" onclick="selPro(this)">
+            <div class="number_btn number_btn_stop">已结束</div>
+        </div>
+    </section>
+	#end
+#end
+

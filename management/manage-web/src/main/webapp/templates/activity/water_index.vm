@@ -1,0 +1,174 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/activity/water/list.htm')" onsubmit="return navTabSearch(this);">
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!req.pageNum" />
+		<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+			<tr>
+				<td>
+					<div class="buttonActive">
+						<div class="buttonContent">
+							<button onclick="checkPass()" type="button">审核通过</button>
+						</div>
+					</div>
+				</td>
+                <td>
+                    <div class="buttonActive">
+                        <div class="buttonContent">
+                            <button onclick="checkRefuse()" type="button">审核拒绝</button>
+                        </div>
+                    </div>
+                </td>
+			</tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="100%" layoutH="120" >
+		<thead>
+			<tr>
+				<th width="5%">选择</th>
+				<th width="5%">序号</th>
+				<th width="10%">状态</th>
+				<th width="10%">投票数</th>
+                <th width="10%">姓名</th>
+                <th width="10%">手机号</th>
+                <th width="10%">家庭人数</th>
+                <th width="10%">月人均水费</th>
+                <th width="10%">节水小妙招</th>
+                <th width="10%">节水小妙招照片</th>
+                <th width="10%">水费单照片</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			#foreach($data in $list)
+                <span class="checked_span">
+                    <tr target="rid" rel="1">
+                        <td>
+                            #if($!data.checkStatus == "INIT")
+                                <input type="checkbox" name="checked_water" water_id="$!data.id">
+                            #end
+                        </td>
+                        <td>$!data.serialNo</td>
+                        <td>
+                            #if($!data.checkStatus == "INIT")
+                                待审核
+                            #elseif($!data.checkStatus == "PASS")
+                                通过
+                            #elseif($!data.checkStatus == "REFUSE")
+                                拒绝
+                            #end
+                        </td>
+                        <td>
+                            #if($!data.voteNum)
+                                $!data.voteNum
+                            #else
+                                0
+                            #end
+                        </td>
+                        <td>$!data.userName</td>
+                        <td>$!data.mobile</td>
+                        <td>$!data.familyNum</td>
+                        <td>$!data.monthWaterRate</td>
+                        <td>$!data.content</td>
+                        <td>
+                            #if($!data.waterSavePhoto)
+                                <a title="节水照片" target="navtab" href="$!env.getWebURL('/activity/water/photo.htm?img=')$!data.waterSavePhoto" style="color: blue;">节水照片</a>
+                            #else
+                                未上传
+                            #end
+                        </td>
+                        <td>
+                            <a title="水费单照片" target="navtab" href="$!env.getWebURL('/activity/water/photo.htm?img=')$!data.waterRatePhoto" style="color: blue;" >水费单照片</a>
+                        </td>
+                    </tr>
+                </span>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!count条</span>
+		</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+	</div>
+</div>
+<script>
+    function checkPass() {
+		var checked = [];
+        $('input[name=checked_water]:checked').each(function() {
+            checked.push($(this).attr('water_id'));
+		});
+		if(checked.length <= 0) {
+            alertMsg.warn('请选择需要通过的记录!');
+			return false;
+		}
+        alertMsg.confirm('审核通过', {
+            okCall: function(){
+                jQuery.ajax({
+                    url: $('#APP_ROOT_PATH').val() + '/activity/water/check.htm',
+                    data:{
+                        content: checked.toString(),
+						checkStatus: 'PASS'
+                    },
+                    type:'post',
+                    success: function(data){
+                        if(data.statusCode == '200'){
+                            alertMsg.correct('操作成功！');
+                            navTab.reload("$env.getWebURL('/activity/water/list.htm')");
+                        }else{
+                            alertMsg.error('操作失败!'+ data.message);
+                            navTab.reload("$env.getWebURL('/activity/water/list.htm')");
+                        }
+                    }
+                });
+            }
+        });
+    }
+    function checkRefuse() {
+        var checked = [];
+        $('input[name=checked_water]:checked').each(function() {
+            checked.push($(this).attr('water_id'));
+        });
+        if(checked.length <= 0) {
+            alertMsg.warn('请选择需要拒绝的记录!');
+            return false;
+        }
+        alertMsg.confirm('审核拒绝', {
+            okCall: function(){
+                jQuery.ajax({
+                    url: $('#APP_ROOT_PATH').val() + '/activity/water/check.htm',
+                    data:{
+                        content: checked.toString(),
+                        checkStatus: 'REFUSE'
+                    },
+                    type:'post',
+                    success: function(data){
+                        if(data.statusCode == '200'){
+                            alertMsg.correct('操作成功！');
+                            navTab.reload("$env.getWebURL('/activity/water/list.htm')");
+                        }else{
+                            alertMsg.error('操作失败!'+ data.message);
+                            navTab.reload("$env.getWebURL('/activity/water/list.htm')");
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+</script>

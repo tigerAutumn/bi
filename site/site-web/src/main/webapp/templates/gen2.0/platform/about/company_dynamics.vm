@@ -1,0 +1,103 @@
+#Html("begin")
+#Head("begin","公司动态_港湾资讯,币港湾,币港湾官网","欢迎关注币港湾资讯公司动态，币港湾官网为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("公司动态_港湾资讯【币港湾官网】")
+#LoadGenCSS("/resources/gen2.0/styles/platform/about/company_dynamics")
+#Head("end")
+<body>
+	<input type="hidden" id="url" value="$!env.get('gen.server.web')/gen2.0/platform/about/company_dynamics/index"/>
+    <input type="hidden" name="totalPages" value="$req.totalPages" class="totalPages"/>
+    <input type="hidden" name="page" value="$req.pageNum" class="page"/>
+	<!-- header -->
+	#Gen2Header("info")
+
+    
+	<!-- main -->
+	<div class="main">
+		<div class="main_banner"></div>
+		<div class="main_center">
+
+		#**
+		 * subnav
+		 **#
+			#Gen2InfoSubNav()
+
+			<div class="main_cright">
+				<div class="main_cr_down">
+					<div class="main_cr_center_txt">
+						#if($!dataGrid)
+							#foreach($data in $!dataGrid)
+                                <a href="$!env.get('gen.server.web')/gen2.0/platform/about/company_dynamic_detail/index?id=$!data.id">
+                                    <div class="main_cr_center_tdiv">
+                                        <div class="main_cr_center_tleft"><img src="$!data.subjectImg"/></div>
+                                        <div class="main_cr_center_tright">
+                                            <h4 class="main_cr_center_h4">
+												$!data.subject
+                                            </h4>
+                                            <div class="main_cr_center_trtxt">
+                                                <p>
+													$!data.summary
+                                                </p>
+                                            </div>
+                                            <div class="main_cr_center_trtxta">
+                                                发布时间：<span class="main_cr_center_h4span">$!date.formatDateTime($!data.publishTime,'yyyy-MM-dd')</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+							#end
+						#else
+                            <p class="null_notice">暂无动态</p>
+						#end
+					</div>
+				</div>
+				#if($!req.totalPages > 1)
+                    <div class="main_cr_fenye">
+                        <div class="main_cr_fenye_div">
+							#set($nextPage = $req.pageNum + 1)
+							#set($nextSecondPage = $req.pageNum + 2)
+							#set($prePage = $req.pageNum - 1)
+							#set($preSecondPage = $req.pageNum - 2)
+							#set($totalPage = $req.totalPages)
+                            <a href="javascript:void(0)" onclick="prePage(1)" class="index main_cr_fenye_all">首页</a>
+                            <a href="javascript:void(0);" onclick="prePage($prePage)" class="main_cr_fenye_al"></a>
+							#if($!prePage > 0)
+								#if($!preSecondPage > 0 && $!nextPage > $totalPage)
+                                    <a href="javascript:void(0)" onclick="prePage($preSecondPage)" class="main_cr_fenye_ac">$!preSecondPage</a>
+								#end
+                                <a href="javascript:void(0)" onclick="prePage($prePage)" class="main_cr_fenye_ac">$!prePage</a>
+                                <a href="javascript:void(0)" class="main_cr_fenye_achover">$!req.pageNum</a>
+								#if($!nextPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextPage)" class="main_cr_fenye_ac">$!nextPage</a>
+								#end
+							#else
+                                <a href="javascript:void(0)" class="main_cr_fenye_achover">$!req.pageNum</a>
+								#if($!nextPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextPage)" class="main_cr_fenye_ac">$!nextPage</a>
+								#end
+								#if($!nextSecondPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextSecondPage)" class="main_cr_fenye_ac">$!nextSecondPage</a>
+								#end
+							#end
+                            <a href="javascript:void(0)" onclick="nextPage($nextPage)" class="main_cr_fenye_ar"></a>
+                            <a href="javascript:void(0)" onclick="nextPage($totalPage)" class="index main_cr_fenye_arr">尾页</a>
+                        </div>
+                    </div>
+				#end
+			</div>
+
+		</div>
+	</div>
+	<!-- footer -->
+	#Gen2Footer()
+#LoadGenJS("/resources/gen2.0/scripts/common/platform_pagination")
+    <script>
+        $(document).ready(function () {
+            var subNav = $("#information").children("a");
+            var subTitle = $(".main_cleft").children(".main_cl_h31");
+            $("#information").show();
+            $(subNav[0]).addClass("main_clul_lione");
+            $(subTitle[3]).addClass("main_cl_hfo");
+        })
+    </script>
+</body>
+#Html("end")

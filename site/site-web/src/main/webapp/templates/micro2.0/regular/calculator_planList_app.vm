@@ -1,0 +1,29 @@
+#Html("begin")
+#Head("begin")
+
+#Title("回款计划表")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/regular/calculator.min")
+#WeChatShare()
+#Head("end")
+
+<body id="body">
+		<div class="classify" style="margin:0 auto;">
+			<div class="fy_dlcopy1">期次</div>
+			<div class="fy_dl">每月本息</div>
+			<div class="fy_dl">本金</div>
+			<div class="fy_dlcopy2">收益</div>
+		</div>
+		<ul class="list">
+			#foreach($record in $!list)
+			<li class="list_classify">
+				<div class="list_fy_dlcopy1">$!record.serial</div>
+				<div class="list_fy_dl">$!number.format("0.00",$!record.planTotal)</div>
+				<div class="list_fy_dl">$!number.format("0.00",$!record.planPrincipal)</div>
+				<div class="list_fy_dlcopy2">$!number.format("0.00",$!record.planInterest)</div>
+			</li>
+			#end
+		</ul>
+
+	</body>

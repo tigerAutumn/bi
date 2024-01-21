@@ -1,0 +1,121 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/financeStatistics/queryPartnerServiceFee/index.htm')" method="post" id="myform" class="pageForm required-validate">
+    	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+    	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    	<input type="hidden" name="pageNum" value="$!pageNum" />
+    	<input type="hidden" name="queryFlag" value="QUERY" />
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+					   	结算日期： <input name="startTime"  type="text" id="startTime" class="date textInput readonly" readonly="true" size="15"  value="$!startTime" dateFmt="yyyy-MM-dd" /> 到
+					   	<input name="endTime"  type="text" id="endTime" class="date textInput readonly" readonly="true" size="15"  value="$!endTime"  dateFmt="yyyy-MM-dd" />
+					</td>
+					<td>
+						资产方：
+						<select name="partnerCode" >
+							<option value="YUN_DAI_SELF" #if("$!partnerCode"=="YUN_DAI_SELF") selected  #end>云贷</option>
+							<option value="7_DAI_SELF" #if("$!partnerCode"=="7_DAI_SELF") selected  #end>7贷</option>
+						</select>
+						<span style="margin-left:20px;">
+							<button  onclick="func()" type="button">查询</button>
+							<button  onclick="exp()" type="button">导出excel</button>
+                        </span>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	
+	<table class="table" width="896" layoutH="98">
+		<thead>
+			<tr>
+                <th width="17%">短信条数</th>
+				<th width="17%">鉴权笔数</th>
+				<th width="17%">放款代发笔数</th>
+				<th width="17%">还款代扣笔数</th>
+                <th width="15%">协议支付手续费</th>
+				<th width="17%">放款金额</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr target="sid_user" rel="1">
+				<td>$!partnerServiceFeeVo.smsCount</td>
+				<td>$!partnerServiceFeeVo.authCount</td>
+				<td>$!partnerServiceFeeVo.loanCount</td>	
+				<td>$!partnerServiceFeeVo.repayCount</td>
+                <td>
+					#if($!partnerServiceFeeVo.agreementFeeAmount == 0)
+                        <span style="color:blue;">$!money.format($!partnerServiceFeeVo.agreementFeeAmount)</span>
+					#else
+                        <a style="color:blue;" title="明细列表" target="dialog"
+						   href="$env.getWebURL('/financeStatistics/queryAgreementFeeDetail/index.htm?startTime=')$!startTime&endTime=$!endTime&partnerCode=$!partnerCode" mask="true" rel="createBack" height="490" width="725">
+							$!money.format($!partnerServiceFeeVo.agreementFeeAmount)
+						</a>
+					#end
+
+				</td>
+				<td><div>$!money.format($!partnerServiceFeeVo.loanAmount)</div></td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+function func(){
+	var startTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+
+	if(startTime != "" && endTime != ""){
+		var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(startTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("结算开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/financeStatistics/queryPartnerServiceFee/index.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+	
+	var startTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+
+	if(startTime != "" && endTime != ""){
+		var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(startTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("结算开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	var url = $("#APP_ROOT_PATH").val() + "/financeStatistics/queryPartnerServiceFee/exportXls.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+</script>

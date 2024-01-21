@@ -1,0 +1,79 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/assets/six")
+#LoadCSS("resources/micro2.0/styles/assets/default")
+#LoadCSS("resources/micro2.0/styles/assets/bank_card")
+#LoadJS("resources/micro2.0/scripts/zepto.min")
+#LoadJS("resources/micro2.0/scripts/assets/custom")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/bankcard/bankcard_index")
+#WeChatShare()
+#Head("end")
+<body>
+<input type="hidden" value="$!env.getWebURL('')" id="APP_ROOT_PATH" />
+<div class="header">
+	<a class="header_arrow" href="javascript:history.go(-1)"></a>
+	<h1 class="heade_ft oran_color">我的银行卡</h1>
+</div>
+<form id="generalForm" action="$!env.getWebURL('/micro2.0/wealth/bankcard_unbundling_index')" method="post">
+	<input type="hidden" id="cardId" name="cardId" />
+	<input type="hidden" id="cardNo" name="cardNo" />
+	<input type="hidden" id="bankName" name="bankName" />
+	<input type="hidden" id="smallLogo" name="smallLogo" />
+	<input type="hidden" id="largeLogo" name="largeLogo" />
+</form>
+<div class="main">
+	#if($!size == 0)
+        <div class="bank_null"></div> 
+        <h3 class="null_h3">暂时没有银行卡</h3> 
+	#else
+		<ul>
+			#foreach($!bankcard in $!bankcards)
+				<li class="item item_top_border">
+        			<div class="item_small" card_id="$!bankcard.id" bank_name="$!bankcard.bankName" card_no="$string.right($!bankcard.cardNo,4)" smallLogo="$!bankcard.smallLogo" largeLogo="$!bankcard.largeLogo">
+						<input type="hidden" name="cardId" value="$!bankcard.id" />
+                    	<input type="hidden" name="cardNo" value="$string.right($!bankcard.cardNo,4)" />
+                    	<input type="hidden" name="bankName" value="$!bankcard.bankName" />
+                    	<input type="hidden" name="smallLogo" value="$!smallLogo" />
+                    	<input type="hidden" name="largeLogo" value="$!largeLogo" />
+						
+						#if($!bankcard.smallLogo)
+							<i class="bank_bg" style="background:url($!env.getWebURL('')/$!bankcard.smallLogo) no-repeat"></i>
+						#elseif($!bankcard.largeLogo)
+							<i class="bank_bg" style="background:url($!env.getWebURL('')/$!bankcard.largeLogo) no-repeat"></i>
+						#else
+							<i class="bank_bg" style="background:url($!env.getWebURL('resources/micro2.0/images/bank_bg.jpg') no-repeat"></i>
+						#end
+    					<span class="font_left">$!bankcard.bankName（***$string.right($!bankcard.cardNo,4)）</span>
+    					<div class="font_right">
+							#if($!bankcard.isFirst == 1)	## 常用卡 1
+								<span class="ft_setting">安全卡</span>
+								<i class="setting_info_img"></i>
+							#else	## 非常用卡 2
+								<span class="ft_setting"></span>
+								<i class="Acc_arrow"></i>
+							#end
+    					</div>
+        			</div>
+        		</li>
+			#end
+    	</ul>
+	#end	
+</div> 
+
+<!-- 弹窗小时或者显示改变left -->
+ <!-- 弹窗提醒 -->
+ <div class="select_warp reg_beyond">
+	<div class="select">
+		<div class="select_title"></div>
+		<div class="select_off off_beyong"></div>
+		<div class="beyond_ft">
+			<p class="bank_ind">为了最大程度保证您的便捷和资金安全，您首次购买或充值的银行卡将作为安全卡。</p>
+        	<p class="bank_ind">币港湾实行多卡进，一卡出。我们需要确保绑定一张属于您自己的卡，系统将确认您银行卡的信息真实有效。当您的投资到期后，会将本金+利息一起回款到此卡上。</p>
+		</div>
+		<a class="beyong_btn" href="javascript:void(0)" title="">知道了</a>
+	</div>
+</div>
+</body>
+#Html("end")

@@ -1,0 +1,87 @@
+## 管理台积分设置
+1. 需求描述
+	+ 积分设置查询列表
+	+ 新增积分设置
+	+ 积分设置编辑
+	+ 删除积分设置记录
+		
+		
+2. 需求背景
+	为树立平台良好的品牌形象，进行新老用户的关怀与维护，获得更多的曝光和展现机会，实现平台拉新促投，需开发积分商城系统，客户自己就是最好的宣传媒体，
+	通过积分系统实现：“发起活动——吸引新客户——将新客户发展成老客户——关怀与维护老客户”，从而提升客户忠诚度。
+	
+3. 业务逻辑
+### 原型地址: 项目需求\原型\2018年需求\4月份-积分商城一期\原型导出
+	
+### 业务实现点
+1. 积分设置记录列表，查询mall_points_rule表，排除状态已删除的。对应字段说明：场景get_scene、获取方式get_times、时间trigger_time_start-trigger_time_end、状态status
+
+2. 新增积分设置：同一场景可以新增多条记录，添加时，不允许时间重复。
+	+ 成功注册：mall_points_rule表新增一条记录，场景get_scene存值REGISTER、获取次数get_times存值ONE、get_time_type存值REAL_TIME、积分points和场景触发开始时间trigger_time_start和景触发结束时间trigger_time_end存值为页面传值，status启用状态存值CLOSE-关闭、OPEN-开启。
+    
+	+ 成功开通存管账户：mall_points_rule表新增一条记录，场景get_scene存值OPEN_DEPOSIT、获取次数get_times存值ONE、get_time_type存值REAL_TIME，其它存值同成功注册取值方式。        
+	
+	+ 成功完成风险测评：mall_points_rule表新增一条记录，场景get_scene存值FINISH_RISK_ASSESSMENT、获取次数get_times存值ONE、get_time_type存值REAL_TIME，其它存值同成功注册取值方式。
+	
+	+ 成功完成首次加入产品：mall_points_rule表新增一条记录，场景get_scene存值FIRST_INVEST、获取次数get_times存值ONE、get_time_type存值REAL_TIME，其它存值同成功注册取值方式。
+	
+	+ 成功加入产品：mall_points_rule表新增一条记录，场景get_scene存值INVEST、获取次数get_times存值MORE、get_time_type存值DAY，其它存值同成功注册取值方式。
+					mall_points_rule_detail新增1条记录，rule_id关联mall_points_rule表id，rule_key插入EXCHANGE_RATE，rule_value对应rule_key的值。
+					
+	+ 累计加入产品积分奖励：mall_points_rule表新增一条记录，场景get_scene存值TOTAL_INVEST、获取次数get_times存值ONE、get_time_type存值DAY，其它存值同成功注册取值方式。
+							mall_points_rule_detail新增2条记录，rule_id关联mall_points_rule表id，rule_key分别插入投资满额起始额：INVEST_AMOUNT_BEGIN，
+							投资满额截至额：INVEST_AMOUNT_END，rule_value对应rule_key的值。
+							
+	+ 签到：mall_points_rule表新增一条记录，场景get_scene存值SIGN、获取次数get_times存值MORE、get_time_type存值REAL_TIME，其它存值同成功注册取值方式。
+			mall_points_rule_detail新增3条记录，rule_id关联mall_points_rule表id，rule_key分别插入签到初始积分：SIGN_INIT_POINT、签到递增积分：SIGN_INCREMENT_POINT、
+            签到额外奖励积分：SIGN_AWARD_POINT，rule_value对应rule_key的值。
+			
+3. 积分设置编辑：场景不能编辑。
+
+4. 删除积分设置记录：更新mall_points_rule表记录status字段为已删除DELETED。
+
+5. 新增和编辑积分设置时，开启的同一场景需要校验时间重复问题(累计加入产品积分奖励场景不校验), 累计加入产品积分奖励场景校验金额重复问题。
+
+6. 新增和编辑校验：必填项校验、积分整数校验、时间前后校验。
+
+
+## 管理台订单管理
+1. 需求描述
+	+ 订单管理查询列表
+	+ 订单管理根据搜索结果导出记录
+	+ 已发货状态订单，查看信息
+	+ 未发货状态订单，操作栏显示发货
+	+ 虚拟商品（除类别：红包和加息券），比如：话费，流量。在供货方那里购买后，在这里操作批量发货。实体商品不能进行批量发货
+	
+	
+2. 需求背景
+	为树立平台良好的品牌形象，进行新老用户的关怀与维护，获得更多的曝光和展现机会，实现平台拉新促投，需开发积分商城系统，客户自己就是最好的宣传媒体，
+	通过积分系统实现：“发起活动——吸引新客户——将新客户发展成老客户——关怀与维护老客户”，从而提升客户忠诚度。
+
+3. 业务逻辑
+### 原型地址: 项目需求\原型\2018年需求\4月份-积分商城一期\原型导出
+
+### 业务实现点
+1. 订单管理列表记录：初始化查询未发货订单，列表排序兑换时间倒序。对应表字段：兑换时间取mall_exchange_orders表创建时间create_time，商品名称取mall_commodity_info表商品名称comm_name，商品类别取mall_commodity_type表类别名称comm_type_name，
+					 属性取mall_commodity_info表商品属性comm_property，支出积分取mall_exchange_orders表交易积分pay_points，手机号取用户表手机号，
+					 收货信息取rec_name、rec_mobile、rec_adress、rec_adress_detail，状态取mall_send_commodity表status字段，发货时间取mall_send_commodity表update_time 
+
+2. 订单管理导出：根据订单管理搜索出来的结果导出对应记录。
+
+3. 未发货状态订单，操作栏显示发货，点击打开弹窗，有发货信息就回显，提交发货后，标记为已发货，发货信息和备注更新到mall_send_commodity的delivery_note和note字段，还有更新update_time和m_user_id字段。
+   更新订单表订单状态为已完成。
+	
+4. 已发货状态订单，发货变成：查看，点击打开弹窗，有发货信息就回显，点击修改保存修改内容，更新到mall_send_commodity的delivery_note和note字段，还有更新update_time和m_user_id字段。
+
+5. 虚拟商品（除类别：红包和加息券），比如：话费，流量。在供货方那里购买后，在这里操作批量发货，实体商品不能进行批量发货，批量更新到mall_send_commodity的delivery_note和note字段，还有更新update_time和m_user_id字段。
+   批量发货实物还有红包和加息券选择框不展示。更新订单表订单状态为已完成。	
+
+6. 红包加息券发货失败的，状态是发放失败，操作栏显示已发货。
+
+
+   
+
+
+	            
+            
+    

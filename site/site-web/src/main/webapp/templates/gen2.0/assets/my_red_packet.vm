@@ -1,0 +1,593 @@
+<input type="hidden" id="initCount" name="initCount" value="$!initCount">
+#LoadGenCSS("/resources/gen2.0/styles/red_pack/public")
+#LoadGenCSS("/resources/gen2.0/styles/red_pack/my_red_packet")
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.get('gen.server.web')"/>
+<input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+#*红包分页数据*#
+<input type="hidden" id="initPageNum" name="initPageNum" value="$!initPageNum" class="initPage">
+<input type="hidden" id="overPageNum" name="overPageNum" value="$!overPageNum" class="overPage">
+<input type="hidden" id="usedPageNum" name="usedPageNum" value="$!usedPageNum" class="userPage">
+<input type="hidden" id="initTotalPages" name="initTotalPages" value="$!initTotalPages" class="initTotalPages">
+<input type="hidden" id="overTotalPages" name="overTotalPages" value="$!overTotalPages" class="overTotalPages">
+<input type="hidden" id="usedTotalPages" name="usedTotalPages" value="$!usedTotalPages" class="userTotalPages">
+#*加息券分页数据*#
+<input type="hidden" id="ticketInitPageNum" name="initTicketPageNum" value="$!initTicketPageNum" class="ticketInitPageNum">
+<input type="hidden" id="ticketOverPageNum" name="overTicketPageNum" value="$!overTicketPageNum" class="ticketOverPageNum">
+<input type="hidden" id="ticketUsedPageNum" name="usedTicketPageNum" value="$!usedTicketPageNum" class="ticketUsedPageNum">
+<input type="hidden" id="ticketInitTotalPages" name="initTicketTotalPages" value="$!initTicketTotalPages" class="ticketInitTotalPages">
+<input type="hidden" id="ticketOverTotalPages" name="overTicketTotalPages" value="$!overTicketTotalPages" class="ticketOverTotalPages">
+<input type="hidden" id="ticketUsedTotalPages" name="usedTicketTotalPages" value="$!usedTicketTotalPages" class="ticketUsedTotalPages">
+
+
+<body>
+
+<div class="tickets">
+    <div class="tickets_title">
+        <ul class="clearfix">
+            <li class="tickets_title_focuse">我的红包</li>
+            <li>加息券</li>
+        </ul>
+
+        <div class="increase_detail">
+            <a href="$!env.get('gen.server.web')/gen2.0/static/increaseOnload">加息券使用说明？</a>
+        </div>
+    </div>
+
+    <div class="tickets_categroy">
+        <div class="tickets_container tickets_show">
+            <div class="tickets_filter">
+                <ul class="clearfix">
+                    <li class="focuse">
+                        <div class="filter_dot"><span></span></div>未使用
+                    </li>
+                    <li>
+                        <div class="filter_dot"><span></span></div>已使用
+                    </li>
+                    <li>
+                        <div class="filter_dot"><span></span></div>已过期
+                    </li>
+                </ul>
+            </div>
+            <input type="hidden" id="redPacket_detail" value="/gen2.0/redPacket/myRedPacketPage">
+            <div class="tickets_list list_show " id="clearfix_init">
+                <div class="row clearfix ">
+                    #if($!initResult.dataGrid.size() > 0)
+                        #foreach($!grid in $!initResult.dataGrid)
+                            <div class="col-6 initRedPacket">
+                                <div class="tickets_card card_abled">
+                                    <div class="tickets_lines"></div>
+                                    <div class="tickets_card_top text_right">
+                                        <p class="tickets_card_num">￥<strong>$!money.format($!grid.subtract)</strong></p>
+                                        <a href="$!env.get('gen.server.web')/gen2.0/regular/list">加入立减</a>
+                                        <span class="tickets_card_gap" style="left: -8px"></span>
+                                        <span class="tickets_card_gap" style="right: -8px"></span>
+                                    </div>
+                                    <div class="tickets_card_bottom">
+                                        <h5 class="text_left">$!grid.serialName</h5>
+                                        <ul class="tickets_rule clearfix text_left">
+                                            <li class="tickets_rule_li">$!grid.termLimitMsg</li>
+                                            <li class="tickets_rule_licopy">
+                                                #if($!grid.isWan == "yes")
+                                                    单笔加入满$!number.format("0.00", $!grid.full)万元启用
+                                                #else
+                                                    单笔加入满$!number.format("0.00", $!grid.full)元启用
+                                                #end
+                                            </li>
+                                            <li class="tickets_rule_li"><span>$!date.formatYYYYMMDD($!grid.useTimeStart)</span>至<span>$!date.formatYYYYMMDD($!grid.useTimeEnd)</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        #end
+
+                    #else
+                        <!-- TODO 未使用红包无数据的情况 -->
+                        <div class="null_redpack">
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/red_pack/null_redpack.png" class=""/>
+                            <p>暂无可用红包</p>
+                        </div>
+                    #end
+                </div>
+                #if($!initTotalPages > 1)
+                    <div class="fenye">
+                        <div class="fenye_wrap">
+                            #set($nextPage = $initPageNum + 1)
+                            #set($nextSecondPage = $initPageNum + 2)
+                            #set($prePage = $initPageNum - 1)
+                            #set($preSecondPage = $initPageNum - 2)
+                            #set($totalPage = $initTotalPages)
+
+                            <a href="javascript:void(0)" onclick="prePage(1, 'INIT','RED_PACKET')" class="fy_l">首页</a>
+                            <a href="javascript:void(0)" onclick="prePage($prePage, 'INIT','RED_PACKET')" class="fy_ll"></a>
+                            #if($!prePage > 0)
+                                #if($!preSecondPage > 0 && $!nextPage > $totalPage)
+                                    <a href="javascript:void(0)" onclick="prePage($preSecondPage, 'INIT','RED_PACKET')" class="fy_c">$!preSecondPage</a>
+                                #end
+                                <a href="javascript:void(0)" onclick="prePage($prePage, 'INIT','RED_PACKET')" class="fy_c">$!prePage</a>
+                                <a href="javascript:void(0)" class="fy_c fy_atpage">$!initPageNum</a>
+                                #if($!nextPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextPage, 'INIT','RED_PACKET')" class="fy_c">$!nextPage</a>
+                                #end
+                            #else
+                                <a href="javascript:void(0)" class="fy_c fy_atpage">$!initPageNum</a>
+                                #if($!nextPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextPage, 'INIT','RED_PACKET')" class="fy_c">$!nextPage</a>
+                                #end
+                                #if($!nextSecondPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextSecondPage, 'INIT','RED_PACKET')" class="fy_c">$!nextSecondPage</a>
+                                #end
+                            #end
+                            <a href="javascript:void(0)" onclick="nextPage($nextPage, 'INIT','RED_PACKET')" class="fy_rr"></a>
+                            <a href="javascript:void(0)" onclick="nextPage($totalPage, 'INIT','RED_PACKET')" class="fy_r">尾页</a>
+                        </div>
+                    </div>
+                #end
+            </div>
+
+            <div class="tickets_list" id="clearfix_used">
+                <div class="row clearfix">
+                    #if($!usedResult.dataGrid.size() > 0)
+                        #foreach($!grid in $!usedResult.dataGrid)
+                            <div class="col-6">
+                                <div class="tickets_card">
+                                    <div class="tickets_lines"></div>
+                                    <div class="tickets_card_top text_right">
+                                        <p class="tickets_card_num">￥<strong>$!money.format($!grid.subtract)</strong></p>
+                                        <span class="tickets_card_gap" style="left: -8px"></span>
+                                        <span class="tickets_card_gap" style="right: -8px"></span>
+                                    </div>
+                                    <div class="tickets_card_bottom">
+                                        <h5>$!grid.serialName</h5>
+                                        <ul class="tickets_rule clearfix">
+                                            <li class="tickets_rule_li">$!grid.termLimitMsg</li>
+                                            <li class="tickets_rule_licopy">
+                                                #if($!grid.isWan == "yes")
+                                                    单笔加入满$!number.format("0.00", $!grid.full)万元启用
+                                                #else
+                                                    单笔加入满$!number.format("0.00", $!grid.full)元启用
+                                                #end
+                                            </li>
+                                            <li class="tickets_rule_li"><span>$!date.formatYYYYMMDD($!grid.useTimeStart)</span>至<span>$!date.formatYYYYMMDD($!grid.useTimeEnd)</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        #end
+
+                        #if($!usedPageNum==$!usedTotalPages)
+                            <p class="packet_tips">仅显示最近<i class="color_font">90天内</i>的红包</p>
+                        #end
+                    #else
+                        <!-- TODO 已使用红包无数据的情况 -->
+                        <div class="null_redpack">
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/red_pack/redpack_90.png" class=""/>
+                            <p>仅显示最近<span class="color_font">90天内</span>的红包</p>
+                        </div>
+                    #end
+                </div>
+
+                #if($!usedTotalPages > 1)
+                    <div class="fenye">
+                        <div class="fenye_wrap">
+                            #set($nextPage = $usedPageNum + 1)
+                            #set($nextSecondPage = $usedPageNum + 2)
+                            #set($prePage = $usedPageNum - 1)
+                            #set($preSecondPage = $usedPageNum - 2)
+                            #set($totalPage = $usedTotalPages)
+
+                            <a href="javascript:void(0)" onclick="prePage(1, 'USED','RED_PACKET')" class="fy_l">首页</a>
+                            <a href="javascript:void(0)" onclick="prePage($prePage, 'USED','RED_PACKET')" class="fy_ll"></a>
+                            #if($!prePage > 0)
+                                #if($!preSecondPage > 0 && $!nextPage > $totalPage)
+                                    <a href="javascript:void(0)" onclick="prePage($preSecondPage, 'USED','RED_PACKET')" class="fy_c">$!preSecondPage</a>
+                                #end
+                                <a href="javascript:void(0)" onclick="prePage($prePage, 'USED','RED_PACKET')" class="fy_c">$!prePage</a>
+                                <a href="javascript:void(0)" class="fy_c fy_atpage">$!usedPageNum</a>
+                                #if($!nextPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextPage, 'USED','RED_PACKET')" class="fy_c">$!nextPage</a>
+                                #end
+                            #else
+                                <a href="javascript:void(0)" class="fy_c fy_atpage">$!usedPageNum</a>
+                                #if($!nextPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextPage, 'USED','RED_PACKET')" class="fy_c">$!nextPage</a>
+                                #end
+                                #if($!nextSecondPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextSecondPage, 'USED','RED_PACKET')" class="fy_c">$!nextSecondPage</a>
+                                #end
+                            #end
+                            <a href="javascript:void(0)" onclick="nextPage($nextPage, 'USED','RED_PACKET')" class="fy_rr"></a>
+                            <a href="javascript:void(0)" onclick="nextPage($totalPage, 'USED','RED_PACKET')" class="fy_r">尾页</a>
+                        </div>
+                    </div>
+                #end
+
+            </div>
+
+            <div class="tickets_list" id="clearfix_over">
+                <div class="row clearfix">
+                    #if($!overResult.dataGrid.size() > 0)
+                        #foreach($!grid in $!overResult.dataGrid)
+                            <div class="col-6">
+                                <div class="tickets_card">
+                                    <div class="tickets_lines"></div>
+                                    <div class="tickets_card_top text_right">
+                                        <p class="tickets_card_num">￥<strong>$!money.format($!grid.subtract)</strong></p>
+                                        <span class="tickets_card_gap" style="left: -8px"></span>
+                                        <span class="tickets_card_gap" style="right: -8px"></span>
+                                    </div>
+                                    <div class="tickets_card_bottom">
+                                        <h5>$!grid.serialName</h5>
+                                        <ul class="tickets_rule clearfix">
+                                            <li class="tickets_rule_li">$!grid.termLimitMsg</li>
+                                            <li class="tickets_rule_licopy">
+                                                #if($!grid.isWan == "yes")
+                                                    单笔加入满$!number.format("0.00", $!grid.full)万元启用
+                                                #else
+                                                    单笔加入满$!number.format("0.00", $!grid.full)元启用
+                                                #end
+                                            </li>
+                                            <li class="tickets_rule_li"><span>$!date.formatYYYYMMDD($!grid.useTimeStart)</span>至<span>$!date.formatYYYYMMDD($!grid.useTimeEnd)</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        #end
+
+                        #if($!overPageNum==$!overTotalPages)
+                            <p class="packet_tips">仅显示最近<i class="color_font">90天内</i>的红包</p>
+                        #end
+
+                    #else
+                        <!-- TODO 已过期红包无数据的情况 -->
+                        <div class="null_redpack">
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/red_pack/redpack_90.png" class=""/>
+                            <p>仅显示最近<span class="color_font">90天内</span>的红包</p>
+                        </div>
+                    #end
+                </div>
+                #if($!overTotalPages > 1)
+                    <div class="fenye">
+                        <div class="fenye_wrap">
+                            #set($nextPage = $overPageNum + 1)
+                            #set($nextSecondPage = $overPageNum + 2)
+                            #set($prePage = $overPageNum - 1)
+                            #set($preSecondPage = $overPageNum - 2)
+                            #set($totalPage = $overTotalPages)
+
+                            <a href="javascript:void(0)" onclick="prePage(1, 'OVER','RED_PACKET')" class="fy_l">首页</a>
+                            <a href="javascript:void(0)" onclick="prePage($prePage, 'OVER','RED_PACKET')" class="fy_ll"></a>
+                            #if($!prePage > 0)
+                                #if($!preSecondPage > 0 && $!nextPage > $totalPage)
+                                    <a href="javascript:void(0)" onclick="prePage($preSecondPage, 'OVER','RED_PACKET')" class="fy_c">$!preSecondPage</a>
+                                #end
+                                <a href="javascript:void(0)" onclick="prePage($prePage, 'OVER','RED_PACKET')" class="fy_c">$!prePage</a>
+                                <a href="javascript:void(0)" class="fy_c fy_atpage">$!overPageNum</a>
+                                #if($!nextPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextPage, 'OVER','RED_PACKET')" class="fy_c">$!nextPage</a>
+                                #end
+                            #else
+                                <a href="javascript:void(0)" class="fy_c fy_atpage">$!overPageNum</a>
+                                #if($!nextPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextPage, 'OVER','RED_PACKET')" class="fy_c">$!nextPage</a>
+                                #end
+                                #if($!nextSecondPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextSecondPage, 'OVER','RED_PACKET')" class="fy_c">$!nextSecondPage</a>
+                                #end
+                            #end
+                            <a href="javascript:void(0)" onclick="nextPage($nextPage, 'OVER','RED_PACKET')" class="fy_rr"></a>
+                            <a href="javascript:void(0)" onclick="nextPage($totalPage, 'OVER','RED_PACKET')" class="fy_r">尾页</a>
+                        </div>
+                    </div>
+
+                #elseif($!overResult.dataGrid.size() > 0)
+                    <div class="main_cr_fenye used_page_controller">
+                        <div class="show_text" style="display: none">仅显示最近<span class="color_font">90天内</span>的红包</div>
+                    </div>
+                #end
+            </div>
+        </div>
+
+        <div class="tickets_container">
+            <div class="tickets_filter">
+                <ul class="clearfix">
+                    <li class="focuse">
+                        <div class="filter_dot"><span></span></div>未使用
+                    </li>
+                    <li>
+                        <div class="filter_dot"><span></span></div>已使用
+                    </li>
+                    <li>
+                        <div class="filter_dot"><span></span></div>已过期
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="tickets_list list_show" id="increase_init">#*未使用加息券*#
+                <div class="row clearfix ">
+                    #if($!initTicketResult.dataList.size()>0)
+                        #foreach($!initTickets in $!initTicketResult.dataList)
+                            <div class="col-6 IncreasePacket">
+                                <div class="Increase_card Increase_abled">
+                                    <div class="Increase_card_top text_right">
+                                        <p class="Increase_card_num"><strong>加息$!money.format($!initTickets.rate)%</strong></p>
+                                        <a href="$!env.get('gen.server.web')/gen2.0/regular/list">立即使用</a>
+                                        <div class="gap_wrap gap_wrap_left"><span class="tickets_card_gap"></span></div>
+                                        <div class="gap_wrap gap_wrap_right"><span class="tickets_card_gap"></span></div>
+                                    </div>
+                                    <div class="Increase_card_bottom">
+                                        <h5 class="text_left">$!initTickets.serialName</h5>
+                                        <ul class="Increase_rule clearfix text_left">
+                                            <li class="Increase_rule_li">
+                                                <div style="font-size: 14px">
+                                                    限$!initTickets.termLimit天产品使用，单笔加入...
+                                                    <div class="Increase_mark">
+                                                        ?
+                                                        <div class="Increase_help">
+                                                            #set($productLimitArr = $initTickets.productLimit.split(','))
+                                                            #set($forNum = 0)
+                                                            #set($serial="")
+                                                            #if($productLimitArr.size()==4)
+                                                                #set($serial='全部系列')
+                                                            #else
+                                                                #foreach($productName in $productLimitArr)
+                                                                    #if($productName == 'BIGANGWAN_SERIAL')
+                                                                        #set($serial=$!serial + '港湾系列')
+                                                                    #elseif($productName == 'YONGJIN_SERIAL')
+                                                                        #set($serial=$!serial + '涌金系列')
+                                                                    #elseif($productName == 'KUAHONG_SERIAL')
+                                                                        #set($serial=$!serial + '跨虹系列')
+                                                                    #elseif($productName == 'BAOXIN_SERIAL')
+                                                                        #set($serial=$!serial + '保信系列')
+                                                                    #end
+                                                                    #set($forNum = $forNum + 1)
+                                                                    #if($forNum < $productLimitArr.size())
+                                                                        #set($serial=$!serial + ',')
+                                                                    #end
+                                                                #end
+                                                            #end
+                                                            #set($serial=$!serial + '产品适用。加息收益将会在加入的产品到期后以奖励金的形式发放。')
+                                                            #if($money.subtract("$!initTickets.full", "10000") >= 0)
+                                                                限$!{initTickets.termLimit}天产品使用，单笔加入满$!number.format("0.00", $money.divide("$!initTickets.full", "10000"))万元启用，$!serial
+                                                            #else
+                                                                限$!{initTickets.termLimit}天产品使用，单笔加入满$!number.format("0.00", $!initTickets.full)元启用，$!serial
+                                                            #end
+                                                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/red_pack/help_triangle.png" class="help_triangle">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="Increase_rule_li"><span>$!date.formatYYYYMMDD($!initTickets.useTimeStart)</span>至<span>$!date.formatYYYYMMDD($!initTickets.useTimeEnd)</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        #end
+                    #else
+                        <!-- TODO 未使用红包无数据的情况 -->
+                        <div class="null_redpack">
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/red_pack/null_increase.png" class=""/>
+                            <p>暂无可用加息券</p>
+                        </div>
+                    #end
+                </div>
+                #if($!initTicketTotalPages > 1)
+                    <div class="fenye">
+                        <div class="fenye_wrap">
+                            #set($nextPage = $initTicketPageNum + 1)
+                            #set($nextSecondPage = $initTicketPageNum + 2)
+                            #set($prePage = $initTicketPageNum - 1)
+                            #set($preSecondPage = $initTicketPageNum - 2)
+                            #set($totalPage = $initTicketTotalPages)
+
+                            <a href="javascript:void(0)" onclick="prePage(1, 'INIT','INTEREST_TICKET')" class="fy_l">首页</a>
+                            <a href="javascript:void(0)" onclick="prePage($prePage, 'INIT','INTEREST_TICKET')" class="fy_ll"></a>
+                            #if($!prePage > 0)
+                                #if($!preSecondPage > 0 && $!nextPage > $totalPage)
+                                    <a href="javascript:void(0)" onclick="prePage($preSecondPage, 'INIT','INTEREST_TICKET')" class="fy_c">$!preSecondPage</a>
+                                #end
+                                <a href="javascript:void(0)" onclick="prePage($prePage, 'INIT','INTEREST_TICKET')" class="fy_c">$!prePage</a>
+                                <a href="javascript:void(0)" class="fy_c fy_atpage">$!initTicketPageNum</a>
+                                #if($!nextPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextPage, 'INIT','INTEREST_TICKET')" class="fy_c">$!nextPage</a>
+                                #end
+                            #else
+                                <a href="javascript:void(0)" class="fy_c fy_atpage">$!initTicketPageNum</a>
+                                #if($!nextPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextPage, 'INIT','INTEREST_TICKET')" class="fy_c">$!nextPage</a>
+                                #end
+                                #if($!nextSecondPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextSecondPage, 'INIT','INTEREST_TICKET')" class="fy_c">$!nextSecondPage</a>
+                                #end
+                            #end
+                            <a href="javascript:void(0)" onclick="nextPage($nextPage, 'INIT','INTEREST_TICKET')" class="fy_rr"></a>
+                            <a href="javascript:void(0)" onclick="nextPage($totalPage, 'INIT','INTEREST_TICKET')" class="fy_r">尾页</a>
+                        </div>
+                    </div>
+                #end
+            </div>
+
+            <div class="tickets_list" id="increase_used">#*已使用加息券*#
+                <div class="row clearfix ">
+                    #if($!usedTicketResult.dataList.size() > 0)
+                        #foreach($usedTickets in $!usedTicketResult.dataList)
+                            <div class="col-6 IncreasePacket">
+                                <div class="Increase_card">
+                                    <div class="Increase_card_top text_right">
+                                        <p class="Increase_card_num"><strong>加息$!money.format($!usedTickets.rate)%</strong></p>
+                                        <div class="gap_wrap gap_wrap_left"><span class="tickets_card_gap"></span></div>
+                                        <div class="gap_wrap gap_wrap_right"><span class="tickets_card_gap"></span></div>
+                                    </div>
+                                    <div class="Increase_card_bottom">
+                                        <h5 class="text_left">$!usedTickets.serialName</h5>
+                                        <ul class="Increase_rule clearfix text_left">
+                                            <li class="Increase_rule_li">
+                                                <div style="font-size: 14px">
+                                                    $!usedTickets.productName
+                                                </div>
+                                            </li>
+                                            <li class="Increase_rule_li">使用时间：$!date.format($!usedTickets.useTime)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        #end
+                        #if($!usedTicketTotalPages == 1)
+                            <p class="packet_tips">仅显示最近<i class="color_font">90天内</i>的加息券</p>
+                        #end
+                    #else
+                        <!-- TODO 未使用红包无数据的情况 -->
+                        <div class="null_redpack">
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/red_pack/increase_90.png" class=""/>
+                            <p class="packet_tips">仅显示最近<i class="color_font">90天内</i>的加息券</p>
+                        </div>
+                    #end
+                </div>
+                #if($!usedTicketTotalPages > 1)
+                    <div class="fenye">
+                        <div class="fenye_wrap">
+                            #set($nextPage = $usedTicketPageNum + 1)
+                            #set($nextSecondPage = $usedTicketPageNum + 2)
+                            #set($prePage = $usedTicketPageNum - 1)
+                            #set($preSecondPage = $usedTicketPageNum - 2)
+                            #set($totalPage = $usedTicketTotalPages)
+
+                            <a href="javascript:void(0)" onclick="prePage(1, 'USED','INTEREST_TICKET')" class="fy_l">首页</a>
+                            <a href="javascript:void(0)" onclick="prePage($prePage, 'USED','INTEREST_TICKET')" class="fy_ll"></a>
+                            #if($!prePage > 0)
+                                #if($!preSecondPage > 0 && $!nextPage > $totalPage)
+                                    <a href="javascript:void(0)" onclick="prePage($preSecondPage, 'USED','INTEREST_TICKET')" class="fy_c">$!preSecondPage</a>
+                                #end
+                                <a href="javascript:void(0)" onclick="prePage($prePage, 'USED','INTEREST_TICKET')" class="fy_c">$!prePage</a>
+                                <a href="javascript:void(0)" class="fy_c fy_atpage">$!usedPageNum</a>
+                                #if($!nextPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextPage, 'USED','INTEREST_TICKET')" class="fy_c">$!nextPage</a>
+                                #end
+                            #else
+                                <a href="javascript:void(0)" class="fy_c fy_atpage">$!usedPageNum</a>
+                                #if($!nextPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextPage, 'USED','INTEREST_TICKET')" class="fy_c">$!nextPage</a>
+                                #end
+                                #if($!nextSecondPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextSecondPage, 'USED','INTEREST_TICKET')" class="fy_c">$!nextSecondPage</a>
+                                #end
+                            #end
+                            <a href="javascript:void(0)" onclick="nextPage($nextPage, 'USED','INTEREST_TICKET')" class="fy_rr"></a>
+                            <a href="javascript:void(0)" onclick="nextPage($totalPage, 'USED','INTEREST_TICKET')" class="fy_r">尾页</a>
+                        </div>
+                    </div>
+                #end
+            </div>
+
+            <div class="tickets_list" id="increase_over">#*已过期加息券*#
+                <div class="row clearfix ">
+                    #if($!overTicketResult.dataList.size() > 0)
+                        #foreach($!overTickets in $!overTicketResult.dataList)
+                            <div class="col-6 IncreasePacket">
+                                <div class="Increase_card">
+                                    <div class="Increase_card_top text_right">
+                                        <p class="Increase_card_num"><strong>加息$!money.format($!overTickets.rate)%</strong></p>
+                                        <div class="gap_wrap gap_wrap_left"><span class="tickets_card_gap"></span></div>
+                                        <div class="gap_wrap gap_wrap_right"><span class="tickets_card_gap"></span></div>
+                                    </div>
+                                    <div class="Increase_card_bottom">
+                                        <h5 class="text_left">$!overTickets.serialName</h5>
+                                        <ul class="Increase_rule clearfix text_left">
+                                            <li class="Increase_rule_li">
+                                                <div style="font-size: 14px">
+                                                    限$!overTickets.termLimit天产品使用，单笔加入...
+                                                    <div class="Increase_mark">
+                                                        ?
+                                                        <div class="Increase_help">
+                                                            #set($productLimitArr = $overTickets.productLimit.split(','))
+                                                            #set($forNum = 0)
+                                                            #set($serial="")
+                                                            #if($productLimitArr.size()==4)
+                                                                #set($serial='全部系列')
+                                                            #else
+                                                                #foreach($productName in $productLimitArr)
+                                                                    #if($productName == 'BIGANGWAN_SERIAL')
+                                                                        #set($serial=$!serial + '港湾系列')
+                                                                    #elseif($productName == 'YONGJIN_SERIAL')
+                                                                        #set($serial=$!serial + '涌金系列')
+                                                                    #elseif($productName == 'KUAHONG_SERIAL')
+                                                                        #set($serial=$!serial + '跨虹系列')
+                                                                    #elseif($productName == 'BAOXIN_SERIAL')
+                                                                        #set($serial=$!serial + '保信系列')
+                                                                    #end
+                                                                    #set($forNum = $forNum + 1)
+                                                                    #if($forNum < $productLimitArr.size())
+                                                                        #set($serial=$!serial + ',')
+                                                                    #end
+                                                                #end
+                                                            #end
+                                                            #set($serial=$!serial + '产品适用。加息收益将会在加入的产品到期后以奖励金的形式发放。')
+                                                            #if($money.subtract("$!overTickets.full", "10000") >= 0)
+                                                                限$!{overTickets.termLimit}天产品使用，单笔加入满$!number.format("0.00", $money.divide("$!overTickets.full", "10000"))万元启用，$!serial
+                                                            #else
+                                                                限$!{overTickets.termLimit}天产品使用，单笔加入满$!number.format("0.00", $!overTickets.full)元启用，$!serial
+                                                            #end
+                                                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/red_pack/help_triangle.png" class="help_triangle">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="Increase_rule_li"><span>$!date.formatYYYYMMDD($!overTickets.useTimeStart)</span>至<span>$!date.formatYYYYMMDD($!overTickets.useTimeEnd)</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        #end
+                        #if($!overTicketTotalPages == 1)
+                            <p class="packet_tips">仅显示最近<i class="color_font">90天内</i>的加息券</p>
+                        #end
+                    #else
+                        <!-- TODO 未使用红包无数据的情况 -->
+                        <div class="null_redpack">
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/red_pack/increase_90.png" class=""/>
+                            <p class="packet_tips">仅显示最近<i class="color_font">90天内</i>的加息券</p>
+                        </div>
+                    #end
+                </div>
+                #if($!overTicketTotalPages > 1)
+                    <div class="fenye">
+                        <div class="fenye_wrap">
+                            #set($nextPage = $overTicketPageNum + 1)
+                            #set($nextSecondPage = $overTicketPageNum + 2)
+                            #set($prePage = $overTicketPageNum - 1)
+                            #set($preSecondPage = $overTicketPageNum - 2)
+                            #set($totalPage = $overTicketTotalPages)
+
+                            <a href="javascript:void(0)" onclick="prePage(1, 'OVER','INTEREST_TICKET')" class="fy_l">首页</a>
+                            <a href="javascript:void(0)" onclick="prePage($prePage, 'OVER','INTEREST_TICKET')" class="fy_ll"></a>
+                            #if($!prePage > 0)
+                                #if($!preSecondPage > 0 && $!nextPage > $totalPage)
+                                    <a href="javascript:void(0)" onclick="prePage($preSecondPage, 'OVER','INTEREST_TICKET')" class="fy_c">$!preSecondPage</a>
+                                #end
+                                <a href="javascript:void(0)" onclick="prePage($prePage, 'OVER','INTEREST_TICKET')" class="fy_c">$!prePage</a>
+                                <a href="javascript:void(0)" class="fy_c fy_atpage">$!overPageNum</a>
+                                #if($!nextPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextPage, 'OVER','INTEREST_TICKET')" class="fy_c">$!nextPage</a>
+                                #end
+                            #else
+                                <a href="javascript:void(0)" class="fy_c fy_atpage">$!overPageNum</a>
+                                #if($!nextPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextPage, 'OVER','INTEREST_TICKET')" class="fy_c">$!nextPage</a>
+                                #end
+                                #if($!nextSecondPage <= $totalPage)
+                                    <a href="javascript:void(0)" onclick="nextPage($nextSecondPage, 'OVER','INTEREST_TICKET')" class="fy_c">$!nextSecondPage</a>
+                                #end
+                            #end
+                            <a href="javascript:void(0)" onclick="nextPage($nextPage, 'OVER','INTEREST_TICKET')" class="fy_rr"></a>
+                            <a href="javascript:void(0)" onclick="nextPage($totalPage, 'OVER','INTEREST_TICKET')" class="fy_r">尾页</a>
+                        </div>
+                    </div>
+                #end
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+#LoadGenJS("/resources/gen2.0/scripts/red_pack/red_pack")

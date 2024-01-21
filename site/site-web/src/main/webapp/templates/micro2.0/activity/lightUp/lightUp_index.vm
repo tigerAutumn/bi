@@ -1,0 +1,131 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadCSS("resources/micro2.0/styles/activity/lightUp/light")
+#LoadJS("resources/micro2.0/scripts/activity/six")
+#LoadJS("resources/micro2.0/scripts/activity/lightUp/light")
+#LoadJS("resources/micro2.0/scripts/activity/lightUp/jquery-1.11.3.min")
+
+#WeChatShare()
+#Head("end")
+
+<body id="body">
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<input type="hidden" id="num" value="$!num"/>
+<input type="hidden" id="userId" value="$!userId"/>
+<input type="hidden" id="isStart" value="$!isStart">
+
+<div class="banner">
+    <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lightUp/banner.jpg" class="banner_img" />
+</div>
+<div class="light_time">活动时间：$!{startTime}-$!{endTime}</div>
+<div class="light_icon">
+
+    #if($!isStart == "end")
+        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lightUp/icon2.jpg" class="light_img" />
+    #elseif($!isStart == "not_start")
+        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lightUp/icon1.jpg" class="light_img" />
+    #else
+        #if($!isLightUp == "not_light_up")
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lightUp/icon1.jpg" class="light_img" />
+        #else
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lightUp/icon2.jpg" class="light_img" />
+        #end
+    #end
+
+    <div class="light_btn">
+        #if($!isStart == "start")
+            <!-- 开始 -->
+            #if($!isLightUp == "not_light_up")<!-- 未点亮 -->
+                <a id="light_up_id" class="light_btn_child2 light_start" href="javascript:;">点亮拿红包</a>
+            #else<!-- 已点亮 -->
+                <a class="light_btn_child1" href="javascript:;">您已参与</a>
+            #end
+        #elseif($!isStart == "not_start")
+            <!-- 未开始 -->
+            <a class="light_btn_child1" href="javascript:;">活动未开始</a>
+        #else
+            <!-- 结束 -->
+            <a class="light_btn_child1" href="javascript:;">活动已结束</a>
+        #end
+    </div>
+    <div class="light_nunmer">目前已有<span class="light_number_color">#if($!isStart == "not_start")0#else $!{num} #end</span>人点亮</div>
+</div>
+<div class="light_prompt">
+    <div class="light_box light_title"><img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lightUp/light.png" class="light_titleimg" />点亮小秘诀</div>
+    <div class="light_box">您可以分享活动（朋友圈/好友），点亮人数越多</div>
+    <div class="light_box">红包金额更大哦~</div>
+</div>
+<div class="light_content">
+    <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lightUp/title1.png" />
+    <div class="light_bar">
+        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lightUp/bar.png" class="light_bar_img" />
+        <div class="light_bar_before light_bar1">
+            <div class="light_bar_money">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lightUp/red.png" class="light_red" />
+                <p>可瓜分</p>
+                <p>5000元</p>
+            </div>
+            <div class="light_bar_people">500～1000人</div>
+        </div>
+        <div class="light_bar_before light_bar2">
+            <div class="light_bar_money">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lightUp/red.png" class="light_red" />
+                <p>可瓜分</p>
+                <p>3万元</p>
+            </div>
+            <div class="light_bar_people">1001～2000人</div>
+        </div>
+        <div class="light_bar_before light_bar3">
+            <div class="light_bar_money">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lightUp/red.png" class="light_red" />
+                <p>可瓜分</p>
+                <p>15万元</p>
+            </div>
+            <div class="light_bar_people">2001～5000人</div>
+        </div>
+        <div class="light_bar_before light_bar4">
+            <div class="light_bar_money">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lightUp/red.png" class="light_red" />
+                <p>可瓜分</p>
+                <p>50万元</p>
+            </div>
+            <div class="light_bar_people">5001～10000人</div>
+        </div>
+        <div class="light_bar_before light_bar5">
+            <div class="light_bar_money">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lightUp/red.png" class="light_red" />
+                <p>可瓜分</p>
+                <p>150万元</p>
+            </div>
+            <div class="light_bar_people">10001以上</div>
+        </div>
+    </div>
+</div>
+<div class="rule">
+    <div class="light_rule">
+        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lightUp/title2.png" />
+        <div class="light_rule_txt">
+            <div class="rule_content">1、活动时间：$!{startTime}-$!{endTime}；</div>
+            <div class="rule_content">2、同一手机号用户仅有一次点亮地图机会；</div>
+            <div class="rule_content">3、活动期间用户可进行活动分享，点亮图标的人数越多，可瓜分红包金额越高；</div>
+            <div class="rule_content">4、实际瓜分红包金额，将于活动结束后1个工作日内进行公示，详情请关注微信公众号-币港湾精选（bigangwanjingxuan）；</div>
+            <div class="rule_content">5、瓜分红包将于活动结束后的5个工作日内发放至用户账户内，可通过【我的账户】-【我的红包】查看；</div>
+            <div class="rule_content">6、本次活动最终解释权归杭州币港湾科技有限公司所有。</div>
+        </div>
+    </div>
+</div>
+<!--弹窗-->
+<div class="dialog_flex">
+    <div class="alert_info">
+        <i class="close"></i>
+        <div class="alert_content">已获奖励资格请等待瓜分红包，您可以分享活动（朋友圈/好友），点亮人数越多红包金额更大哦～</div>
+        <div class="alert_btn">
+            <a class="alert_btna" href="javascript:;">知道了</a>
+        </div>
+    </div>
+</div>
+</body>
+
+#Html("end")

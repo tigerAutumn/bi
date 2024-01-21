@@ -1,0 +1,193 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadCSS("resources/micro2.0/styles/activity/lantern2017/lantern")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/activity/six")
+#LoadJS("resources/micro2.0/scripts/activity/lantern2017/lantern")
+#WeChatShare()
+#Head("end")
+
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<input type="hidden" id="page" name="page" value="1" />
+<input type="hidden" id="totalPages" name="totalPages" value="$!res.totalPages" />
+
+<li class="template" style="display: none;">
+    <dl class="left_dl">
+        <dt><img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lantern2017/index/07.png" alt=""></dt>
+        <dd>$!{user.lanternNum}号</dd>
+    </dl>
+    <dl class="center_dl">
+        <dt>$!date.formatYYYYMMDD($!date.parseDateTime(${user.createTime}))</dt>
+        <dd>$!date.formatDateTime($!date.parseDateTime(${user.createTime}), "HH:mm:ss")</dd>
+    </dl>
+    <dl class="right_dl">
+        <dt>$!{user.userName}</dt>
+        <dd>$!{user.mobile}</dd>
+    </dl>
+</li>
+
+<body class="bg_cor">
+<div class="header_wrap">
+    <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lantern2017/index/01.jpg" alt="" class="header_img">
+    <div class="lantern_time">2017.2.9-2.13</div>
+</div>
+<div class="main_bg">
+    <div class="mainnumbenr">
+        累计已有
+        #if($!shakeIsStart == "not_start")
+            <span class="num">0</span>
+        #else
+            <span class="num">$!{shakeNum}</span>
+        #end
+        人摇过
+    </div>
+    <div class="money_wrap">
+        抢走
+        <div class="inline_wrap">
+            <ul class="number_money">
+                #if($!shakeIsStart == "not_start")
+                    <li class="money_list">0</li>
+                #else
+                    #foreach($a in ${amount})
+                        <li class="money_list">$!{a}</li>
+                    #end
+                #end
+            </ul>
+        </div>
+        元
+    </div>
+    <div class="btn_ru go_shake">
+        点击进入
+        <img class="ru_Img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/lantern2017/index/02.png" alt="">
+    </div>
+</div>
+
+<div class="main_two_bg">
+    <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lantern2017/index/03.png" alt="" class="two_img">
+    <div class="main_bg lanter_bg">
+        <div class="two_margin_wrap">
+            <div class="two_font">活动期间投资币港湾平台所有理财产品（赞分期系列、港湾系列），我们将根据您的投资时间先后进行灯笼排序，灯笼尾号逢 8 且投资金额≥ 5000 元，即可获得 5 元奖励金。全民“挂灯笼”，幸运大比拼。</div>
+
+            <div class="two_lanter">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lantern2017/index/04.png" alt="">
+                <div class="lanter_container">
+                    <div class="left_lanter">
+                        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lantern2017/index/05.png" alt="">
+                    </div>
+                    <div class="right_lanter">
+                        <div class="right_title">
+                            当前“挂灯笼”总数
+                        </div>
+                        <div class="inline_wrap twolanter_inline">
+                            <ul class="number_money">
+                                #if($!buyIsStart == "not_start")
+                                    <li class="money_list">0</li>
+                                #else
+                                    #foreach($num in ${investNum})
+                                        <li class="money_list">$!{num}</li>
+                                    #end
+                                #end
+                            </ul>
+                        </div>
+                        <div class="right_title">
+                            下一个中奖“灯笼”
+                        </div>
+                        <div class="inline_wrap twolanter_inline">
+                            <ul class="number_money">
+                                #if($!buyIsStart == "not_start")
+                                    <li class="money_list">8</li>
+                                #else
+                                    #foreach($num in ${nextLuckInvestNum})
+                                        <li class="money_list">$!{num}</li>
+                                    #end
+                                #end
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="btn_ru two_lanter_btn go_buy">
+                        立即投资
+                    </div>
+                    <div class="huojiang_guize">
+                        <span class="bottom_linear">获奖用户 / 活动规则</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="footer_fonts">本次活动的最终解释权归币港湾所有</div>
+    <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lantern2017/index/06.png" alt="" class="footImg">
+</div>
+<div class="dialog_notice alert_hide">
+    <div class="close_wrap">
+        <div class="dialog_kaun">
+            <ul class="dialog_tab_header">
+                <li class="tab_li tab_active">获奖用户</li>
+                <li class="tab_li">活动规则</li>
+            </ul>
+            <div class="dialog_contain">
+                <div class="contaon_tab contain_one">
+                    #if($!buyIsStart == "not_start")
+                        <div class="nonejiang">虚位以待</div>
+                    #else
+                        #if($!res.list.size() == 0)
+                            <!-- 无获奖用户 -->
+                            <div class="nonejiang">虚位以待</div>
+                        #else
+                            <ul class="jianping_ul">
+                                #foreach($user in ${res.list})
+                                    <li class="jianping_li">
+                                        <dl class="left_dl">
+                                            <dt><img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lantern2017/index/07.png" alt=""></dt>
+                                            <dd>$!{user.lanternNum}号</dd>
+                                        </dl>
+                                        <dl class="center_dl">
+                                            <dt>$!date.formatYYYYMMDD($!date.parseDateTime(${user.createTime}))</dt>
+                                            <dd>$!date.formatDateTime($!date.parseDateTime(${user.createTime}), "HH:mm:ss")</dd>
+                                        </dl>
+                                        <dl class="right_dl">
+                                            <dt>$!{user.userName}</dt>
+                                            <dd>$!{user.mobile}</dd>
+                                        </dl>
+                                    </li>
+                                #end
+                                <span id="showmore" style="display: none"></span>
+                            </ul>
+                        #end
+                    #end
+                </div>
+                <div class="contaon_tab contain_two">
+                    <ul class="game_info">
+                        <li class="li_info">1.活动时间：2月9日-2月13日；</li>
+                        <li class="li_info">2.活动参与对象：币港湾理财所有用户；</li>
+                        <li class="li_info">3.若灯笼尾号逢8的用户投资金额小于5000元，则不具备奖励金领取资格；</li>
+                        <li class="li_info">4.获奖的用户，您可在【我的资产】-【我的奖励】中查看。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/lantern2017/index/close.png" alt="" class="close">
+    </div>
+</div>
+
+<div class="dialog_notice2 alert_hide">
+    <div class="alert_info">
+        <i class="close2">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/assets/bankcard/close.png" alt="">
+        </i>
+        <div class="alert_title">温馨提示</div>
+        <ul class="alert_ul">
+            <li class="alert_list">
+                活动需要登录后，才能参加
+            </li>
+        </ul>
+        <div class="btn_group">
+            <div class="top_line btn_bgNO close_btn">立即登录</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinting.business.dao.BsEntrustLoanViewMapper">
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsEntrustLoanView">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="property_symbol" jdbcType="VARCHAR" property="propertySymbol" />
+    <result column="date" jdbcType="TIMESTAMP" property="date" />
+    <result column="today_invest_7" jdbcType="DOUBLE" property="todayInvest7" />
+    <result column="today_loan_7" jdbcType="DOUBLE" property="todayLoan7" />
+    <result column="today_invest_30" jdbcType="DOUBLE" property="todayInvest30" />
+    <result column="today_loan_30" jdbcType="DOUBLE" property="todayLoan30" />
+    <result column="today_invest_60" jdbcType="DOUBLE" property="todayInvest60" />
+    <result column="today_loan_60" jdbcType="DOUBLE" property="todayLoan60" />
+    <result column="today_invest_90" jdbcType="DOUBLE" property="todayInvest90" />
+    <result column="today_loan_90" jdbcType="DOUBLE" property="todayLoan90" />
+    <result column="today_invest_120" jdbcType="DOUBLE" property="todayInvest120" />
+    <result column="today_loan_120" jdbcType="DOUBLE" property="todayLoan120" />
+    <result column="today_invest_150" jdbcType="DOUBLE" property="todayInvest150" />
+    <result column="today_loan_150" jdbcType="DOUBLE" property="todayLoan150" />
+    <result column="today_invest_180" jdbcType="DOUBLE" property="todayInvest180" />
+    <result column="today_loan_180" jdbcType="DOUBLE" property="todayLoan180" />
+    <result column="today_invest_270" jdbcType="DOUBLE" property="todayInvest270" />
+    <result column="today_loan_270" jdbcType="DOUBLE" property="todayLoan270" />
+    <result column="today_invest_365" jdbcType="DOUBLE" property="todayInvest365" />
+    <result column="today_loan_365" jdbcType="DOUBLE" property="todayLoan365" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, property_symbol, date, today_invest_7, today_loan_7, today_invest_30, today_loan_30, 
+    today_invest_60, today_loan_60, today_invest_90, today_loan_90, today_invest_120, 
+    today_loan_120, today_invest_150, today_loan_150, today_invest_180, today_loan_180, 
+    today_invest_270, today_loan_270, today_invest_365, today_loan_365, create_time
+  </sql>
+  <select id="selectByExample" parameterType="com.pinting.business.model.BsEntrustLoanViewExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_entrust_loan_view
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bs_entrust_loan_view
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bs_entrust_loan_view
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsEntrustLoanViewExample">
+    delete from bs_entrust_loan_view
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsEntrustLoanView">
+    insert into bs_entrust_loan_view (id, property_symbol, date, 
+      today_invest_7, today_loan_7, today_invest_30, 
+      today_loan_30, today_invest_60, today_loan_60, 
+      today_invest_90, today_loan_90, today_invest_120, 
+      today_loan_120, today_invest_150, today_loan_150, 
+      today_invest_180, today_loan_180, today_invest_270, 
+      today_loan_270, today_invest_365, today_loan_365, 
+      create_time)
+    values (#{id,jdbcType=INTEGER}, #{propertySymbol,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP}, 
+      #{todayInvest7,jdbcType=DOUBLE}, #{todayLoan7,jdbcType=DOUBLE}, #{todayInvest30,jdbcType=DOUBLE}, 
+      #{todayLoan30,jdbcType=DOUBLE}, #{todayInvest60,jdbcType=DOUBLE}, #{todayLoan60,jdbcType=DOUBLE}, 
+      #{todayInvest90,jdbcType=DOUBLE}, #{todayLoan90,jdbcType=DOUBLE}, #{todayInvest120,jdbcType=DOUBLE}, 
+      #{todayLoan120,jdbcType=DOUBLE}, #{todayInvest150,jdbcType=DOUBLE}, #{todayLoan150,jdbcType=DOUBLE}, 
+      #{todayInvest180,jdbcType=DOUBLE}, #{todayLoan180,jdbcType=DOUBLE}, #{todayInvest270,jdbcType=DOUBLE}, 
+      #{todayLoan270,jdbcType=DOUBLE}, #{todayInvest365,jdbcType=DOUBLE}, #{todayLoan365,jdbcType=DOUBLE}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsEntrustLoanView">
+    insert into bs_entrust_loan_view
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="propertySymbol != null">
+        property_symbol,
+      </if>
+      <if test="date != null">
+        date,
+      </if>
+      <if test="todayInvest7 != null">
+        today_invest_7,
+      </if>
+      <if test="todayLoan7 != null">
+        today_loan_7,
+      </if>
+      <if test="todayInvest30 != null">
+        today_invest_30,
+      </if>
+      <if test="todayLoan30 != null">
+        today_loan_30,
+      </if>
+      <if test="todayInvest60 != null">
+        today_invest_60,
+      </if>
+      <if test="todayLoan60 != null">
+        today_loan_60,
+      </if>
+      <if test="todayInvest90 != null">
+        today_invest_90,
+      </if>
+      <if test="todayLoan90 != null">
+        today_loan_90,
+      </if>
+      <if test="todayInvest120 != null">
+        today_invest_120,
+      </if>
+      <if test="todayLoan120 != null">
+        today_loan_120,
+      </if>
+      <if test="todayInvest150 != null">
+        today_invest_150,
+      </if>
+      <if test="todayLoan150 != null">
+        today_loan_150,
+      </if>
+      <if test="todayInvest180 != null">
+        today_invest_180,
+      </if>
+      <if test="todayLoan180 != null">
+        today_loan_180,
+      </if>
+      <if test="todayInvest270 != null">
+        today_invest_270,
+      </if>
+      <if test="todayLoan270 != null">
+        today_loan_270,
+      </if>
+      <if test="todayInvest365 != null">
+        today_invest_365,
+      </if>
+      <if test="todayLoan365 != null">
+        today_loan_365,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="propertySymbol != null">
+        #{propertySymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="todayInvest7 != null">
+        #{todayInvest7,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan7 != null">
+        #{todayLoan7,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest30 != null">
+        #{todayInvest30,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan30 != null">
+        #{todayLoan30,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest60 != null">
+        #{todayInvest60,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan60 != null">
+        #{todayLoan60,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest90 != null">
+        #{todayInvest90,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan90 != null">
+        #{todayLoan90,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest120 != null">
+        #{todayInvest120,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan120 != null">
+        #{todayLoan120,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest150 != null">
+        #{todayInvest150,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan150 != null">
+        #{todayLoan150,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest180 != null">
+        #{todayInvest180,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan180 != null">
+        #{todayLoan180,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest270 != null">
+        #{todayInvest270,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan270 != null">
+        #{todayLoan270,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest365 != null">
+        #{todayInvest365,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan365 != null">
+        #{todayLoan365,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsEntrustLoanViewExample" resultType="java.lang.Long">
+    select count(*) from bs_entrust_loan_view
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update bs_entrust_loan_view
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.propertySymbol != null">
+        property_symbol = #{record.propertySymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="record.date != null">
+        date = #{record.date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.todayInvest7 != null">
+        today_invest_7 = #{record.todayInvest7,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayLoan7 != null">
+        today_loan_7 = #{record.todayLoan7,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayInvest30 != null">
+        today_invest_30 = #{record.todayInvest30,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayLoan30 != null">
+        today_loan_30 = #{record.todayLoan30,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayInvest60 != null">
+        today_invest_60 = #{record.todayInvest60,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayLoan60 != null">
+        today_loan_60 = #{record.todayLoan60,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayInvest90 != null">
+        today_invest_90 = #{record.todayInvest90,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayLoan90 != null">
+        today_loan_90 = #{record.todayLoan90,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayInvest120 != null">
+        today_invest_120 = #{record.todayInvest120,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayLoan120 != null">
+        today_loan_120 = #{record.todayLoan120,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayInvest150 != null">
+        today_invest_150 = #{record.todayInvest150,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayLoan150 != null">
+        today_loan_150 = #{record.todayLoan150,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayInvest180 != null">
+        today_invest_180 = #{record.todayInvest180,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayLoan180 != null">
+        today_loan_180 = #{record.todayLoan180,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayInvest270 != null">
+        today_invest_270 = #{record.todayInvest270,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayLoan270 != null">
+        today_loan_270 = #{record.todayLoan270,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayInvest365 != null">
+        today_invest_365 = #{record.todayInvest365,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayLoan365 != null">
+        today_loan_365 = #{record.todayLoan365,jdbcType=DOUBLE},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update bs_entrust_loan_view
+    set id = #{record.id,jdbcType=INTEGER},
+      property_symbol = #{record.propertySymbol,jdbcType=VARCHAR},
+      date = #{record.date,jdbcType=TIMESTAMP},
+      today_invest_7 = #{record.todayInvest7,jdbcType=DOUBLE},
+      today_loan_7 = #{record.todayLoan7,jdbcType=DOUBLE},
+      today_invest_30 = #{record.todayInvest30,jdbcType=DOUBLE},
+      today_loan_30 = #{record.todayLoan30,jdbcType=DOUBLE},
+      today_invest_60 = #{record.todayInvest60,jdbcType=DOUBLE},
+      today_loan_60 = #{record.todayLoan60,jdbcType=DOUBLE},
+      today_invest_90 = #{record.todayInvest90,jdbcType=DOUBLE},
+      today_loan_90 = #{record.todayLoan90,jdbcType=DOUBLE},
+      today_invest_120 = #{record.todayInvest120,jdbcType=DOUBLE},
+      today_loan_120 = #{record.todayLoan120,jdbcType=DOUBLE},
+      today_invest_150 = #{record.todayInvest150,jdbcType=DOUBLE},
+      today_loan_150 = #{record.todayLoan150,jdbcType=DOUBLE},
+      today_invest_180 = #{record.todayInvest180,jdbcType=DOUBLE},
+      today_loan_180 = #{record.todayLoan180,jdbcType=DOUBLE},
+      today_invest_270 = #{record.todayInvest270,jdbcType=DOUBLE},
+      today_loan_270 = #{record.todayLoan270,jdbcType=DOUBLE},
+      today_invest_365 = #{record.todayInvest365,jdbcType=DOUBLE},
+      today_loan_365 = #{record.todayLoan365,jdbcType=DOUBLE},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsEntrustLoanView">
+    update bs_entrust_loan_view
+    <set>
+      <if test="propertySymbol != null">
+        property_symbol = #{propertySymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        date = #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="todayInvest7 != null">
+        today_invest_7 = #{todayInvest7,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan7 != null">
+        today_loan_7 = #{todayLoan7,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest30 != null">
+        today_invest_30 = #{todayInvest30,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan30 != null">
+        today_loan_30 = #{todayLoan30,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest60 != null">
+        today_invest_60 = #{todayInvest60,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan60 != null">
+        today_loan_60 = #{todayLoan60,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest90 != null">
+        today_invest_90 = #{todayInvest90,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan90 != null">
+        today_loan_90 = #{todayLoan90,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest120 != null">
+        today_invest_120 = #{todayInvest120,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan120 != null">
+        today_loan_120 = #{todayLoan120,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest150 != null">
+        today_invest_150 = #{todayInvest150,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan150 != null">
+        today_loan_150 = #{todayLoan150,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest180 != null">
+        today_invest_180 = #{todayInvest180,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan180 != null">
+        today_loan_180 = #{todayLoan180,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest270 != null">
+        today_invest_270 = #{todayInvest270,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan270 != null">
+        today_loan_270 = #{todayLoan270,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest365 != null">
+        today_invest_365 = #{todayInvest365,jdbcType=DOUBLE},
+      </if>
+      <if test="todayLoan365 != null">
+        today_loan_365 = #{todayLoan365,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsEntrustLoanView">
+    update bs_entrust_loan_view
+    set property_symbol = #{propertySymbol,jdbcType=VARCHAR},
+      date = #{date,jdbcType=TIMESTAMP},
+      today_invest_7 = #{todayInvest7,jdbcType=DOUBLE},
+      today_loan_7 = #{todayLoan7,jdbcType=DOUBLE},
+      today_invest_30 = #{todayInvest30,jdbcType=DOUBLE},
+      today_loan_30 = #{todayLoan30,jdbcType=DOUBLE},
+      today_invest_60 = #{todayInvest60,jdbcType=DOUBLE},
+      today_loan_60 = #{todayLoan60,jdbcType=DOUBLE},
+      today_invest_90 = #{todayInvest90,jdbcType=DOUBLE},
+      today_loan_90 = #{todayLoan90,jdbcType=DOUBLE},
+      today_invest_120 = #{todayInvest120,jdbcType=DOUBLE},
+      today_loan_120 = #{todayLoan120,jdbcType=DOUBLE},
+      today_invest_150 = #{todayInvest150,jdbcType=DOUBLE},
+      today_loan_150 = #{todayLoan150,jdbcType=DOUBLE},
+      today_invest_180 = #{todayInvest180,jdbcType=DOUBLE},
+      today_loan_180 = #{todayLoan180,jdbcType=DOUBLE},
+      today_invest_270 = #{todayInvest270,jdbcType=DOUBLE},
+      today_loan_270 = #{todayLoan270,jdbcType=DOUBLE},
+      today_invest_365 = #{todayInvest365,jdbcType=DOUBLE},
+      today_loan_365 = #{todayLoan365,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="countList" resultType="java.lang.Integer" parameterType="map" >
+  select count(*)
+  	from bs_entrust_loan_view where date is not null
+	  <if test="propertySymbol != null and propertySymbol != ''">
+	  	and property_symbol = #{propertySymbol}
+	  </if>
+	<if test="startDate != null and startDate != ''">
+		and date >= DATE_FORMAT(#{startDate},'%Y-%m-%d')
+	</if>
+	<if test="endDate != null and endDate != ''">
+		and date &lt;= DATE_FORMAT(#{endDate},'%Y-%m-%d')
+	</if>
+  </select>
+
+   <select id="getList" resultMap="BaseResultMap" parameterType="map" >
+  select *
+  	from bs_entrust_loan_view where date is not null
+	  <if test="propertySymbol != null and propertySymbol != ''">
+	  	and property_symbol = #{propertySymbol}
+	  </if>
+	<if test="startDate != null and startDate != ''">
+		and date >= DATE_FORMAT(#{startDate},'%Y-%m-%d')
+	</if>
+	<if test="endDate != null and endDate != ''">
+		and date &lt;= DATE_FORMAT(#{endDate},'%Y-%m-%d')
+	</if>
+	 order by date desc
+	 LIMIT #{start}, #{numPerPage}
+  </select>
+
+  <select id="getSumList" resultMap="BaseResultMap" parameterType="map" >
+  select sum(today_invest_7) today_invest_7, sum(today_Loan_7) today_Loan_7,
+	sum(today_invest_30) today_invest_30, sum(today_Loan_30) today_Loan_30,
+	sum(today_invest_60) today_invest_60, sum(today_Loan_60) today_Loan_60,
+	sum(today_invest_90) today_invest_90, sum(today_Loan_90) today_Loan_90,
+	sum(today_invest_120) today_invest_120, sum(today_Loan_120) today_Loan_120,
+	sum(today_invest_150) today_invest_150, sum(today_Loan_150) today_Loan_150,
+	sum(today_invest_180) today_invest_180, sum(today_Loan_180) today_Loan_180,
+	sum(today_invest_270) today_invest_270, sum(today_Loan_270) today_Loan_270,
+	sum(today_invest_365) today_invest_365, sum(today_Loan_365) today_Loan_365
+  	from bs_entrust_loan_view where date is not null
+	  <if test="propertySymbol != null and propertySymbol != ''">
+	  	and property_symbol = #{propertySymbol}
+	  </if>
+	<if test="startDate != null and startDate != ''">
+		and date >= DATE_FORMAT(#{startDate},'%Y-%m-%d')
+	</if>
+	<if test="endDate != null and endDate != ''">
+		and date &lt;= DATE_FORMAT(#{endDate},'%Y-%m-%d')
+	</if>
+  </select>
+
+
+  
+</mapper>

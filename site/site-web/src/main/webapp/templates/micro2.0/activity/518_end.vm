@@ -1,0 +1,30 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/activity/scale")
+#WeChatShare()
+<style>
+body{height:auto;background:#ffffff;}
+.end,.home{;color:#333333; width:100%; text-align:center;line-height:normal;}
+.end{ font-size:60px; margin:300px 0px 0px;}
+.home{font-size:42px;}
+</style>
+#Head("end")
+<body>
+	<input type="hidden" value="$!env.getWebURL('')" id="APP_ROOT_PATH" />
+    <div class="end">抱歉！活动已结束。</div>
+	<div class="home"><span class="seconds">5</span>秒后转到币港湾首页</div>
+	<script >
+		var seconds = 5;
+		var t = setInterval(function(){
+			$('.seconds').text(--seconds);
+			if(seconds == 0) {
+				clearInterval(t);
+				location.href = $("#APP_ROOT_PATH").val() + '/micro2.0/index';
+			}
+		}, 1000);
+    </script>
+</body>
+#Html("end")

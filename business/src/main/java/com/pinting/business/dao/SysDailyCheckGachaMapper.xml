@@ -1,0 +1,914 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.SysDailyCheckGachaMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.SysDailyCheckGacha" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="check_date" property="checkDate" jdbcType="TIMESTAMP" />
+    <result column="channel" property="channel" jdbcType="VARCHAR" />
+    <result column="balance_withdraw_total_amt" property="balanceWithdrawTotalAmt" jdbcType="DOUBLE" />
+    <result column="balance_withdraw_succ_amt" property="balanceWithdrawSuccAmt" jdbcType="DOUBLE" />
+    <result column="balance_withdraw_fail_amt" property="balanceWithdrawFailAmt" jdbcType="DOUBLE" />
+    <result column="balance_withdraw_process_amt" property="balanceWithdrawProcessAmt" jdbcType="DOUBLE" />
+    <result column="balance_withdraw_total_count" property="balanceWithdrawTotalCount" jdbcType="INTEGER" />
+    <result column="balance_withdraw_succ_count" property="balanceWithdrawSuccCount" jdbcType="INTEGER" />
+    <result column="balance_withdraw_fail_count" property="balanceWithdrawFailCount" jdbcType="INTEGER" />
+    <result column="balance_withdraw_process_count" property="balanceWithdrawProcessCount" jdbcType="INTEGER" />
+    <result column="bonus_withdraw_total_amt" property="bonusWithdrawTotalAmt" jdbcType="DOUBLE" />
+    <result column="bonus_withdraw_succ_amt" property="bonusWithdrawSuccAmt" jdbcType="DOUBLE" />
+    <result column="bonus_withdraw_fail_amt" property="bonusWithdrawFailAmt" jdbcType="DOUBLE" />
+    <result column="bonus_withdraw_process_amt" property="bonusWithdrawProcessAmt" jdbcType="DOUBLE" />
+    <result column="bonus_withdraw_total_count" property="bonusWithdrawTotalCount" jdbcType="INTEGER" />
+    <result column="bonus_withdraw_succ_count" property="bonusWithdrawSuccCount" jdbcType="INTEGER" />
+    <result column="bonus_withdraw_fail_count" property="bonusWithdrawFailCount" jdbcType="INTEGER" />
+    <result column="bonus_withdraw_process_count" property="bonusWithdrawProcessCount" jdbcType="INTEGER" />
+    <result column="sys_revenue_amt" property="sysRevenueAmt" jdbcType="DOUBLE" />
+    <result column="sys_repeat_revenue_amt" property="sysRepeatRevenueAmt" jdbcType="DOUBLE" />
+    <result column="baofoo_2_hfbank_total_amt" property="baofoo2HfbankTotalAmt" jdbcType="DOUBLE" />
+    <result column="baofoo_2_hfbank_succ_amt" property="baofoo2HfbankSuccAmt" jdbcType="DOUBLE" />
+    <result column="baofoo_2_hfbank_fail_amt" property="baofoo2HfbankFailAmt" jdbcType="DOUBLE" />
+    <result column="baofoo_2_hfbank_process_amt" property="baofoo2HfbankProcessAmt" jdbcType="DOUBLE" />
+    <result column="baofoo_2_hfbank_total_count" property="baofoo2HfbankTotalCount" jdbcType="INTEGER" />
+    <result column="baofoo_2_hfbank_succ_count" property="baofoo2HfbankSuccCount" jdbcType="INTEGER" />
+    <result column="baofoo_2_hfbank_fail_count" property="baofoo2HfbankFailCount" jdbcType="INTEGER" />
+    <result column="baofoo_2_hfbank_process_count" property="baofoo2HfbankProcessCount" jdbcType="INTEGER" />
+    <result column="pre_deposition_back_amt" property="preDepositionBackAmt" jdbcType="DOUBLE" />
+    <result column="deposition_repay_total_amt" property="depositionRepayTotalAmt" jdbcType="DOUBLE" />
+    <result column="deposition_repay_succ_amt" property="depositionRepaySuccAmt" jdbcType="DOUBLE" />
+    <result column="deposition_repay_fail_amt" property="depositionRepayFailAmt" jdbcType="DOUBLE" />
+    <result column="deposition_repay_process_amt" property="depositionRepayProcessAmt" jdbcType="DOUBLE" />
+    <result column="deposition_repay_total_count" property="depositionRepayTotalCount" jdbcType="INTEGER" />
+    <result column="deposition_repay_succ_count" property="depositionRepaySuccCount" jdbcType="INTEGER" />
+    <result column="deposition_repay_fail_count" property="depositionRepayFailCount" jdbcType="INTEGER" />
+    <result column="deposition_repay_process_count" property="depositionRepayProcessCount" jdbcType="INTEGER" />
+    <result column="deposition_repay_repeat_amt" property="depositionRepayRepeatAmt" jdbcType="DOUBLE" />
+    <result column="deposition_repay_repeat_count" property="depositionRepayRepeatCount" jdbcType="INTEGER" />
+    <result column="deposition_compensate_amt" property="depositionCompensateAmt" jdbcType="DOUBLE" />
+    <result column="depostion_compensate_succ_amt" property="depostionCompensateSuccAmt" jdbcType="DOUBLE" />
+    <result column="deposition_compensate_repeat_amt" property="depositionCompensateRepeatAmt" jdbcType="DOUBLE" />
+    <result column="deposition_compensate_fail_amt" property="depositionCompensateFailAmt" jdbcType="DOUBLE" />
+    <result column="deposition_compensate_count" property="depositionCompensateCount" jdbcType="INTEGER" />
+    <result column="deposition_compensate_succ_count" property="depositionCompensateSuccCount" jdbcType="INTEGER" />
+    <result column="deposition_compensate_repeat_count" property="depositionCompensateRepeatCount" jdbcType="INTEGER" />
+    <result column="deposition_compensate_fail_count" property="depositionCompensateFailCount" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, check_date, channel, balance_withdraw_total_amt, balance_withdraw_succ_amt, balance_withdraw_fail_amt, 
+    balance_withdraw_process_amt, balance_withdraw_total_count, balance_withdraw_succ_count, 
+    balance_withdraw_fail_count, balance_withdraw_process_count, bonus_withdraw_total_amt, 
+    bonus_withdraw_succ_amt, bonus_withdraw_fail_amt, bonus_withdraw_process_amt, bonus_withdraw_total_count, 
+    bonus_withdraw_succ_count, bonus_withdraw_fail_count, bonus_withdraw_process_count, 
+    sys_revenue_amt, sys_repeat_revenue_amt, baofoo_2_hfbank_total_amt, baofoo_2_hfbank_succ_amt, 
+    baofoo_2_hfbank_fail_amt, baofoo_2_hfbank_process_amt, baofoo_2_hfbank_total_count, 
+    baofoo_2_hfbank_succ_count, baofoo_2_hfbank_fail_count, baofoo_2_hfbank_process_count, 
+    pre_deposition_back_amt, deposition_repay_total_amt, deposition_repay_succ_amt, deposition_repay_fail_amt, 
+    deposition_repay_process_amt, deposition_repay_total_count, deposition_repay_succ_count, 
+    deposition_repay_fail_count, deposition_repay_process_count, deposition_repay_repeat_amt, 
+    deposition_repay_repeat_count, deposition_compensate_amt, depostion_compensate_succ_amt, 
+    deposition_compensate_repeat_amt, deposition_compensate_fail_amt, deposition_compensate_count, 
+    deposition_compensate_succ_count, deposition_compensate_repeat_count, deposition_compensate_fail_count
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.SysDailyCheckGachaExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from sys_daily_check_gacha
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_daily_check_gacha
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_daily_check_gacha
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.SysDailyCheckGachaExample" >
+    delete from sys_daily_check_gacha
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.SysDailyCheckGacha" >
+    insert into sys_daily_check_gacha (id, check_date, channel, 
+      balance_withdraw_total_amt, balance_withdraw_succ_amt, 
+      balance_withdraw_fail_amt, balance_withdraw_process_amt, 
+      balance_withdraw_total_count, balance_withdraw_succ_count, 
+      balance_withdraw_fail_count, balance_withdraw_process_count, 
+      bonus_withdraw_total_amt, bonus_withdraw_succ_amt, 
+      bonus_withdraw_fail_amt, bonus_withdraw_process_amt, 
+      bonus_withdraw_total_count, bonus_withdraw_succ_count, 
+      bonus_withdraw_fail_count, bonus_withdraw_process_count, 
+      sys_revenue_amt, sys_repeat_revenue_amt, baofoo_2_hfbank_total_amt, 
+      baofoo_2_hfbank_succ_amt, baofoo_2_hfbank_fail_amt, 
+      baofoo_2_hfbank_process_amt, baofoo_2_hfbank_total_count, 
+      baofoo_2_hfbank_succ_count, baofoo_2_hfbank_fail_count, 
+      baofoo_2_hfbank_process_count, pre_deposition_back_amt, 
+      deposition_repay_total_amt, deposition_repay_succ_amt, 
+      deposition_repay_fail_amt, deposition_repay_process_amt, 
+      deposition_repay_total_count, deposition_repay_succ_count, 
+      deposition_repay_fail_count, deposition_repay_process_count, 
+      deposition_repay_repeat_amt, deposition_repay_repeat_count, 
+      deposition_compensate_amt, depostion_compensate_succ_amt, 
+      deposition_compensate_repeat_amt, deposition_compensate_fail_amt, 
+      deposition_compensate_count, deposition_compensate_succ_count, 
+      deposition_compensate_repeat_count, deposition_compensate_fail_count
+      )
+    values (#{id,jdbcType=INTEGER}, #{checkDate,jdbcType=TIMESTAMP}, #{channel,jdbcType=VARCHAR}, 
+      #{balanceWithdrawTotalAmt,jdbcType=DOUBLE}, #{balanceWithdrawSuccAmt,jdbcType=DOUBLE}, 
+      #{balanceWithdrawFailAmt,jdbcType=DOUBLE}, #{balanceWithdrawProcessAmt,jdbcType=DOUBLE}, 
+      #{balanceWithdrawTotalCount,jdbcType=INTEGER}, #{balanceWithdrawSuccCount,jdbcType=INTEGER}, 
+      #{balanceWithdrawFailCount,jdbcType=INTEGER}, #{balanceWithdrawProcessCount,jdbcType=INTEGER}, 
+      #{bonusWithdrawTotalAmt,jdbcType=DOUBLE}, #{bonusWithdrawSuccAmt,jdbcType=DOUBLE}, 
+      #{bonusWithdrawFailAmt,jdbcType=DOUBLE}, #{bonusWithdrawProcessAmt,jdbcType=DOUBLE}, 
+      #{bonusWithdrawTotalCount,jdbcType=INTEGER}, #{bonusWithdrawSuccCount,jdbcType=INTEGER}, 
+      #{bonusWithdrawFailCount,jdbcType=INTEGER}, #{bonusWithdrawProcessCount,jdbcType=INTEGER}, 
+      #{sysRevenueAmt,jdbcType=DOUBLE}, #{sysRepeatRevenueAmt,jdbcType=DOUBLE}, #{baofoo2HfbankTotalAmt,jdbcType=DOUBLE}, 
+      #{baofoo2HfbankSuccAmt,jdbcType=DOUBLE}, #{baofoo2HfbankFailAmt,jdbcType=DOUBLE}, 
+      #{baofoo2HfbankProcessAmt,jdbcType=DOUBLE}, #{baofoo2HfbankTotalCount,jdbcType=INTEGER}, 
+      #{baofoo2HfbankSuccCount,jdbcType=INTEGER}, #{baofoo2HfbankFailCount,jdbcType=INTEGER}, 
+      #{baofoo2HfbankProcessCount,jdbcType=INTEGER}, #{preDepositionBackAmt,jdbcType=DOUBLE}, 
+      #{depositionRepayTotalAmt,jdbcType=DOUBLE}, #{depositionRepaySuccAmt,jdbcType=DOUBLE}, 
+      #{depositionRepayFailAmt,jdbcType=DOUBLE}, #{depositionRepayProcessAmt,jdbcType=DOUBLE}, 
+      #{depositionRepayTotalCount,jdbcType=INTEGER}, #{depositionRepaySuccCount,jdbcType=INTEGER}, 
+      #{depositionRepayFailCount,jdbcType=INTEGER}, #{depositionRepayProcessCount,jdbcType=INTEGER}, 
+      #{depositionRepayRepeatAmt,jdbcType=DOUBLE}, #{depositionRepayRepeatCount,jdbcType=INTEGER}, 
+      #{depositionCompensateAmt,jdbcType=DOUBLE}, #{depostionCompensateSuccAmt,jdbcType=DOUBLE}, 
+      #{depositionCompensateRepeatAmt,jdbcType=DOUBLE}, #{depositionCompensateFailAmt,jdbcType=DOUBLE}, 
+      #{depositionCompensateCount,jdbcType=INTEGER}, #{depositionCompensateSuccCount,jdbcType=INTEGER}, 
+      #{depositionCompensateRepeatCount,jdbcType=INTEGER}, #{depositionCompensateFailCount,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.SysDailyCheckGacha" >
+    insert into sys_daily_check_gacha
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="checkDate != null" >
+        check_date,
+      </if>
+      <if test="channel != null" >
+        channel,
+      </if>
+      <if test="balanceWithdrawTotalAmt != null" >
+        balance_withdraw_total_amt,
+      </if>
+      <if test="balanceWithdrawSuccAmt != null" >
+        balance_withdraw_succ_amt,
+      </if>
+      <if test="balanceWithdrawFailAmt != null" >
+        balance_withdraw_fail_amt,
+      </if>
+      <if test="balanceWithdrawProcessAmt != null" >
+        balance_withdraw_process_amt,
+      </if>
+      <if test="balanceWithdrawTotalCount != null" >
+        balance_withdraw_total_count,
+      </if>
+      <if test="balanceWithdrawSuccCount != null" >
+        balance_withdraw_succ_count,
+      </if>
+      <if test="balanceWithdrawFailCount != null" >
+        balance_withdraw_fail_count,
+      </if>
+      <if test="balanceWithdrawProcessCount != null" >
+        balance_withdraw_process_count,
+      </if>
+      <if test="bonusWithdrawTotalAmt != null" >
+        bonus_withdraw_total_amt,
+      </if>
+      <if test="bonusWithdrawSuccAmt != null" >
+        bonus_withdraw_succ_amt,
+      </if>
+      <if test="bonusWithdrawFailAmt != null" >
+        bonus_withdraw_fail_amt,
+      </if>
+      <if test="bonusWithdrawProcessAmt != null" >
+        bonus_withdraw_process_amt,
+      </if>
+      <if test="bonusWithdrawTotalCount != null" >
+        bonus_withdraw_total_count,
+      </if>
+      <if test="bonusWithdrawSuccCount != null" >
+        bonus_withdraw_succ_count,
+      </if>
+      <if test="bonusWithdrawFailCount != null" >
+        bonus_withdraw_fail_count,
+      </if>
+      <if test="bonusWithdrawProcessCount != null" >
+        bonus_withdraw_process_count,
+      </if>
+      <if test="sysRevenueAmt != null" >
+        sys_revenue_amt,
+      </if>
+      <if test="sysRepeatRevenueAmt != null" >
+        sys_repeat_revenue_amt,
+      </if>
+      <if test="baofoo2HfbankTotalAmt != null" >
+        baofoo_2_hfbank_total_amt,
+      </if>
+      <if test="baofoo2HfbankSuccAmt != null" >
+        baofoo_2_hfbank_succ_amt,
+      </if>
+      <if test="baofoo2HfbankFailAmt != null" >
+        baofoo_2_hfbank_fail_amt,
+      </if>
+      <if test="baofoo2HfbankProcessAmt != null" >
+        baofoo_2_hfbank_process_amt,
+      </if>
+      <if test="baofoo2HfbankTotalCount != null" >
+        baofoo_2_hfbank_total_count,
+      </if>
+      <if test="baofoo2HfbankSuccCount != null" >
+        baofoo_2_hfbank_succ_count,
+      </if>
+      <if test="baofoo2HfbankFailCount != null" >
+        baofoo_2_hfbank_fail_count,
+      </if>
+      <if test="baofoo2HfbankProcessCount != null" >
+        baofoo_2_hfbank_process_count,
+      </if>
+      <if test="preDepositionBackAmt != null" >
+        pre_deposition_back_amt,
+      </if>
+      <if test="depositionRepayTotalAmt != null" >
+        deposition_repay_total_amt,
+      </if>
+      <if test="depositionRepaySuccAmt != null" >
+        deposition_repay_succ_amt,
+      </if>
+      <if test="depositionRepayFailAmt != null" >
+        deposition_repay_fail_amt,
+      </if>
+      <if test="depositionRepayProcessAmt != null" >
+        deposition_repay_process_amt,
+      </if>
+      <if test="depositionRepayTotalCount != null" >
+        deposition_repay_total_count,
+      </if>
+      <if test="depositionRepaySuccCount != null" >
+        deposition_repay_succ_count,
+      </if>
+      <if test="depositionRepayFailCount != null" >
+        deposition_repay_fail_count,
+      </if>
+      <if test="depositionRepayProcessCount != null" >
+        deposition_repay_process_count,
+      </if>
+      <if test="depositionRepayRepeatAmt != null" >
+        deposition_repay_repeat_amt,
+      </if>
+      <if test="depositionRepayRepeatCount != null" >
+        deposition_repay_repeat_count,
+      </if>
+      <if test="depositionCompensateAmt != null" >
+        deposition_compensate_amt,
+      </if>
+      <if test="depostionCompensateSuccAmt != null" >
+        depostion_compensate_succ_amt,
+      </if>
+      <if test="depositionCompensateRepeatAmt != null" >
+        deposition_compensate_repeat_amt,
+      </if>
+      <if test="depositionCompensateFailAmt != null" >
+        deposition_compensate_fail_amt,
+      </if>
+      <if test="depositionCompensateCount != null" >
+        deposition_compensate_count,
+      </if>
+      <if test="depositionCompensateSuccCount != null" >
+        deposition_compensate_succ_count,
+      </if>
+      <if test="depositionCompensateRepeatCount != null" >
+        deposition_compensate_repeat_count,
+      </if>
+      <if test="depositionCompensateFailCount != null" >
+        deposition_compensate_fail_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="checkDate != null" >
+        #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="channel != null" >
+        #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="balanceWithdrawTotalAmt != null" >
+        #{balanceWithdrawTotalAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="balanceWithdrawSuccAmt != null" >
+        #{balanceWithdrawSuccAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="balanceWithdrawFailAmt != null" >
+        #{balanceWithdrawFailAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="balanceWithdrawProcessAmt != null" >
+        #{balanceWithdrawProcessAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="balanceWithdrawTotalCount != null" >
+        #{balanceWithdrawTotalCount,jdbcType=INTEGER},
+      </if>
+      <if test="balanceWithdrawSuccCount != null" >
+        #{balanceWithdrawSuccCount,jdbcType=INTEGER},
+      </if>
+      <if test="balanceWithdrawFailCount != null" >
+        #{balanceWithdrawFailCount,jdbcType=INTEGER},
+      </if>
+      <if test="balanceWithdrawProcessCount != null" >
+        #{balanceWithdrawProcessCount,jdbcType=INTEGER},
+      </if>
+      <if test="bonusWithdrawTotalAmt != null" >
+        #{bonusWithdrawTotalAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="bonusWithdrawSuccAmt != null" >
+        #{bonusWithdrawSuccAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="bonusWithdrawFailAmt != null" >
+        #{bonusWithdrawFailAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="bonusWithdrawProcessAmt != null" >
+        #{bonusWithdrawProcessAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="bonusWithdrawTotalCount != null" >
+        #{bonusWithdrawTotalCount,jdbcType=INTEGER},
+      </if>
+      <if test="bonusWithdrawSuccCount != null" >
+        #{bonusWithdrawSuccCount,jdbcType=INTEGER},
+      </if>
+      <if test="bonusWithdrawFailCount != null" >
+        #{bonusWithdrawFailCount,jdbcType=INTEGER},
+      </if>
+      <if test="bonusWithdrawProcessCount != null" >
+        #{bonusWithdrawProcessCount,jdbcType=INTEGER},
+      </if>
+      <if test="sysRevenueAmt != null" >
+        #{sysRevenueAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="sysRepeatRevenueAmt != null" >
+        #{sysRepeatRevenueAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="baofoo2HfbankTotalAmt != null" >
+        #{baofoo2HfbankTotalAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="baofoo2HfbankSuccAmt != null" >
+        #{baofoo2HfbankSuccAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="baofoo2HfbankFailAmt != null" >
+        #{baofoo2HfbankFailAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="baofoo2HfbankProcessAmt != null" >
+        #{baofoo2HfbankProcessAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="baofoo2HfbankTotalCount != null" >
+        #{baofoo2HfbankTotalCount,jdbcType=INTEGER},
+      </if>
+      <if test="baofoo2HfbankSuccCount != null" >
+        #{baofoo2HfbankSuccCount,jdbcType=INTEGER},
+      </if>
+      <if test="baofoo2HfbankFailCount != null" >
+        #{baofoo2HfbankFailCount,jdbcType=INTEGER},
+      </if>
+      <if test="baofoo2HfbankProcessCount != null" >
+        #{baofoo2HfbankProcessCount,jdbcType=INTEGER},
+      </if>
+      <if test="preDepositionBackAmt != null" >
+        #{preDepositionBackAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionRepayTotalAmt != null" >
+        #{depositionRepayTotalAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionRepaySuccAmt != null" >
+        #{depositionRepaySuccAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionRepayFailAmt != null" >
+        #{depositionRepayFailAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionRepayProcessAmt != null" >
+        #{depositionRepayProcessAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionRepayTotalCount != null" >
+        #{depositionRepayTotalCount,jdbcType=INTEGER},
+      </if>
+      <if test="depositionRepaySuccCount != null" >
+        #{depositionRepaySuccCount,jdbcType=INTEGER},
+      </if>
+      <if test="depositionRepayFailCount != null" >
+        #{depositionRepayFailCount,jdbcType=INTEGER},
+      </if>
+      <if test="depositionRepayProcessCount != null" >
+        #{depositionRepayProcessCount,jdbcType=INTEGER},
+      </if>
+      <if test="depositionRepayRepeatAmt != null" >
+        #{depositionRepayRepeatAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionRepayRepeatCount != null" >
+        #{depositionRepayRepeatCount,jdbcType=INTEGER},
+      </if>
+      <if test="depositionCompensateAmt != null" >
+        #{depositionCompensateAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depostionCompensateSuccAmt != null" >
+        #{depostionCompensateSuccAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionCompensateRepeatAmt != null" >
+        #{depositionCompensateRepeatAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionCompensateFailAmt != null" >
+        #{depositionCompensateFailAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionCompensateCount != null" >
+        #{depositionCompensateCount,jdbcType=INTEGER},
+      </if>
+      <if test="depositionCompensateSuccCount != null" >
+        #{depositionCompensateSuccCount,jdbcType=INTEGER},
+      </if>
+      <if test="depositionCompensateRepeatCount != null" >
+        #{depositionCompensateRepeatCount,jdbcType=INTEGER},
+      </if>
+      <if test="depositionCompensateFailCount != null" >
+        #{depositionCompensateFailCount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.SysDailyCheckGachaExample" resultType="java.lang.Integer" >
+    select count(*) from sys_daily_check_gacha
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_daily_check_gacha
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkDate != null" >
+        check_date = #{record.checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.channel != null" >
+        channel = #{record.channel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.balanceWithdrawTotalAmt != null" >
+        balance_withdraw_total_amt = #{record.balanceWithdrawTotalAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.balanceWithdrawSuccAmt != null" >
+        balance_withdraw_succ_amt = #{record.balanceWithdrawSuccAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.balanceWithdrawFailAmt != null" >
+        balance_withdraw_fail_amt = #{record.balanceWithdrawFailAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.balanceWithdrawProcessAmt != null" >
+        balance_withdraw_process_amt = #{record.balanceWithdrawProcessAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.balanceWithdrawTotalCount != null" >
+        balance_withdraw_total_count = #{record.balanceWithdrawTotalCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.balanceWithdrawSuccCount != null" >
+        balance_withdraw_succ_count = #{record.balanceWithdrawSuccCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.balanceWithdrawFailCount != null" >
+        balance_withdraw_fail_count = #{record.balanceWithdrawFailCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.balanceWithdrawProcessCount != null" >
+        balance_withdraw_process_count = #{record.balanceWithdrawProcessCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.bonusWithdrawTotalAmt != null" >
+        bonus_withdraw_total_amt = #{record.bonusWithdrawTotalAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.bonusWithdrawSuccAmt != null" >
+        bonus_withdraw_succ_amt = #{record.bonusWithdrawSuccAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.bonusWithdrawFailAmt != null" >
+        bonus_withdraw_fail_amt = #{record.bonusWithdrawFailAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.bonusWithdrawProcessAmt != null" >
+        bonus_withdraw_process_amt = #{record.bonusWithdrawProcessAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.bonusWithdrawTotalCount != null" >
+        bonus_withdraw_total_count = #{record.bonusWithdrawTotalCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.bonusWithdrawSuccCount != null" >
+        bonus_withdraw_succ_count = #{record.bonusWithdrawSuccCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.bonusWithdrawFailCount != null" >
+        bonus_withdraw_fail_count = #{record.bonusWithdrawFailCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.bonusWithdrawProcessCount != null" >
+        bonus_withdraw_process_count = #{record.bonusWithdrawProcessCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.sysRevenueAmt != null" >
+        sys_revenue_amt = #{record.sysRevenueAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sysRepeatRevenueAmt != null" >
+        sys_repeat_revenue_amt = #{record.sysRepeatRevenueAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.baofoo2HfbankTotalAmt != null" >
+        baofoo_2_hfbank_total_amt = #{record.baofoo2HfbankTotalAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.baofoo2HfbankSuccAmt != null" >
+        baofoo_2_hfbank_succ_amt = #{record.baofoo2HfbankSuccAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.baofoo2HfbankFailAmt != null" >
+        baofoo_2_hfbank_fail_amt = #{record.baofoo2HfbankFailAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.baofoo2HfbankProcessAmt != null" >
+        baofoo_2_hfbank_process_amt = #{record.baofoo2HfbankProcessAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.baofoo2HfbankTotalCount != null" >
+        baofoo_2_hfbank_total_count = #{record.baofoo2HfbankTotalCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.baofoo2HfbankSuccCount != null" >
+        baofoo_2_hfbank_succ_count = #{record.baofoo2HfbankSuccCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.baofoo2HfbankFailCount != null" >
+        baofoo_2_hfbank_fail_count = #{record.baofoo2HfbankFailCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.baofoo2HfbankProcessCount != null" >
+        baofoo_2_hfbank_process_count = #{record.baofoo2HfbankProcessCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.preDepositionBackAmt != null" >
+        pre_deposition_back_amt = #{record.preDepositionBackAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.depositionRepayTotalAmt != null" >
+        deposition_repay_total_amt = #{record.depositionRepayTotalAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.depositionRepaySuccAmt != null" >
+        deposition_repay_succ_amt = #{record.depositionRepaySuccAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.depositionRepayFailAmt != null" >
+        deposition_repay_fail_amt = #{record.depositionRepayFailAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.depositionRepayProcessAmt != null" >
+        deposition_repay_process_amt = #{record.depositionRepayProcessAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.depositionRepayTotalCount != null" >
+        deposition_repay_total_count = #{record.depositionRepayTotalCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.depositionRepaySuccCount != null" >
+        deposition_repay_succ_count = #{record.depositionRepaySuccCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.depositionRepayFailCount != null" >
+        deposition_repay_fail_count = #{record.depositionRepayFailCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.depositionRepayProcessCount != null" >
+        deposition_repay_process_count = #{record.depositionRepayProcessCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.depositionRepayRepeatAmt != null" >
+        deposition_repay_repeat_amt = #{record.depositionRepayRepeatAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.depositionRepayRepeatCount != null" >
+        deposition_repay_repeat_count = #{record.depositionRepayRepeatCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.depositionCompensateAmt != null" >
+        deposition_compensate_amt = #{record.depositionCompensateAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.depostionCompensateSuccAmt != null" >
+        depostion_compensate_succ_amt = #{record.depostionCompensateSuccAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.depositionCompensateRepeatAmt != null" >
+        deposition_compensate_repeat_amt = #{record.depositionCompensateRepeatAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.depositionCompensateFailAmt != null" >
+        deposition_compensate_fail_amt = #{record.depositionCompensateFailAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="record.depositionCompensateCount != null" >
+        deposition_compensate_count = #{record.depositionCompensateCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.depositionCompensateSuccCount != null" >
+        deposition_compensate_succ_count = #{record.depositionCompensateSuccCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.depositionCompensateRepeatCount != null" >
+        deposition_compensate_repeat_count = #{record.depositionCompensateRepeatCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.depositionCompensateFailCount != null" >
+        deposition_compensate_fail_count = #{record.depositionCompensateFailCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_daily_check_gacha
+    set id = #{record.id,jdbcType=INTEGER},
+      check_date = #{record.checkDate,jdbcType=TIMESTAMP},
+      channel = #{record.channel,jdbcType=VARCHAR},
+      balance_withdraw_total_amt = #{record.balanceWithdrawTotalAmt,jdbcType=DOUBLE},
+      balance_withdraw_succ_amt = #{record.balanceWithdrawSuccAmt,jdbcType=DOUBLE},
+      balance_withdraw_fail_amt = #{record.balanceWithdrawFailAmt,jdbcType=DOUBLE},
+      balance_withdraw_process_amt = #{record.balanceWithdrawProcessAmt,jdbcType=DOUBLE},
+      balance_withdraw_total_count = #{record.balanceWithdrawTotalCount,jdbcType=INTEGER},
+      balance_withdraw_succ_count = #{record.balanceWithdrawSuccCount,jdbcType=INTEGER},
+      balance_withdraw_fail_count = #{record.balanceWithdrawFailCount,jdbcType=INTEGER},
+      balance_withdraw_process_count = #{record.balanceWithdrawProcessCount,jdbcType=INTEGER},
+      bonus_withdraw_total_amt = #{record.bonusWithdrawTotalAmt,jdbcType=DOUBLE},
+      bonus_withdraw_succ_amt = #{record.bonusWithdrawSuccAmt,jdbcType=DOUBLE},
+      bonus_withdraw_fail_amt = #{record.bonusWithdrawFailAmt,jdbcType=DOUBLE},
+      bonus_withdraw_process_amt = #{record.bonusWithdrawProcessAmt,jdbcType=DOUBLE},
+      bonus_withdraw_total_count = #{record.bonusWithdrawTotalCount,jdbcType=INTEGER},
+      bonus_withdraw_succ_count = #{record.bonusWithdrawSuccCount,jdbcType=INTEGER},
+      bonus_withdraw_fail_count = #{record.bonusWithdrawFailCount,jdbcType=INTEGER},
+      bonus_withdraw_process_count = #{record.bonusWithdrawProcessCount,jdbcType=INTEGER},
+      sys_revenue_amt = #{record.sysRevenueAmt,jdbcType=DOUBLE},
+      sys_repeat_revenue_amt = #{record.sysRepeatRevenueAmt,jdbcType=DOUBLE},
+      baofoo_2_hfbank_total_amt = #{record.baofoo2HfbankTotalAmt,jdbcType=DOUBLE},
+      baofoo_2_hfbank_succ_amt = #{record.baofoo2HfbankSuccAmt,jdbcType=DOUBLE},
+      baofoo_2_hfbank_fail_amt = #{record.baofoo2HfbankFailAmt,jdbcType=DOUBLE},
+      baofoo_2_hfbank_process_amt = #{record.baofoo2HfbankProcessAmt,jdbcType=DOUBLE},
+      baofoo_2_hfbank_total_count = #{record.baofoo2HfbankTotalCount,jdbcType=INTEGER},
+      baofoo_2_hfbank_succ_count = #{record.baofoo2HfbankSuccCount,jdbcType=INTEGER},
+      baofoo_2_hfbank_fail_count = #{record.baofoo2HfbankFailCount,jdbcType=INTEGER},
+      baofoo_2_hfbank_process_count = #{record.baofoo2HfbankProcessCount,jdbcType=INTEGER},
+      pre_deposition_back_amt = #{record.preDepositionBackAmt,jdbcType=DOUBLE},
+      deposition_repay_total_amt = #{record.depositionRepayTotalAmt,jdbcType=DOUBLE},
+      deposition_repay_succ_amt = #{record.depositionRepaySuccAmt,jdbcType=DOUBLE},
+      deposition_repay_fail_amt = #{record.depositionRepayFailAmt,jdbcType=DOUBLE},
+      deposition_repay_process_amt = #{record.depositionRepayProcessAmt,jdbcType=DOUBLE},
+      deposition_repay_total_count = #{record.depositionRepayTotalCount,jdbcType=INTEGER},
+      deposition_repay_succ_count = #{record.depositionRepaySuccCount,jdbcType=INTEGER},
+      deposition_repay_fail_count = #{record.depositionRepayFailCount,jdbcType=INTEGER},
+      deposition_repay_process_count = #{record.depositionRepayProcessCount,jdbcType=INTEGER},
+      deposition_repay_repeat_amt = #{record.depositionRepayRepeatAmt,jdbcType=DOUBLE},
+      deposition_repay_repeat_count = #{record.depositionRepayRepeatCount,jdbcType=INTEGER},
+      deposition_compensate_amt = #{record.depositionCompensateAmt,jdbcType=DOUBLE},
+      depostion_compensate_succ_amt = #{record.depostionCompensateSuccAmt,jdbcType=DOUBLE},
+      deposition_compensate_repeat_amt = #{record.depositionCompensateRepeatAmt,jdbcType=DOUBLE},
+      deposition_compensate_fail_amt = #{record.depositionCompensateFailAmt,jdbcType=DOUBLE},
+      deposition_compensate_count = #{record.depositionCompensateCount,jdbcType=INTEGER},
+      deposition_compensate_succ_count = #{record.depositionCompensateSuccCount,jdbcType=INTEGER},
+      deposition_compensate_repeat_count = #{record.depositionCompensateRepeatCount,jdbcType=INTEGER},
+      deposition_compensate_fail_count = #{record.depositionCompensateFailCount,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.SysDailyCheckGacha" >
+    update sys_daily_check_gacha
+    <set >
+      <if test="checkDate != null" >
+        check_date = #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="channel != null" >
+        channel = #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="balanceWithdrawTotalAmt != null" >
+        balance_withdraw_total_amt = #{balanceWithdrawTotalAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="balanceWithdrawSuccAmt != null" >
+        balance_withdraw_succ_amt = #{balanceWithdrawSuccAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="balanceWithdrawFailAmt != null" >
+        balance_withdraw_fail_amt = #{balanceWithdrawFailAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="balanceWithdrawProcessAmt != null" >
+        balance_withdraw_process_amt = #{balanceWithdrawProcessAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="balanceWithdrawTotalCount != null" >
+        balance_withdraw_total_count = #{balanceWithdrawTotalCount,jdbcType=INTEGER},
+      </if>
+      <if test="balanceWithdrawSuccCount != null" >
+        balance_withdraw_succ_count = #{balanceWithdrawSuccCount,jdbcType=INTEGER},
+      </if>
+      <if test="balanceWithdrawFailCount != null" >
+        balance_withdraw_fail_count = #{balanceWithdrawFailCount,jdbcType=INTEGER},
+      </if>
+      <if test="balanceWithdrawProcessCount != null" >
+        balance_withdraw_process_count = #{balanceWithdrawProcessCount,jdbcType=INTEGER},
+      </if>
+      <if test="bonusWithdrawTotalAmt != null" >
+        bonus_withdraw_total_amt = #{bonusWithdrawTotalAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="bonusWithdrawSuccAmt != null" >
+        bonus_withdraw_succ_amt = #{bonusWithdrawSuccAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="bonusWithdrawFailAmt != null" >
+        bonus_withdraw_fail_amt = #{bonusWithdrawFailAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="bonusWithdrawProcessAmt != null" >
+        bonus_withdraw_process_amt = #{bonusWithdrawProcessAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="bonusWithdrawTotalCount != null" >
+        bonus_withdraw_total_count = #{bonusWithdrawTotalCount,jdbcType=INTEGER},
+      </if>
+      <if test="bonusWithdrawSuccCount != null" >
+        bonus_withdraw_succ_count = #{bonusWithdrawSuccCount,jdbcType=INTEGER},
+      </if>
+      <if test="bonusWithdrawFailCount != null" >
+        bonus_withdraw_fail_count = #{bonusWithdrawFailCount,jdbcType=INTEGER},
+      </if>
+      <if test="bonusWithdrawProcessCount != null" >
+        bonus_withdraw_process_count = #{bonusWithdrawProcessCount,jdbcType=INTEGER},
+      </if>
+      <if test="sysRevenueAmt != null" >
+        sys_revenue_amt = #{sysRevenueAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="sysRepeatRevenueAmt != null" >
+        sys_repeat_revenue_amt = #{sysRepeatRevenueAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="baofoo2HfbankTotalAmt != null" >
+        baofoo_2_hfbank_total_amt = #{baofoo2HfbankTotalAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="baofoo2HfbankSuccAmt != null" >
+        baofoo_2_hfbank_succ_amt = #{baofoo2HfbankSuccAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="baofoo2HfbankFailAmt != null" >
+        baofoo_2_hfbank_fail_amt = #{baofoo2HfbankFailAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="baofoo2HfbankProcessAmt != null" >
+        baofoo_2_hfbank_process_amt = #{baofoo2HfbankProcessAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="baofoo2HfbankTotalCount != null" >
+        baofoo_2_hfbank_total_count = #{baofoo2HfbankTotalCount,jdbcType=INTEGER},
+      </if>
+      <if test="baofoo2HfbankSuccCount != null" >
+        baofoo_2_hfbank_succ_count = #{baofoo2HfbankSuccCount,jdbcType=INTEGER},
+      </if>
+      <if test="baofoo2HfbankFailCount != null" >
+        baofoo_2_hfbank_fail_count = #{baofoo2HfbankFailCount,jdbcType=INTEGER},
+      </if>
+      <if test="baofoo2HfbankProcessCount != null" >
+        baofoo_2_hfbank_process_count = #{baofoo2HfbankProcessCount,jdbcType=INTEGER},
+      </if>
+      <if test="preDepositionBackAmt != null" >
+        pre_deposition_back_amt = #{preDepositionBackAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionRepayTotalAmt != null" >
+        deposition_repay_total_amt = #{depositionRepayTotalAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionRepaySuccAmt != null" >
+        deposition_repay_succ_amt = #{depositionRepaySuccAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionRepayFailAmt != null" >
+        deposition_repay_fail_amt = #{depositionRepayFailAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionRepayProcessAmt != null" >
+        deposition_repay_process_amt = #{depositionRepayProcessAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionRepayTotalCount != null" >
+        deposition_repay_total_count = #{depositionRepayTotalCount,jdbcType=INTEGER},
+      </if>
+      <if test="depositionRepaySuccCount != null" >
+        deposition_repay_succ_count = #{depositionRepaySuccCount,jdbcType=INTEGER},
+      </if>
+      <if test="depositionRepayFailCount != null" >
+        deposition_repay_fail_count = #{depositionRepayFailCount,jdbcType=INTEGER},
+      </if>
+      <if test="depositionRepayProcessCount != null" >
+        deposition_repay_process_count = #{depositionRepayProcessCount,jdbcType=INTEGER},
+      </if>
+      <if test="depositionRepayRepeatAmt != null" >
+        deposition_repay_repeat_amt = #{depositionRepayRepeatAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionRepayRepeatCount != null" >
+        deposition_repay_repeat_count = #{depositionRepayRepeatCount,jdbcType=INTEGER},
+      </if>
+      <if test="depositionCompensateAmt != null" >
+        deposition_compensate_amt = #{depositionCompensateAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depostionCompensateSuccAmt != null" >
+        depostion_compensate_succ_amt = #{depostionCompensateSuccAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionCompensateRepeatAmt != null" >
+        deposition_compensate_repeat_amt = #{depositionCompensateRepeatAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionCompensateFailAmt != null" >
+        deposition_compensate_fail_amt = #{depositionCompensateFailAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="depositionCompensateCount != null" >
+        deposition_compensate_count = #{depositionCompensateCount,jdbcType=INTEGER},
+      </if>
+      <if test="depositionCompensateSuccCount != null" >
+        deposition_compensate_succ_count = #{depositionCompensateSuccCount,jdbcType=INTEGER},
+      </if>
+      <if test="depositionCompensateRepeatCount != null" >
+        deposition_compensate_repeat_count = #{depositionCompensateRepeatCount,jdbcType=INTEGER},
+      </if>
+      <if test="depositionCompensateFailCount != null" >
+        deposition_compensate_fail_count = #{depositionCompensateFailCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.SysDailyCheckGacha" >
+    update sys_daily_check_gacha
+    set check_date = #{checkDate,jdbcType=TIMESTAMP},
+      channel = #{channel,jdbcType=VARCHAR},
+      balance_withdraw_total_amt = #{balanceWithdrawTotalAmt,jdbcType=DOUBLE},
+      balance_withdraw_succ_amt = #{balanceWithdrawSuccAmt,jdbcType=DOUBLE},
+      balance_withdraw_fail_amt = #{balanceWithdrawFailAmt,jdbcType=DOUBLE},
+      balance_withdraw_process_amt = #{balanceWithdrawProcessAmt,jdbcType=DOUBLE},
+      balance_withdraw_total_count = #{balanceWithdrawTotalCount,jdbcType=INTEGER},
+      balance_withdraw_succ_count = #{balanceWithdrawSuccCount,jdbcType=INTEGER},
+      balance_withdraw_fail_count = #{balanceWithdrawFailCount,jdbcType=INTEGER},
+      balance_withdraw_process_count = #{balanceWithdrawProcessCount,jdbcType=INTEGER},
+      bonus_withdraw_total_amt = #{bonusWithdrawTotalAmt,jdbcType=DOUBLE},
+      bonus_withdraw_succ_amt = #{bonusWithdrawSuccAmt,jdbcType=DOUBLE},
+      bonus_withdraw_fail_amt = #{bonusWithdrawFailAmt,jdbcType=DOUBLE},
+      bonus_withdraw_process_amt = #{bonusWithdrawProcessAmt,jdbcType=DOUBLE},
+      bonus_withdraw_total_count = #{bonusWithdrawTotalCount,jdbcType=INTEGER},
+      bonus_withdraw_succ_count = #{bonusWithdrawSuccCount,jdbcType=INTEGER},
+      bonus_withdraw_fail_count = #{bonusWithdrawFailCount,jdbcType=INTEGER},
+      bonus_withdraw_process_count = #{bonusWithdrawProcessCount,jdbcType=INTEGER},
+      sys_revenue_amt = #{sysRevenueAmt,jdbcType=DOUBLE},
+      sys_repeat_revenue_amt = #{sysRepeatRevenueAmt,jdbcType=DOUBLE},
+      baofoo_2_hfbank_total_amt = #{baofoo2HfbankTotalAmt,jdbcType=DOUBLE},
+      baofoo_2_hfbank_succ_amt = #{baofoo2HfbankSuccAmt,jdbcType=DOUBLE},
+      baofoo_2_hfbank_fail_amt = #{baofoo2HfbankFailAmt,jdbcType=DOUBLE},
+      baofoo_2_hfbank_process_amt = #{baofoo2HfbankProcessAmt,jdbcType=DOUBLE},
+      baofoo_2_hfbank_total_count = #{baofoo2HfbankTotalCount,jdbcType=INTEGER},
+      baofoo_2_hfbank_succ_count = #{baofoo2HfbankSuccCount,jdbcType=INTEGER},
+      baofoo_2_hfbank_fail_count = #{baofoo2HfbankFailCount,jdbcType=INTEGER},
+      baofoo_2_hfbank_process_count = #{baofoo2HfbankProcessCount,jdbcType=INTEGER},
+      pre_deposition_back_amt = #{preDepositionBackAmt,jdbcType=DOUBLE},
+      deposition_repay_total_amt = #{depositionRepayTotalAmt,jdbcType=DOUBLE},
+      deposition_repay_succ_amt = #{depositionRepaySuccAmt,jdbcType=DOUBLE},
+      deposition_repay_fail_amt = #{depositionRepayFailAmt,jdbcType=DOUBLE},
+      deposition_repay_process_amt = #{depositionRepayProcessAmt,jdbcType=DOUBLE},
+      deposition_repay_total_count = #{depositionRepayTotalCount,jdbcType=INTEGER},
+      deposition_repay_succ_count = #{depositionRepaySuccCount,jdbcType=INTEGER},
+      deposition_repay_fail_count = #{depositionRepayFailCount,jdbcType=INTEGER},
+      deposition_repay_process_count = #{depositionRepayProcessCount,jdbcType=INTEGER},
+      deposition_repay_repeat_amt = #{depositionRepayRepeatAmt,jdbcType=DOUBLE},
+      deposition_repay_repeat_count = #{depositionRepayRepeatCount,jdbcType=INTEGER},
+      deposition_compensate_amt = #{depositionCompensateAmt,jdbcType=DOUBLE},
+      depostion_compensate_succ_amt = #{depostionCompensateSuccAmt,jdbcType=DOUBLE},
+      deposition_compensate_repeat_amt = #{depositionCompensateRepeatAmt,jdbcType=DOUBLE},
+      deposition_compensate_fail_amt = #{depositionCompensateFailAmt,jdbcType=DOUBLE},
+      deposition_compensate_count = #{depositionCompensateCount,jdbcType=INTEGER},
+      deposition_compensate_succ_count = #{depositionCompensateSuccCount,jdbcType=INTEGER},
+      deposition_compensate_repeat_count = #{depositionCompensateRepeatCount,jdbcType=INTEGER},
+      deposition_compensate_fail_count = #{depositionCompensateFailCount,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

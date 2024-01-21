@@ -1,0 +1,61 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')"/>
+<div class="pageContent">
+	<form method="post" name="detail_form" action="$env.getWebURL('/bsuser/verifyBindCardChange.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+        <div class="pageFormContent" layoutH="56">
+     
+           	<dl>
+                <dt >审核结果：</dt>
+                <dd>
+                	<input type="radio" id="verify_pass" name="check_status" value="PASS" #if("$!check_status"=="PASS") checked #end checked/>通过
+					<input type="radio" id="verify_refuse" name="check_status" value="REFUSE" #if("$!check_status"=="REFUSE") checked #end />不通过
+                </dd>
+            </dl>
+		   
+		    <dl>
+                <dt >反馈信息：</dt>
+                <dd style="width:100px;">
+                    <textarea name="note" id="note" rows="8" cols="50"  type="text" maxlength="128" placeholder="请输入反馈信息"></textarea>
+                </dd>
+            </dl>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+                </li>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_verifyForm('$!id')">确定</button></div></div></li>
+            </ul>
+        </div>
+	</form>
+</div>
+<script>
+	
+		function submit_verifyForm(id) {
+	        var verifyId = id;
+        	var checkStatus = $('div').find('input[name="check_status"]:checked').val();
+            var note = $.trim($("#note").val());
+            $.ajax({
+                type: 'post',
+                url: $("#APP_ROOT_PATH").val() + "/bsuser/verifyBindCardChange.htm",
+                data: {
+                    verifyId: verifyId,
+                    note: note,
+                    checkStatus: checkStatus
+                },
+                success: function (data) {
+                    if (data.statusCode == "200") {
+                    	alertMsg.correct('操作成功!');
+                    	$.pdialog.closeCurrent();
+                        navTab.reload("$env.getWebURL('bsuser/changeBindCardIndex.htm')");
+                    } else {
+                        if (data.message) {
+                            alertMsg.error(data.message);
+                        } else {
+                            alertMsg.error("操作失败");
+                        }
+                    }
+                }
+            })
+        }
+	
+</script>

@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.LnSubjectMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.LnSubject" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="charge_rule_id" property="chargeRuleId" jdbcType="INTEGER" />
+    <result column="subject_code" property="subjectCode" jdbcType="VARCHAR" />
+    <result column="subject_name" property="subjectName" jdbcType="VARCHAR" />
+    <result column="repay_order" property="repayOrder" jdbcType="INTEGER" />
+    <result column="reserve_rule" property="reserveRule" jdbcType="VARCHAR" />
+    <result column="cal_rule" property="calRule" jdbcType="VARCHAR" />
+    <result column="left_rule" property="leftRule" jdbcType="VARCHAR" />
+    <result column="rateType" property="ratetype" jdbcType="VARCHAR" />
+    <result column="num_value" property="numValue" jdbcType="DOUBLE" />
+    <result column="customized_class" property="customizedClass" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+   <resultMap id="BaseResultVOMap" type="com.pinting.business.model.vo.LnSubjectVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="charge_rule_id" property="chargeRuleId" jdbcType="INTEGER" />
+    <result column="subject_code" property="subjectCode" jdbcType="VARCHAR" />
+    <result column="subject_name" property="subjectName" jdbcType="VARCHAR" />
+    <result column="repay_order" property="repayOrder" jdbcType="INTEGER" />
+    <result column="reserve_rule" property="reserveRule" jdbcType="VARCHAR" />
+    <result column="cal_rule" property="calRule" jdbcType="VARCHAR" />
+    <result column="left_rule" property="leftRule" jdbcType="VARCHAR" />
+    <result column="rateType" property="ratetype" jdbcType="VARCHAR" />
+    <result column="num_value" property="numValue" jdbcType="DOUBLE" />
+    <result column="customized_class" property="customizedClass" jdbcType="VARCHAR" />
+    <result column="partner_code" property="partnerCode" jdbcType="VARCHAR" />
+    <result column="charge_rule_code" property="chargeRuleCode" jdbcType="VARCHAR" />
+    <result column="term" property="term" jdbcType="INTEGER" />
+    <result column="approve_amount" property="approveAmount" jdbcType="DOUBLE" />
+    <result column="loan_time" property="loanTime" jdbcType="TIMESTAMP" />
+    
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, charge_rule_id, subject_code, subject_name, repay_order, reserve_rule, cal_rule, 
+    left_rule, rateType, num_value, customized_class, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.LnSubjectExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ln_subject
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ln_subject
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ln_subject
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.LnSubjectExample" >
+    delete from ln_subject
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.LnSubject" >
+    insert into ln_subject (id, charge_rule_id, subject_code, 
+      subject_name, repay_order, reserve_rule, 
+      cal_rule, left_rule, rateType, 
+      num_value, customized_class, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{chargeRuleId,jdbcType=INTEGER}, #{subjectCode,jdbcType=VARCHAR}, 
+      #{subjectName,jdbcType=VARCHAR}, #{repayOrder,jdbcType=INTEGER}, #{reserveRule,jdbcType=VARCHAR}, 
+      #{calRule,jdbcType=VARCHAR}, #{leftRule,jdbcType=VARCHAR}, #{ratetype,jdbcType=VARCHAR}, 
+      #{numValue,jdbcType=DOUBLE}, #{customizedClass,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.LnSubject" >
+    insert into ln_subject
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="chargeRuleId != null" >
+        charge_rule_id,
+      </if>
+      <if test="subjectCode != null" >
+        subject_code,
+      </if>
+      <if test="subjectName != null" >
+        subject_name,
+      </if>
+      <if test="repayOrder != null" >
+        repay_order,
+      </if>
+      <if test="reserveRule != null" >
+        reserve_rule,
+      </if>
+      <if test="calRule != null" >
+        cal_rule,
+      </if>
+      <if test="leftRule != null" >
+        left_rule,
+      </if>
+      <if test="ratetype != null" >
+        rateType,
+      </if>
+      <if test="numValue != null" >
+        num_value,
+      </if>
+      <if test="customizedClass != null" >
+        customized_class,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="chargeRuleId != null" >
+        #{chargeRuleId,jdbcType=INTEGER},
+      </if>
+      <if test="subjectCode != null" >
+        #{subjectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectName != null" >
+        #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="repayOrder != null" >
+        #{repayOrder,jdbcType=INTEGER},
+      </if>
+      <if test="reserveRule != null" >
+        #{reserveRule,jdbcType=VARCHAR},
+      </if>
+      <if test="calRule != null" >
+        #{calRule,jdbcType=VARCHAR},
+      </if>
+      <if test="leftRule != null" >
+        #{leftRule,jdbcType=VARCHAR},
+      </if>
+      <if test="ratetype != null" >
+        #{ratetype,jdbcType=VARCHAR},
+      </if>
+      <if test="numValue != null" >
+        #{numValue,jdbcType=DOUBLE},
+      </if>
+      <if test="customizedClass != null" >
+        #{customizedClass,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.LnSubjectExample" resultType="java.lang.Integer" >
+    select count(*) from ln_subject
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ln_subject
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.chargeRuleId != null" >
+        charge_rule_id = #{record.chargeRuleId,jdbcType=INTEGER},
+      </if>
+      <if test="record.subjectCode != null" >
+        subject_code = #{record.subjectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subjectName != null" >
+        subject_name = #{record.subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.repayOrder != null" >
+        repay_order = #{record.repayOrder,jdbcType=INTEGER},
+      </if>
+      <if test="record.reserveRule != null" >
+        reserve_rule = #{record.reserveRule,jdbcType=VARCHAR},
+      </if>
+      <if test="record.calRule != null" >
+        cal_rule = #{record.calRule,jdbcType=VARCHAR},
+      </if>
+      <if test="record.leftRule != null" >
+        left_rule = #{record.leftRule,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ratetype != null" >
+        rateType = #{record.ratetype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.numValue != null" >
+        num_value = #{record.numValue,jdbcType=DOUBLE},
+      </if>
+      <if test="record.customizedClass != null" >
+        customized_class = #{record.customizedClass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ln_subject
+    set id = #{record.id,jdbcType=INTEGER},
+      charge_rule_id = #{record.chargeRuleId,jdbcType=INTEGER},
+      subject_code = #{record.subjectCode,jdbcType=VARCHAR},
+      subject_name = #{record.subjectName,jdbcType=VARCHAR},
+      repay_order = #{record.repayOrder,jdbcType=INTEGER},
+      reserve_rule = #{record.reserveRule,jdbcType=VARCHAR},
+      cal_rule = #{record.calRule,jdbcType=VARCHAR},
+      left_rule = #{record.leftRule,jdbcType=VARCHAR},
+      rateType = #{record.ratetype,jdbcType=VARCHAR},
+      num_value = #{record.numValue,jdbcType=DOUBLE},
+      customized_class = #{record.customizedClass,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.LnSubject" >
+    update ln_subject
+    <set >
+      <if test="chargeRuleId != null" >
+        charge_rule_id = #{chargeRuleId,jdbcType=INTEGER},
+      </if>
+      <if test="subjectCode != null" >
+        subject_code = #{subjectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectName != null" >
+        subject_name = #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="repayOrder != null" >
+        repay_order = #{repayOrder,jdbcType=INTEGER},
+      </if>
+      <if test="reserveRule != null" >
+        reserve_rule = #{reserveRule,jdbcType=VARCHAR},
+      </if>
+      <if test="calRule != null" >
+        cal_rule = #{calRule,jdbcType=VARCHAR},
+      </if>
+      <if test="leftRule != null" >
+        left_rule = #{leftRule,jdbcType=VARCHAR},
+      </if>
+      <if test="ratetype != null" >
+        rateType = #{ratetype,jdbcType=VARCHAR},
+      </if>
+      <if test="numValue != null" >
+        num_value = #{numValue,jdbcType=DOUBLE},
+      </if>
+      <if test="customizedClass != null" >
+        customized_class = #{customizedClass,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.LnSubject" >
+    update ln_subject
+    set charge_rule_id = #{chargeRuleId,jdbcType=INTEGER},
+      subject_code = #{subjectCode,jdbcType=VARCHAR},
+      subject_name = #{subjectName,jdbcType=VARCHAR},
+      repay_order = #{repayOrder,jdbcType=INTEGER},
+      reserve_rule = #{reserveRule,jdbcType=VARCHAR},
+      cal_rule = #{calRule,jdbcType=VARCHAR},
+      left_rule = #{leftRule,jdbcType=VARCHAR},
+      rateType = #{ratetype,jdbcType=VARCHAR},
+      num_value = #{numValue,jdbcType=DOUBLE},
+      customized_class = #{customizedClass,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByLoanId" resultMap="BaseResultVOMap" parameterType="map">
+	select a.id, a.charge_rule_id, a.subject_code, a.subject_name, a.repay_order, 
+		a.reserve_rule, a.cal_rule,a.left_rule, a.rateType, a.num_value, a.customized_class, 
+		b.partner_code, b.charge_rule_code, b.term,
+		c.approve_amount,c.loan_time 
+    from ln_subject a,ln_partner_charge_rule b,ln_loan c
+    where c.charge_rule_id = b.id and b.id=a.charge_rule_id
+		and c.id = #{loanId} and b.partner_code =#{partnerCode} 
+		and a.subject_code=#{subjectCode}
+  </select>
+
+  <select id="selectByLoanTerm" resultMap="BaseResultVOMap" parameterType="map">
+    select a.id, a.charge_rule_id, a.subject_code, a.subject_name, a.repay_order,
+		a.reserve_rule, a.cal_rule,a.left_rule, a.rateType, a.num_value, a.customized_class,
+		b.partner_code, b.charge_rule_code, b.term
+    from ln_subject a,ln_partner_charge_rule b
+    where b.id=a.charge_rule_id
+	  AND b.partner_code =#{partnerCode}
+	  AND a.subject_code=#{subjectCode}
+	  AND b.is_current='YES'
+	  AND b.term=#{loanTerm}
+  </select>
+  
+</mapper>

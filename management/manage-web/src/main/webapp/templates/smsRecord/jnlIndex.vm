@@ -1,0 +1,169 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!record.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!record.numPerPage" />
+</form>
+<div class="pageHeader">
+	<form id="myform" method="post"  rel="pagerForm" action="$env.getWebURL('/smsRecord/jnlIndex.htm')" onsubmit="return navTabSearch(this);">
+		#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	<input type="hidden" name="pageNum" value="$!record.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!record.numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+			<tbody><tr>
+				<td>
+					短信平台：
+					<select name="platformsCode" class="valid">
+						<option value="" #if("$!req.platformsCode"=="") selected  #end>全部</option>
+        				<option value="EMay" #if("$!req.platformsCode"=="EMay") selected  #end>亿美</option>
+						<option value="CL253" #if("$!req.platformsCode"=="CL253") selected  #end>创蓝253</option>
+        			</select>
+				</td>
+				<td>
+					手机号：<input  id="mobile" type="text" name="mobile" value="$!req.mobile" size="15" maxlength="11"/>
+                </td>
+				<td>
+					发送内容：<input  id="content" type="text" name="content" value="$!req.content" size="30" maxlength="30"/>
+                </td>
+				<td>
+					账户状态：
+					<select name="type" class="valid">
+						<option value="BUSINESS" #if("$!req.type"=="BUSINESS" || "$!status"=="") selected  #end>业务类</option>
+        				<option value="MARKET" #if("$!req.type"=="MARKET") selected  #end>营销类</option>
+						<option value="WELINK_MARKET" #if("$!req.type"=="WELINK_MARKET") selected  #end>微网营销类</option>
+							
+        			</select>
+				</td>
+				<td>
+					发送状态：
+					<select name="statusCode" class="valid">
+						<option value="" #if("$!req.statusCode"=="") selected  #end>全部</option>
+						<option value="0" #if("$!req.statusCode"=="0") selected  #end>接收成功</option>
+        				<option value="1" #if("$!req.statusCode"=="1") selected  #end>发送暂缓</option>
+						<option value="2" #if("$!req.statusCode"=="2") selected  #end>发送失败</option>
+						<option value="-1" #if("$!req.statusCode"=="-1") selected  #end>未知</option>
+        			</select>
+				</td>
+				<td>
+				<td>
+					开始日期：<input type="text" readonly="true" class="date textInput readonly" datefmt="yyyy-MM-dd HH:mm:ss" name="beginTime" id="beginTime" value="$!date.format($!req.beginTime)">
+				</td>
+				<td>
+					结束日期：<input type="text" readonly="true" class="date textInput readonly" datefmt="yyyy-MM-dd HH:mm:ss" name="overTime" id="overTime" value="$!date.format($!req.overTime)">
+				</td>
+				<td>
+					<input type="button" id="search" onclick="func()" value="查询"/>
+					<input type="button" id="check" onclick="checkSms()" value="获取状态"/>
+                </td>
+			</tr>
+		</tbody></table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="5%">短信平台</th>
+				<th width="8%">手机号</th>
+				<th width="15%">短信内容</th>
+                <th width="8%">发送时间</th>
+				<th width="12%">短信编码</th>
+				<th width="10%">发送状态</th>
+				<th width="5%">返回码</th>
+				<th width="5%">错误码翻译</th>
+				<th width="8%">送达时间</th>
+				<th width="8%">更新时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($jnl in $list)
+			<tr target="sid_user" rel="1">
+				<td>$!jnl.platformsName</td>
+                <td>$!jnl.mobile</td>
+				<td>$!jnl.content</td>
+				<td>$date.format($!jnl.sendTime)</td>
+				<td>$!jnl.serialNo</td>
+                <td>#if($!jnl.statusCode == '0')接收成功
+					#elseif($!jnl.statusCode == '1')发送暂缓
+					#elseif($!jnl.statusCode == '2')发送失败
+					#else 未知 #end</td>
+				<td>$!jnl.statusMsg</td>
+				<td>
+					#foreach($eCode in $errorCodeList)
+						#if($eCode.code == $!jnl.statusMsg)
+							$eCode.description
+						#end
+					#end
+					#foreach($eCode1 in $errorCodeListEMay)
+						#if($eCode1.code == $!jnl.statusMsg)
+							$eCode1.description
+						#end
+					#end
+					#foreach($eCode2 in $errorCodeListEMayMobile)
+						#if($eCode2.code == $!jnl.statusMsg)
+							$eCode2.description
+						#end
+					#end
+					#foreach($eCode3 in $errorCodeListEMayTele)
+						#if($eCode3.code == $!jnl.statusMsg)
+							$eCode3.description
+						#end
+					#end
+					#foreach($eCode4 in $errorCodeListEMayUni)
+						#if($eCode4.code == $!jnl.statusMsg)
+							$eCode4.description
+						#end
+					#end
+				</td>
+				<td>#if($!jnl.arriveTime)$date.format($!jnl.arriveTime)#end</td>
+				<td>#if($!jnl.updateTime)$date.format($!jnl.updateTime)#end</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!record.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!record.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!record.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!record.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!record.totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!record.totalRows" numPerPage="$!record.numPerPage" currentPage="$!record.pageNum"></div>
+
+	</div>
+</div>
+		
+<script>
+
+function func(){
+	var beginTime = $("#beginTime").val();
+	var overTime = $("#overTime").val();
+	if(beginTime != "" && overTime != ""){
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	$("#myform").submit();
+}
+
+function checkSms(){
+	var url = $("#APP_ROOT_PATH").val() + "/smsRecord/check.htm";
+	jQuery.ajax({
+		type : 'post',
+		url : url,
+		async : false,
+		success : function(data) {
+			alert(data.msg);
+		}
+	});
+}
+
+</script>

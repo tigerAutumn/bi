@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsSysNewsMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsSysNews" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="subject" property="subject" jdbcType="VARCHAR" />
+    <result column="keywords" property="keywords" jdbcType="VARCHAR" />
+    <result column="summary" property="summary" jdbcType="VARCHAR" />
+    <result column="subject_img" property="subjectImg" jdbcType="VARCHAR" />
+    <result column="receiver_type" property="receiverType" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="m_user_id" property="mUserId" jdbcType="BIGINT" />
+    <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="read_times" property="readTimes" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="BaseResultVOMap" type="com.pinting.business.model.vo.BsSysNewsVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="subject" property="subject" jdbcType="VARCHAR" />
+    <result column="keywords" property="keywords" jdbcType="VARCHAR" />
+    <result column="summary" property="summary" jdbcType="VARCHAR" />
+    <result column="subject_img" property="subjectImg" jdbcType="VARCHAR" />
+    <result column="receiver_type" property="receiverType" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="m_user_id" property="mUserId" jdbcType="BIGINT" />
+    <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="read_times" property="readTimes" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+ 	<result column="m_user_name" property="mUserName" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.pinting.business.model.BsSysNews" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, type, subject, keywords, summary, subject_img, receiver_type, priority, status, 
+    m_user_id, publish_time, source, read_times, create_time, update_time,content
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+   <sql id="Base_SysNews_List" >
+  	   <if test="id != null" >
+        and a.id = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="type != null and type == 'COMPANY_DYNAMIC_WFANS_ACTIVITY' " >
+      	and  (a.type = 'COMPANY_DYNAMIC' or a.type = 'WFANS_ACTIVITY')
+      </if>
+      <if test="type != null and type != 'COMPANY_DYNAMIC_WFANS_ACTIVITY' " >
+       and  a.type = #{type,jdbcType=VARCHAR}
+      </if>
+      <if test="subject != null" >
+        and a.subject like concat(concat('%', #{subject,jdbcType=VARCHAR}),'%')
+      </if>
+      <if test="keywords != null" >
+        and a.keywords like concat(concat('%', #{keywords,jdbcType=VARCHAR}),'%')
+      </if>
+      <if test="summary != null" >
+        and a.summary like concat(concat('%', #{summary,jdbcType=VARCHAR}),'%')
+      </if>
+      <if test="content != null" >
+        and a.content like concat(concat('%', #{content,jdbcType=VARCHAR}),'%')
+      </if>
+      <if test="subjectImg != null" >
+       and  a.subject_img = #{subjectImg,jdbcType=VARCHAR}
+      </if>
+      <if test="receiverType != null" >
+        and FIND_IN_SET(#{receiverType,jdbcType=VARCHAR}, a.receiver_type)
+      </if>
+      <if test="priority != null" >
+       and a. priority = #{priority,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null" >
+       and  a.status = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="mUserId != null" >
+       and  a.m_user_id = #{mUserId,jdbcType=VARCHAR}
+      </if>
+      <if test="publishTime != null" >
+       and  a.publish_time = #{publishTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="source != null" >
+       and  a.source = #{source,jdbcType=VARCHAR}
+      </if>
+      <if test="readTimes != null" >
+       and  a.read_times = #{readTimes,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createTime != null" >
+       and  a.create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null" >
+       and  a.update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.pinting.business.model.BsSysNewsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from bs_sys_news
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsSysNewsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_sys_news
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from bs_sys_news
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_sys_news
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsSysNewsExample" >
+    delete from bs_sys_news
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsSysNews" >
+    insert into bs_sys_news (id, type, subject, 
+      keywords, summary, subject_img, 
+      receiver_type, priority, status, 
+      m_user_id, publish_time, source, 
+      read_times, create_time, update_time, 
+      content)
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{subject,jdbcType=VARCHAR}, 
+      #{keywords,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{subjectImg,jdbcType=VARCHAR}, 
+      #{receiverType,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
+      #{mUserId,jdbcType=BIGINT}, #{publishTime,jdbcType=TIMESTAMP}, #{source,jdbcType=VARCHAR}, 
+      #{readTimes,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsSysNews" >
+    insert into bs_sys_news
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="subject != null" >
+        subject,
+      </if>
+      <if test="keywords != null" >
+        keywords,
+      </if>
+      <if test="summary != null" >
+        summary,
+      </if>
+      <if test="subjectImg != null" >
+        subject_img,
+      </if>
+      <if test="receiverType != null" >
+        receiver_type,
+      </if>
+      <if test="priority != null" >
+        priority,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="mUserId != null" >
+        m_user_id,
+      </if>
+      <if test="publishTime != null" >
+        publish_time,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="readTimes != null" >
+        read_times,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null" >
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null" >
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectImg != null" >
+        #{subjectImg,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverType != null" >
+        #{receiverType,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null" >
+        #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="mUserId != null" >
+        #{mUserId,jdbcType=BIGINT},
+      </if>
+      <if test="publishTime != null" >
+        #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="readTimes != null" >
+        #{readTimes,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsSysNewsExample" resultType="java.lang.Integer" >
+    select count(*) from bs_sys_news
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_sys_news
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subject != null" >
+        subject = #{record.subject,jdbcType=VARCHAR},
+      </if>
+      <if test="record.keywords != null" >
+        keywords = #{record.keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="record.summary != null" >
+        summary = #{record.summary,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subjectImg != null" >
+        subject_img = #{record.subjectImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiverType != null" >
+        receiver_type = #{record.receiverType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.priority != null" >
+        priority = #{record.priority,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mUserId != null" >
+        m_user_id = #{record.mUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.publishTime != null" >
+        publish_time = #{record.publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.source != null" >
+        source = #{record.source,jdbcType=VARCHAR},
+      </if>
+      <if test="record.readTimes != null" >
+        read_times = #{record.readTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update bs_sys_news
+    set id = #{record.id,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
+      subject = #{record.subject,jdbcType=VARCHAR},
+      keywords = #{record.keywords,jdbcType=VARCHAR},
+      summary = #{record.summary,jdbcType=VARCHAR},
+      subject_img = #{record.subjectImg,jdbcType=VARCHAR},
+      receiver_type = #{record.receiverType,jdbcType=VARCHAR},
+      priority = #{record.priority,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      m_user_id = #{record.mUserId,jdbcType=BIGINT},
+      publish_time = #{record.publishTime,jdbcType=TIMESTAMP},
+      source = #{record.source,jdbcType=VARCHAR},
+      read_times = #{record.readTimes,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_sys_news
+    set id = #{record.id,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
+      subject = #{record.subject,jdbcType=VARCHAR},
+      keywords = #{record.keywords,jdbcType=VARCHAR},
+      summary = #{record.summary,jdbcType=VARCHAR},
+      subject_img = #{record.subjectImg,jdbcType=VARCHAR},
+      receiver_type = #{record.receiverType,jdbcType=VARCHAR},
+      priority = #{record.priority,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      m_user_id = #{record.mUserId,jdbcType=BIGINT},
+      publish_time = #{record.publishTime,jdbcType=TIMESTAMP},
+      source = #{record.source,jdbcType=VARCHAR},
+      read_times = #{record.readTimes,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsSysNews" >
+    update bs_sys_news
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null" >
+        subject = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        keywords = #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null" >
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectImg != null" >
+        subject_img = #{subjectImg,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverType != null" >
+        receiver_type = #{receiverType,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null" >
+        priority = #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="mUserId != null" >
+        m_user_id = #{mUserId,jdbcType=BIGINT},
+      </if>
+      <if test="publishTime != null" >
+        publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="readTimes != null" >
+        read_times = #{readTimes,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.pinting.business.model.BsSysNews" >
+    update bs_sys_news
+    set type = #{type,jdbcType=VARCHAR},
+      subject = #{subject,jdbcType=VARCHAR},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      subject_img = #{subjectImg,jdbcType=VARCHAR},
+      receiver_type = #{receiverType,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      m_user_id = #{mUserId,jdbcType=BIGINT},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      source = #{source,jdbcType=VARCHAR},
+      read_times = #{readTimes,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsSysNews" >
+    update bs_sys_news
+    set type = #{type,jdbcType=VARCHAR},
+      subject = #{subject,jdbcType=VARCHAR},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      subject_img = #{subjectImg,jdbcType=VARCHAR},
+      receiver_type = #{receiverType,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      m_user_id = #{mUserId,jdbcType=BIGINT},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      source = #{source,jdbcType=VARCHAR},
+      read_times = #{readTimes,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+      <select id="selectSysNewsListPageInfo" resultMap="BaseResultVOMap" parameterType="com.pinting.business.model.vo.BsSysNewsVO" >
+ 	select 
+	a.*,b.name as m_user_name 
+    from bs_sys_news a left join m_user b on a.m_user_id = b.id 
+    where 1 = 1 
+    	<include refid="Base_SysNews_List" />
+		<if test="orderDirection!=null and orderDirection != ''  and orderField != ''  and orderField!=null ">   
+    	 	order by 	${orderField}  ${orderDirection}
+    	</if>
+  		<include refid="sql-global.pagination"/>
+  </select>
+  
+ <select id="selectCountSysNews" resultType="java.lang.Integer" parameterType="com.pinting.business.model.BsSysNews" >
+ 	select 
+		count(*) 
+    from bs_sys_news a 
+    where 1 = 1 
+	    <include refid="Base_SysNews_List" />
+  </select>
+  
+    
+  <select id="selectCurrentNews" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	SELECT * FROM `bs_sys_news` a WHERE a.`status` = 'PUBLISHED'
+  	AND FIND_IN_SET(#{receiverType},a.receiver_type)
+  	AND a.type = #{type}
+  	ORDER BY a.priority DESC, a.publish_time DESC LIMIT 0, #{showPage}
+  </select>
+
+  <select id="selectNewsPage" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	SELECT a.subject,a.publish_time,a.id,a.type,a.summary,a.subject_img FROM `bs_sys_news` a WHERE a.`status` = 'PUBLISHED'
+  	<if test="receiverType != '' and receiverType != null">
+  		AND FIND_IN_SET(#{receiverType},a.receiver_type)
+  	</if>
+	<if test="type != null and type != ''">
+		<if test="type == 'not_notice'">
+			AND a.type != 'NOTICE'
+		</if>
+		<if test="type != 'not_notice'">
+			AND a.type = #{type}
+		</if>
+	</if>
+	ORDER BY a.priority DESC, publish_time DESC
+	LIMIT #{start}, #{numPerPage}
+  </select> 
+  
+  <select id="selectNewsBySource" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	SELECT a.subject,a.publish_time,a.id,a.type,a.source,a.receiver_type,a.content,a.subject_img 
+  	FROM `bs_sys_news` a WHERE a.`status` = 'PUBLISHED'
+  	<if test="receiverType != '' and receiverType != null">
+  		AND FIND_IN_SET(#{receiverType},a.receiver_type)
+  	</if>
+	<if test="source != null and source != ''">
+		AND a.source = #{source}
+	</if>
+	ORDER BY a.priority DESC, publish_time DESC
+	LIMIT 1
+  </select>
+
+  <select id="selectNewsPageInfo" resultMap="BaseResultMap" parameterType="java.util.Map">
+    SELECT a.subject,a.publish_time,a.id,a.type,a.summary,a.subject_img,a.content FROM `bs_sys_news` a WHERE a.`status` = 'PUBLISHED'
+    <if test="receiverType !='' and receiverType != null">
+      AND FIND_IN_SET(#{receiverType},a.receiver_type)
+    </if>
+    <if test="type != null and type != '' and type != 'NOTICE' ">
+        AND a.type != 'NOTICE'
+      <if test="type != 'NOTICE'">
+        AND a.type = #{type}
+      </if>
+    </if>
+    <if test="type != null and type != '' and type == 'NOTICE' ">
+      AND a.type = #{type}
+    </if>
+    ORDER BY a.priority DESC, publish_time DESC
+    LIMIT #{start}, #{numPerPage}
+  </select>
+
+  <select id="selectNoticeInfo" resultMap="BaseResultVOMap" parameterType="java.util.Map">
+    SELECT
+      a.id,a.subject,a.publish_time,a.type,a.content, a.summary
+    FROM `bs_sys_news` a
+    WHERE a.`status` = 'PUBLISHED' AND a.type = 'NOTICE'
+    <if test="receiverType !='' and receiverType != null">
+      AND FIND_IN_SET(#{receiverType},a.receiver_type)
+    </if>
+    ORDER BY a.priority DESC, publish_time DESC
+    LIMIT #{start}, #{numPerPage}
+  </select>
+
+  <select id="selectLatestNews" resultMap="BaseResultMap" parameterType="java.util.Map">
+    SELECT * FROM `bs_sys_news` a WHERE a.`status` = 'PUBLISHED'
+    AND FIND_IN_SET(#{receiverType},a.receiver_type)
+    AND a.type = #{type}
+    ORDER BY a.publish_time DESC LIMIT 1
+  </select>
+
+</mapper>

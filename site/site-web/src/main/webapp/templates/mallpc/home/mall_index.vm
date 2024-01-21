@@ -1,0 +1,134 @@
+#Html("begin")
+#GenHead("begin","互联网金融平台，互联网金融，币港湾，币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("【积分商城】币港湾-国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/index/default")
+#LoadGenCSS("/resources/mallpc/styles/mall_index/index")
+#GenHead("end")
+<body>
+
+    <input type="hidden" id="ROOT_PATH" value="$!env.getWebURL('')">
+    <input type="hidden" id="mobile" value="$!mobile">
+    <input type="hidden" id="userPoints" value="$!points">
+    #Mall2Header("mall")
+    <div class="mall_index">
+        <div class="container">
+
+            <div class="store_personal">
+                <div class="store_personal_top">
+                    <div class="store_personal_left store_banner"></div>
+                    #if($!isLogin == "YES")
+                        <div class="store_personal_right personal_center">
+                            <p class="integral_title">我的积分</p>
+                            <p class="integral_num">$!points</p>
+                            <div class="personal_button">
+                                #if($!isSign == "YES")
+                                    <a class="integral_button already_sigin">今日已签</a>
+                                #elseif($!isSign == "NO")
+                                    <a class="integral_button sigin">签到领积分</a>
+                                #end
+                            </div>
+                        </div>
+                    #else
+                        <div class="store_personal_right personal_center">
+                            <p class="integral_title">我的积分</p>
+                            <p class="integral_num">--</p>
+                            <div class="personal_button">
+                                <a class="integral_button go_login">登录</a>
+                                <p class="personal_tips">请登录查看您的积分</p>
+                            </div>
+                        </div>
+                    #end
+                </div>
+                <div class="store_personal_bottom">
+                    <div class="store_personal_left" style="padding-left: 20px;padding-top: 35px;">
+                        <div class="store_des go_register" style="cursor: pointer">
+                            <div class="store_des_ico"><img src="$!env.get('gen.server.web')/resources/mallpc/images/mall_index/icon_integral.png"></div>
+                            <div class="store_des_text">
+                                <p class="title" style="color:#ff6633;">注册币港湾</p>
+                                <p class="text">送积分</p>
+                            </div>
+                        </div>
+                        <div class="store_des" style="width: 20%">
+                            <div class="store_des_ico"><img src="$!env.get('gen.server.web')/resources/mallpc/images/mall_index/icon_sign.png"></div>
+                            <div class="store_des_text">
+                                <p class="title" style="color:#FFC33C;">天天签到</p>
+                                <p class="text">领积分</p>
+                            </div>
+                        </div>
+                        <div class="store_des go_list" style="cursor: pointer">
+                            <div class="store_des_ico"><img src="$!env.get('gen.server.web')/resources/mallpc/images/mall_index/icon_first.png"></div>
+                            <div class="store_des_text">
+                                <p class="title" style="color:#657BFF;">首次加入产品</p>
+                                <p class="text">赠积分</p>
+                            </div>
+                        </div>
+                        <div class="store_des go_list" style="cursor: pointer">
+                            <div class="store_des_ico"><img src="$!env.get('gen.server.web')/resources/mallpc/images/mall_index/icon_num.png"></div>
+                            <div class="store_des_text">
+                                <p class="title" style="color:#C787FF;">多次加入产品</p>
+                                <p class="text">赠积分</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="store_personal_right store_help">
+                        <div class="store_help_text">
+                            <p class="store_help_title">开心挣，轻松花！</p>
+                            <a class="store_help_link" href="javascript:void(0)">积分帮助</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="stores">
+                #if($!commList)
+                    #foreach($category in $!commList)
+                        <div class="store_category">
+                            <p class="store_category_title">$!category.commTypeName</p>
+                            <div class="store_list">
+                                #foreach($list in $!category.commInfoList)
+                                    <div class="store_card" data-id="$!list.id">
+                                        <div class="store_card_frame">
+                                            <div class="store_card_img" style="background-image: url($!env.get('gen.server.web')/resources/mallpc/images/mall_index/mall_product_null.png);">
+                                                <img src="$!env.getWebURL('')$!list.commPictureUrl">
+                                            </div>
+                                            <div class="store_card_text">
+                                                <p class="store_card_des">$!list.commName</p>
+                                                <p class="store_card_coast">$!money.format($!list.points).replace(".00","")积分</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                #end
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    #end
+                #else
+                    <div class="store_category">
+                        <div class="list_null">
+                            <img src="$!env.get('gen.server.web')/resources/mallpc/images/mall_index/icon_list_null.png">
+                            <p>暂无商品</p>
+                        </div>
+                    </div>
+                #end
+            </div>
+        </div>
+    </div>
+    <div class="cover_bg"></div>
+    <div class="diolog">
+        <div class="diolog_sigin">
+            <div class="diolog_top">
+                <span class="diolog_close"><img src="$!env.get('gen.server.web')/resources/mallpc/images/mall_index/icon_close.png"></span>
+                <p class="diolog_integral">积分<span id="signPoints">+2</span></p>
+            </div>
+            <div class="diolog_content">
+                <p class="diolog_text">恭喜你，已连续<span id="signDays">签到6天</span></p>
+                <p class="diolog_text">每连续签到满7天可获得更多积分</p>
+                <div class="diolog_button">
+                    <span class="diolog_close">知道了</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    #Gen2Footer()
+    #LoadGenJS("/resources/mallpc/scripts/mall_index/index")
+</body>
+#Html("end")

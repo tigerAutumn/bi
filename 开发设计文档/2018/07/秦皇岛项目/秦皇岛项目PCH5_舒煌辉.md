@@ -1,0 +1,290 @@
+## 秦皇岛项目PC/H5 ##
+- 代码开发分支：fr.20180716.qhd（business manage schedule site）
+
+
+### 一、数据准备和初始化 ###
+1. bs_agent表添加秦皇岛相关渠道
+<pre>
+-- 秦皇岛交通广播渠道
+INSERT INTO `bs_agent` (`id`, `agent_name`, `serial_id`, `agent_code`, `agent_pic`, `page_view_times`, `note`, `dept`, `agent_type`, `support_terminal`, `create_time`, `update_time`) VALUES ('51', '秦皇岛交通广播', NULL, 'FM521004', NULL, '0', NULL, '秦皇岛交通广播', 'SOLID', NULL, NOW(), NOW());
+-- 秦皇岛新闻891
+INSERT INTO `bs_agent` (`id`, `agent_name`, `serial_id`, `agent_code`, `agent_pic`, `page_view_times`, `note`, `dept`, `agent_type`, `support_terminal`, `create_time`, `update_time`) VALUES ('52', '秦皇岛新闻891', NULL, 'qhdxw891', NULL, '0', NULL, '秦皇岛新闻891', 'SOLID', NULL, NOW(), NOW());
+-- 秦皇岛电视台今日报道
+INSERT INTO `bs_agent` (`id`, `agent_name`, `serial_id`, `agent_code`, `agent_pic`, `page_view_times`, `note`, `dept`, `agent_type`, `support_terminal`, `create_time`, `update_time`) VALUES ('53', '秦皇岛电视台今日报道', NULL, 'QHDTVJRBD-8883333', NULL, '0', NULL, '秦皇岛电视台今日报道', 'SOLID', NULL, NOW(), NOW());
+-- 视听之友
+INSERT INTO `bs_agent` (`id`, `agent_name`, `serial_id`, `agent_code`, `agent_pic`, `page_view_times`, `note`, `dept`, `agent_type`, `support_terminal`, `create_time`, `update_time`) VALUES ('54', '视听之友', NULL, 'shitingzhiyou', NULL, '0', NULL, '视听之友', 'SOLID', NULL, NOW(), NOW());
+-- 1038私家车广播
+INSERT INTO `bs_agent` (`id`, `agent_name`, `serial_id`, `agent_code`, `agent_pic`, `page_view_times`, `note`, `dept`, `agent_type`, `support_terminal`, `create_time`, `update_time`) VALUES ('55', '1038私家车广播', NULL, 'sijiache1038', NULL, '0', NULL, '1038私家车广播', 'SOLID', NULL, NOW(), NOW());
+
+
+</pre>
+
+2. bs_agent_view_config表增加数据
+<pre>
+agent_id = 51	秦皇岛交通广播 qhd_jt（h5_qhd_jt）
+agent_id = 52	秦皇岛新闻891 qhd_xw（h5_qhd_xw）
+agent_id = 53	秦皇岛电视台今日报道 qhd_tv（h5_qhd_tv）
+agent_id = 54	视听之友 qhd_st（h5_qhd_st / pc_qhd_st）
+agent_id = 55	1038私家车广播 qhd_sjc（h5_qhd_sjc）
+
+H5-LOGO： `H5_KEY_LOGIN_IMG_546_74`		
+H5-注册文案： `H5_KEY_REGISTER_TITLE_TEXT`
+
+PC端登录图片： `PC_KEY_LOGIN_IMG_500_440`
+PC端logo： `PC_KEY_LOGO_IMG_400_54`
+PC端底部微信号二维码： `PC_KEY_BOTTOM_QR_IMG_118_118`
+PC端头部微信号二维码： `PC_KEY_TOP_QR_IMG_133_133`
+
+PC端侧栏浮动微信号二维码： `PC_KEY_RIGHT_FLOAT_QR_IMG_110_137`
+PC端注册图片： `PC_KEY_REGISTER_IMG_360_420`
+PC注册文案： `PC_KEY_PARTNER_4REGISTER`
+PC页面底部微信关注文案： `PC_BOTTOM_QR_TEXT`
+
+
+-- 1、秦皇岛交通广播渠道  H5
+INSERT INTO `bs_agent_view_config` (`view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('H5_KEY_LOGIN_IMG_546_74', '51', '/resources/micro2.0/images/qhd/jt/nav.png', 'H5端登陆页图片（360X420.jpg）', 'H5端登陆页图片（360X420.jpg）');
+INSERT INTO `bs_agent_view_config` (`view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('H5_KEY_REGISTER_TITLE_TEXT', '51', '币港湾&秦皇岛交通广播', 'H5端注册文案', 'H5端注册文案');
+INSERT INTO `bs_agent_view_config` (`id`, `view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('PC_KEY_PARTNER_4REGISTER', '51', '秦皇岛交通广播', 'PC注册文案', 'PC注册文案');
+
+
+-- 2、秦皇岛新闻891  H5
+INSERT INTO `bs_agent_view_config` (`view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('H5_KEY_LOGIN_IMG_546_74', '52', '/resources/micro2.0/images/qhd/xw/nav.png', 'H5端登陆页图片（360X420.jpg）', 'H5端登陆页图片（360X420.jpg）');
+INSERT INTO `bs_agent_view_config` (`view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('H5_KEY_REGISTER_TITLE_TEXT', '52', '币港湾&秦皇岛新闻891', 'H5端注册文案', 'H5端注册文案');
+INSERT INTO `bs_agent_view_config` (`id`, `view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('PC_KEY_PARTNER_4REGISTER', '52', '秦皇岛新闻891', 'PC注册文案', 'PC注册文案');
+
+-- 3、秦皇岛电视台今日报道  H5
+INSERT INTO `bs_agent_view_config` (`view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('H5_KEY_LOGIN_IMG_546_74', '53', '/resources/micro2.0/images/qhd/tv/nav.png', 'H5端登陆页图片（360X420.jpg）', 'H5端登陆页图片（360X420.jpg）');
+INSERT INTO `bs_agent_view_config` (`view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('H5_KEY_REGISTER_TITLE_TEXT', '53', '币港湾&秦皇岛电视台今日报道', 'H5端注册文案', 'H5端注册文案');
+INSERT INTO `bs_agent_view_config` (`id`, `view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('PC_KEY_PARTNER_4REGISTER', '53', '秦皇岛电视台今日报道', 'PC注册文案', 'PC注册文案');
+
+-- 4、视听之友
+-- （1）H5
+INSERT INTO `bs_agent_view_config` (`view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('H5_KEY_LOGIN_IMG_546_74', '54', '/resources/micro2.0/images/qhd/st/nav.png', 'H5端登陆页图片（360X420.jpg）', 'H5端登陆页图片（360X420.jpg）');
+INSERT INTO `bs_agent_view_config` (`view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('H5_KEY_REGISTER_TITLE_TEXT', '54', '币港湾&视听之友', 'H5端注册文案', 'H5端注册文案');
+
+-- （2）PC
+-- PC端logo
+INSERT INTO `bs_agent_view_config` (`view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('PC_KEY_LOGO_IMG_400_54', '54', '/resources/gen178/images/qhd/st/nav.png', 'PC端logo（400X54.png）', 'PC端logo（400X54.png）');
+-- PC端底部微信号二维码
+INSERT INTO `bs_agent_view_config` (`view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('PC_KEY_BOTTOM_QR_IMG_118_118', '54', '/resources/gen178/images/qhd/st/em.png', 'PC端底部微信号二维码（118X118.jpg）', 'PC端底部微信号二维码（118X118.jpg）');
+-- PC端头部微信号二维码
+INSERT INTO `bs_agent_view_config` (`view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('PC_KEY_TOP_QR_IMG_133_133', '54', '/resources/gen178/images/qhd/st/2wm.png', 'PC端头部微信号二维码（118X118.jpg）', 'PC端头部微信号二维码（118X118.jpg）');
+
+-- PC注册文案
+INSERT INTO `bs_agent_view_config` (`view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('PC_KEY_PARTNER_4REGISTER', '54', '视听之友', 'PC注册文案', 'PC注册文案');
+-- PC页面底部微信关注文案
+INSERT INTO `bs_agent_view_config` (`view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('PC_BOTTOM_QR_TEXT', '54', '微信关注视听之友', '微信关注文案', '微信关注文案');
+
+-- 5、1038私家车广播 
+INSERT INTO `bs_agent_view_config` (`view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('H5_KEY_LOGIN_IMG_546_74', '55', '/resources/micro2.0/images/qhd/sjc/nav.png', 'H5端登陆页图片（360X420.jpg）', 'H5端登陆页图片（360X420.jpg）');
+INSERT INTO `bs_agent_view_config` (`view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('H5_KEY_REGISTER_TITLE_TEXT', '55', '币港湾&1038私家车广播', 'H5端注册文案', 'H5端注册文案');
+INSERT INTO `bs_agent_view_config` (`id`, `view_key`, `agent_id`, `view_value`, `view_name`, `note`) VALUES ('PC_KEY_PARTNER_4REGISTER', '55', '1038私家车广播', 'PC注册文案', 'PC注册文案');
+
+6、 site添加bs_agent_view_config表数据对应的静态资源
+目录以及名称：
+/resources/gen178/images/<font color=#DC143C>qhd/渠道名称/nav.png</font>
+/resources/micro2.0/images/<font color=#DC143C>qhd/渠道名称/nav.png</font>
+
+</pre>
+
+
+
+### 二、设计 ###
+### 1. H5链接以及渠道的标志 ###
+<pre>
+秦皇岛交通广播渠道渠道链接：`https://m.bigangwan.com/micro2.0/*?qianbao=qianbao&agentViewFlag=51`
+标志优先级： bs_user.agent_id > cookie > 参数，非钱报非秦皇岛交通广播渠道渠道用户可以访问任何一个渠道网站。bs_user.agent_id的判断取值来自登录时获得并存入cookie的用户渠道。
+此处的qianbao=qianbao只作为标志是渠道链接，具体的渠道类型是agentViewFlag。
+</pre>
+
+### 2. 拦截器 PreURLInterceptor，保存agentViewFlag进入cookie：###
+<pre>
+1. 拦截所有micro2.0的带有参数`qianbao=qianbao`的链接
+2. cookie中获取agentViewFlag信息。
+String viewAgentFlagCookie = cookie.getValue(CookieEnums._VIEW.getName(), CookieEnums._VIEW_AGENT_FLAG.getName(), true);
+1. 用户未登录
+	1. viewAgentFlagCookie 没有值，直接获取链接中agentViewFlag参数，查询bs_agent_view_config中是否存在该渠道
+		存在，根据agentViewFlag参数，保存cookie。
+		不存在，则默认钱报178，保存cookie
+		若链接中没有agentViewFlag参数，则默认为钱报178
+	2. viewAgentFlagCookie 有值，获取链接中agentViewFlag参数，查询bs_agent_view_config中是否存在该渠道
+		存在，根据agentViewFlag参数，保存cookie
+		不存在，则保持viewAgentFlagCookie不变
+		若链接中没有agentViewFlag参数，则保持viewAgentFlagCookie不变
+2. 用户已登录
+	1. viewAgentFlagCookie没有值，判断登录时cookie中保存的用户agentId
+		1. 如果是钱报或者秦皇岛交通广播渠道用户，保存对应用户渠道入cookie
+		2. 用户不是钱报和秦皇岛交通广播渠道用户，判断链接参数agentViewFlag是否为秦皇岛交通广播渠道或者钱报渠道
+			1. 是：根据agentViewFlag参数，保存cookie
+			2. 不是，则默认钱报178，保存cookie
+			若链接中没有agentViewFlag参数，则默认为钱报178
+	2. viewAgentFlagCookie有值，判断登录时cookie中保存的用户agentId
+		1. 如果是钱报或者秦皇岛交通广播渠道用户，保存对应用户渠道入cookie
+		2. 用户不是钱报和秦皇岛交通广播渠道用户，判断链接参数agentViewFlag是否为秦皇岛交通广播渠道或者钱报渠道
+			1. 是：根据agentViewFlag参数，保存cookie。
+			2. 不是：cookie保持不变
+			若链接中没有agentViewFlag参数，则保持viewAgentFlagCookie不变
+3. 因为只有视听之友有PC端入口，gen178打开的链接需添加错误页（公用的404页面）判断  agentViewSaveCookiePC178() 
+<font color=#0000FF>采用枚举的方式，枚举类AgentViewIdEnum</font>；
+如果agentViewFlag = 51 || viewAgentFlagCookie = 51
+agentViewFlag = 52 || viewAgentFlagCookie = 52
+agentViewFlag = 53 || viewAgentFlagCookie = 53
+agentViewFlag = 55 || viewAgentFlagCookie = 55
+都进入错误页
+</pre>
+
+### 3、对应的场景 PC/H5 ###
+<pre>
+1. 钱报用户访问秦皇岛交通广播渠道链接：显示钱报信息
+2. 秦皇岛交通广播渠道用户访问钱报链接：显示秦皇岛交通广播渠道信息
+3. 秦皇岛交通广播渠道用户访问官网：显示官网
+4. 其他渠道用户访问秦皇岛交通广播渠道链接：显示秦皇岛交通广播渠道信息
+5. 币港湾用户访问秦皇岛交通广播渠道链接：显示秦皇岛交通广播渠道信息
+6. 未登录用户访问秦皇岛交通广播渠道链接：显示秦皇岛交通广播渠道信息
+</pre>
+
+### 4. 首页banner根据渠道标志查询秦皇岛交通广播渠道展示端口的banner ###
+</pre>
+首页头部header中微信二维码，在macros.vm，添加agentViewFlag=54视听之友的判断；
+
+首页Controller：IndexDispatchController 添加秦皇岛交通广播渠道渠道（agentViewFlag）的判断查询对应channelType()
+<font color=#0000FF>动态获取优化</font>；
+
+</pre>
+
+### 5. 首页产品列表数据、产品列表页面根据渠道标志查询展示终端是秦皇岛交通广播渠道的产品（展示规则，同钱报） ###
+</pre>
+首页Controller：IndexDispatchController 添加秦皇岛交通广播渠道渠道（agentViewFlag）的判断查询对应的产品：H5_QHD_JT。
+</pre> 	
+
+### 6. 购买完成页面——文案调整，涉及渠道方信息的，修改为秦皇岛交通广播渠道 ###
+</pre>
+微信号修改为：FM521004
+购买成功页面：regular/buy_product_success.vm
+</pre>
+
+### 7. PC平台公告\公司动态\公司动态\湾粉活动 只查询秦皇岛交通广播渠道相关公告 ###
+<pre>
+PC PlatformController
+平台公告 noticeInfo()；
+公司动态 companyDynamics();
+媒体报道 newsList()
+湾粉活动 wfansActivity()；
+
+接收类型 recieverType()
+
+</pre>
+
+### 8. H5平台公告\港湾资讯 只查询秦皇岛交通广播渠道相关内容 ###
+<pre>
+PlatformController
+链接：micro2.0/platform/noticeInfo/index
+PlatformController添加秦皇岛交通广播渠道渠道（agentViewFlag）的判断查询对应的公告 
+
+链接：micro2.0/platform/gw_info/index
+PlatformController添加秦皇岛交通广播渠道渠道（agentViewFlag）的判断查询对应的公告
+</pre>
+
+### 9. 登录、注册、忘记密码页面的logo和文案 ###
+<pre>
+页面通过`$!agentView.getView($!agentViewFlag).get('H5_KEY_REGISTER_TITLE_TEXT')` 获取H5的文案
+页面通过`$!agentView.getView($!agentViewFlag).get('H5_KEY_LOGIN_IMG_546_74')` 获取H5的LOGO
+
+忘记密码页面
+micro2.0/user/forget_password_second.vm
+注册页面
+micro2.0/user/register_second_index.vm.vm
+</pre>
+
+### 10. 登录 ###
+<pre>
+登录成功，如果是秦皇岛交通广播渠道或者钱报用户，则存入cookie
+
+UserLoginOutController 退出，清除cokkie
+
+manager.setValue(CookieEnums._VIEW.getName(), CookieEnums._VIEW_AGENT_FLAG.getName(), agent_view_id, true);
+manager.save(response, CookieEnums._VIEW.getName(), null, "/", -1, true);
+</pre>
+
+### 11. 注册 ###
+<pre>
+UserRegisterController 
+
+
+-- 注册页面一：币港湾渠道用户使用此页面
+https://m.bigangwan.com/micro2.0/user/register_first_new_index?qianbao=qianbao&agentViewFlag=51
+-- 注册页面二：所有渠道都进这个页面。渠道，则带参数进入
+https://m.bigangwan.com/micro2.0/user/register_second_index?qianbao=qianbao&agentViewFlag=51
+
+
+注册访问链接为：`/micro2.0/user/register_first_new_index?qianbao=qianbao&agentViewFlag=51`。
+1. UserRegisterController中判断渠道是否为秦皇岛交通广播渠道渠道，如果是秦皇岛交通广播渠道渠道，则在该页面中加上qianbao=qianbao，agentViewFlag=51的参数
+2. 注册成功的跳转页面也要带上qianbao=qianbao，agentViewFlag=51的参数
+</pre>
+
+
+### 12、PC前端修改点 ###
+<pre>
+1. 首页，banner管理，精选产品（新手标）、平台相关（平台公告、运营公告、公司动态、媒体报道、湾粉活动）需要管理台添加秦皇岛交通广播渠道终端。
+<font color=#DC143C>首页页面底部的合作伙伴 是否需要修改？</font><font color=#0000FF>跟产品确认不修改</font>
+2. 产品列表-秦皇岛交通广播渠道产品列表链接只查询展示终端是秦皇岛交通广播渠道的产品 —— 需要管理台添加新的展示终端
+3. 安全保障不变
+4. 信息披露-承诺函 不变；
+5. 信息披露-监管信息-渠道信息：<font color=#DC143C>渠道信息页面添加秦皇岛相关？</font><font color=#0000FF>跟产品确认不修改</font>；
+6. 信息披露-平台实况：<font color=#DC143C>平台公告展示视听之友渠道终端的数据</font>；
+7. 信息披露-港湾资讯：<font color=#DC143C>公司动态、媒体报道、湾粉活动展示视听之友渠道终端的数据</font>；
+8. 关于我们-平台简介 不变；
+9. 关于我们-发展历程 不变；
+10. 关于我们-荣誉资质 不变；
+11. 关于我们-合作伙伴 <font color=#DC143C>合作伙伴 是否需要修改？</font><font color=#0000FF>跟产品确认不修改</font>；
+12. 关于我们-联系我们 不变；
+13. 关于我们-帮助中心 不变；
+14. 登录页面，页面头尾侧面logo变成秦皇岛交通广播渠道logo，通过 bs_agent_view_config 控制
+15. 忘记密码页面，页面头尾侧面logo变成秦皇岛交通广播渠道logo
+15. 注册页面：1. 页面头尾侧面logo变成秦皇岛交通广播渠道logo；2. 标题栏以及合作方改为秦皇岛交通广播渠道；
+16. 我的账户-账户总览 不变；
+17. 我的账户-计划管理 不变；
+18. 我的账户-回款计划 不变；
+19. 我的账户-交易明细 不变；
+20. 我的账户-优惠券 不变；
+21. 我的账户-银行卡 不变；
+22. 我的账户-安全中心 不变；
+23. 分享相关；
+
+<font color=#DC143C>补充：</font>
+24. 代理渠道展示配置表bs_agent_view_config，配置了对应渠道的图片、文案信息后，还有几个页面需要单独修改，添加对应渠道的判断；
+<1>宏文件 Gen178Header 中添加渠道二维码的判断；
+macros.vm 
+<2>注册二级页面logo图片修改；
+micro2.0/user/register_second_index.vm
+<3>忘记密码一级页面logo图片修改；
+micro2.0/user/forget_password_first.vm
+<4>忘记密码二级页面logo图片修改；
+micro2.0/user/forget_password_second.vm
+25. 产品列表页，注册/登录/忘记密码添加“网站图片”；
+此处有一个线上bug，现在注册/登录/忘记密码页面的图片，取的均是钱报渠道的banner图片；
+26. PC积分商城banner落地页添加渠道二维码的判断；
+https://www.bigangwan.com/gen178/mallStatic/mall_landing_pagepcqb?agentViewFlag=54
+</font><font color=#0000FF>注：新加渠道端，首页配置的banner链接地址，需检查页面中是否涉到渠道的判断；</font>
+27. IndexDispatchController、PlatformController、RegularController中以及Controller中调用的查询数据查询服务，渠道写了较长的条件判断，建议宽裕的时间优化；
+
+</pre>
+
+### 13、H5前端修改点 ###
+<pre>
+1. banner管理，需要管理台添加秦皇岛交通广播渠道终端。首页需要专门的banner查询。
+2. 平台数据不动
+3. 安全保障不动
+4. 秦皇岛交通广播渠道产品列表链接只查询展示终端是秦皇岛交通广播渠道的产品 —— 需要管理台添加新的展示终端
+5. 登录页面，logo变成秦皇岛交通广播渠道logo   》 通过 bs_agent_view_config 控制
+6. 注册页面：1. logo变成秦皇岛交通广播渠道logo；2. 标题栏以及合作方改为秦皇岛交通广播渠道；3. 邀请码不默认写死，店主引导客户填写。如果填了秦皇岛交通广播渠道店主邀请码，就属于秦皇岛交通广播渠道渠道用户。如果没有填写，就属于币港湾的默认邀请码注册用户（非秦皇岛交通广播渠道渠道）
+7. 找回密码页面，logo变成秦皇岛交通广播渠道logo   》 通过 bs_agent_view_config 控制
+8. 购买完成页面——文案调整，设计渠道方信息的，修改为秦皇岛交通广播渠道
+9. 账户中心（同钱报系）
+	充值、提现、当日收益、累计产品收益、资产总计、存管账户余额、我的红包、回款计划、计划管理、交易明细、银行卡、安全中心
+10. 更多（同钱报系）
+	静态图、关于我们、平台公告（只查询秦皇岛交通广播渠道公告）、帮助中心、港湾资讯（只查询秦皇岛交通广播渠道公告）、风险测评、意见反馈、联系我们、在线客服
+
+</pre>
+
+

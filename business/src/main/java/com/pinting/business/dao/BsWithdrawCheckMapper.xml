@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsWithdrawCheckMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsWithdrawCheck" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="terminal_type" property="terminalType" jdbcType="INTEGER" />
+    <result column="trans_detail_id" property="transDetailId" jdbcType="INTEGER" />
+    <result column="sub_trans_detail_id" property="subTransDetailId" jdbcType="INTEGER" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="clearing_mark" property="clearingMark" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="check_time" property="checkTime" jdbcType="TIMESTAMP" />
+    <result column="execution_time" property="executionTime" jdbcType="TIMESTAMP" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="m_user_id" property="mUserId" jdbcType="INTEGER" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, terminal_type, trans_detail_id, sub_trans_detail_id, amount, status,
+    clearing_mark, create_time, check_time, execution_time, order_no, m_user_id, note
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsWithdrawCheckExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from bs_withdraw_check
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from bs_withdraw_check
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_withdraw_check
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsWithdrawCheckExample" >
+    delete from bs_withdraw_check
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsWithdrawCheck" >
+    insert into bs_withdraw_check (id, user_id, terminal_type,
+    trans_detail_id, sub_trans_detail_id, amount,
+    status, clearing_mark, create_time,
+    check_time, execution_time, order_no,
+    m_user_id, note)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{terminalType,jdbcType=INTEGER},
+    #{transDetailId,jdbcType=INTEGER}, #{subTransDetailId,jdbcType=INTEGER}, #{amount,jdbcType=DOUBLE},
+    #{status,jdbcType=VARCHAR}, #{clearingMark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+    #{checkTime,jdbcType=TIMESTAMP}, #{executionTime,jdbcType=TIMESTAMP}, #{orderNo,jdbcType=VARCHAR},
+    #{mUserId,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsWithdrawCheck" useGeneratedKeys="true" keyProperty="id">
+    insert into bs_withdraw_check
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="terminalType != null" >
+        terminal_type,
+      </if>
+      <if test="transDetailId != null" >
+        trans_detail_id,
+      </if>
+      <if test="subTransDetailId != null" >
+        sub_trans_detail_id,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="clearingMark != null" >
+        clearing_mark,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="checkTime != null" >
+        check_time,
+      </if>
+      <if test="executionTime != null" >
+        execution_time,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="mUserId != null" >
+        m_user_id,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="terminalType != null" >
+        #{terminalType,jdbcType=INTEGER},
+      </if>
+      <if test="transDetailId != null" >
+        #{transDetailId,jdbcType=INTEGER},
+      </if>
+      <if test="subTransDetailId != null" >
+        #{subTransDetailId,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="clearingMark != null" >
+        #{clearingMark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkTime != null" >
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="executionTime != null" >
+        #{executionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mUserId != null" >
+        #{mUserId,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsWithdrawCheckExample" resultType="java.lang.Integer" >
+    select count(*) from bs_withdraw_check
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_withdraw_check
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.terminalType != null" >
+        terminal_type = #{record.terminalType,jdbcType=INTEGER},
+      </if>
+      <if test="record.transDetailId != null" >
+        trans_detail_id = #{record.transDetailId,jdbcType=INTEGER},
+      </if>
+      <if test="record.subTransDetailId != null" >
+        sub_trans_detail_id = #{record.subTransDetailId,jdbcType=INTEGER},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clearingMark != null" >
+        clearing_mark = #{record.clearingMark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.checkTime != null" >
+        check_time = #{record.checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.executionTime != null" >
+        execution_time = #{record.executionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orderNo != null" >
+        order_no = #{record.orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mUserId != null" >
+        m_user_id = #{record.mUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_withdraw_check
+    set id = #{record.id,jdbcType=INTEGER},
+    user_id = #{record.userId,jdbcType=INTEGER},
+    terminal_type = #{record.terminalType,jdbcType=INTEGER},
+    trans_detail_id = #{record.transDetailId,jdbcType=INTEGER},
+    sub_trans_detail_id = #{record.subTransDetailId,jdbcType=INTEGER},
+    amount = #{record.amount,jdbcType=DOUBLE},
+    status = #{record.status,jdbcType=VARCHAR},
+    clearing_mark = #{record.clearingMark,jdbcType=VARCHAR},
+    create_time = #{record.createTime,jdbcType=TIMESTAMP},
+    check_time = #{record.checkTime,jdbcType=TIMESTAMP},
+    execution_time = #{record.executionTime,jdbcType=TIMESTAMP},
+    order_no = #{record.orderNo,jdbcType=VARCHAR},
+    m_user_id = #{record.mUserId,jdbcType=INTEGER},
+    note = #{record.note,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsWithdrawCheck" >
+    update bs_withdraw_check
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="terminalType != null" >
+        terminal_type = #{terminalType,jdbcType=INTEGER},
+      </if>
+      <if test="transDetailId != null" >
+        trans_detail_id = #{transDetailId,jdbcType=INTEGER},
+      </if>
+      <if test="subTransDetailId != null" >
+        sub_trans_detail_id = #{subTransDetailId,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="clearingMark != null" >
+        clearing_mark = #{clearingMark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkTime != null" >
+        check_time = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="executionTime != null" >
+        execution_time = #{executionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mUserId != null" >
+        m_user_id = #{mUserId,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsWithdrawCheck" >
+    update bs_withdraw_check
+    set user_id = #{userId,jdbcType=INTEGER},
+    terminal_type = #{terminalType,jdbcType=INTEGER},
+    trans_detail_id = #{transDetailId,jdbcType=INTEGER},
+    sub_trans_detail_id = #{subTransDetailId,jdbcType=INTEGER},
+    amount = #{amount,jdbcType=DOUBLE},
+    status = #{status,jdbcType=VARCHAR},
+    clearing_mark = #{clearingMark,jdbcType=VARCHAR},
+    create_time = #{createTime,jdbcType=TIMESTAMP},
+    check_time = #{checkTime,jdbcType=TIMESTAMP},
+    execution_time = #{executionTime,jdbcType=TIMESTAMP},
+    order_no = #{orderNo,jdbcType=VARCHAR},
+    m_user_id = #{mUserId,jdbcType=INTEGER},
+    note = #{note,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <resultMap id="WithdrawCheckVOResultMap" type="com.pinting.business.model.vo.BsWithdrawCheckVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="terminal_type" property="terminalType" jdbcType="INTEGER" />
+    <result column="trans_detail_id" property="transDetailId" jdbcType="INTEGER" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="check_time" property="checkTime" jdbcType="TIMESTAMP" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="m_user_id" property="mUserId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="m_user_name" property="mUserName" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectWithdrawCheckByMobileAndUserNameAndStatus" parameterType="java.util.Map" resultMap="WithdrawCheckVOResultMap" >
+    SELECT a.id, a.user_id, a.m_user_id, a.amount, a.`status`, a.note, a.create_time, a.check_time, b.user_name, b.mobile, c.`name` AS m_user_name
+    FROM bs_withdraw_check a
+    LEFT JOIN bs_user b ON a.user_id = b.id
+    LEFT JOIN m_user c ON a.m_user_id = c.id
+    <where>
+      <if test="userName != null and userName != ''">
+        AND b.user_name LIKE CONCAT('%',#{userName},'%')
+      </if>
+      <if test="mobile != null and mobile != ''">
+        AND b.mobile LIKE CONCAT('%',#{mobile},'%')
+      </if>
+      <if test="status != null and status != ''">
+        <if test="status != 'ALL'">
+          AND a.`status` = #{status}
+        </if>
+      </if>
+    </where>
+    ORDER BY a.create_time DESC
+    LIMIT #{start}, #{numPerPage}
+  </select>
+
+  <select id="countWithdrawCheckByMobileAndUserNameAndStatus" parameterType="java.util.Map" resultType="java.lang.Integer" >
+    SELECT COUNT(a.id)
+    FROM bs_withdraw_check a
+    LEFT JOIN bs_user b ON a.user_id = b.id
+    LEFT JOIN m_user c ON a.m_user_id = c.id
+    <where>
+      <if test="userName != null and userName != ''">
+        AND b.user_name LIKE CONCAT('%',#{userName},'%')
+      </if>
+      <if test="mobile != null and mobile != ''">
+        AND b.mobile LIKE CONCAT('%',#{mobile},'%')
+      </if>
+      <if test="status != null and status != ''">
+        <if test="status != 'ALL'">
+          AND a.`status` = #{status}
+        </if>
+      </if>
+    </where>
+  </select>
+</mapper>

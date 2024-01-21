@@ -1,0 +1,1 @@
+jsonpCallback[2]({"code": "1", "result": "true", "version": "2.0-2.0.5084.1351", "timestamp": "1427440378.21", "message": "Successful.", "share_id": "7945828"});

@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsBankCardMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsBankCard" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="card_no" property="cardNo" jdbcType="VARCHAR" />
+    <result column="card_owner" property="cardOwner" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="bank_id" property="bankId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="is_first" property="isFirst" jdbcType="INTEGER" />
+    <result column="bind_time" property="bindTime" jdbcType="TIMESTAMP" />
+    <result column="unbind_time" property="unbindTime" jdbcType="TIMESTAMP" />
+    <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+    <result column="sub_branch_name" property="subBranchName" jdbcType="VARCHAR" />
+    <result column="open_province_id" property="openProvinceId" jdbcType="INTEGER" />
+    <result column="open_city_id" property="openCityId" jdbcType="INTEGER" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="BankCardResultMap" type="com.pinting.business.model.vo.BsBankCardVO" extends="BaseResultMap">
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="card_no" property="cardNo" jdbcType="VARCHAR" />
+    <result column="card_owner" property="cardOwner" jdbcType="VARCHAR" />
+    <result column="bank_id" property="bankId" jdbcType="INTEGER" />
+    <result column="sub_branch_name" property="subBranchName" jdbcType="VARCHAR" />
+    <result column="city_name" property="cityName" jdbcType="VARCHAR" />
+    <result column="province_name" property="provinceName" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="obligate_mobile" property="obligateMobile" jdbcType="VARCHAR" />
+    <result column="receipt_no" property="receiptNo" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap type="com.pinting.business.model.vo.BsBindBankVO" id="BindBankResultMap" extends="BaseResultMap">
+  	<id column="id" property="id" jdbcType="INTEGER" />
+  	<result column="one_top" property="oneTop" jdbcType="DOUBLE" />
+    <result column="day_top" property="dayTop" jdbcType="DOUBLE" />
+    <result column="month_top" property="monthTop" jdbcType="DOUBLE" />
+    <result column="is_available" property="isAvailable" jdbcType="INTEGER" />
+    <result column="forbidden_start" property="forbiddenStart" jdbcType="TIMESTAMP" />
+    <result column="forbidden_end" property="forbiddenEnd" jdbcType="TIMESTAMP" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="small_logo" property="smallLogo" jdbcType="VARCHAR" />
+    <result column="large_logo" property="largeLogo" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="daily_notice" property="dailyNotice" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, card_no, card_owner, id_card, mobile, bank_id, status, is_first, bind_time, 
+    unbind_time, bank_name, sub_branch_name, open_province_id, open_city_id, note
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsBankCardExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_bank_card
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_bank_card
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_bank_card
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsBankCardExample" >
+    delete from bs_bank_card
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsBankCard" >
+    insert into bs_bank_card (id, user_id, card_no, 
+      card_owner, id_card, mobile, 
+      bank_id, status, is_first, 
+      bind_time, unbind_time, bank_name, 
+      sub_branch_name, open_province_id, open_city_id, 
+      note)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{cardNo,jdbcType=VARCHAR}, 
+      #{cardOwner,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{bankId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{isFirst,jdbcType=INTEGER}, 
+      #{bindTime,jdbcType=TIMESTAMP}, #{unbindTime,jdbcType=TIMESTAMP}, #{bankName,jdbcType=VARCHAR}, 
+      #{subBranchName,jdbcType=VARCHAR}, #{openProvinceId,jdbcType=INTEGER}, #{openCityId,jdbcType=INTEGER}, 
+      #{note,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsBankCard" useGeneratedKeys="true" keyProperty="id">
+    insert into bs_bank_card
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="cardNo != null" >
+        card_no,
+      </if>
+      <if test="cardOwner != null" >
+        card_owner,
+      </if>
+      <if test="idCard != null" >
+        id_card,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="bankId != null" >
+        bank_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isFirst != null" >
+        is_first,
+      </if>
+      <if test="bindTime != null" >
+        bind_time,
+      </if>
+      <if test="unbindTime != null" >
+        unbind_time,
+      </if>
+      <if test="bankName != null" >
+        bank_name,
+      </if>
+      <if test="subBranchName != null" >
+        sub_branch_name,
+      </if>
+      <if test="openProvinceId != null" >
+        open_province_id,
+      </if>
+      <if test="openCityId != null" >
+        open_city_id,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="cardNo != null" >
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cardOwner != null" >
+        #{cardOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="bankId != null" >
+        #{bankId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isFirst != null" >
+        #{isFirst,jdbcType=INTEGER},
+      </if>
+      <if test="bindTime != null" >
+        #{bindTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="unbindTime != null" >
+        #{unbindTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bankName != null" >
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="subBranchName != null" >
+        #{subBranchName,jdbcType=VARCHAR},
+      </if>
+      <if test="openProvinceId != null" >
+        #{openProvinceId,jdbcType=INTEGER},
+      </if>
+      <if test="openCityId != null" >
+        #{openCityId,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsBankCardExample" resultType="java.lang.Integer" >
+    select count(*) from bs_bank_card
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_bank_card
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cardNo != null" >
+        card_no = #{record.cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardOwner != null" >
+        card_owner = #{record.cardOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCard != null" >
+        id_card = #{record.idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null" >
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankId != null" >
+        bank_id = #{record.bankId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.isFirst != null" >
+        is_first = #{record.isFirst,jdbcType=INTEGER},
+      </if>
+      <if test="record.bindTime != null" >
+        bind_time = #{record.bindTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.unbindTime != null" >
+        unbind_time = #{record.unbindTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.bankName != null" >
+        bank_name = #{record.bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subBranchName != null" >
+        sub_branch_name = #{record.subBranchName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.openProvinceId != null" >
+        open_province_id = #{record.openProvinceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.openCityId != null" >
+        open_city_id = #{record.openCityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_bank_card
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      card_no = #{record.cardNo,jdbcType=VARCHAR},
+      card_owner = #{record.cardOwner,jdbcType=VARCHAR},
+      id_card = #{record.idCard,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      bank_id = #{record.bankId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      is_first = #{record.isFirst,jdbcType=INTEGER},
+      bind_time = #{record.bindTime,jdbcType=TIMESTAMP},
+      unbind_time = #{record.unbindTime,jdbcType=TIMESTAMP},
+      bank_name = #{record.bankName,jdbcType=VARCHAR},
+      sub_branch_name = #{record.subBranchName,jdbcType=VARCHAR},
+      open_province_id = #{record.openProvinceId,jdbcType=INTEGER},
+      open_city_id = #{record.openCityId,jdbcType=INTEGER},
+      note = #{record.note,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsBankCard" >
+    update bs_bank_card
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="cardNo != null" >
+        card_no = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cardOwner != null" >
+        card_owner = #{cardOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="bankId != null" >
+        bank_id = #{bankId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isFirst != null" >
+        is_first = #{isFirst,jdbcType=INTEGER},
+      </if>
+      <if test="bindTime != null" >
+        bind_time = #{bindTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="unbindTime != null" >
+        unbind_time = #{unbindTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bankName != null" >
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="subBranchName != null" >
+        sub_branch_name = #{subBranchName,jdbcType=VARCHAR},
+      </if>
+      <if test="openProvinceId != null" >
+        open_province_id = #{openProvinceId,jdbcType=INTEGER},
+      </if>
+      <if test="openCityId != null" >
+        open_city_id = #{openCityId,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsBankCard" >
+    update bs_bank_card
+    set user_id = #{userId,jdbcType=INTEGER},
+      card_no = #{cardNo,jdbcType=VARCHAR},
+      card_owner = #{cardOwner,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      bank_id = #{bankId,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      is_first = #{isFirst,jdbcType=INTEGER},
+      bind_time = #{bindTime,jdbcType=TIMESTAMP},
+      unbind_time = #{unbindTime,jdbcType=TIMESTAMP},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      sub_branch_name = #{subBranchName,jdbcType=VARCHAR},
+      open_province_id = #{openProvinceId,jdbcType=INTEGER},
+      open_city_id = #{openCityId,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateBankCardByUserIdAndCardNo" parameterType="com.pinting.business.model.BsBankCard" >
+    update bs_bank_card
+    <set >
+      <if test="cardOwner != null" >
+        card_owner = #{cardOwner,jdbcType=VARCHAR},
+      </if>
+      <if test="bankId != null" >
+        bank_id = #{bankId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isFirst != null" >
+        is_first = #{isFirst,jdbcType=INTEGER},
+      </if>
+      <if test="bindTime != null" >
+        bind_time = #{bindTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="unbindTime != null" >
+        unbind_time = #{unbindTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bankName != null" >
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="subBranchName != null" >
+        sub_branch_name = #{subBranchName,jdbcType=VARCHAR},
+      </if>
+      <if test="openProvinceId != null" >
+        open_province_id = #{openProvinceId,jdbcType=INTEGER},
+      </if>
+      <if test="openCityId != null" >
+        open_city_id = #{openCityId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where 
+    	user_id =#{userId} and
+		card_no=#{cardNo}
+  </update>
+  
+  <select id="selectBankCardBindInfoByUserIdAndCardNo" resultMap="BankCardResultMap" parameterType="java.lang.Integer" >
+    select 
+    	a.user_id, 
+    	a.card_no, 
+    	a.card_owner,
+    	a.bank_name as name,
+    	a.sub_branch_name, 
+    	b.pca_name as city_name, 
+    	c.pca_name as province_name
+	from bs_bank_card a 
+		LEFT JOIN  bs_p_c_a b 
+		on a.open_city_id = b.id 
+		LEFT JOIN bs_p_c_a c 
+		on b.parent_id=c.id 
+	where 
+		a.user_id =#{userId} and
+		a.card_no=#{cardNo}
+  </select>
+  
+  <sql id="Base_CardUser_List" >
+    <if test="cardOwner !=null and cardOwner != ''">   
+       and card_owner like CONCAT(CONCAT('%', #{cardOwner}),'%')    
+    </if>
+    <if test="mobile !=null and mobile != ''">   
+       and u.mobile like CONCAT(CONCAT('%', #{mobile}),'%')    
+    </if>
+    <if test="obligateMobile !=null and obligateMobile != ''">   
+       and b.mobile like CONCAT(CONCAT('%', #{obligateMobile}),'%')    
+    </if>
+    <if test="idCard !=null and idCard != ''">   
+       and b.id_card like CONCAT(CONCAT('%', #{idCard}),'%')   
+    </if>
+    <if test="cardNo !=null and cardNo != ''">   
+       and b.card_no like CONCAT(CONCAT('%', #{cardNo}),'%')    
+    </if> 
+    <if test="bankId != null and bankId != 0" >
+        and b.bank_id = #{bankId,jdbcType=INTEGER}
+    </if>
+    <if test="status != null and status != ''" >
+        and b.status = #{status,jdbcType=INTEGER}
+    </if>
+    <if test="isFirst != null and isFirst != ''" >
+        and b.is_first = #{isFirst,jdbcType=INTEGER}
+    </if>
+  </sql>
+  
+  <select id="bankCardUserCount" parameterType="com.pinting.business.model.vo.BsBankCardVO" resultType="java.lang.Integer" >
+    SELECT COUNT(*) FROM bs_bank_card AS b LEFT JOIN bs_user AS u ON b.user_id = u.id WHERE 1 =1
+    <include refid="Base_CardUser_List" />
+  </select>
+
+  <select id="bankCardUserPage" resultMap="BankCardResultMap" parameterType="com.pinting.business.model.vo.BsBankCardVO" >
+    SELECT
+    b.id, b.user_id, b.card_no, b.card_owner, b.bank_id, b.status, b.is_first, b.bind_time, b.unbind_time,
+    b.bank_name, b.sub_branch_name, b.open_province_id, b.open_city_id,b.mobile as obligate_mobile,u.mobile,b.id_card, NULL AS receipt_no
+    FROM bs_bank_card AS b LEFT JOIN bs_user AS u ON b.user_id = u.id  where 1 = 1
+    <include refid="Base_CardUser_List" />
+    GROUP BY b.id
+    ORDER BY b.bind_time desc
+    <include refid="sql-global.pagination"/>
+  </select>
+  <select id="groupByBankName" parameterType="com.pinting.business.model.vo.BsBankCardVO" resultMap="BankCardResultMap" >
+     SELECT bank_name FROM bs_bank_card GROUP BY bank_name
+  </select>
+  <resultMap id="BankCardVOResultMap" type="com.pinting.business.model.vo.BankCardVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="card_no" property="cardNo" jdbcType="VARCHAR" />
+    <result column="card_owner" property="cardOwner" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="bank_id" property="bankId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="is_first" property="isFirst" jdbcType="INTEGER" />
+    <result column="bind_time" property="bindTime" jdbcType="TIMESTAMP" />
+    <result column="unbind_time" property="unbindTime" jdbcType="TIMESTAMP" />
+    <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+    <result column="sub_branch_name" property="subBranchName" jdbcType="VARCHAR" />
+    <result column="open_province_id" property="openProvinceId" jdbcType="INTEGER" />
+    <result column="open_city_id" property="openCityId" jdbcType="INTEGER" />
+    <result column="small_logo" property="smallLogo" jdbcType="VARCHAR" />
+    <result column="large_logo" property="largeLogo" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectBankCardVOByStatusAndUserId" parameterType="map" resultMap="BankCardVOResultMap" >
+     SELECT c.*, b.small_logo, b.large_logo FROM bs_bank_card c, bs_bank b 
+     WHERE c.bank_id = b.id AND c.user_id = #{userId}
+     <if test="status != null">
+     	AND c.status = #{status}
+     </if>
+     ORDER BY c.status
+  </select>
+  
+  <select id="selectBindBankList" resultMap="BindBankResultMap">
+	SELECT
+		b.id,
+		b.user_id,
+		b.mobile,
+		b.bank_id,
+		b.card_no,
+		b.is_first,
+		p.one_top,
+		p.day_top,
+		p.month_top,
+		p.is_available,
+		p.forbidden_start,
+		p.forbidden_end,
+		s.name bank_name,
+		s.large_logo,
+		s.small_logo,
+		u.user_name,
+		u.id_card,
+		p.daily_notice
+	FROM
+		bs_19pay_bank p,
+		bs_bank_card b,
+		bs_bank s,
+		bs_user u
+	WHERE
+		b.user_id = #{userId}
+	AND b.user_id = u.id
+	AND u.status in(1, 4)
+	AND b.status = 1
+	<if test="bankId != null">
+	AND b.bank_id = #{bankId}
+	</if>
+	AND b.bank_id = p.bank_id
+	AND p.pay_type = #{payType}
+	AND p.is_main = 1
+	AND s.id = b.bank_id
+    AND p.channel = 'HFBANK'
+	ORDER BY
+		b.bind_time desc
+  </select>
+  
+  <select id="selectDefaultBank" resultMap="BindBankResultMap">
+  	SELECT
+		b.bank_id,
+		b.card_no,
+		b.mobile,
+		p.one_top,
+		p.day_top,
+		b.is_first,
+		s.name bank_name,
+		u.user_name,
+		u.id_card,
+		p.daily_notice
+	FROM
+		bs_user u,
+		bs_bank_card b,
+		bs_19pay_bank p,
+		bs_bank s
+	WHERE
+		u.id = #{userId}
+	AND u.status = 1
+	AND u.recent_bank_card_id = b.id
+	AND b.status = 1
+	AND b.bank_id = p.bank_id
+	AND p.pay_type = #{payType}
+	AND s.id = b.bank_id
+  </select>
+  
+  <!-- 
+  	- 查询所有的银行
+  	- @author yanwl
+  	- @date 2016-02-26
+   -->
+  <select id="selectBankCards" resultMap="BaseResultMap" >
+     SELECT DISTINCT bank_id,bank_name FROM bs_bank_card
+     WHERE status = 1
+  </select>
+  
+  <select id="selectSafeBankCard" resultMap="BindBankResultMap">
+  	SELECT
+		b.bank_id,
+		b.card_no,
+		b.mobile,
+		b.is_first,
+		b.bank_name,
+		u.user_name,
+		u.id_card
+	FROM
+		bs_user u,
+		bs_bank_card b
+	WHERE
+		u.id = #{userId}
+	AND u.status = 1
+	AND u.id = b.user_id
+	AND b.status = 1
+	AND b.is_first = 1
+  </select>
+  
+  <!-- 新增绑卡用户数 -->
+  <select id="countBindCardUser" parameterType="java.util.Map" resultType="java.util.Map" >
+  	SELECT COUNT(a.id) AS count, b.agent_id, DATE(a.bind_time) AS open_time 
+	FROM bs_bank_card a, bs_user b 
+	WHERE a.user_id = b.id AND DATE(a.bind_time) = DATE(#{startTime}) AND a.`status` = 1
+	GROUP BY b.agent_id
+  </select>
+  
+  <!-- 按时查：当日绑卡用户数 -->
+  <select id="countDailyBindCardUser" parameterType="java.util.Map" resultMap="BaseResultMap" >
+  	SELECT a.bind_time
+	FROM bs_bank_card a, bs_user b 
+	WHERE a.user_id = b.id AND DATE(a.bind_time) = DATE(#{startTime}) AND a.`status` = 1
+	<if test="agentIds != null and agentIds !='' and (nonAgentId == null or nonAgentId == '')">
+		and b.agent_id in 
+		<foreach collection="agentIds" item="agentId" index="index"
+            open="(" close=")" separator=",">
+            #{agentId}
+        </foreach>
+	</if>
+	<if test="(agentIds == null or agentIds =='' ) and nonAgentId != null and nonAgentId != ''">
+		and b.agent_id is null
+	</if>
+	<if test="agentIds != null and agentIds !='' and nonAgentId != null and nonAgentId != ''">
+		and (b.agent_id in 
+		<foreach collection="agentIds" item="agentId" index="index"
+            open="(" close=")" separator=",">
+            #{agentId}
+        </foreach>
+        or b.agent_id is null)
+	</if>
+  </select>
+  
+  <!--  查询绑卡成功的银行卡信息 -->
+  <select id="selectCardSuccess" resultMap="BindBankResultMap" >
+  	SELECT user_id, card_no,id_card,mobile,card_owner as user_name,bank_id FROM `bs_bank_card` WHERE `status` = 1 AND is_first = 1
+  </select>
+  
+  <!-- 根据手机号查询绑卡成功的银行卡信息是否存在 -->
+  <select id="selectBankCardByMobile" resultMap="BindBankResultMap">
+  	SELECT user_id,card_no,id_card,mobile,card_owner as user_name,bank_id FROM `bs_bank_card` WHERE `status` = 1 AND is_first = 1 
+  	<if test="mobiles != null">
+            and (mobile in
+            <foreach collection="mobiles" item="mobile" index="index"
+                     open="(" close=")" separator=",">
+                #{mobile,jdbcType=VARCHAR}
+            </foreach>
+            )
+     </if> 
+  </select>
+
+  <select id="selectByUserId" resultMap="BankCardResultMap" parameterType="java.util.Map">
+    SELECT
+      b.*
+    FROM bs_bank_card b
+    WHERE b.user_id = #{userId}
+  </select>
+  
+</mapper>

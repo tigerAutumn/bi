@@ -1,0 +1,50 @@
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*//////////////////// Variables Start                                                                                    */
+var $ = jQuery.noConflict(); 
+/*//////////////////// Variables End                                                                                      */
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*//////////////////// Document Ready Function Starts                                                                     */
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+jQuery(document).ready(function($) {
+	
+	$('input[type="text"], input[type="password"], textarea').each(function(){
+		if($(this).attr('data-placeholder') && $(this).val()==""){
+			$(this).val($(this).attr('data-placeholder'));
+		}
+			
+	});
+	
+	// fields focus function starts
+	$('input[type="text"], input[type="password"], textarea').focus(function(){
+	    
+		if($(this).val() == $(this).attr('data-placeholder')){
+		    
+			$(this).val('');
+				
+		};	
+		
+	});
+	// fields focus function ends
+	
+	
+	
+	// fields blur function starts
+	$('input, textarea').blur(function(){
+	    
+		if($(this).val() == ''){
+		    
+			$(this).val($(this).attr('data-placeholder'));
+				
+		};	
+		
+	});
+	// fields blur function ends
+	
+	
+});
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*//////////////////// Document Ready Function Ends                                                                       */
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/

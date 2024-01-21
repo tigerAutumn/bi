@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsPropertyInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsPropertyInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="property_name" property="propertyName" jdbcType="VARCHAR" />
+    <result column="property_symbol" property="propertySymbol" jdbcType="VARCHAR" />
+    <result column="property_summary" property="propertySummary" jdbcType="VARCHAR" />
+    <result column="return_source" property="returnSource" jdbcType="VARCHAR" />
+    <result column="fund_security" property="fundSecurity" jdbcType="VARCHAR" />
+    <result column="orgnize_check" property="orgnizeCheck" jdbcType="VARCHAR" />
+    <result column="orgnize_check_pics" property="orgnizeCheckPics" jdbcType="VARCHAR" />
+    <result column="coop_protocol_pics" property="coopProtocolPics" jdbcType="VARCHAR" />
+    <result column="rating_grade" property="ratingGrade" jdbcType="VARCHAR" />
+    <result column="rating_grade_pics" property="ratingGradePics" jdbcType="VARCHAR" />
+    <result column="loan_protocol_pics" property="loanProtocolPics" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, property_name, property_symbol, property_summary, return_source, fund_security, 
+    orgnize_check, orgnize_check_pics, coop_protocol_pics, rating_grade, rating_grade_pics, 
+    loan_protocol_pics, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsPropertyInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_property_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_property_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_property_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsPropertyInfoExample" >
+    delete from bs_property_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsPropertyInfo" >
+    insert into bs_property_info (id, property_name, property_symbol, 
+      property_summary, return_source, fund_security, 
+      orgnize_check, orgnize_check_pics, coop_protocol_pics, 
+      rating_grade, rating_grade_pics, loan_protocol_pics, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{propertyName,jdbcType=VARCHAR}, #{propertySymbol,jdbcType=VARCHAR}, 
+      #{propertySummary,jdbcType=VARCHAR}, #{returnSource,jdbcType=VARCHAR}, #{fundSecurity,jdbcType=VARCHAR}, 
+      #{orgnizeCheck,jdbcType=VARCHAR}, #{orgnizeCheckPics,jdbcType=VARCHAR}, #{coopProtocolPics,jdbcType=VARCHAR}, 
+      #{ratingGrade,jdbcType=VARCHAR}, #{ratingGradePics,jdbcType=VARCHAR}, #{loanProtocolPics,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsPropertyInfo" >
+    insert into bs_property_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="propertyName != null" >
+        property_name,
+      </if>
+      <if test="propertySymbol != null" >
+        property_symbol,
+      </if>
+      <if test="propertySummary != null" >
+        property_summary,
+      </if>
+      <if test="returnSource != null" >
+        return_source,
+      </if>
+      <if test="fundSecurity != null" >
+        fund_security,
+      </if>
+      <if test="orgnizeCheck != null" >
+        orgnize_check,
+      </if>
+      <if test="orgnizeCheckPics != null" >
+        orgnize_check_pics,
+      </if>
+      <if test="coopProtocolPics != null" >
+        coop_protocol_pics,
+      </if>
+      <if test="ratingGrade != null" >
+        rating_grade,
+      </if>
+      <if test="ratingGradePics != null" >
+        rating_grade_pics,
+      </if>
+      <if test="loanProtocolPics != null" >
+        loan_protocol_pics,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="propertyName != null" >
+        #{propertyName,jdbcType=VARCHAR},
+      </if>
+      <if test="propertySymbol != null" >
+        #{propertySymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="propertySummary != null" >
+        #{propertySummary,jdbcType=VARCHAR},
+      </if>
+      <if test="returnSource != null" >
+        #{returnSource,jdbcType=VARCHAR},
+      </if>
+      <if test="fundSecurity != null" >
+        #{fundSecurity,jdbcType=VARCHAR},
+      </if>
+      <if test="orgnizeCheck != null" >
+        #{orgnizeCheck,jdbcType=VARCHAR},
+      </if>
+      <if test="orgnizeCheckPics != null" >
+        #{orgnizeCheckPics,jdbcType=VARCHAR},
+      </if>
+      <if test="coopProtocolPics != null" >
+        #{coopProtocolPics,jdbcType=VARCHAR},
+      </if>
+      <if test="ratingGrade != null" >
+        #{ratingGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="ratingGradePics != null" >
+        #{ratingGradePics,jdbcType=VARCHAR},
+      </if>
+      <if test="loanProtocolPics != null" >
+        #{loanProtocolPics,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsPropertyInfoExample" resultType="java.lang.Integer" >
+    select count(*) from bs_property_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_property_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.propertyName != null" >
+        property_name = #{record.propertyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.propertySymbol != null" >
+        property_symbol = #{record.propertySymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="record.propertySummary != null" >
+        property_summary = #{record.propertySummary,jdbcType=VARCHAR},
+      </if>
+      <if test="record.returnSource != null" >
+        return_source = #{record.returnSource,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fundSecurity != null" >
+        fund_security = #{record.fundSecurity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgnizeCheck != null" >
+        orgnize_check = #{record.orgnizeCheck,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgnizeCheckPics != null" >
+        orgnize_check_pics = #{record.orgnizeCheckPics,jdbcType=VARCHAR},
+      </if>
+      <if test="record.coopProtocolPics != null" >
+        coop_protocol_pics = #{record.coopProtocolPics,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ratingGrade != null" >
+        rating_grade = #{record.ratingGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ratingGradePics != null" >
+        rating_grade_pics = #{record.ratingGradePics,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loanProtocolPics != null" >
+        loan_protocol_pics = #{record.loanProtocolPics,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_property_info
+    set id = #{record.id,jdbcType=INTEGER},
+      property_name = #{record.propertyName,jdbcType=VARCHAR},
+      property_symbol = #{record.propertySymbol,jdbcType=VARCHAR},
+      property_summary = #{record.propertySummary,jdbcType=VARCHAR},
+      return_source = #{record.returnSource,jdbcType=VARCHAR},
+      fund_security = #{record.fundSecurity,jdbcType=VARCHAR},
+      orgnize_check = #{record.orgnizeCheck,jdbcType=VARCHAR},
+      orgnize_check_pics = #{record.orgnizeCheckPics,jdbcType=VARCHAR},
+      coop_protocol_pics = #{record.coopProtocolPics,jdbcType=VARCHAR},
+      rating_grade = #{record.ratingGrade,jdbcType=VARCHAR},
+      rating_grade_pics = #{record.ratingGradePics,jdbcType=VARCHAR},
+      loan_protocol_pics = #{record.loanProtocolPics,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsPropertyInfo" >
+    update bs_property_info
+    <set >
+      <if test="propertyName != null" >
+        property_name = #{propertyName,jdbcType=VARCHAR},
+      </if>
+      <if test="propertySymbol != null" >
+        property_symbol = #{propertySymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="propertySummary != null" >
+        property_summary = #{propertySummary,jdbcType=VARCHAR},
+      </if>
+      <if test="returnSource != null" >
+        return_source = #{returnSource,jdbcType=VARCHAR},
+      </if>
+      <if test="fundSecurity != null" >
+        fund_security = #{fundSecurity,jdbcType=VARCHAR},
+      </if>
+      <if test="orgnizeCheck != null" >
+        orgnize_check = #{orgnizeCheck,jdbcType=VARCHAR},
+      </if>
+      <if test="orgnizeCheckPics != null" >
+        orgnize_check_pics = #{orgnizeCheckPics,jdbcType=VARCHAR},
+      </if>
+      <if test="coopProtocolPics != null" >
+        coop_protocol_pics = #{coopProtocolPics,jdbcType=VARCHAR},
+      </if>
+      <if test="ratingGrade != null" >
+        rating_grade = #{ratingGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="ratingGradePics != null" >
+        rating_grade_pics = #{ratingGradePics,jdbcType=VARCHAR},
+      </if>
+      <if test="loanProtocolPics != null" >
+        loan_protocol_pics = #{loanProtocolPics,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsPropertyInfo" >
+    update bs_property_info
+    set property_name = #{propertyName,jdbcType=VARCHAR},
+      property_symbol = #{propertySymbol,jdbcType=VARCHAR},
+      property_summary = #{propertySummary,jdbcType=VARCHAR},
+      return_source = #{returnSource,jdbcType=VARCHAR},
+      fund_security = #{fundSecurity,jdbcType=VARCHAR},
+      orgnize_check = #{orgnizeCheck,jdbcType=VARCHAR},
+      orgnize_check_pics = #{orgnizeCheckPics,jdbcType=VARCHAR},
+      coop_protocol_pics = #{coopProtocolPics,jdbcType=VARCHAR},
+      rating_grade = #{ratingGrade,jdbcType=VARCHAR},
+      rating_grade_pics = #{ratingGradePics,jdbcType=VARCHAR},
+      loan_protocol_pics = #{loanProtocolPics,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 资产合作方信息 列表  -->
+  <select id="selectPropertyInfoList" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsPropertyInfo" >
+	 SELECT 
+	   <include refid="Base_Column_List"></include>
+	  FROM bs_property_info
+	  ORDER BY 
+	  <if test="orderDirection!=null and orderDirection != '' and orderField != '' and orderField!=null ">   
+	  	${orderField} ${orderDirection},
+	  </if>
+	  update_time DESC
+	  <include refid="sql-global.pagination" />
+  </select>
+  <!-- 查询资产合作 名称是否已存在 -->
+  <select id="selectPropertyInfoName" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsPropertyInfo" >
+  	SELECT
+  	 <include refid="Base_Column_List"></include>
+  	 FROM bs_property_info
+  	 WHERE 1 = 1
+  	 <if test="id != null and id != 0 ">
+  	 	and id = #{id,jdbcType=INTEGER}
+  	 </if>
+  	 <if test="propertyName != null and propertyName != '' ">
+  	 	and property_name = #{propertyName,jdbcType=VARCHAR}
+  	 </if>
+  	 LIMIT 0,1
+  </select>
+  <!-- 查询该资产合作名称 是否已被产品表引用 -->
+  <select id="selectCountByProductId" resultType="java.lang.Integer" parameterType="map">
+  	SELECT COUNT(*) 
+  	 FROM bs_product p
+  	 WHERE 1 = 1 
+  	 <if test="id != null and id != 0">
+  	 	and p.property_id = #{id,jdbcType=INTEGER}
+  	 </if>
+  </select>
+  
+  <select id="checkPropertySymbol" parameterType="java.util.Map" resultType="java.lang.String">
+			SELECT 
+				a.property_symbol
+			FROM 
+			bs_property_info a,
+			bs_product b,
+			bs_sub_account c
+			WHERE a.id = b.property_id
+			AND b.id = c.product_id
+			AND c.id = #{subAccountId}
+  	</select>
+</mapper>

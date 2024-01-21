@@ -1,0 +1,108 @@
+﻿$axure.loadCurrentPage({
+  "url":"投资收益.html",
+  "generationDate":new Date(1423549441132.91),
+  "isCanvasEnabled":false,
+  "variables":["OnLoadVariable"],
+  "page":{
+    "packageId":"9ad1cecc08ed4a57beb5a44c8b90428d",
+    "type":"Axure:Page",
+    "name":"投资收益",
+    "notes":{
+},
+    "style":{
+      "baseStyle":"627587b6038d43cca051c114ac41ad32",
+      "pageAlignment":"near",
+      "fill":{
+        "fillType":"solid",
+        "color":0xFFFFFFFF},
+      "image":null,
+      "imageHorizontalAlignment":"near",
+      "imageVerticalAlignment":"near",
+      "imageRepeat":"auto",
+      "favicon":null,
+      "sketchFactor":"0",
+      "colorStyle":"appliedColor",
+      "fontName":"应用字体",
+      "borderWidth":"0"},
+    "adaptiveStyles":{
+},
+    "interactionMap":{
+},
+    "diagram":{
+      "objects":[{
+          "id":"e9ec39f9acb947bea6de739e5d9006ce",
+          "label":"",
+          "type":"imageBox",
+          "styleType":"imageBox",
+          "visible":true,
+          "style":{
+            "location":{
+              "x":4,
+              "y":10},
+            "size":{
+              "width":276,
+              "height":477}},
+          "adaptiveStyles":{
+},
+          "objects":[{
+              "id":"6290156dbf9243888ffd29404dc7e7a2",
+              "label":"",
+              "isContained":true,
+              "type":"richTextPanel",
+              "styleType":"paragraph",
+              "visible":true,
+              "style":{
+                "location":{
+                  "x":4,
+                  "y":10},
+                "size":{
+                  "width":276,
+                  "height":477}},
+              "adaptiveStyles":{
+}}],
+          "images":{
+            "normal~":"images/投资收益/u0.png"}},
+{
+          "id":"71164fd68c0e402a85362d6b518a5962",
+          "label":"",
+          "type":"imageBox",
+          "styleType":"imageBox",
+          "visible":true,
+          "style":{
+            "location":{
+              "x":4,
+              "y":487},
+            "size":{
+              "width":276,
+              "height":43}},
+          "adaptiveStyles":{
+},
+          "objects":[{
+              "id":"6bd17bca928843f5a33dea53fbc50ada",
+              "label":"",
+              "isContained":true,
+              "type":"richTextPanel",
+              "styleType":"paragraph",
+              "visible":true,
+              "style":{
+                "location":{
+                  "x":4,
+                  "y":487},
+                "size":{
+                  "width":276,
+                  "height":43}},
+              "adaptiveStyles":{
+}}],
+          "images":{
+            "normal~":"images/定期理财主页/u46.png"}}]}},
+  "masters":{
+},
+  "objectPaths":{
+    "e9ec39f9acb947bea6de739e5d9006ce":{
+      "scriptId":"u0"},
+    "6290156dbf9243888ffd29404dc7e7a2":{
+      "scriptId":"u1"},
+    "71164fd68c0e402a85362d6b518a5962":{
+      "scriptId":"u2"},
+    "6bd17bca928843f5a33dea53fbc50ada":{
+      "scriptId":"u3"}}});

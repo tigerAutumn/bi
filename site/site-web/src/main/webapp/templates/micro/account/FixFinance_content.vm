@@ -1,0 +1,37 @@
+#foreach($!invest in $!investList)
+       	<div class="dq1">
+      
+<div class="dq3">
+<h5><img src="$!env.getWebURL('')/resources/micro/images/sd.png" width="80" height="75">投资金额：<span>$!money.format($!invest.balance)</span></h5>
+
+<div class="dq3l">
+<ul>
+<li>投资时间：
+<br />
+<span>$!date.formatDateTime($!invest.interestBeginDate,'yyyy.MM.dd')</span></li>
+<li>到期时间：
+<br /><span>$!date.formatDateTime($!invest.investEndTime,'yyyy.MM.dd')</span></li>
+<li>剩余投资时长：<span>#if($!invest.investDay > 0)$!invest.investDay#else 0#end</span>天</li>
+</ul>
+</div>
+
+<div class="dq3r">现利息基数<br />
+<span>$!invest.productRate%</span>
+<br />
+#if($!invest.status == 2)
+	<a href="javascript:void(-1)" >投资中</a>
+#elseif($!invest.status == 4)
+	<a href="javascript:void(-1)" style="background-color:#ccc">已转让</a>
+#elseif($!invest.status == 5)
+	<a href="javascript:void(-1)" style="background-color:#ccc">已结算</a>
+#elseif($!invest.status == 7)
+	<a href="javascript:void(-1)" style="background-color:#ccc">回款中</a>
+#end
+<a style="background-color: #fff;color:#09F" href="$!env.getWebURL('/micro/regular/buyagreement?signDate=')$!date.formatDateTime($!invest.interestBeginDate,'yyyy.MM.dd')&term=$!invest.term">《投资协议》</a>
+</div>
+
+</div>   
+ 		
+     </div>
+                
+#end

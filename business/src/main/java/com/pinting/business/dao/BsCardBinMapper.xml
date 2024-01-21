@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsCardBinMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsCardBin" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="bank_id" property="bankId" jdbcType="INTEGER" />
+    <result column="card_bin" property="cardBin" jdbcType="VARCHAR" />
+    <result column="card_bin_len" property="cardBinLen" jdbcType="INTEGER" />
+    <result column="bank_card_len" property="bankCardLen" jdbcType="INTEGER" />
+    <result column="bank_name_desc" property="bankNameDesc" jdbcType="VARCHAR" />
+    <result column="bank_card_type_desc" property="bankCardTypeDesc" jdbcType="VARCHAR" />
+    <result column="bank_card_func_type" property="bankCardFuncType" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, bank_id, card_bin, card_bin_len, bank_card_len, bank_name_desc, bank_card_type_desc, 
+    bank_card_func_type, create_time, update_time, note
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsCardBinExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_card_bin
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_card_bin
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_card_bin
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsCardBinExample" >
+    delete from bs_card_bin
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsCardBin" >
+    insert into bs_card_bin (id, bank_id, card_bin, 
+      card_bin_len, bank_card_len, bank_name_desc, 
+      bank_card_type_desc, bank_card_func_type, create_time, 
+      update_time, note)
+    values (#{id,jdbcType=INTEGER}, #{bankId,jdbcType=INTEGER}, #{cardBin,jdbcType=VARCHAR}, 
+      #{cardBinLen,jdbcType=INTEGER}, #{bankCardLen,jdbcType=INTEGER}, #{bankNameDesc,jdbcType=VARCHAR}, 
+      #{bankCardTypeDesc,jdbcType=VARCHAR}, #{bankCardFuncType,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{note,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsCardBin" >
+    insert into bs_card_bin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="bankId != null" >
+        bank_id,
+      </if>
+      <if test="cardBin != null" >
+        card_bin,
+      </if>
+      <if test="cardBinLen != null" >
+        card_bin_len,
+      </if>
+      <if test="bankCardLen != null" >
+        bank_card_len,
+      </if>
+      <if test="bankNameDesc != null" >
+        bank_name_desc,
+      </if>
+      <if test="bankCardTypeDesc != null" >
+        bank_card_type_desc,
+      </if>
+      <if test="bankCardFuncType != null" >
+        bank_card_func_type,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bankId != null" >
+        #{bankId,jdbcType=INTEGER},
+      </if>
+      <if test="cardBin != null" >
+        #{cardBin,jdbcType=VARCHAR},
+      </if>
+      <if test="cardBinLen != null" >
+        #{cardBinLen,jdbcType=INTEGER},
+      </if>
+      <if test="bankCardLen != null" >
+        #{bankCardLen,jdbcType=INTEGER},
+      </if>
+      <if test="bankNameDesc != null" >
+        #{bankNameDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCardTypeDesc != null" >
+        #{bankCardTypeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCardFuncType != null" >
+        #{bankCardFuncType,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsCardBinExample" resultType="java.lang.Integer" >
+    select count(*) from bs_card_bin
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_card_bin
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.bankId != null" >
+        bank_id = #{record.bankId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cardBin != null" >
+        card_bin = #{record.cardBin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardBinLen != null" >
+        card_bin_len = #{record.cardBinLen,jdbcType=INTEGER},
+      </if>
+      <if test="record.bankCardLen != null" >
+        bank_card_len = #{record.bankCardLen,jdbcType=INTEGER},
+      </if>
+      <if test="record.bankNameDesc != null" >
+        bank_name_desc = #{record.bankNameDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankCardTypeDesc != null" >
+        bank_card_type_desc = #{record.bankCardTypeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankCardFuncType != null" >
+        bank_card_func_type = #{record.bankCardFuncType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_card_bin
+    set id = #{record.id,jdbcType=INTEGER},
+      bank_id = #{record.bankId,jdbcType=INTEGER},
+      card_bin = #{record.cardBin,jdbcType=VARCHAR},
+      card_bin_len = #{record.cardBinLen,jdbcType=INTEGER},
+      bank_card_len = #{record.bankCardLen,jdbcType=INTEGER},
+      bank_name_desc = #{record.bankNameDesc,jdbcType=VARCHAR},
+      bank_card_type_desc = #{record.bankCardTypeDesc,jdbcType=VARCHAR},
+      bank_card_func_type = #{record.bankCardFuncType,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      note = #{record.note,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsCardBin" >
+    update bs_card_bin
+    <set >
+      <if test="bankId != null" >
+        bank_id = #{bankId,jdbcType=INTEGER},
+      </if>
+      <if test="cardBin != null" >
+        card_bin = #{cardBin,jdbcType=VARCHAR},
+      </if>
+      <if test="cardBinLen != null" >
+        card_bin_len = #{cardBinLen,jdbcType=INTEGER},
+      </if>
+      <if test="bankCardLen != null" >
+        bank_card_len = #{bankCardLen,jdbcType=INTEGER},
+      </if>
+      <if test="bankNameDesc != null" >
+        bank_name_desc = #{bankNameDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCardTypeDesc != null" >
+        bank_card_type_desc = #{bankCardTypeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCardFuncType != null" >
+        bank_card_func_type = #{bankCardFuncType,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsCardBin" >
+    update bs_card_bin
+    set bank_id = #{bankId,jdbcType=INTEGER},
+      card_bin = #{cardBin,jdbcType=VARCHAR},
+      card_bin_len = #{cardBinLen,jdbcType=INTEGER},
+      bank_card_len = #{bankCardLen,jdbcType=INTEGER},
+      bank_name_desc = #{bankNameDesc,jdbcType=VARCHAR},
+      bank_card_type_desc = #{bankCardTypeDesc,jdbcType=VARCHAR},
+      bank_card_func_type = #{bankCardFuncType,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      note = #{note,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+   <select id="selectCardBin" resultMap="BaseResultMap" parameterType="map">
+    select c.*
+    from bs_card_bin c,bs_19pay_bank p
+    where find_in_set(c.card_bin,#{sqlBin,jdbcType=VARCHAR})
+    and c.bank_card_len >= #{cardLength,jdbcType=INTEGER} 
+    and c.bank_id = p.bank_id and p.pay_type=1
+    order by card_bin desc 
+  </select>
+  
+</mapper>

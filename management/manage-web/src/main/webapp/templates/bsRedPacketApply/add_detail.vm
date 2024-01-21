@@ -1,0 +1,74 @@
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	<form id="financeForm" method="post" action="$env.getWebURL('/bsRedPacketApply/save.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("id", "$!bsRedPacketApply.id")
+		<div class="pageFormContent" layoutH="56">
+			<dl>
+				<dt >
+					申请名称：
+                </dt>
+				<dd >
+					<input type="text" id="addRpName" name="addRpName" class="required" maxlength="10" value="$!bsRedPacketApply.addRpName" />
+                </dd>
+			</dl>
+			<dl>
+				<dt >
+					金额：
+                </dt>
+				<dd >
+					<input type="text" id="budget" name="budget" class="required" maxlength="8" value="$!bsRedPacketApply.budget" />
+                </dd>
+			</dl>
+			<dl>
+				<dt >
+					申请备注：
+                </dt>
+				<dd >
+					<textarea id="note" name="note" cols="35" rows="6" class="required" maxlength="50" value="$!bsRedPacketApply.note"></textarea>
+                </dd>
+            </dl>
+		</div>
+		<div class="formBar">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_financeForm()">保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>	
+	function submit_financeForm(){
+		var addRpName = $("#addRpName").val();
+    	var budget = $("#budget").val();
+		var note = $("#note").val();
+		var reg = /^[1-9]\d*$/;
+		var regName = /^[a-zA-Z0-9\u4E00-\u9FA5]+$/;
+		if((addRpName==null || addRpName == "") && (budget==null || budget == "") && (note==null || note == "")){
+		    alert("带 * 的选项为必填内容，请输入对应的信息！");
+        	return false;
+		}
+		if(!regName.test(addRpName)) {
+			alert("申请名称格式错误，不能含有特殊字符！");
+        	return false;
+    	}
+    	if(!reg.test(budget)) {
+			alert("红包金额必须是正整数！");
+        	return false;
+    	}
+        $("#financeForm").submit();
+	}
+	
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "301") {
+			alertMsg.warn('红包名称已存在!');
+		} else if (json.statusCode == "200") {
+			alertMsg.correct('操作成功!');
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('/bsRedPacketApply/index.htm')");
+		} else {
+			alertMsg.error('操作失败!');
+		}
+	}
+</script>

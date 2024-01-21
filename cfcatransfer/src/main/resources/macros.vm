@@ -1,0 +1,94 @@
+#** ------------------------------- 
+* Function: <Html></Html>。
+* 
+* @author 
+* @date   
+*  
+* @param  (String) path  文件全路径
+* ------------------------------- **#
+#macro(Html $flag)
+#if("$!{flag}" == "begin")
+<!DOCTYPE html>
+#elseif("$!{flag}" == "end")
+</html>
+#end
+#end
+
+#** ------------------------------- 
+* Function: <Head></Head>。
+* 
+* @author 
+* @date   
+*  
+* @param  (String) path  文件全路径
+* ------------------------------- **#
+#macro(Head $flag $keywords $description)
+#if("$!{flag}" == "begin")
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+	<meta name="format-detection" content="telephone=no" />
+	<link rel="shortcut icon" href="http://www.hangshangcapital.com/static/images/logo/favicon.ico">
+	
+	<script type="text/javascript" src="$!env.getWebURL('resources/jquery-1.11.1.min.js')" charset="UTF-8"></script>
+	<script type="text/javascript" src="$!env.getWebURL('/resources/common.js')" charset="UTF-8"></script>
+#elseif("$!{flag}" == "end")
+</head>
+#end
+#end
+
+#** ------------------------------- 
+* Function: <title></title>。
+* 
+* @author
+* @date   
+*  
+* @param  (String) path  文件全路径
+* ------------------------------- **#
+#macro(Title $title)
+<title>$!esc.htmlEscape($!{title})</title>
+#end
+
+#** ------------------------------- 
+* Function: 载入静态资源服务器上的JS文件。
+* 
+* @author 
+* @date   
+*  
+* @param  (String) path  文件全路径
+* ------------------------------- **#
+#macro(LoadJS $path)
+#set($suffix=".js?v=1.1.8")
+<script type="text/javascript" src="$!env.getWebURL($!esc.htmlEscape($!{path}))$suffix" charset="UTF-8"></script>
+#end
+
+#** ------------------------------- 
+* Function: 载入静态资源服务器上的CSS文件。
+* 
+* @author
+* @date  
+*  
+* @param  (String) path  文件全路径
+* ------------------------------- **#
+#macro(LoadCSS $path)
+#set($suffix=".css?v=1.1.8")
+#if("$!path" == "default")
+<link rel="stylesheet" type="text/css" href="$!env.getWebURL($!esc.htmlEscape('css'))$suffix" charset="UTF-8"></link>
+#else
+<link rel="stylesheet" type="text/css" href="$!env.getWebURL($!esc.htmlEscape($!{path}))$suffix" charset="UTF-8"></link>
+#end
+#end
+
+#** ------------------------------- 
+* Function: 支持国际化。
+* 
+* @author 
+* @date 
+*  
+* @param  (String) path  文件全路径
+* --------------!----------------- **#
+#macro(Label $title)
+#springMessage($title)
+#end
+

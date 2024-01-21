@@ -1,0 +1,97 @@
+#Html("begin")
+#Head("begin", "币港湾平台活动,币港湾,币港湾官网", "关注币港湾,活动不停歇!币港湾官网为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("财运大转盘")
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+#LoadJS("resources/micro2.0/scripts/activity/rem_750")
+#LoadCSS("resources/weixin/style/default")
+#LoadCSS("resources/weixin/style/activity/lucky_rotate/weChatLuckyTurning")
+#WeChatShare()
+#Head("end")
+<body>
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>	
+	<input type="hidden" id="userId" value="$!userId"/>
+	<input type="hidden" id="isStart" value="$!result.isStart"/>	
+	<input type="hidden" id="numberOfChance" value="$!result.numberOfChance"/>	
+	<input type="hidden" id="isLogin" value="$!result.isLogin"/>	
+	<input type="hidden" id="shared" value="$!result.shared"/>		
+	<div class="rotateBanner">
+		<img class="rotateBannerImg" src="$!env.getWebURL('')/resources/weixin/images/activity/lucky_rotate/banner.jpg" alt="" />
+		#if($!result.isLogin == "yes")
+		<div class="rotateMy"><img class="rotateMyImg" src="$!env.getWebURL('')/resources/weixin/images/activity/lucky_rotate/rotateMy.png" alt="" /></div>
+		#else
+		<div class="rotateMynotLogin"><img class="rotateMyImg" src="$!env.getWebURL('')/resources/weixin/images/activity/lucky_rotate/rotateMy.png" alt="" /></div>	
+		#end
+	</div>
+	<div id="dowebok">
+		<div class="plate">
+			<img class="plateImg" src="$!env.getWebURL('')/resources/weixin/images/activity/lucky_rotate/lyplate.png" alt="" />
+			#if($!result.isStart == "start")
+				#if($!result.isLogin == "yes")
+					<a id="activity_btn" href="javascript:" title="" class="plateBtnnot">
+						<i id="btn_text" class="plateBtnTxtnot">请稍等...</i>
+						<img class="plateBtnImg" src="$!env.getWebURL('')/resources/weixin/images/activity/lucky_rotate/rotate-staticnone1.png" alt="" />
+					</a>
+					<i id="btn_textzero" class="plateBtnTxtnot">请稍等...</i>
+				#else
+                    <a id="plateLogin" href="javascript:" title="" class="plateBtn">
+                        <i class="plateBtnLogin">立即登录</i>
+                        <img class="plateBtnImg" src="$!env.getWebURL('')/resources/weixin/images/activity/lucky_rotate/rotate-static1.png" alt="" />
+                    </a>
+				#end
+			#elseif($!result.isStart == "not_start")
+                <a id="not_start" href="javascript:" title="" class="plateBtnnot">
+                    <i class="plateBtnTxtnot">活动尚未<br/>开始</i>
+                    <img class="plateBtnImg" src="$!env.getWebURL('')/resources/weixin/images/activity/lucky_rotate/rotate-staticnone1.png" alt="" />
+                </a>
+			#elseif($!result.isStart == "end")
+                <a id="end" href="javascript:" title="" class="plateBtnnot">
+                    <i class="plateBtnTxtnot">活动已结<br/>束</i>
+                    <img class="plateBtnImg" src="$!env.getWebURL('')/resources/weixin/images/activity/lucky_rotate/rotate-staticnone1.png" alt="" />
+                </a>
+			#end
+		</div>
+	</div>
+	<div class="rotateImg">
+		<div class="ren"><img class="renImg" src="$!env.getWebURL('')/resources/weixin/images/activity/lucky_rotate/ren.png" alt="" /></div>
+		<img class="rotateBottomImg" src="$!env.getWebURL('')/resources/weixin/images/activity/lucky_rotate/rotate-staticnone2.png" alt="" />
+	</div>
+	<div class="rotateRule">活动说明</div>
+	<div class="rotateRuleText">
+		<div class="rotateRuleTxt"><span>1</span>
+			<p>活动期间登录即可获得一次抽奖机会（不累计），分享可额外获得一次抽奖机会（一天仅限一次）；</p>
+		</div>
+		<div class="rotateRuleTxt"><span>2</span>
+			<p>抽奖获得的红包及加息券将实时发放至您的账户，你可在电脑端登录币港湾官网www.bigangwan.com、在官方微信公众号搜索；bigangwanlicai、在ios/安卓应用市场搜索下载币港湾，在【我的资产】-【优惠券】处查看；</p>
+		</div>
+		<div class="rotateRuleTxt"><span>3</span>
+			<p>如有疑问，请咨询官方客服400-806-1230（周一至周五9:00-18:00）；</p>
+		</div>
+		<div class="rotateRuleTxt"><span>4</span>
+			<p>iOS版本特别说明：所有活动奖励由币港湾提供，与苹果公司无关；</p>
+		</div>
+	</div>
+	<div class="bottomHeight"></div>
+	<div class="rotateBtn">
+		<a class="rotateBtnLeft" href="$!env.getWebURL('')/weixin/activity/weChatLuckyTurning">抽奖机 <img class="rotateBtnHorn" src="$!env.getWebURL('')/resources/weixin/images/activity/lucky_rotate/rule01.png" /></a>
+		<a class="rotateBtnRight" href="$!env.getWebURL('')/weixin/activity/aboutBGW">关于币港湾 <img class="rotateBtnHorn" src="$!env.getWebURL('')/resources/weixin/images/activity/lucky_rotate/rule01.png" /></a>
+	</div>
+	<div class="question_prompt alert_hide" id="result">
+		<div class="question_box">
+			<a href="javascript:;" class="close resultBtn" id="resultBtn"></a>
+			<div class="question_title"></div>
+			<div class="alertImg"></div>
+			<div class="question_title" id="resultTxt"></div>
+			<a href="javascript:;" class="question_btn resultBtn">我知道了</a>
+		</div>
+	</div>
+	<div class="share_cover">
+		<div class="share_cover_img">
+			<img src="$!env.getWebURL('')/resources/weixin/images/activity/lucky_rotate/share_tips.png">
+		</div>
+	</div>
+#LoadJS("resources/weixin/scripts/common")
+#LoadJS("resources/weixin/scripts/activity/lucky_rotate/jquery.rotate.min")
+#LoadJS("resources/weixin/scripts/activity/lucky_rotate/weChatLuckyTurning")
+#LoadJS("resources/weixin/scripts/jweixin-1.3.2")
+</body>
+#Html("end")

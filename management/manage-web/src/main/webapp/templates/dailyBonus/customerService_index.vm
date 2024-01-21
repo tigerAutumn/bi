@@ -1,0 +1,116 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/customerService/dailyBonus.htm')" method="post">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" id="queryFlag" name="queryFlag" value="QUERY"/>
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						推荐人姓名：<input  id="recommendName" type="text" name="recommendName" value="$!recommendName" size="15" maxlength="4" style="width:120px; height:16px" />
+						推荐人手机号：<input  id="recommendMobile" type="text" name="recommendMobile" value="$!recommendMobile" size="15" maxlength="11" style="width:120px; height:16px" />
+						投资人姓名：<input  id="byName" type="text" name="byName" value="$!byName" size="15" maxlength="4" style="width:120px; height:16px" />
+						投资人手机号：<input  id="byMobile" type="text" name="byMobile" value="$!byMobile" size="15" maxlength="11" style="width:120px; height:16px" />
+						<span style="margin-left:20px;">
+						<span style="margin-left:20px;">
+							<button onclick="func()" type="button">查询</button>
+                        </span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<font color="red">总金额：#if($!money.format($!allBonus))$!money.format($!allBonus) #else 0.00 #end 元</font>
+                    </td>
+				</tr>
+			</table>
+		</div> 
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="226">操作类型</th>
+				<th width="130">受益人姓名</th>
+				<th width="130">受益人手机号</th>
+				<th width="130">投资人姓名</th>
+				<th width="130">投资人手机号</th>
+				<th width="130">推荐人姓名</th>
+				<th width="130">推荐人手机号</th>
+				<th width="130">奖励金额</th>
+				<th width="130">奖励发放时间</th>
+				<th width="130">投资金额</th>
+				<th width="130">投资期限</th>
+			    <th width="130">投资时间</th>
+				<th width="130">只看该笔投资</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($bsDailyBonus in $bsDailyBonusList)
+			<tr>
+				<td>#if($!bsDailyBonus.bonus>0) 获得奖励金
+					#else 奖励金转余额#end
+				</td>
+				<td>$!bsDailyBonus.name</td>
+				<td>$!bsDailyBonus.mobile</td>
+				<td>$!bsDailyBonus.byName</td>
+				<td>$!bsDailyBonus.byMobile</td>
+				<td> $!bsDailyBonus.generalName $!bsDailyBonus.salesName  $!bsDailyBonus.managerName </td>
+				<td> $!bsDailyBonus.generalMobile $!bsDailyBonus.salesMobile  $!bsDailyBonus.managerMobile </td>
+				<td>$!bsDailyBonus.bonus</td>
+				<td>$!date.format($!bsDailyBonus.time)</td>
+				<td>$!bsDailyBonus.balance</td>
+				<td>#set($Integer = 0)
+					#if($!bsDailyBonus.term == 0) &nbsp; 
+					#else
+                        #if(0 > $Integer.parseInt("$!bsDailyBonus.term"))
+							#set($termNum = $Integer.parseInt("$!bsDailyBonus.term")*-1 ) $!termNum 天
+                        #else
+							$!bsDailyBonus.term 个月 
+                        #end
+					#end
+				</td>
+				<td>$!date.format($!bsDailyBonus.buyTime)</td>
+				<td>#if($!bsDailyBonus.bonus>0) 
+					<a title="查看" target="navtab" href="$env.getWebURL('/customerService/dailyBonus/subId.htm?subAccountId=')$!bsDailyBonus.subAccountId" class="btnLook">查看</a>
+					#end
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+<script>
+function func(){
+    var recommendName = $("#recommendName").val();
+	var recommendMobile = $("#recommendMobile").val(); 
+	var byName = $("#byName").val();
+	var byMobile = $("#byMobile").val();
+	if((recommendName == "" || recommendName == null) && (recommendMobile == "" || recommendMobile == null) && (byName == "" || byName == null) && (byMobile == "" || byMobile == null)) {
+		 alertMsg.warn("推荐人姓名、推荐人手机号、投资人姓名或投资人手机号必须输入一个！");
+    	 return false;
+	}
+	var url = $("#APP_ROOT_PATH").val() + "/customerService/dailyBonus.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+</script>

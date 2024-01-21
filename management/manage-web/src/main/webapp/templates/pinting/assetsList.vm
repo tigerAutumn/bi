@@ -1,0 +1,90 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!product.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!product.numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+ <div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/pinting/account/assetsList.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" name="pageNum" value="$!product.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!product.numPerPage" />
+	 <div class="searchBar">
+		<table class="searchContent">
+			<tr>
+
+				<td>
+    				<label>验签状态：</label>
+        			<select class="combox" name="status">
+        				<option value="0">请选择</option>
+        				<option value="1" #if($!req.status == 1) selected #end>验签通过</option>
+        				<option value="2" #if($!req.status == 2) selected #end>验签不通过</option>
+        			</select>
+				</td>
+				<td>
+					创建日期：<input type="text" readonly="true" class="date textInput readonly" name="createTime" id="createTime" value="$!date.formatYYYYMMDD($!req.createTime)">
+				</td>
+			
+				<td>
+					<input type="button" id="search" onclick="func()" value="查询"/>
+                </td>
+			</tr>
+		</table>
+	</div>
+	</form>
+</div> 
+<div class="pageContent">
+	
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+			<tr>
+	            <th width="3%">编号</th>
+			
+				<th width="6%">创建时间</th>
+				
+				<th width="3%">状态</th>
+				
+				<th width="3%">下载</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($product in $accountList)
+			<tr target="sid_user" rel="1" style="color:
+						#if("$!product.status" == "1") green">
+						#else ">
+				        #end 
+                <td>$!product.id</td>
+				
+				<td>$!date.formatYYYYMMDD($!product.createTime)</td>
+				
+				<td>$!message.get("CHECK_SIGN_STATUS_$!product.status")</td>
+				
+				<td> <a href="$!product.fileAddress" target="_self">下载此文件</a> </td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!product.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!product.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!product.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!product.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!product.totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!product.totalRows" numPerPage="$!product.numPerPage" currentPage="$!product.pageNum"></div>
+
+	</div>
+</div>
+<script>
+
+function func(){
+	
+	
+	$("#myform").submit();
+}
+
+</script>

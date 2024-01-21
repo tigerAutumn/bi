@@ -1,0 +1,15 @@
+# 网联协议支付
+## 项目背景
+> 云贷和七贷代扣还款接口调整（云贷、七贷都是接口9）。做代扣还款时入参增加两个字段，分别为`用户签约协议号` `userSignNo`和`持卡人支付IP` `payIP`。
+## 代扣流程
+### 1.云贷、七贷调用币港湾接口分发入口，调用代扣接口，入参增加`userSignNo`和`payIP`
+> 七贷：DepLoan7Controller.serviceDispatch
+> 云贷：DafyLoanServiceDispatchController.serviceDispatch
+### 2.在代扣接口中判断`userSignNo`是否为空，如果为空则不传`uesrSignNo`和`payIP`，如果不为空，再判断`payIP`是否为空，如果`payIP`为空则直接拒接。如果不为空，则将userSignNo 和payIP 传递过去。
+### 3.userSignNo 和payIP 入redis 还款队列
+> 七贷：DepFixedRepayPaymentServiceImpl.depSevenRepayApply
+> 云贷：DepFixedRepayPaymentServiceImpl.repayApply
+### 4.还款队列定时启动，将redis 中的值取出并传递到调用的代扣还款请求中
+> RepayQueueTask
+### 5.当userSignNo 与payIP 存在时，当协议支付是云贷发起时，查询云贷的userId，即ln_user 表中的partnerUserId；当协议支付是七贷发起时，userId 不用传递。当userSignNo 与payIP 不存在时，查询币港湾bs_bgw_nucc_sign_relation 表中已经记录的userId。
+

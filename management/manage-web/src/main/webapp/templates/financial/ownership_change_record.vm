@@ -1,0 +1,58 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/financialIntention/queryOwnershipChangeRecord.htm')" id="ownership_change" method="post">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="userId" value="$!userId" />
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="110">
+		<thead>
+			<tr>
+				<th width="5%">序号</th>
+				<th width="5%">理财人姓名</th>
+				<th width="10%">手机号</th>
+				<th width="10%">变更前客户经理</th>
+				<th width="10%">变更前营业部</th>
+				<th width="10%">变更后客户经理</th>
+				<th width="10%">变更后营业部</th>
+				<th width="10%">操作时间</th>
+				<th width="10%">操作人</th>
+			</tr>
+		</thead>
+		<tbody>
+			#if($dataGrid)
+    			#foreach($data in $dataGrid)
+    			<tr>
+    				<td>$!data.rowno</td>
+    				<td>$!data.userName</td>
+    				<td>$!data.mobile</td>
+    				<td>$!data.oldCustomerManagerName</td>
+    				<td>$!data.oldDafyDeptName</td>
+    				<td>$!data.newCustomerManagerName</td>
+    				<td>$!data.newDafyDeptName</td>
+    				<td>$!date.format($!data.createTime)</td>
+    				<td>$!data.opUserName</td>
+    			</tr>
+				#end
+			#else
+    			<tr>
+					<td>无归属变更记录！</td>
+        		</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>共$!totalRows条</span>
+		</div>
+	</div>
+</div>

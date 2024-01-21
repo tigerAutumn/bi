@@ -1,0 +1,113 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/regular/withdraw_deposit.min")
+#WeChatShare()
+#Head("end")
+<body>
+    <!-- 头部 -->
+    <div class="header">
+        <a class="header_arrow" href="javascript:history.go(-1)"></a>
+        <h1 class="heade_ft color_bg">提现奖励金</h1>
+        <div class="right_title"></div>
+    </div>
+    <!-- 头部提示 -->
+    ## 支付渠道替换成了宝付，无时间限制，在此提醒
+    ## <div class="waring_info" id="withdrawMsg">
+    ##    支付系统需每日定时维护，$!{begin} － $!{end}无法进行充值操作。
+    ##    给您带来的不便，敬请见谅。
+    ## </div>
+    <!-- main -->
+    <div class="main">
+        <div class="withdraw-content">
+			<img class="withdraw-bank-img" src="$!{env.getWebURL('')}/$!bankLogo" alt="">
+				<span class="withdraw-bank-name">$!bankName
+                    <i class="withdraw-spot">****</i>
+					<i class="withdraw-spot">****</i>
+					<i class="withdraw-spot">****</i>
+					$!cardNo
+				</span>           
+        </div>
+		<div class="withdraw-balance">
+			<span id="show_text_other" can_withdraw="$!money.format($!canWithdraw)">可提余额：￥$!money.format($!canWithdraw)</span>
+			##<span class="balance_right">全部提现</span>
+		</div>
+		<div class="withdraw-samll">
+			<div class="withdraw-title">提现金额</div>
+			<div class="withdraw-money">
+				<input  class="withdraw-number" type="text" maxlength="8" id="amount" value="$!amount" placeholder="请输入您提现的金额（10元起）" autocomplete="off">
+           	</div>                
+        </div>
+		<div class="withdraw-balance" id="">
+           $!number.format("#", $!{withdrawLimit})元起提，免收手续费。
+        </div>
+        <div class="Exit_login btn_bgNO pre_withdraw_btn">提交</div>    
+    </div>
+    <!-- 弹窗 -->
+    <div id="explain" class="dialog_flex alert_hide">
+        <div class="alert_info">
+            <i class="close">
+                <img src="$!{env.getWebURL('')}/resources/micro2.0/images/close.png" alt="">
+            </i>
+            <div class="alert_title">奖励金提现规则</div>
+            <ul class="alert_ul">
+    			<li class="alert_list">•$!number.format("#", $!{withdrawLimit})元起提，免收手续费。</li>
+                <li class="alert_list">•提现申请提交后，预计当天到账；如遇银行通道维护等特殊情况将1-2个工作日到账，实际到账时间依据提现银行而有所差异。</li>
+    			<li class="alert_list">•根据《反洗钱法》规定，严禁洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用。</li>
+    			<li class="alert_list">•如有疑问请联系客服 400-806-1230。</li>
+            </ul>
+        </div>
+    </div>
+    <div id="paylog" class="dialog_flex alert_hide">
+        <div class="deposit_dialog reminder">
+            <h3 class="deposit_info_title">请输入交易密码</h3>
+            <div class="input-box"><input class="pass_input" type="password" name="password" id="password" maxLength="16" value="" placeholder="请输入交易密码"></div>
+            <div class="btn_group">
+				<i class="close dep_btn dep_line">取消</i>
+				<div class="top_line oran_color withdraw_btn">确定</div>
+			</div>
+        </div>
+    </div>
+    <!-- 知道了 -->
+    <div class="dialog_notice have_fee_dialog" style="display: none">
+        <div class="alert_info_new">
+            <div class="alert_title_new">提示</div>
+            <ul class="alert_ul">
+                <li class="alert_list fee_show_text">
+                </li>
+            </ul>
+            <div class="btn_group">
+                <div class="top_line_new close_btn know_this" style="margin-top:0;">知道了</div>
+            </div>
+        </div>
+    </div>
+    #* 继续提现 *#
+    <div class="dialog_notice continue_dialog" style="display: none">
+        <div class="alert_info_new">
+            <div class="alert_title_new">提示</div>
+            <ul class="alert_ul">
+                <li class="alert_list continue_text">
+                </li>
+            </ul>
+            <div class="btn_group">
+                <div class="dep_btn know_this">取消</div>
+                <div class="dep_btn go_withdraw">继续提现</div>
+            </div>
+        </div>
+    </div>
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$!env.getWebURL('')" />
+<input type="hidden" id="canWithdraw" name="canWithdraw" value="$!canWithdraw" />
+<input type="hidden" id="withdrawLimit" name="withdrawLimit" value="$!withdrawLimit" /> ## 提现最小金额
+<input type="hidden" id="failTime" name="failTime" value="$!failTime" />
+<input type="hidden" id="from" name="from" value="$!from" />
+<input type="hidden" id="token" name="token" value="$!token" /> ## 防重复提交
+#if("$!qianbao" == "qianbao")
+<input type="hidden" id="qianbao" name="qianbao" value="$!qianbao" />
+<input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+#end
+#LoadJS("resources/micro2.0/scripts/bonus/withdraw")
+#LoadJS("resources/micro2.0/scripts/common/common")
+</body>
+#Html("end")

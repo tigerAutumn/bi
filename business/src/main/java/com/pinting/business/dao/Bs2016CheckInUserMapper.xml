@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.Bs2016CheckInUserMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.Bs2016CheckInUser" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="check_in_time" property="checkInTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="VoResultMap" type="com.pinting.business.model.vo.BsCheckInUserVO" extends="BaseResultMap">
+  	<result column="register_time" property="registerTime" jdbcType="TIMESTAMP" />
+	<result column="is_win" property="isWin" jdbcType="VARCHAR" />
+	<result column="back_draw_time" property="backDrawTime" jdbcType="TIMESTAMP" />
+	<result column="content" property="content" jdbcType="VARCHAR" />
+	<result column="activity_award_id" property="activityAwardId" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ActivityVoResultMap" type="com.pinting.business.model.vo.EndOf2016YearActivityVO" extends="BaseResultMap">
+  	<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+	<result column="user_id" property="userId" jdbcType="INTEGER" />
+	<result column="annualized_investment" property="annualizedInvestment" jdbcType="DOUBLE" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mobile, check_in_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.Bs2016CheckInUserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_2016_check_in_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_2016_check_in_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_2016_check_in_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.Bs2016CheckInUserExample" >
+    delete from bs_2016_check_in_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.Bs2016CheckInUser" >
+    insert into bs_2016_check_in_user (id, mobile, check_in_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, #{checkInTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.Bs2016CheckInUser" >
+    insert into bs_2016_check_in_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="checkInTime != null" >
+        check_in_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="checkInTime != null" >
+        #{checkInTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <insert id="insertCheckInUser">
+  	${sql}
+  </insert>
+  
+  <select id="countByExample" parameterType="com.pinting.business.model.Bs2016CheckInUserExample" resultType="java.lang.Integer" >
+    select count(*) from bs_2016_check_in_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_2016_check_in_user
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mobile != null" >
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkInTime != null" >
+        check_in_time = #{record.checkInTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_2016_check_in_user
+    set id = #{record.id,jdbcType=INTEGER},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      check_in_time = #{record.checkInTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.Bs2016CheckInUser" >
+    update bs_2016_check_in_user
+    <set >
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="checkInTime != null" >
+        check_in_time = #{checkInTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.Bs2016CheckInUser" >
+    update bs_2016_check_in_user
+    set mobile = #{mobile,jdbcType=VARCHAR},
+      check_in_time = #{checkInTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 查询手机号码是否已存在 -->
+  <select id="selectByMobile" resultMap="BaseResultMap" parameterType="com.pinting.business.model.Bs2016CheckInUser" >
+	 SELECT
+		<include refid="Base_Column_List" />
+	 FROM bs_2016_check_in_user 
+	 WHERE 1 = 1 
+     <if test="mobile != null and mobile != '' " >
+	   	 AND mobile = #{mobile,jdbcType=VARCHAR}
+	  </if>
+	 LIMIT 0,1
+  </select>
+  
+  <select id="findCheckInUserList" resultMap="VoResultMap" parameterType="com.pinting.business.model.vo.BsCheckInUserVO" >
+	  SELECT aa.mobile, aa.register_time, aa.is_win, aa.back_draw_time, aa.activity_award_id, aa.content
+	  FROM
+		 (
+			 SELECT 
+			 	a.mobile, b.register_time, c.is_win, c.back_draw_time, d.id AS activity_award_id, c.note as content, c.award_id, c.create_time, a.check_in_time
+			 FROM bs_2016_check_in_user a
+             LEFT JOIN bs_activity e ON e.id = 30
+			 LEFT JOIN bs_user b ON a.mobile = b.mobile 
+			 LEFT JOIN bs_activity_lucky_draw c ON c.user_id = b.id AND c.activity_id = e.id
+			 LEFT JOIN bs_activity_award d ON c.award_id = d.id AND c.award_id IN (87, 88, 89, 90)
+              <where>
+                 <if test="isWin != null and isWin != '' and isWin == '-1' " >
+                     AND c.is_win = 'Y'
+                 </if>
+                 <if test="isWin != null and isWin != '' and isWin == '-2' " >
+                     AND b.id NOT IN (SELECT t.user_id FROM bs_activity_lucky_draw t WHERE t.award_id IN (87, 88, 89, 90)) OR b.register_time IS NULL
+                 </if>
+              </where>
+		 ) aa
+	 WHERE 1=1
+	 <if test="mobile != null and mobile != '' " >
+	   	 AND aa.mobile like concat(concat('%', #{mobile,jdbcType=VARCHAR}),'%')
+	 </if>
+	 <if test="activityAwardId != null and activityAwardId != '' " >
+	   	 AND aa.award_id = #{activityAwardId,jdbcType=INTEGER}
+	 </if>
+	 ORDER BY
+	 <if test="orderDirection!=null and orderDirection != ''  and orderField != ''  and orderField!=null ">
+		 ${orderField} ${orderDirection},
+	 </if>
+		 aa.create_time DESC,aa.check_in_time DESC
+	 <include refid="sql-global.pagination" />
+  </select>
+  
+  <select id="findCheckInUserCount" parameterType="com.pinting.business.model.vo.BsCheckInUserVO" resultType="java.lang.Integer">
+  	 SELECT 
+	 	COUNT(*)
+	  FROM
+		 (
+			 SELECT 
+			 	a.mobile, b.register_time, c.is_win, c.back_draw_time, d.id AS activity_award_id, d.content, c.award_id, c.create_time, a.check_in_time
+			 FROM bs_2016_check_in_user a
+             LEFT JOIN bs_activity e ON e.id = 30
+			 LEFT JOIN bs_user b ON a.mobile = b.mobile 
+			 LEFT JOIN bs_activity_lucky_draw c ON c.user_id = b.id AND c.activity_id = e.id
+			 LEFT JOIN bs_activity_award d ON c.award_id = d.id AND c.award_id IN (87, 88, 89, 90)
+              <where>
+                 <if test="isWin != null and isWin != '' and isWin == '-1' " >
+                     AND c.is_win = 'Y'
+                 </if>
+                 <if test="isWin != null and isWin != '' and isWin == '-2' " >
+                     AND b.id NOT IN (SELECT t.user_id FROM bs_activity_lucky_draw t WHERE t.award_id IN (87, 88, 89, 90)) OR b.register_time IS NULL
+                 </if>
+              </where>
+		 ) aa
+	 WHERE 1=1
+	 <if test="mobile != null and mobile != '' " >
+	   	 AND aa.mobile like concat(concat('%', #{mobile,jdbcType=VARCHAR}),'%')
+	 </if>
+	 <if test="activityAwardId != null and activityAwardId != '' " >
+	   	 AND aa.award_id = #{activityAwardId,jdbcType=INTEGER}
+	 </if>
+  </select>
+  
+  <select id="selectLotteryMobileList" resultMap="ActivityVoResultMap" parameterType="com.pinting.business.model.vo.EndOf2016YearActivityVO">
+	 SELECT 
+	 	a.mobile, b.id AS user_id
+	 FROM bs_2016_check_in_user a, bs_user b
+	 WHERE a.mobile = b.mobile AND b.register_time IS NOT NULL
+  </select>
+  
+  <select id="selectNoDrawMobileList" resultMap="ActivityVoResultMap" parameterType="java.util.Map">
+      SELECT
+      a.mobile, b.id AS user_id
+      FROM bs_2016_check_in_user a, bs_user b, bs_activity e
+      WHERE a.mobile = b.mobile AND b.register_time IS NOT NULL and e.id = 30
+      AND b.id NOT IN (SELECT c.user_id FROM bs_activity_lucky_draw c WHERE c.activity_id = 30)
+  </select>
+  
+  <select id="selectAnnualizedAmountMax" resultMap="ActivityVoResultMap" parameterType="com.pinting.business.model.vo.EndOf2016YearActivityVO">
+      select aaa.*, bbb.open_time from (
+          select ifnull(sum(aa.amount), 0) as annualized_investment, aa.mobile, aa.user_id, aa.account_id from ((
+              select
+                  ROUND(IFNULL(SUM(
+                  CASE f.term
+                  WHEN -7 THEN a.open_balance*7/365
+                  WHEN 1 THEN a.open_balance*30/365
+                  WHEN 3 THEN a.open_balance*90/365
+                  WHEN 6 THEN a.open_balance*180/365
+                  WHEN 12 THEN a.open_balance END
+                  ), 0), 2) AS amount, concat(left(c.mobile, 3), '币港湾', right(c.mobile, 4)) as mobile, a.account_id, b.user_id
+              from bs_sub_account a, bs_account b, bs_user c, bs_2016_check_in_user d, bs_activity e, bs_product f
+              where a.account_id = b.id and b.user_id = c.id and c.mobile = d.mobile and e.id = 30
+              and a.product_id = f.id
+              and a.product_type in ('AUTH_YUN', 'AUTH_ZSD', 'REG', 'RED', 'RED_ZSD') and a.`status` in (2,5,7)
+              group by a.account_id
+          ) union (
+              select ROUND(IFNULL(SUM(
+                  r.init_amount*f.term/24
+              ), 0), 2) AS amount, concat(left(c.mobile, 3), '币港湾', right(c.mobile, 4)) as mobile, a.account_id, b.user_id
+              from ln_loan_relation r, bs_sub_account a, bs_account b, bs_user c, bs_2016_check_in_user d, bs_activity e, bs_product f
+              where r.bs_sub_account_id = a.id and r.`status` in ('REPAID', 'SUCCESS') and a.product_type = 'REG_D'
+              and a.account_id = b.id and b.user_id = c.id and c.mobile = d.mobile and e.id = 30
+              and a.product_id = f.id
+              group by a.account_id
+          )) as aa
+            group by aa.account_id
+      ) as aaa, (
+          select aa.* from (
+              select a.* from bs_sub_account a, bs_account b, bs_user c, bs_2016_check_in_user d
+              where a.product_type in ('REG_D', 'AUTH_YUN', 'AUTH_ZSD', 'REG') and a.account_id = b.id and c.id = b.user_id
+              and c.mobile = d.mobile
+              order by a.id desc
+          ) as aa
+          group by aa.account_id
+      ) as bbb where aaa.account_id = bbb.account_id
+      order by annualized_investment desc, bbb.open_time asc, bbb.id asc
+      limit 1
+  </select>
+  
+  <select id="selectNumberOfWinners" resultType="java.lang.Integer" parameterType="java.util.Map">
+  	 SELECT 
+	 	COUNT(*)
+	 FROM bs_2016_check_in_user a, bs_user b, bs_activity_lucky_draw c
+	 WHERE a.mobile = b.mobile AND b.id = c.user_id AND b.register_time IS NOT NULL 
+	 AND c.award_id = #{activityAwardId,jdbcType=INTEGER}
+  </select>
+
+
+    <!-- 2017平安夜湾粉抽奖活动 -->
+<select id="selectNoDrawUserAmount" resultMap="ActivityVoResultMap" parameterType="java.util.Map">
+<if test="activityId == 30">
+    select aaa.*, bbb.open_time from (
+        select ifnull(sum(aa.amount), 0) as annualized_investment, aa.mobile, aa.user_id, aa.account_id from ((
+            select
+            ROUND(IFNULL(SUM(
+                CASE f.term
+                WHEN -7 THEN a.open_balance*7/365
+                WHEN 1 THEN a.open_balance*30/365
+                WHEN 3 THEN a.open_balance*90/365
+                WHEN 6 THEN a.open_balance*180/365
+                WHEN 12 THEN a.open_balance END
+            ), 0), 2) AS amount, concat(left(c.mobile, 3), '币港湾', right(c.mobile, 4)) as mobile, a.account_id, b.user_id
+            from bs_sub_account a, bs_account b, bs_user c, bs_2016_check_in_user d, bs_activity e, bs_product f
+            where a.account_id = b.id and b.user_id = c.id and c.mobile = d.mobile and e.id = 30
+            and a.product_id = f.id
+            and a.product_type in ('AUTH_YUN', 'AUTH_ZSD', 'REG', 'RED', 'RED_ZSD') and a.`status` in (2,5,7)
+            and c.id NOT IN (SELECT c.user_id FROM bs_activity_lucky_draw c WHERE c.activity_id = 30)
+            group by a.account_id
+        ) union (
+            select ROUND(IFNULL(SUM(
+                r.init_amount*f.term/24
+            ), 0), 2) AS amount, concat(left(c.mobile, 3), '币港湾', right(c.mobile, 4)) as mobile, a.account_id, b.user_id
+            from ln_loan_relation r, bs_sub_account a, bs_account b, bs_user c, bs_2016_check_in_user d, bs_activity e, bs_product f
+            where r.bs_sub_account_id = a.id and r.`status` in ('REPAID', 'SUCCESS') and a.product_type = 'REG_D'
+            and a.account_id = b.id and b.user_id = c.id and c.mobile = d.mobile and e.id = 30
+            and a.product_id = f.id
+            and c.id NOT IN (SELECT c.user_id FROM bs_activity_lucky_draw c WHERE c.activity_id = 30)
+            group by a.account_id
+        )) as aa
+        group by aa.account_id
+    ) as aaa, (
+      select aa.* from (
+            select a.* from bs_sub_account a, bs_account b, bs_user c, bs_2016_check_in_user d
+            where a.product_type in ('REG_D', 'AUTH_YUN', 'AUTH_ZSD', 'REG') and a.account_id = b.id and c.id = b.user_id
+            and c.mobile = d.mobile
+            order by a.id desc
+        ) as aa
+        group by aa.account_id
+    ) as bbb where aaa.account_id = bbb.account_id
+    order by annualized_investment desc, bbb.open_time asc, bbb.id asc
+</if>
+
+<if test="activityId == 32">
+    select a.employee_name as mobile, a.id as user_id from bs_2016_annual_meeting_employee a where a.is_win != 'Y' or a.is_win is null order by a.id asc
+</if>
+</select>
+
+    <select id="selectDrawedUser" resultMap="ActivityVoResultMap" parameterType="java.util.Map">
+        <if test="activityId == 30">
+            select aa.* from (
+                select a.user_id, concat(left(b.mobile, 3), '币港湾', right(b.mobile, 4)) as mobile,
+                case a.award_id
+                    when 87 then '1'
+                    when 88 then '2'
+                    when 89 then '3'
+                    when 90 then '0'
+                end as type
+                from bs_activity_lucky_draw a, bs_user b
+                where a.activity_id = 30 and a.is_win = 'Y' and a.user_id = b.id
+                order by a.award_id asc, a.create_time desc
+            ) as aa
+            <if test="type != null">
+                where aa.type = #{type}
+            </if>
+        </if>
+        <if test="activityId == 32">
+            select aa.* from (
+                select a.employee_name as mobile, a.id as user_id,
+                    case a.award_id
+                        when 101 then '1'
+                        when 102 then '2'
+                        when 103 then '3'
+                        when 104 then '0'
+                    end as type
+                from bs_2016_annual_meeting_employee a where a.is_win = 'Y'
+                order by a.award_id asc, a.create_time desc
+            ) as aa
+            <if test="type != null">
+                where aa.type = #{type}
+            </if>
+        </if>
+    </select>
+</mapper>

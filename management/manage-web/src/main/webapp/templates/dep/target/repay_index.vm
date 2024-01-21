@@ -1,0 +1,88 @@
+<div class="pageContent">
+    #Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+
+    <div class="pageFormContent nowrap" layoutH="97">
+        <dl>
+            <dt>
+                标的还款计划id：
+            </dt>
+            <dd>
+                <input type="text" id="target_id" name="target_id" oninput="onlyInteger(this)" class="required"  style="width:200px;"  maxlength="12" />
+            </dd>
+        </dl>
+
+        <dl>
+            <dt>
+                文件路径：
+            </dt>
+            <dd>
+                <input type="text" id="target_file_path" name="target_file_path"  class="required"  style="width:450px;"  maxlength="100" />
+                </br>
+                <span>文件路径示例：11/offReturn_2017-11-02.csv</span>
+            </dd>
+        </dl>
+
+        <ul>
+            <li>
+                <div class="buttonActive">
+                    <div class="buttonContent"><button type="button" id="target_btn">标的回款重发确认</button></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<script>
+
+    function onlyInteger(input_obj) {
+        input_obj.value = input_obj.value.replace(/\D/g,'');
+    }
+
+    $("#target_btn").click(function(){
+        targetResend();
+    });
+
+    function targetResend() {
+
+        var targetId = $("#target_id").val();
+        var targetFilePath = $.trim($("#target_file_path").val());
+
+        if(targetId == '') {
+            alertMsg.error("标的编号不能为空！");
+            return false;
+        }
+
+        $.ajax({
+            url : $('#APP_ROOT_PATH').val()+'/target/targetResend.htm',
+            type: 'post',
+            data: {
+                targetId : targetId,
+                targetFilePath : targetFilePath
+            },
+            success: function(data) {
+                if (data.statusCode == '200') {
+                    alertMsg.info("标的回款重发成功");
+                } else {
+                    if(data.statusCode == '300'){
+                        if(data.message){
+                            alertMsg.error(data.message);
+                        } else {
+                            alertMsg.error("港湾航道堵塞，稍后再试吧~");
+                        }
+                    }else{
+                        if(data.message){
+                            alertMsg.error(data.message);
+                        } else {
+                            alertMsg.error("港湾航道堵塞，稍后再试吧~");
+                        }
+                    }
+                }
+            },
+            error: function(data) {
+                alertMsg.error("币港湾航道堵塞，稍后再试吧~");
+            }
+        });
+    }
+
+</script>

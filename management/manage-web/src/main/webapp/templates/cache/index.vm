@@ -1,0 +1,314 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')"/>
+<form id="pagerForm" method="post" action="#rel#">
+</form>
+<div class="page unitBox">
+    <div class="pageHeader">
+        <form rel="pagerForm" onsubmit="return navTabSearch(this);"
+              action="$env.getWebURL('/sys/redisCache/index.htm')" id="myform" method="post">
+            <div class="searchBar">
+                <table class="searchContent">
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="pageContent">
+        <div class="panelBar">
+            <ul class="toolBar">
+                <li><a class="add" href="#" id="refreshCacheKey"><span>刷新缓存</span></a></li>
+                <li><a class="add" href="#" id="openCachekey"><span>启用缓存</span></a></li>
+                <li><a class="add" href="#" id="closeCachekey"><span>关闭缓存</span></a></li>
+            </ul>
+        </div>
+        <table class="table" width="1100" layoutH="170">
+            <thead>
+            <tr>
+                <th width="5%"><input id="checkedAll" type="checkbox" onclick="checkedAll()"/>全选</th>
+                <th width="15%">缓存key值</th>
+                <th width="40%">缓存描述</th>
+                <th width="10%">缓存失效时间</th>
+                <th width="10%">缓存状态</th>
+                <th width="20%">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                #foreach($grid in $dataGrid)
+                    <tr target='sid_user' rel='1'>
+                        <td>
+                            <input type="checkbox" name="checkId" value="$!grid.cacheKey" data-name="$!grid.cacheKey"
+                                       onclick="checkedId(this)"/>
+                        </td>
+                        <td>$!grid.cache</td>
+                        <td>$!grid.desc</td>
+                        <td>$!grid.expire （秒）</td>
+                        <td>
+                            #if($!grid.status)
+                                已启用
+                            #else
+                                已关闭
+                            #end
+                        </td>
+                        <td>
+                            <a title="刷新缓存" href="#" onclick="refreshCacheKey('$!grid.cacheKey')" mask="true">刷新缓存</a>&nbsp;&nbsp;
+                            <a title="设置失效时间" target="dialog" href="$env.getWebURL('/sys/redisCache/refreshCachekeyExpire/page.htm?cacheKey=')$!grid.cacheKey" mask="true" rel="createBack">设置失效时间</a>&nbsp;&nbsp;
+                            #if($!grid.status)
+                                <a title="关闭" href="#" onclick="closeCachekey('$!grid.cacheKey')" mask="true">关闭</a>
+                            #else
+                                <a title="启用" href="#" onclick="openCachekey('$!grid.cacheKey')" mask="true">启用</a>
+                            #end
+                        </td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    function searchFunction() {
+        $("#myform").submit();
+    }
+
+    //全选
+    function checkedAll() {
+        if ($('#checkedAll').attr('checked')) {
+            $("input[name=checkId]:checkbox").each(function () {
+                $(this).prop('checked', true);
+            })
+        } else {
+            $("input[name=checkId]:checkbox").each(function () {
+                $(this).prop('checked', false);
+            })
+        }
+    }
+
+    //单选
+    function checkedId(obj) {
+        var checkCount = $.trim($('#checkCount').val());
+        if ($(obj).attr('checked')) {
+            var len = 0;
+            $("input[name=checkId]:checkbox").each(function () {
+                if ($(this).attr('checked')) {
+                    len = parseInt(len) + 1;
+                }
+            })
+
+            if (len == checkCount) {
+                $('#checkedAll').prop('checked', true);
+            } else {
+                $('#checkedAll').prop('checked', false);
+            }
+        } else {
+            $('#checkedAll').prop('checked', false);
+        }
+    }
+
+    function refreshCacheKey(cacheKey) {
+        var cacheKeys = [];
+        cacheKeys[0] = cacheKey
+        alertMsg.confirm("你确定刷新缓存(" + cacheKeys + ")？", {
+            okCall: function () {
+                $.ajax({
+                    type: 'post',
+                    url: $("#APP_ROOT_PATH").val() + "/sys/redisCache/refreshCacheKey.htm",
+                    data: {
+                        cacheKeys: cacheKeys
+                    },
+                    success: function (data) {
+                        if (data.statusCode == "200") {
+                            alertMsg.correct("刷新缓存(" + cacheKeys + ")成功");
+                            navTab.reload("$env.getWebURL('/sys/redisCache/index.htm')");
+                        } else {
+                            if (data.message) {
+                                alertMsg.error(data.message);
+                            } else {
+                                alertMsg.error("操作失败");
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    }
+
+    function openCachekey(cacheKey) {
+        var cacheKeys = [];
+        cacheKeys[0] = cacheKey
+        alertMsg.confirm("你确定启用缓存(" + cacheKeys + ")？", {
+            okCall: function () {
+                $.ajax({
+                    type: 'post',
+                    url: $("#APP_ROOT_PATH").val() + "/sys/redisCache/openCachekey.htm",
+                    data: {
+                        cacheKeys: cacheKeys
+                    },
+                    success: function (data) {
+                        if (data.statusCode == "200") {
+                            alertMsg.correct("启用缓存(" + cacheKeys + ")成功");
+                            navTab.reload("$env.getWebURL('/sys/redisCache/index.htm')");
+                        } else {
+                            if (data.message) {
+                                alertMsg.error(data.message);
+                            } else {
+                                alertMsg.error("操作失败");
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    }
+
+    function closeCachekey(cacheKey) {
+        var cacheKeys = [];
+        cacheKeys[0] = cacheKey
+        alertMsg.confirm("你确定关闭缓存(" + cacheKeys + ")？", {
+            okCall: function () {
+                $.ajax({
+                    type: 'post',
+                    url: $("#APP_ROOT_PATH").val() + "/sys/redisCache/closeCachekey.htm",
+                    data: {
+                        cacheKeys: cacheKeys
+                    },
+                    success: function (data) {
+                        if (data.statusCode == "200") {
+                            alertMsg.correct("关闭缓存(" + cacheKeys + ")成功");
+                            navTab.reload("$env.getWebURL('/sys/redisCache/index.htm')");
+                        } else {
+                            if (data.message) {
+                                alertMsg.error(data.message);
+                            } else {
+                                alertMsg.error("操作失败");
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    }
+
+    $(function () {
+        $('#refreshCacheKey').on('click', function () {
+            var ids = "";
+            var count = 0;
+            var cacheKeys = [];
+            $("input[name=checkId]:checkbox").each(function () {
+                if ($(this).attr("checked")) {
+                    ids += $(this).attr('value') + ",";
+                    cacheKeys[count] = $(this).attr('value');
+                    count++;
+                }
+            })
+            if (ids == null || ids == '') {
+                alertMsg.warn('请选择要刷新的缓存key');
+                return;
+            }
+
+            alertMsg.confirm("你确定刷新【" + count + "个缓存】，是否继续？", {
+                okCall: function () {
+                    $.ajax({
+                        type: 'post',
+                        url: $("#APP_ROOT_PATH").val() + "/sys/redisCache/refreshCacheKey.htm",
+                        data: {
+                            cacheKeys: cacheKeys
+                        },
+                        success: function (data) {
+                            if (data.statusCode == "200") {
+                                alertMsg.correct("刷新(" + count + ")个缓存成功");
+                                navTab.reload("$env.getWebURL('/sys/redisCache/index.htm')");
+                            } else {
+                                if (data.message) {
+                                    alertMsg.error(data.message);
+                                } else {
+                                    alertMsg.error("操作失败");
+                                }
+                            }
+                        }
+                    })
+                }
+            });
+        })
+
+        $('#openCachekey').on('click', function () {
+            var ids = "";
+            var count = 0;
+            var cacheKeys = [];
+            $("input[name=checkId]:checkbox").each(function () {
+                if ($(this).attr("checked")) {
+                    ids += $(this).attr('value') + ",";
+                    cacheKeys[count] = $(this).attr('value');
+                    count++;
+                }
+            })
+            if (ids == null || ids == '') {
+                alertMsg.warn('请选择要启用的缓存key');
+                return;
+            }
+
+            alertMsg.confirm("你确定启用【" + count + "个缓存】，是否继续？", {
+                okCall: function () {
+                    $.ajax({
+                        type: 'post',
+                        url: $("#APP_ROOT_PATH").val() + "/sys/redisCache/openCachekey.htm",
+                        data: {
+                            cacheKeys: cacheKeys
+                        },
+                        success: function (data) {
+                            if (data.statusCode == "200") {
+                                alertMsg.correct("启用(" + count + ")个缓存成功");
+                                navTab.reload("$env.getWebURL('/sys/redisCache/index.htm')");
+                            } else {
+                                if (data.message) {
+                                    alertMsg.error(data.message);
+                                } else {
+                                    alertMsg.error("操作失败");
+                                }
+                            }
+                        }
+                    })
+                }
+            });
+        })
+
+        $('#closeCachekey').on('click', function () {
+            var ids = "";
+            var count = 0;
+            var cacheKeys = [];
+            $("input[name=checkId]:checkbox").each(function () {
+                if ($(this).attr("checked")) {
+                    ids += $(this).attr('value') + ",";
+                    cacheKeys[count] = $(this).attr('value');
+                    count++;
+                }
+            })
+            if (ids == null || ids == '') {
+                alertMsg.warn('请选择要关闭的缓存key');
+                return;
+            }
+
+            alertMsg.confirm("你确定关闭【" + count + "个缓存】，是否继续？", {
+                okCall: function () {
+                    $.ajax({
+                        type: 'post',
+                        url: $("#APP_ROOT_PATH").val() + "/sys/redisCache/closeCachekey.htm",
+                        data: {
+                            cacheKeys: cacheKeys
+                        },
+                        success: function (data) {
+                            if (data.statusCode == "200") {
+                                alertMsg.correct("关闭(" + count + ")个缓存成功");
+                                navTab.reload("$env.getWebURL('/sys/redisCache/index.htm')");
+                            } else {
+                                if (data.message) {
+                                    alertMsg.error(data.message);
+                                } else {
+                                    alertMsg.error("操作失败");
+                                }
+                            }
+                        }
+                    })
+                }
+            });
+        })
+    })
+</script> 

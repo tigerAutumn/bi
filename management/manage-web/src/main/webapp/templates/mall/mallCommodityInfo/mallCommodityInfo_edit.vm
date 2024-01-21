@@ -1,0 +1,137 @@
+<div class="pageContent">
+    <form id="myform_edit" method="post" action="$env.getWebURL('/mallCommodityInfo/editCommodity.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, reloadPage)">
+        #Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+        <input id="id" name="id" value="$info.id" type="hidden">
+        <div class="pageFormContent nowrap" layoutH="50">
+            <dl>
+                <dt>商品名称：<i style="color: red">*</i></dt>
+                <dd style="width:100px;">
+                    <span>$!info.commName</span>
+                </dd>
+            </dl>
+            <dl>
+                <dt>商品类别：<i style="color: red">*</i></dt>
+                <dd style="width:100px;">
+                    #foreach($enumKey in $!mallCommodityTypeEnum.keySet())
+                        #if($!info.commTypeId== $!enumKey) $!mallCommodityTypeEnum.get($!enumKey) #end
+                    #end
+                </dd>
+            </dl>
+            <dl>
+                <dt>属性：<i style="color: red">*</i></dt>
+                <dd style="width:100px;">
+                    <span>#if($!info.commProperty =="REAL") 实体 #elseif($!info.commProperty =="EMPTY") 虚拟 #end</span>
+                </dd>
+            </dl>
+            <dl>
+                <dt>所需积分：<i style="color: red">*</i></dt>
+                <span>$!info.points</span>
+            </dl>
+            <dl>
+                <dt>剩余库存：<i style="color: red">*</i></dt>
+                <input type="text" id="leftCount" name="leftCount" size="20" maxlength="9" value="$!info.leftCount" class="required number"
+                       onkeyup="value=value.replace(/((^\s*)[^\d]*)|([^\d]*(\s*$))/g,'').replace(/\./g,'')" />
+            </dl>
+            <dl>
+                <dt>推荐：<i style="color: red">*</i></dt>
+                <dd style="width:100px;">
+                <input type="radio" id="isRecommend1" name="isRecommend" value="YES" #if("$!info.isRecommend"=="YES") checked #end>是</input>
+                <input type="radio" id="isRecommend2" name="isRecommend" value="NO" #if("$!info.isRecommend"=="NO") checked #end>否</input>
+                </dd>
+            </dl>
+            <dl>
+                <dt>商品主图（750 x 520）：<i style="color: red">*</i></dt>
+                <dd>
+                    <div id="uploader-demo">
+                        <!--用来存放item-->
+                        <div id="fileThumb" class="uploader-list">
+                            <div class="file-item thumbnail">
+                                <img src="$!mUrl$!info.commPictureUrl"/><div class="info"></div>
+                            </div>
+                        </div>
+                    </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt>兑换需知：<i style="color: red">*</i></dt>
+                <dd>
+                   <textarea name="exchangeNote" id="exchangeNote" class="editor" rows="50" cols="115"
+                             tools="Blocktag,Fontface,FontSize,Bold,Italic,Underline,Strikethrough,Align,List,|,Link,About" >
+                       $!info.exchangeNote
+                   </textarea>
+                </dd>
+            </dl>
+            <dl>
+                <dt>商品详情：<i style="color: red">*</i></dt>
+                <dd>
+                   <textarea name="commDetails" id="commDetails" class="editor" rows="50" cols="115" tools="simple" upImgUrl="$env.getWebURL('/upload/mallCommodityImg.htm')" upImgExt="jpg,jpeg,gif,png">
+                       $!info.commDetails
+                   </textarea>
+                </dd>
+            </dl>
+        </div>
+        <div class="formBar">
+            <ul style="float:left;">
+                <li><div class="buttonActive"><div class="buttonContent"><button onclick="formSubmit()" type="button">保存</button></div></div></li>
+                <li><div class="button"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div></li>
+            </ul>
+        </div>
+    </form>
+    #LoadJS("/resources/js/global_validate")
+    <script>
+        function formSubmit() {
+
+            var leftCount = $("#leftCount").val();
+            var isRecommend = $("[name='isRecommend']").filter(":checked").val();
+            var exchangeNote = $("#exchangeNote").val();
+            var commDetails = $("#commDetails").val();
+
+            if (leftCount == '') {
+                alertMsg.warn("请填写剩余库存！");
+                return false;
+            }
+            if (leftCount != '') {
+                if (parseInt(leftCount) < parseInt(0)) {
+                    alertMsg.warn("剩余库存不能小于0！");
+                    return false;
+                }
+            }
+            if (isRecommend == undefined || isRecommend == '') {
+                alertMsg.warn("请选择是否推荐！");
+                return false;
+            }
+            if (exchangeNote == '') {
+                alertMsg.warn("请填写兑换需知！");
+                return false;
+            }
+            if (commDetails == '') {
+                alertMsg.warn("请填写商品详情！");
+                return false;
+            }
+
+            //检查是否存在赋值粘贴的图片（base64）
+            if((exchangeNote.indexOf("data:image") != -1) && (exchangeNote.indexOf("base64") != -1)) {
+                alertMsg.warn("图片必须上传方式加载，请勿直接粘贴！");
+                return false;
+            }
+
+            //检查是否存在赋值粘贴的图片（base64）
+            if((commDetails.indexOf("data:image") != -1) && (commDetails.indexOf("base64") != -1)) {
+                alertMsg.warn("图片必须上传方式加载，请勿直接粘贴！");
+                return false;
+            }
+
+            $('#myform_edit').submit();
+        }
+
+        function reloadPage(json) {
+            if (json.statusCode == 200) {
+                navTab.closeCurrentTab();
+                alertMsg.correct(json.message);
+                navTab.reload("$env.getWebURL('/mallCommodityInfo/getList.htm')");
+            } else {
+                alertMsg.error(json.message);
+            }
+        }
+    </script>
+</div>

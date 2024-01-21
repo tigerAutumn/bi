@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+	<div class="col-md-12">
+       <div class="box box-primary">
+       <div class="box-body">
+       		<table id="table"
+				   data-url="/financing_detail/list"
+				   data-sort-name="id"
+				   data-sort-order="desc"
+				   data-click-to-select="true"
+				   data-pagination="true" 
+				   data-side-pagination="server"
+    			   data-page-list="[5, 10, 20, 50, 100, 200]">
+	            <thead>
+	            <tr>
+	                <!--<th data-field="state" data-checkbox="true"></th>-->
+	                <th data-field="id">编号</th>
+	                <th data-field="totalId">总账编号</th>
+	                <th data-field="productOrderNo">产品订单号</th>
+	                <th data-field="productCode">产品编码</th>
+	                <th data-field="productAmount">产品金额</th>
+					<th data-field="status" data-formatter="statusFormatter">状态</th>
+					<th data-field="action"
+		                    data-align="center"
+		                    data-formatter="actionFormatter"
+		                    data-events="actionEvents">操作</th>
+	            </tr>
+	            </thead>
+	        </table>
+        	<!--<a class="search btn btn-success" href="javascript:void(0);">获取选中IDs</a>-->
+       </div><!-- /.box-body -->
+       </div><!-- /. box -->
+   </div>
+   
+   <script>
+    var API_URL = "/financing_detail/",
+		table;
+		
+	$(function(){
+		//表格初始化
+		table = $('#table').bootstrapTable();
+	})
+	
+	//状态格式化
+	function statusFormatter(value,row,index) {
+        var status = '已收到';
+		if(row.status == 'RECEIVED' ) {
+			status = '已收到';
+		}else if(row.status == 'CONFIRM_FAIL') {
+			status = '回复确认失败';
+		}else if(row.status == 'CONFIRMED') {
+			status = '已回复确认';
+		}else if(row.status == 'RETURN_FAIL') {
+			status = '回款失败';
+		}else if(row.status == 'RETURNED') {
+			status = '已回款';
+		}
+		return status;
+    }
+		
+	//操作项
+	function actionFormatter(value,row,index) {
+        if(row.status == 'RECEIVED' || row.status == 'CONFIRM_FAIL') {
+			return [
+				'<a class="update" href="javascript:" title="回复"><i class="glyphicon glyphicon-edit"></i></a> ',
+        	].join('');
+		}
+		
+		if(row.status == 'CONFIRMED' || row.status == 'RETURN_FAIL') {
+            return [
+            	'<a class="remove" href="javascript:" title="回款"><i class="glyphicon glyphicon-remove-circle"></i></a>',
+        	].join('');
+		}
+    }
+	
+	// 回复和回款事件
+    window.actionEvents = {
+        'click .update': function (e, value, row) {
+			$.openModal(API_URL+"modal/reply/"+row.id, "回复理财信息");
+        },
+        'click .remove': function (e, value, row) {
+            $.warn('你确定要回款此理财吗?','确定回款',function(){
+				$.ajax({
+                    url: API_URL + "return_money/" + row.id,
+                    type: 'post',
+					dataType: 'json',
+                    success: function (data) {
+                        var title = "错误提示";
+						if(data.code == 'SUCC'){
+				    		title = "成功提示";
+				    	}
+						$.alert(data.msg,title,function(){
+				    		window.location.reload();
+				    	});
+                    }
+                })
+			});
+        }
+    };
+   </script>
+</body>
+</html>

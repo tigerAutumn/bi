@@ -1,0 +1,118 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen178/styles/assets/bankcard/head")
+#LoadGenCSS("/resources/gen178/styles/assets/bankcard/default")
+#LoadGenCSS("/resources/gen178/styles/assets/bankcard/index")
+#LoadGenJS("/resources/gen178/scripts/common/common")
+#LoadGenJS("/resources/gen178/scripts/assets/bankcard/bind_card_index")
+#parse("/hfCustody_account_service.vm")
+#LoadGenJS("/resources/gen178/scripts/assets/bankcard/select")
+#GenHead("end")
+<body class="body">
+
+#Gen178Header("home")
+<!--main-->
+<form id="go_bind_list" action="" method="post">
+    <div class="main">
+        <div class="main_content">
+            <div class="card_bind">
+                <ul class="card_bind_ul">
+                    <li class="card_bind_li">
+                        <div class="card_bind_left">持卡人：</div>
+                        <div class="card_bind_right"><input type="text" maxlength="10" name="userName" id="userName" placeholder="请输入持卡人真实姓名" value="$!{userName}" class="card_bind_rightinput" /></div>
+                    </li>
+                    <li class="card_bind_li">
+                        <div class="card_bind_left">身份证号：</div>
+                        <div class="card_bind_right"><input type="text" maxlength="18" name="idCard" id="idCard" placeholder="仅支持中国大陆身份证号" value="$!{idCard}" class="card_bind_rightinput" /></div>
+                    </li>
+                    <li class="card_bind_li">
+                        <div class="card_bind_left">银行卡号：</div>
+                        <div class="card_bind_right"><input type="text" maxlength="20" name="cardNo" id="cardNo" placeholder="请输入储蓄卡卡号" value="$!{cardNo}" class="card_bind_rightinput" /></div>
+                    </li>
+                    <li class="card_bind_li">
+                        <div class="card_bind_left">类型：</div>
+                        <div class="card_bind_right">
+                            ##<form action="" method="post" style="display: block;">
+                                <div id="divselect">
+                                    <cite>请选择银行</cite>
+                                    <ul>
+                                    #foreach($bank in $!bankList)
+                                        <li>
+                                            <a href="javascript:void(0);" selectid="$!bank.bankId" bank_id="$!bank.bankId" one_top="$!{bank.oneTop}" day_top="$!{bank.dayTop}" notice="$!{bank.notice}" class="choose_bank_a">
+                                                #if($bank.isAvailable == 1)
+                                                    $!{bank.bankName}
+                                                #else
+                                                    $!{bank.bankName}(暂不可用)
+                                                #end
+                                            </a>
+                                        </li>
+                                    #end
+                                    </ul>
+                                </div>
+                                <input name="bankId" type="hidden" value="$!{bankId}" id="bankId" />
+                            ##</form>
+                        </div>
+                    </li>
+                    <li class="card_bind_li">
+                        <div class="card_bind_left">手机号：</div>
+                        <div class="card_bind_right"><input type="text" maxlength="11" name="mobile" id="mobile" placeholder="请输入银行预留手机号" value="$!{mobile}" class="card_bind_rightinput" /></div>
+                    </li>
+                    <li class="card_bind_li card_bind_li_margin">
+                        <div class="card_bind_left">验证码：</div>
+                        <div class="card_bind_right"><input type="text" maxlength="4" name="verifyCode" id="verifyCode" placeholder="请输入短信验证码" value="" class="card_bind_rightinputcopy" />
+                            <span class="card_bind_rightspan send_sms">发送验证码</span>
+                        </div>
+                    </li>
+                    <li class="card_bind_btntxt">
+                        <div class="card_bind_btn_left"></div>
+                        <div class="card_bind_btn_right" id="show_text" style="display: none;">单笔限额<i style="color: #ff6633;" id="oneTopI"></i>万元，单日限额<i style="color: #ff6633;" id="dayTopI"></i>万元</div>
+                        <div class="show_notice" id="show_notice" style="display: none;"></div>
+                    </li>
+                    <li class="card_bind_btn">
+                        <div class="card_bind_btnl"></div>
+                        <div class="card_bind_btnr">
+                        <a class="card_bind_btnra">立即开通</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+			<div class="HF-content">
+				<div class="HF-content-txt" style="margin-bottom: 10px;">1、点击“立即开通”即表示您同意<a name="hfCustody_div"><span class="HF-content-color">《网络交易资金存管账户服务协议》</span></a>，系统将为您自动开通恒丰银行个人存管账户；</div>
+				<div class="HF-content-txt">2、为保障您的资金安全，默认开通存管时使用的银行卡为“安全卡”，后续仅可使用此卡进行充值和提现。</div>
+			</div>
+			<div class="HF-security">
+                <span></span>
+                <img src="$!env.get('gen.server.web')/resources/gen178/images/HF-security.png" class="HF-security-img"/>
+                <p>您的信息已使用SSL加密技术，数据传输安全</p>
+                <span></span>
+            </div>
+            <div class="payment_Quick">
+                <h3 class="payment_Quick_title">支持银行</h3>
+                <div class="row">
+                #foreach($bank in $!bankList)
+                    <div class="payment_Quick_card" style="overflow:hidden;">
+                        <div class="payment_Qcright" style="text-align: center;overflow:hidden;">
+                            <img src="$!env.get('gen.server.web')/resources/gen178/images/z_netbank_s_$!{bank.bankId}.png" class="payment_cardimg" />
+                        </div>
+                    </div>
+                #end
+                </div>
+            </div>
+
+        </div>
+    <input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')"/>
+    <input type="hidden" id="orderNo" value="$!orderNo">
+    <input type="hidden" id="entry" value="$!entry">
+    <input type="hidden" id="oneTop" value="$!{bank.oneTop}">
+    <input type="hidden" id="dayTop" value="$!{bank.dayTop}">
+    <input type="hidden" id="productId" name="productId" value="$!{productId}">
+    <input type="hidden" id="amount" name="amount" value="$!{amount}"/>
+    </div>
+</form>
+<!--footer-->
+#Gen178Footer()
+
+
+</body>
+#Html("end")

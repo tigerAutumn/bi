@@ -1,0 +1,214 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="page unitBox">
+
+	<div class="pageHeader">
+    	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/financial/dsdf/repayAct/index.htm')" id="dept_myform" method="post">
+            <input type="hidden" name="queryFlag" value="QUERYFLAG"/>
+			<div class="searchBar">
+                <table class="searchContent">
+					<tbody>
+        			<tr>
+						<td >
+        				姓名：<input type="text" id="userName" name="userName" maxlength="20" value="$!userName" />
+						</td>
+						<td >
+						 手机号：<input type="text" id="mobile" name="mobile" maxlength="20" value="$!mobile"  />
+						 </td>
+						<td >
+						 类型：
+						 <select name="type" class="valid">
+                            <option value="" #if("$!type"=="") selected  #end>全部</option>
+                            <option value="DS" #if("$!type"=="DS") selected  #end>代收</option>
+                            <option value="DF" #if("$!type"=="DF") selected  #end>代付</option>
+                        </select>
+						</td>
+					
+        				<td >
+                            创建日期：
+						<input name="startTime" type="text" id="startTime" class=" date textInput readonly" readonly="true" value="$!startTime" dateFmt="yyyy-MM-dd" maxdate="{%y}-%M-{%d-1}"/>
+						</td>
+						<td >
+    						<input name="endTime" type="text" id="endTime" class=" date textInput readonly" readonly="true" value="$!endTime" dateFmt="yyyy-MM-dd" maxdate="{%y}-%M-{%d-1}"/>
+    					</td>
+						<td >
+						 状态：
+						 <select name="status" class="valid">
+                            <option value="" #if("$!status"=="") selected  #end>全部</option>
+                            <option value="6" #if("$!status"=="6") selected  #end>成功</option>
+                            <option value="5" #if("$!status"=="5") selected  #end>处理中</option>
+                        </select>
+						</td>
+						<td >
+								<button  onclick="searchFunction()" type="button">查询</button> &nbsp
+								<button  onclick="exp()" type="button">导出excel</button>&nbsp
+								<a href="$env.getWebURL('/financial/dsdf/exportBatchFlowIndex.htm')" target="dialog" mask="true" rel="createBackExport" height="240" width="500"><span>下载批次流水</span></a>
+        				 </td>
+                    </tr>
+					</tbody>
+        		</table>
+        	</div>
+    	</form>
+    </div>
+    <div class="pageContent">
+		<div class="panelBar" style="height:40px;padding-top: 15px;">
+            <span style="color:red;font-size:24px;">代收总额：$!money.format($!ds_amount)&nbsp;&nbsp;&nbsp;&nbsp; 代付总额：$!money.format($!df_amount)</span>
+        </div>
+    	<table class="table" width="1396" layoutH="150">
+    		<thead>
+    			<tr>
+					<th width="5%">序号</th>
+					<th width="12%">融资客户名称</th>
+    				<th width="12%">手机号</th>
+					<th width="12%">类型</th>
+					<th width="12%">代收</th>
+					<th width="12%">代付</th>
+                    <th width="12.5%">创建日期</th>
+					<th width="12.5%">更新日期</th>
+					<th width="10%">状态</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			#foreach($grid in $dataGrid)
+    			<tr target="sid_user" rel="1">
+    				<td>$!grid.rowno</td>
+					<td>$!grid.userName</td>
+                    <td>$!grid.userMobile</td>
+					<td>#if($!grid.DSDFType == 'DS')代收
+						#else 代付#end
+					</td>
+					<td>
+						#if($!grid.DSDFType == 'DS')
+							$!money.format($!grid.amount)
+						#end
+					</td>
+					<td>
+						#if($!grid.DSDFType == 'DF')
+							$!money.format($!grid.amount)
+						#end
+					</td>
+                    <td>$!date.formatYYYYMMDD($!grid.createTime)</td>
+					<td>$!date.formatYYYYMMDD($!grid.doneTime)</td>
+					<td>#if($!grid.status == 6)
+						 成功
+						#elseif($!grid.status == 5)
+						 处理中#end
+					</td>
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+    			<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!totalRows条</span>
+    	</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+    </div>
+    </div>
+	
+</div>
+#LoadJS("/resources/js/global_validate")	
+<script>  
+
+
+	function navTabAjaxDone(json) {
+		 if (json.statusCode == "200") {
+			    	var url = $("#APP_ROOT_PATH").val() + "/financial/dsdf/repayAct/index.htm";
+    	$("#dept_myform").attr("action",url);
+    	$("#dept_myform").attr("onsubmit","return navTabSearch(this);");
+    	$("#dept_myform").submit();
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+
+	function searchFunction(){
+		var beginTime = $("#startTime").val();
+    	var endTime = $("#endTime").val();
+			
+		if(endTime){
+			if(!beginTime) {
+        		alertMsg.warn("开始时间不能为空！");
+        		return;
+        	}
+		}
+		
+		if(beginTime){
+        	if(!endTime) {
+        		alertMsg.warn("结束时间不能为空！");
+        		return;
+        	}
+		}
+
+    	if(beginTime && endTime) {
+     			var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+				
+				if(result < 0){
+            		alertMsg.warn("开始时间不能在结束时间之后！");
+            		return;
+            	}
+				if(result/86400000 > 30){
+					alertMsg.warn("结束时间和开始时间间隔不能超过30天！");
+            		return;
+				}
+    	}
+    	var url = $("#APP_ROOT_PATH").val() + "/financial/dsdf/repayAct/index.htm";
+    	$("#dept_myform").attr("action",url);
+    	$("#dept_myform").attr("onsubmit","return navTabSearch(this);");
+    	$("#dept_myform").submit();
+    }
+	
+	
+	
+	
+function exp(){
+	var beginTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	
+	if(endTime){
+		if(!beginTime) {
+    		alertMsg.warn("开始时间不能为空！");
+    		return;
+    	}
+	}
+	
+	if(beginTime){
+    	if(!endTime) {
+    		alertMsg.warn("结束时间不能为空！");
+    		return;
+    	}
+	}
+	
+	if(beginTime && endTime) {
+ 			var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+        	if(result < 0){
+        		alertMsg.warn("开始时间不能在结束时间之后！");
+        		return;
+        	}
+			if(result/86400000 > 30){
+				alertMsg.warn("结束时间和开始时间间隔不能超过30天！");
+            	return;
+			}
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/financial/dsdf/repayAct/export.htm";
+	$("#dept_myform").attr("action",url);
+	$("#dept_myform").attr("onsubmit","");
+	$("#dept_myform").submit();
+}
+	
+</script> 

@@ -1,0 +1,108 @@
+﻿$axure.loadCurrentPage({
+  "url":"用户注册_登录.html",
+  "generationDate":new Date(1423549440346.86),
+  "isCanvasEnabled":false,
+  "variables":["OnLoadVariable"],
+  "page":{
+    "packageId":"6cb5049aaaad4ed1b6769a70a7423b5d",
+    "type":"Axure:Page",
+    "name":"用户注册/登录",
+    "notes":{
+},
+    "style":{
+      "baseStyle":"627587b6038d43cca051c114ac41ad32",
+      "pageAlignment":"near",
+      "fill":{
+        "fillType":"solid",
+        "color":0xFFFFFFFF},
+      "image":null,
+      "imageHorizontalAlignment":"near",
+      "imageVerticalAlignment":"near",
+      "imageRepeat":"auto",
+      "favicon":null,
+      "sketchFactor":"0",
+      "colorStyle":"appliedColor",
+      "fontName":"应用字体",
+      "borderWidth":"0"},
+    "adaptiveStyles":{
+},
+    "interactionMap":{
+},
+    "diagram":{
+      "objects":[{
+          "id":"dda692916fea4aa5bfead9d43e298e20",
+          "label":"",
+          "type":"imageBox",
+          "styleType":"imageBox",
+          "visible":true,
+          "style":{
+            "location":{
+              "x":10,
+              "y":926},
+            "size":{
+              "width":250,
+              "height":444}},
+          "adaptiveStyles":{
+},
+          "objects":[{
+              "id":"241568b88b794beeb0a022cd46bbd6df",
+              "label":"",
+              "isContained":true,
+              "type":"richTextPanel",
+              "styleType":"paragraph",
+              "visible":true,
+              "style":{
+                "location":{
+                  "x":10,
+                  "y":926},
+                "size":{
+                  "width":250,
+                  "height":444}},
+              "adaptiveStyles":{
+}}],
+          "images":{
+            "normal~":"images/用户注册_登录/u0.png"}},
+{
+          "id":"060a7d3b1e0749109db66a9bd041fd3b",
+          "label":"",
+          "type":"imageBox",
+          "styleType":"imageBox",
+          "visible":true,
+          "style":{
+            "location":{
+              "x":10,
+              "y":1330},
+            "size":{
+              "width":249,
+              "height":40}},
+          "adaptiveStyles":{
+},
+          "objects":[{
+              "id":"171e1de8d28b439faa71b05525452ad6",
+              "label":"",
+              "isContained":true,
+              "type":"richTextPanel",
+              "styleType":"paragraph",
+              "visible":true,
+              "style":{
+                "location":{
+                  "x":10,
+                  "y":1330},
+                "size":{
+                  "width":249,
+                  "height":40}},
+              "adaptiveStyles":{
+}}],
+          "images":{
+            "normal~":"images/用户注册_登录/u2.png"}}]}},
+  "masters":{
+},
+  "objectPaths":{
+    "dda692916fea4aa5bfead9d43e298e20":{
+      "scriptId":"u0"},
+    "241568b88b794beeb0a022cd46bbd6df":{
+      "scriptId":"u1"},
+    "060a7d3b1e0749109db66a9bd041fd3b":{
+      "scriptId":"u2"},
+    "171e1de8d28b439faa71b05525452ad6":{
+      "scriptId":"u3"}}});

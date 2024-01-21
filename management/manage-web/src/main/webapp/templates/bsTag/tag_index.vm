@@ -1,0 +1,113 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/bsTag/index.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+				<tr>
+					<td>
+						标签内容：<input id="content" type="text" name="content" value="$!req.content" maxlength="15" oninput="filter()"/>
+						<span style="margin-left:20px;">
+							<button onclick="func()" type="button">查询</button>
+                        </span>
+						
+					</td>
+				</tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">	
+		<ul class="toolBar">
+			<li><a class="add" href="$env.getWebURL('/bsTag/detail.htm')" target="dialog" mask="true" rel="createBack" height="300" width="580"><span>新增</span></a></li>
+			<li class="line">line</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="168">
+		<thead>
+			<tr>
+	            <th width="20%">标签内容</th>
+				<th width="10%">排序号</th>
+				<th width="20%">创建时间</th>
+				<th width="20%">创建人</th>
+				<th orderfield="count_tag"  class=#if("$!count_tag" != "") $!count_tag #else "asc" #end width="20%">人数</th>
+				<th width="20%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $tagList)
+			<tr target="sid_user" rel="1" >
+				<td>$!grid.content</td>
+				<td>$!grid.serialId</td>
+				<td>$!date.format($!grid.createTime)</td>
+				<td>$!grid.name</td>
+				<td>$!grid.countTag</td>
+				<td>
+					<a title="编辑标签" target="dialog" href="$env.getWebURL('/bsTag/detail.htm?id=')$!grid.id" class="btnEdit" mask="true" rel="createBack" height="300" width="580">编辑</a>
+					<a href="#" onclick="deleteTag($!grid.countTag,$!grid.id)" class="btnDel">删除</a>
+                </td>
+			</tr>
+			#end
+		</tbody>
+		
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				##<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				##<option #if("$!numPerPage" == "200") selected #end value="200">200</option> 
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+function func(){
+	var url = $("#APP_ROOT_PATH").val() + "/bsTag/index.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+function filter(){
+	var content = $("#content").val().trim();
+	$("#content").val(content);
+}
+function deleteTag(count,id){
+	var url = $("#APP_ROOT_PATH").val() + "/bsTag/delete.htm";
+	var content = "";
+	if(count > 0) {
+		content = "已有"+count+"位用户被打上此标签，确认删除？";
+	}
+	else {
+		content = "确认删除？";
+	}
+	alertMsg.confirm(content,{okCall:function(){
+		jQuery.ajax({
+			type : 'post',
+			url : url,
+			data : {id:id},
+			dataType: 'json',
+			success : function(json) {
+				alertMsg.correct('删除成功!');
+				func();
+			}
+    	});
+	}});
+}
+
+</script>

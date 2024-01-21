@@ -1,0 +1,63 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')"/>
+<div class="pageContent">
+	<form method="post" name="detail_form" action="$env.getWebURL('/bsuser/updateUserStatus.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+        <div class="pageFormContent" layoutH="56">
+     		
+     		<dl>
+                <dt >账户：</dt>
+                <dd style="width:100px;">
+					$user.mobile
+                </dd>
+            </dl>
+            
+           	<dl>
+                <dt >状态：</dt>
+                <dd>
+                	<select id="status" name="status" >
+			            <option value="1" #if("$!user.status"=="1") selected #end >正常 </option>
+						<option value="2" #if("$!user.status"=="2") selected #end >注销 </option>
+						<option value="4" #if("$!user.status"=="4") selected #end >冻结 </option>
+			        </select>
+                </dd>
+            </dl>
+		    
+        </div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+                </li>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_verifyForm('$!user.id')">确定</button></div></div></li>
+            </ul>
+        </div>
+	</form>
+</div>
+<script>
+	
+		function submit_verifyForm(id) {
+	        var verifyId = id;
+        	var status = $.trim($("#status option:selected").val());
+            $.ajax({
+                type: 'post',
+                url: $("#APP_ROOT_PATH").val() + "/bsuser/updateUserStatus.htm",
+                data: {
+                    verifyId: verifyId,
+                    userStatus: status
+                },
+                success: function (data) {
+                    if (data.statusCode == "200") {
+                    	alertMsg.correct('操作成功!');
+                    	$.pdialog.closeCurrent();
+                        navTab.reload("$env.getWebURL('bsuser/index.htm')");
+                    } else {
+                        if (data.message) {
+                            alertMsg.error(data.message);
+                        } else {
+                            alertMsg.error("操作失败");
+                        }
+                    }
+                }
+            })
+        }
+	
+</script>

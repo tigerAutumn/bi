@@ -1,0 +1,220 @@
+# 平台数据页面的逾期数据
+## 需求背景
+### 现在开发出云贷分期产品，`信息披露-平台实况-平台数据`的逾期及代偿数据统计需要加入云贷分期的统计
+> + 出借人项目逾期率默认设置为0%，**无变化**
+> + 出借人金额逾期率默认设置为0%，**无变化**
+> + 借款人逾期90天以上金额（元）只有暂时贷与赞分期才统计，云贷不会出现逾期90天以上的情况，**无变化**
+> + 借款人逾期90天以上笔数只有暂时贷与赞分期才统计，云贷不会出现逾期90天以上的情况，**无变化**
+> + 借款人逾期金额（元）统计加入云贷分期，**有变化**
+> + 借款人逾期笔数统计加入云贷分期，**有变化**
+> + 累计代偿金额（元），**有变化**
+> + 累计代偿笔数，**有变化**
+
+## 逻辑变动
+### 项目逾期率
+> 0%，针对出借人来说
+### 金额逾期率
+> 0%，针对出借人来说
+### 借款人逾期金额
+> 当前对投资人已经处于逾期状态的所有借款的金额总和，仅统计本金，已经代偿的不计入，赞时贷、云贷、七贷借款人最后一期账单逾期，统计出借人被逾期的应收本金和利息（用借款协议利率计算），与是否被代偿无关，逾期已还不计入，赞分期统计每期出借人被逾期金额，借款协议利率计算，本+息。**等额本息、等本等息统计每期出借人被逾期金额，借款协议利率计算，本+息**
+### 借款人逾期笔数
+> 当前对投资人处于逾期状态的所有借款的笔数之和,已经代偿的不计入，借款人最后一期账单逾期，算一笔，与是否被代偿无关，逾期已还不计入。**等额本息、等本等息每期账单逾期为一笔**
+### 借款人逾期90天以上金额
+> 当前对投资人逾期＞90天的借款金额总和，仅统计本金，已经代偿的不计入，借款人最后一期账单逾期次日开始算第一天，只统计赞分期+赞时贷的，七贷+云贷等以后打通贷后管理再统计
+### 借款人逾期90天以上笔数
+> 当前对投资人逾期＞90天的借款笔数之和，已经代偿的不计入，借款人最后一期账单逾期次日开始算第一天，只统计赞分期+赞时贷的，七贷+云贷等以后打通贷后管理再统计
+### 累计代偿金额
+> 平台自成立以来，累计的代偿金额，包括本金和利息，云贷存管+七贷存管+赞时贷最后一期代偿到恒丰的金额（本+息），赞分期存管后每期被代偿的金额（本+息），存管前的代偿不统计。**等额本息、等本等息统计每期被代偿的金额（本+息）**
+### 累计代偿笔数
+> 平台自成立以来，累计代偿的笔数之和，云贷存管+七贷存管+赞时贷最后一期代偿到恒丰为一笔，赞分期存管后每期被代偿为一笔，存管前的代偿不统计。**等额本息、等本等息每期被代偿为一笔**
+
+## sql变动
+### 借款人逾期金额
+> BsSubAccountMapper.xml
+```
+    -- 原sql
+    select ifnull(a.amount+b.amount+c.amount, 0) from
+        ( select ifnull(sum(c.plan_total), 0) as amount from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status` ='LATE_NOT' and c.relation_id = e.id and a.serial_id = b.period and c.repay_serial = a.serial_id
+            and e.loan_id = b.id and a.loan_id = b.id and d.id = b.ln_user_id and d.partner_code ='7_DAI_SELF' and b.`status` = 'PAIED'
+        ) a,
+        ( select ifnull(sum(c.plan_total), 0) as amount from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status`='LATE_NOT' and c.relation_id = e.id and c.repay_serial = a.serial_id and e.loan_id = b.id and a.loan_id = b.id
+            and d.id = b.ln_user_id and d.partner_code in('ZSD','ZAN') and b.`status` = 'PAIED'
+        ) b,(
+            select ifnull(sum(c.plan_total), 0) as amount from
+            (select max(a.serial_id) as serial_id, a.loan_id, a.`status` from (
+                select serial_id,loan_id,`status`,plan_date from ln_repay_schedule where `status`!= 'CANCELLED' ORDER BY serial_id desc 
+            ) a group by a.loan_id) as a,
+            ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where c.relation_id = e.id  and c.repay_serial = a.serial_id and a.`status`= 'LATE_NOT'
+            and e.loan_id = b.id and a.loan_id = b.id and d.id = b.ln_user_id and d.partner_code = 'YUN_DAI_SELF' and b.`status` = 'PAIED'
+        ) c;
+
+    -- 现sql
+    select ifnull(a.amount+b.amount+c.amount+d.amount, 0) from
+        ( select ifnull(sum(c.plan_total), 0) as amount from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status` ='LATE_NOT' and c.relation_id = e.id and a.serial_id = b.period and c.repay_serial = a.serial_id
+            and e.loan_id = b.id and a.loan_id = b.id and d.id = b.ln_user_id and d.partner_code ='7_DAI_SELF' and b.`status` = 'PAIED'
+        ) a,
+        ( select ifnull(sum(c.plan_total), 0) as amount from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status`='LATE_NOT' and c.relation_id = e.id and c.repay_serial = a.serial_id and e.loan_id = b.id and a.loan_id = b.id
+            and d.id = b.ln_user_id and d.partner_code in('ZSD','ZAN') and b.`status` = 'PAIED'
+        ) b,(
+            select ifnull(sum(c.plan_total), 0) as amount from
+            (select max(a.serial_id) as serial_id, a.loan_id, a.`status` from (
+                select serial_id,loan_id,`status`,plan_date from ln_repay_schedule where `status`!= 'CANCELLED' ORDER BY serial_id desc 
+            ) a group by a.loan_id) as a,
+            ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where c.relation_id = e.id  and c.repay_serial = a.serial_id and a.`status`= 'LATE_NOT'
+            and e.loan_id = b.id and a.loan_id = b.id and d.id = b.ln_user_id and d.partner_code = 'YUN_DAI_SELF' and b.`status` = 'PAIED'
+            and b.partner_business_flag = 'REPAY_ANY_TIME'
+        ) c,
+        ( select ifnull(sum(c.plan_total), 0) as amount from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status`='LATE_NOT' and c.relation_id = e.id and c.repay_serial = a.serial_id and e.loan_id = b.id and a.loan_id = b.id
+            and d.id = b.ln_user_id and d.partner_code = 'YUN_DAI_SELF' and b.`status` = 'PAIED' 
+            and b.partner_business_flag IN ('FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+        ) d;
+```
+### 借款人逾期笔数
+> BsSubAccountMapper.xml
+```
+    -- 原sql
+    select ifnull(a.times+b.times+c.times, 0) from
+        ( select count(DISTINCT(a.id)) as times from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+                where a.`status` in ('LATE_NOT') and c.relation_id = e.id and a.serial_id = b.period and c.repay_serial = a.serial_id
+                and e.loan_id = b.id and a.loan_id = b.id and d.id = b.ln_user_id and d.partner_code in('7_DAI_SELF','ZAN') and b.`status` = 'PAIED'
+        ) a,
+        ( select count(DISTINCT(a.id)) as times from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+                where a.`status` in ('LATE_NOT') and c.relation_id = e.id and c.repay_serial = a.serial_id and e.loan_id = b.id and a.loan_id = b.id
+                and d.id = b.ln_user_id and d.partner_code ='ZSD' and b.`status` = 'PAIED'
+        ) b,(
+                select count(DISTINCT(a.id)) as times from
+                (select a.id,max(a.serial_id) as serial_id, a.loan_id, a.`status` from (
+                    select id,serial_id,loan_id,`status`,plan_date from ln_repay_schedule where `status`!= 'CANCELLED' ORDER BY serial_id desc 
+                ) a group by a.loan_id) as a,
+                ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+                where c.relation_id = e.id  and c.repay_serial = a.serial_id and a.`status`= 'LATE_NOT'
+                and e.loan_id = b.id and a.loan_id = b.id and d.id = b.ln_user_id and d.partner_code = 'YUN_DAI_SELF' and b.`status` = 'PAIED'
+                and b.partner_business_flag = 'REPAY_ANY_TIME'
+        ) c;
+
+    -- 现sql
+    select ifnull(a.times+b.times+c.times+d.times, 0) from
+        ( select count(DISTINCT(a.id)) as times from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+                where a.`status` in ('LATE_NOT') and c.relation_id = e.id and a.serial_id = b.period and c.repay_serial = a.serial_id
+                and e.loan_id = b.id and a.loan_id = b.id and d.id = b.ln_user_id and d.partner_code in('7_DAI_SELF','ZAN') and b.`status` = 'PAIED'
+        ) a,
+        ( select count(DISTINCT(a.id)) as times from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+                where a.`status` in ('LATE_NOT') and c.relation_id = e.id and c.repay_serial = a.serial_id and e.loan_id = b.id and a.loan_id = b.id
+                and d.id = b.ln_user_id and d.partner_code ='ZSD' and b.`status` = 'PAIED'
+        ) b,(
+                select count(DISTINCT(a.id)) as times from
+                (select a.id,max(a.serial_id) as serial_id, a.loan_id, a.`status` from (
+                    select id,serial_id,loan_id,`status`,plan_date from ln_repay_schedule where `status`!= 'CANCELLED' ORDER BY serial_id desc 
+                ) a group by a.loan_id) as a,
+                ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+                where c.relation_id = e.id  and c.repay_serial = a.serial_id and a.`status`= 'LATE_NOT'
+                and e.loan_id = b.id and a.loan_id = b.id and d.id = b.ln_user_id and d.partner_code = 'YUN_DAI_SELF' and b.`status` = 'PAIED'
+                and b.partner_business_flag = 'REPAY_ANY_TIME'
+        ) c,
+        ( select count(DISTINCT(a.id)) as times from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+                where a.`status` in ('LATE_NOT') and c.relation_id = e.id and c.repay_serial = a.serial_id and e.loan_id = b.id and a.loan_id = b.id
+                and d.id = b.ln_user_id and d.partner_code = 'YUN_DAI_SELF' and b.`status` = 'PAIED'
+                and b.partner_business_flag IN ('FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+        ) d;
+```
+### 累计代偿金额
+> BsSubAccountMapper.xml
+```
+    -- 原sql
+    select ifnull(a.amount+b.amount+c.amount, 0) from
+        ( select ifnull(sum(c.plan_total), 0) as amount from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status` in ('LATE_NOT', 'LATE_REPAIED') and c.relation_id = e.id and a.serial_id = b.period and c.repay_serial = a.serial_id
+            and e.loan_id = b.id and a.loan_id = b.id and d.id = b.ln_user_id and d.partner_code =  '7_DAI_SELF' and b.`status` = 'PAIED'
+        ) a,
+        ( select ifnull(sum(c.plan_total), 0) as amount from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status` in ('LATE_NOT', 'LATE_REPAIED') and c.relation_id = e.id and c.repay_serial = a.serial_id and e.loan_id = b.id and a.loan_id = b.id
+            and d.id = b.ln_user_id and d.partner_code in('ZAN','ZSD') and b.`status` = 'PAIED' and c.done_time>='2017-9-20'
+        ) b,(
+            select ifnull(sum(c.plan_total), 0) as amount from
+                (select max(a.serial_id) as serial_id, a.loan_id, a.`status` from (
+                    select serial_id,loan_id,`status`,plan_date from ln_repay_schedule where `status`!= 'CANCELLED' ORDER BY serial_id desc 
+                ) a group by a.loan_id) as a,
+                ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status` in ('LATE_NOT', 'LATE_REPAIED') and c.relation_id = e.id and c.repay_serial = a.serial_id
+            and e.loan_id = b.id and a.loan_id = b.id and d.id = b.ln_user_id and d.partner_code = 'YUN_DAI_SELF' and b.`status` = 'PAIED'
+        ) c;
+
+    -- 现sql
+    select ifnull(a.amount+b.amount+c.amount+d.amount, 0) from
+        ( select ifnull(sum(c.plan_total), 0) as amount from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status` in ('LATE_NOT', 'LATE_REPAIED') and c.relation_id = e.id and a.serial_id = b.period and c.repay_serial = a.serial_id
+            and e.loan_id = b.id and a.loan_id = b.id and d.id = b.ln_user_id and d.partner_code =  '7_DAI_SELF' and b.`status` = 'PAIED'
+        ) a,
+        ( select ifnull(sum(c.plan_total), 0) as amount from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status` in ('LATE_NOT', 'LATE_REPAIED') and c.relation_id = e.id and c.repay_serial = a.serial_id and e.loan_id = b.id and a.loan_id = b.id
+            and d.id = b.ln_user_id and d.partner_code in('ZAN','ZSD') and b.`status` = 'PAIED' and c.done_time>='2017-9-20'
+        ) b,(
+            select ifnull(sum(c.plan_total), 0) as amount from
+                (select max(a.serial_id) as serial_id, a.loan_id, a.`status` from (
+                    select serial_id,loan_id,`status`,plan_date from ln_repay_schedule where `status`!= 'CANCELLED' ORDER BY serial_id desc 
+                ) a group by a.loan_id) as a,
+                ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status` in ('LATE_NOT', 'LATE_REPAIED') and c.relation_id = e.id and c.repay_serial = a.serial_id
+            and e.loan_id = b.id and a.loan_id = b.id and d.id = b.ln_user_id and d.partner_code = 'YUN_DAI_SELF' and b.`status` = 'PAIED'
+            and b.partner_business_flag = 'REPAY_ANY_TIME'
+        ) c,
+        ( select ifnull(sum(c.plan_total), 0) as amount from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status` in ('LATE_NOT', 'LATE_REPAIED') and c.relation_id = e.id and c.repay_serial = a.serial_id and e.loan_id = b.id and a.loan_id = b.id
+            and d.id = b.ln_user_id and d.partner_code = 'YUN_DAI_SELF' and b.`status` = 'PAIED' 
+            and b.partner_business_flag IN ('FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+        ) d;
+```
+### 累计代偿笔数
+> BsSubAccountMapper.xml
+```
+    -- 原sql
+    select ifnull(a.times+b.times+c.times, 0) from
+        ( select count(DISTINCT(a.id)) as times  from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status` in ('LATE_NOT', 'LATE_REPAIED') and c.relation_id = e.id and a.serial_id = b.period and c.repay_serial = a.serial_id
+            and e.loan_id = b.id and a.loan_id = b.id and d.id = b.ln_user_id and d.partner_code =  '7_DAI_SELF' and b.`status` = 'PAIED'
+        ) a,
+        ( select count(DISTINCT(a.id)) as times from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status` in ('LATE_NOT', 'LATE_REPAIED') and c.relation_id = e.id and c.repay_serial = a.serial_id and e.loan_id = b.id and a.loan_id = b.id
+            and d.id = b.ln_user_id and d.partner_code in('ZAN','ZSD') and b.`status` = 'PAIED' and c.done_time>='2017-9-20'
+        ) b,(
+            select count(DISTINCT(a.id)) as times from
+                (select a.id,max(a.serial_id) as serial_id, a.loan_id, a.`status` from (
+                    select id,serial_id,loan_id,`status`,plan_date from ln_repay_schedule where `status`!= 'CANCELLED' ORDER BY serial_id desc 
+                ) a group by a.loan_id) as a,
+                ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status` in ('LATE_NOT', 'LATE_REPAIED') and c.relation_id = e.id and c.repay_serial = a.serial_id
+            and e.loan_id = b.id and a.loan_id = b.id and d.id = b.ln_user_id and d.partner_code = 'YUN_DAI_SELF' and b.`status` = 'PAIED'
+        ) c;
+
+    -- 现sql
+    select ifnull(a.times+b.times+c.times+d.times, 0) from
+        ( select count(DISTINCT(a.id)) as times  from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status` in ('LATE_NOT', 'LATE_REPAIED') and c.relation_id = e.id and a.serial_id = b.period and c.repay_serial = a.serial_id
+            and e.loan_id = b.id and a.loan_id = b.id and d.id = b.ln_user_id and d.partner_code =  '7_DAI_SELF' and b.`status` = 'PAIED'
+        ) a,
+        ( select count(DISTINCT(a.id)) as times from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status` in ('LATE_NOT', 'LATE_REPAIED') and c.relation_id = e.id and c.repay_serial = a.serial_id and e.loan_id = b.id and a.loan_id = b.id
+            and d.id = b.ln_user_id and d.partner_code in('ZAN','ZSD') and b.`status` = 'PAIED' and c.done_time>='2017-9-20'
+        ) b,(
+            select count(DISTINCT(a.id)) as times from
+                (select a.id,max(a.serial_id) as serial_id, a.loan_id, a.`status` from (
+                    select id,serial_id,loan_id,`status`,plan_date from ln_repay_schedule where `status`!= 'CANCELLED' ORDER BY serial_id desc 
+                ) a group by a.loan_id) as a,
+                ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status` in ('LATE_NOT', 'LATE_REPAIED') and c.relation_id = e.id and c.repay_serial = a.serial_id
+            and e.loan_id = b.id and a.loan_id = b.id and d.id = b.ln_user_id and d.partner_code = 'YUN_DAI_SELF' and b.`status` = 'PAIED'
+            and b.partner_business_flag = 'REPAY_ANY_TIME'
+        ) c,
+        ( select count(DISTINCT(a.id)) as times from ln_repay_schedule a, ln_loan b, ln_user d, ln_finance_repay_schedule c, ln_loan_relation e
+            where a.`status` in ('LATE_NOT', 'LATE_REPAIED') and c.relation_id = e.id and c.repay_serial = a.serial_id and e.loan_id = b.id and a.loan_id = b.id
+            and d.id = b.ln_user_id and d.partner_code = 'YUN_DAI_SELF' and b.`status` = 'PAIED'
+            and b.partner_business_flag IN ('FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+        ) d;
+```

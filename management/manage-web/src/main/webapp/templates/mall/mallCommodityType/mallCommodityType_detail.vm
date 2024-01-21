@@ -1,0 +1,85 @@
+<div class="pageContent">
+    #Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+    <form id="mallCommodityForm" method="post" action="$env.getWebURL('/mallCommodityType/save.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+        #Hidden("commodityTypeId", "$!mallCommodityType.id")
+        #Hidden("isRecommend","$!mallCommodityType.isRecommend")
+        #Hidden("isRecommendValue", "")
+        <div class="pageFormContent nowrap" layoutH="97">
+            <dl>
+                <dt >
+                    商品类别：<i style="color: red">*</i></dt>
+                </dt>
+
+                #if($!mallCommodityType.commTypeCode == "RED_PACKET")
+                    <input type="text" id="commTypeName_id" name="commTypeName" class="required" readonly="true" onKeypress="javascript:if(event.keyCode == 32)event.returnValue = false;"  maxlength="8" value="$!mallCommodityType.commTypeName" style="width:250px; height:16px" />
+                #elseif($!mallCommodityType.commTypeCode == "INTEREST_TACKET")
+                    <input type="text" id="commTypeName_id" name="commTypeName" class="required" readonly="true" onKeypress="javascript:if(event.keyCode == 32)event.returnValue = false;"  maxlength="8" value="$!mallCommodityType.commTypeName" style="width:250px; height:16px" />
+                #else
+                    <input type="text" id="commTypeName_id" name="commTypeName" class="required" onKeypress="javascript:if(event.keyCode == 32)event.returnValue = false;"  maxlength="8" value="$!mallCommodityType.commTypeName" style="width:250px; height:16px" />
+                #end
+                <div style="float: left;padding-left: 5px;margin-top: 9px;">最多8个字，允许中英文和数字</div>
+            </dl>
+            <dl>
+                <dt >
+                    推荐：<i style="color: red">*</i></dt>
+                    <input type="radio" id="is_recommend_yes" name="typeIsRecommend" value="YES" checked="checked"/>是
+                    <input type="radio" id="is_recommend_no" name="typeIsRecommend" value="NO" />否
+                </dt>
+            </dl>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button id="button_sub" type="button" onclick="submit_mallCommodityForm()">保存</button></div></div></li>
+                <li>
+                    <div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+<script>
+    // 单选框回显
+    var isRecommend = $.trim($('#isRecommend').val());
+    if(isRecommend == "YES"){
+        $("#is_recommend_yes").attr("checked","true");
+    }else if(isRecommend == "NO") {
+        $("#is_recommend_no").attr("checked","true");
+    }
+
+    // 回车键事件禁用
+    document.onkeydown = function () {
+        if (window.event && window.event.keyCode == 13) {
+            window.event.returnValue = false;
+        }
+    }
+
+    function submit_mallCommodityForm(){
+        var commTypeName = $.trim($("#commTypeName_id").val());
+        var regContent = /^[a-zA-Z0-9\u4E00-\u9FA5]+$/;
+        if((commTypeName == null || commTypeName == "")){
+            alertMsg.warn("类别名称不能为空，请输入对应的信息！");
+            return false;
+        }
+        if(!regContent.test(commTypeName)) {
+            alertMsg.warn("类别名称，不能含有特殊字符！");
+            return false;
+        }
+        var isRecommendValue= $('input:radio[name="typeIsRecommend"]:checked').val();
+        $("#isRecommendValue").val(isRecommendValue);
+
+        $("#mallCommodityForm").submit();
+    }
+
+    function navTabAjaxDone(json) {
+        if (json.statusCode == "301") {
+            alertMsg.warn('类别名称已存在!');
+        } else if (json.statusCode == "200") {
+            alertMsg.correct(json.message);
+            $.pdialog.closeCurrent();
+            navTab.reload("$env.getWebURL('/mallCommodityType/getList.htm')");
+        } else {
+            alertMsg.error('操作失败!');
+        }
+    }
+
+</script>

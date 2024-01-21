@@ -1,0 +1,158 @@
+#Html("begin")
+#Head("begin","风险评测,币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("风险评测【币港湾官网】")
+#LoadGenJS("/resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadGenCSS("/resources/micro2.0/styles/assets/questionnaire.min")
+#WeChatShare()
+#Head("end")
+	
+	<body id="body">
+		#if("$!userId" == "")
+		<div class="header">
+			<a class="header_arrow" href="$!env.getWebURL('')/micro2.0/assets/questionnaire"></a>
+			<h1 class="heade_ft color_bg">风险测评</h1>
+		</div>
+		#end
+		<input type="hidden" name="userId" value="$!userId">
+		<input type="hidden" id="client" value="$!client"/>
+		<input type="hidden" value="$!env.getWebURL('')" id="APP_ROOT_PATH" />
+		<div class="Q_rsult">
+			<img src="$!env.getWebURL('')/resources/micro2.0/images/assets/questionnaire/bg.png" class="Q_rsult_bg" />
+			#if($!resCode == "000")
+	            #if($!resMsg == "conservative")
+	                <img src="$!env.getWebURL('')/resources/micro2.0/images/assets/questionnaire/bs.png" alt="保守" class="Q_rsult_img">
+	            #elseif($!resMsg == "steady")
+	                <img src="$!env.getWebURL('')/resources/micro2.0/images/assets/questionnaire/wj.png" alt="稳健" class="Q_rsult_img">
+	            #elseif($!resMsg == "balanced")
+	                <img src="$!env.getWebURL('')/resources/micro2.0/images/assets/questionnaire/ph.png" alt="平衡" class="Q_rsult_img">
+	            #elseif($!resMsg == "aggressive")
+	                <img src="$!env.getWebURL('')/resources/micro2.0/images/assets/questionnaire/jq.png" alt="进取" class="Q_rsult_img">
+	            #elseif($!resMsg == "radical")
+	                <img src="$!env.getWebURL('')/resources/micro2.0/images/assets/questionnaire/jj.png" alt="激进" class="Q_rsult_img">
+	            #end
+		    #else
+		        <img src="$!env.getWebURL('')/resources/micro2.0/images/assets/questionnaire/fail.png" alt="测评失败" class="Q_rsult_img1">
+		    #end
+		</div>
+		<div class="Qindex">
+			<div class="Qindex_txt">
+				#if($!resMsg == "conservative")
+		                    在参与任何产品项目中，保证本金不受损失和保持资产的流动性是您的首要目标。您对参与产品项目的态度是希望收益极度稳定，不愿承担高风险以换取高收益，不愿意承受太大波动对心理的煎熬，追求稳定。
+		                #elseif($!resMsg == "steady")
+		                    在参与任何产品项目中，稳定是您首要考虑的因素。您希望在保证本金安全的基础上能有一些增值收入。追求较低的风险，对回报的要求不高。
+		                #elseif($!resMsg == "balanced")
+		                    在参与任何产品项目中，在风险较小的情况下获得一定的收益是您主要目的。您通常愿意面临一定的风险，但在做决定时，会仔细地对将要面临的风险进行认真的分析。您对风险总是客观存在有清楚的认识。
+		                #elseif($!resMsg == "aggressive")
+		                    在参与任何产品项目中，您渴望有较高的收益，但又不愿承受较大的风险；可以承受一定的资金波动，但是希望自己的资金风险小于市场的整体风险。您有较高的收益目标，且对风险有清醒的认识。
+		                #elseif($!resMsg == "radical")
+		                    在参与任何产品项目中，您通常专注于资本的长期增值，并愿意为此承受较大的风险。短期的资金波动并不会对您造成大的影响，追求超高的回报才是您关注的目标。
+		                #else
+		                    尊敬的客户，您的风险承受能力测评结果万分之一的概率走丢了，请点击下方按钮，重新测评！
+		         #end
+			</div>
+			<div class="Q_rsult_btn">			
+			#if($!resCode == "999")
+			 	#if("$!userId"!="")
+					#if("$!qianbao" == "qianbao")
+						<a class="Qindex_btna" href="$!env.getWebURL('/micro2.0/assets/questionnaire')?qianbao=qianbao&agentViewFlag=$!agentViewFlag">
+		                   	重新测评
+		                </a>
+	                #else
+		                <a class="Qindex_btna" href="$!env.getWebURL('')/micro2.0/assets/questionnaire">
+		                   	重新测评
+		                </a>
+	                #end
+                #else
+                	#if("$!qianbao" == "qianbao")
+						<a class="Qindex_btna" href="$!env.getWebURL('')/micro2.0/user/login/index?qianbao=qianbao&agentViewFlag=$!agentViewFlag&burl=/micro2.0/assets/assets">
+		                   	重新测评
+		                </a>
+	                #else
+		                <a class="Qindex_btna" href="$!env.getWebURL('')/micro2.0/user/login/index?burl=/micro2.0/assets/assets">
+		                   	重新测评
+		                </a>
+	                #end
+                #end
+	    			
+            #else
+            	#if("$!qianbao" == "qianbao") 
+					#if("$!userId" == "")
+	          			<a class="Qindex_btna entry_qb">
+	                 		确定
+	               		</a>
+	                #else
+	                	<div class="Qindex_btna" onclick="clickAppQuestionnaire()">		
+	                	确定
+	               		</div>	
+	                #end
+            	#else
+	            	#if("$!userId" == "")
+	          			<a class="Qindex_btna entry_bgw">
+	                 		确定
+	               		</a>
+	                #else
+	                	<div class="Qindex_btna" onclick="clickAppQuestionnaire()">		
+	                	确定
+	               		</div>	
+	                #end
+	            #end    
+            #end
+			</div>
+			<div class="result-tips">测评结果仅供参考，请结合自身情况选择产品！</div>
+		</div>
+		
+<script type="text/javascript">	
+	function toiOSPage(json) {
+    }
+    function toAndroidPage(json) {
+        javascript:coinharbour.toAndroidPage(json);
+    }
+	// 我的资产页面
+    function clickAppQuestionnaire() {
+        var client = $('#client').val();
+        var json = '{"appActive" : {"page": "d"}}';
+        if(client == "android") {
+            toAndroidPage(json);
+        }
+        if(client == "ios") {
+            toiOSPage(json);
+        }
+    }
+	//页面不同跳转
+	$(function(){
+		var entry_result=sessionStorage.getItem("entry");
+		console.log(entry_result)
+		$(".entry_bgw").click(function(){
+			if(entry_result=="withdraw"){
+				location.href=$("#APP_ROOT_PATH").val()+"/micro2.0/withdraw/withdraw_deposit";
+			}else if(entry_result=="top_up"){
+				location.href=$("#APP_ROOT_PATH").val()+"/micro2.0/topUp/top_up";
+			}else if(entry_result=="buy"){
+				location.href=$("#APP_ROOT_PATH").val()+"/micro2.0/regular/list";
+			}else if(entry_result=="bonus_withdraw"){
+				location.href=$("#APP_ROOT_PATH").val()+"/micro2.0/assets/my_bonus?bonus=$!resMsg.bonus&withdrawFlag=1";
+			}else{
+				location.href=$("#APP_ROOT_PATH").val()+"/micro2.0/assets/assets";
+			}
+			sessionStorage.removeItem("entry"); 
+		})
+		$(".entry_qb").click(function(){
+			if(entry_result=="withdraw"){
+				location.href=$("#APP_ROOT_PATH").val()+"/micro2.0/withdraw/withdraw_deposit?qianbao=qianbao&agentViewFlag=$!agentViewFlag";
+			}else if(entry_result=="top_up"){
+				location.href=$("#APP_ROOT_PATH").val()+"/micro2.0/topUp/top_up?qianbao=qianbao&agentViewFlag=$!agentViewFlag";
+			}else if(entry_result=="buy"){
+				location.href=$("#APP_ROOT_PATH").val()+"/micro2.0/regular/list?qianbao=qianbao&agentViewFlag=$!agentViewFlag";
+			}else if(entry_result=="bonus_withdraw"){
+				location.href=$("#APP_ROOT_PATH").val()+"/micro2.0/assets/my_bonus?bonus=$!resMsg.bonus&withdrawFlag=1?qianbao=qianbao&agentViewFlag=$!agentViewFlag";
+			}else{
+				location.href=$("#APP_ROOT_PATH").val()+"/micro2.0/assets/assets?qianbao=qianbao&agentViewFlag=$!agentViewFlag";
+			}
+			sessionStorage.removeItem("entry"); 
+		})
+	})
+    
+</script>   		
+</body>	
+#Html("end")

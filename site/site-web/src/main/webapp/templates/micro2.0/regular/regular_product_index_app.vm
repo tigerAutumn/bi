@@ -1,0 +1,290 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+#LoadJS("resources/micro2.0/scripts/flexible")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/regular/product_detail_newApp.min")
+#WeChatShare()	
+#Head("end")
+<body>
+	
+	
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<input type="hidden" id="id" name="id" value="$!id" />
+<input type="hidden" id="name" name="name" value="$!name" />
+<input type="hidden" id="rate" name="rate" value="$!rate" />
+<input type="hidden" id="term" name="term" value="$!term" />
+<input type="hidden" id="totalCount" name="totalCount" value="$!totalCount" />	##总条数
+<input type="hidden" id="pageNum" name="pageNum" value="$!pageNum" /> ##当前页码
+<input type="hidden" id="minInvestAmount" name="minInvestAmount" value="$!minInvestAmount">
+<input type="hidden" id="client" name="client" value="$!client" />
+
+<div class="swiper-container">
+    <div class="pr_wp">
+        <ul class="pr_tab" id="tab_now">
+            <li class="tab_li active">计划介绍<span class="pr_line swiper_active"></span></li>
+            <li class="tab_li">风险控制<span class="pr_line"></span></li>
+            <li class="tab_li">加入记录<span class="pr_line"></span></li>
+        </ul>
+    </div>
+    <div class="swiper-wrapper">
+        <div class="swiper-slide swiper_active">
+            <div class="content-silde">
+				<div class="plan_box">
+                    <div class="slide1_tt"><span class="pr_tline"></span>计划基本信息</div>
+                    <table id="tfhover" class="tftable" border="1">
+                        <tr>
+                            <td class="bg_td">计划名称</td>
+                            <td>$!productDetail.name </td>
+                        </tr>
+                        <tr>
+                            <td class="bg_td">收益管理费</td>
+                            <td>
+    							#if($!productDetail.manageFee == '0.0')
+                                    免收
+    							#else
+    								#if($!productDetail.propertySymbol == 'ZAN')
+                                        实际收益的$string.replace($!number.format("0.00",$!productDetail.manageFee),".00","")% <font color="red">（2017年1月1日前免收）</font>
+    								#else
+    									$string.replace($!number.format("0.00",$!productDetail.manageFee),".00","")% <font color="red">（2017年1月1日前免收）</font>
+    								#end
+    							#end
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="bg_td">
+    							#if($!productDetail.status == '7')
+                                    投资总额
+    							#else
+                                    计划总额
+    							#end
+                            </td>
+                            <td>
+    							#if($!productDetail.status == '7')
+    								#if($!productDetail.currTotalAmount >= 10000)
+    									#if($!productDetail.currTotalAmount %10000 >0 && $!productDetail.currTotalAmount %1000>0)
+    										#set($currTotalAmount = $!productDetail.currTotalAmount/10000)
+    										$!number.format("0.00",$currTotalAmount)万
+    									#elseif($!productDetail.currTotalAmount %10000 >0 && $!productDetail.currTotalAmount %1000==0)
+    										#set($currTotalAmount = $!productDetail.currTotalAmount/10000)
+    										$!number.format("0.0",$currTotalAmount)万
+    									#else
+    										#set($currTotalAmount = $!productDetail.currTotalAmount/10000)
+    										$!number.format("0",$currTotalAmount)万
+    									#end
+    								#else
+    									$!number.format("0",$!productDetail.currTotalAmount)元
+    								#end
+    							#else
+    								#if($!productDetail.maxTotalAmount >= 10000)
+    									#if($!productDetail.maxTotalAmount %10000 >0 && $!productDetail.maxTotalAmount %1000>0)
+    										#set($maxTotalAmount = $!productDetail.maxTotalAmount/10000)
+    										$!number.format("0.00",$maxTotalAmount)万
+    									#elseif($!productDetail.maxTotalAmount %10000 >0 && $!productDetail.maxTotalAmount %1000==0)
+    										#set($maxTotalAmount = $!productDetail.maxTotalAmount/10000)
+    										$!number.format("0.0",$maxTotalAmount)万
+    									#else
+    										#set($maxTotalAmount = $!productDetail.maxTotalAmount/10000)
+    										$!number.format("0",$maxTotalAmount)万
+    									#end
+    								#else
+    									$!number.format("0",$!productDetail.maxTotalAmount)元
+    								#end
+    							#end
+                            </td>
+                        </tr>
+    					#if(!$productDetail.maxSingleInvestAmount)
+    					#else
+                            <tr>
+                                <td class="bg_td">限购金额</td>
+                                <td>
+    								#if($!productDetail.maxSingleInvestAmount >= 10000)
+    									#if($!productDetail.maxSingleInvestAmount %10000 >0 && $!productDetail.maxSingleInvestAmount %1000>0)
+    										#set($maxSingleInvestAmount = $!productDetail.maxSingleInvestAmount/10000)
+    										$!number.format("0.00",$maxSingleInvestAmount)万
+    									#elseif($!productDetail.maxSingleInvestAmount %10000 >0 && $!productDetail.maxSingleInvestAmount %1000==0)
+    										#set($maxSingleInvestAmount = $!productDetail.maxSingleInvestAmount/10000)
+    										$!number.format("0.0",$maxSingleInvestAmount)万
+    									#else
+    										#set($maxSingleInvestAmount = $!productDetail.maxSingleInvestAmount/10000)
+    										$!number.format("0",$maxSingleInvestAmount)万
+    									#end
+    								#else
+    									$!number.format("0",$!productDetail.maxSingleInvestAmount)元
+    								#end
+                                </td>
+                            </tr>
+    					#end
+    					#if($!productDetail.propertySymbol == 'ZAN')
+                            <tr>
+                                <td class="bg_td">优惠券</td>
+                                <td>不支持使用红包</td>
+                            </tr>
+    					#end
+                        <tr>
+                            <td class="bg_td">债权类别</td>
+                            <td>#if($!productDetail.propertyType == 'CASH_LOOP' ) 小微借款  #elseif($!productDetail.propertyType == 'CONSUME') 消费贷 #else $!productDetail.propertyType #end</td>
+                        </tr>
+                        <tr>
+                            <td class="bg_td">起息时间</td>
+                            <td class="regularBox">#if($!productDetail.beginInterestDays == 'NEXT_DAY' ) 出借成功当日起息 #elseif($!productDetail.beginInterestDays == 'MATCH_DAY') 出借成功当日起息 #end <span class="regularIcomBtn"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="bg_td">回款方式</td>
+                            <td>#if($!productDetail.returnType == 'FINISH_RETURN_ALL' ) 到期还本付息  #elseif($!productDetail.returnType == 'AVERAGE_CAPITAL_PLUS_INTEREST') 等额本息 #end</td>
+                        </tr>
+    					#if($!productDetail.propertySymbol == 'ZAN')
+                            <tr>
+                                <td class="bg_td">委托冻结期</td>
+                                <td>成功委托次日起$!productDetail.entrustLockPeriod个自然日</td>
+                            </tr>
+    					#end
+                        <tr>
+                            <td class="bg_td">计息方式</td>
+                            <td>按日计息</td>
+                        </tr>
+                        <tr>
+                            <td class="bg_td">可加入时间</td>
+    						#if($!productDetail.endTime)
+                                <td>$!date.formatYYYYMMDD($!productDetail.startTime) 至  $!date.formatYYYYMMDD($!productDetail.endTime)</td>
+    						#else
+                                <td>$!date.formatYYYYMMDD($!productDetail.startTime) 起</td>
+    						#end
+                        </tr>
+                    </table>
+				</div>
+				#if("$!productDetail.note" != "")
+    				<div class="plan_box">
+                        <div class="slide1_tt reminder_posi"><span class="pr_tline"></span>计划简介<i class="reminder_txt">温馨提示：市场有风险，用户需谨慎</i></div>
+                        <div class="plan_p">$!productDetail.note</div>
+    				</div>
+				#end
+				#if("$!productDetail.propertySummary" != "")
+    				<div class="plan_box">
+                        <div class="slide1_tt"><span class="pr_tline"></span>合作方简介</div>
+                        <div class="plan_p">$!productDetail.propertySummary</div>
+    				</div>
+				#end
+				#if("$!productDetail.returnSource" != "")
+    				<div class="plan_box">
+                        <div class="slide1_tt"><span class="pr_tline"></span>还款来源</div>
+                        <div class="plan_p">$!productDetail.returnSource</div>
+    				</div>
+				#end
+				#if("$!productDetail.coopProtocolPics" != "")
+                    <a href="$!env.getWebURL('/micro2.0/regular/protocol?productId=')$!productDetail.id&protocolType=coop&resourceType=APP">
+                        <div class="check_file">
+                            <span class="pr_tline"></span>合作协议
+                            <span class="pr_timg"></span>
+                        </div>
+                    </a>
+				#end
+                <div class="deta_foor_info">
+                    <span class="pr_safe_img"></span>账户资金安全由全球网络安全领导者赛门铁克保障
+                </div>
+            </div>        </div>
+        <div class="swiper-slide">
+            <div class="content-silde">
+                <div class="plan_box">
+                    <div class="slide1_tt"><span class="pr_tline"></span>概述</div>
+                    <div class="plan_p">币港湾平台对每个产品计划的合作项目都进行了严格的审查，保证风险可控，让用户可以在币港湾上安心收益。</br>
+                        币港湾所有产品项目均已对接恒丰银行存管，用户加入成功后，资金将直接进入用户在恒丰银行的存管账户，保障平台资金与用户资金完全隔离。</div>
+				</div>
+				<div class="plan_box">
+					#if("$!productDetail.fundSecurity" != "")
+                        <div class="slide1_tt"><span class="pr_tline"></span>技术保障</div>
+                        <div class="plan_p">$!productDetail.fundSecurity</div>
+					#end
+                </div>
+				#if("$!productDetail.orgnizeCheck" != "" && "$!productDetail.orgnizeCheckPics" != "" )
+                    <a href="$!env.getWebURL('/micro2.0/regular/protocol?productId=')$!productDetail.id&protocolType=orgnize&resourceType=APP">
+                        <div class="check_file">
+                            <span class="pr_tline"></span>合作方信息披露<span class="pr_timg"></span>
+                        </div>
+                    </a>
+				#end
+				#if("$!productDetail.ratingGrade" != "" && "$!productDetail.ratingGradePics" != "" )
+                    <a href="$!env.getWebURL('/micro2.0/regular/protocol?productId=')$!productDetail.id&protocolType=rating&resourceType=APP">
+                        <div class="check_file" #if("$!productDetail.orgnizeCheck" == "" || "$!productDetail.orgnizeCheckPics" == "" ) #end>
+                            <span class="pr_tline"></span>第三方担保合同<span class="pr_timg"></span>
+                        </div>
+                    </a>
+				#end
+				#if("$!productDetail.loanProtocolPics" != "")
+                    <a href="$!env.getWebURL('/micro2.0/regular/protocol?productId=')$!productDetail.id&protocolType=loan&resourceType=APP">
+                        <div class="check_file" #if("$!productDetail.orgnizeCheck" == "" || "$!productDetail.orgnizeCheckPics" == "" ) #if("$!productDetail.ratingGrade" == "" || "$!productDetail.ratingGradePics" == "" ) #end #end>
+                            <span class="pr_tline"></span>借款合同示例<span class="pr_timg"></span>
+                        </div>
+                    </a>
+				#end
+                <div class="deta_foor_info">
+                    <span class="pr_safe_img"></span>账户资金安全由全球网络安全领导者赛门铁克保障
+                </div>
+            </div>
+        </div>
+        <div class="swiper-slide slide3">
+            <div class="content-silde">
+                <ul class="slide3_ul">
+					#foreach($record in $!investRecord)
+                        <li class="slide3_li">
+                            <div class="name">$!record.userName </div>
+                            <div class="name_right">
+								#if($!record.balance >= 10000)
+									#if($!record.balance %10000 >0 && $!record.balance %1000>0)
+										#set($balanceAmount = $!record.balance/10000)
+										$!number.format("0.00",$balanceAmount)万
+									#elseif($!record.balance %10000 >0 && $!record.balance %1000==0)
+										#set($balanceAmount = $!record.balance/10000)
+										$!number.format("0.0",$balanceAmount)万
+									#else
+										#set($balanceAmount = $!record.balance/10000)
+										$!number.format("0",$balanceAmount)万
+									#end
+								#elseif($!record.balance >=100 && $!record.balance <10000)
+									$!number.format("0",$!record.balance)元
+								#else
+                                    0 元
+								#end
+                            </div>
+                            <div class="name_time">$!date.format($!record.openTime)</div>
+                        </li>
+					#end
+                </ul>
+				#if($!productDetail.totalRows == 0)
+                    <div id="showmore_none">暂无加入记录</div>
+                    <div style = "width:100%; text-align:center; font-size:30px; line-height:normal; color:#cccccc; padding-bottom:60px;    font-weight: bold;"></div>
+                    <div style = "width:100%; text-align:center; font-size:30px; line-height:normal; color:#cccccc; padding-bottom:60px;    font-weight: bold;"></div>
+                    <div style = "width:100%; text-align:center; font-size:30px; line-height:normal; color:#cccccc; padding-bottom:60px;    font-weight: bold;"></div>
+                    <div style = "width:100%; text-align:center; font-size:30px; line-height:normal; color:#cccccc; padding-bottom:60px;    font-weight: bold;"></div>
+                    <div style = "width:100%; text-align:center; font-size:30px; line-height:normal; color:#cccccc; padding-bottom:60px;    font-weight: bold;"></div>
+                    <div style = "width:100%; text-align:center; font-size:30px; line-height:normal; color:#cccccc; padding-bottom:60px;    font-weight: bold;"></div>
+                    <div style = "width:100%; text-align:center; font-size:30px; line-height:normal; color:#cccccc; padding-bottom:60px;    font-weight: bold;"></div>
+				#else
+                    <div id="showmore" >查看更多</div>
+                    <div id="showmore_have"></div>
+				#end
+                <div class="place_btn"></div>
+            </div>
+        </div>    </div>
+		##合规弹窗2
+        <script>
+    		function toAndroidPage(json) {
+    			javascript:coinharbour.toAndroidPage(json);
+    		}
+    		$(function(){
+    			$('.regularIcomBtn').on('click', function() {
+            		var json = '{"appActive":{"page":"aa"}}';
+            		var client = document.getElementById("client").value;
+            		if(client == "ios") {
+            			toiOSPage(json);
+            		} else if(client == "android") {
+            			toAndroidPage(json);
+            		}
+            	});
+    		})
+    	</script>
+#LoadJS("resources/micro2.0/scripts/regular/product_detail_new")
+#LoadJS("resources/micro2.0/scripts/common/common")
+</body>
+#Html("end")

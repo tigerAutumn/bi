@@ -1,0 +1,293 @@
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+    <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/statistics/buyMessage/queryDep/index.htm')" method="post" id="myform" class="pageForm required-validate">
+        <input type="hidden" name="numPerPage" value="$!numPerPage" />
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="pageNum" value="$!pageNum" />
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+            手机号：<input  id="mobile" type="text" name="mobile" value="$!req.mobile" maxlength="11"/>
+                        姓名：<input  id="userName" type="text" name="userName" value="$!req.userName" size="15" maxlength="20"/>
+                        订单号：<input  id="orderNo" type="text" name="orderNo" value="$!req.orderNo" size="15" maxlength="20"/>
+                        站岗户：
+                        <select name="propertySymbol" id="propertySymbol">
+                        	<option value="" #if("$!req.propertySymbol"=="") selected #end>全部</option>
+                            <option value="YUN_DAI_SELF" #if("$!req.propertySymbol"=="YUN_DAI_SELF") selected  #end>云贷存管</option>
+                        	<option value="7_DAI_SELF" #if("$!req.propertySymbol"=="7_DAI_SELF") selected  #end>七贷存管</option>
+                            <option value="ZSD" #if("$!req.propertySymbol"=="ZSD") selected  #end>赞时贷</option>
+                            <option value="FREE" #if("$!req.propertySymbol"=="FREE") selected  #end>自由站岗户</option>
+                        </select>
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="add" href="$env.getWebURL('/agent/agent_list.htm')" target="dialog" mask="true" rel="createBack" height="390" width="600"><span><button type="button">选择渠道</button></span></a>
+                        <input type="hidden" id="agentTotal" name="agentTotal" value="$!agentTotal"/>
+                        <input type="hidden" id="agentIds" name="agentIds" value="$!req.agentIds"/>
+                        <input type="hidden" id="nonAgentId" name="nonAgentId" value="$!req.nonAgentId"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                        购买日期： <input name="investBuyStartTime" type="text" id="investBuyStartTime" class="date textInput readonly" readonly="true" size="15"  value="$!req.investBuyStartTime" /> 到 <input name="investBuyEndTime" type="text" id="investBuyEndTime" class="date textInput readonly" readonly="true" size="15"  value="$!req.investBuyEndTime" />
+                        结算日期： <input name="investFinishStartTime"  type="text" id="investFinishStartTime" class="date textInput readonly" readonly="true" size="15"  value="$!req.investFinishStartTime" /> 到 <input name="investFinishEndTime"  type="text" id="investFinishEndTime" class="date textInput readonly" readonly="true" size="15"  value="$!req.investFinishEndTime" />
+
+                        投资状态：
+                        <select name="accountStatus" id="accountStatus">
+                            <option value="0" #if("$!req.accountStatus"=="0") selected #end>全部</option>
+                            <option value="2" #if("$!req.accountStatus"=="2") selected  #end>投资中</option>
+                            <option value="7" #if("$!req.accountStatus"=="7") selected  #end>结算中</option>
+                            <option value="5" #if("$!req.accountStatus"=="5") selected  #end>已结算</option>
+                        </select>
+
+						<span style="margin-left:20px;">
+							<button  onclick="func()" type="button">查询</button>
+							<button  onclick="exp()" type="button">导出</button>
+                        </span>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li>
+				<span style="margin-left:10px;" id="span_total_finance_interest">
+    				<font color="blue">购买总金额：#if(!$!sumBuyMessageAmount) 0 #else $!money.format($!sumBuyMessageAmount) #end 元</font>
+                </span>
+            </li>
+        </ul>
+    </div>
+    <table class="table" width="1396" layoutH="180">
+        <thead>
+        <tr>
+            <th width="80">用户id</th>
+            <th width="120">手机号</th>
+            <th width="80">姓名</th>
+            <th width="80">站岗户</th>
+            <th width="220">订单号</th>
+            <th width="60">期限</th>
+            <th width="60">利率</th>
+            <th width="80">购买金额</th>
+            <th width="100">产品状态</th>
+            <th width="180">购买时间</th>
+            <th width="180">到期提现日</th>
+            <th width="100">渠道来源</th>
+        </tr>
+        </thead>
+        <tbody>
+			#foreach($grid in $userBuyMessage)
+            <tr target="sid_user" rel="1">
+                <td>$!grid.id</td>
+                <td>#if("$!grid.preMobile" != "" || "$!grid.afterMobile" != "") $!grid.preMobile****$!grid.afterMobile#end</td>
+                <td>#if("$!grid.userName" != "") $!grid.userName#end</td>
+
+                <td>#if("$!grid.propertySymbol" == "YUN_DAI_SELF") 云贷存管
+                #elseif("$!grid.propertySymbol" == "7_DAI_SELF") 七贷存管
+				#elseif("$!grid.propertySymbol" == "ZSD") 赞时贷
+				#elseif("$!grid.propertySymbol" == "FREE") 自由站岗户
+				#end</td>
+
+                <td>$!grid.orderNo</td>
+                <td>
+					#set($Integer = 0)
+					#if(0 > $Integer.parseInt("$!grid.term"))
+						#set($termNum = $Integer.parseInt("$!grid.term")*-1 ) $!termNum 天
+					#else
+						$!grid.term 个月
+					#end
+                </td>
+                <td>$!grid.rate</td>
+                <td><div class="gridCol">$!money.format($!grid.buyBalance)</div></td>
+                <td>$!message.get("ACCOUNT_STATUS_$!grid.accountStatus")</td>
+                <td>$!date.format($!grid.openTime)</td>
+                <td>$!date.formatYYYYMMDD($!grid.investEndTime)</td>
+                <td>#if($!grid.agentName) $!grid.agentName #else 无 #end</td>
+            </tr>
+			#end
+        </tbody>
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+                <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!totalRows条</span>
+        </div>
+
+        <div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+    </div>
+</div>
+<script>
+	
+	//保留两位小数
+	function returnFloat(value){
+ 		var value=Math.round(parseFloat(value)*100)/100;
+ 		var xsd=value.toString().split(".");
+ 		if(xsd.length==1){
+			value=value.toString()+".00";
+		 	return value;
+		}
+		if(xsd.length>1){
+		if(xsd[1].length<2){
+		  	value=value.toString()+"0";
+		}
+		 	return value;
+		}
+	}
+
+    $(function () {
+        $.ajaxSettings.global=false;
+		
+		var mobile = $("#mobile").val();
+		var userName = $("#userName").val();
+		var orderNo = $("#orderNo").val();
+		var agentIds = $("#agentIds").val();
+		var nonAgentId = $("#nonAgentId").val();
+        var buyBeginTime = $("#investBuyStartTime").val();
+        var buyEndTime = $("#investBuyEndTime").val();
+        var investBeginTime = $("#investFinishStartTime").val();
+        var investEndTime = $("#investFinishEndTime").val();
+        var propertySymbol = $("#propertySymbol option:selected").val();
+        var accountStatus = $("#accountStatus option:selected").val();
+        var term = $("#term option:selected").val();
+        var url_post = $("#APP_ROOT_PATH").val() + "/statistics/buyMessage/queryDep/SumBalnace.htm";
+        jQuery.ajax({
+            type : 'post',
+            url : url_post,
+            data : {
+            	mobile : mobile,
+            	userName : userName,
+            	orderNo : orderNo,
+            	agentIds : agentIds,
+            	nonAgentId : nonAgentId,
+                buyBeginTime : buyBeginTime,
+                buyEndTime : buyEndTime,
+                investBeginTime : investBeginTime,
+                investEndTime : investEndTime,
+                propertySymbol : propertySymbol,
+                accountStatus : accountStatus,
+                term : term
+            },
+            async : true,
+            success : function(data) {
+                var html1 = '<font color="red">购买总金额：'+ returnFloat(data.sumBuyMessageAsyncAmount)+'元</font>';
+                $("#span_total_balance").html(html1)
+            }
+        });
+
+        $.ajaxSettings.global=true;
+    });
+
+    function func(){
+        var beginTime1 = $("#investBuyStartTime").val();
+        var overTime1 = $("#investBuyEndTime").val();
+        var beginTime2 = $("#investFinishStartTime").val();
+        var overTime2 = $("#investFinishEndTime").val();
+
+
+        if(beginTime1 != "" && overTime1 == ""){
+            alertMsg.warn("请输入购买日期结束时间！");
+            return false;
+        }
+
+        if(beginTime1 == "" && overTime1 != ""){
+            alertMsg.warn("请输入购买日期开始时间！");
+            return false;
+        }
+
+        if(beginTime1 != "" && overTime1 != ""){
+            var result = Date.parse(overTime1.replace(/-/g,"/"))- Date.parse(beginTime1.replace(/-/g,"/"));
+            if(result < 0){
+                alertMsg.warn("购买日期开始时间不能在结束时间之后！！");
+                return false;
+            }
+        }
+
+
+        if(beginTime2 != "" && overTime2 == ""){
+            alertMsg.warn("请输入结算结束时间！");
+            return false;
+        }
+
+        if(beginTime2 == "" && overTime2 != ""){
+            alertMsg.warn("请输入结算开始时间！");
+            return false;
+        }
+
+        if(beginTime2 != "" && overTime2 != ""){
+            var result = Date.parse(overTime2.replace(/-/g,"/"))- Date.parse(beginTime2.replace(/-/g,"/"));
+            if(result < 0){
+                alertMsg.warn("结算开始时间不能在结束时间之后！！");
+                return false;
+            }
+        }
+        var url = $("#APP_ROOT_PATH").val() + "/statistics/buyMessage/queryDep/index.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+
+    function exp(){
+        var beginTime1 = $("#investBuyStartTime").val();
+        var overTime1 = $("#investBuyEndTime").val();
+        var beginTime2 = $("#investFinishStartTime").val();
+        var overTime2 = $("#investFinishEndTime").val();
+
+
+        if(beginTime1 != "" && overTime1 == ""){
+            alertMsg.warn("请输入购买日期结束时间！");
+            return false;
+        }
+
+        if(beginTime1 == "" && overTime1 != ""){
+            alertMsg.warn("请输入购买日期开始时间！");
+            return false;
+        }
+
+        if(beginTime1 != "" && overTime1 != ""){
+            var result = Date.parse(overTime1.replace(/-/g,"/"))- Date.parse(beginTime1.replace(/-/g,"/"));
+            if(result < 0){
+                alertMsg.warn("购买日期开始时间不能在结束时间之后！！");
+                return false;
+            }
+        }
+
+
+        if(beginTime2 != "" && overTime2 == ""){
+            alertMsg.warn("请输入结算结束时间！");
+            return false;
+        }
+
+        if(beginTime2 == "" && overTime2 != ""){
+            alertMsg.warn("请输入结算开始时间！");
+            return false;
+        }
+
+        if(beginTime2 != "" && overTime2 != ""){
+            var result = Date.parse(overTime2.replace(/-/g,"/"))- Date.parse(beginTime2.replace(/-/g,"/"));
+            if(result < 0){
+                alertMsg.warn("结算开始时间不能在结束时间之后！！");
+                return false;
+            }
+        }
+
+        var url = $("#APP_ROOT_PATH").val() + "/buyMessage/depInvestment/exportXls.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","");
+        $("#myform").submit();
+    }
+
+</script>

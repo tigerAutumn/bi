@@ -1,0 +1,138 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+	<input type="hidden" name="orderField" value="$!req.orderField" />
+	<input type="hidden" name="orderDirection" value="$!req.orderDirection" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/bsuser/interestRepayment.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!req.pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+        <input type="hidden" id="queryDateFlag" name="queryDateFlag" value="QUERYDATE" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+                        回款日期：<input name="openTimeStart"  type="text" maxdate="{%y}-%M-{%d}" id="openTimeStart" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.openTimeStart)" /> 到
+						<input name="openTimeEnd" maxdate="{%y}-%M-{%d}" type="text"id="openTimeEnd" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.openTimeEnd)" />
+						<span style="margin-left:20px;">
+							<button  onclick="exp()" type="button">导出excel</button>
+							<button onclick="func()" type="button">查询</button>
+						</span>
+					</td>
+				</tr>
+			</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="12%">购买日期</th>
+				<th width="6%">姓名</th>
+				<th width="9%">手机号</th>
+				<th width="12%">产品名称</th>
+				<th width="9%">购买金额</th>
+				<th width="6%">利率</th>
+                <th width="6%">期限</th>
+                <th width="12%">到期提现日期</th>
+                <th width="9%">状态</th>
+                <th width="10%">资产合作方</th>
+                <th width="9%">利息</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $dataList)
+			<tr target="sid_user" rel="1">
+				<td>$!date.format($!grid.openTime)</td>
+				<td>$!grid.userName</td>
+                <td>$!grid.mobile</td>
+				<td>$!grid.productName</td>
+
+				<td>$!money.format($!grid.balance)</td>
+                <td>$!money.format($!grid.productRate)</td>
+                <td>$!grid.term</td>
+                <td>$!date.format($!grid.lastfinishInterestDate)</td>
+
+                <td>$!message.get("ACCOUNT_STATUS_$!grid.accountStatus")</td>
+                <td>$!message.get("PROPERTY_SYSBOL_$!grid.propertySymbol")</td>
+                <td>$!money.format($!grid.interest)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+
+	</div>
+</div>
+<script>
+function func(){
+	var beginTime = $("#openTimeStart").val();
+	var overTime = $("#openTimeEnd").val();
+	if(beginTime != "" && overTime == ""){
+		alert("请输入结束时间！");
+		return false;
+	}
+	if(beginTime == "" && overTime != ""){
+		alert("请输入开始时间！");
+		return false;
+	}
+	if(beginTime != "" && overTime != ""){
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+
+    if(beginTime == "" || overTime == null) {
+        alertMsg.warn("回款的开始时间、结束时间必须同时输入！");
+        return false;
+    }
+
+	var url = $("#APP_ROOT_PATH").val() + "/bsuser/interestRepayment.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+    var beginTime = $("#openTimeStart").val();
+    var overTime = $("#openTimeEnd").val();
+    if(beginTime != "" && overTime == ""){
+        alert("请输入结束时间！");
+        return false;
+    }
+    if(beginTime == "" && overTime != ""){
+        alert("请输入开始时间！");
+        return false;
+    }
+    if(beginTime != "" && overTime != ""){
+        var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+        if(result < 0){
+            alert("开始时间不能在结束时间之后！！");
+            return false;
+        }
+    }
+    var url = $("#APP_ROOT_PATH").val() + "/bsuser/interestRepayment/exportXls.htm";
+    $("#myform").attr("action",url);
+    $("#myform").attr("onsubmit","");
+    $("#myform").submit();
+}
+</script>

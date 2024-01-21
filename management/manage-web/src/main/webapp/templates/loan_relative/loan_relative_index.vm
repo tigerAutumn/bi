@@ -1,0 +1,85 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+<div class="page unitBox">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/loan_relative/loan_relative_index.htm')" onsubmit="return navTabSearch(this);">
+    <input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+    </form>
+	<div class="pageContent">
+    	<table class="table" width="1800" layoutH="140">
+    		<thead>
+    			<tr>
+					<th width="3%">变动表编号</th>
+					<th width="3%">债权关系数据编号</th>
+					<th width="6%">原匹配金额</th>
+					<th width="6%">还款后匹配金额</th>
+					<th width="6%">还款金额</th>
+					<th width="4%">处理状态</th>
+    				<th width="6%">借款人客户号</th>
+    				<th width="6%">借款人身份证</th>
+					<th width="3%">借款人姓名</th>
+					<th width="4%">达飞产品名称</th>
+					<th width="4%">借款金额</th>
+					<th width="6%">初始匹配金额</th>
+					<th width="4%">借款编号</th>
+					<th width="4%">放款交易号</th>
+					<th width="4%">放款完成时间</th>
+					<th width="4%">是否已还款</th>
+					<th width="4%">还款时间</th>
+					<th width="4%">创建时间</th>
+					<th width="4%">修改时间</th>
+					<th width="10%">操作</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			#foreach($grid in $dataGrid)
+        			<tr target="sid_user" rel="1">
+                        <td>$!grid.id</td>
+                        <td>$!grid.loanRelativeId</td>
+                        <td>$!grid.beforeAmount</td>
+                        <td>$!grid.afterAmount</td>
+                        <td>$!grid.repayAmount</td>
+                        <td>$!grid.dealStatus</td>
+                    	<td>$!grid.borrowerCustomerId</td>
+                    	<td>$!grid.borrowerIdCard</td>
+                    	<td>$!grid.borrowerName</td>
+                    	<td>$!grid.productName</td>
+                    	<td>$!grid.borrowAmount</td>
+                    	<td>$!grid.initAmount</td>
+                    	<td>$!grid.borrowId</td>
+                    	<td>$!grid.borrowTransNo</td>
+                    	<td>$!date.format($!grid.time)</td>
+                    	<td>$!grid.isRepay</td>
+                    	<td>$!date.format($!grid.repayTime)</td>
+                    	<td>$!date.format($!grid.createTime)</td>
+                    	<td>$!date.format($!grid.updateTime)</td>
+						<td>
+							<a style="color:blue;" href="$env.getWebURL('/loan_relative/draw_relay.htm')?customerId=$!grid.borrowerCustomerId&borrowNo=$!grid.borrowId&id=$!grid.id" target="dialog" mask="true" rel="createBack" height="500" width="1000">拉取</a>
+						</td>
+        			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+        	<div class="pages">
+        		<span>显示</span>
+        		<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+        			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+        			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+        			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+        			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+        		</select>
+        		<span>条，共$!count 条</span>
+        	</div>
+        	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+        </div>
+    </div>
+</div>
+<script>  
+	function searchFunction(){
+		$("#generalForm").submit();
+	}
+</script> 

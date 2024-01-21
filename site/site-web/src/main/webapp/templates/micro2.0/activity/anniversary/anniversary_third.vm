@@ -1,0 +1,618 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadCSS("resources/micro2.0/styles/activity/anniversary/layout")
+#LoadCSS("resources/micro2.0/styles/activity/anniversary/celebration_03")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/activity/six")
+#LoadJS("resources/micro2.0/scripts/activity/anniversary/common")
+#LoadJS("resources/micro2.0/scripts/activity/anniversary/jquery.cxscroll.min")
+#LoadJS("resources/micro2.0/scripts/activity/anniversary/celebration_03")
+#LoadJS("resources/micro2.0/scripts/activity/anniversary/anniversary_third")
+#WeChatShare()
+#Head("end")
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')">
+<input type="hidden" id="isWin" value="$!thirdPageInfo.isWin"/>
+<input type="hidden" id="awardId" value="$!thirdPageInfo.awardId"/>
+<body class="BGImg">
+<img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/01.png" alt="" class="headerImg">
+
+<div class="win_border">
+    <div class="pos_title">
+        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/02.png" alt="">
+        <div class="right_title">
+            <div class="tit_info">每日投资达标，参与瓜分奖金</div>
+            <div class="tit_time">3月18日-3月24日</div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="ner_font">
+            活动说明：活动期间内，用户年化满1000元即可参与奖金瓜分。奖金每日开启情况以当天的累计年化投资额为准；用户年化投资越多，可瓜分奖金越多。每天年化投资额前10名的用户，可获得额外奖励。
+        </div>
+        #if($!thirdPageInfo.isLogin == "yes")
+            #if($!thirdPageInfo.isStartFifth == "not_start")
+                <!--未开始-->
+                <div class="smallbor_wrap">
+                    <div class="bortitle">3月18日年化投资额（元）</div>
+                    <div class="bormonery">0.00</div>
+                    <div class="demInfo">（预计可瓜分金额0.00元）</div>
+                    <div class="btn see_user_award">我瓜分到的奖金></div>
+                </div>
+            #elseif($!thirdPageInfo.isStartFifth == "pre")
+                <!--预热中-->
+                <div class="smallbor_wrap">
+                    <div class="bortitle">3月18日年化投资额（元）</div>
+                    <div class="bormonery">0.00</div>
+                    <div class="demInfo">（预计可瓜分金额0.00元）</div>
+                    <div class="btn see_user_award">我瓜分到的奖金></div>
+                </div>
+            #elseif($!thirdPageInfo.isStartFifth == "start")
+                <!--进行中-->
+                <div class="smallbor_wrap">
+                    <div class="bortitle">今日我的年化投资额（元）</div>
+                    <div class="bormonery">$!money.format($!{thirdPageInfo.selfAnnualizedInvestment})</div>
+                    <div class="demInfo">（预计可瓜分金额$!money.format($!{thirdPageInfo.todayUserAwardAmount})元）<img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/04.png" alt="" class="icon see_user_award"></div>
+                    <div class="btn go_product_list">立即投资</div>
+                </div>
+            #elseif($!thirdPageInfo.isStartFifth == "end")
+                <!--已结束-->
+                <div class="smallbor_wrap">
+                    <div class="bortitle">3月24日年化投资额（元）</div>
+                    <div class="bormonery">$!money.format($!{thirdPageInfo.selfAnnualizedInvestment})</div>
+                    <div class="demInfo">（预计可瓜分金额$!money.format($!{thirdPageInfo.todayUserAwardAmount})元）<img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/04.png" alt="" class="icon see_user_award"></div>
+                    <div class="btn go_product_list">立即投资</div>
+                </div>
+            #end
+        #else
+            <div class="smallbor_wrap">
+                #if($!thirdPageInfo.isStartFifth == "not_start")
+                    <!--未开始-->
+                    <div class="bortitle">3月18日年化投资额（元）</div>
+                #elseif($!thirdPageInfo.isStartFifth == "pre")
+                    <!--预热中-->
+                    <div class="bortitle">3月18日年化投资额（元）</div>
+                #elseif($!thirdPageInfo.isStartFifth == "start")
+                    <!--进行中-->
+                    <div class="bortitle">今日我的年化投资额（元）</div>
+                #elseif($!thirdPageInfo.isStartFifth == "end")
+                    <!--已结束-->
+                    <div class="bortitle">3月24日年化投资额（元）</div>
+                #end
+                <div class="bormonery go_login" style="cursor: pointer; color: #1cb3e2; font-size: 40px; padding-top: 40px;">登录后可查看</div>
+                <div class="btn go_login">登录</div>
+            </div>
+        #end
+
+        <div class="smallbor_wrap">
+            #if($!thirdPageInfo.isStartFifth == "not_start")
+                <!--未开始-->
+                <div class="bortitle">3月18日年化投资额（元）</div>
+                <div class="bormonery">0.00</div>
+                #if($!thirdPageInfo.nextUpAmount == 0)
+                    <div class="demInfo">可瓜分总奖金（元）</div>
+                    <div class="thousand_info"><span class="sand_num">0.00</span></div>
+                #else
+                    <div class="demInfo">年化投资额达</div>
+                    <div class="thousand_info"><span class="sand_num">250</span>万元奖金升级</div>
+                #end
+            #elseif($!thirdPageInfo.isStartFifth == "pre")
+                <!--预热中-->
+                <div class="bortitle">3月18日年化投资额（元）</div>
+                <div class="bormonery">0.00</div>
+                #if($!thirdPageInfo.nextUpAmount == 0)
+                    <div class="demInfo">可瓜分总奖金（元）</div>
+                    <div class="thousand_info"><span class="sand_num">0.00</span></div>
+                #else
+                    <div class="demInfo">年化投资额达</div>
+                    <div class="thousand_info"><span class="sand_num">250</span>万元奖金升级</div>
+                #end
+            #elseif($!thirdPageInfo.isStartFifth == "start")
+                <!--进行中-->
+                <div class="bortitle">今日总年化投资额（元）</div>
+                <div class="bormonery">$!money.format($!{thirdPageInfo.todayTotalAmount})</div>
+                #if($!thirdPageInfo.nextUpAmount == 0)
+                    <div class="demInfo">可瓜分总奖金（元）</div>
+                    <div class="thousand_info"><span class="sand_num">$!money.format($!{thirdPageInfo.todayAwardAmount})</span></div>
+                #else
+                    <div class="demInfo">年化投资额达</div>
+                    <div class="thousand_info"><span class="sand_num">$!number.format("0", $!{thirdPageInfo.nextUpAmount})</span>万元奖金升级</div>
+                #end
+            #elseif($!thirdPageInfo.isStartFifth == "end")
+                <!--已结束-->
+                <div class="bortitle">3月24日年化投资额（元）</div>
+                <div class="bormonery">$!money.format($!{thirdPageInfo.todayTotalAmount})</div>
+                #if($!thirdPageInfo.nextUpAmount == 0)
+                    <div class="demInfo">可瓜分总奖金（元）</div>
+                    <div class="thousand_info"><span class="sand_num">$!money.format($!{thirdPageInfo.todayAwardAmount})</span></div>
+                #else
+                    <div class="demInfo">年化投资额达</div>
+                    <div class="thousand_info"><span class="sand_num">$!number.format("0", $!{thirdPageInfo.nextUpAmount})</span>万元奖金升级</div>
+                #end
+            #end
+            <div class="condition">
+                <div class="condition_left">参与活动方式？</div>
+                <div class="condition_right">奖金开放条件？</div>
+            </div>
+        </div>
+        <div class="neikuan paihan_hin">
+            <div class="alertHeader">
+                <img class="alertHeaderImg" src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/Trophy.png" alt="">
+                #if($!thirdPageInfo.isStartFifth == "end")
+                    <span class="headerTitle">3月24日年化投资额排行榜</span>
+                #else
+                    <span class="headerTitle">今日年化投资额排行榜</span>
+                #end
+            </div>
+            <div class="alertRanking">
+                <span class="RankingName alertLeft">排名</span>
+                <span class="RankingName alertRight">购买金额</span>
+            </div>
+            <div class="OverHin">
+                <div class="alertWrap">
+                    <ul class="alertUl">
+                        #foreach($!todayInvestUser in $!thirdPageInfo.todayInvestUserList)
+                            <li class="alertLi">
+                                <div class="OderLeft">
+                                    #if($!todayInvestUser.rank == 1)
+                                        <img class="OrderNumber" src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/thp01.png" alt="">
+                                    #elseif($!todayInvestUser.rank == 2)
+                                        <img class="OrderNumber" src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/thp02.png" alt="">
+                                    #elseif($!todayInvestUser.rank == 3)
+                                        <img class="OrderNumber" src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/thp03.png" alt="">
+                                    #else
+                                        $!todayInvestUser.rank
+                                    #end
+                                </div>
+                                <div class="NameList">$!todayInvestUser.userName</div>
+                                #if($!todayInvestUser.userName == "----")
+                                    <div class="RightMenory">$!{todayInvestUser.amount}</div>
+                                #else
+                                    <div class="RightMenory">$!money.format($!{todayInvestUser.amount})元</div>
+                                #end
+                            </li>
+                        #end
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="btn see_winner_list" id="View_Award">查看获奖名单></div>
+        <div id="Click_five_dialog" class="guize">活动规则</div>
+    </div>
+</div>
+
+<div class="win_border four_win">
+    <div class="pos_title">
+        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/03.png" alt="">
+        <div class="right_title">
+            <div class="tit_info">周年投资  100%中奖</div>
+            <div class="tit_time">3月18日</div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="ner_font" style="text-align:left;">
+           活动说明： 用户于3月18日投资完成后，可获得一次抽奖机会。
+        </div>
+        <div id="csMoveLeft" class="draw_wrap scroll_horizontal">
+            <div class="move_left box">
+                <ul class="list">
+                    <li>
+                        <div class="win_bg no_bg">
+                            <div class="draw_container">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/lotter01.png" alt="" class="draw_img">
+                                <span class="draw_info">投资红包5元</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="win_bg no_bg">
+                            <div class="draw_container">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/lotter02.png" alt="" class="draw_img">
+                                <span class="draw_info">投资红包10元</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="win_bg no_bg">
+                            <div class="draw_container">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/lotter03.png" alt="" class="draw_img">
+                                <span class="draw_info">投资红包20元</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="win_bg no_bg">
+                            <div class="draw_container">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/lotter07.png" alt="" class="draw_img">
+                                <span class="draw_info">奖励金1元</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="win_bg no_bg">
+                            <div class="draw_container">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/lotter07.png" alt="" class="draw_img">
+                                <span class="draw_info">奖励金3元</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="win_bg no_bg">
+                            <div class="draw_container">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/lotter07.png" alt="" class="draw_img">
+                                <span class="draw_info">奖励金5元</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="win_bg no_bg">
+                            <div class="draw_container">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/lotter07.png" alt="" class="draw_img">
+                                <span class="draw_info">现金奖励10元</span>
+                            </div>
+                        </div>
+                    </li>
+ 
+                </ul>
+            </div>
+        </div>
+        <div id="csMoveRight" class="draw_wrap scroll_horizontal">
+            <div class="move_left box">
+                <ul class="list">
+                    <li>
+                        <div class="win_bg no_bg">
+                            <div class="draw_container">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/lotter07.png" alt="" class="draw_img">
+                                <span class="draw_info">现金奖励15元</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="win_bg no_bg">
+                            <div class="draw_container">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/lotter07.png" alt="" class="draw_img">
+                                <span class="draw_info">现金奖励20元</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="win_bg no_bg">
+                            <div class="draw_container">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/lotter07.png" alt="" class="draw_img">
+                                <span class="draw_info">现金奖励30元</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="win_bg no_bg">
+                            <div class="draw_container">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/lotter07.png" alt="" class="draw_img">
+                                <span class="draw_info">现金奖励50元</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="win_bg no_bg">
+                            <div class="draw_container">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/lotter08.png" alt="" class="draw_img">
+                                <span class="draw_info">京东卡100元</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="win_bg no_bg">
+                            <div class="draw_container">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/lotter09.png" alt="" class="draw_img">
+                                <span class="draw_info">京东卡200元</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="win_bg no_bg">
+                            <div class="draw_container">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/lotter10.png" alt="" class="draw_img">
+                                <span class="draw_info">京东卡500元</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="win_bg no_bg">
+                            <div class="draw_container">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/lotter11.png" alt="" class="draw_img">
+                                <span class="draw_info">京东卡1000元</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        #if($!thirdPageInfo.isLogin == "yes")
+            #if($!thirdPageInfo.isStartSixth == "not_start")
+                <!--未开始-->
+                #if($!thirdPageInfo.isWin == "yes")
+                    <div class="bgloter">
+                        <img id="gameImg" class="bgattrImg" src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/pank14.png" alt="">
+                    </div>
+                    <div class="draw_Info">已抽中：<span class="active_draw">京东卡1000元</span></div>
+                    <div class="btn btn_gray">已抽奖</div>
+                #else
+                    <div class="bgloter">
+                        <img id="gameImg" class="bgattrImg" src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/pank14.png" alt="">
+                    </div>
+                    <div class="draw_Info opac">已抽中：<span class="active_draw">？</span></div>
+                    <div id="start_game" class="btn btn_gray">开始抽奖</div>
+                #end
+            #elseif($!thirdPageInfo.isStartSixth == "pre")
+                <!--预热中-->
+                #if($!thirdPageInfo.isWin == "yes")
+                    <div class="bgloter">
+                        <img id="gameImg" class="bgattrImg" src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/pank14.png" alt="">
+                    </div>
+                    <div class="draw_Info">已抽中：<span class="active_draw">京东卡1000元</span></div>
+                    <div class="btn btn_gray">已抽奖</div>
+                #else
+                    <div class="bgloter">
+                        <img id="gameImg" class="bgattrImg" src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/pank14.png" alt="">
+                    </div>
+                    <div class="draw_Info opac">已抽中：<span class="active_draw">？</span></div>
+                    <div id="start_game" class="btn btn_gray">开始抽奖</div>
+                #end
+            #elseif($!thirdPageInfo.isStartSixth == "start")
+                <!--进行中-->
+                #if($!thirdPageInfo.isWin == "yes")
+                    <div class="bgloter">
+                        <img id="gameImg" class="bgattrImg" src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/pank14.png" alt="">
+                    </div>
+                    <div class="draw_Info">已抽中：<span class="active_draw">京东卡1000元</span></div>
+                    <div class="btn btn_gray">已抽奖</div>
+                #else
+                    <div class="bgloter">
+                        <img id="gameImg" class="bgattrImg" src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/pank14.png" alt="">
+                    </div>
+                    <div class="draw_Info opac">已抽中：<span class="active_draw">？</span></div>
+                    <div id="start_game" class="btn btn_gray">开始抽奖</div>
+                #end
+            #elseif($!thirdPageInfo.isStartSixth == "end")
+                <!--已结束-->
+                #if($!thirdPageInfo.isWin == "yes")
+                    <div class="bgloter">
+                        <img id="gameImg" class="bgattrImg" src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/pank14.png" alt="">
+                    </div>
+                    <div class="draw_Info">已抽中：<span class="active_draw">京东卡1000元</span></div>
+                    <div class="btn btn_gray">已抽奖</div>
+                #else
+                    <div class="bgloter">
+                        <img id="gameImg" class="bgattrImg" src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/pank14.png" alt="">
+                    </div>
+                    <div class="draw_Info opac">已抽中：<span class="active_draw">？</span></div>
+                    <div class="btn btn_gray">已结束</div>
+                #end
+
+            #end
+        #else
+            <div class="bgloter">
+                <img id="gameImg" class="bgattrImg" src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/pank14.png" alt="">
+            </div>
+            <div class="draw_Info opac">已抽中：<span class="active_draw">？</span></div>
+            <div class="btn btn_gray go_login">登录后才能抽奖</div>
+        #end
+
+
+
+        <div id="Click_six_dialog" class="guize">活动规则</div>
+    </div>
+
+</div>
+<div class="footer_info">
+    本次活动的最终解释权归币港湾所有
+</div>
+
+<!-- 5重礼弹窗 -->
+<div id="fiveDialog" class="dialog_notice alert_hide">
+    <div class="wrap_dialog">
+        <div class="dialog_title">
+            5重礼 活动规则
+            <div class="close">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/close.png" alt="" class="closeImg">
+            </div>
+        </div>
+        <ul class="rule_ul">
+            <li class="rule_li">
+                <span class="rule_list">1.</span>
+                活动时间：2017年3月18日-3月24日；
+            </li>
+            <li class="rule_li">
+                <span class="rule_list">2.</span>
+                活动期间，用户年化金额达1000元，即可参与活动；
+            </li>
+            <li class="rule_li">
+                <span class="rule_list">3.</span>
+                奖金开放条件：
+                <div class="rule_li_small">
+                    <ul class="rule_small_margin">
+                        <li class="rule_li">当日年化投资总额达250万元时，总奖金将为5000元，</li>
+                        <li class="rule_li">当日年化投资总额达350万元时，总奖金将为10000元，</li>
+                        <li class="rule_li">当日年化投资总额达500万元时，总奖金将为20000元，</li>
+                        <li class="rule_li">当日年化投资总额达600万元时，总奖金将为30000元；</li>
+                    </ul>
+                </div>
+            </li>
+            <li class="rule_li">
+                <span class="rule_list">4.</span>
+                用户当日奖励=当日总奖金*用户当日年化投资额/当日总年化投资额；
+            </li>
+            <li class="rule_li">
+                <span class="rule_list">5.</span>
+                当用户当日年化投资额为第1-3名时，可获得额外200元奖励金，<br/>
+                当用户当日年化投资额为第4-10名时，可获得额外50元奖励金，<br/>
+                若出现投资相同的情况下，按投资时间先后排名。投资时间以平台显示时间为准；
+            </li>
+            <li class="rule_li">
+                <span class="rule_list">6.</span>
+                奖励以奖励金形式发放，将于活动结束（3月24日）后的1-5个工作日内发放至用户的币港湾账户内，用户可进入账户【我的账户】-【我的奖励】内查看。
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 6重礼弹窗 -->
+<div id="sixDialog" class="dialog_notice alert_hide">
+    <div class="wrap_dialog">
+        <div class="dialog_title">
+            6重礼 活动规则
+            <div class="close">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/close.png" alt="" class="closeImg">
+            </div>
+        </div>
+        <ul class="rule_ul">
+            <li class="rule_li">
+                <span class="rule_list">1</span>
+                活动时间：2017年3月18日；
+            </li>
+            <li class="rule_li">
+                <span class="rule_list">2</span>
+                参与用户：活动当天在币港湾平台进行投资的用户；
+            </li>
+            <li class="rule_li">
+                <span class="rule_list">3</span>
+                本次活动，活动期间用户仅可参与一次；
+            </li>
+            <li class="rule_li">
+                <span class="rule_list">4</span>
+                用户获得的投资红包、奖励金将由系统发放至用户的币港湾账户内；
+            </li>
+            <li class="rule_li">
+                <span class="rule_list"></span>
+                投资红包查看，【我的账户】-【我的红包】；<br>奖励金查看，【我的账户】-【我的奖励】。
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 参与活动方式 -->
+<div id="participate"  class="dialog_notice auto_hin alert_hide">
+    <div class="wrap_dialog">
+        <div class="dialog_title">
+            参与活动方式
+            <div class="close">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/close.png" alt="" class="closeImg">
+            </div>
+        </div>
+        <div class="actity_main">
+            <div class="actity_info">
+                当您今日年化投资金额达1000元及以上时，您即可参与活动。
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 奖金开放条件 -->
+<div id="condition_dialog"  class="dialog_notice auto_hin alert_hide">
+    <div class="wrap_dialog">
+        <div class="dialog_title">
+            奖金开放条件
+            <div class="close">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/close.png" alt="" class="closeImg">
+            </div>
+        </div>
+        <div class="actity_main">
+            <div class="actity_info">当日年化投资总额达250万元时，总奖金将为5000元；</div>
+            <div class="actity_info">当日年化投资总额达350万元时，总奖金将为10000元；</div>
+            <div class="actity_info">当日年化投资总额达500万元时，总奖金将为20000元；</div>
+            <div class="actity_info">当日年化投资总额达600万元时，总奖金将为30000元。</div>
+        </div>
+    </div>
+</div>
+<!-- 瓜分到的奖金 -->
+<div id="bonus_dialog"  class="dialog_notice alert_hide">
+    <div class="wrap_dialog">
+        <div class="dialog_title">
+            瓜分到的奖金
+            <div class="close">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/close.png" alt="" class="closeImg">
+            </div>
+        </div>
+        <div class="equally_monery">
+            <ul class="equally_ul">
+                <li class="equally_li equally_title_li">
+                    <div class="equally_left">日期</div>
+                    <div class="equally_center">我的年化投资额</div>
+                    <div class="equally_right">瓜分到奖金</div>
+                </li>
+            </ul>
+            <ul class="equally_ul equally_container user_award_list">
+
+            </ul>
+        </div>
+    </div>
+</div>
+<li class="equally_li user_award_li user_award_li_content" style="display:none;">
+    <div class="equally_left"></div>
+    <div class="equally_center"></div>
+    <div class="equally_right"></div>
+</li>
+<!-- 获奖名单 -->
+<li class="list_li winner_list_li" style="display: none;">
+    <div class="list_li_left">
+        <span class="winner_list_main_img_span">
+            <img class="OrderNumber winner_list_main_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/thp01.png" alt="">
+        </span>
+        <span class="list_li_name winner_list_user_name">王**</span>
+    </div>
+    <div class="list_li_center winner_list_amount">1200000.00</div>
+    <div class="list_li_right winner_list_award">200.00</div>
+</li>
+<div class="hava_data winner_list_div" style="display: none;">
+    <div class="Winning_time winner_list_main_title">
+        2017年3月11日
+    </div>
+    <ul class="list_ul ">
+        <li class="list_li">
+            <div class="list_li_left">排名</div>
+            <div class="list_li_center">年化投资额（元）</div>
+            <div class="list_li_right">奖励（元）</div>
+        </li>
+    </ul>
+    <ul class="list_ul list_hin winner_list_ul">
+
+    </ul>
+</div>
+<style>
+    .rule_window6_content{
+        height: 800px;
+    }
+</style>
+<div id="View_Awarddialog"  class="dialog_notice alert_hide">
+    <div class="wrap_dialog rule_window6_content winner_list_dialog" style="background-color: #fff">
+        <div class="dialog_title">
+            获奖名单
+            <div class="close">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/close.png" alt="" class="closeImg">
+            </div>
+        </div>
+
+        <!-- 无数据时 -->
+        <!-- <div class="no_data ">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/nodata.png" alt="" class="nodataImg">
+        </div> -->
+    </div>
+</div>
+<div class="wrap_dialog no_data_winner_div" style="background-color: #fff;display: none;">
+    <!-- 无数据时 -->
+    <div class="no_data ">
+        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/third/nodata.png" alt="" class="nodataImg">
+    </div>
+</div>
+
+<!-- 提示框 -->
+<div class="dialog_notice smalldialog prompt_dialog alert_hide" >
+    <div class="wrap_dialog">
+        <div class="dialog_title prompt_close" >
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/close_gray.png" alt="" class="closegrayImg">
+        </div>
+        <div class="dialog_font prompt_content">亲~今天已经送过祝福了喔~</div>
+        <div class="dialog_btn prompt_btn">知道了</div>
+    </div>
+</div>
+</body>
+
+#Html("end")
+

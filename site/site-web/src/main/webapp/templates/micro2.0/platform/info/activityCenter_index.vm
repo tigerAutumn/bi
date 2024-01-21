@@ -1,0 +1,57 @@
+#Html("begin")
+#Head("begin","活动中心,币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("活动中心【币港湾官网】")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("/resources/micro2.0/styles/platform/activity_center.min")
+#WeChatShare()
+#Head("end")
+<body id="body">
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="page" name="page" value="1" />
+    <input type="hidden" id="totalCount" name="totalCount" value="$!count" />
+    <input type="hidden" id="userId" name="userId" value="$!userId">
+    <!-- 头部 -->
+    <div class="header">
+        #if($!activityEntrance == 'ACTIVITYHOMEPAGE')
+            <a class="header_arrow" href="$!env.getWebURL('')"></a>
+        #else
+            <a class="header_arrow" href="javascript:history.go(-1)"></a>
+        #end
+
+        <h1 class="heade_ft color_bg">活动中心</h1>
+    </div>
+    <div class="main">
+        <div class="main_info" id="main_info">
+            #foreach($!data in $!dataGrid)
+            <div class="main_content" onclick="clickActivityDetail($data.appActiveStatus,'$data.url', $!data.id)">
+                <div class="info_img">                    
+					#if("$!data.appActiveStatus" == "1")
+						<span class="info_label">
+							<i class="info_label_icon1"></i>进行中
+						</span>
+					#elseif("$!data.appActiveStatus" == "2")
+						<span class="info_label">
+							<i class="info_label_icon2"></i>预热中
+						</span>
+					#elseif("$!data.appActiveStatus" == "3")
+						<span class="info_label">
+                            <i class="info_label_icon3"></i>已结束
+						</span>
+						<!--活动结束黑色遮罩-->
+						<span class="info_stopbg"></span>
+					#end                    
+                    <!--活动图片-->
+                    <img class="info_img_content" src="$!env.get('gen.server.web')$!data.imgUrl" alt="">
+                </div>
+                <div class="info_title">$!data.title</div>
+                <div class="info_txt">$!data.summary</div>
+                <div class="info_time">活动时间：$!date.formatDateTime($!data.startTime,'yyyy-MM-dd')~$!date.formatDateTime($!data.endTime,'yyyy-MM-dd')</div>
+            </div>
+            #end
+        </div>
+        <div id="info_load" class="info_load"><span class="info_load_line info_load_right"></span>上滑加载更多已结束活动<span class="info_load_line info_load_left"></span></div>
+    </div>
+#LoadJS("/resources/micro2.0/scripts/platform/activityCenter_info")
+</body>
+#Html("end")

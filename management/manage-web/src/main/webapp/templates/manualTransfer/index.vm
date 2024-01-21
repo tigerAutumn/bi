@@ -1,0 +1,87 @@
+#LoadCSS("/resources/css/manual_transfer")
+#LoadJS("/resources/js/manual_transfer")
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH_GEN",$env.getWebURL(''))
+	
+		<div class="pageFormContent nowrap" layoutH="97">
+
+			
+			<dl>
+				<dt >
+					资金接收方：
+                </dt>
+				<dd >
+					    <select name="propertySymbol" id="propertySymbol" >
+    						<option value="YUN_DAI" >云贷</option>
+							<option value="7_DAI" >七贷</option>
+        				</select>
+                </dd>
+			</dl>
+			
+			<dl>
+				<dt >
+					金额：
+                </dt>
+				
+				<dd >
+					<input type="text" id="amount" name="amount"  onkeyup= "if( ! /^-?\d+\.?\d{0,2}$/.test(this.value)){ var s = this.value;this.value=s.substring(0,s.length-1);}"  class="required"  style="width:200px;"  maxlength="12" />
+                </dd>
+			</dl>
+			
+			<ul>
+				<li ><div class="buttonActive"><div class="buttonContent"><button type="button" id="send_sms_btn">转账确认</button></div></div></li>
+			</ul>
+
+            <br><br><br><br><br>
+            <div style="margin:45px;">
+				<font style="color: red; font-size:18px; font-weight:800">此功能用于给其他资产合作方划拨资金，不做系统记账。一般用于错账平账用。</font>
+			</div>
+
+		</div>
+
+	
+	
+<!--弹窗背景-->
+<div class="body_bg" style="display: none;"></div>
+	<!-- 预下单弹窗 -->
+  <div id="alert_listthree_three" class="alert_listthree" style="display: none;">
+    <h3 class="alert_listthree_h3"><span class="title">支付验证</span>
+        <a class="alert_listthree_btn" href="javascript:;" title="" onclick="">
+            <img src="https://www.bigangwan.com/resources/gen2.0/images/close_right.png">
+        </a>
+    </h3>
+    <div class="alert_listthree_txt">
+        <div class="alert_listthree_success">已向你的手机号<span>13777588488</span></div>
+        <div class="alert_listthree_success">发送验证码短信，请注意查收</div>
+        <div class="cpm_put">
+            <span class="put_left" style="border: 22px none;font-size: 16px;height: 44px;left: 90px;line-height: 43px;padding: 0 10px;position: absolute;">验证码</span>
+            <div class="put_wrp" style="border: 1px solid #bbbbbb;display: inline-block;height: 44px;left: 74px;position: relative;width: 250px;">
+                <input class="put_text" type="text" name="mobileCode" id="mobileCode" maxlength="4" placeholder="请输入短信验证码">
+                <span id="sendCode" class="retransmission btn_success" count="60" style="top: 5px">重发验证码</span>
+            </div>
+        </div>
+    </div>
+    <div class="alert_listthree_btnd">
+        <a class="alert_listthree_btnl balance_buy_btn" href="javascript:void(0);">确定</a>
+    </div>
+</div>
+	
+	
+</div>
+<script>
+
+	function navTabAjaxDone(json) {
+		 if (json.statusCode == "200") {
+		 	navTab.closeCurrentTab();
+			alertMsg.correct(json.message);
+			navTab.reload("$env.getWebURL('/manualTransfer/index.htm')");
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+	
+</script>

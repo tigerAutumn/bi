@@ -1,0 +1,62 @@
+<div class="fenye">
+    <div class="fenye_wrap">
+        <a href="javascript:void(0);" index="1" class="index main_cr_fenye_all">首页</a>
+        <a href="javascript:void(0);" index="$!req.pageNum" totalPages="$!req.totalPages" class="main_cr_fenye_al"></a>
+        #if($!req.totalPages > 1)
+            #set($pageNumLeft = $!req.pageNum - 2)
+            #set($pageNumRight = $!req.pageNum + 2)
+            #set($totalPagesLeft = $!req.totalPages - 1)
+            #if($!req.pageNum < 6)
+                #foreach($index in [1..$!req.totalPages])
+                    #if($!index == 6)
+                        <a href="javascript:void(0);" index="$index" class="index #if($index == $!req.pageNum) main_cr_fenye_achover #else main_cr_fenye_ac #end">$index</a>
+                        #if($!req.totalPages >= 8)
+                            <span class="points">...</span>
+                        #end
+                    #else
+                        <a href="javascript:void(0);" index="$index" class="index #if($index == $!req.pageNum) main_cr_fenye_achover #else main_cr_fenye_ac #end">$index</a>
+                    #end
+                #end
+                #foreach($index in [$totalPagesLeft..$!req.totalPages])
+                    #if($!req.totalPages >= 8)
+                        <a href="javascript:void(0);" index="$index" class="index #if($index == $!req.pageNum) main_cr_fenye_achover #else main_cr_fenye_ac #end">$index</a>
+                    #end
+                #end
+            #end
+            #if($!req.pageNum >= 6 && $pageNumRight < $totalPagesLeft)
+                <a href="javascript:void(0);" index="1" class="index #if(1 == $!req.pageNum) main_cr_fenye_achover #else main_cr_fenye_ac #end">1</a>
+                <a href="javascript:void(0);" index="2" class="index #if(2 == $!req.pageNum) main_cr_fenye_achover #else main_cr_fenye_ac #end">2</a>
+                <span class="points">...</span>
+                #foreach($index in [$pageNumLeft..$!pageNumRight])
+                    <a href="javascript:void(0);" index="$index" class="index #if($index == $!req.pageNum) main_cr_fenye_achover #else main_cr_fenye_ac #end">$index</a>
+                #end
+                #set($f = $pageNumRight + 1)
+                #if($f != $totalPagesLeft)
+                    <span class="points">...</span>
+                #end
+                #foreach($index in [$totalPagesLeft..$!req.totalPages])
+                    <a href="javascript:void(0);" index="$index" class="index #if($index == $!req.pageNum) main_cr_fenye_achover #else main_cr_fenye_ac #end">$index</a>
+                #end
+            #end
+            #if($!req.pageNum >= 6 && $pageNumRight >= $totalPagesLeft)
+                #set($totalPagesLeft = $req.totalPages - 5)
+                <a href="javascript:void(0);" index="1" class="index #if(1 == $!req.pageNum) main_cr_fenye_achover #else main_cr_fenye_ac #end">1</a>
+                <a href="javascript:void(0);" index="2" class="index #if(2 == $!req.pageNum) main_cr_fenye_achover #else main_cr_fenye_ac #end">2</a>
+                #if($totalPagesLeft > 3)
+                    <span class="points">...</span>
+                    #foreach($index in [$totalPagesLeft..$!req.totalPages])
+                        <a href="javascript:void(0);" index="$index" class="index #if($index == $!req.pageNum) main_cr_fenye_achover #else main_cr_fenye_ac #end">$index</a>
+                    #end
+                #else
+                    #foreach($index in [3..$!req.totalPages])
+                        <a href="javascript:void(0);" index="$index" class="index #if($index == $!req.pageNum) main_cr_fenye_achover #else main_cr_fenye_ac #end">$index</a>
+                    #end
+                #end
+            #end
+        #else
+            <a href="javascript:void(0);" index="1" class="index #if(1 == $!req.pageNum) main_cr_fenye_achover #else main_cr_fenye_ac #end">1</a>
+        #end
+        <a href="javascript:void(0);" index="$!req.pageNum" totalPages="$!req.totalPages" class="main_cr_fenye_ar"></a>
+        <a href="javascript:void(0);" index="$!req.totalPages" class="index main_cr_fenye_arr">尾页</a>
+    </div>
+</div>

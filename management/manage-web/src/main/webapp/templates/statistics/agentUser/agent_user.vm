@@ -1,0 +1,113 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	 <form rel="pagerForm"   id="myformq"  onsubmit="return navTabSearch(this);" action="$env.getWebURL('/statistics/agent/agentUser.htm?agentId=')$!req.agentId" method="post">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<div class="searchBar">
+		<ul class="searchContent">
+            <table class="searchContent">
+				<tr>
+					<td>
+						手机号：<input id="mobile" type="text" name="mobile" value="$!req.mobile" maxlength="11" />
+					</td>
+					<td>
+						姓名：<input id="userName" type="text" name="userName" value="$!req.userName" maxlength="10" />
+					</td>
+					<td >
+						注册日期：
+							<input name="sregistTime" maxdate="{%y}-%M-{%d}"   type="text"  id="sregistTime" class=" date textInput readonly" readonly="true"   value="$!req.sregistTime" />
+					</td >
+					<td>	到  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input name="eregistTime" maxdate="{%y}-%M-{%d}"  type="text" id="eregistTime" class=" date textInput readonly" readonly="true"   value="$!req.eregistTime" />
+					</td>
+					<td>
+						<select name="investFlag" class="combox">
+							<option value="" #if("$!req.investFlag"=="") selected  #end>是否已投资</option>
+        					<option value="true" #if("$!req.investFlag"=="true") selected  #end>已投资</option>
+        					<option value="false" #if("$!req.investFlag"=="false") selected  #end>未投资</option>
+        				</select>
+					</td>
+					<td><div class="buttonActive"><div class="buttonContent"><button onclick="funcq()" type="button">查询</button></div></div></td>
+				</tr>
+			</table>
+		</ul>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+			<tr>
+				<th width="2%">用户ID</th>
+				<th width="3%">用户手机号</th>
+				<th width="3%">姓名</th>
+				<th width="3%">注册时间</th>
+				<th width="3%">投资总笔数</th>
+				<th width="3%">投资总金额</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $agentUserList)
+			<tr target="sid_user" rel="1">
+				<td>$!grid.id</td>
+				<td>$!grid.mobile</td>
+				<td>$!grid.userName</td>
+				<td>$date.format($!grid.registerTime)</td>
+				<td>#if("$!grid.transItemCount"=="") 0 #else $!grid.transItemCount #end</td>
+				<td>#if("$!grid.transAmountCount"=="") 0 #else $!money.format($!grid.transAmountCount) #end</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+    	
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+	
+<script >
+
+function funcq(){
+	var beginTime = $("#sregistTime").val();
+	var overTime = $("#eregistTime").val();
+	
+	if(beginTime != "" && overTime == ""){
+		alert("请输入结束时间！");
+		return false;
+	}
+	
+	if(beginTime == "" && overTime != ""){
+		alert("请输入开始时间！");
+		return false;
+	}
+	
+	if(beginTime != "" && overTime != ""){
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	$("#myformq").attr("onsubmit","return navTabSearch(this);");
+	$("#myformq").submit();
+}
+</script>

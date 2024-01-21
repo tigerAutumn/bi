@@ -1,0 +1,87 @@
+#Html("begin")
+#Head("begin","币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("我的资产【币港湾官网】")
+#WeChatShare()
+#Head("end")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/assets/swiper-3.4.1.min")
+#LoadCSS("resources/micro2.0/styles/assets/payment_plant.min")
+<body id="body">
+    <div class="swiper-container">
+        <div class="swiper-wrapper listHeight">
+            <div class="swiper-slide" data-hash="slide1">
+                <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+                <input type="hidden" id="totalRecord" name ="totalRecord" value="$!totalRecord"/>
+                ##头部导航
+                <div class="header">
+                    <a class="header_arrow" href="javascript:history.go(-1)"></a>
+                    <h1 class="heade_ft oran_color">回款计划</h1>
+                </div>
+                #if($!resMsgPaymentPlant.paymentPastList)
+	                <div class="money_play_title">
+	                    <div class="money_play_title_box">
+							<div class="mp_dl_time">日期</div>
+							<div class="mp_dl">计划回款</div>
+							<div class="mp_dl">已回款</div>
+						</div>
+	                </div>
+	            #end    
+                ##有数据
+                <ul class="money_play_list1">
+					#foreach($payment in $!resMsgPaymentPlant.paymentPastList)
+						<li class="list_title" onclick ="details(this)" dataTime="$!payment.planDate">
+							<div class="list_mp_dl_time">$!payment.planDate</div>
+							<div class="list_mp_dl">$!money.format($!payment.repayScheduleTotalAmount)</div>
+							<div class="list_mp_dl list_mp_dl_color">$!money.format($!payment.planTotalRepaied)</div>
+						</li>
+					#end
+                </ul>
+                ##无数据
+                #if($!resMsgPaymentPlant.paymentPastList)
+                    <div class="money_play_txt">
+                        <div class="money_play_txt_position">暂无记录</div>
+                    </div>
+                #else
+                    <div class="money_play_txt" style="display: block;">
+                        <div class="money_play_txt_position">暂无记录</div>
+                    </div>
+                #end
+                ##一直显示
+                <div class="money_play_txt_title">当前仅统计分期类计划回款明细</div>
+            </div>
+            ##回款详情
+            <div class="swiper-slide" data-hash="slide1">
+                ##头部导航
+                <div class="header">
+                    <a class="header_arrow payment_plant_gobtn"></a>
+                    <h1 class="heade_ft oran_color">回款详情</h1>
+                </div>
+                ##日期选择器
+                <div class="money_play_years">
+                    <div type="text" class="date_picker"></div>
+                </div>
+                <div class="money_play_years_title">
+					<div class="money_play_title_box">
+                        <div class="mp_dl_years_time">日期</div>
+                        <div class="mp_dl_years">计划回款</div>
+                        <div class="mp_dl_years">已回款</div>
+                        <div class="mp_dl_years_time">状态</div>
+					</div>
+                </div>
+                ##有数据
+                <ul class="money_play_list2 money_play_list_detacls">
+    
+                </ul>
+                ##无数据
+				<div class="money_play_txt_date">
+					<div class="money_play_txt_position">暂无记录</div>   
+				</div> 
+            </div>
+        </div>
+    </div>
+#LoadJS("resources/micro2.0/scripts/common/jquery-1.11.1.min")
+#LoadJS("resources/micro2.0/scripts/common/swiper-3.4.1.jquery.min")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/assets/payment_plant")
+</body>#Html("end")

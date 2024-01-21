@@ -1,0 +1,123 @@
+<div class="pageContent">
+	<form method="post" id="detail_form" action="$env.getWebURL('app/version/addVersion.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<div class="pageFormContent" layoutH="56">
+			<p>
+				<label>app类型：</label>
+				<select name="appType" class="required combox">
+					<option value="ios" >ios</option>
+					<option value="android" >android</option>
+				</select>
+			</p>
+			<p>
+				<label>app版本：</label>
+				<input name="version" id="version" type="text"  size="30" maxlength="5" class="required textInput" alt="请输入app版本号" />
+			</p>
+			<p>
+				<label>针对之前版本：</label>
+				<select name="isMandatory" class="required combox">
+					<option value="2" >非强制更新</option>
+					<option value="1" >强制更新</option>
+				</select>
+			</p>
+			<div id="content">
+			<p style="height:95px;">
+				<label>用户更新日志：</label>
+				<textarea class="textInput valid" rows="5" cols="25" name="content1" id="content1" maxlength="200"></textarea><span>注意句子换行用英文";"分割</span>
+			</p>
+			<p>
+				<label>开发人员日志：</label>
+				<textarea class="textInput valid" rows="5" cols="25" name="content2" id="content2" maxlength="200"></textarea><span>注意句子换行用英文";"分割</span>
+			</p>
+			</div>
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submitForm()">保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	$("select[name=appType]").on('change',function(){
+		var val = this.value;
+		/*if(val == 'android') {
+			$("#content").html("");
+		}else{*/
+			var content = "<p style='height:95px;'> "
+					+ "<label>用户更新日志：</label>"
+					+ "<textarea class='textInput valid' rows='5' cols='25' name='content1' id='content1' maxlength='200'></textarea><span>注意句子换行用英文';'分割</span>"
+					+ "</p>"
+					+ "<p>"
+					+ "<label>开发人员日志：</label>"
+					+ "<textarea class='textInput valid' rows='5' cols='25' name='content2' id='content2' maxlength='200'></textarea><span>注意句子换行用英文';'分割</span>"
+					+ "</p>";
+				
+			$("#content").html(content);
+		/*}*/
+	})
+	
+	document.onkeydown = function () {
+        if (window.event && window.event.keyCode == 13) {
+            window.event.returnValue = false;
+        }
+    }
+	
+	
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "200") {
+			alertMsg.correct(json.message);
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('app/version/index.htm')");
+		} else {
+			alertMsg.error(json.message);
+		}
+	}
+	
+	
+	function submitForm() {
+		var isMandatory = $("select[name=isMandatory]").val(),
+			appType = $("select[name=appType]").val(),
+			version = $.trim($('#version').val());
+		
+		if(!checkVersion(version)) {
+			alertMsg.error("app版本格式不正确！！！");
+		}else {
+			if(appType == 'ios') {
+    			var content1 = $.trim($("#content1").val());
+    			if(content1 == null || content1 == '') {
+    				alertMsg.error("用户更新日志不能为空");
+    			}else {
+    				if(isMandatory == 1) {
+                        alertMsg.confirm("确定要强制更新低于当前版本的所有版本吗？", {
+                            okCall: function(){
+                                $("#detail_form").submit();
+                            },
+                            cancelCall : function() {}
+                        });
+            		}else {
+            			$("#detail_form").submit();
+            		}
+    			}
+    		}else {
+    			if(isMandatory == 1) {
+                    alertMsg.confirm("确定要强制更新低于当前版本的所有版本吗？", {
+                        okCall: function(){
+                            $("#detail_form").submit();
+                        },
+                        cancelCall : function() {}
+                    });
+        		}else {
+        			$("#detail_form").submit();
+        		}
+    		}
+		}
+	}
+	
+	function checkVersion(str){
+		var reg=/^([1-9]{1}.[0-9]{1})(.[0-9]|){1}$/g;
+		return reg.test(str);
+	}
+</script>

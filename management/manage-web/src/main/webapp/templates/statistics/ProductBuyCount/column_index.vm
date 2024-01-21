@@ -1,0 +1,76 @@
+#* 
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li class="line">line</li>
+			<li><a  rel="main"  target="navTab"  postType="string" href="$env.getWebURL('/statistics/ProductBuyCount/Product/index.htm')" class="edit"><span>折线图</span></a></li>
+			 <li class="line">line</li>
+			<li><a   rel="main"  target="navTab"  postType="string" href="$env.getWebURL('/statistics/ProductBuyCount/column/index.htm')" class="edit"><span>柱状图</span></a></li>
+			
+		</ul>
+	</div> *#
+    <div id="HighChart" style="min-width:700px;height:400px"></div>
+
+
+    <script type="text/javascript">
+        $(function () {
+    $('#HighChart').highcharts({
+        title: {
+            text: '理财产品购买次数统计',
+            x: -20 //center
+        },
+		 chart: { type: 'column' },
+		 subtitle: { text: 'Source: bigangwan.com', x: -20 },
+    plotOptions: {
+         column: { pointPadding: 0.2, borderWidth: 0 }
+        },
+      	xAxis: {
+        type: 'datetime',
+        maxZoom: 14 * 24 * 3600000, // fourteen days
+         labels: {  
+                        formatter: function () {  
+                            return Highcharts.dateFormat('%m.%d', this.value);  
+                        }  
+                    } 
+        },
+        yAxis: {
+            title: {
+                text: $!yAxistext
+            },
+			plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+    
+     
+        series: [{
+            name: $!name1,
+			pointInterval: 24 * 3600 * 1000,
+            pointStart: Date.UTC($!startTime),
+            data: [$!data1]
+        }, {
+			pointInterval: 24 * 3600 * 1000,
+            pointStart: Date.UTC($!startTime),
+            name: $!name2,
+            data: [$!data2]
+        }, {
+			pointInterval: 24 * 3600 * 1000,
+            pointStart: Date.UTC($!startTime),
+            name: $!name3,
+            data: [$!data3]
+        },{
+			pointInterval: 24 * 3600 * 1000,
+            pointStart: Date.UTC($!startTime),
+            name: $!name4,
+            data: [$!data4]
+        },{
+			pointInterval: 24 * 3600 * 1000,
+            pointStart: Date.UTC($!startTime),
+            name: $!name5,
+            data: [$!data5]
+        }]
+    });
+});
+    </script>

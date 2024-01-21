@@ -1,0 +1,617 @@
+<!-- 有回显的自动红包新增 -->
+<div class="pageContent" >
+	<form method="post" id="indexForm" action="$env.getWebURL('/autoPacket/save.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+		<input type="hidden" id="time" name="time" value="$!time"/>
+		<input type="hidden" id="lastApplyNo" name="lastApplyNo" value="$!autoPocket.applyNo"/>
+		<div class="pageFormContent" layoutH="100" style="width:700px;margin-left: 70px;">
+           <p style="width:600px;">
+				<label>红包名称：</label>
+				<input id="serialName1" name="serialName" type="text" size="30" maxlength="12" class="required" value="$!autoPocket.serialName"/>
+				<div style="float: left; margin-left: -247px;margin-top: 9px;">最多12个字，允许中英文和数字</div>
+			</p>
+			
+			<p style="width:600px;">
+				<label>红包策略：</label>
+				#if(!$autoPocket.policyType)
+				<input id="policyType" name="policyType" autocomplete="off" type="text" size="30" maxlength="10" class="required" value="$!policyType"/>
+				#else
+				<input id="policyType" name="policyType" autocomplete="off" type="text" size="30" maxlength="10" class="required" value="$!autoPocket.policyType"/>
+				#end
+				<div id="text_notice" style="float: left; margin-left: -247px;margin-top: 9px;">最多10个字，允许中英文和数字</div>
+			</p>
+		
+			<p>
+				<label>选择预算来源：</label>
+				<select name="applyNo" id="applyNo" >
+					<option value="" >请选择</option>
+					#foreach($packet in $!packetList)
+						#if($!packet.applyNo == $!autoPocket.applyNo)
+							<option value="$!packet.applyNo" selected="selected">$!packet.rpName</option>
+						#else
+							<option value="$!packet.applyNo" >$!packet.rpName</option>
+						#end
+					#end
+				</select>
+			</p>
+			<p>
+				<label>选择红包类型：</label>
+				<select name="useCondition" id="useCondition" >
+					<option value="FULL_SUBTRACT" > 满减包</option>
+				</select>
+				<input type="hidden" id="canPutAmount" name="canPutAmount" value=""/>
+			</p>
+			<p style="width:600px;">
+				<label>红包使用条件：</label>
+				单次购买满&nbsp;&nbsp;<input id="full" onkeyup="value=value.replace(/[^\d]/g,'')" name="full" type="text" size="15" maxlength="8" class="required number" value="$!number.format("0", $!autoPocket.full)" style="float: none;"/>&nbsp;&nbsp;元
+				<div style="float: left; margin-left: -247px;margin-top: 9px;">如果超过10万，则后四位为0</div>
+			</p>
+			<p style="width:600px;">
+				<label>红包金额：</label>
+				<input id="subtract" name="subtract" onkeyup="value=value.replace(/\.\d{2,}$/,value.substr(value.indexOf('.'),3))" type="text" size="10" maxlength="5" class="required number" value="" placeholder="" style="float: none;"/>&nbsp;&nbsp;元
+				<div style="float: left; margin-left: -247px;margin-top: 9px;">5位数字，可以有小数</div>
+				<input type="hidden" id="subtractShow" name="subtractShow" value="$!autoPocket.subtract"/>
+			</p>
+			<p>
+				<label>发放数量：</label>
+				<input id="total" name="total" onkeyup="value=value.replace(/[^\d]/g,'')" type="text" size="15" maxlength="9" class="required number" value="$!autoPocket.total" placeholder=""/>&nbsp;&nbsp;个
+			</p>
+			<p>
+				当前红包预算余额：<em id="canUseAmount">0</em>元，本次发放金额：<em id="totalAcount">0</em>元
+			</p>
+			
+			<p>
+				<a href="$env.getWebURL('/autoPacket/agent.htm')" class="button" target="dialog" mask="true" rel="createBack" height="500" width="450"><span>选择渠道</span></a>
+				<div id="showAgentChoose" style="float: left; margin-left: -247px;margin-top: 9px;">已选择#if($!autoPocket.agentids == "-1")
+						#set($agentSize = 1+$!allAgents.size()) $agentSize #else $!agentList.size() #end 个渠道</div>
+				#if($!autoPocket.agentids == "-1")
+					<input type="hidden" id="agentIds" name="agentIds" value="-1,0,#foreach($aa in $!allAgents)$aa.id,#end"/>
+				#else
+					<input type="hidden" id="agentIds" name="agentIds" value="$!autoPocket.agentids"/>
+				#end
+			</p>
+			<p>
+				<label>限用标的：</label>
+				<input type="checkbox" value="" name="term" id="term" onclick="chooseAll(this)" #if($!termList.size() == 4)checked#end/>全选
+				<input type="hidden" id="termLimit" name="termLimit" value="$!autoPocket.termLimit"/>
+			</p>
+			<p>##style="width:600px;"
+				<label>&nbsp;</label>
+				<input type="checkbox" value="1" name="term" id="term1" onclick="chooseOne(this)" />30天
+				<input type="checkbox" value="3" name="term" id="term2" onclick="chooseOne(this)" />90天
+				<input type="checkbox" value="6" name="term" id="term3" onclick="chooseOne(this)" />180天
+				##<input type="checkbox" value="9" name="term" id="term5" onclick="chooseOne(this)" />270天
+				<input type="checkbox" value="12" name="term" id="term4" onclick="chooseOne(this)" />365天
+			</p>
+			<p style="height:70px;width:650px">
+				<label>红包备注：</label>
+				<textarea class="textInput valid" rows="3" cols="35" name="note" maxlength="200" style="float: left;">$!autoPocket.note</textarea>
+			</p>
+			<p>
+				<label>设置触发条件：</label>
+				<select name="triggerType" id="triggerType">
+					<option value="NEW_USER" #if($!autoPocket.triggertype == 'NEW_USER') selected="selected" #end >新用户注册</option>
+					<option value="318_GAME_OLD_USER" #if($!autoPocket.triggertype == '318_GAME_OLD_USER') selected="selected" #end >318摇一摇老用户</option>
+					<option value="BUY_FULL" #if($!autoPocket.triggertype == 'BUY_FULL') selected="selected" #end >购买满一定额度</option>
+					<option value="INVITE_FULL" #if($!autoPocket.triggertype == 'INVITE_FULL') selected="selected" #end >邀请满一定人数</option>
+					<option value="WECHAT_MINI_PROGRAM" #if($!autoPocket.triggertype == 'WECHAT_MINI_PROGRAM') selected="selected" #end >微信小程序</option>					
+					<option value="EXCHANGE_4MALL" #if($!autoPocket.triggertype == 'EXCHANGE_4MALL') selected="selected" #end >积分商城兑换</option>
+					<option value="BIRTHDAY_BENEFIT" #if($!autoPocket.triggertype == 'BIRTHDAY_BENEFIT') selected="selected" #end>生日福利</option>
+				</select>
+				<input type="hidden" id="triggertypeShow" name="triggertypeShow" value="$!autoPocket.triggertype"/>
+				<input type="hidden" id="triggeramountstartShow" name="triggeramountstartShow" value="$!autoPocket.triggeramountstart"/>
+				<input type="hidden" id="triggeramountendShow" name="triggeramountendShow" value="$!autoPocket.triggeramountend"/>
+				<input type="hidden" id="triggerinvitenumShow" name="triggerinvitenumShow" value="$!autoPocket.triggerinvitenum"/>
+			</p>
+			<div id="triggerShow">
+			</div>
+			<p style="width:650px">
+				<label id="timeText">触发时间：</label>
+				<input name="distributeTimeStart" type="text" size="20" id="distributeTimeStart" class=" date dateInitStart textInput readonly" datefmt="yyyy-MM-dd HH:mm:ss" readonly="true" value="$!date.format($!autoPocket.distributetimestart)" />
+				<label style="width:15px">至</label>
+				<input name="distributeTimeEnd" type="text" size="20" id="distributeTimeEnd" class=" date dateInitEnd textInput readonly" datefmt="yyyy-MM-dd HH:mm:ss" readonly="true" value="$!date.format($!autoPocket.distributetimeend)" />
+			</p>
+			<p>
+				<label>有效期：</label>
+				<select name="validTermType" id="validTermType">
+					<option value="FIXED" #if($!autoPocket.validtermtype == 'FIXED')selected="selected" #end>固定日期</option>
+					<option value="AFTER_RECEIVE" #if($!autoPocket.validtermtype == 'AFTER_RECEIVE')selected="selected" #end>发放后生效</option>
+				</select>
+			</p>
+			<div id="useDayShow" #if($!autoPocket.validtermtype == 'FIXED')style="display:none;"#end>
+				<p style="width:450px"><label>&nbsp;</label>
+					<input id="availableDays" name="availableDays" type="text" size="10" maxlength="4" onkeyup="value=value.replace(/[^\d]/g,'')" class="number" value="$!autoPocket.availabledays" style="float: none;"/> &nbsp;&nbsp;天
+				</p>
+            </div>
+			<div id="useTimeShow" #if($!autoPocket.validtermtype == 'AFTER_RECEIVE')style="display:none;" #end>
+    			<p style="width:650px">
+    				<label>&nbsp;</label>
+    				<input name="useTimeStart" type="text" size="20" id="useTimeStart" class=" date textInput readonly" datefmt="yyyy-MM-dd 00:00:00" readonly="true" value="$!date.format($!autoPocket.useTimeStart)" />
+    				<label style="width:15px">至</label>
+    				<input name="useTimeEnd" type="text" size="20" id="useTimeEnd" class=" date textInput readonly" datefmt="yyyy-MM-dd 23:59:59" readonly="true" value="$!date.format($!autoPocket.useTimeEnd)" />
+    			</p>
+            </div>
+			
+			<p>
+				<label>&nbsp;</label>
+				<input type="checkbox" value="WECHAT" name="notify"/>微信
+				<input type="checkbox" value="SMS" name="notify"/>短信
+				<input type="checkbox" value="APP" name="notify"/>app通知
+				<input type="hidden" id="notifyChannel" name="notifyChannel" value="$!autoPocket.notifyChannel"/>
+            </p>
+            <p></p><p></p><p></p><p></p>
+		</div>
+		<div style="margin-left:350px;">
+			<p>
+        		<div class="buttonActive" style="margin-right: 20px;"><div class="buttonContent"><button type="button" onclick="submit_from()" style="width:50px;">保存</button></div></div>
+        		<div class="button" ><div class="buttonContent"><button type="button" class="close" style="width:50px;">取消</button></div></div>
+			</p>
+		</div>
+	</form>
+</div>
+
+<script>
+function navTabAjaxDone(json) {
+		 if (json.statusCode == "200") {
+		 	navTab.closeCurrentTab();
+			alertMsg.correct(json.message);
+			navTab.reload("$env.getWebURL('/redPacket/redPacketGrantManagementIndex.htm')");
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+function chooseAll(e){
+	if ( e.checked == true){
+		$("[name='term']").attr("checked",'true');//全选
+	}else{
+		$("[name='term']").removeAttr("checked");//取消全选 
+	}
+}
+function choosePolicy(obj){
+	var policy = $.trim($(obj).text());
+	$("#policyType").val(policy);
+	$("#show_all_policy_div").hide();
+}
+$(function(){
+	//红包信息初始化
+	//红包金额初始化
+	var subtractShow = $("#subtractShow").val();
+	var subtractShowInt = parseInt(subtractShow);
+	var subtractShowD = parseFloat(subtractShow);
+	if(subtractShowD - subtractShowInt == 0){
+		$("#subtract").val(subtractShowInt);
+	}else{
+		$("#subtract").val(subtractShow);
+	}
+	
+	
+	//根据预算来源选择预算剩余金额
+			var val = $("#lastApplyNo").val();
+			if(val !=null &&  val !=''){
+    			var url = $("#APP_ROOT_PATH").val() + "/autoPacket/getByApplyNo.htm";
+        		jQuery.ajax({
+        			type : 'post',
+        			url : url,
+        			data : {applyNo : val},
+        			async : false,
+        			success : function(data) {
+        				$('#canUseAmount').html(data.canPutAmount);
+						$('#canPutAmount').val(data.canPutAmount);
+        			}
+        		});
+			}else{
+				$('#canUseAmount').html('');
+			}
+		//根据红包个数和金额，计算该次红包金额	
+		var total = $.trim($('#total').val());
+		var	subtract = $.trim($('#subtract').val());
+		if(total == null || total == '') {
+			total = 0;
+		}	
+		if(subtract == null || subtract == '') {
+			subtract = 0;
+		}
+		var totalAcount = parseInt(total) * parseFloat(subtract);
+		$("#totalAcount").html(totalAcount.toFixed(2));
+		
+		//标的期限初始化
+		var terms = $("#termLimit").val();
+		var termArr = terms.split(",");
+		for(var i=0; i<termArr.length; i++) {
+			if(termArr[i] != null && termArr[i] != '') {
+				$("input[name=term]:checkbox").each(function(){
+					if($(this).attr('value') == termArr[i]) {
+						$(this).attr('checked','checked');
+        			}
+        		})
+			}
+		}
+
+		//触发条件初始化
+		var triggerVal = $("#triggertypeShow").val();
+			var showHtml = '';
+			var timeText = '';
+			if(triggerVal == '318_GAME_OLD_USER'){
+				showHtml = '';
+				timeText = '触发时间：';
+			} else if(triggerVal =='NEW_USER'){
+				showHtml = '';
+				timeText = '触发时间：';
+			}else if(triggerVal == 'BUY_FULL'){
+				showHtml = showHtml + '<p style="width:450px"><label>触发额度：</label>'
+					+ '<input id="triggerAmountStart" name="triggerAmountStart" '
+					+ 'onkeyup="value=value.replace(/\.\d{2,}$/,value.substr(value.indexOf(\'.\'),3))" '
+					+ 'type="text" size="10" maxlength="8" class="required number" value="'+$("#triggeramountstartShow").val()+'" style="float: none;"/>'
+					+ '&nbsp;&nbsp;元&nbsp;&nbsp;至&nbsp;&nbsp;'
+					+ '<input id="triggerAmountEnd" name="triggerAmountEnd" '
+					+ 'onkeyup="value=value.replace(/\.\d{2,}$/,value.substr(value.indexOf(\'.\'),3))" '
+					+ 'type="text" size="10" maxlength="8" class="required number" value="'+$("#triggeramountendShow").val()+'" style="float: none;"/>&nbsp;&nbsp;元'
+					+ '</p>';
+				timeText = '触发时间：';
+			}else if(triggerVal == 'INVITE_FULL'){
+				showHtml = showHtml + '<p style="width:450px"><label>邀请人数：</label>'
+					+ '<input id="triggerInviteNum" name="triggerInviteNum" onkeyup="value=value.replace(/[^\\d]/g,\'\')"  type="text" size="10" maxlength="4" class="required number" value="'+$("#triggerinvitenumShow").val()+'" style="float: none;"/>&nbsp;&nbsp;人'
+					+ '</p>';
+				timeText = '触发时间：';
+			}else if(triggerVal == 'EXCHANGE_4MALL' || triggerVal == 'BIRTHDAY_BENEFIT' || triggerVal == 'WECHAT_MINI_PROGRAM'){
+				showHtml = '';
+				timeText = '触发时间：';
+			}
+			$('#triggerShow').html(showHtml);
+			$('#timeText').html(timeText);
+			
+		//通知渠道初始化
+		var notifys = $("#notifyChannel").val();
+		var notifyArr = notifys.split(",");
+		for(var i=0; i<notifyArr.length; i++) {
+			if(notifyArr[i] != null && notifyArr[i] != '') {
+				$("input[name=notify]:checkbox").each(function(){
+					if($(this).attr('value') == notifyArr[i]) {
+						$(this).attr('checked','checked');
+        			}
+        		})
+			}
+		}
+		
+		
+	$("#total").on('change',function(){
+		var total = $.trim($('#total').val());
+		var	subtract = $.trim($('#subtract').val());
+		if(total == null || total == '') {
+			total = 0;
+		}	
+		if(subtract == null || subtract == '') {
+			subtract = 0;
+		}
+		var totalAcount = parseInt(total) * parseFloat(subtract);
+		$("#totalAcount").html(totalAcount.toFixed(2));
+	});
+	
+	$("#subtract").on('change',function(){
+		var total = $.trim($('#total').val());
+		var	subtract = $.trim($('#subtract').val());
+		if(total == null || total == '') {
+			total = 0;
+		}	
+		if(subtract == null || subtract == '') {
+			subtract = 0;
+		}
+		var totalAcount = parseInt(total) * parseFloat(subtract);
+		$("#totalAcount").html(totalAcount.toFixed(2));
+	});
+	
+	
+	
+	$("#policyType").on('keyup',function(){
+		var policyType = $("#policyType").val();
+		if(policyType != null && policyType !=''){
+			var url = $("#APP_ROOT_PATH").val() + "/autoPacket/getCheckByPolicy.htm";
+        	jQuery.ajax({
+        		type : 'post',
+        		url : url,
+        		data : {policyType : policyType},
+        		async : false,
+        		success : function(data) {
+					// debugger;
+    				if(data.checkPolicy.length>0){
+						if($("#show_all_policy_div")) {
+							$("#show_all_policy_div").remove();
+						}
+						var showHtml ='<div id="show_all_policy_div" style="border: 1px solid #aaa;line-height: 25px;position: absolute;top: 25px;left: 130px;cursor:pointer;width: 200px;background-color: #fff;padding: 6px;z-index: 100;">';
+						for(var i=0;i<data.checkPolicy.length;i++){
+							showHtml = showHtml + '<div onclick="choosePolicy(this)" style="font-size: 14px;padding:5px;">'+data.checkPolicy[i].policyType+'</div>';
+    					}
+						showHtml = showHtml + '</div>';
+            			$('#policyType').after(showHtml);
+    				} else {
+						$("#show_all_policy_div").remove();
+					}
+        		}
+        	});
+		}else{
+			$('#policyName').html('');
+		}
+		
+	});
+});
+
+function chooseOne(e){
+	if ( e.checked != true){
+        $("[id='term']").removeAttr("checked");
+	}else{
+		var num = parseInt(4);
+		var sum = parseInt(0);
+		for(var i=parseInt(1);i<=num;i++){
+			if($("#term"+i).attr("checked") != undefined){
+				sum = sum+parseInt(1);
+			}
+		}
+		if(parseInt(sum) == parseInt(num)){
+			$("[id='term']").attr("checked",'true');
+		}
+	}
+}
+
+$(function(){
+
+		$("select[name=applyNo]").on('change',function(){
+    		var val = this.value;
+			if(val !=null &&  val !=''){
+    			var url = $("#APP_ROOT_PATH").val() + "/autoPacket/getByApplyNo.htm";
+        		jQuery.ajax({
+        			type : 'post',
+        			url : url,
+        			data : {applyNo : val},
+        			async : false,
+        			success : function(data) {
+        				$('#canUseAmount').html(data.canPutAmount);
+						$('#canPutAmount').val(data.canPutAmount);
+        			}
+        		});
+			}else{
+				$('#canUseAmount').html('');
+			}
+			
+		});
+		
+		$("select[name=triggerType]").on('change',function(){
+			var triggerVal = this.value;
+			var showHtml = '';
+			var timeText = '';
+			if(triggerVal == '318_GAME_OLD_USER'){
+				showHtml = '';
+				timeText = '触发时间：';
+			} else if(triggerVal =='NEW_USER'){
+				showHtml = '';
+				timeText = '触发时间：';
+			}else if(triggerVal == 'BUY_FULL'){
+				showHtml = showHtml + '<p style="width:450px"><label>触发额度：</label>'
+					+ '<input id="triggerAmountStart" name="triggerAmountStart" '
+					+ 'onkeyup="value=value.replace(/\.\d{2,}$/,value.substr(value.indexOf(\'.\'),3))" '
+					+ 'type="text" size="10" maxlength="8" class="required number" value="" style="float: none;"/>'
+					+ '&nbsp;&nbsp;元&nbsp;&nbsp;至&nbsp;&nbsp;'
+					+ '<input id="triggerAmountEnd" name="triggerAmountEnd" '
+					+ 'onkeyup="value=value.replace(/\.\d{2,}$/,value.substr(value.indexOf(\'.\'),3))" '
+					+ 'type="text" size="10" maxlength="8" class="required number" value="" style="float: none;"/>&nbsp;&nbsp;元'
+					+ '</p>';
+				timeText = '触发时间：';
+			}else if(triggerVal == 'INVITE_FULL'){
+				showHtml = showHtml + '<p style="width:450px"><label>邀请人数：</label>'
+					+ '<input id="triggerInviteNum" name="triggerInviteNum" onkeyup="value=value.replace(/[^\\d]/g,\'\')"  type="text" size="10" maxlength="4" class="required number" value="" style="float: none;"/>&nbsp;&nbsp;人'
+					+ '</p>';
+				timeText = '触发时间：';
+			}else if(triggerVal == 'EXCHANGE_4MALL' || triggerVal == 'BIRTHDAY_BENEFIT' || triggerVal == 'WECHAT_MINI_PROGRAM'){
+				showHtml = '';
+				timeText = '触发时间：';
+			}
+			$('#triggerShow').html(showHtml);
+			$('#timeText').html(timeText);
+		});
+		
+		$("select[name=validTermType]").on('change',function(){
+			var timeVal = this.value;
+			if(timeVal == 'FIXED'){
+				document.getElementById("useTimeShow").style.display="";
+				document.getElementById("useDayShow").style.display="none";
+			}else if(timeVal == 'AFTER_RECEIVE'){
+				document.getElementById("useTimeShow").style.display="none";
+				document.getElementById("useDayShow").style.display="";
+			}
+		});
+		
+		$("select[name=policyName]").on('change',function(){
+			var policyValue = this.value;
+			$("#policyType").val(policyValue);
+		});
+	});
+	
+	function submit_from(){
+		var applyNo = $("#applyNo").val();
+		var useCondition = $("#useCondition").val();
+		var full = $("#full").val();
+		var subtract = $("#subtract").val();
+		var total = $("#total").val();
+		var serialName = $("#serialName1").val();
+		var triggerType = $("#triggerType").val();
+		var validTermType = $("#validTermType").val();
+		var policyType = $("#policyType").val();
+		
+		if(serialName == ''){
+			alertMsg.warn("红包名称不能为空！");
+			return false;
+		}
+		
+		if(policyType == ''){
+			alertMsg.warn("红包策略不能为空！");
+			return false;
+		}
+		
+		if(applyNo == ''){
+			alertMsg.warn("请选择预算来源！");
+			return false;
+		}
+		if(useCondition == ''){
+			alertMsg.warn("请选择红包类型！");
+			return false;
+		}
+		if(full == ''){
+			alertMsg.warn("红包使用条件不能为空！");
+			return false;
+		}
+		if(full != ''){
+			full = full;
+			if(parseInt(full) <= parseInt(0)){
+				alertMsg.warn("红包使用条件金额必须大于0！");
+					return false;
+			}
+			if(parseInt(full) > parseInt(100000)){
+				var t = parseInt(full);
+				t = parseInt(full) % parseInt(10000);
+				if(parseInt(t)>parseInt(0)){
+					alertMsg.warn("红包使用条件金额大于10万时不能存在万位以下！");
+					return false;
+				}
+			}
+		}
+		if(subtract == ''){
+			alertMsg.warn("红包金额不能为空！");
+			return false;
+		}
+		if(parseFloat(subtract) <= parseInt(0)){
+			alertMsg.warn("红包金额必须大于0！");
+			return false;
+		}
+		if(parseFloat(subtract) > parseInt(full)){
+			alertMsg.warn("红包金额不能大于使用条件金额！");
+			return false;
+		}
+		
+		if(total == ''){
+			alertMsg.warn("发放数量不能为空！");
+			return false;
+		}
+		
+		if(parseInt(total) <= parseInt(0)){
+			alertMsg.warn("发放数量必须大于0！");
+			return false;
+		}
+		if(parseInt(total) > parseInt(100000000)){
+			alertMsg.warn("发放数量不能大于1亿！");
+			return false;
+		}
+		
+		var agentIds = $("#agentIds").val();
+		if(agentIds == ''){
+			alertMsg.warn("请选择渠道！");
+			return false;
+		}
+		
+		var term = '';
+		$("input[name=term]:checkbox").each(function(){
+			if($(this).attr("checked")) {
+				if($(this).attr("id") != "term"){
+					term += $(this).attr('value') + ",";
+				}
+			}
+		});
+		if(term != ''){
+			$("#termLimit").val(term);
+		}
+		
+		var termLimit = $("#termLimit").val();
+		if(termLimit == ''){
+			alertMsg.warn("请选择限用标的！");
+    		return false;
+		}
+		
+		var canPutAmount = $("#canPutAmount").val();
+		if(parseFloat(subtract*total) > parseFloat(canPutAmount)){
+			alertMsg.warn("发放总金额不能超过预算金额！");
+			return false;
+		}
+		
+		var distributeTimeStart = $("#distributeTimeStart").val();
+		var distributeTimeEnd = $("#distributeTimeEnd").val();
+		var time  = $("#time").val()+ " 00:00:00";
+		if(distributeTimeStart == '' || distributeTimeEnd == ''){
+			alertMsg.warn("触发时间不能为空！");
+			return false;
+		}
+		
+		if(distributeTimeStart != '' && distributeTimeEnd != ''){
+			if(distributeTimeStart < time){
+				alertMsg.warn("触发时间不能早于今天！");
+    			return false;
+			}
+			if(distributeTimeStart > distributeTimeEnd){
+    			alertMsg.warn("触发时间填写不正确！");
+    			return false;
+			}
+		}
+		
+		if(triggerType =='BUY_FULL'){
+			var triggerAmountStart = $("#triggerAmountStart").val();
+			var triggerAmountEnd = $("#triggerAmountEnd").val();
+			if(triggerAmountStart == '' || triggerAmountEnd == ''){
+				alertMsg.warn("触发额度不能为空！");
+				return false;
+			}
+			if(triggerAmountStart != '' && triggerAmountEnd != ''){
+				if(parseFloat(triggerAmountStart) > parseFloat(triggerAmountEnd)){
+    				alertMsg.warn("触发额度填写不正确！");
+    				return false;
+				}
+			}
+		}else if(triggerType =='INVITE_FULL'){
+			var triggerInviteNum = $("#triggerInviteNum").val();
+			if(triggerInviteNum == ''){
+				alertMsg.warn("邀请人数不能为空！");
+				return false;
+			}
+		}
+		if(validTermType == 'FIXED'){
+			var useTimeStart = $("#useTimeStart").val();
+			var useTimeEnd = $("#useTimeEnd").val();
+			if(useTimeEnd == '' || useTimeEnd == ''){
+				alertMsg.warn("有效期时间不能为空！");
+				return false;
+			}
+			if(useTimeStart != '' && useTimeEnd != ''){
+				if(useTimeStart > useTimeEnd){
+    				alertMsg.warn("有效期时间填写不正确！");
+    				return false;
+				}
+			}
+			if(useTimeEnd < distributeTimeEnd){
+				alertMsg.warn("有效期结束时间不能早于触发结束时间！");
+    				return false;
+			}
+			
+		}else if(validTermType == 'AFTER_RECEIVE'){
+			var availableDays = $("#availableDays").val();
+			if(availableDays == ''){
+				alertMsg.warn("有效期时间不能为空！");
+				return false;
+			}
+		}
+		var notify = '';
+		$("input[name=notify]:checkbox").each(function(){
+			if($(this).attr("checked")) {
+				notify += $(this).attr('value') + ",";
+			}
+		});
+		if(notify != ''){
+			$("#notifyChannel").val(notify);
+		}
+		
+		
+		
+		$("#indexForm").submit();
+	}
+
+  
+</script>

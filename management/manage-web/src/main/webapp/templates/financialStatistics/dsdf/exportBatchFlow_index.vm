@@ -1,0 +1,33 @@
+<div class="pageContent">
+    #Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+    <form id="financeDsdfForm" method="post" action="$env.getWebURL('/financial/dsdf/exportBatchFlowData.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+        <div class="pageFormContent nowrap" layoutH="0" >
+            <p style="padding-left:15px;float:none;">
+                创建日期：
+            </p>
+            <label style="padding-left:15px;margin-bottom:15px;float:none;display:block;">
+                <input name="checkDate" type="text" id="checkDate" class=" date textInput readonly" readonly="true" style="width:165px; height:26px;float:none;" value="$!checkDate" dateFmt="yyyy-MM-dd" maxdate="{%y}-%M-{%d}"/>
+            </label>
+            <label style="padding-left:15px;float:none;display:block;">
+                <button  onclick="expBatch()" type="button" style="float:none;">导出</button>
+            </label>
+        </div>
+    </form>
+</div>
+#LoadJS("/resources/js/global_validate")
+<script>
+    function expBatch(){
+        var checkDate = $("#checkDate").val();
+        if(checkDate == null || checkDate == "") {
+            alertMsg.warn("创建日期不能为空！");
+            return;
+        }
+
+        var url = $("#APP_ROOT_PATH").val() + "/financial/dsdf/exportBatchFlowData.htm?checkDate="+checkDate;
+
+        $("#financeDsdfForm").attr("action",url);
+        $("#financeDsdfForm").attr("onsubmit","");
+        $("#financeDsdfForm").submit();
+    }
+</script>
+

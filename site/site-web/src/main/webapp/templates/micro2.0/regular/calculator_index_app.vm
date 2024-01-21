@@ -1,0 +1,44 @@
+#Html("begin")
+#Head("begin")
+#Title("计算器")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/regular/calculator.min")
+#WeChatShare()
+#Head("end")
+<body>
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" id="baseRate" name="baseRate" value="$!baseRate" />
+	<input type="hidden" id="termMonth" name="termMonth" value="$!termMonth" />
+	<input type="hidden" id="in_amount" name="amount" value="" />
+	<div class="Calculator">
+		<span class="Calculator_red">加入金额</span>
+		<input class="Calculator_money" name="amount" id="amount" maxlength="9" type="tel" onfocus="this.placeholder = ''" onblur=" this.placeholder='输入金额' "  value="" placeholder="输入金额">
+		<span class="arrow">元</span>
+	</div>
+	<div class="main_content_two">
+		<div class="main_name_two">
+			委托意向
+			<div id="ipt01" class="right_font">$!termMonth个月</div>
+		</div>
+		<div class="main_name_two">
+			每月回款本息
+			<div id="expected_return_month" class="right_font">0.00元</div>
+		</div>
+		<div id="clickUnit" class="main_name_two">
+			产品预期收益
+			<div id="expected_return" class="right_font font_color">0.00元</div>
+		</div>
+		<div class="main_name_two border_color ">
+			<a href="javascript:void(0)" onclick="planList()" class="call_btn">
+				回款计划表
+				<img src="$!{env.getWebURL('')}/resources/micro2.0/images/btn_bg.png" class="main_img" />
+			</a>
+		</div>
+	</div>
+	<input type="button" id="calThis" name="" value="开始计算" class="main_btn" />
+	<div class="bottom_info">收益仅供参考，实际收益请以实际匹配为准！</div>
+#LoadJS("resources/micro2.0/scripts/regular/calculator_app")
+#LoadJS("resources/micro2.0/scripts/common/common")
+</body>
+#Html("end")

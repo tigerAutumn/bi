@@ -1,0 +1,72 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('userMainOperation/index.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!req.pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+		
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						手机号：<input id="mobile" type="text" name="mobile" maxlength="11" value="$!req.mobile"/>
+					</td>
+					<td>
+						IP：<input id="srcIp" type="text" name="srcIp" maxlength="50" value="$!req.srcIp" />
+					</td>
+					<td>
+						<button   type="submit">查询</button>
+					</td>
+				</tr>
+			</table>
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="90">
+		<thead>
+			<tr>
+				<th width="10%">手机号</th>
+				<th width="10%">IP</th>
+				<th width="35%">系统环境</th>
+				<th width="15%">访问地址</th>
+				<th width="15%">来源URL</th>
+				<th width="15%">创建时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($operation in $userMainOperationList)
+					
+			<tr target="sid_user" rel="1">
+				<td>$!operation.userMobile</td>	
+				<td>$!operation.srcIp</td>	
+				<td>$!operation.srcAgent</td>	
+				<td>$!operation.url</td>	
+				<td>$!operation.referer</td>	
+				<td>$!date.format($!operation.createTime)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+
+	</div>
+</div>

@@ -1,0 +1,61 @@
+## 品听服务费率调整为1%
+1. 需求描述
+	品听服务费结算逻辑：2018年5月1日起(购买日期) 品听服务费结算比例调整为1%
+	
+2. 需求背景
+	财务需求
+
+3. 业务逻辑
+### 入口（/financial/ptDepServiceFeeIndex  bsuserMapper的queryPtDepServiceFeeList）
+### 原型地址: 项目需求\原型\2018年需求\1月份-服务费结算相关
+
+### 改动点
+1. 查询品听服务费列表记录的结算比例和信息服务费根据时间判断，if(DATE(a.open_time) >= DATE('2018-05-01'), 1, 2) as revenueRate
+2. 信息服务费统计之前sql是写死的2% * openBalance * investDay/365，改成revenueRate * openBalance * investDay/36500
+
+	
+## 资产方费用结算查询
+1. 需求描述
+	+ 根据资产方以及结算日期，查询相应的结算数据
+	+ 导出数据和查询数据一致
+	
+2. 需求背景
+	* 每月财务需要和资产方结算业务涉及的费用；
+	* 需要开放查询功能给财务获取相关结算数据；
+
+3. 业务逻辑
+### 原型地址: 项目需求\原型\2018年需求\4月份-资产方费用结算查询
+
+### 改动点
+1. INSERT INTO `m_menu` (`url`, `parent_id`, `order_num`, `name`, `note`) VALUES ('/financeStatistics/queryPartnerServiceFee/index.htm', '129', '23', '资产方费用结算查询', NULL);
+2. 初始载入不查询数据
+3. 短信条数，结算日期内发送短信成功的条数（还款预下单验证码短信及重发） 
+	<pre> # sql，资产方以7贷为例，云贷还得加上a.content like '%达飞云贷%'
+	select count(a.id) from bs_sms_record_jnl a ,ln_user b where a.mobile=b.mobile and b.partner_code='7_DAI_SELF' 
+	and DATE(a.send_time) >= DATE('#') and DATE(a.send_time) <= DATE('#')
+	</pre>
+4. 鉴权笔数，结算日期内恒丰绑卡笔数（不管成功未成功）
+	<pre> # sql，资产方以7贷为例
+	select count(*) from ln_pay_orders where partner_code='7_DAI_SELF' and trans_type='BIND_CARD' and channel='HFBANK' 
+	and DATE(create_time) >= DATE('#') and DATE(create_time) <= DATE('#')
+	</pre>
+5. 放款代发笔数，结算日期内放款成功的借款笔数，去除退票笔数（结算日期内退票）
+	<pre> # sql，资产方以7贷为例，724952是7贷自主放款大借款人用户编号
+	select count(l.id) from ln_loan l, ln_user u where u.partner_code='7_DAI_SELF' and u.id=l.ln_user_id and l.status='PAIED'
+	and ln_user_id<>724952 and l.id not in (select loan_id from ln_deposition_repay_schedule where partner_repay_id like '%RGCL%'
+	and DATE(create_time) >= DATE('#') and DATE(create_time) <= DATE('#'))
+	and DATE(l.loan_time) >= DATE('#') and DATE(l.loan_time) <= DATE('#');
+	</pre>
+6. 还款代扣笔数，结算日期内还款代扣成功的笔数
+	<pre> # sql，资产方以7贷为例
+	select count(*) from ln_pay_orders where partner_code='7_DAI_SELF' and `status`=6 and trans_type='REPAY' and channel_trans_type='DK'
+	and DATE(update_time) >= DATE('#') and DATE(update_time) <= DATE('#')
+	</pre>
+7. 放款金额，结算日期内放款成功的借款金额，去除退票金额（结算日期内退票）
+	<pre> # sql，资产方以7贷为例，724952是7贷自主放款大借款人用户编号
+	select SUM(approve_amount) from ln_loan l, ln_user u where u.partner_code='7_DAI_SELF' and u.id=l.ln_user_id and l.status='PAIED'
+	and ln_user_id<>724952 and l.id not in (select loan_id from ln_deposition_repay_schedule where partner_repay_id like '%RGCL%'
+	and DATE(create_time) >= DATE('#') and DATE(create_time) <= DATE('#'))
+	and DATE(l.loan_time) >= DATE('#') and DATE(l.loan_time) <= DATE('#');	
+	</pre>
+

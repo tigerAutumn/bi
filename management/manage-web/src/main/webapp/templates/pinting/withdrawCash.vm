@@ -1,0 +1,70 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/statistics/buyMessage/query/index.htm')" method="post" id="myform" class="pageForm required-validate">
+		
+		<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						网新提现：<input  id="userName" type="text" name="userName" value="$!req.userName" size="20"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span style="margin-left:130px;">
+						<button url="$!env.getWebURL('')" target="ajaxTodo" onclick="func()" type="button" id="withdraw">提现</button>
+                        </span>
+					</td>
+					</tr>
+			</table>
+		</div>
+	</form>
+</div>
+<script >
+
+function func(){
+	
+	var amount = $("#userName").val();
+	if(amount == ""){
+		alert("提现金额不能为空");
+		return;
+	}
+	
+	if(amount < 0 ){
+		alert("提现金额要大于0");
+		return;
+	}
+	
+	if(!confirm("是否要提现？")){
+		return;
+	}
+	
+	var url = $("#withdraw").attr("url") + "/pinting/account/withdrawCashSubmit.htm";
+	
+	jQuery.ajax({
+			type:'post',
+		    url:url,
+		    data:"&amount=" + amount,
+		    dataType:"json",
+		    success:function(data){
+		     	if(data.error == "yes"){
+					alert("提现失败：" + data.message);
+				}else{
+					alert("提现申请成功，等待通知！");
+				}
+		    }
+		});
+
+}
+
+
+</script>
+

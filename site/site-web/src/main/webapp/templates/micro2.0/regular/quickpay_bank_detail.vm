@@ -1,0 +1,43 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/regular/product_details.min")
+#Head("end")
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="qianbao" name="qianbao" value="$!qianbao" />
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+    <div class="header">
+    	<a class="header_arrow" href="javascript:history.go(-1)"></a>
+    	<h1 class="heade_ft oran_color">支持银行及限额</h1>
+    </div>
+    
+    <div class="deta_container contan_animation" style="margin-top:2px;">
+    	<div class="deta_title1">
+    		<div class="t1_ft oran_color">快捷支付银行(仅支持储蓄卡、暂不支持信用卡)</div>
+    		<div class="ft_conu">*具体金额以银行卡实际允许额度为准</div>
+    		##<div class="tit_line"></div>
+    	</div>
+    	#foreach($bank in $bankList)
+        	<div class="bank_list">
+        		<div class="list_left">
+        			<i class="ban_list ban_list_$!bank.bankId"></i>
+        			<span class="list_sp">$!{bank.bankName}</span>
+        		</div>
+        		<div class="list_right">
+    				#if($bank.isAvailable == 1)
+    					单笔$!{bank.oneTop}万，单日$!{bank.dayTop}万
+    				#else
+    					暂不可用
+    				#end
+    			</div>
+        	</div>
+    	#end
+    </div>
+#LoadJS("resources/micro2.0/scripts/zepto.min")
+#LoadJS("resources/micro2.0/scripts/swiper.min")
+#LoadJS("resources/micro2.0/scripts/regular/custom")
+</body>
+#Html("end")

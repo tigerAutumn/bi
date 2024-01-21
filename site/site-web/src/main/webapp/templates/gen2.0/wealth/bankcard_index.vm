@@ -1,0 +1,68 @@
+#LoadGenCSS("/resources/gen2.0/styles/assets/bankcard_index")
+#LoadGenJS("/resources/gen2.0/scripts/assets/bankcard_index")
+<div class="rig2_4" style="display:block;">
+		#if($!size == 0)
+			    <p class="rig2_p4">我的银行卡</p>
+				<div class="rig2_4top" style="height:313px;">
+            	<div class="righ_bank">
+            			<p class="right_bank"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/tanh.png">暂无银行卡，<a href="$!env.get('gen.server.web')/gen2.0/regular/list">立即购买</a>绑定安全卡</p>
+            	</div>
+				</div>
+
+		#else
+		<p class="rig2_p4">我的银行卡</p>
+		<div class="rig2_4top">
+    		<ul>
+    			#foreach($!bankcard in $!bankcards)
+						<input type="hidden" name="cardId" value="$!bankcard.id" />
+                    	<input type="hidden" name="cardNo" value="$string.right($!bankcard.cardNo,4)" />
+                    	<input type="hidden" name="bankName" value="$!bankcard.bankName" />
+                    	<input type="hidden" name="smallLogo" value="$!smallLogo" />
+                    	<input type="hidden" name="largeLogo" value="$!largeLogo" />
+					#if($!bankcard.isFirst == 1)
+						<li class="rig2_4li1"><span>
+    					#if($!bankcard.smallLogo)
+    							<img src="$!env.get('gen.server.web')/$!bankcard.smallLogo">
+    					#elseif($!bankcard.largeLogo)
+    							<img src="$!env.get('gen.server.web')/$!bankcard.largeLogo">
+    					#else
+    							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/bank_null.jpg">
+						#end
+						</span>$!bankcard.bankName<em>**** **** **** $string.right($!bankcard.cardNo,4)</em><b><button disabled>安全卡</button></b></li>
+					#else
+						<li class="rig2_4li2"><span>
+						#if($!bankcard.smallLogo)
+    							<img src="$!env.get('gen.server.web')/$!bankcard.smallLogo">
+    					#elseif($!bankcard.largeLogo)
+    							<img src="$!env.get('gen.server.web')/$!bankcard.largeLogo">
+    					#else
+    							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/bank_null.jpg">
+						#end
+						</span>$!bankcard.bankName<em>**** **** **** $string.right($!bankcard.cardNo,4)</em><b>
+							<span class="bankcard_span" is_first="$!bankcard.isFirst" card_id="$!bankcard.id" bank_name="$!bankcard.bankName" card_no="$string.right($!bankcard.cardNo,4)" smallLogo="$!bankcard.smallLogo" largeLogo="$!bankcard.largeLogo">
+                        解除绑定</span></b></li>
+					#end
+    			#end
+
+
+    		</ul>
+			</div>
+		#end
+
+	<div class="rig2_4bottom">
+		<p class="rig2_p4bot">安全卡说明：</p>
+		<dl class="rig2_4dl">
+			<dt class="rig2_4dt1">为了保障您的资金安全，您首次成功支付的银行卡将作为<i class="zcon_maini">安全卡</a>。后续仅可使用此卡进行买入和取出。</dt>
+		</dl>
+	</div>
+</div>
+	
+
+## 确认框
+<div class="box-mask"></div>
+<div class="box-a">
+	<input id="bank_card_unbind" name="bank_card_unbind" type="hidden"/>
+	<p><strong>提示</strong></p>
+    <p id="show_text">您确定要解绑银行卡？</p>
+    <p><span class="span1 return_cancel_btn">取消</span><span class="return_sub_btn">确定</span></p>
+</div>

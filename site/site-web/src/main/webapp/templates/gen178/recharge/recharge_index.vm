@@ -1,0 +1,48 @@
+#Html("begin")
+#GenHead("begin","互联网金融平台，互联网金融，币港湾，币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen178/styles/recharge/trade_public")
+#LoadGenCSS("/resources/gen178/styles/recharge/recharge_index")
+#GenHead("end")
+<body id="body">
+<!--header -s-->
+	#Gen178Header("assets")
+<!--header -e-->
+<input type="hidden"  id="availableBalanceRecharge" value="$!availableBalance" />
+<input type="hidden"  id="depAvailableBalance" value="$!depAvailableBalance" />
+<input type="hidden"  id="rechargeLimit" value="$!rechargeLimit" />
+<div class="trade_wrap">
+    <!-- <div class="rig2_2_Prompt">支付系统需每日定时维护，22:40 － 23:20 无法进行提现操作。给您带来的不便，敬请见谅 </div>-->
+    <div class="recharge">
+        <div class="recharge_content">
+            <div class="trade_data">
+                可用余额：<span class="color_font">$!number.format("0.00", $!depAvailableBalance)</span>元
+            </div>
+            <div class="trade_input">
+                <p>充值金额：</p>
+                <form action="$!env.get('gen.server.web')/gen178/recharge/recharge_index_submit?agentViewFlag=$!agentViewFlag" method="post" id="rechargeForm">
+                    <input type="tel" name="rechargeAmount" class="rechargeAmount" maxlength="12" placeholder="请输入充值金额">
+                </form>
+            </div>
+            <p class="trade_tips" style="padding-left: 70px">仅可充值到存管账户</p>
+            <div class="trade_submit">
+                <button id="recharge_submit" style="cursor:pointer;">立即充值</button>
+            </div>
+            <p class="trade_tips" style="padding-left: 70px;font-size: 12px;">充值后存管账户金额：<span id="total_amount_recharge" class="color_font">$!depAvailableBalance</span>元</p>
+        </div>
+
+        <div class="recharge_rule">
+            <h5>充值说明：</h5>
+            <ul>
+                <li>充值金额不能低于$!{rechargeLimit}元；</li>
+                <li>仅可使用储蓄卡进行充值，严禁洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用；</li>
+                <li>充值申请完成后，资金预计5分钟内到账，如遇到银行通道维护未及时处理，请联系客服400-806-1230。</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--footer -s-->
+	#Gen178Footer()
+<!--footer -e-->
+	#LoadGenJS("/resources/gen178/scripts/assets/recharge_index")
+</body>

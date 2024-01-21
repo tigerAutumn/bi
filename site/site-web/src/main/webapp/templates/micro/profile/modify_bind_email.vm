@@ -1,0 +1,58 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾理财官网_安心可靠互联网金融投资理财平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#Head("end")
+	
+<body>
+	<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$!env.getWebURL('')" />
+    <!-- website wrapper starts -->
+    <div class="websiteWrapper"> 
+      
+      #Header("绑定新邮箱","","","micro/profile/index")
+      
+      <!-- notification starts -->
+      
+      <!-- notification ends --> 
+      
+      <!-- page wrapper starts -->
+	  <form action="$!env.getWebURL('/micro/profile/modifybindemail')" method="post" class="generalForm" id="generalForm">
+			<input type="hidden" id="oldEmailCodeReg" value="$!reg.get('validateCode')" />
+			<input type="hidden" id="newEmailReg" value="$!reg.get('userEmail')" />
+			<input type="hidden" id="newEmailCodeReg" value="$!reg.get('validateCode')" />
+			<input type="hidden" id="oldEmail" name="oldEmail" value="$!oldEmail" />
+			<div class="pageWrapper contactPageWrapper"> 
+    
+   
+                <div class="gm formFieldWrapper"><span style="max-width:inherit;">原邮箱验证码：</span> <input name="oldEmailCode" id="oldEmailCode" type="text" maxlength="4" placeholder="请输入验证码" class="validateCodeField requiredField regExpField" style="width:30%;">  <input class="yz-normal" toEmail="oldEmail" count="120" type="button" value="发送验证码"></div>
+               <div class="gm formFieldWrapper" style="margin-top:20px; border:1px #eee solid;"><span>新邮箱：</span> <input name="newEmail" id="newEmail" type="text" placeholder="请输入邮箱地址" class="userEmailField requiredField regExpField"></div>
+                <div class="gm formFieldWrapper"><span style="max-width:inherit;">新邮箱验证码：</span> <input name="newEmailCode" id="newEmailCode"  type="text" maxlength="4" placeholder="请输入验证码" class="validateCodeField requiredField regExpField" style="width:30%;">  <input class="yz-normal" toEmail="newEmail" count="120" type="button" value="发送验证码"></div>
+              <div class="formSubmitButtonErrorsWrapper"> 
+                <!-- form errors start --> 
+                <span class="formValidationError" id="newEmailFieldError">
+					<span>请输入新邮箱</span> 
+					<span>新邮箱格式不正确</span> 
+				</span> 
+				<span class="formValidationError" id="oldEmailCodeFieldError">
+					<span>请输入原邮箱验证码</span> 
+					<span>请输入4位数字的原邮箱验证码</span> 
+				</span>
+				<span class="formValidationError" id="newEmailCodeFieldError">
+					<span>请输入新邮箱验证码</span> 
+					<span>请输入4位数字的新邮箱验证码</span> 
+				</span>
+                <!-- form errors end -->
+              </div>
+               
+            <a class="go_btn1" id="validateSubmitButton" href="#" style="color:#6cf;" data-form-id="generalForm">修改绑定</a>
+              </div>
+	  </form>
+      <!-- page wrapper ends --> 
+     
+      #Footer("4")
+      
+    </div>
+	<!-- website wrapper ends -->
+	#LoadJS("resources/micro/scripts/profile/modify_bind_email")
+</body>
+
+#Html("end")

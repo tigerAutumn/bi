@@ -1,0 +1,74 @@
+<div class="pageContent">
+	<form method="post" name="detail_form" action="$env.getWebURL('user/management/save.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		#Hidden("flag", "$!flag")
+		#Hidden("id", "$!userVO.id")
+		<div class="pageFormContent" layoutH="56">
+			<p>
+				<label>用户名称：</label>
+				<input name="name" type="text" size="30" maxlength="32" class="required textInput" value="$!userVO.name" />
+			</p>
+			<p>
+				<label>昵称：</label>
+				<input name="nick" type="text" size="30" maxlength="32" value="$!userVO.nick" />
+			</p>
+			
+			<p>
+				<label>邮箱：</label>
+				<input type="text" name="email" size="30" class="required email" alt="请输入您的电子邮件" maxlength="50" value="$!userVO.email" />
+			</p>
+			<p>
+				<label>手机：</label>
+				<input type="text" name="mobile" class="phone" class="required phone" size="30" alt="请输入您的手机" maxlength="11" value="$!userVO.mobile" />
+			</p>
+			<p>
+				<label>权限：</label>
+				<select name="roleId" class=" combox">
+					#foreach($!role in $!roleList)
+					<option value="$!role.id" #if("$!userVO.roleId"=="$!role.id") selected  #end>$!role.name</option>
+					#end
+				</select>
+			</p>
+			<p>
+				<label>状态：</label>
+				<select name="status" class="required combox">		
+					<option value="1" #if("$!userVO.status"=="1") selected  #end>可以使用</option>
+					<option value="2" #if("$!userVO.status"=="2") selected  #end>已经失效</option>
+				</select>
+			</p>
+			<p>
+				<label>渠道：</label>
+				<select name="agentId">
+					   <option value="" #if("$!agents.id"=="") selected  #end>全部</option>
+					#foreach($!agents in $!agentList)
+					   <option value="$!agents.id" #if("$!agents.id"=="$!userVO.agentId") selected  #end>$!agents.agentName</option>
+					#end
+				</select>
+			</p>
+			<p>
+				<label>备注：</label>
+                <textarea name="note" maxlength="256">$!userVO.note</textarea>
+			</p>
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "301") {
+			alertMsg.warn('邮箱已存在!');
+		} else if (json.statusCode == "200") {
+			alertMsg.correct('保存成功!');
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('user/management/index.htm')");
+		} else {
+			alertMsg.error('保存失败!');
+		}
+	}
+</script>

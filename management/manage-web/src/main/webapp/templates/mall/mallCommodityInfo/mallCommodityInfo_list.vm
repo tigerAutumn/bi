@@ -1,0 +1,235 @@
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageList.pageNum" />
+    <input type="hidden" name="numPerPage" value="$!pageList.numPerPage" />
+</form>
+<div class="pageHeader">
+    <form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/mallCommodityInfo/getList.htm')" class="pageForm required-validate"
+          onsubmit="return navTabSearch(this);" >
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        <label>商品名称：</label>
+                        <input type="text" id="commNameSearch" name="commNameSearch" maxlength="20" value="$!req.commNameSearch" style="float:left;width:100px;"
+                               onkeyup="value=value.replace(/[^\u4E00-\uFA29\uE7C7-\uE7F3a-zA-Z0-9\\.\\%]*/g,'')"/>
+                    </td>
+                    <td>
+                        <label>商品类别：</label>
+                        <select name="commTypeIdSearch" id="commTypeIdSearch"
+                                style="float:left;width:100px;">
+                            <option value="">全部</option>
+                            #foreach($enumKey in $!mallCommodityTypeEnum.keySet())
+                                <option value="$!enumKey" #if("$!req.commTypeIdSearch"=="$!enumKey") selected #end >$!mallCommodityTypeEnum.get($!enumKey)</option>
+                            #end
+                        </select>
+                    </td>
+
+                    <td>
+                        <label>剩余库存：</label>
+                        <input type="text" id="leftCountMinSearch" name="leftCountMinSearch" maxlength="9" value="$!req.leftCountMinSearch" style="float:left;width:100px;"
+                               onkeyup="value=value.replace(/((^\s*)[^0-9]*)|([^0-9]*(\s*$))/g,'').replace(/\./g,'')" class="number" />
+                        <span style="float:left;line-height: 23px;">&nbsp;至&nbsp;</span>
+                        <input type="text" id="leftCountMaxSearch" name="leftCountMaxSearch" maxlength="9" value="$!req.leftCountMaxSearch" style="float:left;width:100px;"
+                               onkeyup="value=value.replace(/((^\s*)[^0-9]*)|([^0-9]*(\s*$))/g,'').replace(/\./g,'')" class="number" />
+                    </td>
+                    <td>
+                        <label>状态：</label>
+                        <select name="statusSearch" id="statusSearch" style="float:left;width:100px;">
+                            <option value="ALL">全部</option>
+                            #foreach($enumKey in $!mallInfoStatusEnum.keySet())
+                                <option value="$!enumKey" #if("$!req.statusSearch"=="$!enumKey") selected #end >$!mallInfoStatusEnum.get($!enumKey)</option>
+                            #end
+                        </select>
+                        <label style="width:20px;">&nbsp</label>
+                    </td>
+                    <td>
+                        <div class="buttonActive">
+                            <div class="buttonContent">
+                                <button onclick="searchFunction()" type="button">查询</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li><a class="add" href="$env.getWebURL('/mallCommodityInfo/enterCommodityPage.htm')" target="navTab" mask="true" rel="createBack" height="300" width="580"><span>新增</span></a></li>
+            <li class="line">line</li>
+        </ul>
+    </div>
+    <table class="table" width="1396" layoutH="128">
+        <thead>
+        <tr>
+            <th width="4%">序号</th>
+            <th width="10%">商品主图</th>
+            <th width="6%">商品名称</th>
+            <th width="5%">商品类别</th>
+            <th width="5%">属性</th>
+            <th width="5%">所需积分</th>
+            <th width="5%">剩余库存</th>
+            <th width="5%">推荐</th>
+            <th width="10%">上架时间</th>
+            <th width="5%">状态</th>
+            <th width="15%">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+            #set($index = $!pageList.offset)
+            #foreach($grid in $!pageList.list)
+            <tr target="sid_user" rel="1" >
+                #set($index = $index + 1)
+                <td>$!index</td>
+                <td><a href=$!mUrl$!grid.commPictureUrl target="view_window">查看</a></td>
+                <td>$!grid.commName</td>
+                <td>$!grid.commTypeName</td>
+                <td>$!grid.commPropertyDesc</td>
+                <td>$!grid.points</td>
+                <td>$!grid.leftCount</td>
+                <td>
+                    #if("$!grid.isRecommend"=="YES")是
+                    #elseif("$!grid.isRecommend"=="NO")否
+                    #else
+                    #end
+                </td>
+                <td>$!date.format($!grid.forSaleTime)</td>
+                <td>$!grid.statusDesc</td>
+                <td>
+                    #if($!grid.status =='SOLD_OUT')
+                        <a title="上架" href="#" onclick="forSaleCommodity('$!grid.commName','$!grid.id')" mask="true" class="">上架 </a>&nbsp;&nbsp;
+                    #else
+                        <a title="下架" href="#" onclick="soldOutCommodity('$!grid.commName','$!grid.id')" mask="true" class="">下架 </a>&nbsp;&nbsp;
+                    #end
+
+                    <a title="编辑" href="$env.getWebURL('/mallCommodityInfo/enterCommodityEditPage.htm?id=')$!grid.id" target="navTab" mask="true" rel="createBack">编辑 </a>&nbsp;&nbsp;
+                    <a title="克隆" href="$env.getWebURL('/mallCommodityInfo/enterCommodityPage.htm?id=')$!grid.id" target="navTab" mask="true" rel="createBack">克隆 </a>&nbsp;&nbsp;
+                	#if($!grid.soldCount == 0 && $!grid.status !='DELETED')
+                		<a title="删除" onclick="closeCommodityInfo('$!grid.id')" mask="true">删除</a>
+                	#end
+                </td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                <option #if("$!pageList.numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!pageList.numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!pageList.numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!pageList.numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!pageList.totalRow条</span>
+        </div>
+        <div class="pagination" targetType="navTab" totalCount="$!pageList.totalRow" numPerPage="$!pageList.numPerPage" currentPage="$!pageList.pageNum"></div>
+    </div>
+</div>
+
+<script>
+    function searchFunction() {
+
+        var leftCountMinSearch = $("#leftCountMinSearch").val();
+        var leftCountMaxSearch = $("#leftCountMaxSearch").val();
+
+        if (leftCountMinSearch != undefined && leftCountMinSearch) {
+            if(!/^[0-9]*$/.test(leftCountMinSearch)) {
+                alertMsg.warn("请输入合法的数字！");
+                return false;
+            }
+        }
+
+        if (leftCountMaxSearch != undefined && leftCountMaxSearch) {
+            if(!/^[0-9]*$/.test(leftCountMaxSearch)) {
+                alertMsg.warn("请输入合法的数字！");
+                return false;
+            }
+        }
+
+        $("#myform").submit();
+    }
+
+    function forSaleCommodity(commodityName, id) {
+        alertMsg.confirm("你确定上架商品(" + commodityName + ")？", {
+            okCall: function () {
+                $.ajax({
+                    type: 'post',
+                    url: $("#APP_ROOT_PATH").val() + "/mallCommodityInfo/forSaleCommodity.htm",
+                    data: {
+                        id: id
+                    },
+                    success: function (data) {
+                        if (data.statusCode == "200") {
+                            alertMsg.correct("上架商品(" + commodityName + ")成功");
+                            navTab.reload("$env.getWebURL('mallCommodityInfo/getList.htm')");
+                        } else {
+                            if (data.message) {
+                                alertMsg.error(data.message);
+                            } else {
+                                alertMsg.error("操作失败");
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    }
+
+    function soldOutCommodity(commodityName, id) {
+        alertMsg.confirm("你确定下架商品(" + commodityName + ")？", {
+            okCall: function () {
+                $.ajax({
+                    type: 'post',
+                    url: $("#APP_ROOT_PATH").val() + "/mallCommodityInfo/soldOutCommodity.htm",
+                    data: {
+                        id: id
+                    },
+                    success: function (data) {
+                        if (data.statusCode == "200") {
+                            alertMsg.correct("下架商品(" + commodityName + ")成功");
+                            navTab.reload("$env.getWebURL('mallCommodityInfo/getList.htm')");
+                        } else {
+                            if (data.message) {
+                                alertMsg.error(data.message);
+                            } else {
+                                alertMsg.error("操作失败");
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    }
+    
+    function closeCommodityInfo(commodityId) {
+        var commodityId = commodityId;
+        alertMsg.confirm("你确定删除此商品？", {
+            okCall: function () {
+                $.ajax({
+                    type: 'post',
+                    url: $("#APP_ROOT_PATH").val() + "/mallCommodityInfo/deleteCommodity.htm",
+                    data: {
+                        commodityId: commodityId
+                    },
+                    success: function (data) {
+                        if (data.statusCode == "200") {
+                            alertMsg.correct("删除商品成功");
+                            navTab.reload("$env.getWebURL('mallCommodityInfo/getList.htm')");
+                        } else {
+                            if (data.message) {
+                                alertMsg.error(data.message);
+                            } else {
+                                alertMsg.error("操作失败");
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    }
+    
+</script>

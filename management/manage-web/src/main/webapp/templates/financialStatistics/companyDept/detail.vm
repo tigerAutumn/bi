@@ -1,0 +1,73 @@
+<div class="pageContent">
+	##LoadCSS("/resources/ztree/css/zTreeStyle/zTreeStyle")
+	##LoadJS("/resources/ztree/js/jquery.ztree.core")
+	##LoadJS("/resources/ztree/js/jquery.ztree.excheck")
+	#LoadJS("/resources/js/dept_select")
+	<div style="display:none;" class="div_dept">
+		<input name="check_dept" class="check_dept" type="checkBox" style=" float: left;" checked onchange="check_dept(this)"/>
+    	<select class="required select_dept" onclick="change_dept(this)">
+    	</select>
+	</div>
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	<form id="flashForm" method="post" action="$env.getWebURL('/financial/statistics/company_dept/update.htm')?detailFlag=update" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+	#Hidden("not_id", "$!bsCompanyDept.id")
+	#Hidden("id", "$!bsCompanyDept.id")
+	#Hidden("dept_name", "$!bsCompanyDept.deptName")
+	#Hidden("parent_id", "$!bsCompanyDept.parentId")
+    </form>
+		<div class="pageFormContent nowrap" layoutH="97">
+			<dl>
+				<dt>
+					部门名称：
+				</dt>
+				<dd>
+					<input type="text" id= "deptName"  name="deptName" size="30" class="required" maxlength="20" value="$!bsCompanyDept.deptName" />
+				</dd>
+			</dl>
+			<dl>
+				<dt>所属部门</dt>
+				<dd class="dept_dd">
+					$!parentName
+					<!--<div class="content_wrap">
+                    	<div class="zTreeDemoBackground left">
+                    		<ul id="deptTree" class="ztree"></ul>
+                    	</div>
+                    </div>-->
+					<!--
+						<div >
+        					<input name="check_dept" class="check_dept" type="checkBox" style=" float: left;" disabled checked/>
+            				<select name="parentId" id="parentId"  class="required">
+            					<option value="0" >币港湾</option>
+            					#foreach($list in $!deptList)
+            						<option value="$!list.id" >$!list.deptName</option>
+            					#end
+            				</select>
+    					</div>
+					-->
+				</dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul style="float:left;">
+				<li><div class="buttonActive"><div class="buttonContent"><button onclick="formsubmint()" type="button">保存</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+</div>
+	
+<script>
+
+	function navTabAjaxDone(json) {
+		 if (json.statusCode == "200") {
+		 	navTab.closeCurrentTab();
+			alertMsg.correct(json.message);
+			navTab.reload("$env.getWebURL('/financial/statistics/company_dept/index.htm')");
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+</script>

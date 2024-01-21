@@ -1,0 +1,155 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);"  action="$env.getWebURL('/financeStatistics/queryPayFinanceForZan.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						姓名：<input id="userName" type="text" name="userName" maxlength="20" value="$!userName" class="clear"/>
+					</td>
+					<td>
+						手机号：<input id="mobile" type="text" name="mobile" maxlength="11" value="$!mobile" class="clear num"/>
+					</td>
+					<td >起息日期：<input name="startTime" type="text" id="startTime" class=" date textInput readonly" readonly="true" value="$!startTime" dateFmt="yyyy-MM-dd" maxdate="{%y}-%M-{%d-1}"/></td >
+					<td>到  &nbsp;&nbsp;&nbsp;&nbsp;
+						<input name="endTime" type="text" id="endTime" class=" date textInput readonly" readonly="true" value="$!endTime" dateFmt="yyyy-MM-dd" maxdate="{%y}-%M-{%d-1}"/>
+					</td>
+					<td>
+						<button  onclick="func()" type="button">查询</button>
+						<button  onclick="exp()" type="button">导出excel</button>
+					</td>
+				</tr>
+			</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li>		
+				<span style="margin-left:10px;">
+    				<font color="red">投资总金额：#if(!$!payFinance.totalBalance)0.00 #else $!money.format($!payFinance.totalBalance) #end 元</font>
+                </span>
+			</li>
+			<li>		
+				<span style="margin-left:10px;">
+    				<font color="blue">融资客户应付利息总计：#if(!$!payFinance.totalFinanceInterest)0.00 #else $!money.format($!payFinance.totalFinanceInterest) #end 元</font>
+                </span>
+			</li>
+			<li>		
+				<span style="margin-left:10px;">
+    				<font color="blue">应付投资客户利息总计：#if(!$!payFinance.totalUserInterest)0.00 #else $!money.format($!payFinance.totalUserInterest) #end 元</font>
+                </span>
+			</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="120">
+		<thead>
+			<tr>
+				<th width="5%">序号</th>
+				<th width="5%">姓名</th>
+				<th width="10%">手机号</th>
+				<th width="8%">客户代码</th>
+				<th width="8%">融资客户代码</th>
+				<th width="10%">单据编号</th>
+				<th width="10%">投资金额</th>
+				<th width="8%">融资客户应付利息</th>
+				<th width="10%">融资客户本息合计</th>
+				<th width="8%">应付投资客户利息</th>
+				<th width="8%">应付公司利息</th>
+				<th width="10%">起息日期</th>
+			</tr>
+		</thead>
+		<tbody>
+			#set($prefix="130")
+			#foreach($user in $userList)
+			<tr>
+				<td>$!user.rowno</td>
+				<td>$!user.userName</td>
+				<td>$!user.mobile</td>
+				<td>$!user.customerCode</td>
+				<td>$!user.propertyCode</td>
+				<td>$prefix$!user.orderNo</td>
+				<td>$!money.format($!user.balance)</td>
+				<td>$!money.format($!user.financeInterest)</td>
+				<td>$!money.format($!user.financeTotalAmount)</td>
+				<td>$!money.format($!user.userInterest)</td>
+				<td>$!money.format($!user.interestIncome)</td>
+				<td>$!date.format($!user.time)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+#LoadJS("/resources/js/global_validate")
+<script>
+
+function func(){
+	var beginTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	if(!beginTime) {
+		alertMsg.warn("开始时间不能为空！");
+		return;
+	}
+	if(!endTime) {
+		alertMsg.warn("结束时间不能为空！");
+		return;
+	}
+    var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+	if(result < 0){
+		alertMsg.warn("开始时间不能在结束时间之后！");
+		return;
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/financeStatistics/queryPayFinanceForZan.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+	var beginTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	if(!beginTime) {
+		alertMsg.warn("开始时间不能为空！");
+		return;
+	}
+	if(!endTime) {
+		alertMsg.warn("结束时间不能为空！");
+		return;
+	}
+    var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+	if(result < 0){
+		alertMsg.warn("开始时间不能在结束时间之后！");
+		return;
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/financeStatistics/exportPayFinanceForZan.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+</script>

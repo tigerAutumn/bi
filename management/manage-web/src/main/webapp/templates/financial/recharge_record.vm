@@ -1,0 +1,50 @@
+<div class="pageContent">
+	<div class="pageFormContent" layoutH="80">
+<table class="table"  width="100%">
+	<tr >
+		<td width="5%">序号</td>
+		<td width="10%">理财人登录名</td>
+		<td width="9%">理财人姓名</td>
+        <td width="8%">充值次数</td>
+		<td width="8%">充值总次数</td>
+		<td width="7%">资金来源 </td>
+		<td width="10%">充值金额</td>
+		<td width="5%">状态</td>
+		<td width="14%">充值申请时间</td>
+		<td width="14%">充值完成时间</td>
+		<td width="10%">充值失败原因</td>
+    </tr>
+		<tr>
+			<td>$!rechargeRecord.rowno</td>
+			<td>$!rechargeRecord.mobile</td>
+			<td>$!rechargeRecord.userName</td>
+			<td>
+				$!rechargeRecord.rechargeTimes
+			</td>
+			<td>$!rechargeRecord.rechargeTotalTimes</td>
+			<td>
+				#if("$!rechargeRecord.channelTransType"=="QUICK_PAY")
+					银行快捷
+				#elseif("$!rechargeRecord.channelTransType"=="NETBANK")
+					银行网银
+				#else
+					$!rechargeRecord.channelTransType
+				#end 
+			</td>
+			<td>$!money.format($!rechargeRecord.transAmount)</td>
+			<td>
+    			#if("$!rechargeRecord.transCode" == "SUCCESS")
+					成功
+				#else
+					$!rechargeRecord.transCode
+				#end
+			</td>
+			<td>
+    			$!date.format($!rechargeRecord.createTime)
+			</td>
+			<td >$!date.format($!rechargeRecord.updateTime)</div>
+			<td ></div>
+    </tr>
+</table>
+</div>
+</div>

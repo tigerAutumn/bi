@@ -1,0 +1,42 @@
+<div class="pageContent">
+	<form method="post" name="detail_form" action="$env.getWebURL('user/management/updatePwd.htm')" class="pageForm required" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<div class="pageFormContent" layoutH="56">
+		<div class="unit">
+				<label>旧密码：</label>
+				<input type="password" name="oldPassword" size="30" minlength="8" maxlength="16" class="required" />
+			</div>
+			<div class="unit">
+				<label style="display: block;height: 63px;">新密码：</label>
+				<small style="float: right;margin-bottom: 5px;width: 420px;">8-16位密码，必须包含数字，大写字母，小写字母，特殊符号(_!@#$)</small>
+				<input type="password" onkeyup="value=value.replace(/[^a-zA-Z0-9_!@#$]*/g,'')" id="password" name="password"  size="30" minlength="8" maxlength="16" class="required"/>
+			</div>
+			<div class="unit">
+				<label>重复输入新密码：</label>
+				<input type="password" onkeyup="value=value.replace(/[^a-zA-Z0-9_!@#$]*/g,'')" name="rnewPassword" size="30" minlength="8" maxlength="16" equalTo="#password" class="required"/>
+			</div>
+			
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	function navTabAjaxDone(json) {
+ 	if (json.statusCode == "200") {
+			alertMsg.correct('保存成功!');
+			setTimeout(function(){
+			$.pdialog.closeCurrent();
+			location ="$env.getWebURL('login/out.htm')";},2000)
+			
+		} else {
+			alertMsg.error(json.message);
+		}
+	}
+	
+</script>

@@ -1,0 +1,242 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')"/>
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!req.pageNum"/>
+    <input type="hidden" name="numPerPage" value="$!req.numPerPage"/>
+</form>
+<div class="page unitBox">
+    <div class="pageHeader">
+        <form rel="pagerForm" onsubmit="return navTabSearch(this);"
+              action="$env.getWebURL('ticket/interestTicketCheck/index.htm')" id="myform" method="post">
+            <input type="hidden" id="checkCount" value="$!checkCount"/>
+            <div class="searchBar">
+                <table class="searchContent">
+                    <tr>
+                        <td>
+                            <label>加息券名称</label>
+                            <input type="text" id="serialNameSearch" name="serialNameSearch"
+                                   value="$!req.serialNameSearch" style="float:left;width:100px;"/>
+                        </td>
+                        <td>
+                            <label>审核状态</label>
+                            <select name="checkStatusSearch" id="checkStatusSearch" style="float:left;width:100px;">
+                                <option value="">全部</option>
+                                <option value="UNCHECKED" #if("$!req.checkStatusSearch"=="UNCHECKED") selected #end >
+                                    待审核
+                                </option>
+                                <option value="PASS" #if("$!req.checkStatusSearch"=="PASS") selected #end >已通过</option>
+                                <option value="REFUSE" #if("$!req.checkStatusSearch"=="REFUSE") selected #end >不通过
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <div class="buttonActive">
+                                <div class="buttonContent">
+                                    <button onclick="searchFunction()" type="button">查询</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="pageContent">
+
+        <table class="table" width="1900" layoutH="170">
+            <thead>
+            <tr>
+                <th width="6%">加息券批次号</th>
+                <th width="5%">发放类型</th>
+                <th width="5%">加息券名称</th>
+                <th width="4%">发放数量</th>
+                <th width="10%">有效期</th>
+                <th width="6%">产品限制</th>
+                <th width="5%">期限限制(天)</th>
+                <th width="5%">使用条件</th>
+                <th width="4%">加息幅度</th>
+                <th width="6%">通知渠道</th>
+                <th width="4%">申请人</th>
+                <th width="9%">申请时间</th>
+                <th width="4%">审核状态</th>
+                <th width="4%">审核人</th>
+                <th width="5%">审核处理时间</th>
+                <th width="9%">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                #foreach($grid in $dataGrid)
+
+                    #set($Integer = 0)
+
+                <tr target='sid_user' rel='1'>
+                    <td>$!grid.serialNo</td>
+                    <td>
+                        #if($!grid.distributeType == 'AUTO')
+                            自动
+                        #elseif($!grid.distributeType == 'MANUAL')
+                            手动
+                        #else
+                            &nbsp
+                        #end
+                    </td>
+                    <td>$!grid.serialName</td>
+                    <td>$!grid.grantTotal</td>
+                    <td>
+                        #if($!grid.validTermType == 'FIXED')
+                            $!date.format($!grid.useTimeStart) 至 $!date.format($!grid.useTimeEnd)
+                        #elseif($!grid.validTermType == 'AFTER_RECEIVE')
+                            发放后 $!grid.availableDays 日
+                        #else
+                            &nbsp
+                        #end
+                    </td>
+                    <td>
+                        #foreach ($element in $!grid.productLimit.split(","))
+                            #if($element == 'BIGANGWAN_SERIAL')
+                                港湾系列
+                            #elseif($element == 'YONGJIN_SERIAL')
+                                涌金系列
+                            #elseif($element == 'KUAHONG_SERIAL')
+                                跨虹系列
+                            #elseif($element == 'BAOXIN_SERIAL')
+                                保信系列
+                            #else
+                                &nbsp
+                            #end
+                            #if($velocityCount != $!grid.productLimit.split(",").size())
+                                ,
+                            #end
+                        #end
+                    </td>
+                    <td>$!grid.termLimit</td>
+                    <td>满$!number.format("0", $!grid.investLimit)元启用</td>
+                    <td>$!number.format("0.00", $!grid.ticketApr)%</td>
+                    <td>
+                        #foreach ($element in $!grid.notifyChannel.split(","))
+                            #if($element == 'WECHAT')
+                                微信
+                            #elseif($element == 'SMS')
+                                短信
+                            #elseif($element == 'APP')
+                                app通知
+                            #else
+                                &nbsp
+                            #end
+                            #if($velocityCount != $!grid.notifyChannel.split(",").size())
+                                ,
+                            #end
+                        #end
+                    </td>
+                    <td>$!grid.applicantName</td>
+                    <td>$!date.format($!grid.applyTime)</td>
+                    <td>
+                        #if($!grid.checkStatus == 'UNCHECKED')
+                            待审核
+                        #elseif($!grid.checkStatus == 'PASS')
+                            已通过
+                        #elseif($!grid.checkStatus == 'REFUSE')
+                            不通过
+                        #else
+                            &nbsp
+                        #end
+                    </td>
+                    <td>$!grid.checkerName</td>
+                    <td>$!date.format($!grid.checkTime)</td>
+                    <td>
+                        #if($!grid.distributeType == 'MANUAL')
+                            <a title="加息券预览" target="navTab"
+                               href="$env.getWebURL('/ticket/manualInterestTicketCheck/review.htm?checkId=')$!grid.id"
+                               mask="true">加息券预览</a> &nbsp&nbsp&nbsp
+                        #elseif($!grid.distributeType == 'AUTO')
+                            <a title="加息券预览" target="navTab"
+                               href="$env.getWebURL('/ticket/autoInterestTicketCheck/review.htm?checkId=')$!grid.id"
+                               height="665" width="720" mask="true">加息券预览</a> &nbsp&nbsp&nbsp
+                        #else
+                            &nbsp
+                        #end
+                        #if($!grid.checkStatus=="UNCHECKED" && $!grid.grantStatus == 'INIT')
+                            <a title="通过" onclick="checkPass('$!grid.serialName','$!grid.id')" mask="true">通过 </a>&nbsp&nbsp&nbsp
+                            <a title="不通过" onclick="checkFail('$!grid.serialName','$!grid.id')" mask="true">不通过 </a>
+                        #else
+                            &nbsp
+                        #end
+                    </td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+        <div class="panelBar">
+            <div class="pages">
+                <span>显示</span>
+                <select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+                    <option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+                    <option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+                    <option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+                    <option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+                </select>
+                <span>条，共$!count条</span>
+            </div>
+            <div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage"
+                 currentPage="$!req.pageNum"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function searchFunction() {
+        $("#myform").submit();
+    }
+
+    function checkPass(serialName, checkId) {
+        alertMsg.confirm("你确定加息券发放计划(" + serialName + ")审核通过？", {
+            okCall: function () {
+                $.ajax({
+                    type: 'post',
+                    url: $("#APP_ROOT_PATH").val() + "/ticket/interestTicketCheckPass.htm",
+                    data: {
+                        checkId: checkId
+                    },
+                    success: function (data) {
+                        if (data.statusCode == "200") {
+                            alertMsg.correct("加息券发放计划(" + serialName + ")审核通过");
+                            navTab.reload("$env.getWebURL('ticket/interestTicketCheck/index.htm')");
+                        } else {
+                            if (data.message) {
+                                alertMsg.error(data.message);
+                            } else {
+                                alertMsg.error("操作失败");
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    }
+
+    function checkFail(serialName, checkId) {
+        alertMsg.confirm("你确定加息券发放计划(" + serialName + ")审核不通过？", {
+            okCall: function () {
+                $.ajax({
+                    type: 'post',
+                    url: $("#APP_ROOT_PATH").val() + "/ticket/interestTicketCheckRefuse.htm",
+                    data: {
+                        checkId: checkId
+                    },
+                    success: function (data) {
+                        if (data.statusCode == "200") {
+                            alertMsg.correct("加息券发放计划(" + serialName + ")审核不通过");
+                            navTab.reload("$env.getWebURL('ticket/interestTicketCheck/index.htm')");
+                        } else {
+                            if (data.message) {
+                                alertMsg.error(data.message);
+                            } else {
+                                alertMsg.error("操作失败");
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    }
+</script> 

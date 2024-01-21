@@ -1,0 +1,776 @@
+#Html("begin")
+#GenHead("begin","互联网金融产品,币港湾,币港湾官网","欢迎了解币港湾产品,币港湾官网为您提供多种互联网金融产品,是优质的互联网金融服务平台。")
+#set($strTitle="$!{productDetail.name}【币港湾官网】")
+#Title("$!strTitle")
+
+#LoadGenJS("/resources/gen178/scripts/common/placeholderfriend")
+#LoadGenJS("/resources/gen178/scripts/regular/regular_index_common")
+#LoadGenJS("/resources/gen178/scripts/common/common")
+#LoadGenJS("/resources/gen178/scripts/regular/regular_index")
+#LoadGenJS("/resources/gen178/scripts/regular/window_login")
+#LoadGenCSS("/resources/gen178/styles/regular/regular_index")
+#LoadGenCSS("/resources/gen178/styles/regular/calculator")
+#parse("/gen178/user/login_window.vm")
+
+<script type="text/javascript">
+    window.onload = function() {
+        if($(".tab_flag").val() == 'THREE_TAB'){
+            $(".main_down_div").hide().eq(2).show();
+        }
+    }
+</script>
+#GenHead("end")
+<body id="body">
+<!--header -s-->
+	#Gen178Header("product")
+<!--header -e-->
+<input type="hidden" id="propertySymbol" name="propertySymbol" value="$!productDetail.propertySymbol">
+## 表单基本信息 -s
+<form id="generalForm_regular_index" method="post" action="$!env.get('gen.server.web')/gen178/regular/index?id=$!productDetail.id">
+    <input type="hidden" id="term" name="term" value="$!trem" class="term"/>
+    <input type="hidden" id="product_id" name="product_id" value="$!productDetail.id"/>
+    <input type="hidden" id="id" name="id" value="$!productDetail.id"/>
+    <input type="hidden" name="page" value="$!pageNum" class="page"/>
+    <input type="hidden" name="totalCount" value="$!totalCount" class="totalCount"/>
+    <input type="hidden" name="tab_flag" value="$!tab_flag" class="tab_flag"/>
+##当前产品状态
+    <input type="hidden" id="product_status"  name="product_status" value="$!productDetail.status"/>
+##产品状态更改标记
+    <input type="hidden" id="product_status_flag" name="product_status_flag" value="$!product_status_flag"/>
+    <input type="hidden" name="agentViewFlag" value="$!agentViewFlag" class="agentViewFlag"/>
+</form>
+## 表单基本信息 -e
+<input type="hidden" id="inform_minute" value="$!productDetail.informMinute"/>
+<input type="hidden" id="to_remind" name="to_remind" value="$!toRemind"/>
+<input type="hidden" id="product_name" value="$!productDetail.name"/>
+
+##起投金额
+<input type="hidden" id="min_invest_amount" value="$!productDetail.minInvestAmount"/>
+##起投金额---显示
+<input type="hidden" id="min_invest_amount_text" value="$string.replace($!money.format($!productDetail.minInvestAmount),'.00','')"/>
+
+##投资天数
+<input type="hidden" id="invest_days" value="$!productDetail.term"/>
+##年化收益
+<input type="hidden" id="invest_baseRate" value="$!productDetail.baseRate"/>
+##记录是提醒业务还是购买业务
+<input type="hidden" id="remind_or_buy" value=""/>
+<input type="hidden" id="surplus_amount" value="$!productDetail.surplusAmount"/>
+
+##加入记录总页数
+<input type="hidden" name="totalPages" value="$!totalCount" class="totalPages"/>
+##剩余时间（总秒数）
+<input type="hidden" id="intervalTime" value="$!intervalTime"/>
+##个人单次最高投资金额
+<input type="hidden" id="maxSingleInvestAmount" value="$!productDetail.maxSingleInvestAmount"/>
+##产品活动类型
+<input type="hidden" id="activityType" value="$!productDetail.activityType"/>
+##用户账户可用余额
+<input type="hidden" id="available_balance" value="$!availableBalance"/>
+##风险测评状态
+<input type="hidden" id="riskStatus" value="$!hfDepGuideInfo.riskStatus">
+
+##页面主体-s
+<div class="main">
+    <div class="main_center clearfix">
+        <div class="main_c_left">
+            <div class="product_name">
+                <h5>$!productDetail.name</h5>
+                <div class="newer_only">
+					#if($!productDetail.activityType == 'NEW_BUYER')
+                        <p class="new_txt" style="font-size:12px;line-height:20px;color:#999;">
+                            （仅限首次加入
+                            #if(!$productDetail.maxSingleInvestAmount)
+                                )
+                            #else，限额
+                                #if($!productDetail.maxSingleInvestAmount >= 10000)
+                                    #if($!productDetail.maxSingleInvestAmount %10000 >0 && $!productDetail.maxSingleInvestAmount %1000>0)
+                                        #set($maxSingleInvestAmount = $!productDetail.maxSingleInvestAmount/10000)
+                                        <span>$!number.format("0.00",$maxSingleInvestAmount)</span>万
+                                    #elseif($!productDetail.maxSingleInvestAmount %10000 >0 && $!productDetail.maxSingleInvestAmount %1000==0)
+                                        #set($maxSingleInvestAmount = $!productDetail.maxSingleInvestAmount/10000)
+                                        <span>$!number.format("0.0",$maxSingleInvestAmount)</span>万
+                                    #else
+                                        #set($maxSingleInvestAmount = $!productDetail.maxSingleInvestAmount/10000)
+                                        <span>$!number.format("0",$maxSingleInvestAmount)</span>万
+                                    #end
+                                #else
+                                    <span>$!number.format("0",$!productDetail.maxSingleInvestAmount)</span>
+                                #end
+                                元）
+                            #end
+                        </p>
+					#end
+                </div>
+				#if($!productDetail.propertySymbol == 'ZAN')
+                    <div class="alert_bg alert_hide"></div>
+                    <div class="calculator withtips">
+                        <div class="detail_tips" style="left: -73px;">点击打开收益计算器<span></span></div>
+                    </div>
+				#end
+				#if("$!productDetail.status" == "7" || ("$!productDetail.status" == "6" && "$!productDetail.endTime" == ""))
+				#else
+                    <span class="surplusTime"></span>
+                    <span id="day_show" class="cutDown">0</span><span>天</span>
+                    <span id="hour_show" class="cutDown">0</span><span>时</span>
+                    <span id="minute_show" class="cutDown">0</span><span>分</span>
+                    <span id="second_show" class="cutDown">0</span><span>秒</span>
+				#end
+            </div>
+            <div class="product_data clearfix">
+                <div class="product_data_wrap">
+                    <h5 class="withtips">
+                        预期年化收益<span>*</span>
+                        <div class="detail_tips" style="left: -30px;">预期年化收益不代表对实际利息收益的承诺<span></span></div>
+                    </h5>
+                    <div class="product_data_interest">
+                        #if($!productDetail.interestRatesTagContent)
+                            <div class="product_data_interest_left">
+                                <p>$!number.format("0.00",$!productDetail.baseRate)<span>%</span></p>
+                            </div>
+                            <div class="product_data_interest_right">
+                                <p class="redpack_tag redpack_tag_middle">$!productDetail.interestRatesTagContent</p>
+                            </div>
+                        #else
+                            <p>$!number.format("0.00",$!productDetail.baseRate)<span>%</span></p>
+                        #end
+                    </div>
+                </div>
+                <div class="product_data_wrap">
+
+					#if($!productDetail.propertySymbol == 'ZAN')
+                        <h5 class="withtips">委托意向<span>*</span>
+                            <div class="detail_tips" style="left: -29px;">
+                                系统将根据您的委托意向做最优债权匹配
+                                <span></span>
+                            </div>
+                        </h5>
+                        <p> $!productDetail.termMonth <span>个月内</span><p>
+					#else
+                        <h5>产品期限</h5>
+                        <p>$!productDetail.term<span>天</span></p>
+					#end
+                </div>
+                <div class="product_data_wrap">
+                    <h5>起投金额</h5>
+                    <p>$string.replace($!money.format($!productDetail.minInvestAmount),".00","")<span> 元</span></p>
+                </div>
+            </div>
+            <ul class="main_cdleftul_copy clearfix">
+                <li class="withtips">
+					#if($!productDetail.beginInterestDays == 'MATCH_DAY')
+                        <img src="$!env.get('gen.server.web')/resources/gen178/images/regular/regular_index/main_cdlul_copy1.png" />
+                        <span style="color:#999;">起息时间：</span>出借成功当日起息<span>*</span>
+                        <div class="detail_tips" style="left: -10px;">您在加入成功后第二天开始启动匹配服务<span></span></div>
+					#elseif($!productDetail.beginInterestDays == 'NEXT_DAY')
+                        <img src="$!env.get('gen.server.web')/resources/gen178/images/regular/regular_index/main_cdlul_copy1.png" />
+                        <span style="color:#999;">起息时间：</span>出借成功当日起息 <span>*</span>
+                        <div class="detail_tips" style="left: -30px;">您在加入成功后第二天开始启动匹配服务<span></span></div>
+					#end
+                </li>
+                <li>
+                    <img src="$!env.get('gen.server.web')/resources/gen178/images/regular/regular_index/main_cdlul_copy2.png" />
+                    <span style="color:#999;">回款方式：</span>
+					#if($!productDetail.returnType == 'FINISH_RETURN_ALL' ) 到期还本付息
+					#elseif($!productDetail.returnType == 'AVERAGE_CAPITAL_PLUS_INTEREST')等额本息
+					#else $!productDetail.returnType #end
+                </li>
+
+				#if($!productDetail.propertySymbol == 'ZAN')
+                    <li class="withtips">
+                        <img src="$!env.get('gen.server.web')/resources/gen178/images/regular/regular_index/main_cdlul_copy3.png" />
+                        <span style="color:#999;">委托冻结期：</span>成功委托次日起$!productDetail.entrustLockPeriod个自然日<span>*</span>
+                        <div class="detail_tips" style="margin-left: -10px">冻结期结束后未匹配资金自动返回余额<span></span></div>
+                    </li>
+				#else
+                    <li>
+                        <img src="$!env.get('gen.server.web')/resources/gen178/images/regular/regular_index/main_cdlul_copy3.png" />
+                        <span style="color:#999;">开始时间：</span>$!date.format($!productDetail.startTime)
+                    </li>
+				#end
+            </ul>
+        </div>
+		#if($!productDetail.status == '6')
+            <!-- 计划进行中 -->
+            <div class="main_c_right">
+                <div class="plan_data">
+                    <p>计划剩余金额：<span>$string.replace($!money.format($!productDetail.surplusAmount),".00","")</span>元</p>
+                    <div class="bank_limit main_ctopa withtips">
+                        <div class="detail_tips" style="left: -76px;">点击查看银行限额列表<span></span></div>
+                    </div>
+                </div>
+                <div class="buy_ifo">
+                    <div class="buy_num">
+                        <input type="text" id="money" maxlength="9" placeholder="请输入100的整数倍" autocomplete="off">
+                    </div>
+                    <p class="buy_tips" id="buy_tip">
+						#if(!$productDetail.maxSingleInvestAmount)
+                            起投金额：<span>$string.replace($!money.format($!productDetail.minInvestAmount),".00","")</span>元
+						#else
+                            限购金额：<span>$string.replace($!money.format($!productDetail.maxSingleInvestAmount),".00","")元</span>
+						#end
+                    </p>
+                    <div class="mian_cdrfou">
+                        <a id = "gotobuy_btn" hrel="" class="mian_cdrfou_a">立即加入</a>
+                    </div>
+					#if("$!user_is_login" == "no")
+                        <div class="main_cdrfive">存管账户余额：<a class="login_btn" href="$!env.get('gen.server.web')/gen178/user/login/index" >登录</a> 后可见</div>
+                        <p class="rule_tips">*温馨提示：市场有风险，用户需谨慎</p>
+					#elseif("$!user_is_login" == "yes")
+						#if("$!isBindCard" == "NO")
+                            <div class="main_cdrfive">
+                                存管账户余额：
+								#if($!depBalance == 0) 0.0元
+								#else $string.replace($!money.format($!depBalance),".00","")元
+								#end
+                                <a class="recharge_btn" href="javascript:void(0);">充值</a>
+                            </div>
+                            <p class="rule_tips">*温馨提示：市场有风险，用户需谨慎</p>
+						#else
+                            <div class="main_cdrfive">
+                                存管账户余额：
+								#if($!depBalance == 0)  0.0元
+								#else $string.replace($!money.format($!depBalance),".00","")元
+								#end
+                                <a class="recharge_btn" href="javascript:void(0);">充值</a>
+                            </div>
+                            <p class="rule_tips">*温馨提示：市场有风险，用户需谨慎</p>
+						#end
+					#end
+                </div>
+            </div>
+		#elseif($!productDetail.status == '5')
+            <!-- 计划未开始 -->
+            <div class="main_c_right">
+                <div class="plan_data">
+                    <p>计划剩余金额：<span>$string.replace($!money.format($!productDetail.surplusAmount),".00","")</span>元</p>
+                    <div class="bank_limit main_ctopa withtips">
+                        <div class="detail_tips" style="left: -76px;">点击查看银行限额列表<span></span></div>
+                    </div>
+                </div>
+                <div class="buy_ifo">
+                    <div class="product_hide">
+                        计划未开始
+                    </div>
+                    <p class="buy_tips" id="buy_tip">
+						#if(!$productDetail.maxSingleInvestAmount)
+                            起投金额：<span>$string.replace($!money.format($!productDetail.minInvestAmount),".00","")</span>元
+						#else
+                            限购金额：<span>$string.replace($!money.format($!productDetail.maxSingleInvestAmount),".00","")元</span>
+						#end
+                    </p>
+                    <div class="mian_cdrfou">
+                        <div class="mian_cdrfou" id = "remind_btn"><a hrel="" class="mian_cdrfou_a" >短信提醒我</a></div>
+                    </div>
+					#if("$!user_is_login" == "no")
+                        <div class="main_cdrfive">存管账户余额：<a class="login_btn" href="$!env.get('gen.server.web')/gen178/user/login/index" >登录</a> 后可见</div>
+					#elseif("$!user_is_login" == "yes")
+						#if("$!isBindCard" == "NO")
+                            <div class="main_cdrfive">
+                                存管账户余额：
+								#if($!depBalance == 0) 0.0元
+								#else $string.replace($!money.format($!depBalance),".00","")元
+								#end
+                                <a class="recharge_btn" href="javascript:void(0);">充值</a>
+                            </div>
+						#else
+                            <div class="main_cdrfive">
+                                存管账户余额：
+								#if($!depBalance == 0)  0.0元
+								#else $string.replace($!money.format($!depBalance),".00","")元
+								#end
+                                <a class="recharge_btn" href="javascript:void(0);">充值</a>
+                            </div>
+                            <p class="rule_tips">*温馨提示：市场有风险，用户需谨慎</p>
+						#end
+					#end
+                </div>
+            </div>
+		#elseif($!productDetail.status == '7')
+            <!-- 计划已结束 -->
+            <div class="main_c_right">
+                <div class="plan_data">
+                    <p>计划剩余金额：<span>0</span>元</p>
+                    <div class="bank_limit main_ctopa withtips">
+                        <div class="detail_tips" style="left: -76px;">点击查看银行限额列表<span></span></div>
+                    </div>
+                </div>
+                <div class="buy_ifo">
+                    <div class="product_hide">
+                        计划完成于 $!finishTime
+                    </div>
+                    <br>
+                    <br>
+                    <div class="mian_cdrfou">
+                        <div class="mian_cdrfou"><a hrel="" class="mian_cdrfou_f" >已完成</a></div>
+                    </div>
+                    <p class="rule_tips">*温馨提示：市场有风险，用户需谨慎</p>
+                </div>
+            </div>
+		#else
+            <!-- 计划已结束 -->
+            <div class="main_c_right">
+                <div class="plan_data">
+                    <p>计划剩余金额：<span>0</span>元</p>
+                    <div class="bank_limit main_ctopa withtips">
+                        <div class="detail_tips" style="left: -76px;">点击查看银行限额列表<span></span></div>
+                    </div>
+                </div>
+                <div class="buy_ifo">
+                    <div class="product_hide">
+                        计划完成于 $!finishTime
+                    </div>
+                    <p class="buy_tips" id="buy_tip">
+                        已完成
+                    </p>
+                    <div class="mian_cdrfou">
+                        <div class="mian_cdrfou"><a hrel="" class="mian_cdrfou_f" >已完成</a></div>
+                    </div>
+                    <p class="rule_tips">*温馨提示：市场有风险，用户需谨慎</p>
+                </div>
+            </div>
+		#end
+    </div>
+</div>
+
+<div class="main_down" id="main_down">
+    <ul class="main_down_ul">
+		#if($!tab_flag && $!tab_flag != "")
+            <li><a>计划介绍</a><span></span></li>
+            <li><a>风险控制</a><span></span></li>
+            <li class="selected"><a>加入记录</a><span></span></li>
+		#else
+            <li class="selected"><a>计划介绍</a><span></span></li>
+            <li><a>风险控制</a><span></span></li>
+            <li><a>加入记录</a><span></span></li>
+		#end
+    </ul>
+
+
+    <div class="main_down_div main_down_div_01">
+        <div class="" style="display: block;">
+            <div class="main_down_div_h3">
+                <p>计划基本信息<span></span></p>
+            </div>
+            <div class="main_down_div_one">
+                <div class="main_down_div_otop">
+                    <div class="mdd_otone">计划名称</div>
+                    <div class="mdd_ottwo">$!productDetail.name </div>
+                    <div class="mdd_otone">收益管理费</div>
+                    <div class="mdd_ottwo">
+						#if($!productDetail.manageFee == '0.0')
+                            免收
+						#else
+							#if($!productDetail.propertySymbol == 'ZAN')
+                                实际收益的$string.replace($!number.format("0.00",$!productDetail.manageFee),".00","")% <font color="red">（2017年1月1日前免收）</font>
+							#else
+								$string.replace($!number.format("0.00",$!productDetail.manageFee),".00","")% <font color="red">（2017年1月1日前免收）</font>
+							#end
+						#end
+                    </div>
+                </div>
+                <div class="main_down_div_otop">
+                    <div class="mdd_otone">
+                        计划总额
+                    </div>
+                    <div class="mdd_ottwo">
+						#if($!productDetail.status == '7')
+							$string.replace($!money.format($!productDetail.currTotalAmount),".00","")元
+						#else
+							$string.replace($!money.format($!productDetail.maxTotalAmount),".00","")元
+						#end
+                    </div>
+
+                    <div class="mdd_otone">债权类别</div>
+                    <div class="mdd_ottwo">#if($!productDetail.propertyType == 'CASH_LOOP' ) 小微借款 #elseif($!productDetail.propertyType == 'CONSUME')消费贷 #else $!productDetail.propertyType #end</div>
+
+                </div>
+                <div class="main_down_div_otop">
+                    <div class="mdd_otone">起息时间</div>
+                    <div class="mdd_ottwo">#if($!productDetail.beginInterestDays == 'NEXT_DAY' ) 出借成功当日起息 #elseif($!productDetail.beginInterestDays == 'MATCH_DAY') 出借成功当日起息 #end</div>
+
+                    <div class="mdd_otone">计息方式</div>
+                    <div class="mdd_ottwo">按日计息</div>
+
+                </div>
+                <div class="main_down_div_otop">
+                    <div class="mdd_otone">回款方式</div>
+                    <div class="mdd_ottwo">#if($!productDetail.returnType == 'FINISH_RETURN_ALL' ) 到期还本付息 #elseif($!productDetail.returnType == 'AVERAGE_CAPITAL_PLUS_INTEREST') 等额本息 #end</div>
+
+					#if($!productDetail.propertySymbol == 'ZAN')
+                        <div class="mdd_otone">优惠券</div>
+                        <div class="mdd_ottwo">不支持使用红包</div>
+					#else
+						#if($!productDetail.maxSingleInvestAmount)
+                            <div class="mdd_otone">限购金额</div>
+                            <div class="mdd_ottwo">$string.replace($!money.format($!productDetail.maxSingleInvestAmount),".00","")元</div>
+						#else
+                            <div class="mdd_otone">&nbsp</div>
+                            <div class="mdd_ottwo">&nbsp</div>
+						#end
+
+					#end
+
+                </div>
+				#if($!productDetail.propertySymbol == 'ZAN' && $!productDetail.maxSingleInvestAmount)
+                    <div class="main_down_div_otop">
+                        <div class="mdd_otone">限购金额</div>
+                        <div class="mdd_ottwo">$string.replace($!money.format($!productDetail.maxSingleInvestAmount),".00","")元</div>
+
+                        <div class="mdd_otone">&nbsp</div>
+                        <div class="mdd_ottwo">&nbsp</div>
+                    </div>
+				#end
+                <div class="main_down_div_otop">
+                    <div class="mdd_otone">可加入时间</div>
+                    <div class="mdd_otfou">
+						#if("$!productDetail.endTime" == "")
+							$!date.format($!productDetail.startTime) 起
+						#else
+							$!date.format($!productDetail.startTime) 至  $!date.format($!productDetail.endTime)
+						#end
+                    </div>
+
+                </div>
+            </div>
+			#if("$!productDetail.note" != "")
+                <h3 class="main_down_div_h31 main_down_div_h3 ">
+                    <p>计划简介<span></span></p>
+                </h3>
+                <div class="main_down_div_two">
+					$!productDetail.note
+                </div>
+			#end
+			#if("$!productDetail.propertySummary" != "")
+                <h3 class="main_down_div_h3 main_down_div_h32 ">
+                    <p>合作方简介<span></span></p>
+                </h3>
+                <div class="main_down_div_two">
+					$!productDetail.propertySummary
+                </div>
+			#end
+
+			#if("$!productDetail.returnSource" != "")
+                <h3 class="main_down_div_h3 main_down_div_h32 ">
+                    <p>还款来源<span></span></p>
+                </h3>
+                <div class="main_down_div_two">
+					$!productDetail.returnSource
+                </div>
+			#end
+
+			#if("$!productDetail.coopProtocolPics" != "")
+                <h3 class="main_down_div_h3 main_down_div_h32 ">
+                    <p>合作协议<span></span></p>
+                </h3>
+			#end
+            <div class="main_down_div_thr"  #if("$!productDetail.coopProtocolPics" != "" ) #else style="display:none;" #end>
+                <ul class="mobile clearfix">
+					#set($coop_img_id = 0)
+					#foreach($coopProtocol in $!coopProtocolImgs)
+                        <li><img src="$!coopProtocol" width="100%" height="100%"></li>
+						#set($coop_img_id = $coop_img_id + 1)
+					#end
+                </ul>
+            </div>
+        </div>
+        <div id="bg"></div>
+        <div id="bottom">
+            <ul>
+                <li class="prev" onclick="prev(this)"></li>
+                <li class="img"></li>
+                <li class="close"><img src="$!env.get('gen.server.web')/resources/gen178/images/regular/regular_index/close.png" /></li>
+                <li class="next" onclick="next(this)"></li>
+            </ul>
+
+        </div>
+
+        <div id="frame"  class="bgcom"></div>
+
+
+    </div>
+    <div class="main_down_div main_down_div_two1">
+        <div class="main_down_div_two">
+            <p>币港湾平台对每个产品计划的合作项目都进行了严格的审查，保证风险可控，让用户可以在币港湾上安心收益。</p>
+            <p>币港湾所有产品项目均已对接恒丰银行存管，用户加入成功后，资金将直接进入用户在恒丰银行的存管账户，保障平台资金与用户资金完全隔离。</p>
+        </div>
+
+		#if("$!productDetail.fundSecurity" != "")
+            <h3 class="main_down_div_h3 main_down_div_h32 ">
+                <p>技术保障<span></span></p>
+            </h3>
+            <div class="main_down_div_two">
+				$!productDetail.fundSecurity
+            </div>
+		#end
+
+		#if("$!productDetail.orgnizeCheck" != "" || "$!productDetail.orgnizeCheckPics" != "")
+            <h3 class="main_down_div_h3 main_down_div_h32 ">
+                <p>合作方信息披露<span></span></p>
+            </h3>
+		#end
+
+		#if("$!productDetail.orgnizeCheck" != "")
+            <div class="main_down_div_two">
+				$!productDetail.orgnizeCheck
+            </div>
+		#end
+
+
+        <!--图四  合作方信息披露-->
+        <div class="main_down_div_thr" id="box3" #if("$!productDetail.orgnizeCheckPics" != "" ) #else style="display:none;" #end >
+            <ul class="mobile clearfix">
+				#set($orgnize_img_id = 0)
+				#foreach($orgnizeCheckImg in $!orgnizeCheckImgs)
+                    <li><img src="$!orgnizeCheckImg" width="100%" height="100%"></li>
+					#set($orgnize_img_id = $orgnize_img_id + 1)
+				#end
+            </ul>
+        </div>
+        <!-- 图四  合作方信息披露-->
+
+
+
+		#if("$!productDetail.ratingGrade" != "" || "$!productDetail.ratingGradePics" != "" )
+            <h3 class="main_down_div_h3 main_down_div_h32 ">
+                <p>第三方担保合同<span></span></p>
+            </h3>
+		#end
+
+		#if("$!productDetail.ratingGrade" != "")
+            <div class="main_down_div_two">
+				$!productDetail.ratingGrade
+            </div>
+		#end
+        <!--图三  第三方担保合同-->
+        <div class="main_down_div_thr" id="box2" #if("$!productDetail.ratingGradePics" != "" ) #else style="display:none;" #end>
+            <ul class="mobile clearfix">
+				#set($rating_img_id = 0)
+				#foreach($ratingGradeImg in $!ratingGradeImgs)
+                    <li><img src="$!ratingGradeImg" width="100%" height="100%"></li>
+					#set($rating_img_id = $rating_img_id + 1)
+				#end
+            </ul>
+        </div>
+        <div id="frame2" ></div>
+        <!-- 图三 第三方担保合同-->
+
+		#if("$!productDetail.loanProtocolPics" != "")
+            <h3 class="main_down_div_h3 main_down_div_h32 ">
+                <p>借款合同示例<span></span></p>
+            </h3>
+		#end
+        <!--图二 -->
+        <div class="main_down_div_thr" id="box1" #if("$!productDetail.loanProtocolPics" != "" ) #else style="display:none;" #end>
+            <ul class="mobile clearfix">
+				#set($loan_img_id = 0)
+				#foreach($loanProtocol in $!loanProtocolImgs)
+                    <li><img src="$!loanProtocol" width="100%" height="100%"></li>
+					#set($loan_img_id = $loan_img_id + 1)
+				#end
+            </ul>
+        </div>
+        <!-- 图二-->
+
+    </div>
+    <div class="main_down_div">
+        <div class="main_down_div1_div">
+            <div class="main_down_div1_divt">
+                <div class="main_down_div1_divt1">序号</div>
+                <div class="main_down_div1_divt2">用户</div>
+                <div class="main_down_div1_divt2">金额</div>
+                <div class="main_down_div1_divt3">时间</div>
+            </div>
+            <input type="hidden" name="startNum" value="1" />
+
+			#if("$!totalCount" == "0")
+                <div class="main_down_div1_divc_noinvest">
+                    暂无加入记录
+                </div>
+
+			#else
+				#set($record_id = $!pageNum * 20 - 20)
+				#foreach($record in $!investRecord)
+					#set($record_id = $record_id + 1)
+                    <div class="main_down_div1_divc">
+                        <div class="main_down_div1_divc1">$record_id</div>
+                        <div class="main_down_div1_divc2">$!record.userName </div>
+                        <div class="main_down_div1_divc2">$string.replace($!money.format($!record.balance),".00","")元</div>
+                        <div class="main_down_div1_divc3">$!date.format($!record.openTime)</div>
+                    </div>
+				#end
+
+			#end
+
+        </div>
+        <!--fenye-->
+        <div class="fenye">
+            <div class="fenye_wrap">
+                #if($!totalRows > 0 && $!totalCount > 1)
+                    #set($nextPage = $pageNum + 1)
+                    #set($nextSecondPage = $pageNum + 2)
+                    #set($prePage = $pageNum - 1)
+                    #set($preSecondPage = $pageNum - 2)
+                    #set($totalPage = $totalCount)
+                    <a href="javascript:void(0)" onclick="prePage(1)" class="fy_l">首页</a>
+                    <a href="javascript:void(0)" onclick="prePage($prePage)" class="fy_ll"></a>
+                    #if($!prePage > 0)
+                        #if($!preSecondPage > 0 && $!nextPage > $totalPage)
+                            <a href="javascript:void(0)" onclick="prePage($preSecondPage)" class="fy_c">$!preSecondPage</a>
+                        #end
+                        <a href="javascript:void(0)" onclick="prePage($prePage)" class="fy_c">$!prePage</a>
+                        <a href="javascript:void(0)" class="fy_c fy_atpage">$!pageNum</a>
+                        #if($!nextPage <= $totalPage)
+                            <a href="javascript:void(0)" onclick="nextPage($nextPage)" class="fy_c">$!nextPage</a>
+                        #end
+                    #else
+                        <a href="javascript:void(0)" class="fy_c fy_atpage">$!pageNum</a>
+                        #if($!nextPage <= $totalPage)
+                            <a href="javascript:void(0)" onclick="nextPage($nextPage)" class="fy_c">$!nextPage</a>
+                        #end
+                        #if($!nextSecondPage <= $totalPage)
+                            <a href="javascript:void(0)" onclick="nextPage($nextSecondPage)" class="fy_c">$!nextSecondPage</a>
+                        #end
+                    #end
+                    <a href="javascript:void(0)" onclick="nextPage($nextPage)" class="fy_rr"></a>
+                    <a href="javascript:void(0)" onclick="nextPage($totalPage)" class="fy_r">尾页</a>
+                #end
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+##页面主体-e
+
+##图片弹框背景
+<div class="img_bg">
+    <div class="imgshow_container">
+        <img src="" alt="">
+        <div class="list_warp">
+            <ul class="imgshow_list clearfix">
+            </ul>
+        </div>
+    </div>
+    <div class="imgshow_close"></div>
+</div>
+
+##银行限额列表-s
+<div class="body_bg_regular"></div>
+<div class="bank_list_list">
+    <h3 class="bank_h3">银行限额列表
+        <a class="bank_btn" href="javascript:;">
+            <img src="$!env.get('gen.server.web')/resources/gen178/images/regular/regular_index/bank_right.png"/>
+        </a>
+    </h3>
+    <div class="bank_list_wrap">
+        <div class="bank_list_top">
+            由于各银行会不定时进行自查和系统维护，期间支付限额可能会有所波动，具体金额以银行卡实际允许额度为准，如有疑问请咨询客服。
+        </div>
+        <div class="scr_con">
+            <div id="dv_scroll">
+                <div id="dv_scroll_text" class="Scroller-Container">
+                    <!--<div class="newslist">-->
+                    <div class="deta_container clearfix">
+						#foreach($bank in $bankList)
+                            <div class="bank_list1">
+                                <div class="list_bankname clearfix">
+                                    <i class="ban_list_$!bank.bankId ban_list"></i>
+                                    <span class="list_sp">$!{bank.bankName}</span>
+                                </div>
+                                <div class="list_right">
+									#if($bank.isAvailable == 1)
+                                        单笔$!{bank.oneTop}万,日累计$!{bank.dayTop}万
+									#else
+                                        暂不可用
+									#end
+                                </div>
+                            </div>
+						#end
+
+                    </div>
+                    <!--</div>-->
+                    <!--about end-->
+                </div>
+            </div>
+            <!--dv_scroll end-->
+            <div id="dv_scroll_bar">
+                <div id="dv_scroll_track" class="Scrollbar-Track">
+                    <div class="Scrollbar-Handle"></div>
+                </div>
+            </div>
+            <!--dv_scroll_bar end-->
+        </div>
+    </div>
+</div>
+##银行限额列表-e
+
+
+##计算器--s
+<div id="fiveDialog" class="dialog_notice alert_hide">
+    <div class="wrap_dialog">
+        <div class="dialog_title">
+            <h3 class="Calculatormain_down_div_h3 ">
+                收益计算器
+            </h3>
+            <div class="close">
+                <img src="$!env.get('gen.server.web')/resources/gen178/images/regular/jsq1.png" alt="" class="closeImg">
+            </div>
+        </div>
+        <div class="rule_ul">
+            <ul class="Calculator_table clearfix">
+                <li class="Calculator_tr">
+                    <span class="Calculator_tr1">产品类型</span>
+                    <span class="Calculator_tr2">赞分期</span>
+                    <span class="Calculator_tr1">预期年化利率</span>
+                    <span class="Calculator_tr4">$!number.format("0.00", $!productDetail.baseRate)%</span>
+                    <input type="hidden" id="calBaseRate" name="calBaseRate" value="$!productDetail.baseRate"/>
+                </li>
+                <li class="Calculator_tr">
+                    <span class="Calculator_tr1">回款方式</span>
+                    <span class="Calculator_tr2">等额本息</span>
+                    <span class="Calculator_tr1">委托意向</span>
+                    <span class="Calculator_tr4" >$!productDetail.termMonth个月</span>
+                    <input type="hidden" id="calterm" name="calterm" value="$!productDetail.termMonth"/>
+                </li>
+                <li class="Calculator_tr">
+                    <span class="Calculator_tr1">加入金额</span>
+                    <span class="Calculator_tr2"><b class="Calculator_trmax" id="investAmountShow">0.00</b><i class="Calculator_trmin">元</i></span>
+                    <span class="Calculator_tr1">预期收益</span>
+                    <span class="Calculator_tr4"><b class="Calculator_trmax" id="calAmount">0.00</b><i class="Calculator_trmin">元</i></span>
+                </li>
+            </ul>
+            <div class="Calculator_prompt">收益仅供参考，实际收益请以实际匹配为准</div>
+            <ul class="Calculator_money">
+                <li class="Calculator_money_li2">
+                    <input type="text" name="investAmountIn" id="investAmountIn" maxLength="9" value="" placeholder="请输入加入金额，要求100的整数倍" class="Calculator_money_input" />
+                </li>
+                <li class="Calculator_money_li5">
+                    <a hrel="javascript:;" class="Calculator_money_libtn">开始计算</a>
+                </li>
+                <li><p class="Calculator_money_inputpro" id="calNote"></p></li>
+        </div>
+        <div class="surface">
+            <h3 class="Calculatormain_down_div_h3 ">
+                回款计划表
+            </h3>
+            <div class="surface_title clearfix">
+                <span class="surface_trspan">期次</span>
+                <span class="surface_trspan">月收本息</span>
+                <span class="surface_trspan">月收本金</span>
+                <span class="surface_trspan">月收利息</span>
+                <span class="surface_trspan">剩余本金</span>
+            </div>
+            <ul class="surface_box" id="planList">
+            </ul>
+        </div>
+    </div>
+</div>
+
+##计算器--e
+<!--footer -s-->
+	#Gen178Footer()
+<!--footer -e-->
+
+</body>
+#Html("end")

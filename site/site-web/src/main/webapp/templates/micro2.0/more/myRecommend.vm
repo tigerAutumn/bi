@@ -1,0 +1,54 @@
+#Html("begin")
+#Head("begin","推荐有礼,币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("推荐有礼【币港湾官网】")
+#WeChatShare()
+#Head("end")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/more/I_recommend.min")
+<body class="body">
+    <div class="header">
+    	<a class="header_arrow" href="$!env.getWebURL('/micro2.0/more/more')"></a>
+    	<h1 class="heade_ft oran_color">我的推荐</h1>
+    </div>
+	<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$!env.getWebURL('')" />
+	#if($!bsUserList.size()>0)
+	<input type="hidden" id="pageIndex" name="pageIndex" value="$!pageIndex" />
+	<input type="hidden" id="totalCount" name="totalCount" value="$!totalCount" />
+    <div class="main" id="mainContent" url='/micro2.0/wealth/friend_detail_content'>
+    	<div>
+    		<ul class="i_reco_ul">
+    			<li class="i_reco">手机号</li><li class="i_reco item_time">注册时间</li><li class="i_reco">加入项目状态</li>
+    		</ul>
+    	</div>
+    	<ul class="recommend_content">
+    		#foreach($!user in $!bsUserList)
+        		<li class="item item_top_border">
+        			<div class="item_small item-left">
+        				<i class="bank_bg"></i>
+        				<span class="font_left">$!string.left($!user.mobile,3)****$!string.right($!user.mobile, 4)</span>
+        			</div>
+    				<div class="item_small item_time">
+        				<i class="bank_bg"></i>
+        				<span class="font_left">$!date.formatDateTime($!user.registerTime,'yyyy-MM-dd HH:mm')</span>
+        			</div>
+    				<div class="item_small item-right">
+        				<i class="bank_bg"></i>
+        				<span class="font_left">#if($!user.firstBuyTime) <span class="oran_color_new">已加入</span> #else <span class="blue_color">暂未加入</span> #end</span>
+        			</div>
+        		</li>
+    		#end
+    	</ul>
+		<div class="i_reafter" id="showmore">查看更多</div>
+    </div>
+	#else
+    <hgroup class="i_remhgp">
+    	<h2 class="i_two_null">还没有推荐过呢！</h2>
+    	<h2 class="i_two_null two_top">快去呼朋唤友赢现金吧！</h2>
+    	<img class="i_two_img" src="$!env.getWebURL('resources/micro2.0/images/more/recommend/if_icon.png')" alt="">
+    </hgroup>
+	<a class="i_reco_btn" id="i_reco_btn" href="$!env.getWebURL('/micro2.0/more/toRecommend')" title="">立即分享 赢取现金</a>
+	#end
+#LoadJS("resources/micro2.0/scripts/more/my_recommend")
+</body>
+#Html("end")

@@ -1,0 +1,178 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('wx/autoReply/index.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!req.pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+		
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr style="heig:30px;">
+					<td>
+						消息名称：<input type="text" id="sName" name="sName" size="30" maxlength="10" value="$!req.sName" />
+					</td>
+					<td>
+						关键词：<input type="text" id="sKeywords" name="sKeywords" size="30" maxlength="10" value="$!req.sKeywords" />
+					</td>
+					<td style="padding-top:8px;">
+						回复类型：
+						<div style="float: right;margin-top: -3px;">
+						<select name="sReplyType" id="sReplyType" class="combox" >
+            				<option value="SUBSCRIBE_REPLY" #if("$!req.sReplyType"=="SUBSCRIBE_REPLY") selected  #end>关注时回复</option>
+        					<option value="AUTO_REPLY" #if("$!req.sReplyType"=="AUTO_REPLY") selected  #end>自动回复</option>
+        					<option value="KEY_REPLY" #if("$!req.sReplyType"=="KEY_REPLY") selected  #end>关键字回复</option>
+							<option value="" #if("$!req.sReplyType"=="") selected  #end>全部</option>
+        				</select>
+                        </div>
+					</td>
+					<td style="padding-top:8px;">
+						消息类型：
+						<div style="float: right;margin-top: -3px;">
+						<select name="sMsgType" id="sMsgType" class="combox">
+            				<option value="text" #if("$!req.sMsgType"=="text") selected  #end>文本</option>
+							<option value="news" #if("$!req.sMsgType"=="news") selected  #end>图文</option>
+							<option value="" #if("$!req.sMsgType"=="") selected  #end>全部</option>
+        				</select>
+                        </div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						图文消息标题：<input type="text" id="sTitle" name="sTitle" size="30" maxlength="20" value="$!req.sTitle" />
+					</td>
+					<td>
+						文本内容：<input type="text" id="sContent" name="sContent" size="30" maxlength="20" value="$!req.sContent" />
+					</td>
+					<td colspan = "2">
+						修改日期：<input name="startTime" maxdate="{%y}-%M-{%d}"   type="text"  id="startTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.startTime)" size="10"/>
+						至<input name="endTime" maxdate="{%y}-%M-{%d}"   type="text"  id="endTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.endTime)" size="10"/>
+					</td>
+					
+					<td>
+						<button  type="button" onclick="dataSearch()">查询</button>
+					</td>
+				</tr>
+			</table>
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+        		<ul class="toolBar">
+					<li><a class="add" href="$env.getWebURL('wx/autoReply/detail.htm?type=addNew')" target="navtab" mask="true" rel="createBack" ><span>新增</span></a></li>
+        		</ul>
+        	</div>
+	<table class="table" width="1082" layoutH="170">
+		<thead>
+			<tr>
+				<th width="10%">消息名称</th>
+				<th width="10%">回复类型</th>
+				<th width="10%">关键词</th>
+				<th width="5%">消息类型</th>
+				<th width="15%">图文消息标题</th>
+				<th width="10%">文本内容</th>
+				<th width="5%">图片url</th>
+				<th width="8%">图文跳转url</th>
+				<th width="12%">修改时间</th>
+				<th width="15%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($reply in $replyList)
+			<tr target="sid_user" rel="1">
+				
+				<td>$!reply.name</td>	
+				<td>
+					#if($!reply.replyType == 'SUBSCRIBE_REPLY')
+						关注时回复
+					#elseif($!reply.replyType == 'AUTO_REPLY')
+						自动回复
+					#elseif($!reply.replyType == 'KEY_REPLY')
+						关键字回复
+					#end
+				</td>	
+				<td>$!reply.keywords</td>	
+				<td>
+					#if($!reply.msgType == 'text')
+						文本
+					#elseif($!reply.msgType == 'news')
+						图文
+					#end
+				</td>
+				<td>$!reply.title</td>	
+				<td>$!reply.content</td>	
+				<td>#if($!reply.picUrl && $!reply.picUrl != '')<a href=$!reply.picUrl target="view_window">查看</a>#else &nbsp;#end</td>	
+				<td>#if($!reply.url && $!reply.url !='')<a href=$!reply.url target="view_window">点击查看</a>#else &nbsp;#end</td>	
+				<td>$!date.format($!reply.updateTime)</td>	
+				<td>
+					<a class="" href="$env.getWebURL('/wx/autoReply/detail.htm?type=update&id=')$!reply.id" target="navtab" mask="true" rel="createBack" style="margin-left:10px;margin-right:10px;"><span>编辑</span></a> 
+					<a title="删除" class='refuse_a' onclick="click_a(this)" grid_id="$!reply.id" href="javascript:void(0)" mask="true" url="$env.getWebURL('/wx/autoReply/delete.htm')">删除</a>
+					
+					#if($!reply.msgType == 'news')
+						<a class="" href="$env.getWebURL('/wx/autoReply/detail.htm?type=add&id=')$!reply.id" target="navtab" mask="true" rel="createBack" style="margin-left:10px;margin-right:10px;"><span>新增图文</span></a>
+					#end
+					
+					
+				</td>	
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+
+	</div>
+</div>
+
+	<script>
+
+	function dataSearch() {
+		var url = $("#APP_ROOT_PATH").val().trim() + "/wx/autoReply/index.htm";
+		$("#myform").attr("action",url);
+		$("#myform").attr("onsubmit","return navTabSearch(this);");
+		$("#myform").submit();
+	}
+	
+	function click_a(obj){
+            var $this = $(obj);
+            var title = $this.attr("title");
+                  alertMsg.confirm(title, {
+                        okCall: function(){
+                            jQuery.ajax({
+                            	url:$this.attr("url"),
+                            	data:{
+                            		id: $this.attr('grid_id')
+                            	},
+                            	type:'post',
+                            	success: function(data){
+									if(data.statusCode == '200'){
+										alertMsg.correct('操作成功！');
+                            			navTab.reload("$env.getWebURL('wx/autoReply/index.htm')");
+									}else{
+										alertMsg.error('操作失败!');
+                            			navTab.reload("$env.getWebURL('wx/autoReply/index.htm')");
+									}
+
+                            	}
+                            });
+                        }
+                  });
+	}	
+	</script>

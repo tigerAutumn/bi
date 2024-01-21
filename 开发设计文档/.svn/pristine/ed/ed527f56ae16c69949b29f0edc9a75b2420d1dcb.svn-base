@@ -1,0 +1,56 @@
+## 积分记录
+### 一、页面数据
+#### 1、描述
+点击积分记录，调用积分记录页面接口
+#### 2、接口
+##### a.接口链接
+{channel}/mallPoints/pointsRecord
+> + 微信请求channel为h5
+> + 安卓请求channel为android
+> + 苹果请求channel为ios
+> + 电脑请求channel为pc
+##### b.接口地址
+com.pinting.mall.controller.points.MallPointsController.pointsRecord
+#### 3、流程
+##### a.一期
+
+```
+    判断channel
+        当channel为h5时
+            从cookie中获取userId
+            执行分享相关代码
+            返回页面设置为 mall/points/mall_points_record
+        当channel为android或者ios时
+            从请求request中获取移动端标识client和userId
+            返回页面设置为 mall/points/mall_points_record_app
+    判断userId是否为空
+        当userId不为空时
+            获取用户积分
+            返回参数中加入用户积分
+            获取用户积分记录
+            返回参数中加入用户积分记录的列表和列表条数
+    返回页面
+```
+
+##### b.二期
+```
+    判断channel
+        当channel为android或者ios时
+            从请求request中获取移动端标识client和userId
+            返回页面设置为 mall/points/mall_points_record_app
+        否则
+            从cookie中获取userId
+            判断channel
+                当channel为h5时
+                    执行分享相关代码
+                    返回页面设置为 mall/points/mall_points_record
+                当channel为pc时
+                    返回页面设置为 mall2.0/exchange/record
+    判断userId是否为空
+        当userId不为空时
+            获取用户积分
+            返回参数中加入用户积分
+            获取用户积分记录
+            返回参数中加入用户积分记录的列表和列表条数
+    返回页面
+```

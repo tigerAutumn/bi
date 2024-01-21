@@ -1,0 +1,41 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/regular/six")
+#LoadCSS("resources/micro2.0/styles/regular/default")
+#LoadCSS("resources/micro2.0/styles/regular/rechargeable.min")
+#WeChatShare()
+#Head("end")
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="qianbao" value="$!qianbao">
+    <input type="hidden" id="agentViewFlag" value="$!agentViewFlag">
+    <div class="header">
+    	<a class="header_arrow" href="javascript:go_history()"></a>
+    	<h1 class="heade_ft oran_color">充值结果</h1>
+    </div>
+    <h2 class="ACC_null_title">币港湾已收到您的充值申请，<br>正在处理中，请稍等
+    	（结果将以短信通知）</h2>
+    <div class="dep_null_img"></div>
+    #if("$!qianbao" == "qianbao")
+        <a class="invite" href="$!env.getWebURL('micro2.0/assets/assets?qianbao=qianbao')&agentViewFlag=$!agentViewFlag" >点击查看我的资产</a>
+    #else
+    	<a class="invite" href="$!env.getWebURL('micro2.0/assets/assets')" >点击查看我的资产</a>
+    #end
+    <div class="dep_service">
+    	<p class="service_info">如您对此次交易有疑问</p>
+    	<p class="service_info_number">请联系客服：<span><a class="ser_color" href="tel:4008061230">400-806-1230</a></span></p>
+    </div>
+    <script>
+        function go_history() {
+            if($('#qianbao').val() == 'qianbao') {
+                location.href = $('#APP_ROOT_PATH').val() + '/micro2.0/topUp/top_up?qianbao=qianbao&agentViewFlag=' + $('#agentViewFlag').val();
+            } else {
+                location.href = $('#APP_ROOT_PATH').val() + '/micro2.0/topUp/top_up';
+            }
+        }
+    </script>
+#LoadJS("resources/micro2.0/scripts/zepto.min")
+#LoadJS("resources/micro2.0/scripts/regular/custom")
+</body>
+#Html("end")

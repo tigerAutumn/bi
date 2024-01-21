@@ -1,0 +1,169 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="page unitBox">
+    <div class="pageHeader">
+        <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/fee/withdrawFeeList.htm')" id="myform"  method="post">
+            <input type="hidden" name="pageNum" value="$!pageNum" />
+            <input type="hidden" name="numPerPage" value="$!numPerPage" />
+            <input type="hidden" id="queryDateFlag" name="queryDateFlag" value="QUERYDATE" />
+            <div class="searchBar">
+                <table class="searchContent">
+                    <tr>
+                        <td>
+                            姓名：<input style="width: 120px;" name="userName" id="userName" maxlength="4" value="$!userName" />
+                        </td>
+                        <td>
+                            手机号：<input style="width: 120px;" name="mobile" id="mobile" maxlength="11" size="11" value="$!mobile" />
+                        </td>
+                        <td>
+                            <label>收取端口</label>
+                            <select id="channel" name="channel">
+                                <option value="">全部</option>
+                                <option value="HFBANK" #if("$!channel"=="HFBANK") selected  #end>恒丰</option>
+                                <option value="BAOFOO" #if("$!channel"=="BAOFOO") selected  #end>宝付</option>
+                            </select>
+                        </td>
+                        <td>
+                            <label>产生日期</label>
+                            <input name="startTime" maxdate="{%y}-%M-{%d}" type="text" id="startTime" class="date textInput readonly" readonly="true" value="$!startTime"/>
+                            到
+                            <input name="endTime" maxdate="{%y}-%M-{%d}" type="text" id="endTime" class="date textInput readonly" readonly="true" value="$!endTime"/>
+                        </td>
+                        <td>
+                            <button onclick="searchFeeFunction()" type="button">查询</button>
+                        </td>
+                        <td>
+                            <button onclick="exp()" type="button">导出</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:red">手续费总额： $!money.format($!sumWithdrawFee) 元 </span></td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="pageContent">
+        <table class="table" width="1396" layoutH="118">
+            <thead>
+            <tr>
+                <th width="2%">序号</th>
+                <th width="3%">姓名</th>
+                <th width="3%">手机号</th>
+                <th width="5%">订单编号</th>
+                <th width="2%">手续费类型</th>
+                <th width="3%">操作金额</th>
+                <th width="3%">收取手续费</th>
+                <th width="3%">收取端口</th>
+                <th width="5%">产生时间</th>
+            </tr>
+            </thead>
+            <tbody>
+                #foreach($grid in $feeList)
+                <tr target="sid_user" rel="1">
+                    #if($!numPerPage == 20)
+                        #set($a=$!velocityCount + 20 * ($!pageNum - 1))
+                        <td>$a</td>
+                    #elseif($!numPerPage == 50)
+                        #set($b=$!velocityCount + 50 * ($!pageNum - 1))
+                        <td>$b</td>
+                    #elseif($!numPerPage == 100)
+                        #set($c=$!velocityCount + 100 * ($!pageNum - 1))
+                        <td>$c</td>
+                    #elseif($!numPerPage == 200)
+                        #set($d=$!velocityCount + 200 * ($!pageNum - 1))
+                        <td>$d</td>
+                    #end
+                    <td>$!grid.userName</td>
+                    <td>$!grid.mobile</td>
+
+                    <td>$!grid.orderNo</td>
+                    <td>
+                        #if("$!grid.feeType"=="FINANCE_WITHDRAW")提现
+                        #end
+                    </td>
+                    <td>$!money.format($!grid.transAmount)</td>
+                    <td>$!money.format($!grid.doneFee)</td>
+                    <td>
+                        #if("$!grid.channel"=="HFBANK")恒丰
+                        #elseif("$!grid.channel"=="BAOFOO")宝付
+                        #end
+                    </td>
+                    <td>$!date.format($!grid.createTime)</td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+        <div class="panelBar">
+            <div class="pages">
+                <span>显示</span>
+                <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                    <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                    <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                    <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                    <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+                </select>
+                <span>条，共$!count条</span>
+            </div>
+            <div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+        </div>
+    </div>
+
+</div>
+<script>
+    function searchFeeFunction(){
+        var mobile = $("#mobile").val().trim();
+        if(mobile != ""){
+            var reg = /^1[34587]\d{9}$/;
+            if(!reg.test(mobile)) {
+                alertMsg.warn("手机号不正确，请重新输入！");
+                return;
+            }
+        }
+
+        var beginTime = $("#startTime").val();
+        var overTime = $("#endTime").val();
+        if(beginTime != "" && overTime != ""){
+            var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+            if(result < 0){
+                alert("开始时间不能在结束时间之后！");
+                return false;
+            }
+        }
+
+        var url = $("#APP_ROOT_PATH").val() + "/fee/withdrawFeeList.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+
+    //导出excel
+    function exp(){
+        var mobile = $("#mobile").val().trim();
+        if(mobile != ""){
+            var reg = /^1[34587]\d{9}$/;
+            if(!reg.test(mobile)) {
+                alertMsg.warn("手机号不正确，请重新输入！");
+                return;
+            }
+        }
+
+        var beginTime = $("#startTime").val();
+        var overTime = $("#endTime").val();
+        if(beginTime != "" && overTime != ""){
+            var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+            if(result < 0){
+                alert("开始时间不能在结束时间之后！");
+                return false;
+            }
+        }
+
+        var url = $("#APP_ROOT_PATH").val() + "/fee/exportXls.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","");
+        $("#myform").submit();
+    }
+</script>

@@ -1,0 +1,103 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform_user" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/sales/user/index.htm')" method="post">
+    	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+    	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    	<input type="hidden" name="pageNum" value="$!pageNum" />
+    	<input type="hidden" name="id" value="$!id" />
+    	<input type="hidden" name="grade" value="$!grade" />
+		<input type="hidden" name="salesName" value="$!salesName" />
+    	<input type="hidden" name="totalRows" value="$!totalRows" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						姓名：<input id="userName" type="text" name="userName" maxlength="20" value="$!userName" class="clear"/>
+					
+						手机号码：<input id="mobile" type="text" name="mobile" maxlength="20" value="$!mobile" class="clear"/>
+						
+						成交日期：<input name="startTime"   type="text"  id="startTimeUser" class=" date textInput readonly" readonly="true" value="$!startTime" dateFmt="yyyy-MM-dd HH:mm:ss"/>
+						到<input name="endTime" type="text" id="endTimeUser" class=" date textInput readonly" readonly="true" value="$!endTime" dateFmt="yyyy-MM-dd HH:mm:ss"/>
+						
+						购买金额：<input name="startMoney" type="text" id="startMoney" value="$!startMoney" />
+						到 <input name="endMoney" type="text" id="endMoney" value="$!endMoney" />
+					</td>
+					<td>
+						<button  onclick="func_user()" type="button">查询</button>
+						<button  onclick="exptest()" type="button">导出excel</button>
+					</td>
+				</tr>
+			</table>
+		</div> 
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="70">序号</th>
+				<th width="70">姓名</th>
+				<th width="60">手机号</th>
+				<th width="60">邀请人</th>
+				<th width="60">购买产品</th>
+				<th width="66">购买金额</th>
+				<th width="60">购买时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($userSales in $userSalesList)
+			<tr>
+				<td>$!userSales.id</td>
+				<td>$!userSales.userName</td>
+				<td>$!userSales.mobile</td>
+				<td>#if($!grade == 1)$!userSales.salesName#else$!userSales.recommendName#end</td>
+				<td>$!userSales.productName</td>
+				<td>$!money.format($!userSales.balance)</td>
+				<td>$!date.format($!userSales.openTime)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+<script>
+function func_user(){
+	var beginTime = $("#startTimeUser").val();
+	var overTime = $("#endTimeUser").val();
+    if(beginTime != "" && overTime != ""){
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alertMsg.warn("开始时间不能在结束时间之后！");
+			return false;
+		}
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/sales/user/index.htm";
+	$("#myform_user").attr("action",url);
+	$("#myform_user").attr("onsubmit","return navTabSearch(this);");
+	$("#myform_user").submit();
+}
+
+function exptest(){
+	var url = $("#APP_ROOT_PATH").val() + "/sales/user/xls.htm";
+	$("#myform_user").attr("action",url);
+	$("#myform_user").attr("onsubmit","");
+	$("#myform_user").submit();
+}
+</script>

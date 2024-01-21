@@ -1,0 +1,159 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!product.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!product.numPerPage" />
+	<input type="hidden" name="orderField" value="$!{param.orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{param.orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" method="post" rel="pagerForm" action="$env.getWebURL('/pinting/account/withdrawDetail.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" name="pageNum" value="$!product.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!product.numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+			<tbody>
+			<tr>
+				<td>
+					到账开始日期：<input type="text" readonly="true" class="date textInput readonly" name="finishTimeBegin" id="finishTimeBegin" value="$!date.formatYYYYMMDD($!req.finishTimeBegin)">
+				</td>
+				<td>
+					到账结束日期：<input type="text" readonly="true" class="date textInput readonly" name="finishTimeEnd" id="finishTimeEnd" value="$!date.formatYYYYMMDD($!req.finishTimeEnd)">
+				</td>
+				
+				<td>
+					账户状态：
+				<select name="status" >
+					<option value="0" #if("$!req.status"=="0") selected #end>全部</option>
+					<option value="1" #if("$!req.status"=="1") selected  #end>发起提现</option>
+					<option value="2" #if("$!req.status"=="2") selected  #end>提现成功</option>
+					<option value="3" #if("$!req.status"=="3") selected  #end>提现失败</option>
+				</select>
+                </td>
+			</tr>
+			<tr>
+				<td>
+					提现开始日期：<input type="text" readonly="true" class="date textInput readonly" name="withdrawTimeBegin" id="withdrawTimeBegin" value="$!date.formatYYYYMMDD($!req.withdrawTimeBegin)">
+				</td>
+				<td>
+					提现结束日期：<input type="text" readonly="true" class="date textInput readonly" name="withdrawTimeEnd" id="withdrawTimeEnd" value="$!date.formatYYYYMMDD($!req.withdrawTimeEnd)">
+				</td>
+				<td>
+					<input type="button" id="search" onclick="func()" value="查询"/>
+                </td>
+			</tr>
+		</tbody></table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="15%">提现编号</th>
+				<th width="12.5%">金额</th>
+                <th width="12.5%">提现时间</th>
+				<th width="12.5%">到账时间</th>
+				<th width="10%">状态</th>
+				<th width="12.5%">开始流水号</th>
+				<th width="12.5%">结束流水号</th>
+				<th width="12.5%">失败原因</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($product in $withdrawList)
+			<tr target="sid_user" rel="1">
+                <td>
+					$!product.applyNo
+				</td>
+				<td>
+					$!money.format($!product.amount)
+				</td>
+				<td>
+					$!date.format($!product.withdrawTime)
+				</td>
+                <td>
+					$!date.format($!product.finishTime)
+				</td>
+	            <td>
+					$!message.get("SYS_WITHDRAW_$!product.status")
+				</td>
+				
+				<td>
+					$!product.startJnlNo
+				</td>
+				<td>
+					$!product.endJnlNo
+                </td>
+				
+				<td>
+					$!product.fail_reason
+                </td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!product.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!product.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!product.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!product.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!product.totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!product.totalRows" numPerPage="$!product.numPerPage" currentPage="$!product.pageNum"></div>
+
+	</div>
+</div>
+	
+<script>
+
+function func(){
+	var finishTimeBegin = $("#finishTimeBegin").val();
+	var finishTimeEnd = $("#finishTimeEnd").val();
+	
+	if(finishTimeBegin != "" && finishTimeEnd == ""){
+		alert("请输入到账结束时间！");
+		return false;
+	}
+	
+	if(finishTimeBegin == "" && finishTimeEnd != ""){
+		alert("请输入到账开始时间！");
+		return false;
+	}
+	
+	if(finishTimeBegin != "" && finishTimeEnd != ""){
+		var result = Date.parse(finishTimeEnd.replace(/-/g,"/"))- Date.parse(finishTimeBegin.replace(/-/g,"/"));
+		if(result < 0){
+			alert("到账开始时间不能在到账结束时间之后！！");
+			return false;
+		}
+	}
+	
+	var withdrawTimeBegin = $("#withdrawTimeBegin").val();
+	var withdrawTimeEnd = $("#withdrawTimeEnd").val();
+	
+	if(withdrawTimeBegin != "" && withdrawTimeEnd == ""){
+		alert("请输入提现结束时间！");
+		return false;
+	}
+	
+	if(withdrawTimeBegin == "" && withdrawTimeEnd != ""){
+		alert("请输入提现开始时间！");
+		return false;
+	}
+	
+	if(withdrawTimeBegin != "" && withdrawTimeEnd != ""){
+		var result = Date.parse(withdrawTimeEnd.replace(/-/g,"/"))- Date.parse(withdrawTimeBegin.replace(/-/g,"/"));
+		if(result < 0){
+			alert("提现开始时间不能在提现结束时间之后！！");
+			return false;
+		}
+	}
+	
+	$("#myform").submit();
+}
+
+</script>

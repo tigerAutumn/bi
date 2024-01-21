@@ -1,0 +1,67 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/regular/payment_failed.min")
+#WeChatShare()
+#Head("end")
+<body>
+<div class="header">
+	#if("$!qianbao" == "qianbao")
+        <a class="header_arrow" href="$!env.getWebURL('micro2.0/assets/assets')?qianbao=qianbao&agentViewFlag=$!agentViewFlag"></a>
+    #else
+        <a class="header_arrow" href="$!env.getWebURL('micro2.0/assets/assets')"></a>
+    #end
+    <h1 class="heade_ft oran_color">提现结果</h1>
+</div>
+<h2 class="result-title">
+	#if($!resCode == '000')
+        <span class="result-info">币港湾已收到您的提现申请，正在处理中
+		##		#if($!isNeedCheck == 'true')
+		##		，预计到账时间为$!date.formatDateTime($!time,'yyyy年MM月dd日 HH:mm') 之前
+		##		#else
+    			<br />
+		##		#end
+    	（结果将以短信通知）</span>
+	#else
+        <span class="result-info">提现申请失败，原因：$!resMsg</span>
+	#end
+</h2>
+<div class="result-img"></div>
+	#if($!resCode == '000')
+		#if("$!qianbao" == "qianbao")
+        <a class="invite" href="$!env.getWebURL('micro2.0/assets/assets')?qianbao=qianbao&agentViewFlag=$!agentViewFlag" title="">完成</a>
+		#else
+        <a class="invite" href="$!env.getWebURL('micro2.0/assets/assets')" title="">完成</a>
+		#end
+	#else
+		#if("$!qianbao" == "qianbao")
+        <a class="invite" href="$!env.getWebURL('micro2.0/withdraw/withdraw_deposit')?qianbao=qianbao&agentViewFlag=$!agentViewFlag" title="">返回提现</a>
+		#else
+        <a class="invite" href="$!env.getWebURL('micro2.0/withdraw/withdraw_deposit')" title="">返回提现</a>
+		#end
+	#end
+
+<div class="dep_service">
+    <p class="service_info">如您对此次交易有疑问</p>
+    <p class="service_info_number">请联系客服：<a class="ser_color" href="tel:4008061230">400-806-1230</a></p>
+</div>
+	#LoadJS("resources/micro2.0/scripts/zepto.min")
+	#LoadJS("resources/micro2.0/scripts/assets/custom")
+	<script>
+		$(function(){
+    		//拦截安卓回退按钮，调用H5的返回方法
+            history.pushState(null, null, location.href);
+            window.addEventListener('popstate', function (event) {
+                history.pushState(null, null, location.href);
+				if("$!qianbao" == "qianbao"){
+					location.href="$!env.getWebURL('micro2.0/assets/assets')?qianbao=qianbao&agentViewFlag=$!agentViewFlag"
+				}else{
+					location.href="$!env.getWebURL('micro2.0/assets/assets')"
+				}
+            });
+    	})
+	</script>
+</body>
+#Html("end")

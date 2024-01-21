@@ -1,0 +1,2681 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinting.business.dao.LnLoanRelationMapper">
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.LnLoanRelation">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="loan_id" jdbcType="INTEGER" property="loanId" />
+    <result column="bs_user_id" jdbcType="INTEGER" property="bsUserId" />
+    <result column="bs_sub_account_id" jdbcType="INTEGER" property="bsSubAccountId" />
+    <result column="ln_user_id" jdbcType="INTEGER" property="lnUserId" />
+    <result column="ln_sub_account_id" jdbcType="INTEGER" property="lnSubAccountId" />
+    <result column="init_amount" jdbcType="DOUBLE" property="initAmount" />
+    <result column="discount_amount" jdbcType="DOUBLE" property="discountAmount" />
+    <result column="total_amount" jdbcType="DOUBLE" property="totalAmount" />
+    <result column="left_amount" jdbcType="DOUBLE" property="leftAmount" />
+    <result column="first_term" jdbcType="INTEGER" property="firstTerm" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="trans_mark" jdbcType="VARCHAR" property="transMark" />
+    <result column="bid_status" jdbcType="VARCHAR" property="bidStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <resultMap id="BaseResultVOMap" type="com.pinting.business.model.vo.LoanRelationVO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="loan_id" jdbcType="INTEGER" property="loanId" />
+    <result column="bs_user_id" jdbcType="INTEGER" property="bsUserId" />
+    <result column="bs_sub_account_id" jdbcType="INTEGER" property="bsSubAccountId" />
+    <result column="ln_user_id" jdbcType="INTEGER" property="lnUserId" />
+    <result column="ln_sub_account_id" jdbcType="INTEGER" property="lnSubAccountId" />
+    <result column="total_amount" jdbcType="DOUBLE" property="totalAmount" />
+    <result column="left_amount" jdbcType="DOUBLE" property="leftAmount" />
+    <result column="first_term" jdbcType="INTEGER" property="firstTerm" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="loan_time" jdbcType="TIMESTAMP" property="loanTime" />
+    <result column="period" jdbcType="INTEGER" property="period" />
+
+  </resultMap>
+  <resultMap id="BsUser4LoanVO" type="com.pinting.business.model.vo.BsUser4LoanVO">
+    <result column="user_account" jdbcType="VARCHAR" property="userAccount" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_idCardNo" jdbcType="VARCHAR" property="userIdCardNo" />
+    <result column="out_amount" jdbcType="DOUBLE" property="outAmount" />
+    <result column="term" jdbcType="INTEGER" property="term" />
+    <result column="id" jdbcType="INTEGER" property="userId" />
+  </resultMap>
+
+  <resultMap id="DailyAmount4LoanVOMap" type="com.pinting.business.model.vo.DailyAmount4LoanVO">
+    <result column="term" jdbcType="INTEGER" property="term" />
+    <result column="sum_amount" jdbcType="DOUBLE" property="sumAmount" />
+  </resultMap>
+
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, loan_id, bs_user_id, bs_sub_account_id, ln_user_id, ln_sub_account_id,  
+    init_amount, discount_amount, total_amount, left_amount, first_term, 
+    status, trans_mark, bid_status, create_time, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.pinting.business.model.LnLoanRelationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ln_loan_relation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ln_loan_relation
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ln_loan_relation
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.LnLoanRelationExample">
+    delete from ln_loan_relation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.LnLoanRelation">
+    insert into ln_loan_relation (id, loan_id, bs_user_id, 
+      bs_sub_account_id, ln_user_id, ln_sub_account_id, 
+      init_amount, 
+      discount_amount, total_amount, left_amount, 
+      first_term, status, trans_mark, 
+      bid_status, create_time, update_time
+	  )
+    values (#{id,jdbcType=INTEGER}, #{loanId,jdbcType=INTEGER}, #{bsUserId,jdbcType=INTEGER}, 
+       #{bsSubAccountId,jdbcType=INTEGER}, #{lnUserId,jdbcType=INTEGER}, #{lnSubAccountId,jdbcType=INTEGER}, 
+      #{initAmount,jdbcType=DOUBLE}, 
+      #{discountAmount,jdbcType=DOUBLE}, #{totalAmount,jdbcType=DOUBLE}, #{leftAmount,jdbcType=DOUBLE}, 
+      #{firstTerm,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{transMark,jdbcType=VARCHAR}, 
+      #{bidStatus,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+	  )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.LnLoanRelation" useGeneratedKeys="true"
+          keyProperty="id">
+    insert into ln_loan_relation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="loanId != null">
+        loan_id,
+      </if>
+      <if test="bsUserId != null">
+        bs_user_id,
+      </if>
+      <if test="bsSubAccountId != null">
+        bs_sub_account_id,
+      </if>
+      <if test="lnUserId != null">
+        ln_user_id,
+      </if>
+      <if test="lnSubAccountId != null">
+        ln_sub_account_id,
+      </if>
+      <if test="initAmount != null">
+        init_amount,
+      </if>
+      <if test="discountAmount != null">
+        discount_amount,
+      </if>
+      <if test="totalAmount != null">
+        total_amount,
+      </if>
+      <if test="leftAmount != null">
+        left_amount,
+      </if>
+      <if test="firstTerm != null">
+        first_term,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="transMark != null">
+        trans_mark,
+      </if>
+      <if test="bidStatus != null">
+        bid_status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="loanId != null">
+        #{loanId,jdbcType=INTEGER},
+      </if>
+      <if test="bsUserId != null">
+        #{bsUserId,jdbcType=INTEGER},
+      </if>
+      <if test="bsSubAccountId != null">
+        #{bsSubAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="lnUserId != null">
+        #{lnUserId,jdbcType=INTEGER},
+      </if>
+      <if test="lnSubAccountId != null">
+        #{lnSubAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="initAmount != null">
+        #{initAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="discountAmount != null">
+        #{discountAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="totalAmount != null">
+        #{totalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="leftAmount != null">
+        #{leftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="firstTerm != null">
+        #{firstTerm,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="transMark != null">
+        #{transMark,jdbcType=VARCHAR},
+      </if>
+      <if test="bidStatus != null">
+        #{bidStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.LnLoanRelationExample" resultType="java.lang.Integer">
+    select count(*) from ln_loan_relation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ln_loan_relation
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.loanId != null">
+        loan_id = #{record.loanId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bsUserId != null">
+        bs_user_id = #{record.bsUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bsSubAccountId != null">
+        bs_sub_account_id = #{record.bsSubAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="record.lnUserId != null">
+        ln_user_id = #{record.lnUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.lnSubAccountId != null">
+        ln_sub_account_id = #{record.lnSubAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="record.initAmount != null">
+        init_amount = #{record.initAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.discountAmount != null">
+        discount_amount = #{record.discountAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalAmount != null">
+        total_amount = #{record.totalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.leftAmount != null">
+        left_amount = #{record.leftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.firstTerm != null">
+        first_term = #{record.firstTerm,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.transMark != null">
+        trans_mark = #{record.transMark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bidStatus != null">
+        bid_status = #{record.bidStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ln_loan_relation
+    set id = #{record.id,jdbcType=INTEGER},
+      loan_id = #{record.loanId,jdbcType=INTEGER},
+      bs_user_id = #{record.bsUserId,jdbcType=INTEGER},
+      bs_sub_account_id = #{record.bsSubAccountId,jdbcType=INTEGER},
+      ln_user_id = #{record.lnUserId,jdbcType=INTEGER},
+      ln_sub_account_id = #{record.lnSubAccountId,jdbcType=INTEGER},
+      init_amount = #{record.initAmount,jdbcType=DOUBLE},
+      discount_amount = #{record.discountAmount,jdbcType=DOUBLE},
+      total_amount = #{record.totalAmount,jdbcType=DOUBLE},
+      left_amount = #{record.leftAmount,jdbcType=DOUBLE},
+      first_term = #{record.firstTerm,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      trans_mark = #{record.transMark,jdbcType=VARCHAR},
+      bid_status = #{record.bidStatus,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.LnLoanRelation">
+    update ln_loan_relation
+    <set>
+      <if test="loanId != null">
+        loan_id = #{loanId,jdbcType=INTEGER},
+      </if>
+      <if test="bsUserId != null">
+        bs_user_id = #{bsUserId,jdbcType=INTEGER},
+      </if>
+      <if test="bsSubAccountId != null">
+        bs_sub_account_id = #{bsSubAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="lnUserId != null">
+        ln_user_id = #{lnUserId,jdbcType=INTEGER},
+      </if>
+      <if test="lnSubAccountId != null">
+        ln_sub_account_id = #{lnSubAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="initAmount != null">
+        init_amount = #{initAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="discountAmount != null">
+        discount_amount = #{discountAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="totalAmount != null">
+        total_amount = #{totalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="leftAmount != null">
+        left_amount = #{leftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="firstTerm != null">
+        first_term = #{firstTerm,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="transMark != null">
+        trans_mark = #{transMark,jdbcType=VARCHAR},
+      </if>
+      <if test="bidStatus != null">
+        bid_status = #{bidStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.LnLoanRelation">
+    update ln_loan_relation
+    set loan_id = #{loanId,jdbcType=INTEGER},
+      bs_user_id = #{bsUserId,jdbcType=INTEGER},
+      bs_sub_account_id = #{bsSubAccountId,jdbcType=INTEGER},
+      ln_user_id = #{lnUserId,jdbcType=INTEGER},
+      ln_sub_account_id = #{lnSubAccountId,jdbcType=INTEGER},
+      init_amount = #{initAmount,jdbcType=DOUBLE},
+      discount_amount = #{discountAmount,jdbcType=DOUBLE},
+      total_amount = #{totalAmount,jdbcType=DOUBLE},
+      left_amount = #{leftAmount,jdbcType=DOUBLE},
+      first_term = #{firstTerm,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      trans_mark = #{transMark,jdbcType=VARCHAR},
+      bid_status = #{bidStatus,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <resultMap id="lnLoanRelationVOMap" type="com.pinting.business.model.vo.LnLoanRelationVO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="borrowerName" />
+    <result column="approve_amount" jdbcType="DOUBLE" property="approveAmount" />
+    <result column="plan_total_interest" jdbcType="DOUBLE" property="planTotalInterest" />
+    <result column="real_principal" jdbcType="DOUBLE" property="realPrincipal" />
+    <result column="real_total" jdbcType="DOUBLE" property="realTotal" />
+    <result column="period" jdbcType="INTEGER" property="period" />
+    <result column="repayed_period_count" jdbcType="INTEGER" property="repayedPeriodCount" />
+    <result column="loan_time" jdbcType="TIMESTAMP" property="loanTime" />
+    <result column="latest_repay_time" jdbcType="TIMESTAMP" property="latestRepayTime" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="id_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="product_rate" jdbcType="DOUBLE" property="productRate" />
+    <result column="interest_begin_date" jdbcType="TIMESTAMP" property="interestBeginDate" />
+    <result column="plan_total" jdbcType="DOUBLE" property="planTotal" />
+    <result column="plan_date" jdbcType="TIMESTAMP" property="planDate" />
+    <result column="regd_product_rate" jdbcType="DOUBLE" property="regdProductRate" />
+    <result column="auth_account_id" jdbcType="INTEGER" property="authAccountId" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="last_plan_date" jdbcType="TIMESTAMP" property="lastPlanDate" />
+    <result column="trans_count" jdbcType="INTEGER" property="transCount" />
+    <result column="purpose" jdbcType="VARCHAR" property="purpose" />
+    <result column="total_amount" jdbcType="DOUBLE" property="totalAmount" />
+    <result column="bs_user_id" jdbcType="INTEGER" property="bsUserId" />
+    <result column="regd_id" jdbcType="INTEGER" property="regdId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_mobile" jdbcType="VARCHAR" property="userMobile" />
+    <result column="ln_user_id" jdbcType="INTEGER" property="lnUserId" />
+    <result column="loan_id" jdbcType="INTEGER" property="loanId" />
+    <result column="init_amount" property="initAmount" jdbcType="DOUBLE" />
+  </resultMap>
+  <select id="selectByBsUserId" parameterType="java.util.Map" resultMap="lnLoanRelationVOMap">
+    SELECT bbb.id, bbb.user_name, bbb.mobile, bbb.id_card, bbb.approve_amount,
+     bbb.period,
+      CASE WHEN bbb.trans_count &gt; 0 THEN bbb.create_time
+      WHEN bbb.trans_count &lt;= 0 THEN bbb.loan_time
+      END AS loan_time, bbb.`status`, bbb.trans_count,
+     bbb.plan_total,
+     CASE
+     WHEN bbb.repayed_period_count &gt; 0 THEN bbb.real_total
+     WHEN bbb.repayed_period_count &lt;= 0 THEN (bbb.real_total + bbb.real_amount_trans)
+     END AS real_total,
+     bbb.repayed_period_count, bbb.latest_repay_time
+    FROM (
+    SELECT a.id, c.user_name, a.total_amount AS approve_amount, b.loan_time,
+    (
+            SELECT SUM(IFNULL(aa.plan_principal, 0) + IFNULL(aa.plan_interest, 0))
+            FROM ln_finance_repay_schedule aa, ln_loan_relation bb
+            WHERE aa.relation_id = bb.id AND bb.bs_user_id = #{userId} AND bb.bs_sub_account_id = regd.id
+            AND bb.id = a.id
+    ) AS plan_total,
+    (
+            SELECT
+            SUM(IFNULL(aa.plan_principal, 0) + IFNULL(aa.plan_interest, 0))
+            FROM ln_finance_repay_schedule aa, ln_loan_relation bb
+            WHERE aa.relation_id = bb.id AND bb.bs_user_id = #{userId} AND bb.bs_sub_account_id = regd.id
+            AND aa.`status` = 'REPAIED' AND bb.id = a.id
+    ) AS real_total, (
+            SELECT CASE WHEN SUM(amount-in_amount) IS NULL THEN 0 ELSE SUM(amount-in_amount) END
+            FROM ln_credit_transfer cc WHERE cc.in_loan_relation_id = a.id
+    ) AS real_amount_trans,(
+        SELECT COUNT(aa.id)
+        FROM ln_finance_repay_schedule aa, ln_loan_relation bb
+        WHERE aa.relation_id = bb.id AND bb.bs_user_id = #{userId} AND bb.bs_sub_account_id = regd.id
+        AND aa.`status` = 'REPAIED' AND bb.id = a.id
+    ) AS repayed_period_count,
+    a.create_time,(
+            SELECT aa.done_time
+            FROM ln_finance_repay_schedule aa, ln_loan_relation bb
+            WHERE aa.relation_id = bb.id AND bb.bs_user_id = #{userId} AND bb.bs_sub_account_id = regd.id
+            AND aa.`status` = 'REPAIED' AND bb.id = a.id
+            ORDER BY aa.done_time DESC LIMIT 1
+    ) AS latest_repay_time, (
+            SELECT count(cc.id) FROM ln_credit_transfer cc WHERE cc.in_loan_relation_id = a.id
+    ) AS trans_count, a.`status`, c.mobile, c.id_card, b.period
+    FROM ln_loan_relation a, ln_loan b, ln_user c, bs_sub_account auth, bs_sub_account regd, bs_sub_account_pair pair
+    WHERE a.bs_sub_account_id = regd.id AND b.id = a.loan_id AND b.ln_user_id = c.id
+        AND regd.id = pair.reg_d_account_id AND auth.id = pair.auth_account_id
+     AND auth.id = #{subAccountId}
+    ) AS bbb
+    ORDER BY field(bbb.`status`,'PAYING', 'SUCCESS', 'REPAID', 'FAIL') 
+, bbb.repayed_period_count ASC, bbb.latest_repay_time DESC, bbb.id ASC
+    LIMIT #{start}, #{numPerPage}
+  </select>
+  
+  <select id="getSuperLnLoanRelationList" resultMap="BaseResultVOMap">
+  	select a.*, b.period, b.loan_time
+  	from ln_loan_relation a,ln_loan b 
+  	where b.id = a.loan_id and a.left_amount&gt;0
+  	AND a.left_amount = a.total_amount
+  	<if test="userIdList != null and userIdList !=''">
+		and a.bs_user_id in 
+		<foreach close=")" collection="userIdList" index="index" item="userId" open="(" separator=",">
+			#{userId}
+		</foreach>
+	</if>
+	AND a.status = 'SUCCESS'
+	order by b.loan_time asc,a.left_amount desc
+  </select>
+
+  <select id="selectByLoanRelationId" parameterType="java.util.Map" resultMap="lnLoanRelationVOMap">
+    SELECT a.loan_id, a.bs_user_id, a.ln_user_id, regd.id AS regd_id,a.total_amount, b.approve_amount, b.period, c.product_rate, regd.product_rate AS regd_product_rate,
+    c.interest_begin_date, e.user_name, e.mobile, e.id_card, b.purpose, b.loan_time, (
+        SELECT d.plan_date FROM ln_finance_repay_schedule d WHERE d.relation_id = a.id ORDER BY d.repay_serial ASC LIMIT 1
+    ) AS plan_date, (
+        SELECT d.plan_total FROM ln_finance_repay_schedule d WHERE d.relation_id = a.id ORDER BY d.repay_serial ASC LIMIT 1
+    ) AS plan_total, (
+        SELECT MAX(d.plan_date) FROM ln_finance_repay_schedule d WHERE d.relation_id = a.id ORDER BY d.repay_serial ASC LIMIT 1
+    ) AS last_plan_date
+
+    FROM ln_loan_relation a, bs_sub_account auth, bs_sub_account regd, bs_sub_account_pair pair,
+        ln_loan b, ln_sub_account c, ln_user e
+    WHERE a.bs_sub_account_id = regd.id AND pair.auth_account_id = auth.id AND pair.reg_d_account_id = regd.id
+    AND a.loan_id = b.id AND a.ln_sub_account_id = c.id AND a.ln_user_id = e.id
+	AND a.id = #{loanRelationId}
+  </select>
+
+  <select id="selectAuthAccountId" resultMap="lnLoanRelationVOMap">
+    SELECT pair.auth_account_id, auth.product_id, a.bs_user_id, a.loan_id
+    FROM ln_loan_relation a, bs_sub_account auth, bs_sub_account regd, bs_sub_account_pair pair
+    WHERE a.bs_sub_account_id = regd.id AND pair.auth_account_id = auth.id AND pair.reg_d_account_id = regd.id
+    AND a.id = #{loanRelationId}
+  </select>
+
+  <select id="selectBsUserByLoanId" resultMap="BsUser4LoanVO">
+	select t.*, 
+	CASE WHEN d.id IS NOT NULL THEN  d.before_amount ELSE  t.total_amount END  out_amount 
+	from (select a.id loan_id ,b.mobile user_account,b.user_name user_name,c.period AS term,
+				b.id_card user_idCardNo,b.id,a.total_amount
+		from ln_loan_relation a ,bs_user b, ln_loan c
+		where a.bs_user_id = b.id and a.loan_id = c.id and a.loan_id = #{loanId} AND a.trans_mark NOT in('TRANS_IN')
+	)t LEFT JOIN ln_loan_amount_change d ON t.loan_id = d.relation_id GROUP BY t.loan_id
+	
+  </select>
+
+  <select id="selectUserByRelationId" parameterType="java.util.Map" resultMap="lnLoanRelationVOMap">
+    SELECT b.user_name AS user_name, b.mobile AS user_mobile, b.id_card FROM ln_loan_relation a ,bs_user b
+    WHERE a.bs_user_id = b.id AND a.id = #{loanRelationId}
+  </select>
+
+  <select id="selectUserByLnUserId" parameterType="java.util.Map" resultMap="lnLoanRelationVOMap">
+    SELECT a.bs_user_id, b.user_name, b.id_card, b.mobile AS user_mobile, a.total_amount, c.period
+    FROM ln_loan_relation a, bs_user b, ln_loan c
+    WHERE b.id = a.bs_user_id AND c.id = a.loan_id AND a.ln_user_id = #{lnUserId}
+  </select>
+
+  <select id="selectUserByLoanId" parameterType="java.util.Map" resultMap="lnLoanRelationVOMap">
+    SELECT a.id, c.user_name, c.mobile AS user_mobile, c.id_card, d.period,a.total_amount
+    FROM ln_loan_relation a, bs_sub_account regd, bs_account b, bs_user c, ln_loan d
+    WHERE a.loan_id = #{loanId} AND b.id = regd.account_id AND c.id = b.user_id AND a.bs_sub_account_id = regd.id
+    AND regd.product_type = 'REG_D' AND d.id = a.loan_id
+    AND a.id not in(
+		select DISTINCT(in_loan_relation_id) from ln_credit_transfer
+		)
+  </select>
+
+  <update id="repayPrincipalById" parameterType="com.pinting.business.model.LnLoanRelation">
+    update
+      ln_loan_relation
+    set
+      left_amount = left_amount + #{leftAmount,jdbcType=DOUBLE},
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where
+      id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="sumTotalAmountByAuthId" parameterType="java.util.Map" resultType="java.lang.Double">
+    SELECT SUM(a.total_amount) FROM ln_loan_relation a, bs_sub_account regd, bs_sub_account_pair pair
+    WHERE a.bs_sub_account_id = regd.id AND regd.id = pair.reg_d_account_id AND pair.auth_account_id = #{authAccountId};
+  </select>
+
+  <select id="sumLeftAmountByAuthId" parameterType="java.util.Map" resultType="java.lang.Double">
+    SELECT SUM(a.left_amount) FROM ln_loan_relation a, bs_sub_account regd, bs_sub_account_pair pair
+    WHERE a.bs_sub_account_id = regd.id AND regd.id = pair.reg_d_account_id AND pair.auth_account_id = #{authAccountId};
+  </select>
+
+	<select id="getLoanSumAmount" resultMap="DailyAmount4LoanVOMap">
+		select sum(a.total_amount) as sum_amount, b.period as term
+ 		from ln_loan_relation a,ln_loan b
+		where b.id = a.loan_id and (a.`status` = 'SUCCESS' or a.`status`='REPAID')
+		<if test="beginDate != null">
+		and a.create_time &gt;=#{beginDate}
+		</if>
+		<if test="endDate != null">
+		and a.create_time &lt;#{endDate}
+		</if>
+		<if test="userIdList != null and userIdList !=''">
+		and a.bs_user_id not in 
+			<foreach close=")" collection="userIdList" index="index" item="userId" open="(" separator=",">
+				#{userId}
+			</foreach>
+		</if>
+		GROUP BY b.period;
+	</select>
+	
+	<select id="getVIPLoanedSumAmount" resultMap="DailyAmount4LoanVOMap">
+		select sum(a.total_amount) as sum_amount, b.period as term
+ 		from ln_loan_relation a,ln_loan b
+		where b.id = a.loan_id and (a.`status` = 'SUCCESS')
+		<if test="userIdList != null and userIdList !=''">
+		and a.bs_user_id in 
+			<foreach close=")" collection="userIdList" index="index" item="userId" open="(" separator=",">
+				#{userId}
+			</foreach>
+		</if>
+		GROUP BY b.period;
+	</select>
+
+    <select id="selectRecordByUserIdAndId" parameterType="java.util.Map" resultMap="BaseResultMap">
+      SELECT l.id
+      FROM ln_loan_relation l
+      WHERE l.id=#{id} AND l.bs_user_id=#{userId , jdbcType=INTEGER}
+    </select>
+    
+    <select id="selectNeedPayBonusGrant" parameterType="java.util.Map" resultType="java.util.Map">
+	    select a.bs_sub_account_id regd_id,a.bs_user_id user_id,
+	    sum(a.total_amount) amount,b.recommend_id ,regd.interest_begin_date
+		from ln_loan_relation a,bs_user b,bs_sub_account regd
+		where a.bs_user_id = b.id and (a.`status`='SUCCESS' or  a.`status`='REPAID') 
+		and regd.id = a.bs_sub_account_id  AND regd.product_type = 'REG_D'
+		and regd.interest_begin_date = DATE(#{interestBeginDate})
+		<if test="userIdList != null and userIdList !='' ">
+			and a.bs_user_id not in 
+			<foreach close=")" collection="userIdList" index="index" item="userId" open="(" separator=",">
+				#{userId}
+			</foreach>
+		</if>
+		GROUP BY bs_sub_account_id 
+	</select>
+	
+	<select id="isFinishLoan" resultType="java.util.Map">
+        select b.open_balance,
+            sum(case when f.in_amount is null then a.total_amount else f.in_amount end) loaned_amount,
+            d.user_id, b.product_id,b.open_time,b.id sub_account_id,
+            case when concat(d.user_id,',') in(concat(e.conf_value,',')) then 0 else -1 end isVIP
+        from ln_loan_relation a left join ln_credit_transfer f on f.in_loan_relation_id = a.id,
+            bs_sub_account b,bs_sub_account_pair c,bs_account d ,bs_sys_config e
+        where b.id=#{authId} and c.auth_account_id = b.id
+            and c.reg_d_account_id = a.bs_sub_account_id
+            and (a.`status`='SUCCESS' or  a.`status`='REPAID')
+            and d.id = b.account_id
+            and e.conf_key='SUPER_FINANCE_USER_ID'
+            GROUP BY a.bs_sub_account_id
+	</select>
+
+    <select id="selectLendersByLoanId" parameterType="java.util.Map" resultMap="lnLoanRelationVOMap">
+        SELECT b.user_name, b.id_card, a.init_amount as approve_amount,b.mobile
+        FROM ln_loan_relation a LEFT JOIN bs_user b ON a.bs_user_id = b.id
+        WHERE a.loan_id = #{loanId}
+        AND a.id not in(
+            SELECT DISTINCT(in_loan_relation_id) from ln_credit_transfer
+        )
+    </select>
+
+	<select id="getRelationAmountByLoanId" resultType="java.lang.Double">
+		SELECT
+			CASE
+		WHEN sum(left_amount) IS NULL THEN
+			0
+		ELSE
+			sum(left_amount)
+		END
+		FROM
+			ln_loan_relation
+		WHERE
+			loan_id = #{loanId}
+		AND `status` = 'SUCCESS'
+	</select>
+	
+	<select id="getRelationAmountNotRepayingByLoanId" resultType="java.lang.Double">
+		SELECT
+			IFNULL(sum(a.left_amount),0) - IFNULL(sum(fin.paying_principal),0)
+		FROM
+			ln_loan_relation a left join 
+			(SELECT 
+				case when sum(plan_principal) is null then 0 else sum(plan_principal) end paying_principal,relation_id 
+				from ln_finance_repay_schedule where `status` = 'REPAYING' GROUP BY relation_id
+			) fin
+			ON fin.relation_id = a.id
+		WHERE
+			loan_id = #{loanId}
+		AND `status` = 'SUCCESS'
+	</select>
+	
+	<select id="getRelationAmountByLoanIdAndStatus" resultType="java.lang.Double">
+		SELECT IFNULL(sum(left_amount), 0)
+			FROM ln_loan_relation
+		WHERE
+			loan_id = #{loanId}
+		AND `status` = #{status}
+	</select>
+		
+	
+	<resultMap id="LoanRelation4TransferVOMap" type="com.pinting.business.accounting.loan.model.LoanRelation4TransferVO">
+	    <id column="id" jdbcType="INTEGER" property="id" />
+	    <result column="loan_id" jdbcType="INTEGER" property="loanId" />
+	    <result column="bs_user_id" jdbcType="INTEGER" property="bsUserId" />
+	    <result column="bs_sub_account_id" jdbcType="INTEGER" property="bsSubAccountId" />
+	    <result column="ln_user_id" jdbcType="INTEGER" property="lnUserId" />
+	    <result column="ln_sub_account_id" jdbcType="INTEGER" property="lnSubAccountId" />
+	    <result column="init_amount" jdbcType="DOUBLE" property="initAmount" />
+	    <result column="total_amount" jdbcType="DOUBLE" property="totalAmount" />
+	    <result column="left_amount" jdbcType="DOUBLE" property="leftAmount" />
+	    <result column="first_term" jdbcType="INTEGER" property="firstTerm" />
+	    <result column="status" jdbcType="VARCHAR" property="status" />
+	    <result column="trans_mark" jdbcType="VARCHAR" property="transMark" />
+	    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+	    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+
+	    <result column="relation_begin_date" jdbcType="DATE" property="relationBeginDate" />
+	    <result column="base_rate" jdbcType="DOUBLE" property="baseRate" />
+	    <result column="interest_begin_date" jdbcType="DATE" property="interestBeginDate" />
+	    <result column="last_pay_interest" jdbcType="DOUBLE" property="lastPayInterest" />
+	 	<result column="last_pay_interest_date" jdbcType="DATE" property="lastPayInterestDate" />
+	 	<result column="last_finish_interest_date" jdbcType="DATE" property="lastFinishInterestDate" />
+		<result column="agreement_rate" jdbcType="DOUBLE" property="agreementRate" />
+		<result column="hf_user_id" jdbcType="VARCHAR" property="hfUserId" />
+		<result column="partner_code" jdbcType="VARCHAR" property="partnerCode" />
+		<result column="last_repay_plan_date" jdbcType="DATE" property="lastRepayPlanDate" />
+		<result column="this_repay_plan_date" jdbcType="DATE" property="thisRepayPlanDate" />
+		<result column="loan_date" jdbcType="DATE" property="loanDate" />
+		<result column="loan_period" jdbcType="INTEGER" property="loanPeriod" />
+		<result column="this_repay_plan_serial_id" jdbcType="INTEGER" property="thisRepayPlanSerialId" />
+		<result column="partner_business_flag" jdbcType="VARCHAR" property="partnerBusinessFlag" />
+		<result column="bgw_settle_rate" jdbcType="DOUBLE" property="bgwSettleRate"/>
+		<result column="approve_amount" jdbcType="DOUBLE" property="approveAmount"/>		
+	  </resultMap>
+
+	  <select id="getRelationList" resultMap="LoanRelation4TransferVOMap">
+	  	select a.id, a.loan_id, a.bs_user_id, a.bs_sub_account_id, a.ln_user_id, a.ln_sub_account_id, a.init_amount, 
+    		a.discount_amount, a.total_amount,
+			CASE WHEN fin.paying_principal >0 THEN a.left_amount -fin.paying_principal ELSE a.left_amount END as left_amount,  
+			a.first_term, a.`status`, a.trans_mark, a.bid_status, 
+   			a.create_time, a.update_time, 
+	  		b.interest_begin_date,b.last_finish_interest_date,
+	  		b.product_rate base_rate,
+			CASE WHEN a.trans_mark ='NORMAL' THEN DATE(d.loan_time) ELSE DATE(a.create_time) END AS relation_begin_date,
+			CASE WHEN a.trans_mark = 'NORMAL' THEN 0 ELSE f.in_amount-f.amount END last_pay_interest,
+			e.plan_date last_pay_interest_date,hfu.hf_user_id,d.agreement_rate
+		from ln_loan_relation a
+			LEFT JOIN ln_credit_transfer f on f.in_loan_relation_id = a.id
+			LEFT JOIN (
+              SELECT * FROM (
+				select b1.*,c1.plan_amount principal,d1.plan_amount interest
+					from ln_loan_relation a1, ln_repay_schedule b1,
+					ln_repay_schedule_detail c1, ln_repay_schedule_detail d1
+				where a1.loan_id = b1.loan_id and b1.id = c1.plan_id and b1.id = d1.plan_id
+				and b1.`status` in('PART_REPAY','REPAIED','LATE_NOT','LATE_REPAIED') 
+				and b1.finish_time is not null
+				<if test="bsSubAccountId != null">
+					and a1.bs_sub_account_id = #{bsSubAccountId}
+				</if>
+				 <if test="loanId != null">
+					and a1.loan_id = #{loanId}
+				</if>
+				and c1.subject_code='PRINCIPAL' and d1.subject_code = 'INTEREST'
+				and c1.plan_amount = 0
+				ORDER BY b1.plan_date desc
+              ) aa
+              GROUP BY aa.loan_id
+			)e on e.loan_id = a.loan_id
+			LEFT JOIN (SELECT sum(plan_principal) paying_principal ,relation_id from ln_finance_repay_schedule where `status` = 'REPAYING' GROUP BY relation_id) fin
+			ON fin.relation_id = a.id,
+			bs_sub_account b,bs_product c,bs_hfbank_user_ext hfu,ln_loan d
+		where a.bs_sub_account_id = b.id
+		 and hfu.user_id = a.bs_user_id
+		 and b.product_id = c.id
+		 and a.loan_id = d.id
+		 and a.left_amount &gt;0
+		 and a.`status`='SUCCESS'
+		 <if test="bsSubAccountId != null">
+			and a.bs_sub_account_id = #{bsSubAccountId}
+		</if>
+
+		 <if test="loanId != null">
+			and a.loan_id = #{loanId} ORDER BY left_amount DESC
+		</if>
+		 ;
+	  </select>
+	  
+	  
+	  <select id="getSevenRelationList" resultMap="LoanRelation4TransferVOMap">
+	  	select a.id, a.loan_id, a.bs_user_id, a.bs_sub_account_id, a.ln_user_id, a.ln_sub_account_id, a.init_amount, 
+    		a.discount_amount, a.total_amount,
+			CASE WHEN fin.paying_principal >0 THEN a.left_amount -fin.paying_principal ELSE a.left_amount END as left_amount,  
+			a.first_term, a.`status`, a.trans_mark, a.bid_status, 
+   			a.create_time, a.update_time, 
+	  		b.interest_begin_date,b.last_finish_interest_date,
+	  		b.product_rate base_rate,
+			CASE WHEN a.trans_mark ='NORMAL' THEN DATE(d.loan_time) ELSE DATE(a.create_time) END AS relation_begin_date,
+			CASE WHEN a.trans_mark = 'NORMAL' THEN 0 ELSE f.in_amount-f.amount END last_pay_interest,
+			e.repay_time last_pay_interest_date,hfu.hf_user_id,d.agreement_rate
+		from ln_loan_relation a
+			LEFT JOIN ln_credit_transfer f on f.in_loan_relation_id = a.id
+			LEFT JOIN (
+              SELECT * FROM (
+				select b1.*
+					from ln_loan_relation a1, ln_bill_biz_info b1
+				where a1.loan_id = b1.loan_id 
+				<if test="bsSubAccountId != null">
+					and a1.bs_sub_account_id = #{bsSubAccountId}
+				</if>
+				 <if test="loanId != null">
+					and a1.loan_id = #{loanId}
+				</if>
+				ORDER BY b1.repay_time desc
+              ) aa
+              GROUP BY aa.loan_id
+			)e on e.loan_id = a.loan_id
+			LEFT JOIN (SELECT sum(plan_principal) paying_principal ,relation_id from ln_finance_repay_schedule where `status` = 'REPAYING' GROUP BY relation_id) fin
+			ON fin.relation_id = a.id,
+			bs_sub_account b,bs_product c,bs_hfbank_user_ext hfu,ln_loan d
+		where a.bs_sub_account_id = b.id
+		 and hfu.user_id = a.bs_user_id
+		 and b.product_id = c.id
+		 and a.loan_id = d.id
+		 and a.left_amount &gt;0
+		 and a.`status`='SUCCESS'
+		 <if test="bsSubAccountId != null">
+			and a.bs_sub_account_id = #{bsSubAccountId}
+		</if>
+
+		 <if test="loanId != null">
+			and a.loan_id = #{loanId} ORDER BY left_amount DESC
+		</if>
+		 ;
+	  </select>
+	  
+	  <select id="sumLeftAmount" resultType="java.lang.Double">
+	  	select case when sum(left_amount) is null then 0 else sum(left_amount) end 
+	  	from ln_loan_relation where left_amount>0
+		 and `status` in ('SUCCESS','TRANSFERRED') and bs_sub_account_id = #{bsSubAccountId}
+	  </select>
+	  
+	  <select id="sumLeftAmountByLoanId" resultType="java.lang.Double">
+		select IFNULL(sum(aa.leftAmt),0) - IFNULL(sum(aa.payingAmt),0) from (
+			select a.id,a.left_amount leftAmt,sum( IFNULL(b.plan_principal,0)) payingAmt from ln_loan_relation a left join ln_finance_repay_schedule b on a.id=b.relation_id  and b.`status`='REPAYING'  
+				where a.loan_id =#{loanId} and a.`status` in ('SUCCESS','TRANSFERRED')
+			group by a.id 
+		) aa
+	  </select>
+	  
+	  <select id="getVIPRelationList4Page" resultMap="LoanRelation4TransferVOMap">
+	  select a.id, a.loan_id, a.bs_user_id, a.bs_sub_account_id, a.ln_user_id, a.ln_sub_account_id, a.init_amount, 
+    		a.discount_amount, a.total_amount,
+			CASE WHEN fin.paying_principal >0 THEN a.left_amount -fin.paying_principal ELSE a.left_amount END as left_amount,  
+			a.first_term, a.`status`, a.trans_mark, a.bid_status, 
+   			a.create_time, a.update_time, 
+	  		b.interest_begin_date,b.last_finish_interest_date,
+	  		b.product_rate base_rate,
+			CASE WHEN a.trans_mark ='NORMAL' THEN DATE(d.loan_time) ELSE DATE(a.create_time) END AS relation_begin_date,
+			CASE WHEN a.trans_mark = 'NORMAL' THEN 0 ELSE f.in_amount-f.amount END last_pay_interest,
+			CASE WHEN lu.partner_code = 'YUN_DAI_SELF' THEN e.plan_date ELSE e3.repay_time END last_pay_interest_date,
+			e1.plan_date last_repay_plan_date,e2.plan_date this_repay_plan_date,e2.serial_id this_repay_plan_serial_id,
+			date(d.loan_time)loan_date,d.period loan_period,d.partner_business_flag,d.bgw_settle_rate,d.approve_amount,
+			hfu.hf_user_id,d.agreement_rate,lu.partner_code
+		from (select * from ln_loan_relation 
+				 where left_amount >0 and `status`='SUCCESS' and trans_mark != 'COMPENSATE_TRANS_IN'
+					<if test="vipIdList != null and vipIdList !=''">
+						and bs_user_id in 
+						<foreach collection="vipIdList" item="userId" index="index"
+							open="(" close=")" separator=",">
+							#{userId}
+						</foreach>
+					</if>
+			)a
+			LEFT JOIN ln_credit_transfer f on f.in_loan_relation_id = a.id
+			LEFT JOIN (
+              SELECT * FROM (
+				SELECT aa.* FROM (
+					select b1.*
+					from ln_loan_relation a1, ln_repay_schedule b1
+					where a1.loan_id = b1.loan_id 
+						and b1.`status` in('REPAIED','LATE_NOT','LATE_REPAIED') 
+						and b1.finish_time is not null and a1.trans_mark != 'COMPENSATE_TRANS_IN'
+						<if test="vipIdList != null and vipIdList !=''">
+							and a1.bs_user_id in 
+							<foreach collection="vipIdList" item="userId" index="index"
+								open="(" close=")" separator=",">
+								#{userId}
+							</foreach>
+						</if>
+					) aa ,
+					ln_repay_schedule_detail c1 
+					WHERE  aa.id = c1.plan_id and c1.subject_code='PRINCIPAL' and c1.plan_amount = 0
+					ORDER BY aa.plan_date desc
+				) aa
+				GROUP BY aa.loan_id
+			)e on e.loan_id = a.loan_id
+			LEFT JOIN (
+				SELECT * FROM (
+					SELECT aa.* FROM (
+					  select a.* from ln_repay_schedule a,ln_loan_relation b where 
+										a.loan_id = b.loan_id and b.trans_mark != 'COMPENSATE_TRANS_IN'
+						and a.`status` in('LATE_NOT','LATE_REPAIED','REPAIED') 
+						<if test="vipIdList != null and vipIdList !=''">
+							and b.bs_user_id in 
+							<foreach collection="vipIdList" item="userId" index="index"
+								open="(" close=")" separator=",">
+								#{userId}
+							</foreach>
+						</if>
+					) aa ORDER BY plan_date desc
+				)aa
+              GROUP BY aa.loan_id
+			)e1 on e1.loan_id = a.loan_id
+			LEFT JOIN (
+				SELECT * FROM (
+					SELECT aa.* FROM (
+					  select a.* from ln_repay_schedule a,ln_loan_relation b where 
+										a.loan_id = b.loan_id
+						and a.`status` ='INIT' and b.trans_mark != 'COMPENSATE_TRANS_IN'
+						<if test="vipIdList != null and vipIdList !=''">
+							and b.bs_user_id in 
+							<foreach collection="vipIdList" item="userId" index="index"
+								open="(" close=")" separator=",">
+								#{userId}
+							</foreach>
+						</if>
+					) aa ORDER BY plan_date asc
+				)aa
+              GROUP BY aa.loan_id
+			)e2 on e2.loan_id = a.loan_id
+			LEFT JOIN (
+              SELECT * FROM (
+				SELECT aa.* FROM (
+					select b1.*
+						from ln_loan_relation a1, ln_bill_biz_info b1
+					where a1.loan_id = b1.loan_id and a1.trans_mark != 'COMPENSATE_TRANS_IN'
+						<if test="vipIdList != null and vipIdList !=''">
+							and a1.bs_user_id in 
+							<foreach collection="vipIdList" item="userId" index="index"
+								open="(" close=")" separator=",">
+								#{userId}
+							</foreach>
+						</if>
+				
+				) aa ORDER BY aa.repay_time desc
+			  )aa 
+        GROUP BY aa.loan_id
+			)e3 on e3.loan_id = a.loan_id
+			LEFT JOIN (SELECT sum(plan_principal) paying_principal ,relation_id from ln_finance_repay_schedule where `status` = 'REPAYING' GROUP BY relation_id) fin
+			ON fin.relation_id = a.id,
+			bs_sub_account b,bs_product c,bs_hfbank_user_ext hfu,ln_loan d,ln_user lu
+		where a.bs_sub_account_id = b.id
+		 and hfu.user_id = a.bs_user_id
+		 and b.product_id = c.id
+		 and a.loan_id = d.id
+		 and d.ln_user_id = lu.id
+		limit #{start , jdbcType=INTEGER}, #{pageSize , jdbcType=INTEGER}
+	  </select>
+	  
+	  <select id="countVIPRelationList" resultType="java.lang.Integer">
+	  	select 
+			count(a.id)
+		from ln_loan_relation a,
+			bs_sub_account b,bs_product c,bs_hfbank_user_ext hfu,ln_loan d,ln_user lu
+		where a.bs_sub_account_id = b.id
+		 and hfu.user_id = a.bs_user_id
+		 and b.product_id = c.id
+		 and a.loan_id = d.id
+		 and d.ln_user_id = lu.id
+		 and a.left_amount&gt;0
+		 and a.`status`='SUCCESS'
+		 and a.trans_mark != 'COMPENSATE_TRANS_IN'
+		<if test="vipIdList != null and vipIdList !=''">
+			and a.bs_user_id in 
+			<foreach collection="vipIdList" item="userId" index="index"
+				open="(" close=")" separator=",">
+				#{userId}
+			</foreach>
+		</if>
+		 ;
+	  </select>
+
+      <resultMap id="CashTransferSchemesVOMap" type="com.pinting.business.model.vo.CashTransferSchemesVO">
+        <result column="plan_date" jdbcType="VARCHAR" property="planDate" />
+        <result column="base_plan_date" jdbcType="DATE" property="basePlanDate" />
+        <result column="plan_total_init" jdbcType="DOUBLE" property="planTotalInit" />
+        <result column="plan_total_repaied" jdbcType="DOUBLE" property="planTotalRepaied" />
+        <result column="plan_total_repaying" jdbcType="DOUBLE" property="planTotalRepaying" />
+      </resultMap>
+
+      <select id="PaymentPast" parameterType="java.util.Map" resultMap="CashTransferSchemesVOMap">
+        SELECT
+        test.plan_date,test.base_plan_date,
+        IFNULL((aaa.plan_total_init),0) AS plan_total_init,
+        IFNULL((bbb.plan_total_repaied),0) AS plan_total_repaied,
+        IFNULL((ccc.plan_total_repaying),0) AS plan_total_repaying
+        FROM (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date, b.plan_date AS base_plan_date
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id = #{userId}
+        AND b.plan_date &gt;= DATE_FORMAT(NOW() ,'%Y-%m') AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m')
+        ) test LEFT JOIN (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date,
+        SUM(b.plan_principal + b.plan_interest)  AS plan_total_init
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id AND b.`status` = 'INIT'
+        AND a.bs_user_id =  #{userId} AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m')
+        ) AS aaa ON test.plan_date = aaa.plan_date
+        LEFT JOIN (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date,
+        SUM(b.plan_principal + b.plan_interest)  AS plan_total_repaied
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id =  #{userId} AND b.`status` = 'REPAIED' AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m')
+        ) AS bbb ON test.plan_date = bbb.plan_date
+        LEFT JOIN (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_repaying
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id =  #{userId} AND b.`status` = 'REPAYING' AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m')
+        ) AS ccc ON test.plan_date = ccc.plan_date
+        ORDER BY test.base_plan_date ASC
+      </select>
+
+      <select id="selectRepayScheduleDetailsList" parameterType="java.util.Map" resultMap="CashTransferSchemesVOMap">
+        SELECT
+        abc.base_plan_date,
+        SUM(abc.plan_total_init) AS plan_total_init,
+        SUM(abc.plan_total_repaied) AS plan_total_repaied,
+        SUM(abc.plan_total_repaying) AS plan_total_repaying
+        FROM
+        (SELECT
+        tab.base_plan_date,
+        IFNULL((aaa.plan_total_init),0) AS plan_total_init,
+        IFNULL((bbb.plan_total_repaied),0) AS plan_total_repaied,
+        IFNULL((ccc.plan_total_repaying),0) AS plan_total_repaying
+        FROM
+        (SELECT b.id,
+        b.plan_date AS base_plan_date
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id AND c.id = a.bs_sub_account_id AND c.product_type = 'REG_D'
+        AND a.bs_user_id = #{userId}
+        AND DATE_FORMAT(b.plan_date, '%Y-%m') = #{planDate}
+       
+        ) tab
+        LEFT JOIN
+        (SELECT b.id,
+        b.plan_date AS base_plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_init
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id AND b.`status` = 'INIT' AND c.id = a.bs_sub_account_id AND c.product_type = 'REG_D'
+        AND a.bs_user_id = #{userId} 
+        GROUP BY b.id
+        ) aaa ON tab.id = aaa.id
+        LEFT JOIN
+        (SELECT b.id,
+        b.plan_date AS base_plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_repaied
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id AND b.`status` = 'REPAIED' AND c.id = a.bs_sub_account_id AND c.product_type = 'REG_D'
+        AND a.bs_user_id = #{userId} 
+        GROUP BY b.id
+        ) bbb ON tab.id = bbb.id
+        LEFT JOIN
+        (SELECT b.id,
+        b.plan_date AS base_plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_repaying
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id AND b.`status` = 'REPAYING' AND c.id = a.bs_sub_account_id AND c.product_type = 'REG_D'
+        AND a.bs_user_id = #{userId} 
+        GROUP BY b.id
+        ) ccc ON tab.id = ccc.id )abc
+        GROUP BY abc.base_plan_date
+        ORDER BY abc.base_plan_date ASC
+      </select>
+
+      <select id="selectPaymentPlantPast" parameterType="java.util.Map" resultMap="CashTransferSchemesVOMap">
+        SELECT
+        test.plan_date,test.base_plan_date,
+        IFNULL((aaa.plan_total_init),0) AS plan_total_init,
+        IFNULL((bbb.plan_total_repaied),0) AS plan_total_repaied,
+        IFNULL((ccc.plan_total_repaying),0) AS plan_total_repaying
+        FROM (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date, b.plan_date AS base_plan_date
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id = #{record.userId}
+        AND DATE_FORMAT(NOW() ,'%Y-%m') &gt; DATE_FORMAT(b.plan_date, '%Y-%m')
+        AND DATE_FORMAT(b.plan_date,'%Y') = #{record.dateTime} AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m')
+        ) test LEFT JOIN (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_init
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id AND b.`status` = 'INIT'
+        AND a.bs_user_id = #{record.userId} AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m') , b.`status`
+        ) AS aaa ON test.plan_date = aaa.plan_date
+        LEFT JOIN (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_repaied
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id = #{record.userId} AND b.`status` = 'REPAIED' AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m') , b.`status`
+        ) AS bbb ON test.plan_date = bbb.plan_date
+        LEFT JOIN (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_repaying
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id = #{record.userId} AND b.`status` = 'REPAYING' AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m') , b.`status`
+        ) AS ccc ON test.plan_date = ccc.plan_date
+        ORDER BY test.base_plan_date DESC
+        LIMIT #{record.start}, #{record.numPerPage}
+      </select>
+	  
+    <select id="paymentPastPage" parameterType="java.util.Map" resultMap="CashTransferSchemesVOMap">
+        SELECT
+        test.plan_date,test.base_plan_date,
+        IFNULL((aaa.plan_total_init),0) AS plan_total_init,
+        IFNULL((bbb.plan_total_repaied),0) AS plan_total_repaied,
+        IFNULL((ccc.plan_total_repaying),0) AS plan_total_repaying
+        FROM (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date, b.plan_date AS base_plan_date
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id = #{userId}
+        AND b.plan_date &gt;= DATE_FORMAT(NOW() ,'%Y-%m') AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m')
+        ) test LEFT JOIN (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date,
+        SUM(b.plan_principal + b.plan_interest)  AS plan_total_init
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id AND b.`status` = 'INIT'
+        AND a.bs_user_id =  #{userId} AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m')
+        ) AS aaa ON test.plan_date = aaa.plan_date
+        LEFT JOIN (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date,
+        SUM(b.plan_principal + b.plan_interest)  AS plan_total_repaied
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id =  #{userId} AND b.`status` = 'REPAIED' AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m')
+        ) AS bbb ON test.plan_date = bbb.plan_date
+        LEFT JOIN (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_repaying
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id =  #{userId} AND b.`status` = 'REPAYING' AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m')
+        ) AS ccc ON test.plan_date = ccc.plan_date
+        ORDER BY test.base_plan_date ASC
+        LIMIT #{start}, #{numPerPage}
+      </select>
+      
+      <select id="countPaymentPast"  parameterType="java.util.Map" resultType="java.lang.Integer">
+      	SELECT COUNT(*) FROM (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date, b.plan_date AS base_plan_date
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id = #{userId}
+        AND b.plan_date &gt;= DATE_FORMAT(NOW() ,'%Y-%m') AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m')
+        ) test LEFT JOIN (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date,
+        SUM(b.plan_principal + b.plan_interest)  AS plan_total_init
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id AND b.`status` = 'INIT'
+        AND a.bs_user_id =  #{userId} AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m')
+        ) AS aaa ON test.plan_date = aaa.plan_date
+        LEFT JOIN (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date,
+        SUM(b.plan_principal + b.plan_interest)  AS plan_total_repaied
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id =  #{userId} AND b.`status` = 'REPAIED' AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m')
+        ) AS bbb ON test.plan_date = bbb.plan_date
+        LEFT JOIN (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_repaying
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id =  #{userId} AND b.`status` = 'REPAYING' AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m')
+        ) AS ccc ON test.plan_date = ccc.plan_date
+      </select>
+	  
+	  <select id="countPaymentPlantPost"  parameterType="java.util.Map" resultType="java.lang.Integer">
+      	SELECT COUNT(*) FROM (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date, b.plan_date AS base_plan_date
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id = #{userId}
+        AND DATE_FORMAT(NOW() ,'%Y-%m') &gt; DATE_FORMAT(b.plan_date, '%Y-%m')
+        AND DATE_FORMAT(b.plan_date,'%Y') = #{dateTime} AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m')
+        ) test LEFT JOIN (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_init
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id AND b.`status` = 'INIT'
+        AND a.bs_user_id = #{userId} AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m') , b.`status`
+        ) AS aaa ON test.plan_date = aaa.plan_date
+        LEFT JOIN (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_repaied
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id = #{userId} AND b.`status` = 'REPAIED' AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m') , b.`status`
+        ) AS bbb ON test.plan_date = bbb.plan_date
+        LEFT JOIN (
+        SELECT
+        DATE_FORMAT(b.plan_date, '%Y-%m') AS plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_repaying
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id = #{userId} AND b.`status` = 'REPAYING' AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        GROUP BY DATE_FORMAT(b.plan_date ,'%Y-%m') , b.`status`
+        ) AS ccc ON test.plan_date = ccc.plan_date
+      </select>	
+
+      <select id="getPaymentPastDetails" parameterType="java.util.Map" resultMap="CashTransferSchemesVOMap">
+        SELECT
+        abc.base_plan_date,
+        SUM(abc.plan_total_init) AS plan_total_init,
+        SUM(abc.plan_total_repaied) AS plan_total_repaied,
+        SUM(abc.plan_total_repaying) AS plan_total_repaying
+        FROM
+        (SELECT
+        tab.base_plan_date,
+        IFNULL((aaa.plan_total_init),0) AS plan_total_init,
+        IFNULL((bbb.plan_total_repaied),0) AS plan_total_repaied,
+        IFNULL((ccc.plan_total_repaying),0) AS plan_total_repaying
+        FROM
+        (SELECT b.id,
+        b.plan_date AS base_plan_date
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id =#{record.userId} AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        AND DATE_FORMAT(b.plan_date, '%Y-%m') = #{record.detailsTime}
+        ) tab
+        LEFT JOIN
+        (SELECT b.id,
+        b.plan_date AS base_plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_init
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id AND b.`status` = 'INIT'
+        AND a.bs_user_id = #{record.userId} AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        AND DATE_FORMAT(b.plan_date, '%Y-%m') = #{record.detailsTime}
+        GROUP BY b.id
+        ) aaa ON tab.id = aaa.id
+        LEFT JOIN
+        (SELECT b.id,
+        b.plan_date AS base_plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_repaied
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id AND b.`status` = 'REPAIED' AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        AND a.bs_user_id = #{record.userId}
+        AND DATE_FORMAT(b.plan_date, '%Y-%m') = #{record.detailsTime}
+        GROUP BY b.id
+        ) bbb ON tab.id = bbb.id
+        LEFT JOIN
+        (SELECT b.id,
+        b.plan_date AS base_plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_repaying
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id AND b.`status` = 'REPAYING' AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        AND a.bs_user_id = #{record.userId} 
+        AND DATE_FORMAT(b.plan_date, '%Y-%m') = #{record.detailsTime}
+        GROUP BY b.id
+        ) ccc ON tab.id = ccc.id)abc
+        GROUP BY abc.base_plan_date
+        ORDER BY abc.base_plan_date ASC
+        LIMIT #{record.startNumPage}, #{record.endNumPerPage}
+      </select>
+
+      <select id="getPaymentPlantDetalisCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM
+        (SELECT
+        abc.base_plan_date,
+        SUM(abc.plan_total_init) AS plan_total_init,
+        SUM(abc.plan_total_repaied) AS plan_total_repaied,
+        SUM(abc.plan_total_repaying) AS plan_total_repaying
+        FROM
+        (SELECT
+        tab.base_plan_date,
+        IFNULL((aaa.plan_total_init),0) AS plan_total_init,
+        IFNULL((bbb.plan_total_repaied),0) AS plan_total_repaied,
+        IFNULL((ccc.plan_total_repaying),0) AS plan_total_repaying
+        FROM
+        (SELECT b.id,
+        b.plan_date AS base_plan_date
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id = #{record.userId} AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        AND DATE_FORMAT(b.plan_date, '%Y-%m') = #{record.detailsTime}
+        ) tab
+        LEFT JOIN
+        (SELECT b.id,
+        b.plan_date AS base_plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_init
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id AND b.`status` = 'INIT'
+        AND a.bs_user_id = #{record.userId} AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        AND DATE_FORMAT(b.plan_date, '%Y-%m') = #{record.detailsTime}
+        GROUP BY b.id
+        ) aaa ON tab.id = aaa.id
+        LEFT JOIN
+        (SELECT b.id,
+        b.plan_date AS base_plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_repaied
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id AND b.`status` = 'REPAIED' AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        AND a.bs_user_id = #{record.userId}
+        AND DATE_FORMAT(b.plan_date, '%Y-%m') = #{record.detailsTime}
+        GROUP BY b.id
+        ) bbb ON tab.id = bbb.id
+        LEFT JOIN
+        (SELECT b.id,
+        b.plan_date AS base_plan_date,
+        SUM(b.plan_principal + b.plan_interest) AS plan_total_repaying
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id AND b.`status` = 'REPAYING' AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        AND a.bs_user_id = #{record.userId} 
+        AND DATE_FORMAT(b.plan_date, '%Y-%m') = #{record.detailsTime}
+        GROUP BY b.id
+        ) ccc ON tab.id = ccc.id)abc
+        GROUP BY abc.base_plan_date) qqq
+      </select>
+
+      <select id="getDetailsList" parameterType="java.util.Map" resultMap="CashTransferSchemesVOMap">
+        SELECT
+        abc.base_plan_date,
+        SUM(abc.plan_total_init) AS plan_total_init,
+        SUM(abc.plan_total_repaied) AS plan_total_repaied,
+        SUM(abc.plan_total_repaying) AS plan_total_repaying
+        FROM
+        (SELECT
+        tab.base_plan_date,
+        IFNULL((aaa.plan_total_init),0) AS plan_total_init,
+        IFNULL((bbb.plan_total_repaied),0) AS plan_total_repaied,
+        IFNULL((ccc.plan_total_repaying),0) AS plan_total_repaying
+        FROM
+        (SELECT b.id,
+        b.plan_date AS base_plan_date
+        FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+        WHERE a.id = b.relation_id
+        AND a.bs_user_id = #{record.userId} AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+        AND DATE_FORMAT(b.plan_date, '%Y-%m') = #{record.detailsTime}
+        ) tab
+        LEFT JOIN
+        (SELECT b.id,
+          b.plan_date AS base_plan_date,
+          SUM(b.plan_principal + b.plan_interest) AS plan_total_init
+          FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+          WHERE a.id = b.relation_id AND b.`status` = 'INIT'
+          AND a.bs_user_id = #{record.userId} AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+          AND DATE_FORMAT(b.plan_date, '%Y-%m') = #{record.detailsTime}
+          GROUP BY b.id
+        ) aaa ON tab.id = aaa.id
+        LEFT JOIN
+        (SELECT b.id,
+          b.plan_date AS base_plan_date,
+          SUM(b.plan_principal + b.plan_interest) AS plan_total_repaied
+          FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+          WHERE a.id = b.relation_id AND b.`status` = 'REPAIED' AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+          AND a.bs_user_id = #{record.userId}
+          AND DATE_FORMAT(b.plan_date, '%Y-%m') = #{record.detailsTime}
+          GROUP BY b.id
+        ) bbb ON tab.id = bbb.id
+        LEFT JOIN
+        (SELECT b.id,
+          b.plan_date AS base_plan_date,
+          SUM(b.plan_principal + b.plan_interest) AS plan_total_repaying
+          FROM ln_loan_relation a, ln_finance_repay_schedule b, bs_sub_account c
+          WHERE a.id = b.relation_id AND b.`status` = 'REPAYING' AND c.product_type = 'REG_D' AND c.id = a.bs_sub_account_id
+          AND a.bs_user_id = #{record.userId} AND DATE_FORMAT(b.plan_date, '%Y-%m') = #{record.detailsTime}
+          GROUP BY b.id
+        ) ccc ON tab.id = ccc.id
+        )abc
+        GROUP BY abc.base_plan_date
+        ORDER BY abc.base_plan_date ASC;
+      </select>
+      
+      
+         <select id="selectCompensateUserByLoanId" resultMap="lnLoanRelationVOMap" parameterType="java.util.Map">
+        SELECT a.id, c.user_name, c.mobile AS user_mobile, c.id_card, a.init_amount, d.agreement_rate
+        FROM ln_loan_relation a, bs_sub_account regd, bs_account b, bs_user c, ln_loan d
+        WHERE a.loan_id = #{loanId}
+        AND b.id = regd.account_id AND c.id = b.user_id AND a.bs_sub_account_id = regd.id AND a.loan_id = d.id
+        AND regd.product_type = 'AUTH_INCR'
+        AND a.id not in(
+            select DISTINCT(in_loan_relation_id) from ln_credit_transfer
+        )
+      </select>
+
+      <resultMap id="CompensateTransfersVOMap" type="com.pinting.business.model.vo.CompensateTransfersVO" >
+        <result column="approve_amount" property="approveAmount" jdbcType="DOUBLE" />
+        <result column="agreement_rate" property="agreementRate" jdbcType="DOUBLE" />
+        <result column="period" property="period" jdbcType="INTEGER" />
+        <result column="plan_amount" property="planAmount" jdbcType="DOUBLE" />
+        <result column="ln_loan_relation_id" property="lnLoanRelationId" jdbcType="INTEGER" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+        <result column="loan_user_name" property="loanUserName" jdbcType="VARCHAR" />
+        <result column="loan_id_card" property="loanIdCard" jdbcType="VARCHAR" />
+        <result column="before_amount" property="beforeAmount" jdbcType="DOUBLE" />
+        <result column="no_billing_period" property="noBillingPeriod" jdbcType="INTEGER" />
+        <result column="agree_amount" property="agreementAmount" jdbcType="DOUBLE" />
+        <result column="serial_id" property="serialId" javaType="INTEGER" />
+        <result column="user_mobile" property="userMobile" jdbcType="VARCHAR" />
+      </resultMap>
+
+      <select id="selectCompensateLoanRelationIdList" parameterType="java.util.Map" resultMap="CompensateTransfersVOMap">
+        SELECT
+          a.id AS ln_loan_relation_id 
+        FROM
+            ln_loan_relation a,
+            (SELECT * FROM ln_loan_amount_change WHERE after_amount = 0 ORDER BY relation_id) b
+        WHERE a.id = b.relation_id
+        AND a.loan_id = #{loanId}
+        AND a. STATUS = 'REPAID'
+      </select>
+
+      <select id="selectCompensateTransferInfo" parameterType="java.util.Map" resultMap="CompensateTransfersVOMap">
+        select a.principal before_amount,
+       	0 after_amount,
+        d.user_name AS loan_user_name,
+        d.id_card AS loan_id_card,
+        c.approve_amount,
+        c.period,
+        c.agreement_rate,
+        e.user_name,
+        e.id_card,
+        e.mobile AS user_mobile,
+		a.interest_day no_billing_period,
+		a.amount agree_amount 
+		from ln_compensate_relation a,ln_deposition_repay_schedule b,ln_loan c,
+		        ln_user d,
+		        bs_user e,ln_loan_relation f
+		where a.dep_plan_id = b.id 
+			and b.loan_id = c.id and c.ln_user_id = d.id
+			and a.loan_relation_id = f.id 
+			and f.bs_user_id = e.id
+			and b.loan_id = #{loanId}
+        AND a.loan_relation_id = #{lnLoanRelationId}
+      </select>
+
+      <select id="selectCompensateTransferList" parameterType="java.util.Map" resultMap="CompensateTransfersVOMap">
+       select a.principal before_amount,
+       	0 after_amount,
+        d.user_name AS loan_user_name,
+        d.id_card AS loan_id_card,
+        c.approve_amount,
+        c.period,
+        c.agreement_rate,
+        e.user_name,
+        e.id_card,
+		a.interest_day no_billing_period,
+		ROUND((a.amount+ (a.principal*a.interest_day*(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'LOAN_SERVICE_RATE_YUN_DAI')/36500)), 2) agree_amount,
+		b.serial_id
+		from ln_compensate_relation a,ln_deposition_repay_schedule b,ln_loan c,
+		        ln_user d,
+		        bs_user e,ln_loan_relation f
+		where a.dep_plan_id = b.id 
+			and b.loan_id = c.id and c.ln_user_id = d.id
+			and a.loan_relation_id = f.id 
+			and f.bs_user_id = e.id
+			and b.loan_id = #{loanId}
+      </select>
+
+      <resultMap id="detailsOfDebtVOMap" type="com.pinting.business.model.vo.DetailsOfDebtVO">
+        <result column="loan_name" property="loanName" jdbcType="VARCHAR" />
+        <result column="init_amount" property="initAmount" jdbcType="DOUBLE" />
+        <result column="left_amount" property="leftAmount" jdbcType="DOUBLE" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="trans_mark" property="transMark" jdbcType="VARCHAR" />
+        <result column="interest_begin_date" property="interestBeginDate" jdbcType="DATE" />
+        <result column="lock_term" property="lockTerm" jdbcType="INTEGER" />
+        <result column="product_name" property="productName" jdbcType="VARCHAR" />
+        <result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
+        <result column="balance" property="balance" jdbcType="DOUBLE" />
+        <result column="ln_loan_relation_id" property="lnLoanRelationId" jdbcType="INTEGER" />
+        <result column="loan_id" property="loanId" jdbcType="INTEGER" />
+        <result column="open_balance" property="openBalance" jdbcType="DOUBLE" />
+        <result column="loan_time" property="loanTime" jdbcType="TIMESTAMP" />
+        <result column="transfer_time" property="transferTime" jdbcType="TIMESTAMP" />
+        <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+      	<result column="partner_business_flag" property="partnerBusinessFlag" jdbcType="VARCHAR" />
+      	<result column="product_type" property="productType" jdbcType="VARCHAR" />
+      	<result column="note" property="note" jdbcType="VARCHAR" />
+      	<result column="partner_code" property="partnerCode" jdbcType="VARCHAR" />
+      </resultMap>
+
+      <select id="selectDepClaimsListBySubAccountId" resultMap="detailsOfDebtVOMap" parameterType="java.util.Map">
+        SELECT
+        b.user_name AS loan_name,
+        b.partner_code,
+        a.init_amount,
+        a.left_amount,
+        a.create_time,
+        a.update_time,
+        a.trans_mark,
+        a.status,
+        c.interest_begin_date,
+        c.open_time,
+        c.balance,
+        c.open_balance,
+        c.product_type,
+        c.note,
+        d.name AS product_name,
+        a.id AS ln_loan_relation_id
+        FROM
+        ln_loan_relation a
+        LEFT JOIN ln_user b ON a.ln_user_id = b.id
+        LEFT JOIN bs_sub_account c ON a.bs_sub_account_id = c.id
+        LEFT JOIN bs_product d ON c.product_id = d.id
+        WHERE a.`status` IN ('SUCCESS', 'TRANSFERRED', 'REPAID') AND a.bs_sub_account_id = #{subAccountId}
+        ORDER BY field(a.`status`, 'SUCCESS', 'TRANSFERRED', 'REPAID'),
+        a.update_time DESC
+        LIMIT #{start}, #{numPerPage}
+      </select>
+
+      <select id="selectCustodyFinancialManagement" resultMap="lnLoanRelationVOMap" parameterType="java.util.Map">
+        SELECT
+        a.id AS loan_relation_id,
+        c.user_name,
+        c.mobile AS user_mobile,
+        c.id_card,
+        d.period,
+        a.init_amount
+        FROM
+        ln_loan_relation a, bs_user c, ln_loan d
+        WHERE a.loan_id = #{loanId}
+        AND a.bs_user_id=c.id
+        AND d.id = a.loan_id
+        AND a.trans_mark NOT IN ('TRANS_IN')
+      </select>
+
+      <resultMap id="DebtTransferRecordsVOMap" type="com.pinting.business.model.vo.DebtTransferRecordsVO" >
+        <result column="out_user_mobile" property="outUserMobile" jdbcType="VARCHAR" />
+        <result column="in_user_mobile" property="inUserMobile" jdbcType="VARCHAR" />
+        <result column="amount" property="amount" jdbcType="DOUBLE" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+      </resultMap>
+
+      <select id="selectCustodyLoanTransferClaims" resultMap="DebtTransferRecordsVOMap" parameterType="java.util.Map">
+        SELECT * FROM
+        (
+          (SELECT
+          DISTINCT a.id,
+          a.in_amount AS amount, a.create_time,a.out_loan_relation_id, a.in_loan_relation_id,
+          c.mobile AS out_user_mobile,
+          d.mobile AS in_user_mobile
+          FROM ln_credit_transfer a, ln_loan_relation b, bs_user c, bs_user d
+          WHERE b.loan_id = #{loanId}
+          AND a.out_loan_relation_id = b.id
+          AND a.out_user_id = c.id
+          AND a.in_user_id = d.id)
+          UNION
+          (SELECT
+          DISTINCT a.id,
+          a.in_amount AS amount, a.create_time,a.out_loan_relation_id, a.in_loan_relation_id,
+          c.mobile AS out_user_mobile,
+          d.mobile AS in_user_mobile
+          FROM ln_credit_transfer a, ln_loan_relation b, bs_user c, bs_user d
+          WHERE b.loan_id = #{loanId}
+          AND a.in_loan_relation_id = b.id
+          AND a.out_user_id = c.id
+          AND a.in_user_id = d.id)
+        ) tab
+        ORDER by tab.create_time DESC
+      </select>
+      
+      <!-- 	=========================存管未来30天兑付查询 S ===================================== -->
+      <resultMap id="DepCash30VOMap" type="com.pinting.business.model.vo.DepCash30VO" >
+        <result column="finish_date" property="finishDate" jdbcType="TIMESTAMP" />
+        <result column="quit_principal_balance" property="quitPrincipalBalance" jdbcType="DOUBLE" />
+        <result column="quit_interest_balance" property="quitInterestBalance" jdbcType="DOUBLE" />
+        <result column="befer_day_repay_balance" property="beferDayRepayBalance" jdbcType="DOUBLE" />
+        <result column="vip_amount" property="vipAmount" jdbcType="DOUBLE" />
+        <result column="vip_transfer_interest" property="vipTransferInterest" jdbcType="DOUBLE" />
+        <result column="partner_code" property="partnerCode" jdbcType="VARCHAR"/>
+      </resultMap>
+
+      <select id="depCash30" resultMap="DepCash30VOMap" parameterType="java.util.Map">
+      <![CDATA[
+			SELECT
+			aa.finish_date,
+			IFNULL( bb.quit_principal_balance ,0) quit_principal_balance,
+			0 quit_interest_balance,
+			IFNULL(cc.befer_day_repay_balance,0)+IFNULL(cc.befer_day_repay_principal,0) befer_day_repay_balance,
+			dd.vip_amount,
+			IFNULL(aa.vip_transfer_interest,0) vip_transfer_interest
+			FROM
+			(
+				SELECT ab.*,
+					(select 
+									 SUM((IFNULL(a.left_amount,0) - IFNULL(d.plan_principal,0))*(TIMESTAMPDIFF(DAY,DATE(a.create_time),ab.finish_date)-1)*agreement_rate/36500)
+									from (SELECT id,left_amount,create_time,loan_id,status,bs_user_id FROM ln_loan_relation WHERE status = 'SUCCESS' 
+											AND  FIND_IN_SET(bs_user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'YUN_DAI_SELF_SUPER_FINANCE_USER_ID')) ) a
+									left join ln_finance_repay_schedule d on a.id = d.relation_id and d.status = 'REPAYING',
+									ln_loan b
+									where 
+									a.loan_id = b.id
+									) vip_transfer_interest
+				FROM (
+					SELECT 
+								a.last_finish_interest_date  finish_date
+					FROM
+					bs_sub_account a,
+					bs_product b
+					WHERE a.product_id = b.id
+					AND a.last_finish_interest_date > NOW() AND a.last_finish_interest_date <=  date_add(NOW() , interval 30 day)
+					GROUP BY finish_date
+				) ab
+			) aa 
+			LEFT JOIN (
+					SELECT 
+						a.last_finish_interest_date  finish_date,
+						TIMESTAMPDIFF(DAY,a.interest_begin_date,NOW()) invest_day,
+						SUM(a.open_balance) quit_principal_balance
+					FROM 
+					bs_sub_account a,
+					bs_product b,
+					bs_account c
+					WHERE a.product_id = b.id
+					AND a.account_id = c.id
+					AND a.product_type IN ('AUTH_YUN','RED')
+					AND a.`status` IN ('2','7')
+					AND a.last_finish_interest_date > NOW() AND a.last_finish_interest_date <=  date_add(NOW() , interval 30 day)
+					
+					AND !FIND_IN_SET(c.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'YUN_DAI_SELF_SUPER_FINANCE_USER_ID'))
+					GROUP BY finish_date
+			)bb ON  aa.finish_date = bb.finish_date
+		
+			LEFT JOIN (
+			
+				SELECT ca.plan_date,finish_date, SUM(ca.befer_day_repay_balance) befer_day_repay_balance, SUM(ca.plan_amount) befer_day_repay_principal FROM (			
+						SELECT 
+						a.plan_date,
+						date_add(a.plan_date , interval 1 day) finish_date,
+						SUM(c.plan_amount * f.init_amount/d.apply_amount * g.product_rate /IF(d.loan_time > DATE_FORMAT('2018-01-19','%Y-%m-%d 00:00:00'),36,43.8)) befer_day_repay_balance,
+						b.plan_amount
+						FROM 
+						ln_repay_schedule a
+						LEFT JOIN ln_repay_schedule_detail b ON  a.id = b.plan_id AND b.subject_code = 'PRINCIPAL'
+						LEFT JOIN ln_repay_schedule_detail c ON  a.id = c.plan_id AND c.subject_code = 'INTEREST',
+						ln_loan d ,
+						ln_user e ,
+						ln_loan_relation f,
+						bs_sub_account g
+						WHERE 
+						a.loan_id = d.id
+						AND d.ln_user_id = e.id
+						AND d.id = f.loan_id
+						AND f.bs_sub_account_id = g.id
+						and ((a.`status` = 'INIT' AND f.`status` = 'SUCCESS') OR (a.`status` = 'REPAIED' and DATE(a.plan_date) = DATE(NOW()) and f.`status` != 'TRANSFERRED'))
+						AND e.partner_code = 'YUN_DAI_SELF'
+						AND DATE(a.plan_date)  >= DATE(NOW())
+						AND DATE(a.plan_date) < DATE(date_add(NOW() , interval 30 day))
+						GROUP BY f.loan_id, a.plan_date 
+				) ca
+				GROUP BY ca.plan_date
+			) cc ON aa.finish_date = cc.finish_date,
+			(select 
+			IFNULL(sum(IFNULL(a.left_amount,0) - IFNULL(d.plan_principal,0)),0) vip_amount,
+			b.agreement_rate,a.create_time
+			from ln_loan_relation a
+			left join ln_finance_repay_schedule d on a.id = d.relation_id and d.status = 'REPAYING',
+			ln_loan b
+			where 
+			a.loan_id = b.id
+			and a.status = 'SUCCESS' 
+			and FIND_IN_SET(a.bs_user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'YUN_DAI_SELF_SUPER_FINANCE_USER_ID'))
+			) dd
+		]]>     
+      </select>
+      <select id="depVipDeptsAmount" resultType="java.lang.Double">
+      	select IFNULL(sum(IFNULL(a.left_amount,0) - IFNULL(d.plan_principal,0)),0) vip_amount
+		from ln_loan_relation a
+		left join ln_finance_repay_schedule d on a.id = d.relation_id and d.status = 'REPAYING'
+		where a.status = 'SUCCESS' 
+		and FIND_IN_SET(a.bs_user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'YUN_DAI_SELF_SUPER_FINANCE_USER_ID'))
+      </select>
+      
+      <select id="depVipStandAmount" resultType="java.lang.Double">
+        SELECT IFNULL(SUM(a.available_balance ),0)FROM 
+		bs_sub_account a,
+		bs_account b
+		WHERE 
+		a.account_id = b.id
+		AND FIND_IN_SET(b.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'YUN_DAI_SELF_SUPER_FINANCE_USER_ID'))
+		AND a.product_type = 'AUTH_YUN'
+      </select>
+      
+      <select id="slectQuitInterestBalanceByDate" resultType="java.lang.Double" parameterType="java.util.Map">
+		SELECT
+		SUM(ba.left_amount * TIMESTAMPDIFF(DAY,ba.bill_date,ba.finish_date)*ba.agreement_rate/36500)  quit_interest_balance
+		FROM(
+				SELECT 
+				bd.*,
+				CASE WHEN f.id IS NOT NULL THEN date_add(f.plan_date , interval 1 day)
+					WHEN e.id IS NULL THEN DATE(loan_time)
+						ELSE e.plan_date END bill_date
+				FROM
+				(	
+				
+							SELECT 
+								aa.last_finish_interest_date finish_date,
+								g.agreement_rate,
+								d.left_amount,
+								g.id loan_id,
+								g.loan_time
+							FROM
+							(SELECT a.id,a.last_finish_interest_date
+								FROM 
+								bs_sub_account a
+								WHERE
+								a.product_type IN ('AUTH_YUN' )
+								AND a.`status` IN ('2','7')
+								AND DATE(a.last_finish_interest_date) = DATE(#{finishDate})
+							) aa,
+							ln_loan_relation d , ln_loan g 
+							WHERE d.bs_sub_account_id = aa.id AND d.loan_id = g.id AND d.`status`='SUCCESS'
+							AND !FIND_IN_SET(d.bs_user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'YUN_DAI_SELF_SUPER_FINANCE_USER_ID'))
+							
+				) bd LEFT JOIN (select id,loan_id,plan_date from ln_repay_schedule where  `status` = 'INIT' and serial_id = 1  ) e ON bd.loan_id = e.loan_id  
+				LEFT JOIN ( SELECT tt.id,tt.loan_id,tt.plan_date FROM (SELECT id,loan_id,plan_date FROM ln_repay_schedule t WHERE t.`status` IN ('REPAIED','LATE_NOT','PART_REPAY','LATE_REPAIED') ORDER BY t.serial_id DESC )tt GROUP BY tt.loan_id  ) f ON bd.loan_id = f.loan_id
+		)ba GROUP BY ba.finish_date
+      </select>
+          <!-- 	=========================存管未来30天兑付查询E ===================================== -->         
+
+      
+  <!--==================================赞时贷存管未来30天兑付查询 S ================================================--> 
+      <select id="depVipDeptsZsdAmount" resultType="java.lang.Double">
+      	select IFNULL(sum(IFNULL(a.left_amount,0) - IFNULL(d.plan_principal,0)),0) vip_amount
+		from ln_loan_relation a
+		left join ln_finance_repay_schedule d on a.id = d.relation_id and d.status = 'REPAYING'
+		where a.status = 'SUCCESS' 
+		and FIND_IN_SET(a.bs_user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'ZSD_SUPER_FINANCE_USER_ID'))
+      </select>
+      
+      <select id="depVipStandZsdAmount" resultType="java.lang.Double">
+        SELECT IFNULL(SUM(a.available_balance ),0)FROM 
+		bs_sub_account a,
+		bs_account b
+		WHERE 
+		a.account_id = b.id
+		AND FIND_IN_SET(b.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'ZSD_SUPER_FINANCE_USER_ID'))
+		AND a.product_type = 'AUTH_ZSD'
+      </select>
+      
+      
+     <select id="zsdDepCash30" resultMap="DepCash30VOMap" parameterType="java.util.Map">
+      <![CDATA[
+			SELECT
+			aa.finish_date,
+			IFNULL( bb.quit_principal_balance ,0) quit_principal_balance,
+			0 quit_interest_balance,
+			IFNULL(cc.befer_day_repay_balance,0)+IFNULL(cc.befer_day_repay_principal,0) befer_day_repay_balance,
+			dd.vip_amount,
+			IFNULL(aa.vip_transfer_interest,0) vip_transfer_interest
+			FROM
+			(
+				SELECT ab.*,
+					(select 
+							 SUM((IFNULL(a.left_amount,0) - IFNULL(d.plan_principal,0))*(TIMESTAMPDIFF(DAY,DATE(a.create_time),ab.finish_date)-1)*agreement_rate/36500)
+							from (SELECT id,left_amount,create_time,loan_id,status,bs_user_id FROM ln_loan_relation WHERE status = 'SUCCESS' 
+									AND  FIND_IN_SET(bs_user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'ZSD_SUPER_FINANCE_USER_ID')) 
+								) a
+							left join ln_finance_repay_schedule d on a.id = d.relation_id and d.status = 'REPAYING',
+							ln_loan b
+							where 
+							a.loan_id = b.id
+						) vip_transfer_interest
+				FROM (
+					SELECT 
+								a.last_finish_interest_date  finish_date
+					FROM
+					bs_sub_account a,
+					bs_product b
+					WHERE a.product_id = b.id
+					AND a.last_finish_interest_date > NOW() AND a.last_finish_interest_date <=  date_add(NOW() , interval 30 day)
+					GROUP BY finish_date
+				) ab
+			) aa 
+			LEFT JOIN (
+					SELECT 
+						a.last_finish_interest_date  finish_date,
+						TIMESTAMPDIFF(DAY,a.interest_begin_date,NOW()) invest_day,
+						SUM(a.open_balance) quit_principal_balance
+					FROM 
+					bs_sub_account a,
+					bs_product b,
+					bs_account c
+					WHERE a.product_id = b.id
+					AND a.account_id = c.id
+					AND a.product_type IN ('AUTH_ZSD','RED_ZSD')
+					AND a.`status` IN ('2','7')
+					AND a.last_finish_interest_date > NOW() AND a.last_finish_interest_date <=  date_add(NOW() , interval 30 day)
+					
+					AND !FIND_IN_SET(c.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'ZSD_SUPER_FINANCE_USER_ID'))
+					GROUP BY finish_date
+			)bb ON  aa.finish_date = bb.finish_date
+		
+			LEFT JOIN (
+				SELECT ca.plan_date,finish_date, SUM(ca.befer_day_repay_balance) befer_day_repay_balance, SUM(ca.plan_amount) befer_day_repay_principal FROM (			
+								SELECT 
+								a.plan_date,
+								date_add(a.plan_date , interval 1 day) finish_date,
+								SUM(c.plan_amount * f.init_amount/d.apply_amount * g.product_rate /14.6) befer_day_repay_balance,
+								b.plan_amount
+								FROM 
+								ln_repay_schedule a
+								LEFT JOIN ln_repay_schedule_detail b ON  a.id = b.plan_id AND b.subject_code = 'PRINCIPAL'
+								LEFT JOIN ln_repay_schedule_detail c ON  a.id = c.plan_id AND c.subject_code = 'INTEREST',
+								ln_loan d ,
+								ln_user e ,
+								ln_loan_relation f,
+								bs_sub_account g
+								WHERE 
+								a.loan_id = d.id
+								AND d.ln_user_id = e.id
+								AND d.id = f.loan_id
+								AND f.bs_sub_account_id = g.id
+								and ((a.`status` = 'INIT' AND f.`status` = 'SUCCESS') OR (a.`status` = 'REPAIED' and DATE(a.plan_date) = DATE(NOW()) and f.`status` != 'TRANSFERRED'))
+								AND e.partner_code = 'ZSD'
+								AND DATE(a.plan_date)  >= DATE(NOW())
+								AND DATE(a.plan_date) < DATE(date_add(NOW() , interval 30 day))
+								GROUP BY f.loan_id, a.plan_date 
+				) ca
+				GROUP BY ca.plan_date
+			) cc ON aa.finish_date = cc.finish_date,
+			(select 
+			IFNULL(sum(IFNULL(a.left_amount,0) - IFNULL(d.plan_principal,0)),0) vip_amount,
+			b.agreement_rate,a.create_time
+			from ln_loan_relation a
+			left join ln_finance_repay_schedule d on a.id = d.relation_id and d.status = 'REPAYING',
+			ln_loan b
+			where 
+			a.loan_id = b.id
+			and a.status = 'SUCCESS' 
+			and FIND_IN_SET(a.bs_user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'ZSD_SUPER_FINANCE_USER_ID'))
+			) dd
+		]]>     
+      </select>
+
+      <select id="slectQuitInterestBalanceByDateZsd" resultType="java.lang.Double" parameterType="java.util.Map">
+		SELECT
+		SUM(ba.left_amount * TIMESTAMPDIFF(DAY,ba.bill_date,ba.finish_date)*ba.agreement_rate/36500)  quit_interest_balance
+		FROM(
+				SELECT 
+				bd.*,
+				CASE WHEN f.id IS NOT NULL THEN date_add(f.plan_date , interval 1 day)
+					WHEN e.id IS NULL THEN DATE(loan_time)
+						ELSE e.plan_date END bill_date
+				FROM
+				(	
+				
+				
+							SELECT 
+								aa.last_finish_interest_date finish_date,
+								g.agreement_rate,
+								d.left_amount,
+								g.id loan_id,
+								g.loan_time
+							FROM
+							(SELECT a.id,a.last_finish_interest_date
+								FROM 
+								bs_sub_account a
+								WHERE
+								a.product_type IN ('AUTH_ZSD' )
+								AND a.`status` IN ('2','7')
+								AND DATE(a.last_finish_interest_date) = DATE(#{finishDate})
+							) aa,
+							ln_loan_relation d , ln_loan g 
+							WHERE d.bs_sub_account_id = aa.id AND d.loan_id = g.id AND d.`status`='SUCCESS'
+							AND !FIND_IN_SET(d.bs_user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'ZSD_SUPER_FINANCE_USER_ID'))
+
+				) bd LEFT JOIN (select id,loan_id,plan_date from ln_repay_schedule where  `status` = 'INIT' and serial_id = 1  ) e ON bd.loan_id = e.loan_id 
+					 LEFT JOIN ( SELECT tt.id,tt.loan_id,tt.plan_date FROM (SELECT id,loan_id,plan_date FROM ln_repay_schedule t WHERE t.`status` IN ('REPAIED','LATE_NOT','PART_REPAY','LATE_REPAIED') ORDER BY t.serial_id DESC )tt GROUP BY tt.loan_id  ) f ON bd.loan_id = f.loan_id
+		)ba GROUP BY ba.finish_date
+      </select>
+      <!--==================================赞时贷存管未来30天兑付查询E ================================================--> 
+      <!--==================================七贷存管未来30天兑付查询S ================================================--> 
+      <select id="loan7DepCash30" resultMap="DepCash30VOMap" parameterType="java.util.Map">
+      <![CDATA[
+			SELECT
+			aa.finish_date,
+			IFNULL( bb.quit_principal_balance ,0) quit_principal_balance,
+			0 quit_interest_balance,
+			IFNULL(cc.befer_day_repay_balance,0)+IFNULL(cc.befer_day_repay_principal,0) befer_day_repay_balance,
+			dd.vip_amount,
+			IFNULL(aa.vip_transfer_interest,0) vip_transfer_interest
+			FROM
+			(
+				SELECT ab.*,
+					(select 
+									 SUM((IFNULL(a.left_amount,0) - IFNULL(d.plan_principal,0))*(TIMESTAMPDIFF(DAY,DATE(a.create_time),ab.finish_date)-1)*agreement_rate/36500)
+									from (SELECT id,left_amount,create_time,loan_id,status,bs_user_id FROM ln_loan_relation WHERE status = 'SUCCESS' 
+											AND  FIND_IN_SET(bs_user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = '7_DAI_SELF_SUPER_FINANCE_USER_ID')) ) a
+									left join ln_finance_repay_schedule d on a.id = d.relation_id and d.status = 'REPAYING',
+									ln_loan b
+									where 
+									a.loan_id = b.id
+									) vip_transfer_interest
+				FROM (
+					SELECT 
+								a.last_finish_interest_date  finish_date
+					FROM
+					bs_sub_account a,
+					bs_product b
+					WHERE a.product_id = b.id
+					AND a.last_finish_interest_date > NOW() AND a.last_finish_interest_date <=  date_add(NOW() , interval 30 day)
+					GROUP BY finish_date
+				) ab
+			) aa 
+			LEFT JOIN (
+					SELECT 
+						a.last_finish_interest_date  finish_date,
+						TIMESTAMPDIFF(DAY,a.interest_begin_date,NOW()) invest_day,
+						SUM(a.open_balance) quit_principal_balance
+					FROM 
+					bs_sub_account a,
+					bs_product b,
+					bs_account c
+					WHERE a.product_id = b.id
+					AND a.account_id = c.id
+					AND a.product_type IN ('AUTH_7','RED_7')
+					AND a.`status` IN ('2','7')
+					AND a.last_finish_interest_date > NOW() AND a.last_finish_interest_date <=  date_add(NOW() , interval 30 day)
+					
+					AND !FIND_IN_SET(c.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = '7_DAI_SELF_SUPER_FINANCE_USER_ID'))
+					GROUP BY finish_date
+			)bb ON  aa.finish_date = bb.finish_date
+		
+			LEFT JOIN (
+			
+				SELECT ca.plan_date,finish_date, SUM(ca.befer_day_repay_balance) befer_day_repay_balance, SUM(ca.plan_amount) befer_day_repay_principal FROM (			
+						SELECT 
+						a.plan_date,
+						date_add(a.plan_date , interval 1 day) finish_date,
+						SUM(c.plan_amount * f.init_amount/d.apply_amount * g.product_rate /36) befer_day_repay_balance,
+						b.plan_amount
+						FROM 
+						ln_repay_schedule a
+						LEFT JOIN ln_repay_schedule_detail b ON  a.id = b.plan_id AND b.subject_code = 'PRINCIPAL'
+						LEFT JOIN ln_repay_schedule_detail c ON  a.id = c.plan_id AND c.subject_code = 'INTEREST',
+						ln_loan d ,
+						ln_user e ,
+						ln_loan_relation f,
+						bs_sub_account g
+						WHERE 
+						a.loan_id = d.id
+						AND d.ln_user_id = e.id
+						AND d.id = f.loan_id
+						AND f.bs_sub_account_id = g.id
+						and ((a.`status` = 'INIT' AND f.`status` = 'SUCCESS') OR (a.`status` = 'REPAIED' and DATE(a.plan_date) = DATE(NOW()) and f.`status` != 'TRANSFERRED'))
+						AND e.partner_code = '7_DAI_SELF'
+						AND DATE(a.plan_date)  >= DATE(NOW())
+						AND DATE(a.plan_date) < DATE(date_add(NOW() , interval 30 day))
+						GROUP BY f.loan_id, a.plan_date 
+				) ca
+				GROUP BY ca.plan_date
+			) cc ON aa.finish_date = cc.finish_date,
+			(select 
+			IFNULL(sum(IFNULL(a.left_amount,0) - IFNULL(d.plan_principal,0)),0) vip_amount,
+			b.agreement_rate,a.create_time
+			from ln_loan_relation a
+			left join ln_finance_repay_schedule d on a.id = d.relation_id and d.status = 'REPAYING',
+			ln_loan b
+			where 
+			a.loan_id = b.id
+			and a.status = 'SUCCESS' 
+			and FIND_IN_SET(a.bs_user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = '7_DAI_SELF_SUPER_FINANCE_USER_ID'))
+			) dd
+		]]>     
+      </select>
+      <select id="depVipDeptsLoan7Amount" resultType="java.lang.Double">
+      	select IFNULL(sum(IFNULL(a.left_amount,0) - IFNULL(d.plan_principal,0)),0) vip_amount
+		from ln_loan_relation a
+		left join ln_finance_repay_schedule d on a.id = d.relation_id and d.status = 'REPAYING'
+		where a.status = 'SUCCESS' 
+		and FIND_IN_SET(a.bs_user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = '7_DAI_SELF_SUPER_FINANCE_USER_ID'))
+      </select>
+      
+      <select id="depVipStandLoan7Amount" resultType="java.lang.Double">
+        SELECT IFNULL(SUM(a.available_balance ),0)FROM 
+		bs_sub_account a,
+		bs_account b
+		WHERE 
+		a.account_id = b.id
+		AND FIND_IN_SET(b.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = '7_DAI_SELF_SUPER_FINANCE_USER_ID'))
+		AND a.product_type = 'AUTH_7'
+      </select>
+      
+      <select id="slectQuitInterestBalanceByDateLoan7" resultType="java.lang.Double" parameterType="java.util.Map">
+		SELECT
+		SUM(ba.left_amount * TIMESTAMPDIFF(DAY,ba.bill_date,ba.finish_date)*ba.agreement_rate/36500)  quit_interest_balance
+		FROM(
+				SELECT 
+				bd.*,
+				CASE WHEN f.id IS NOT NULL THEN date_add(f.plan_date , interval 1 day)
+					WHEN e.id IS NULL THEN DATE(loan_time)
+						ELSE e.plan_date END bill_date
+				FROM
+				(	
+				
+							SELECT 
+								aa.last_finish_interest_date finish_date,
+								g.agreement_rate,
+								d.left_amount,
+								g.id loan_id,
+								g.loan_time
+							FROM
+							(SELECT a.id,a.last_finish_interest_date
+								FROM 
+								bs_sub_account a
+								WHERE
+								a.product_type IN ('AUTH_7' )
+								AND a.`status` IN ('2','7')
+								AND DATE(a.last_finish_interest_date) = DATE(#{finishDate})
+							) aa,
+							ln_loan_relation d , ln_loan g 
+							WHERE d.bs_sub_account_id = aa.id AND d.loan_id = g.id AND d.`status`='SUCCESS'
+							AND !FIND_IN_SET(d.bs_user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = '7_DAI_SELF_SUPER_FINANCE_USER_ID'))
+							
+				) bd LEFT JOIN (select id,loan_id,plan_date from ln_repay_schedule where  `status` = 'INIT' and serial_id = 1  ) e ON bd.loan_id = e.loan_id  
+				LEFT JOIN ( SELECT tt.id,tt.loan_id,tt.plan_date FROM (SELECT id,loan_id,plan_date FROM ln_repay_schedule t WHERE t.`status` IN ('REPAIED','LATE_NOT','PART_REPAY','LATE_REPAIED') ORDER BY t.serial_id DESC )tt GROUP BY tt.loan_id  ) f ON bd.loan_id = f.loan_id
+		)ba GROUP BY ba.finish_date
+      </select>
+     <!--==================================七贷存管未来30天兑付查询E ================================================-->  
+  <!-- ==================================恒丰客户充值S ================================================-->
+  <resultMap id="UserRechangeStatisticsMap" type="com.pinting.business.model.vo.UserRechanageStatisticsVO">
+    <result column="rowno" jdbcType="INTEGER" property="rowno" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="time" />
+    <result column="customer_code" jdbcType="VARCHAR" property="customerCode" />
+    <result column="amount" jdbcType="DOUBLE" property="amount" />
+    <result column="service_fee" jdbcType="DOUBLE" property="serviceFee" />
+    <result column="actual_amount" jdbcType="DOUBLE" property="actualAmount" />
+  </resultMap>
+  <select id="depUserRechangeStatistics" resultMap="UserRechangeStatisticsMap">
+  	SELECT
+		(@rowNO := @rowNo + 1) rowno,
+		t.*,t.amount-t.service_fee actual_amount
+	FROM
+		(SELECT @rowNO := #{position}) b,
+		(
+			SELECT
+				p.user_id,
+				p.amount,
+				0 service_fee,
+				p.user_name,
+				p.mobile,
+				p.update_time,
+				concat("3.",p.user_id) customer_code,
+				p.order_no
+			FROM
+				bs_pay_orders p,
+				bs_sub_account pa
+			WHERE
+			p.sub_account_id = pa.id
+			AND p. STATUS = 6
+			AND p.trans_type = 'TOP_UP' 
+        	AND p.update_time &gt;= '2017-09-19 00:00:00'
+			<if test="userName != null and userName != ''"> 
+				AND p.user_name like concat(concat('%', #{userName}),'%')
+			</if>
+			<if test="mobile != null and mobile != ''"> 
+				AND p.mobile  like concat(concat('%', #{mobile}),'%')
+			</if>
+			<if test="startTime != null and startTime != ''"> 
+				<![CDATA[
+					AND p.update_time >= #{startTime}
+				]]>
+			</if>
+			<if test="endTime != null and endTime != ''"> 
+				<![CDATA[
+					AND p.update_time <= #{endTime}
+				]]>
+			</if>
+			ORDER BY
+				p.update_time DESC
+			LIMIT #{position}, #{offset}
+		) t
+  </select>
+  
+  <select id="depUserRechangeStatisticsCount" resultType="java.lang.Integer">
+  	SELECT
+		count(*)
+	FROM
+		bs_pay_orders p,
+		bs_sub_account pa
+	WHERE
+	p.sub_account_id = pa.id
+	AND	p. STATUS = 6
+	AND p.trans_type = 'TOP_UP'
+    AND p.update_time &gt;= '2017-09-19 00:00:00'
+	<if test="userName != null and userName != ''"> 
+		AND p.user_name like concat(concat('%', #{userName}),'%')
+	</if>
+	<if test="mobile != null and mobile != ''"> 
+		AND p.mobile  like concat(concat('%', #{mobile}),'%')
+	</if>
+	<if test="startTime != null and startTime != ''"> 
+		<![CDATA[
+			AND p.update_time >= #{startTime}
+		]]>
+	</if>
+	<if test="endTime != null and endTime != ''"> 
+		<![CDATA[
+			AND p.update_time <= #{endTime}
+		]]>
+	</if>
+  </select>
+    <select id="depUserTotalRechangeAmountStatistics" resultType="java.lang.Double">
+  	SELECT
+		SUM(p.amount)
+	FROM
+		bs_pay_orders p,
+		bs_sub_account pa
+	WHERE
+	p.sub_account_id = pa.id
+	AND	p. STATUS = 6
+	AND p.trans_type = 'TOP_UP' 
+	AND p.update_time &gt;= '2017-09-19 00:00:00'
+	<if test="userName != null and userName != ''"> 
+		AND p.user_name like concat(concat('%', #{userName}),'%')
+	</if>
+	<if test="mobile != null and mobile != ''"> 
+		AND p.mobile  like concat(concat('%', #{mobile}),'%')
+	</if>
+	<if test="startTime != null and startTime != ''"> 
+		<![CDATA[
+			AND p.update_time >= #{startTime}
+		]]>
+	</if>
+	<if test="endTime != null and endTime != ''"> 
+		<![CDATA[
+			AND p.update_time <= #{endTime}
+		]]>
+	</if>
+  </select>
+  <!--==================================恒丰客户充值E ================================================-->
+      <select id="selectDepClaimsListBySubAccountIdNew" resultMap="detailsOfDebtVOMap" parameterType="java.util.Map">
+        SELECT
+			tab.id as ln_loan_relation_id,
+			tab.init_amount, tab.left_amount, tab.create_time, tab.update_time, tab.trans_mark,
+			tab.status,
+			tab.loan_name, tab.id_card,
+			tab.interest_begin_date,
+			tab.open_time,
+			tab.balance,
+			tab.open_balance,
+			tab.loan_time,
+			tab.partner_business_flag,
+			g.create_time AS transfer_time,
+            tab.partner_code
+        FROM
+        (
+        SELECT a.id,a.bs_sub_account_id, a.ln_user_id, a.loan_id, a.init_amount, a.left_amount, a.create_time, a.update_time, a.trans_mark,
+            a.status, b.user_name AS loan_name, b.id_card, b.partner_code,
+            c.interest_begin_date,
+            c.open_time,
+            c.balance,
+            c.open_balance,
+            f.loan_time,
+            f.partner_business_flag
+        FROM
+        (
+            SELECT a.id,a.bs_sub_account_id, a.ln_user_id, a.loan_id, a.init_amount, a.left_amount, a.create_time, a.update_time, a.trans_mark,
+            a.status FROM ln_loan_relation a
+            where a.status IN ('SUCCESS', 'TRANSFERRED', 'REPAID') AND a.bs_sub_account_id = #{subAccountId}
+            ORDER BY field(a.`status`, 'SUCCESS', 'TRANSFERRED', 'REPAID'), a.update_time DESC
+            LIMIT #{start}, #{numPerPage}
+        ) a, ln_user b, bs_sub_account c, ln_loan f
+        where
+        a.ln_user_id = b.id and a.bs_sub_account_id = c.id and a.loan_id = f.id AND f.status = 'PAIED'
+        AND b.id not in (
+		SELECT conf_value
+			FROM bs_sys_config
+			WHERE conf_key IN ('YUN_DAI_SELF_SUPER_LN_USER', '7_DAI_SELF_SUPER_LN_USER') )
+        ) tab
+        LEFT JOIN
+        (select create_time,out_loan_relation_id,in_loan_relation_id from ln_credit_transfer
+						where in_sub_account_id = #{subAccountId} or out_sub_account_id = #{subAccountId}) g
+        ON CASE WHEN tab.status = 'TRANSFERRED' THEN tab.id = g.out_loan_relation_id ELSE tab.id = g.in_loan_relation_id END
+        ORDER BY field(tab.`status`, 'SUCCESS', 'TRANSFERRED', 'REPAID'), tab.update_time DESC
+      </select>
+
+      <select id="selectDepClaimsCount"  parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT
+          COUNT(*)
+        FROM ln_loan_relation
+        WHERE bs_sub_account_id = #{subAccountId}
+        AND `status` IN ('SUCCESS', 'TRANSFERRED','REPAID')
+        AND ln_user_id not in ( 
+		SELECT conf_value 
+			FROM bs_sys_config 
+			WHERE conf_key IN ('YUN_DAI_SELF_SUPER_LN_USER', '7_DAI_SELF_SUPER_LN_USER') )
+      </select>
+
+
+  <resultMap id="BorrowerInfoVOMap" type="com.pinting.business.model.vo.BorrowerInfoVO">
+    <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+    <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
+    <result column="loan_id" property="loanId" jdbcType="INTEGER"/>
+    <result column="loan_amount" property="loanAmount" jdbcType="DOUBLE"/>
+    <result column="period" property="period" jdbcType="INTEGER"/>
+    <result column="loan_time" property="loanTime" jdbcType="TIMESTAMP"/>
+    <result column="history_overdue_times" property="historyOverdueTimes" jdbcType="INTEGER"/>
+    <result column="history_principal_overdue" property="historyOverdueAmount" jdbcType="DOUBLE"/>
+    <result column="principal_overdue" property="currentOverdueAmount" jdbcType="DOUBLE"/>
+    <result column="partner_code" property="partnerCode" jdbcType="VARCHAR"/>
+    <result column="partner_business_flag" property="partnerBusinessFlag" jdbcType="VARCHAR"/>
+  </resultMap>
+  <select id="selectBorrowerInfo" resultMap="BorrowerInfoVOMap" parameterType="java.util.Map">
+<if test="partnerCode == 'ZAN'">
+  select aa.*, count(distinct dd.id) as history_overdue_times, round(ifnull(sum(ee.plan_amount), 0), 2) as history_principal_overdue
+  from (
+    select a.id as loan_relation_id, c.user_name, c.id_card, a.loan_id, b.approve_amount as loan_amount, b.period, b.loan_time,
+          b.ln_user_id, c.partner_user_id, b.partner_loan_id, IFNULL(sum(e.plan_amount), 0) as principal_overdue, c.partner_code,
+          b.partner_business_flag
+    from (
+      select a.* from ln_loan_relation a where a.id = #{loanRelationId}
+    ) as a, ln_loan b left join ln_repay_schedule d on d.loan_id = b.id and d.`status` in ('LATE_NOT', 'LATE_REPAIED')
+    left join ln_repay_schedule_detail e on d.id = e.plan_id and e.subject_code = 'PRINCIPAL'
+    , ln_user c
+    where c.partner_code = #{partnerCode} and a.ln_user_id = b.ln_user_id
+    and a.loan_id = b.id and b.ln_user_id = c.id and a.`status` in ('SUCCESS', 'TRANSFERRED', 'REPAID', 'PAYING')
+  ) as aa
+  left join ln_user bb on bb.id = aa.ln_user_id and bb.partner_code = #{partnerCode}
+  left join ln_loan cc on cc.ln_user_id = aa.ln_user_id and cc.`status` in ('PAIED', 'PAYING')
+  left join ln_repay_schedule dd on dd.loan_id = cc.id and dd.`status` in ('LATE_NOT', 'LATE_REPAIED')
+  left join ln_repay_schedule_detail ee on ee.plan_id = dd.id and ee.subject_code = 'PRINCIPAL'
+</if>
+<if test="partnerCode != 'ZAN'">
+  select aa.*, count(distinct bb.id) as history_overdue_times, round(ifnull(sum(bb.principal), 0), 2) as history_principal_overdue
+  from (
+    select a.id as loan_relation_id, c.user_name, c.id_card, a.loan_id, b.approve_amount as loan_amount, b.period, b.loan_time,
+        b.ln_user_id, c.partner_user_id, b.partner_loan_id, IFNULL(sum(e.plan_amount), 0) as principal_overdue, c.partner_code,
+        b.partner_business_flag
+    from (
+        select a.* from ln_loan_relation a where a.id = #{loanRelationId}
+    ) as a, ln_loan b left join ln_repay_schedule d on b.id = d.loan_id and d.`status` in ('LATE_NOT', 'LATE_REPAIED')
+    left join ln_repay_schedule_detail e on d.id = e.plan_id and e.subject_code = 'PRINCIPAL', ln_user c
+    where a.loan_id = b.id and b.ln_user_id = c.id and a.`status` in ('SUCCESS', 'TRANSFERRED', 'REPAID')
+  ) as aa left join ln_compensate_detail bb on aa.partner_user_id = bb.partner_user_id and bb.`status` = 'SUCC'
+</if>
+  </select>
+
+  <resultMap id="CheckLnUserPartnerCodeVOMap" type="com.pinting.business.model.vo.CheckLnUserPartnerCodeVO">
+    <result column="partner_code" jdbcType="VARCHAR" property="partnerCode" />
+  </resultMap>
+
+  <select id="selectCheckLnUserPartnerCode" resultMap="CheckLnUserPartnerCodeVOMap">
+    SELECT b.partner_code FROM ln_loan_relation a, ln_user b
+    WHERE a.ln_user_id = b.id AND a.id = #{loanRelationId}
+  </select>
+
+  <select id="selectCompensateTransferListRenew" parameterType="java.util.Map" resultMap="CompensateTransfersVOMap">
+    select
+      a.principal before_amount,
+      0 after_amount,
+      d.user_name AS loan_user_name,
+      d.id_card AS loan_id_card,
+      c.approve_amount,
+      c.period,
+      c.agreement_rate,
+      e.user_name,
+      e.id_card,
+      a.interest_day no_billing_period,
+      a.amount agree_amount,
+      b.serial_id
+    from ln_compensate_relation a,ln_deposition_repay_schedule b,ln_loan c,
+      ln_user d,
+      bs_user e,ln_loan_relation f
+    where a.dep_plan_id = b.id
+    and b.loan_id = c.id and c.ln_user_id = d.id
+    and a.loan_relation_id = f.id
+    and f.bs_user_id = e.id
+    and b.loan_id = #{loanId}
+  </select>
+
+  <resultMap id="AgentUserVoMap" type="com.pinting.business.model.vo.AgentUserVo">
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="repayed_period_count" jdbcType="INTEGER" property="repayedPeriodCount" />
+    <result column="real_amount_trans" jdbcType="DOUBLE" property="realAmountTrans" />
+  </resultMap>
+
+  <select id="selectRealAmountTransList"  resultMap="AgentUserVoMap">
+    SELECT
+      a.bs_user_id,
+       (CASE WHEN SUM(amount-in_amount) IS NOT NULL THEN SUM(amount-in_amount) ELSE 0 END) as real_amount_trans
+    FROM ln_loan_relation a
+    left join ln_credit_transfer cc on cc.in_loan_relation_id = a.id
+    group by a.bs_user_id
+  </select>
+
+  <select id="selectrepayedPeriodCountList"  resultMap="AgentUserVoMap">
+    select
+      bb.bs_user_id, COUNT(aa.id) finance_repay_schedule
+    from (
+      select aa.id, aa.relation_id from ln_finance_repay_schedule aa where aa.`status` = 'REPAIED'
+    ) as aa, ln_loan_relation bb, bs_sub_account regd
+    where aa.relation_id = bb.id AND bb.bs_sub_account_id = regd.id
+    group by bb.bs_user_id
+  </select>
+
+
+	<select id="countRelationListWait2Transfer"  resultType="java.lang.Integer">
+		SELECT
+			count(a.id)
+		FROM
+			(
+				SELECT
+					*
+				FROM
+					ln_loan_relation
+				WHERE
+					left_amount > 0
+				AND `status` = 'SUCCESS'
+				and bs_sub_account_id = #{bsSubAccountId}
+			) a,
+		 bs_sub_account b,
+		 bs_product c,
+		 bs_hfbank_user_ext hfu,
+		 ln_loan d,
+		 ln_user lu
+		WHERE
+			a.bs_sub_account_id = b.id
+		AND hfu.user_id = a.bs_user_id
+		AND b.product_id = c.id
+		AND a.loan_id = d.id
+		AND d.ln_user_id = lu.id
+	</select>
+	
+   <select id="getRelationListWait2Transfer" resultMap="LoanRelation4TransferVOMap">
+   
+   select a.id, a.loan_id, a.bs_user_id, a.bs_sub_account_id, a.ln_user_id, a.ln_sub_account_id, a.init_amount, 
+    		a.discount_amount, a.total_amount,
+			CASE WHEN fin.paying_principal >0 THEN a.left_amount -fin.paying_principal ELSE a.left_amount END as left_amount,  
+			a.first_term, a.`status`, a.trans_mark, a.bid_status, 
+   			a.create_time, a.update_time, 
+	  		b.interest_begin_date,b.last_finish_interest_date,
+	  		b.product_rate base_rate,
+			CASE WHEN a.trans_mark ='NORMAL' THEN DATE(d.loan_time) ELSE DATE(a.create_time) END AS relation_begin_date,
+			CASE WHEN a.trans_mark = 'NORMAL' THEN 0 ELSE f.in_amount-f.amount END last_pay_interest,
+			CASE WHEN lu.partner_code = 'YUN_DAI_SELF' THEN e.plan_date ELSE e3.repay_time END last_pay_interest_date,
+			e1.plan_date last_repay_plan_date,e2.plan_date this_repay_plan_date,e2.serial_id this_repay_plan_serial_id,
+			date(d.loan_time) loan_date,d.period loan_period,d.partner_business_flag,d.bgw_settle_rate,d.approve_amount,
+			hfu.hf_user_id,d.agreement_rate,lu.partner_code
+		from (select * from ln_loan_relation 
+				 where left_amount >0 and `status`='SUCCESS'
+					<if test="bsSubAccountId != null">
+						and bs_sub_account_id = #{bsSubAccountId}
+					</if>
+			)a
+			LEFT JOIN ln_credit_transfer f on f.in_loan_relation_id = a.id
+			LEFT JOIN (
+              SELECT * FROM (
+				SELECT aa.* FROM (
+					select b1.*
+					from ln_loan_relation a1, ln_repay_schedule b1
+					where a1.loan_id = b1.loan_id 
+						and b1.`status` in('REPAIED','LATE_NOT','LATE_REPAIED') 
+						and b1.finish_time is not null
+						<if test="bsSubAccountId != null">
+							and a1.bs_sub_account_id = #{bsSubAccountId}
+						</if>
+					) aa ,
+					ln_repay_schedule_detail c1 
+					WHERE  aa.id = c1.plan_id and c1.subject_code='PRINCIPAL' and c1.plan_amount = 0
+					ORDER BY aa.plan_date desc
+				) aa
+				GROUP BY aa.loan_id
+			)e on e.loan_id = a.loan_id
+			LEFT JOIN (
+				SELECT * FROM (
+					SELECT aa.* FROM (
+					  select a.* from ln_repay_schedule a,ln_loan_relation b where 
+										a.loan_id = b.loan_id
+						and a.`status` in('LATE_NOT','LATE_REPAIED','REPAIED') 
+						<if test="bsSubAccountId != null">
+							and b.bs_sub_account_id = #{bsSubAccountId}
+						</if>
+					) aa ORDER BY plan_date desc
+				)aa
+              GROUP BY aa.loan_id
+			)e1 on e1.loan_id = a.loan_id
+			LEFT JOIN (
+				SELECT * FROM (
+					SELECT aa.* FROM (
+					  select a.* from ln_repay_schedule a,ln_loan_relation b where 
+										a.loan_id = b.loan_id
+						and a.`status` ='INIT' 
+						<if test="bsSubAccountId != null">
+							and b.bs_sub_account_id = #{bsSubAccountId}
+						</if>
+					) aa ORDER BY plan_date asc
+				)aa
+              GROUP BY aa.loan_id
+			)e2 on e2.loan_id = a.loan_id
+			LEFT JOIN (
+              SELECT * FROM (
+				SELECT aa.* FROM (
+					select b1.*
+						from ln_loan_relation a1, ln_bill_biz_info b1
+					where a1.loan_id = b1.loan_id 
+						<if test="bsSubAccountId != null">
+							and a1.bs_sub_account_id = #{bsSubAccountId}
+						</if>
+				
+				) aa ORDER BY aa.repay_time desc
+			  )aa 
+        GROUP BY aa.loan_id
+			)e3 on e3.loan_id = a.loan_id
+			LEFT JOIN (SELECT sum(plan_principal) paying_principal ,relation_id from ln_finance_repay_schedule where `status` = 'REPAYING' GROUP BY relation_id) fin
+			ON fin.relation_id = a.id,
+			bs_sub_account b,bs_product c,bs_hfbank_user_ext hfu,ln_loan d,ln_user lu
+		where a.bs_sub_account_id = b.id
+		 and hfu.user_id = a.bs_user_id
+		 and b.product_id = c.id
+		 and a.loan_id = d.id
+		 and d.ln_user_id = lu.id
+		ORDER BY left_amount DESC limit #{pageSize}
+  </select>
+
+  <!--================================== 自由站岗户未来30天兑付查询S ================================================-->
+  <select id="depVipDeptsLoanFreeAmount" resultType="java.lang.Double">
+    select IFNULL(sum(IFNULL(a.left_amount,0) - IFNULL(d.plan_principal,0)),0) vip_amount
+    from ln_loan_relation a
+    left join ln_finance_repay_schedule d on a.id = d.relation_id and d.status = 'REPAYING'
+    where a.status = 'SUCCESS'
+    and FIND_IN_SET(a.bs_user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'FREE_SUPER_FINANCE_USER_ID'))
+  </select>
+
+  <select id="depVipStandLoanFreeAmount" resultType="java.lang.Double">
+    SELECT IFNULL(SUM(a.available_balance ),0) FROM
+    bs_sub_account a,
+    bs_account b
+    WHERE
+    a.account_id = b.id
+    AND FIND_IN_SET(b.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'FREE_SUPER_FINANCE_USER_ID'))
+    AND a.product_type = 'AUTH_FREE'
+  </select>
+
+
+  <select id="loanFreeDepCash30" resultMap="DepCash30VOMap" parameterType="java.util.Map">
+    <![CDATA[
+		select  IFNULL(c.quit_principal,0) quit_principal_balance,IFNULL(d.quit_interest,0) quit_interest_balance,
+			IFNULL(f.repay_balance,0) befer_day_repay_balance,IFNULL(g.vip_amount,0) vip_amount,IFNULL(g.vip_interest,0) vip_transfer_interest,
+			a.last_finish_interest_date finish_date,'FREE' partner_code
+		from 
+		(
+					SELECT 
+								last_finish_interest_date
+					FROM
+					bs_sub_account 
+					WHERE last_finish_interest_date > NOW() AND last_finish_interest_date <=  date_add(NOW() , interval 30 day)
+					GROUP BY last_finish_interest_date
+		)a LEFT JOIN
+		(
+		-- C-预计退出债权本金
+		SELECT 
+				a.last_finish_interest_date ,ROUND(SUM(a.open_balance),2) quit_principal
+		FROM
+				bs_sub_account a
+		WHERE a.last_finish_interest_date > NOW() AND a.last_finish_interest_date <=  date_add(NOW() , interval 30 day)
+				AND (a.product_type='AUTH_FREE' or a.product_type = 'RED_FREE') AND `status`=2
+		GROUP BY a.last_finish_interest_date
+		)c ON c.last_finish_interest_date = a.last_finish_interest_date
+		LEFT JOIN 
+		(
+		-- D-预计退出债权利息
+			select 
+			CASE WHEN c.partner_business_flag='FIXED_INSTALLMENT' or c.partner_business_flag='FIXED_PRINCIPAL_INTEREST'
+			THEN sum(ROUND((t.init_amount*c.agreement_rate/2400*c.period/(c.period-t.first_term+1)),2))
+			ELSE sum(ROUND(((t.left_amount-IFNULL(b.plan_principal,0))*(DATEDIFF(t.last_finish_interest_date,NOW())+1)*c.agreement_rate/36500),2))
+			END quit_interest,t.last_finish_interest_date
+			from (
+				select a.id,a.loan_id,a.init_amount,a.left_amount,a.first_term,b.last_finish_interest_date
+				from ln_loan_relation a,
+				(SELECT id,last_finish_interest_date from
+					bs_sub_account 
+					WHERE last_finish_interest_date > NOW() AND last_finish_interest_date <=  date_add(NOW() , interval 30 day)
+						AND product_type='AUTH_FREE'  AND `status`=2 
+				)b 
+				where a.bs_sub_account_id = b.id and a.`status` ='SUCCESS' 
+				and a.left_amount>0
+			)t LEFT JOIN ln_finance_repay_schedule b on b.relation_id = t.id and b.`status`='REPAYING',ln_loan c
+			where t.loan_id=c.id
+			 GROUP BY t.last_finish_interest_date
+		)d on a.last_finish_interest_date = d.last_finish_interest_date
+		
+		LEFT JOIN 
+		(
+			-- G-预计VIP转让债权利息,A-VIP持有债权本金
+			select SUM(t.left_amount-IFNULL(b.plan_principal,0)) vip_amount,t.last_finish_interest_date,
+			CASE WHEN loan.partner_business_flag='FIXED_INSTALLMENT' or loan.partner_business_flag='FIXED_PRINCIPAL_INTEREST'
+			THEN sum(ROUND((t.init_amount*loan.agreement_rate/2400*loan.period/(loan.period-t.first_term+1)),2))
+			ELSE sum(ROUND(((t.left_amount-IFNULL(b.plan_principal,0))*(DATEDIFF(t.last_finish_interest_date,NOW())+1)*loan.agreement_rate/36500),2))
+			END	vip_interest from (
+				select a.id,a.left_amount,b.last_finish_interest_date,a.loan_id,a.init_amount,a.first_term from ln_loan_relation a,(
+					select last_finish_interest_date
+					FROM
+							bs_sub_account a
+					WHERE a.last_finish_interest_date > NOW() AND a.last_finish_interest_date <=  date_add(NOW() , interval 30 day)
+					GROUP BY last_finish_interest_date
+				)b
+				where a.`status` ='SUCCESS' and a.left_amount>0 and FIND_IN_SET(a.bs_user_id,(
+				SELECT conf_value FROM bs_sys_config WHERE conf_key = 'FREE_SUPER_FINANCE_USER_ID'))
+			)t LEFT JOIN ln_finance_repay_schedule b on b.relation_id = t.id and b.`status`='REPAYING',
+			ln_loan loan where t.loan_id = loan.id  GROUP BY t.last_finish_interest_date
+		)g on a.last_finish_interest_date = g.last_finish_interest_date
+		LEFT JOIN 
+		(
+			-- F-预计前日回到站岗户资金
+			select 
+				t.last_finish_interest_date,
+				sum(CASE WHEN p.plan_amount >0 THEN t.left_amount-IFNULL(bb.plan_principal,0) ELSE 0 END) +
+			CASE WHEN loan.partner_business_flag='FIXED_INSTALLMENT' or loan.partner_business_flag='FIXED_PRINCIPAL_INTEREST'
+			THEN	sum(ROUND((t.init_amount*loan.agreement_rate/2400*loan.period/(loan.period-t.first_term+1)),2))
+			ELSE sum(ROUND((i.plan_amount*t.init_amount/loan.apply_amount*t.product_rate/36),2)) END repay_balance
+			from (
+				select a.id,a.init_amount,a.left_amount,a.loan_id,a.first_term,
+				b.last_finish_interest_date,d.product_rate,c.plan_date,c.`status`,c.id plan_id
+				from ln_loan_relation a,
+				(SELECT last_finish_interest_date from
+					bs_sub_account 
+					WHERE last_finish_interest_date > NOW() AND last_finish_interest_date <=  date_add(NOW() , interval 30 day) 
+					AND `status`=2 GROUP BY last_finish_interest_date
+				)b,ln_repay_schedule c,bs_sub_account d
+				where a.`status` ='SUCCESS' 
+				and a.left_amount>0 
+				and a.loan_id = c.loan_id and c.plan_date = DATE_ADD(b.last_finish_interest_date,INTERVAL -1 DAY) 
+				and c.`status`='INIT' and d.id = a.bs_sub_account_id and d.product_type = 'AUTH_FREE'
+			)t LEFT JOIN ln_finance_repay_schedule bb on bb.relation_id = t.id and bb.`status`='REPAYING' 
+			LEFT JOIN ln_repay_schedule_detail p on  p.plan_id = t.plan_id and p.subject_code='PRINCIPAL'
+			LEFT JOIN ln_repay_schedule_detail i on i.plan_id = t.plan_id and i.subject_code = 'INTEREST' ,ln_loan loan
+			where 
+			loan.id = t.loan_id GROUP BY t.last_finish_interest_date
+		)f on a.last_finish_interest_date = f.last_finish_interest_date
+		]]>
+  </select>
+
+
+  <!--================================== 自由站岗户未来30天兑付查询E ================================================-->
+
+
+	<!-- 云贷-等额本息-还款或债权转让-获取债权列表 -->
+	<select id="getYunFixedInstallmentRelationList" resultMap="LoanRelation4TransferVOMap">
+		select a.id, a.loan_id, a.bs_user_id, a.bs_sub_account_id, a.ln_user_id, a.ln_sub_account_id, 
+			a.init_amount, 
+    		a.discount_amount, a.total_amount,
+			CASE WHEN fin.paying_principal >0 THEN a.left_amount -fin.paying_principal ELSE a.left_amount END as left_amount,  
+				a.first_term, a.`status`, a.trans_mark, a.bid_status, 
+   			a.create_time, a.update_time, 
+	  		b.interest_begin_date,b.last_finish_interest_date,
+	  		b.product_rate base_rate,
+			CASE WHEN a.trans_mark ='NORMAL' THEN DATE(d.loan_time) ELSE DATE(a.create_time) END AS relation_begin_date,
+			CASE WHEN a.trans_mark = 'NORMAL' THEN 0 ELSE f.in_amount-f.amount END last_pay_interest,
+			e.plan_date last_repay_plan_date,hfu.hf_user_id,d.agreement_rate
+			from (
+				select * from ln_loan_relation 
+				where left_amount >0
+				 <if test="loanId != null">
+					and loan_id = #{loanId} 
+				</if>
+			)a
+			LEFT JOIN ln_credit_transfer f on f.in_loan_relation_id = a.id
+			LEFT JOIN (
+				select * from(
+	              select * from ln_repay_schedule where 
+	              	`status` in('LATE_NOT','LATE_REPAIED','REPAIED') 
+	              	<if test="loanId != null">
+						and loan_id = #{loanId} 
+					</if>
+				)b
+	              	ORDER BY b.plan_date desc limit 1
+			)e on e.loan_id = a.loan_id
+			LEFT JOIN (SELECT sum(plan_principal) paying_principal ,relation_id from ln_finance_repay_schedule where `status` = 'REPAYING' GROUP BY relation_id) fin
+			ON fin.relation_id = a.id,
+			bs_sub_account b,bs_product c,bs_hfbank_user_ext hfu,ln_loan d
+		where a.bs_sub_account_id = b.id
+		 and hfu.user_id = a.bs_user_id
+		 and b.product_id = c.id
+		 and a.loan_id = d.id
+		 and a.left_amount &gt;0
+		 and a.`status`='SUCCESS'
+			ORDER BY left_amount DESC 
+	</select>
+
+	<!-- 平台存量数据-待还余额（借款人未还款的出借金额总和，仅统计本金） -->
+    <select id="sumLoanRepayBalance" resultType="java.lang.Double" parameterType="Map">
+        select IFNULL(sum(a.left_amount), 0) from ln_loan_relation a, ln_user u
+        <where>
+        	a.ln_user_id = u.id AND a.`status` = 'SUCCESS' AND a.left_amount &gt; 0
+        	<if test="partnerCode != null and partnerCode != ''">
+				AND u.partner_code = #{partnerCode}
+			</if>
+			<if test="endTime != null and endTime != ''">
+	     		<![CDATA[
+					AND a.create_time <= #{endTime}
+				]]>
+	    	</if>
+        </where>
+    </select>
+
+    <!-- 平台存量数据-待还余额（借款人未还款的出借金额总和，仅统计本金） -->
+    <select id="sumLoanReturnRepayBalance" resultType="java.lang.Double" parameterType="Map">
+        select IFNULL(sum(a.left_amount), 0) from ln_loan_relation a
+        <where>
+        	a.`status` = 'SUCCESS' AND a.left_amount &gt; 0
+			<if test="endTime != null and endTime != ''">
+	     		<![CDATA[
+					AND a.create_time <= #{endTime}
+				]]>
+	    	</if>
+        </where>
+    </select>
+</mapper>

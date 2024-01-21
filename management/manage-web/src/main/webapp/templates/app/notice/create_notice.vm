@@ -1,0 +1,109 @@
+<div class="pageContent">
+	<form method="post" id="detail_form" action="$env.getWebURL('app/notice/addNotice.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<div class="pageFormContent" layoutH="56">
+			<p>
+				<label>发布端口：</label>
+				<select name="releasePart" class="required combox">
+					<option value="1">币港湾</option>
+					<!--<option value="2">钱报币港湾</option>
+					<option value="3">全部</option>-->
+				</select>
+			</p>
+			<p>
+				<label>名称：</label>
+				<input name="name" type="text"  size="20" maxlength="30" class="required textInput clear" alt="请输入名称" />
+			</p>
+			<p>
+				<label>标题：</label>
+				<input name="title" type="text"  size="20" maxlength="20" class="required textInput clear" alt="请输入标题" />
+			</p>
+			<p>
+				<label>推送文字：</label>
+				<input name="pushChar" type="text"  size="20" maxlength="20" class="required textInput clear" alt="请输入推送文字" />
+			</p>
+			<p style="height:95px;">
+				<label>摘要：</label>
+				<textarea class="required textInput valid clear" rows="5" cols="25" name="pushAbstract" maxlength="100"></textarea>
+			</p>
+			<p>
+				<label>内容：</label>
+				<select name="pushType" class="required combox">
+					<option value="2">文本</option>
+					<option value="1">url</option>
+					<option value="3">APP内页</option>
+				</select>
+				<p style="margin-left: 130px" class="native_content"><textarea class="required textInput valid clear" rows="10" cols="25" maxlength="500" name="content"></textarea></p>
+			</p>
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button onclick="func()" type="button">保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+#LoadJS("/resources/js/global_validate")
+<script>
+
+	$("select[name=pushType]").on('change',function(){
+		var val = this.value;
+		if(val == 1) {
+			$(".native_content").html("<input name='content' type='text'  size='30' class='required textInput clear' alt='请输入url' />url必须是以http或者https开头");
+		}else if(val == 3) {
+			var options = "<select name='appPage' class='required combox'> "
+					+ "<option value='1'>首页</option>"
+					+ "<option value='2'>理财产品</option>"
+					+ "<option value='3'>我的资产</option>"
+					+ "<option value='4'>更多</option>"
+					+ "<option value='5'>推荐奖励金</option>"
+					+ "<option value='6'>安全保障</option>"
+					+ "<option value='7'>我的推荐</option>"
+					+ "<option value='8'>帮助中心</option>"
+					+ "<option value='9'>意见反馈</option>"
+					+ "<option value='11'>我的投资页面</option>"
+					+ "<option value='12'>交易明细页面</option>"
+					+ "<option value='13'>安全中心</option>"
+					+ "<option value='14'>银行卡界面</option>"
+					+ "<option value='15'>我的红包列表</option>"
+				+ "</select>";
+				
+				$(".native_content").html(options);
+		}else {
+			$(".native_content").html("<textarea class='required textInput valid clear' rows='10' cols='25' maxlength='500' name='content'></textarea>");
+		}
+	})
+	
+	document.onkeydown = function () {
+        if (window.event && window.event.keyCode == 13) {
+            window.event.returnValue = false;
+        }
+    }
+	
+	function func() {
+		var pushType = $("select[name=pushType]").val();
+		if(pushType == 1) {
+			var url = $.trim($("input[name=content]").val());
+			if(url.indexOf("http:") == 0 || url.indexOf("https:") == 0) {
+				$("#detail_form").submit();
+			}else {
+				alertMsg.error("url必须是以http或者https开头");
+				return false;
+			}
+		}else {
+			$("#detail_form").submit();
+		}
+	}
+
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "200") {
+			alertMsg.correct(json.message);
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('app/notice/index.htm')");
+		} else {
+			alertMsg.error(json.message);
+		}
+	}
+</script>

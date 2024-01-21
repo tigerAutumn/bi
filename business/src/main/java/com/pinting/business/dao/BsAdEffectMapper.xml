@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsAdEffectMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsAdEffect" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="monitor_type" property="monitorType" jdbcType="VARCHAR" />
+    <result column="visit_time" property="visitTime" jdbcType="TIMESTAMP" />
+    <result column="reg_mobile" property="regMobile" jdbcType="VARCHAR" />
+    <result column="utm_source" property="utmSource" jdbcType="VARCHAR" />
+    <result column="utm_medium" property="utmMedium" jdbcType="VARCHAR" />
+    <result column="utm_term" property="utmTerm" jdbcType="VARCHAR" />
+    <result column="utm_content" property="utmContent" jdbcType="VARCHAR" />
+    <result column="utm_campaign" property="utmCampaign" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="BsAdEffectVOMap" extends="BaseResultMap" type="com.pinting.business.model.vo.BsAdEffectVO"  >
+	 <result column="user_buy_amount" property="userBuyAmount" jdbcType="DOUBLE" />	   
+	 <result column="user_id" property="userId" jdbcType="INTEGER" />
+	 <result column="register_time" property="registerTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, url, monitor_type, visit_time, reg_mobile, utm_source, utm_medium, utm_term, 
+    utm_content, utm_campaign, create_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsAdEffectExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_ad_effect
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_ad_effect
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_ad_effect
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsAdEffectExample" >
+    delete from bs_ad_effect
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsAdEffect" >
+    insert into bs_ad_effect (id, url, monitor_type, 
+      visit_time, reg_mobile, utm_source, 
+      utm_medium, utm_term, utm_content, 
+      utm_campaign, create_time)
+    values (#{id,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{monitorType,jdbcType=VARCHAR}, 
+      #{visitTime,jdbcType=TIMESTAMP}, #{regMobile,jdbcType=VARCHAR}, #{utmSource,jdbcType=VARCHAR}, 
+      #{utmMedium,jdbcType=VARCHAR}, #{utmTerm,jdbcType=VARCHAR}, #{utmContent,jdbcType=VARCHAR}, 
+      #{utmCampaign,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsAdEffect" >
+    insert into bs_ad_effect
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="monitorType != null" >
+        monitor_type,
+      </if>
+      <if test="visitTime != null" >
+        visit_time,
+      </if>
+      <if test="regMobile != null" >
+        reg_mobile,
+      </if>
+      <if test="utmSource != null" >
+        utm_source,
+      </if>
+      <if test="utmMedium != null" >
+        utm_medium,
+      </if>
+      <if test="utmTerm != null" >
+        utm_term,
+      </if>
+      <if test="utmContent != null" >
+        utm_content,
+      </if>
+      <if test="utmCampaign != null" >
+        utm_campaign,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="monitorType != null" >
+        #{monitorType,jdbcType=VARCHAR},
+      </if>
+      <if test="visitTime != null" >
+        #{visitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regMobile != null" >
+        #{regMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="utmSource != null" >
+        #{utmSource,jdbcType=VARCHAR},
+      </if>
+      <if test="utmMedium != null" >
+        #{utmMedium,jdbcType=VARCHAR},
+      </if>
+      <if test="utmTerm != null" >
+        #{utmTerm,jdbcType=VARCHAR},
+      </if>
+      <if test="utmContent != null" >
+        #{utmContent,jdbcType=VARCHAR},
+      </if>
+      <if test="utmCampaign != null" >
+        #{utmCampaign,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsAdEffectExample" resultType="java.lang.Integer" >
+    select count(*) from bs_ad_effect
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_ad_effect
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.url != null" >
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.monitorType != null" >
+        monitor_type = #{record.monitorType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.visitTime != null" >
+        visit_time = #{record.visitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.regMobile != null" >
+        reg_mobile = #{record.regMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.utmSource != null" >
+        utm_source = #{record.utmSource,jdbcType=VARCHAR},
+      </if>
+      <if test="record.utmMedium != null" >
+        utm_medium = #{record.utmMedium,jdbcType=VARCHAR},
+      </if>
+      <if test="record.utmTerm != null" >
+        utm_term = #{record.utmTerm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.utmContent != null" >
+        utm_content = #{record.utmContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.utmCampaign != null" >
+        utm_campaign = #{record.utmCampaign,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_ad_effect
+    set id = #{record.id,jdbcType=INTEGER},
+      url = #{record.url,jdbcType=VARCHAR},
+      monitor_type = #{record.monitorType,jdbcType=VARCHAR},
+      visit_time = #{record.visitTime,jdbcType=TIMESTAMP},
+      reg_mobile = #{record.regMobile,jdbcType=VARCHAR},
+      utm_source = #{record.utmSource,jdbcType=VARCHAR},
+      utm_medium = #{record.utmMedium,jdbcType=VARCHAR},
+      utm_term = #{record.utmTerm,jdbcType=VARCHAR},
+      utm_content = #{record.utmContent,jdbcType=VARCHAR},
+      utm_campaign = #{record.utmCampaign,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsAdEffect" >
+    update bs_ad_effect
+    <set >
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="monitorType != null" >
+        monitor_type = #{monitorType,jdbcType=VARCHAR},
+      </if>
+      <if test="visitTime != null" >
+        visit_time = #{visitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regMobile != null" >
+        reg_mobile = #{regMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="utmSource != null" >
+        utm_source = #{utmSource,jdbcType=VARCHAR},
+      </if>
+      <if test="utmMedium != null" >
+        utm_medium = #{utmMedium,jdbcType=VARCHAR},
+      </if>
+      <if test="utmTerm != null" >
+        utm_term = #{utmTerm,jdbcType=VARCHAR},
+      </if>
+      <if test="utmContent != null" >
+        utm_content = #{utmContent,jdbcType=VARCHAR},
+      </if>
+      <if test="utmCampaign != null" >
+        utm_campaign = #{utmCampaign,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsAdEffect" >
+    update bs_ad_effect
+    set url = #{url,jdbcType=VARCHAR},
+      monitor_type = #{monitorType,jdbcType=VARCHAR},
+      visit_time = #{visitTime,jdbcType=TIMESTAMP},
+      reg_mobile = #{regMobile,jdbcType=VARCHAR},
+      utm_source = #{utmSource,jdbcType=VARCHAR},
+      utm_medium = #{utmMedium,jdbcType=VARCHAR},
+      utm_term = #{utmTerm,jdbcType=VARCHAR},
+      utm_content = #{utmContent,jdbcType=VARCHAR},
+      utm_campaign = #{utmCampaign,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  
+  <select id="selectAdEffectInfoData" resultMap="BsAdEffectVOMap" parameterType="java.util.Map">
+		SELECT a.*,b.id user_id,b.register_time register_time,SUM(d.balance) user_buy_amount FROM `bs_ad_effect` a
+		LEFT JOIN bs_user b ON a.reg_mobile = b.mobile
+		LEFT JOIN bs_account c ON b.id = c.user_id
+		LEFT JOIN bs_sub_account  d ON c.id = d.account_id  AND  d.product_type IN ('REG', 'AUTH_YUN') AND d.`status` IN (2,3,4,5,7)
+		WHERE 1=1 
+		<if test="(visitTimeStart != null and visitTimeStart !='') or (visitTimeEnd != null and visitTimeEnd !='')">
+			<if test="visitTimeStart != null and visitTimeStart !=''">
+				and a.visit_time &gt;= date_format(#{visitTimeStart},'%Y-%m-%d 00:00:00')
+			</if>
+			<if test="visitTimeEnd != null and visitTimeEnd !=''">
+				and a.visit_time &lt;= date_format(#{visitTimeEnd},'%Y-%m-%d 23:59:59')
+			</if>
+		</if>
+		<if test="monitorType != null and monitorType !='' " >
+ 		 	and a.monitor_type = #{monitorType} 
+ 		</if>
+		<if test="monitorType != null and monitorType !='' " >
+ 		 	and a.monitor_type = #{monitorType} 
+ 		</if>
+		<if test="utmSource != null and utmSource !='' " >
+			and a.utm_source like CONCAT(CONCAT('%', #{utmSource}),'%')
+		</if>
+		<if test="utmMedium != null and utmMedium !='' " >
+			and a.utm_medium like CONCAT(CONCAT('%', #{utmMedium}),'%')
+		</if>
+		<if test="utmCampaign != null and utmCampaign !='' " >
+			and a.utm_campaign like CONCAT(CONCAT('%', #{utmCampaign}),'%')
+		</if>
+		GROUP BY a.id
+		LIMIT #{start}, #{numPerPage}
+  </select>
+  
+  <select id="selectAdEffectInfoCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+		SELECT COUNT(*)
+		FROM(
+			SELECT a.*,b.id user_id,b.register_time register_time,SUM(d.balance) user_buy_amount  FROM `bs_ad_effect` a
+			LEFT JOIN bs_user b ON a.reg_mobile = b.mobile
+			LEFT JOIN bs_account c ON b.id = c.user_id
+			LEFT JOIN bs_sub_account  d ON c.id = d.account_id  AND  d.product_type IN ('REG', 'AUTH_YUN') AND d.`status` IN (2,3,4,5,7)
+			WHERE 1=1 
+			<if test="(visitTimeStart != null and visitTimeStart !='') or (visitTimeEnd != null and visitTimeEnd !='')">
+				<if test="visitTimeStart != null and visitTimeStart !=''">
+					and a.visit_time &gt;= date_format(#{visitTimeStart},'%Y-%m-%d 00:00:00')
+				</if>
+				<if test="visitTimeEnd != null and visitTimeEnd !=''">
+					and a.visit_time &lt;= date_format(#{visitTimeEnd},'%Y-%m-%d 23:59:59')
+				</if>
+			</if>
+			<if test="monitorType != null and monitorType !='' " >
+	 		 	and a.monitor_type = #{monitorType} 
+	 		</if>
+			<if test="utmSource != null and utmSource !='' " >
+				and a.utm_source like CONCAT(CONCAT('%', #{utmSource}),'%')
+			</if>
+			<if test="utmMedium != null and utmMedium !='' " >
+				and a.utm_medium like CONCAT(CONCAT('%', #{utmMedium}),'%')
+			</if>
+			<if test="utmCampaign != null and utmCampaign !='' " >
+				and a.utm_campaign like CONCAT(CONCAT('%', #{utmCampaign}),'%')
+			</if>
+			GROUP BY a.id
+		) aa
+		
+		
+  </select>
+  
+</mapper>

@@ -1,0 +1,36 @@
+
+-- ==================================积分规则=============================================
+-- 1，成功注册，发放100积分
+INSERT into mall_points_rule VALUES(1,'REGISTER','ONE','REAL_TIME',100,'DELETED','2015-03-01 00:00:00','2018-5-28 23:59:59',null,null,'存量注册规则',NOW(),NOW());
+-- 2，成功开通存管，发放50积分
+INSERT into mall_points_rule VALUES(2,'OPEN_DEPOSIT','ONE','REAL_TIME',50,'DELETED','2015-03-01 00:00:00','2018-5-28 23:59:59',null,null,'存量开通存管规则',NOW(),NOW());
+-- 3，成功完成风险测评，发放50积分
+INSERT into mall_points_rule VALUES(3,'FINISH_RISK_ASSESSMENT','ONE','REAL_TIME',50,'DELETED','2015-03-01 00:00:00','2018-5-28 23:59:59',null,null,'存量完成风险测评规则',NOW(),NOW());
+-- 4，成功完成首次加入产品，发放100积分
+INSERT into mall_points_rule VALUES(4,'FIRST_INVEST','ONE','REAL_TIME',50,'DELETED','2015-03-01 00:00:00','2018-5-28 23:59:59',null,null,'首次投资',NOW(),NOW());
+
+-- 5，累计加入产品（只统计定期类产品）积分奖励，年化投资额
+-- [0,500000) ?1000积分
+INSERT into mall_points_rule VALUES(5,'TOTAL_INVEST','ONE','DAY',1000,'DELETED','2015-03-01 00:00:00','2018-5-28 23:59:59',null,null,'累计加入产品[0,500000)',NOW(),NOW());
+INSERT into mall_points_rule_detail VALUES(1,5,'INVEST_AMOUNT_BEGIN',0,'',NOW(),NOW());
+INSERT into mall_points_rule_detail VALUES(2,5,'INVEST_AMOUNT_END',500000,'',NOW(),NOW());
+
+-- [500000,1000000) ?2000积分
+INSERT into mall_points_rule VALUES(6,'TOTAL_INVEST','ONE','DAY',2000,'DELETED','2015-03-01 00:00:00','2018-5-28 23:59:59',null,null,'累计加入产品[500000,1000000)',NOW(),NOW());
+INSERT into mall_points_rule_detail VALUES(3,6,'INVEST_AMOUNT_BEGIN',500000,'',NOW(),NOW());
+INSERT into mall_points_rule_detail VALUES(4,6,'INVEST_AMOUNT_END',1000000,'',NOW(),NOW());
+
+-- [1000000,5000000) ?4000积分
+INSERT into mall_points_rule VALUES(7,'TOTAL_INVEST','ONE','DAY',4000,'DELETED','2015-03-01 00:00:00','2018-5-28 23:59:59',null,null,'累计加入产品[1000000,5000000)',NOW(),NOW());
+INSERT into mall_points_rule_detail VALUES(5,7,'INVEST_AMOUNT_BEGIN',1000000,'',NOW(),NOW());
+INSERT into mall_points_rule_detail VALUES(6,7,'INVEST_AMOUNT_END',5000000,'',NOW(),NOW());
+
+-- [5000000,10000000) ?6000积分
+INSERT into mall_points_rule VALUES(8,'TOTAL_INVEST','ONE','DAY',6000,'DELETED','2015-03-01 00:00:00','2018-5-28 23:59:59',null,null,'累计加入产品[5000000,10000000)',NOW(),NOW());
+INSERT into mall_points_rule_detail VALUES(7,8,'INVEST_AMOUNT_BEGIN',5000000,'',NOW(),NOW());
+INSERT into mall_points_rule_detail VALUES(8,8,'INVEST_AMOUNT_END',10000000,'',NOW(),NOW());
+
+-- [10000000,∞)    8000积分
+INSERT into mall_points_rule VALUES(9,'TOTAL_INVEST','ONE','DAY',8000,'DELETED','2015-03-01 00:00:00','2018-5-28 23:59:59',null,null,'累计加入产品[10000000,100000000)',NOW(),NOW());
+INSERT into mall_points_rule_detail VALUES(9,9,'INVEST_AMOUNT_BEGIN',10000000,'',NOW(),NOW());
+INSERT into mall_points_rule_detail VALUES(10,9,'INVEST_AMOUNT_END',100000000,'',NOW(),NOW());

@@ -1,0 +1,111 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/account/topUp/index.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+				<tr>
+					<td>
+						手机号：<input id="mobile" type="text" name="mobile" value="$!req.mobile" size="15"/>
+						用户名：<input id="userName" type="text" name="userName" value="$!req.userName" />
+						
+						交易状态：
+						<select name="status" > 
+							<option value="" #if("$!req.status"=="") selected #end>全部</option>
+							<option value="5" #if("$!req.status"=="5") selected  #end>处理中</option>
+							<option value="6" #if("$!req.status"=="6") selected #end>成功</option>
+								<option value="7" #if("$!req.status"=="7") selected #end>失败</option>
+        				</select>
+						交易时间：<input name="beginTime"  maxdate="{%y}-%M-{%d}"  type="text" id="beginTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.beginTime)" /> 到 <input name="overTime" maxdate="{%y}-%M-{%d}"  type="text" id="overTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.overTime)" />
+						<span style="margin-left:20px;">
+							<button onclick="func()" type="button">查询</button>
+                        </span>
+						<span style="margin-left:10px;">
+							<font color="red">用户充值金额合计：#if("$!sumTopUpAmount" != "") $!money.format($!sumTopUpAmount) 元#else 0.00 元 #end</font>
+                        </span>
+					</td>
+				</tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+	            <th width="232">手机号</th>
+				<th width="232">用户名</th>
+				<th width="232">充值类型</th>
+				<th width="232">充值金额</th>
+				<th width="232">交易时间</th>
+				<th width="236">交易类型</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $topUpAmountList)
+			<tr target="sid_user" rel="1" >
+                <td>$!grid.mobile</td>
+				<td>$!grid.userName</td>
+				<td>充值</td>
+				<td>$!money.format($!grid.amount)</td>
+				<td>$!date.format($!grid.sysTime)</td>
+				<td>$!message.get("ACCOUNT_ORDER_STATUS_$!grid.status")</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+<script>
+
+function func(){
+	var beginTime = $("#beginTime").val();
+	var overTime = $("#overTime").val();
+	
+	if(beginTime != "" && overTime == ""){
+		alert("请输入结束时间！");
+		return false;
+	}
+	
+	if(beginTime == "" && overTime != ""){
+		alert("请输入开始时间！");
+		return false;
+	}
+	
+	if(beginTime != "" && overTime != ""){
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	var url = $("#APP_ROOT_PATH").val() + "/account/topUp/index.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+
+}
+
+</script>

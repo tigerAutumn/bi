@@ -1,0 +1,193 @@
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+    <input type="hidden" name="orderField" value="$!{orderField}" />
+    <input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+    <form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/financialAccount/business_overview_index.htm')" onsubmit="return navTabSearch(this);">
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="pageNum" value="$!pageNum" />
+        <input type="hidden" name="numPerPage" value="$!numPerPage" />
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        日期：
+                        <input name="startTime"  maxdate="{%y}-%M-{%d-1}"  type="text" id="startTime" class="date textInput readonly" readonly="true" size="15"  value="$!req.startTime" />
+                        到 <input name="endTime" maxdate="{%y}-%M-{%d-1}"  type="text" id="endTime" class="date textInput readonly" readonly="true" size="15"  value="$!req.endTime"  />
+
+						<span style="margin-left:20px;">
+							<button onclick="func()" type="button">查询</button>
+                            <button onclick="exp()" type="button">导出</button>
+                        </span>
+
+                    </td>
+                </tr>
+				
+				<div>
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" >
+                        <tr>
+        					<td style="height:80px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+            					<div style="color:red;">当前云贷存量总额</div>
+            					<div style="font-size:26px; margin-top:10px;color:red;">
+            						#if("$!yundaiTotalAmount" != "") $!money.format($!yundaiTotalAmount) 元#else 0.00 元 #end
+            					</div>
+            				</td>
+            				<td style="height:80px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+            					<div style="color:red;">当前七贷存量总额</div>
+            					<div style="font-size:26px; margin-top:10px;color:red;">
+            						#if("$!totalAmount7Dai" != "") $!money.format($!totalAmount7Dai) 元#else 0.00 元 #end
+            					</div>
+            				</td>
+            				<td style="height:80px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+            					<div style="color:red;">当前赞分期存量总额</div>
+            					<div style="font-size:26px; margin-top:10px;color:red;">
+            						#if("$!zanTotalAmount" != "") $!money.format($!zanTotalAmount) 元#else 0.00 元 #end
+            					</div>
+            				</td>
+            				<td style="height:80px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+            					<div>累计理财总额</div>
+            					<div style="font-size:26px; margin-top:10px;">
+            						#if("$!totalAmount" != "") $!money.format($!totalAmount) 元#else 0.00 元 #end
+            					</div>
+            				</td>
+        				</tr>
+        				<tr>
+        					<td style="height:80px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+            					<div style="color:red;">累计云贷融资总额</div>
+            					<div style="font-size:26px; margin-top:10px;color:red;">
+            						#if("$!yundaiFinancingAmount" != "") $!money.format($!yundaiFinancingAmount) 元#else 0.00 元 #end
+            					</div>
+            				</td>
+        					<td style="height:80px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+            					<div style="color:red;">累计七贷融资总额</div>
+            					<div style="font-size:26px; margin-top:10px;color:red;">
+        							#if("$!financingAmount7Dai" != "") $!money.format($!financingAmount7Dai) 元#else 0.00 元 #end
+        						</div>
+            				</td>
+        					<td style="height:80px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+            					<div style="color:red;">累计赞分期融资总额</div>
+            					<div style="font-size:26px; margin-top:10px;color:red;">
+        							#if("$!zanFinancingAmount" != "") $!money.format($!zanFinancingAmount) 元#else 0.00 元 #end
+        						</div>
+            				</td>
+        					<td style="height:80px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+            					<div>累计融资总额</div>
+            					<div style="font-size:26px; margin-top:10px;">
+        							#if("$!financingAmount" != "") $!money.format($!financingAmount) 元#else 0.00 元 #end
+        						</div>
+            				</td>
+                        </tr>
+                    </table>
+                 </div>
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent" layoutH="200" >
+    <table class="table" width="1396" layoutH="250">
+        <thead>
+            <tr>
+                <th width="7%">日期</th>
+                <th width="7%" style="background: #DDDDDD;">理财总金额</th>
+                <th width="8%">理财金额-云贷</th>
+                <th width="8%">理财金额-七贷</th>
+                <th width="8%">理财金额-赞分期</th>
+                <th width="7%" style="background: #DDDDDD;">赎回总金额</th>
+                <th width="8%">赎回金额-云贷</th>
+                <th width="8%">赎回金额-七贷</th>
+                <th width="8%">赎回金额-赞分期</th>
+                <th width="7%" style="background: #DDDDDD;">融资总金额</th>
+                <th width="8%">融资金额-云贷</th>
+                <th width="8%">融资金额-七贷</th>
+                <th width="8%">融资金额-赞分期</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>总计</td>
+                <td style="background: #DDDDDD;">$!money.format($!res.totalBuyAmount)</td>
+                <td>$!money.format($!res.buyAmountForYunDai)</td>
+                <td>$!money.format($!res.buyAmountFor7Dai)</td>
+                <td>$!money.format($!res.buyAmountForZan)</td>
+                <td style="background: #DDDDDD;">$!money.format($!res.totalReturnAmount)</td>
+                <td>$!money.format($!res.returnAmountForYunDai)</td>
+                <td>$!money.format($!res.returnAmountFor7Dai)</td>
+                <td>$!money.format($!res.returnAmountForZan)</td>
+                <td style="background: #DDDDDD;">$!money.format($!res.totalFinanceAmount)</td>
+                <td>$!money.format($!res.financeAmountToYunDai)</td>
+                <td>$!money.format($!res.financeAmountTo7Dai)</td>
+                <td>$!money.format($!res.financeAmountToZan)</td>
+            </tr>
+            #foreach($grid in $dataList)
+            <tr target="sid_user" rel="1">
+                <td>$!grid.time</td>
+                <td>$!money.format($!grid.totalBuyAmount)</td>
+                <td>$!money.format($!grid.buyAmountForYunDai)</td>
+                <td>$!money.format($!grid.buyAmountFor7Dai)</td>
+                <td>$!money.format($!grid.buyAmountForZan)</td>
+                <td>$!money.format($!grid.totalReturnAmount)</td>
+                <td>$!money.format($!grid.returnAmountForYunDai)</td>
+                <td>$!money.format($!grid.returnAmountFor7Dai)</td>
+                <td>$!money.format($!grid.returnAmountForZan)</td>
+                <td>$!money.format($!grid.totalFinanceAmount)</td>
+                <td>$!money.format($!grid.financeAmountToYunDai)</td>
+                <td>$!money.format($!grid.financeAmountTo7Dai)</td>
+                <td>$!money.format($!grid.financeAmountToZan)</td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+   #* <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+                <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!totalRows条</span>
+        </div>
+
+        <div class="pagination" targetType="navTab" totalCount="$!totalPages" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+    </div>*#
+</div>
+<script>
+
+    function func(){
+        var beginTime = $("#startTime").val();
+        var overTime = $("#endTime").val();
+        if(beginTime != "" && overTime != ""){
+            var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+            if(result < 0){
+                alert("开始时间不能在结束时间之后！！");
+                return false;
+            }
+        }
+        var url = $("#APP_ROOT_PATH").val() + "/financialAccount/business_overview_index.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+
+    function exp(){
+        var beginTime = $("#startTime").val();
+        var overTime = $("#endTime").val();
+        if(beginTime != "" && overTime != ""){
+            var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+            if(result < 0){
+                alert("开始时间不能在结束时间之后！！");
+                return false;
+            }
+        }
+        var url = $("#APP_ROOT_PATH").val() + "/financialAccount/exportXls.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","");
+        $("#myform").submit();
+    }
+
+</script>

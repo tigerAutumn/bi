@@ -1,0 +1,141 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/bsUserKeepView/retention.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" id="queryDateFlag" name="queryDateFlag" value="QUERYDATE" />
+	<input type="hidden" name="totalRows" value="$!totalRows" />
+	<div class="searchBar">
+		<table class="searchContent">
+			<tr>
+				<td>
+					
+					注册时间： <input name="sRegisterTime" type="text" id="sRegisterTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.sRegisterTime)" /> 
+					到 <input name="eRegisterTime" type="text" id="eRegisterTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.eRegisterTime)" />
+					
+					<span style="margin-left:20px;">
+						&nbsp;&nbsp;&nbsp;
+						<a class="add" href="$env.getWebURL('/agent/agent_list.htm')" target="dialog" mask="true" rel="createBack" height="390" width="600"><span><button type="button">选择渠道</button></span></a>
+						<input type="hidden" id="agentTotal" name="agentTotal" value="$!agentTotal"/>
+						<input type="hidden" id="agentIds" name="agentIds" value="$!req.agentIds"/>
+						<input type="hidden" id="nonAgentId" name="nonAgentId" value="$!req.nonAgentId"/>
+						&nbsp;
+						<button onclick="func()" type="button">查询</button>
+						&nbsp;
+						<button onclick="exp()" type="button">导出excel</button>
+                    </span>
+				</td>
+			</tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="118" >
+		<thead>
+			<tr>
+				<th width="12.5%">注册日期</th>
+				##<th width="15%">渠道名称</th>
+				<th width="12.5%">注册人数</th>
+				<th width="12.5%">次日留存率</th>
+				<th width="12.5%">第3天留存率</th>
+				<th width="12.5%">第7天留存率</th>
+				<th width="12.5%">第14天留存率</th>
+				<th width="12.5%">第30天留存率</th>
+				<th width="12.5%">第60天留存率</th>
+				
+			</tr>
+		</thead>
+	
+		<tbody>
+			#foreach($grid in $retentionList)
+    			<tr target="sid_user" rel="1" >
+					<td>$!date.formatYYYYMMDD($!grid.registDate)</td>
+					##<td>$!grid.agentName</td>
+					<td>#if($!grid.registUserCountTotal && $!grid.registUserCountTotal != "0") $!grid.registUserCountTotal #else #end</td>
+					<td>#if($!grid.day2KeepRate && $!grid.day2KeepRate != "0.0") $!grid.day2KeepRate% #else #end</td>
+					<td>#if($!grid.day3KeepRate && $!grid.day3KeepRate != "0.0") $!grid.day3KeepRate% #else #end</td>
+					<td>#if($!grid.day7KeepRate && $!grid.day7KeepRate != "0.0") $!grid.day7KeepRate% #else #end</td>
+					<td>#if($!grid.day14KeepRate && $!grid.day14KeepRate != "0.0") $!grid.day14KeepRate% #else #end</td>
+					<td>#if($!grid.day30KeepRate && $!grid.day30KeepRate != "0.0") $!grid.day30KeepRate% #else #end</td>
+					<td>#if($!grid.day60KeepRate && $!grid.day60KeepRate != "0.0") $!grid.day60KeepRate% #else #end</td>
+    			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+<script>
+function func(){
+	var sRegisterTime = $("#sRegisterTime").val();
+	var eRegisterTime = $("#eRegisterTime").val();
+	
+	if(sRegisterTime != "" && eRegisterTime == ""){
+		alert("请输入注册结束时间！");
+		return false;
+	}
+	if(sRegisterTime == "" && eRegisterTime != ""){
+		alert("请输入注册开始时间！");
+		return false;
+	}
+	
+	if(sRegisterTime != "" && eRegisterTime != ""){
+		var result = Date.parse(eRegisterTime.replace(/-/g,"/"))- Date.parse(sRegisterTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	var url = $("#APP_ROOT_PATH").val() + "/bsUserKeepView/retention.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+	var sRegisterTime = $("#sRegisterTime").val();
+	var eRegisterTime = $("#eRegisterTime").val();
+	
+	if(sRegisterTime != "" && eRegisterTime == ""){
+		alert("请输入注册结束时间！");
+		return false;
+	}
+	if(sRegisterTime == "" && eRegisterTime != ""){
+		alert("请输入注册开始时间！");
+		return false;
+	}
+	
+	if(sRegisterTime != "" && eRegisterTime != ""){
+		var result = Date.parse(eRegisterTime.replace(/-/g,"/"))- Date.parse(sRegisterTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	var url = $("#APP_ROOT_PATH").val() + "/bsUserKeepView/exportXls.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+
+</script>

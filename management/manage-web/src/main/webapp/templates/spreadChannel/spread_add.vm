@@ -1,0 +1,133 @@
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	
+	<form id="spreadChannelForm" method="post" action="$env.getWebURL('/spreadChannel/spreadSave.htm')" class="pageForm" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<div class="pageFormContent nowrap" layoutH="97">
+			<input type="hidden" id="supportTerminal" name="supportTerminal"  />
+			<input type="hidden" id="id" name="id" value="$!spreadChannel.id"/>
+			<dl>
+				<dt >
+					名称：
+                </dt>
+				<dd >
+					<input type="text" id="agentName_detail" name="agentName" class="required"  style="width:200px;"  maxlength="60" value="$!spreadChannel.agentName"/>
+                </dd>
+			</dl>
+			
+			<dl>
+				<dt>
+					推广方式：
+				</dt>
+				<dd>
+					#if("$!spreadChannel" == "" || "$!spreadChannel" == "undefined")
+    					<div class="dd">
+    						<input type="checkbox" value="pc" name="agent" id="pc" checked/> pc端
+            			</div>
+            			<div class="dd" id="userbox">
+    						<input type="checkbox" value="h5" name="agent" id="h5" checked/> h5端
+            			</div>	
+					#else
+						#if("$!spreadChannel.supportTerminal" == "" || "$!spreadChannel.supportTerminal" == "undefined")
+							<div class="dd">
+								<input type="checkbox" value="pc" name="agent" id="pc"/> pc端
+                			</div>
+                			<div class="dd" id="userbox">
+                				<input type="checkbox" value="h5" name="agent" id="h5"/> h5端
+							</div>
+						#else
+							#set ($terminalArray = $!spreadChannel.supportTerminal.split("\,"))
+        					#if($terminalArray.size() >= 2)
+                    			<div class="dd">
+                    				<input type="checkbox" value="pc" name="agent" id="pc" checked/> pc端
+                    			</div>
+                    			<div class="dd" id="userbox">
+                    				<input type="checkbox" value="h5" name="agent" id="h5" checked/> h5端
+                    			</div>					
+        					#elseif($terminalArray.size() == 1)
+        						#if($terminalArray.get(0) == "pc")
+        						<div class="dd">
+                				<input type="checkbox" value="pc" name="agent" id="pc" checked/> pc端
+                    			</div>
+                    			<div class="dd" id="userbox">
+                    				<input type="checkbox" value="h5" name="agent" id="h5"/> h5端
+                    			</div>
+        						#else
+        						<div class="dd">
+                				<input type="checkbox" value="pc" name="agent" id="pc"/> pc端
+                    			</div>
+                    			<div class="dd" id="userbox">
+                    				<input type="checkbox" value="h5" name="agent" id="h5" checked/> h5端
+                    			</div>
+        						#end 
+    						#end
+						#end
+						
+    					
+    				 #end
+				</dd>
+			</dl>
+  
+		</div>
+		<div class="formBar">
+			<ul>
+				<li ><div class="buttonActive"><div class="buttonContent"><button type="button" id="save_btn_comfirm">确定</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+	
+</div>
+<script>
+
+	function navTabAjaxDone(json) {
+		 if (json.statusCode == "200") {
+		 	navTab.closeCurrentTab();
+			alertMsg.correct(json.message);
+			navTab.reload("$env.getWebURL('/spreadChannel/spreadIndex.htm')");
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+	
+	
+	//运营报告直接发布
+	$("#save_btn_comfirm").click(function(){
+			var agentName = $("#agentName_detail").val();
+			if(agentName == null || agentName == ''){
+				alertMsg.error("名称不能为空");
+				return;
+			}
+	
+			$("#supportTerminal").val("");
+			var sum = '';
+			if($("#pc").attr( "checked" ) == 'checked' && $("#h5").attr( "checked" ) == 'checked'){
+				sum = $("#pc").val() + ',' + $("#h5").val();
+			}else if($("#pc").attr( "checked" ) == 'checked' && $("#h5").attr( "checked" ) != 'checked'){
+				sum = $("#pc").val();
+			}else if($("#pc").attr( "checked" ) != 'checked' && $("#h5").attr( "checked" ) == 'checked'){
+				sum = $("#h5").val();
+			}
+			$("#supportTerminal").val(sum);
+			var url = $("#spreadChannelForm").attr("action");
+        	jQuery.post(url,{"agentName":$("#agentName_detail").val(),"supportTerminal":$("#supportTerminal").val(),"id":$("#id").val()},function(data){
+        		if (data.statusCode == "200") {
+        		 	$.pdialog.closeCurrent();
+        			alertMsg.correct(data.message);
+        			navTab.reload("$env.getWebURL('/spreadChannel/spreadIndex.htm')");
+        		} else {
+        			if(data.message){
+        				alertMsg.error(data.message);
+        			}else{
+        				alertMsg.error('操作失败!');
+        			}
+        		}
+        	},"json");
+	});
+	 
+</script>

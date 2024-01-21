@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.Bs19payBankMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.Bs19payBank" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="bank_id" property="bankId" jdbcType="INTEGER" />
+    <result column="channel" property="channel" jdbcType="VARCHAR" />
+    <result column="channel_priority" property="channelPriority" jdbcType="INTEGER" />
+    <result column="is_main" property="isMain" jdbcType="INTEGER" />
+    <result column="pay19_bank_code" property="pay19BankCode" jdbcType="VARCHAR" />
+    <result column="pay_type" property="payType" jdbcType="INTEGER" />
+    <result column="one_top" property="oneTop" jdbcType="DOUBLE" />
+    <result column="day_top" property="dayTop" jdbcType="DOUBLE" />
+    <result column="month_top" property="monthTop" jdbcType="DOUBLE" />
+    <result column="forbidden_start" property="forbiddenStart" jdbcType="TIMESTAMP" />
+    <result column="forbidden_end" property="forbiddenEnd" jdbcType="TIMESTAMP" />
+    <result column="is_available" property="isAvailable" jdbcType="INTEGER" />
+    <result column="notice" property="notice" jdbcType="VARCHAR" />
+    <result column="daily_notice" property="dailyNotice" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="BankBaseResultMap" type="com.pinting.business.model.vo.Bs19payBankVO" extends="BaseResultMap">
+  	<id column="id" property="id" jdbcType="INTEGER" />
+    <result column="bank_id" property="bankId" jdbcType="INTEGER" />
+    <result column="channel" property="channel" jdbcType="VARCHAR" />
+    <result column="channel_priority" property="channelPriority" jdbcType="INTEGER" />
+    <result column="is_main" property="isMain" jdbcType="INTEGER" />
+    <result column="pay19_bank_code" property="pay19BankCode" jdbcType="VARCHAR" />
+    <result column="pay_type" property="payType" jdbcType="INTEGER" />
+    <result column="one_top" property="oneTop" jdbcType="DOUBLE" />
+    <result column="day_top" property="dayTop" jdbcType="DOUBLE" />
+    <result column="month_top" property="monthTop" jdbcType="DOUBLE" />
+    <result column="forbidden_start" property="forbiddenStart" jdbcType="TIMESTAMP" />
+    <result column="forbidden_end" property="forbiddenEnd" jdbcType="TIMESTAMP" />
+    <result column="is_available" property="isAvailable" jdbcType="INTEGER" />
+    <result column="notice" property="notice" jdbcType="VARCHAR" />
+    <result column="daily_notice" property="dailyNotice" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="com.pinting.business.model.vo.Pay19BankVO" id="BankListResultMap" extends="BaseResultMap">
+  	<result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+    <result column="small_logo" property="smallLogo" jdbcType="VARCHAR" />
+    <result column="large_logo" property="largeLogo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, bank_id, channel, channel_priority, is_main, pay19_bank_code, pay_type, one_top, 
+    day_top, month_top, forbidden_start, forbidden_end, is_available, notice, daily_notice
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.Bs19payBankExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_19pay_bank
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_19pay_bank
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_19pay_bank
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.Bs19payBankExample" >
+    delete from bs_19pay_bank
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.Bs19payBank" >
+    insert into bs_19pay_bank (id, bank_id, channel, 
+      channel_priority, is_main, pay19_bank_code, 
+      pay_type, one_top, day_top, 
+      month_top, forbidden_start, forbidden_end, 
+      is_available, notice, daily_notice
+      )
+    values (#{id,jdbcType=INTEGER}, #{bankId,jdbcType=INTEGER}, #{channel,jdbcType=VARCHAR}, 
+      #{channelPriority,jdbcType=INTEGER}, #{isMain,jdbcType=INTEGER}, #{pay19BankCode,jdbcType=VARCHAR}, 
+      #{payType,jdbcType=INTEGER}, #{oneTop,jdbcType=DOUBLE}, #{dayTop,jdbcType=DOUBLE}, 
+      #{monthTop,jdbcType=DOUBLE}, #{forbiddenStart,jdbcType=TIMESTAMP}, #{forbiddenEnd,jdbcType=TIMESTAMP}, 
+      #{isAvailable,jdbcType=INTEGER}, #{notice,jdbcType=VARCHAR}, #{dailyNotice,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.Bs19payBank" >
+    insert into bs_19pay_bank
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="bankId != null" >
+        bank_id,
+      </if>
+      <if test="channel != null" >
+        channel,
+      </if>
+      <if test="channelPriority != null" >
+        channel_priority,
+      </if>
+      <if test="isMain != null" >
+        is_main,
+      </if>
+      <if test="pay19BankCode != null" >
+        pay19_bank_code,
+      </if>
+      <if test="payType != null" >
+        pay_type,
+      </if>
+      <if test="oneTop != null" >
+        one_top,
+      </if>
+      <if test="dayTop != null" >
+        day_top,
+      </if>
+      <if test="monthTop != null" >
+        month_top,
+      </if>
+      <if test="forbiddenStart != null" >
+        forbidden_start,
+      </if>
+      <if test="forbiddenEnd != null" >
+        forbidden_end,
+      </if>
+      <if test="isAvailable != null" >
+        is_available,
+      </if>
+      <if test="notice != null" >
+        notice,
+      </if>
+      <if test="dailyNotice != null" >
+        daily_notice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bankId != null" >
+        #{bankId,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null" >
+        #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="channelPriority != null" >
+        #{channelPriority,jdbcType=INTEGER},
+      </if>
+      <if test="isMain != null" >
+        #{isMain,jdbcType=INTEGER},
+      </if>
+      <if test="pay19BankCode != null" >
+        #{pay19BankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="oneTop != null" >
+        #{oneTop,jdbcType=DOUBLE},
+      </if>
+      <if test="dayTop != null" >
+        #{dayTop,jdbcType=DOUBLE},
+      </if>
+      <if test="monthTop != null" >
+        #{monthTop,jdbcType=DOUBLE},
+      </if>
+      <if test="forbiddenStart != null" >
+        #{forbiddenStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="forbiddenEnd != null" >
+        #{forbiddenEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isAvailable != null" >
+        #{isAvailable,jdbcType=INTEGER},
+      </if>
+      <if test="notice != null" >
+        #{notice,jdbcType=VARCHAR},
+      </if>
+      <if test="dailyNotice != null" >
+        #{dailyNotice,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.Bs19payBankExample" resultType="java.lang.Integer" >
+    select count(*) from bs_19pay_bank
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_19pay_bank
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.bankId != null" >
+        bank_id = #{record.bankId,jdbcType=INTEGER},
+      </if>
+      <if test="record.channel != null" >
+        channel = #{record.channel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelPriority != null" >
+        channel_priority = #{record.channelPriority,jdbcType=INTEGER},
+      </if>
+      <if test="record.isMain != null" >
+        is_main = #{record.isMain,jdbcType=INTEGER},
+      </if>
+      <if test="record.pay19BankCode != null" >
+        pay19_bank_code = #{record.pay19BankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payType != null" >
+        pay_type = #{record.payType,jdbcType=INTEGER},
+      </if>
+      <if test="record.oneTop != null" >
+        one_top = #{record.oneTop,jdbcType=DOUBLE},
+      </if>
+      <if test="record.dayTop != null" >
+        day_top = #{record.dayTop,jdbcType=DOUBLE},
+      </if>
+      <if test="record.monthTop != null" >
+        month_top = #{record.monthTop,jdbcType=DOUBLE},
+      </if>
+      <if test="record.forbiddenStart != null" >
+        forbidden_start = #{record.forbiddenStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.forbiddenEnd != null" >
+        forbidden_end = #{record.forbiddenEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isAvailable != null" >
+        is_available = #{record.isAvailable,jdbcType=INTEGER},
+      </if>
+      <if test="record.notice != null" >
+        notice = #{record.notice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dailyNotice != null" >
+        daily_notice = #{record.dailyNotice,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_19pay_bank
+    set id = #{record.id,jdbcType=INTEGER},
+      bank_id = #{record.bankId,jdbcType=INTEGER},
+      channel = #{record.channel,jdbcType=VARCHAR},
+      channel_priority = #{record.channelPriority,jdbcType=INTEGER},
+      is_main = #{record.isMain,jdbcType=INTEGER},
+      pay19_bank_code = #{record.pay19BankCode,jdbcType=VARCHAR},
+      pay_type = #{record.payType,jdbcType=INTEGER},
+      one_top = #{record.oneTop,jdbcType=DOUBLE},
+      day_top = #{record.dayTop,jdbcType=DOUBLE},
+      month_top = #{record.monthTop,jdbcType=DOUBLE},
+      forbidden_start = #{record.forbiddenStart,jdbcType=TIMESTAMP},
+      forbidden_end = #{record.forbiddenEnd,jdbcType=TIMESTAMP},
+      is_available = #{record.isAvailable,jdbcType=INTEGER},
+      notice = #{record.notice,jdbcType=VARCHAR},
+      daily_notice = #{record.dailyNotice,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.Bs19payBank" >
+    update bs_19pay_bank
+    <set >
+      <if test="bankId != null" >
+        bank_id = #{bankId,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null" >
+        channel = #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="channelPriority != null" >
+        channel_priority = #{channelPriority,jdbcType=INTEGER},
+      </if>
+      <if test="isMain != null" >
+        is_main = #{isMain,jdbcType=INTEGER},
+      </if>
+      <if test="pay19BankCode != null" >
+        pay19_bank_code = #{pay19BankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="oneTop != null" >
+        one_top = #{oneTop,jdbcType=DOUBLE},
+      </if>
+      <if test="dayTop != null" >
+        day_top = #{dayTop,jdbcType=DOUBLE},
+      </if>
+      <if test="monthTop != null" >
+        month_top = #{monthTop,jdbcType=DOUBLE},
+      </if>
+      <if test="forbiddenStart != null" >
+        forbidden_start = #{forbiddenStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="forbiddenEnd != null" >
+        forbidden_end = #{forbiddenEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isAvailable != null" >
+        is_available = #{isAvailable,jdbcType=INTEGER},
+      </if>
+      <if test="notice != null" >
+        notice = #{notice,jdbcType=VARCHAR},
+      </if>
+      <if test="dailyNotice != null" >
+        daily_notice = #{dailyNotice,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeySelective2" parameterType="com.pinting.business.model.Bs19payBank" >
+    update bs_19pay_bank
+    <set >
+      <if test="bankId != null" >
+        bank_id = #{bankId,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null" >
+        channel = #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="channelPriority != null" >
+        channel_priority = #{channelPriority,jdbcType=INTEGER},
+      </if>
+      <if test="isMain != null" >
+        is_main = #{isMain,jdbcType=INTEGER},
+      </if>
+      <if test="pay19BankCode != null" >
+        pay19_bank_code = #{pay19BankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="oneTop != null" >
+        one_top = #{oneTop,jdbcType=DOUBLE},
+      </if>
+      <if test="dayTop != null" >
+        day_top = #{dayTop,jdbcType=DOUBLE},
+      </if>
+      <if test="monthTop != null" >
+        month_top = #{monthTop,jdbcType=DOUBLE},
+      </if>
+        forbidden_start = #{forbiddenStart,jdbcType=TIMESTAMP},
+        forbidden_end = #{forbiddenEnd,jdbcType=TIMESTAMP},
+      <if test="isAvailable != null" >
+        is_available = #{isAvailable,jdbcType=INTEGER},
+      </if>
+      <if test="notice != null" >
+        notice = #{notice,jdbcType=VARCHAR},
+      </if>
+      <if test="dailyNotice != null" >
+        daily_notice = #{dailyNotice,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.Bs19payBank" >
+    update bs_19pay_bank
+    set bank_id = #{bankId,jdbcType=INTEGER},
+      channel = #{channel,jdbcType=VARCHAR},
+      channel_priority = #{channelPriority,jdbcType=INTEGER},
+      is_main = #{isMain,jdbcType=INTEGER},
+      pay19_bank_code = #{pay19BankCode,jdbcType=VARCHAR},
+      pay_type = #{payType,jdbcType=INTEGER},
+      one_top = #{oneTop,jdbcType=DOUBLE},
+      day_top = #{dayTop,jdbcType=DOUBLE},
+      month_top = #{monthTop,jdbcType=DOUBLE},
+      forbidden_start = #{forbiddenStart,jdbcType=TIMESTAMP},
+      forbidden_end = #{forbiddenEnd,jdbcType=TIMESTAMP},
+      is_available = #{isAvailable,jdbcType=INTEGER},
+      notice = #{notice,jdbcType=VARCHAR},
+      daily_notice = #{dailyNotice,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update> 
+  
+  <sql id="Base_Bs19payBank_List" >
+    <if test="id !=null and id != 0">   
+       and a.id = #{id,jdbcType=INTEGER}  
+    </if>
+    <if test="name !=null and name != ''">   
+       and b.name like CONCAT(CONCAT('%', #{name}),'%')    
+    </if>
+    <if test="pay19BankCode !=null and pay19BankCode != ''">   
+       and a.pay19_bank_code like CONCAT(CONCAT('%', #{pay19BankCode}),'%')    
+    </if>
+    <if test="payType !=null and payType != 0">   
+       and a.pay_type = #{payType,jdbcType=INTEGER}  
+    </if>
+    <if test="isAvailable !=null and isAvailable != 0">   
+       and a.is_available = #{isAvailable,jdbcType=INTEGER}  
+    </if>
+    <if test="isMain !=null and isMain != 0">   
+       and a.is_main = #{isMain,jdbcType=INTEGER}  
+    </if>
+    <if test="channelPriority !=null and channelPriority != 0">   
+       and a.channel_priority = #{channelPriority,jdbcType=INTEGER}  
+    </if>
+    <if test="channel !=null and channel != ''">   
+       and a.channel = #{channel,jdbcType=VARCHAR}  
+    </if>
+  </sql>
+  
+  <select id="bs19payBankCount" parameterType="com.pinting.business.model.vo.Bs19payBankVO" resultType="java.lang.Integer" >
+    select count(*) from bs_19pay_bank a left join bs_bank b on(b.id=a.bank_id) where 1 = 1
+    <include refid="Base_Bs19payBank_List" />
+  </select>
+  
+  <select id="bs19payBankPage" resultMap="BankBaseResultMap" parameterType="com.pinting.business.model.vo.Bs19payBankVO" >
+    select a.*,b.name from bs_19pay_bank a left join bs_bank b on(b.id=a.bank_id) where 1 = 1
+    <include refid="Base_Bs19payBank_List" />
+    order by a.is_available asc,b.name asc,a.is_main asc
+    <include refid="sql-global.pagination"/>
+  </select>
+  
+  <sql id="Base_Bs19payBank" >
+    <if test="id != null and id != 0" >
+        and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="bankId != null and bankId != 0" >
+        and bank_id = #{bankId,jdbcType=INTEGER}
+    </if>
+    <if test="payType != null and payType != 0" >
+        and pay_type = #{payType,jdbcType=INTEGER}
+    </if>
+    <if test="pay19BankCode != null and pay19BankCode != 0" >
+        and pay19_bank_code = #{pay19BankCode,jdbcType=VARCHAR}
+    </if>
+    <if test="channel !=null and channel != ''">   
+       and channel = #{channel,jdbcType=VARCHAR}  
+    </if>
+  </sql>
+  
+  <select id="selectBs19payBank" resultMap="BaseResultMap" parameterType="com.pinting.business.model.Bs19payBank" >
+    select
+    <include refid="Base_Column_List" />
+    from bs_19pay_bank where 1 = 1
+    <include refid="Base_Bs19payBank" />
+    LIMIT 0,1
+  </select>
+  
+  <select id="select19PayBankList" resultMap="BankListResultMap" >
+  	SELECT
+		p.*, b.name bank_name
+	FROM
+		bs_19pay_bank p,
+		bs_bank b
+	WHERE
+		b.id = p.bank_id
+	<if test="bankId != null">
+		AND p.bank_id = #{bankId}
+	</if>
+	<if test="payType != null">
+		AND p.pay_type = #{payType}
+	</if>
+	<if test="pay19BankCode">
+		AND p.pay19_bank_code = #{pay19BankCode}
+	</if>
+	ORDER BY
+		p.id asc
+  </select>
+  
+	<select id="selectFirstBankList" resultMap="BankListResultMap" >
+      SELECT p.*, b.name bank_name, b.small_logo, b.large_logo FROM
+      bs_19pay_bank p,	bs_bank b
+      WHERE b.id = p.bank_id  AND channel_priority = 1
+      <if test="payType != null">
+          AND p.pay_type = #{payType}
+      </if>
+      GROUP BY p.bank_id
+	</select>
+	
+	<select id="selectMainBankList" resultMap="BankListResultMap" >
+		SELECT p.*, b.name bank_name FROM 
+		bs_19pay_bank p,	bs_bank b
+		WHERE b.id = p.bank_id  AND is_main = 1 
+		<if test="payType != null">
+			AND p.pay_type = #{payType}
+		</if>
+		GROUP BY p.bank_id
+	</select>
+	
+	<select id="bankLimitListByPayType" resultMap="BankBaseResultMap" >
+		select a.bank_id,a.pay19_bank_code,a.pay_type,a.day_top,a.one_top,a.forbidden_start,a.forbidden_end
+		from bs_19pay_bank a,bs_bank b where a.is_available = 1 and a.channel = 'BAOFOO' and a.bank_id = b.id 
+		and (a.forbidden_start > NOW() or a.forbidden_end &lt; NOW() or a.forbidden_start is null)
+		<if test="payType != null">
+			AND a.pay_type = #{payType}
+		</if>
+	</select>
+
+  <select id="selectByChannelAndPayType" resultMap="BankListResultMap" >
+    SELECT p.*, b.name bank_name
+    FROM bs_19pay_bank p, bs_bank b
+    WHERE b.id = p.bank_id
+    <if test="channel != null and channel != ''">
+      AND p.channel = #{channel}
+    </if>
+    <if test="payType != null">
+      AND p.pay_type = #{payType}
+    </if>
+    ORDER BY p.is_available ASC
+  </select>
+  
+  <select id="selectByChanelPayTypeBankCode" resultMap="BankListResultMap">
+  	<![CDATA[select a.id, a.bank_id, a.channel, a.channel_priority, a.is_main, a.pay19_bank_code, a.pay_type, a.one_top,
+    	a.day_top, a.month_top, a.forbidden_start, a.forbidden_end, a.is_available, b.name as bank_name
+  	from bs_19pay_bank a left join bs_bank b
+    on a.bank_id = b.id
+  	where a.channel = #{channel} and a.pay_type = #{payType}
+  		and a.pay19_bank_code=#{bankCode}
+  	and (a.forbidden_start > NOW() or a.forbidden_end < NOW() or a.forbidden_start is null)
+  	]]>
+  </select>
+  
+</mapper>

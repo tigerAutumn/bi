@@ -1,0 +1,87 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadCSS("resources/micro2.0/styles/activity/anniversary/share")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/activity/six")
+#LoadJS("resources/micro2.0/scripts/activity/anniversary/common")
+#LoadJS("resources/micro2.0/scripts/activity/anniversary/anniversary_share")
+#WeChatShare()
+#Head("end")
+
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<input type="hidden" id="shareUserId" value="$!shareUserId"/>
+<input type="hidden" id="user" value="$!user"/>
+<body id="body">
+<div class="banner">
+    <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/banner.jpg" class="banner_img" />
+    <div class="share_content">
+        #if($isSelf == "yes")
+            <div class="share_content_txt">已获得元宝：<i>$!{result.goldIngotNum}</i>个</div>
+            <div class="share_content_btn">
+                <a href="javascript:void(0);" class="share_content_btn_a share_btn">获得更多元宝</a>
+            </div>
+        #else
+            #if($!result.isJoined == "yes")
+                <div class="share_content_txt">现有元宝：<i>$!{result.goldIngotNum}</i>个</div>
+                    <div class="share_content_txt" >助力成功</div>
+                <div class="share_content_btn">
+                    <a href="javascript:void(0);" class="share_content_btn_a go_register">注册领318元红包</a>
+                </div>
+            #else
+                <div class="share_content_txt">现有元宝：<i>$!{result.goldIngotNum}</i>个</div>
+                <div class="share_content_btn">
+                    <a href="javascript:void(0);" class="share_content_btn_a to_help">助力并获得红包</a>
+                </div>
+            #end
+        #end
+
+    </div>
+</div>
+<div class="Prompt_txt">注：本活动318元红包为注册红包，仅限币港湾新注册用户获得</div>
+<div class="share_panking">
+    <h3 class="panking_title">已助力好友</h3>
+    <ul class="panking_content">
+        #if($!result.friendList.size() == 0)
+            <!--暂无助力-->
+            <li class="panking_content_none">---暂无助力---</li>
+        #else
+            #foreach($!friend in $!result.friendList)
+                <li>
+                <span class="panking_img">
+                    <img src="$!friend.wxHeadImg"/></span>
+                <span class="panking_name">
+                    <i class="panking_name_i">$!friend.wxNick</i>
+                </span>
+                    <span class="panking_num">+$!{friend.goldIngotNum}元宝</span>
+                </li>
+            #end
+        #end
+
+    </ul>
+</div>
+<div class="bottom_txt">本次活动的最终解释权归币港湾所有</div>
+<!--弹窗-->
+<div class="dialog_notice have_fee_dialog prompt_dialog " style="display: none;">
+    <div class="alert_info">
+        <i class="close close_btn prompt_close help_success">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/panking_close.png" alt="">
+        </i>
+        <ul class="alert_ul">
+            <li class="alert_list fee_show_text prompt_content">助力成功</li>
+        </ul>
+        <div class="btn_group">
+            <div class="top_line close_btn know_this prompt_btn">注册领318元红包</div>
+        </div>
+    </div>
+</div>
+<!--分享-->
+<div class="shae_dialgo share_one" style="display: none;">
+    <div class="arrow"></div>
+    <div class="shar_off"></div>
+</div>
+</body>
+
+#Html("end")
+

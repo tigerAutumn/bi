@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsRedPacketApplyMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsRedPacketApply" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="rp_name" property="rpName" jdbcType="VARCHAR" />
+    <result column="apply_no" property="applyNo" jdbcType="VARCHAR" />
+    <result column="budget" property="budget" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="check_status" property="checkStatus" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="INTEGER" />
+    <result column="checker" property="checker" jdbcType="INTEGER" />
+    <result column="check_time" property="checkTime" jdbcType="TIMESTAMP" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="BaseResultVOMap" type="com.pinting.business.model.vo.BsRedPacketApplyVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="rp_name" property="rpName" jdbcType="VARCHAR" />
+    <result column="apply_no" property="applyNo" jdbcType="VARCHAR" />
+    <result column="budget" property="budget" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="check_status" property="checkStatus" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="INTEGER" />
+    <result column="checker" property="checker" jdbcType="INTEGER" />
+    <result column="check_time" property="checkTime" jdbcType="TIMESTAMP" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="can_put_amount" property="canPutAmount" jdbcType="DOUBLE" />
+    <result column="check_amount" property="checkAmount" jdbcType="DOUBLE" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="mid" property="mid" jdbcType="INTEGER" />
+    <result column="checkerName" property="checkerName" jdbcType="VARCHAR" />
+	<result column="availableAmount" property="availableAmount" jdbcType="DOUBLE" />
+	<result column="expiryAmount" property="expiryAmount" jdbcType="DOUBLE" />
+	<result column="disableUnSendAmount" property="disableUnSendAmount" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, rp_name, apply_no, budget, status, check_status, creator, checker, check_time, 
+    note, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsRedPacketApplyExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_red_packet_apply
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_red_packet_apply
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_red_packet_apply
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsRedPacketApplyExample" >
+    delete from bs_red_packet_apply
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsRedPacketApply" >
+    insert into bs_red_packet_apply (id, rp_name, apply_no, 
+      budget, status, check_status, 
+      creator, checker, check_time, 
+      note, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{rpName,jdbcType=VARCHAR}, #{applyNo,jdbcType=VARCHAR}, 
+      #{budget,jdbcType=DOUBLE}, #{status,jdbcType=VARCHAR}, #{checkStatus,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=INTEGER}, #{checker,jdbcType=INTEGER}, #{checkTime,jdbcType=TIMESTAMP}, 
+      #{note,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsRedPacketApply" >
+    insert into bs_red_packet_apply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="rpName != null" >
+        rp_name,
+      </if>
+      <if test="applyNo != null" >
+        apply_no,
+      </if>
+      <if test="budget != null" >
+        budget,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="checkStatus != null" >
+        check_status,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="checker != null" >
+        checker,
+      </if>
+      <if test="checkTime != null" >
+        check_time,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="rpName != null" >
+        #{rpName,jdbcType=VARCHAR},
+      </if>
+      <if test="applyNo != null" >
+        #{applyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="budget != null" >
+        #{budget,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStatus != null" >
+        #{checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="checker != null" >
+        #{checker,jdbcType=INTEGER},
+      </if>
+      <if test="checkTime != null" >
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsRedPacketApplyExample" resultType="java.lang.Integer" >
+    select count(*) from bs_red_packet_apply
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_red_packet_apply
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.rpName != null" >
+        rp_name = #{record.rpName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applyNo != null" >
+        apply_no = #{record.applyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.budget != null" >
+        budget = #{record.budget,jdbcType=DOUBLE},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkStatus != null" >
+        check_status = #{record.checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=INTEGER},
+      </if>
+      <if test="record.checker != null" >
+        checker = #{record.checker,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkTime != null" >
+        check_time = #{record.checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_red_packet_apply
+    set id = #{record.id,jdbcType=INTEGER},
+      rp_name = #{record.rpName,jdbcType=VARCHAR},
+      apply_no = #{record.applyNo,jdbcType=VARCHAR},
+      budget = #{record.budget,jdbcType=DOUBLE},
+      status = #{record.status,jdbcType=VARCHAR},
+      check_status = #{record.checkStatus,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=INTEGER},
+      checker = #{record.checker,jdbcType=INTEGER},
+      check_time = #{record.checkTime,jdbcType=TIMESTAMP},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsRedPacketApply" >
+    update bs_red_packet_apply
+    <set >
+      <if test="rpName != null" >
+        rp_name = #{rpName,jdbcType=VARCHAR},
+      </if>
+      <if test="applyNo != null" >
+        apply_no = #{applyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="budget != null" >
+        budget = #{budget,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStatus != null" >
+        check_status = #{checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="checker != null" >
+        checker = #{checker,jdbcType=INTEGER},
+      </if>
+      <if test="checkTime != null" >
+        check_time = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsRedPacketApply" >
+    update bs_red_packet_apply
+    set rp_name = #{rpName,jdbcType=VARCHAR},
+      apply_no = #{applyNo,jdbcType=VARCHAR},
+      budget = #{budget,jdbcType=DOUBLE},
+      status = #{status,jdbcType=VARCHAR},
+      check_status = #{checkStatus,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=INTEGER},
+      checker = #{checker,jdbcType=INTEGER},
+      check_time = #{checkTime,jdbcType=TIMESTAMP},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <sql id="Base_RedPacketApply_List">
+  	<if test="rpName != null and rpName != '' ">
+  		and rp_name like concat(concat('%', #{rpName,jdbcType=VARCHAR}),'%')
+  	</if>
+  	<if test="checkStatus != null and checkStatus != '' ">
+  		and check_status = #{checkStatus}
+  	</if>
+  	<if test="applyNo != null and applyNo != '' ">
+  		and apply_no like concat(concat('%', #{applyNo,jdbcType=VARCHAR}),'%')
+  	</if>
+  	<if test="creator != null and creator != 0 ">
+  		and creator = #{creator}
+  	</if>
+  </sql>
+  <!-- 查询红包名称是否已存 -->
+  <sql id="Base_RedPacketApply" >
+     <if test="id != null and id != 0" >
+        and id = #{id,jdbcType=INTEGER}
+     </if>
+     <if test="rpName != null and rpName != '' ">
+  		and rp_name = #{rpName}
+  	</if>
+  </sql>
+  <!-- 红包申请列表 -->
+   <select id="selectByRedPacketApplyListInfo" resultMap="BaseResultVOMap" parameterType="com.pinting.business.model.vo.BsRedPacketApplyVO" >
+   	SELECT aa.*, bb.*, (aa.budget - bb.check_amount + bb.expiryAmount + bb.disableUnSendAmount ) availableAmount from 
+   	  (SELECT u.name,u.id mid,u2.name as checkerName,rpa.id, rpa.rp_name, rpa.apply_no, rpa.budget, rpa.status, rpa.check_status, 
+		rpa.creator, rpa.checker, rpa.check_time,rpa.note, rpa.create_time, rpa.update_time           
+		FROM m_user u,bs_red_packet_apply rpa LEFT JOIN m_user u2 ON rpa.checker = u2.id       
+		WHERE rpa.creator = u.id 
+			<if test="rpName != null and rpName != '' ">
+		  		and rpa.rp_name like concat(concat('%', #{rpName,jdbcType=VARCHAR}),'%')
+		  	</if>
+		  	<if test="checkStatus != null and checkStatus != '' ">
+		  		and rpa.check_status = #{checkStatus}
+		  	</if>
+		  	<if test="applyNo != null and applyNo != '' ">
+		  		and rpa.apply_no like concat(concat('%', #{applyNo,jdbcType=VARCHAR}),'%')
+		  	</if>
+		  	<if test="creator != null and creator != 0 ">
+		  		and rpa.creator = #{creator}
+		  	</if>
+		) aa LEFT JOIN 
+		(
+			select 
+				case when apply.check_amount is null then 0 else apply.check_amount end as check_amount,
+	            case when expiry.expiryAmount is null then 0 else expiry.expiryAmount end as expiryAmount,
+	            case when disableUnSend.disableUnSendAmount is null then 0 else disableUnSend.disableUnSendAmount end as disableUnSendAmount, 
+				apply.apply_no
+			from
+			<!-- 已通过申请的预算总额 --> 
+			(select a.*, case when sum(b.amount * b.total) is null then 0 else sum(b.amount * b.total) end 
+		    as check_amount 
+			from bs_red_packet_apply a LEFT JOIN  bs_red_packet_check b on a.apply_no = b.apply_no
+			and b.check_status !='REFUSE'
+			GROUP BY a.apply_no
+			) apply LEFT JOIN 
+		
+			<!-- 发给用户的，逾期的红包额 -->
+			(select a.apply_no, case when sum(a.amount) is null then 0 else sum(a.amount)end as expiryAmount 
+				from bs_red_packet_info a
+				where a.`status` = 'INIT' 
+				and a.use_time_end &lt; now() GROUP BY a.apply_no) expiry on apply.apply_no=expiry.apply_no 
+			LEFT JOIN
+			
+			<!-- 停用或过期的批次 未发送给用户的红包额 -->
+			(
+			SELECT  total.apply_no, case when total.totalAmount is null then 0 else case when info.amount is null then total.totalAmount 
+			else total.totalAmount - info.amount end end as disableUnSendAmount from
+			(
+			SELECT sum(a.amount*a.total) as totalAmount, a.apply_no from bs_red_packet_check a , bs_auto_red_packet_rule b 
+			where a.serial_no=b.serial_no and a.check_status != 'REFUSE' and (b.`status` = 'DISABLE' or b.distribute_time_end &lt; now())
+			
+			 GROUP BY a.apply_no
+			) total 
+			left join
+			(
+						SELECT
+							sum(c.amount) AS amount,
+								c.apply_no
+						FROM
+							bs_red_packet_info c
+							LEFT JOIN bs_auto_red_packet_rule b ON  c.serial_no =  b.serial_no	
+							LEFT JOIN bs_red_packet_check a ON c.serial_no = a.serial_no
+						WHERE
+						a.check_status != 'REFUSE'
+						AND (
+							b.`status` = 'DISABLE'
+							OR b.distribute_time_end &lt; now()
+						)
+						GROUP BY c.apply_no
+
+			) info
+			 on total.apply_no=info.apply_no
+			 )disableUnSend 
+			on apply.apply_no=disableUnSend.apply_no
+		) bb 
+	on aa.apply_no=bb.apply_no
+   	<if test="orderDirection!=null and orderDirection != ''  and orderField != ''  and orderField!=null ">   
+   	 	order by ${orderField} ${orderDirection}
+   	</if>
+ 	<include refid="sql-global.pagination" />
+   </select>
+   <!-- 红包申请数量 -->
+   <select id="selectCountRedPacketApply" resultType="java.lang.Integer" parameterType="com.pinting.business.model.BsRedPacketApply">
+      SELECT COUNT(*) FROM bs_red_packet_apply
+      WHERE 1= 1
+      <include refid="Base_RedPacketApply_List" />
+   </select>
+   <!-- 查询红包名称是否已存 -->
+   <select id="selectByRedPacketApply" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsRedPacketApply" >
+      SELECT 
+       <include refid="Base_Column_List" />
+      FROM bs_red_packet_apply
+      WHERE 1 = 1
+       <include refid="Base_RedPacketApply" />
+      LIMIT 0,1
+   </select>
+   <!-- 红包申请人 -->
+   <select id="selectByRedPacketApplyCreator" resultMap="BaseResultVOMap" parameterType="com.pinting.business.model.vo.BsRedPacketApplyVO" >
+   	 SELECT u.name,u.id mid,rpa.creator FROM m_user u,bs_red_packet_apply rpa 
+     where  u.id = rpa.creator
+     GROUP BY creator
+   </select>
+   
+   <!-- 总审核通过预算 -->
+   <select id="selectTotalBudgetAmount" resultType="java.lang.Double">
+      SELECT sum(budget) FROM bs_red_packet_apply
+      WHERE check_status = 'PASS'
+   </select>
+   <select id="findCanPutPacket" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsRedPacketApply" >
+      SELECT 
+       <include refid="Base_Column_List" />
+      FROM bs_red_packet_apply
+      where status = 'USING' and check_status = 'PASS' and budget > 0
+   </select>
+  
+  <!-- 根据applyNo查询BsRedPacketApplyVO -->
+   <select id="selectByApplyNo" resultMap="BaseResultVOMap" parameterType="java.util.Map" >
+    select apply.*,apply.budget - apply.check_amount +expiry1.expiryAmount + disableUnSend.disableUnSendAmount as can_put_amount
+	from(select a.*, case when sum(b.amount * b.total) is null then 0 else sum(b.amount * b.total) end 
+	    as check_amount 
+		from bs_red_packet_apply a LEFT JOIN  bs_red_packet_check b on a.apply_no = b.apply_no
+		and b.check_status !='REFUSE'
+		where a.apply_no = #{applyNo,jdbcType=VARCHAR}) apply,
+	
+	(select case when sum(a.amount) is null then 0 else sum(a.amount)end as expiryAmount 
+		from bs_red_packet_info a
+		where a.apply_no = #{applyNo,jdbcType=VARCHAR} and a.`status` = 'INIT' 
+		and a.use_time_end &lt; #{nowTime}) as expiry1,
+	(	SELECT case when aa.totalAmount is null then 0 else case when bb.amount is null then aa.totalAmount 
+		else aa.totalAmount - bb.amount end end as disableUnSendAmount from
+		(
+		SELECT sum(a.amount*a.total) as totalAmount from bs_red_packet_check a , bs_auto_red_packet_rule b 
+		where a.serial_no=b.serial_no and a.check_status != 'REFUSE'
+		and (b.`status` = 'DISABLE' or b.distribute_time_end &lt; #{nowTime}) and a.apply_no = #{applyNo,jdbcType=VARCHAR}
+		) aa,
+		(
+		SELECT sum(c.amount) as amount from bs_red_packet_info c where 
+		c.use_time_end > #{nowTime} and 
+		 c.serial_no in (SELECT a.serial_no from bs_red_packet_check a , bs_auto_red_packet_rule b 
+		where a.serial_no=b.serial_no and (b.`status` = 'DISABLE' or b.distribute_time_end &lt; #{nowTime}) and a.apply_no = #{applyNo,jdbcType=VARCHAR}) 
+		) bb) disableUnSend
+  </select>
+    <!-- 当前预算总额 -->
+  <select id="selectTotalBudget" resultType="java.lang.Double" parameterType="java.util.Map" >
+      SELECT sum(budget) FROM bs_red_packet_apply
+      WHERE check_status = 'PASS'
+	  <if test="applyNo != null and applyNo !='' " >
+		 	and apply_no = #{applyNo} 
+	  </if>
+  </select>
+  
+      <!-- 当前预算可用总额 -->
+  <select id="selectBudgetAvailableAmount" resultType="java.lang.Double" parameterType="java.util.Map" >
+SELECT sum(available_t.availableAmount) FROM
+(
+				SELECT  (aa.budget - bb.check_amount + bb.expiryAmount + bb.disableUnSendAmount ) availableAmount from 
+				(SELECT u.name,u.id mid,u2.name as checkerName,rpa.id, rpa.rp_name, rpa.apply_no, rpa.budget, rpa.status, rpa.check_status, 
+				rpa.creator, rpa.checker, rpa.check_time,rpa.note, rpa.create_time, rpa.update_time           
+				FROM m_user u,bs_red_packet_apply rpa LEFT JOIN m_user u2 ON rpa.checker = u2.id       
+				WHERE rpa.creator = u.id AND rpa.check_status = 'PASS'
+				) aa LEFT JOIN 
+							(
+									select 
+									case when apply.check_amount is null then 0 else apply.check_amount end check_amount,
+									case when expiry.expiryAmount is null then 0 else expiry.expiryAmount end expiryAmount,
+									case when disableUnSend.disableUnSendAmount is null then 0 else disableUnSend.disableUnSendAmount end disableUnSendAmount, 
+									apply.apply_no
+									from
+									(select a.*, case when sum(b.amount * b.total) is null then 0 else sum(b.amount * b.total) end 
+										as check_amount 
+									from bs_red_packet_apply a LEFT JOIN  bs_red_packet_check b on a.apply_no = b.apply_no
+									and b.check_status !='REFUSE'
+									GROUP BY a.apply_no
+							) apply 
+							LEFT JOIN 
+							(
+											select a.apply_no, case when sum(a.amount) is null then 0  else  sum(a.amount) end as expiryAmount 
+											from bs_red_packet_info a
+											where a.`status` = 'INIT' 
+											and a.use_time_end &lt; NOW() GROUP BY a.apply_no
+							) expiry on apply.apply_no=expiry.apply_no 
+							LEFT JOIN
+							(
+							
+							SELECT  total.apply_no, case when total.totalAmount is null then 0 else case when info.amount is null then total.totalAmount 
+							else total.totalAmount - info.amount end end as disableUnSendAmount from
+							(
+							SELECT sum(a.amount*a.total) as totalAmount, a.apply_no from bs_red_packet_check a , bs_auto_red_packet_rule b 
+							where a.serial_no=b.serial_no and a.check_status != 'REFUSE' and (b.`status` = 'DISABLE' or b.distribute_time_end &lt; now())
+							
+							 GROUP BY a.apply_no
+							) total 
+							left join
+							(
+							SELECT sum(c.amount) as amount, c.apply_no from bs_red_packet_info c where 
+							<!-- c.use_time_end > now() and  -->
+							 c.serial_no in (SELECT a.serial_no from bs_red_packet_check a , bs_auto_red_packet_rule b 
+							where a.serial_no=b.serial_no and a.check_status != 'REFUSE'
+							 and (b.`status` = 'DISABLE' or b.distribute_time_end &lt; now()) and a.apply_no=c.apply_no ) 
+							
+							 GROUP BY c.apply_no 
+							) info
+							 on total.apply_no=info.apply_no
+							
+							)disableUnSend on apply.apply_no=disableUnSend.apply_no
+				) bb on aa.apply_no=bb.apply_no
+				WHERE aa.check_status = 'PASS'
+				<if test="applyNo != null and applyNo !='' " >
+				 	and aa.apply_no = #{applyNo} 
+			  	</if>
+) available_t
+  </select>
+</mapper>

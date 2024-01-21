@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsErrorCodeMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsErrorCode" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="channel" property="channel" jdbcType="VARCHAR" />
+    <result column="interface_type" property="interfaceType" jdbcType="VARCHAR" />
+    <result column="error_code" property="errorCode" jdbcType="VARCHAR" />
+    <result column="error_in_msg" property="errorInMsg" jdbcType="VARCHAR" />
+    <result column="error_out_msg" property="errorOutMsg" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="BaseResultMapVO" type="com.pinting.business.model.vo.BsErrorCodeVO" extends="BaseResultMap">
+  	<result column="error_code_other" property="errorCodeOther" jdbcType="VARCHAR" />
+  	<result column="error_code_channel" property="errorCodeChannel" jdbcType="VARCHAR" />
+  	<result column="interface_type_other" property="interfaceTypeOther" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, channel, interface_type, error_code, error_in_msg, error_out_msg, create_time, 
+    update_time
+  </sql>
+  
+   <sql id="Base_ErrorCode_List" >
+   		<if test="errorCodeChannel != null and errorCodeChannel != '' " >
+   		 	and channel like concat(concat('%', #{errorCodeChannel,jdbcType=VARCHAR}),'%')
+   		</if>
+	    <if test="interfaceType != null and interfaceType != '' " >
+   		 	and interface_type like concat(concat('%', #{interfaceType,jdbcType=VARCHAR}),'%')
+   		</if>
+	    <if test="errorCodeOther != null and errorCodeOther != '' " >
+   		 	and error_code like concat(concat('%', #{errorCodeOther,jdbcType=VARCHAR}),'%')
+   		</if>
+	    <if test="errorInMsg != null and errorInMsg != '' " >
+   		 	and error_in_msg like concat(concat('%', #{errorInMsg,jdbcType=VARCHAR}),'%')
+   		</if>
+	    <if test="errorOutMsg != null and errorOutMsg != '' " >
+   		 	and error_out_msg like concat(concat('%', #{errorOutMsg,jdbcType=VARCHAR}),'%')
+   		</if>
+  </sql>
+  
+  <!-- 错误码是否存在 -->
+  <sql id="Base_errorCode" >
+      <if test="id != null and id != 0" >
+        and id = #{id,jdbcType=INTEGER}
+    </if>
+    <if test="errorCode != null and errorCode != ''" >
+        and error_Code = #{errorCode,jdbcType=VARCHAR}
+    </if>
+  </sql>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsErrorCodeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_error_code
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_error_code
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_error_code
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsErrorCodeExample" >
+    delete from bs_error_code
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <!-- <insert id="insert" parameterType="com.pinting.business.model.BsErrorCode" >
+    insert into bs_error_code (id, channel, interface_type, 
+      error_code, error_in_msg, error_out_msg, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{channel,jdbcType=VARCHAR}, #{interfaceType,jdbcType=VARCHAR}, 
+      #{errorCode,jdbcType=VARCHAR}, #{errorInMsg,jdbcType=VARCHAR}, #{errorOutMsg,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert> -->
+  
+  <insert id="insert" parameterType="com.pinting.business.model.vo.BsErrorCodeVO" >
+    insert into bs_error_code (id, channel, interface_type, 
+      error_code, error_in_msg, error_out_msg, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{errorCodeChannel,jdbcType=VARCHAR}, #{interfaceTypeOther,jdbcType=VARCHAR}, 
+      #{errorCode,jdbcType=VARCHAR}, #{errorInMsg,jdbcType=VARCHAR}, #{errorOutMsg,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsErrorCode" >
+    insert into bs_error_code
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="channel != null" >
+        channel,
+      </if>
+      <if test="interfaceType != null" >
+        interface_type,
+      </if>
+      <if test="errorCode != null" >
+        error_code,
+      </if>
+      <if test="errorInMsg != null" >
+        error_in_msg,
+      </if>
+      <if test="errorOutMsg != null" >
+        error_out_msg,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null" >
+        #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceType != null" >
+        #{interfaceType,jdbcType=VARCHAR},
+      </if>
+      <if test="errorCode != null" >
+        #{errorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="errorInMsg != null" >
+        #{errorInMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="errorOutMsg != null" >
+        #{errorOutMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsErrorCodeExample" resultType="java.lang.Integer" >
+    select count(*) from bs_error_code
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_error_code
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.channel != null" >
+        channel = #{record.channel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interfaceType != null" >
+        interface_type = #{record.interfaceType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.errorCode != null" >
+        error_code = #{record.errorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.errorInMsg != null" >
+        error_in_msg = #{record.errorInMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.errorOutMsg != null" >
+        error_out_msg = #{record.errorOutMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_error_code
+    set id = #{record.id,jdbcType=INTEGER},
+      channel = #{record.channel,jdbcType=VARCHAR},
+      interface_type = #{record.interfaceType,jdbcType=VARCHAR},
+      error_code = #{record.errorCode,jdbcType=VARCHAR},
+      error_in_msg = #{record.errorInMsg,jdbcType=VARCHAR},
+      error_out_msg = #{record.errorOutMsg,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.vo.BsErrorCodeVO" >
+    update bs_error_code
+    <set >
+      <if test="errorCodeChannel != null" >
+        channel = #{errorCodeChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceTypeOther != null" >
+        interface_type = #{interfaceTypeOther,jdbcType=VARCHAR},
+      </if>
+      <if test="errorCode != null" >
+        error_code = #{errorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="errorInMsg != null" >
+        error_in_msg = #{errorInMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="errorOutMsg != null" >
+        error_out_msg = #{errorOutMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP} 
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!--  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsErrorCode" >
+    update bs_error_code
+    <set >
+      <if test="channel != null" >
+        channel = #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceType != null" >
+        interface_type = #{interfaceType,jdbcType=VARCHAR},
+      </if>
+      <if test="errorCode != null" >
+        error_code = #{errorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="errorInMsg != null" >
+        error_in_msg = #{errorInMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="errorOutMsg != null" >
+        error_out_msg = #{errorOutMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update> -->
+  
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsErrorCode" >
+    update bs_error_code
+    set channel = #{channel,jdbcType=VARCHAR},
+      interface_type = #{interfaceType,jdbcType=VARCHAR},
+      error_code = #{errorCode,jdbcType=VARCHAR},
+      error_in_msg = #{errorInMsg,jdbcType=VARCHAR},
+      error_out_msg = #{errorOutMsg,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectErrorCodeListPageInfo" resultMap="BaseResultMapVO" parameterType="com.pinting.business.model.vo.BsErrorCodeVO" >
+ 	select 
+		<include refid="Base_Column_List" />
+    from bs_error_code 
+    where 1 = 1 
+    	<include refid="Base_ErrorCode_List" />
+		<if test="orderDirection!=null and orderDirection != ''  and orderField != ''  and orderField!=null ">   
+    	 	order by 	${orderField}  ${orderDirection}
+    	</if>
+  		<include refid="sql-global.pagination"/>
+  </select>
+  
+   <select id="selectCountErrorCode" resultType="java.lang.Integer" parameterType="com.pinting.business.model.vo.BsErrorCodeVO" >
+ 	select 
+		count(*) 
+    from bs_error_code 
+    where 1 = 1 
+	    <include refid="Base_ErrorCode_List" />
+  </select>
+  
+  <!-- 错误码是否存在 -->
+  <select id="selectErrorCode" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsErrorCode" >
+    select
+    <include refid="Base_Column_List" />
+    from bs_error_code where 1 = 1
+    <include refid="Base_errorCode" />
+    LIMIT 0,1
+  </select>
+  
+</mapper>

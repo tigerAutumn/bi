@@ -1,0 +1,74 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="wxAgentId" value="$!wxAgentId" />
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/wxAgent/details_review.htm')" method="post">
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="count" value="$!count" />
+        <input type="hidden" id="queryDateFlag" name="queryDateFlag" value="QUERYDATE" />
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+                        渠道人数:$!count 人
+					</td>
+				</tr>
+			</table>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li class="line">line</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="123">
+		<thead>
+			<tr>
+				<th width="25">微信昵称</th>
+				<th width="23">性别</th>
+                <th width="23">省会</th>
+                <th width="25">关注时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $detailsList)
+				<tr>
+					<td>$!grid.nick</td>
+					<td>
+						#if("$!grid.sex" == "1")
+							男
+						#elseif("$!grid.sex" == "2")
+							女
+						#elseif("$!grid.sex" == "0")
+							未知
+						#end
+					</td>
+					<td>$!grid.province</td>
+					<td>$!date.format($!grid.followTime)</td>
+				</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!count条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>

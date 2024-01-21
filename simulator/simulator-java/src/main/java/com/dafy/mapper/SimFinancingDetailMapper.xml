@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dafy.mapper.SimFinancingDetailMapper" >
+  
+  <!--
+    - =======================================================
+ 	- SimFinancingDetail对象
+ 	- @author yanwl
+ 	- @date 2015-11-19
+ 	- ======================================================= 
+  -->
+  <resultMap id="BaseResultMap" type="SimFinancingDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="total_id" property="totalId" jdbcType="INTEGER" />
+    <result column="product_order_no" property="productOrderNo" jdbcType="VARCHAR" />
+    <result column="product_code" property="productCode" jdbcType="VARCHAR" />
+    <result column="product_amount" property="productAmount" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!--
+    - =======================================================
+ 	- 基本列
+ 	- @author yanwl
+ 	- @date 2015-11-19
+ 	- ======================================================= 
+  -->
+  <sql id="Base_Column_List" >
+    id, total_id, product_order_no, product_code, product_amount, status
+  </sql>
+  
+  <!--
+    - =======================================================
+ 	- 根据主键查询SimFinancingDetail对象
+ 	- @author yanwl
+ 	- @date 2015-11-19
+ 	- ======================================================= 
+  -->
+  <select id="selectSimFinancingDetailById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sim_financing_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <!--
+    - =======================================================
+ 	- 根据多条件分页查询List<SimFinancingDetail>对象
+ 	- @author yanwl
+ 	- @date 2015-11-19
+ 	- ======================================================= 
+  -->
+  <select id="selectAllSimFinancingDetails" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from sim_financing_detail
+    where 1=1
+    <if test="totalId != null and totalId !=''">
+    	and total_id = #{totalId}
+    </if>
+    <include refid="com.dafy.mapper.global-sql.orderBy"></include>
+    <!--  <include refid="com.dafy.mapper.global-sql.pagination"></include>-->
+  </select>
+  
+  <!--
+    - =======================================================
+ 	- 删除SimFinancingDetail对象
+ 	- @author yanwl
+ 	- @date 2015-11-19
+ 	- ======================================================= 
+  -->
+  <delete id="deleteSimFinancingDetail" parameterType="java.lang.Integer" >
+    delete from sim_financing_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  
+  <!--
+    - =======================================================
+ 	- 新增SimFinancingDetail对象
+ 	- @author yanwl
+ 	- @date 2015-11-19
+ 	- ======================================================= 
+  -->
+  <insert id="insertSimFinancingDetail" parameterType="SimFinancingDetail" keyProperty="id" useGeneratedKeys="true">
+    insert into sim_financing_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="totalId != null" >
+        total_id,
+      </if>
+      <if test="productOrderNo != null" >
+        product_order_no,
+      </if>
+      <if test="productCode != null" >
+        product_code,
+      </if>
+      <if test="productAmount != null" >
+        product_amount,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="totalId != null" >
+        #{totalId,jdbcType=INTEGER},
+      </if>
+      <if test="productOrderNo != null" >
+        #{productOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null" >
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productAmount != null" >
+        #{productAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <!--
+    - =======================================================
+ 	- 更新SimFinancingDetail对象
+ 	- @author yanwl
+ 	- @date 2015-11-19
+ 	- ======================================================= 
+  -->
+  <update id="updateSimFinancingDetail" parameterType="SimFinancingDetail" >
+    update sim_financing_detail
+    set total_id = #{totalId,jdbcType=INTEGER},
+      product_order_no = #{productOrderNo,jdbcType=VARCHAR},
+      product_code = #{productCode,jdbcType=VARCHAR},
+      product_amount = #{productAmount,jdbcType=DOUBLE},
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

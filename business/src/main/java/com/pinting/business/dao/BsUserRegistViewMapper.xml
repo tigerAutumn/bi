@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsUserRegistViewMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsUserRegistView" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="regist_date" property="registDate" jdbcType="DATE" />
+    <result column="day_regist_increase" property="dayRegistIncrease" jdbcType="INTEGER" />
+    <result column="day_cardbind_increase" property="dayCardbindIncrease" jdbcType="INTEGER" />
+    <result column="android_regist_num" property="androidRegistNum" jdbcType="INTEGER" />
+    <result column="ios_regist_num" property="iosRegistNum" jdbcType="INTEGER" />
+    <result column="recommend_regist_num" property="recommendRegistNum" jdbcType="INTEGER" />
+    <result column="h5_regist_num" property="h5RegistNum" jdbcType="INTEGER" />
+    <result column="pc_regist_num" property="pcRegistNum" jdbcType="INTEGER" />
+    <result column="other_regist_num" property="otherRegistNum" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, regist_date, day_regist_increase, day_cardbind_increase, android_regist_num, 
+    ios_regist_num, recommend_regist_num, h5_regist_num, pc_regist_num, other_regist_num, 
+    create_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsUserRegistViewExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_user_regist_view
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_user_regist_view
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_user_regist_view
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsUserRegistViewExample" >
+    delete from bs_user_regist_view
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsUserRegistView" >
+    insert into bs_user_regist_view (id, regist_date, day_regist_increase, 
+      day_cardbind_increase, android_regist_num, 
+      ios_regist_num, recommend_regist_num, h5_regist_num, 
+      pc_regist_num, other_regist_num, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{registDate,jdbcType=DATE}, #{dayRegistIncrease,jdbcType=INTEGER}, 
+      #{dayCardbindIncrease,jdbcType=INTEGER}, #{androidRegistNum,jdbcType=INTEGER}, 
+      #{iosRegistNum,jdbcType=INTEGER}, #{recommendRegistNum,jdbcType=INTEGER}, #{h5RegistNum,jdbcType=INTEGER}, 
+      #{pcRegistNum,jdbcType=INTEGER}, #{otherRegistNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsUserRegistView" >
+    insert into bs_user_regist_view
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="registDate != null" >
+        regist_date,
+      </if>
+      <if test="dayRegistIncrease != null" >
+        day_regist_increase,
+      </if>
+      <if test="dayCardbindIncrease != null" >
+        day_cardbind_increase,
+      </if>
+      <if test="androidRegistNum != null" >
+        android_regist_num,
+      </if>
+      <if test="iosRegistNum != null" >
+        ios_regist_num,
+      </if>
+      <if test="recommendRegistNum != null" >
+        recommend_regist_num,
+      </if>
+      <if test="h5RegistNum != null" >
+        h5_regist_num,
+      </if>
+      <if test="pcRegistNum != null" >
+        pc_regist_num,
+      </if>
+      <if test="otherRegistNum != null" >
+        other_regist_num,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="registDate != null" >
+        #{registDate,jdbcType=DATE},
+      </if>
+      <if test="dayRegistIncrease != null" >
+        #{dayRegistIncrease,jdbcType=INTEGER},
+      </if>
+      <if test="dayCardbindIncrease != null" >
+        #{dayCardbindIncrease,jdbcType=INTEGER},
+      </if>
+      <if test="androidRegistNum != null" >
+        #{androidRegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="iosRegistNum != null" >
+        #{iosRegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="recommendRegistNum != null" >
+        #{recommendRegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="h5RegistNum != null" >
+        #{h5RegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="pcRegistNum != null" >
+        #{pcRegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="otherRegistNum != null" >
+        #{otherRegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsUserRegistViewExample" resultType="java.lang.Integer" >
+    select count(*) from bs_user_regist_view
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_user_regist_view
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.registDate != null" >
+        regist_date = #{record.registDate,jdbcType=DATE},
+      </if>
+      <if test="record.dayRegistIncrease != null" >
+        day_regist_increase = #{record.dayRegistIncrease,jdbcType=INTEGER},
+      </if>
+      <if test="record.dayCardbindIncrease != null" >
+        day_cardbind_increase = #{record.dayCardbindIncrease,jdbcType=INTEGER},
+      </if>
+      <if test="record.androidRegistNum != null" >
+        android_regist_num = #{record.androidRegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.iosRegistNum != null" >
+        ios_regist_num = #{record.iosRegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.recommendRegistNum != null" >
+        recommend_regist_num = #{record.recommendRegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.h5RegistNum != null" >
+        h5_regist_num = #{record.h5RegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.pcRegistNum != null" >
+        pc_regist_num = #{record.pcRegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.otherRegistNum != null" >
+        other_regist_num = #{record.otherRegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_user_regist_view
+    set id = #{record.id,jdbcType=INTEGER},
+      regist_date = #{record.registDate,jdbcType=DATE},
+      day_regist_increase = #{record.dayRegistIncrease,jdbcType=INTEGER},
+      day_cardbind_increase = #{record.dayCardbindIncrease,jdbcType=INTEGER},
+      android_regist_num = #{record.androidRegistNum,jdbcType=INTEGER},
+      ios_regist_num = #{record.iosRegistNum,jdbcType=INTEGER},
+      recommend_regist_num = #{record.recommendRegistNum,jdbcType=INTEGER},
+      h5_regist_num = #{record.h5RegistNum,jdbcType=INTEGER},
+      pc_regist_num = #{record.pcRegistNum,jdbcType=INTEGER},
+      other_regist_num = #{record.otherRegistNum,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsUserRegistView" >
+    update bs_user_regist_view
+    <set >
+      <if test="registDate != null" >
+        regist_date = #{registDate,jdbcType=DATE},
+      </if>
+      <if test="dayRegistIncrease != null" >
+        day_regist_increase = #{dayRegistIncrease,jdbcType=INTEGER},
+      </if>
+      <if test="dayCardbindIncrease != null" >
+        day_cardbind_increase = #{dayCardbindIncrease,jdbcType=INTEGER},
+      </if>
+      <if test="androidRegistNum != null" >
+        android_regist_num = #{androidRegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="iosRegistNum != null" >
+        ios_regist_num = #{iosRegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="recommendRegistNum != null" >
+        recommend_regist_num = #{recommendRegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="h5RegistNum != null" >
+        h5_regist_num = #{h5RegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="pcRegistNum != null" >
+        pc_regist_num = #{pcRegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="otherRegistNum != null" >
+        other_regist_num = #{otherRegistNum,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsUserRegistView" >
+    update bs_user_regist_view
+    set regist_date = #{registDate,jdbcType=DATE},
+      day_regist_increase = #{dayRegistIncrease,jdbcType=INTEGER},
+      day_cardbind_increase = #{dayCardbindIncrease,jdbcType=INTEGER},
+      android_regist_num = #{androidRegistNum,jdbcType=INTEGER},
+      ios_regist_num = #{iosRegistNum,jdbcType=INTEGER},
+      recommend_regist_num = #{recommendRegistNum,jdbcType=INTEGER},
+      h5_regist_num = #{h5RegistNum,jdbcType=INTEGER},
+      pc_regist_num = #{pcRegistNum,jdbcType=INTEGER},
+      other_regist_num = #{otherRegistNum,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 用户注册统计 -->
+	<select id="selectByTime" resultMap="BaseResultMap" parameterType="map" >
+		select * from (select count(a.id) day_regist_increase from bs_user a where a.register_time BETWEEN #{startDate} and #{endDate})t1,
+		(select count(b.id) recommend_regist_num from bs_user b where b.recommend_id is not null and b.register_time BETWEEN #{startDate} and #{endDate})t2,
+		(select count(d.id) day_cardbind_increase from bs_bank_card d where d.`status` = 1 and d.bind_time BETWEEN #{startDate} and #{endDate} 
+			and user_id not in (select c.user_id from bs_bank_card c where c.unbind_time &lt; #{endDate} and c.bind_time &lt; #{startDate} and `status`=5 ))t3,
+		(select count(a.id) h5_regist_num from bs_user a where a.reg_terminal = 1 and a.register_time BETWEEN #{startDate} and #{endDate})t4,
+		(select count(a.id) pc_regist_num from bs_user a where a.reg_terminal = 2 and a.register_time BETWEEN #{startDate} and #{endDate})t5,
+		(select count(a.id) android_regist_num from bs_user a where a.reg_terminal = 3 and a.register_time BETWEEN #{startDate} and #{endDate})t6,
+		(select count(a.id) ios_regist_num from bs_user a where a.reg_terminal = 4 and a.register_time BETWEEN #{startDate} and #{endDate})t7,
+		(select count(a.id) other_regist_num from bs_user a where (a.reg_terminal not in (1,2,3,4) or a.reg_terminal is null)
+			and a.register_time BETWEEN #{startDate} and #{endDate})t8
+	</select>
+	
+  <select id="selectListByViewVO" parameterType="com.pinting.business.model.vo.BsUserRegistViewVO" resultMap="BaseResultMap" >
+  	 select 
+    <include refid="Base_Column_List" />
+    from bs_user_regist_view
+    where 1=1
+    <if test="startTime != null and startTime != ''">
+    	and regist_date &gt;= #{startTime}
+    </if>
+    <if test="endTime != null and endTime != ''">
+    	and regist_date &lt;= #{endTime}
+    </if>
+    order by regist_date desc
+    <include refid="sql-global.pagination"/>
+  </select>
+  
+  <select id="selectCountByViewVO" parameterType="com.pinting.business.model.vo.BsUserRegistViewVO" resultType="java.lang.Integer" >
+  	select count(*) from bs_user_regist_view
+    where 1=1
+    <if test="startTime != null and startTime != ''">
+    	and regist_date &gt;= #{startTime}
+    </if>
+    <if test="endTime != null and endTime != ''">
+    	and regist_date &lt;= #{endTime}
+    </if>
+  </select>
+</mapper>

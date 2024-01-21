@@ -1,0 +1,1920 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsProductMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsProduct" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="activity_type" property="activityType" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="interest_type" property="interestType" jdbcType="INTEGER" />
+    <result column="base_rate" property="baseRate" jdbcType="DOUBLE" />
+    <result column="max_rate" property="maxRate" jdbcType="DOUBLE" />
+    <result column="term" property="term" jdbcType="INTEGER" />
+    <result column="max_total_amount" property="maxTotalAmount" jdbcType="DOUBLE" />
+    <result column="min_invest_amount" property="minInvestAmount" jdbcType="DOUBLE" />
+    <result column="max_single_invest_amount" property="maxSingleInvestAmount" jdbcType="DOUBLE" />
+    <result column="max_invest_amount" property="maxInvestAmount" jdbcType="DOUBLE" />
+    <result column="max_invest_times" property="maxInvestTimes" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="curr_total_amount" property="currTotalAmount" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="invest_num" property="investNum" jdbcType="INTEGER" />
+    <result column="sys_return_rate" property="sysReturnRate" jdbcType="DOUBLE" />
+    <result column="serial_id" property="serialId" jdbcType="INTEGER" />
+    <result column="serial_order" property="serialOrder" jdbcType="INTEGER" />
+    <result column="serial_name" property="serialName" jdbcType="VARCHAR" />
+    <result column="property_type" property="propertyType" jdbcType="VARCHAR" />
+    <result column="begin_interest_days" property="beginInterestDays" jdbcType="VARCHAR" />
+    <result column="return_type" property="returnType" jdbcType="VARCHAR" />
+    <result column="interest_deal" property="interestDeal" jdbcType="VARCHAR" />
+    <result column="is_support_transfer" property="isSupportTransfer" jdbcType="VARCHAR" />
+    <result column="manage_fee" property="manageFee" jdbcType="DOUBLE" />
+    <result column="show_terminal" property="showTerminal" jdbcType="VARCHAR" />
+    <result column="property_id" property="propertyId" jdbcType="INTEGER" />
+    <result column="is_suggest" property="isSuggest" jdbcType="VARCHAR" />
+    <result column="terminator" property="terminator" jdbcType="INTEGER" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="checker" property="checker" jdbcType="INTEGER" />
+    <result column="check_time" property="checkTime" jdbcType="TIMESTAMP" />
+    <result column="distributor" property="distributor" jdbcType="INTEGER" />
+    <result column="distribute_time" property="distributeTime" jdbcType="TIMESTAMP" />
+    <result column="is_support_red_packet" property="isSupportRedPacket" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="is_support_incr_interest" property="isSupportIncrInterest" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="MProductVOMap" type="com.pinting.business.model.vo.MProductVO" extends="BaseResultMap">
+    <result column="pro_serial_name" property="proSerialName" jdbcType="VARCHAR" />
+    <result column="term_str" property="termStr" jdbcType="VARCHAR" />
+    <result column="checker_name" property="checkerName" jdbcType="VARCHAR" />
+    <result column="distributor_name" property="distributorName" jdbcType="VARCHAR" />
+    <result column="property_name" property="propertyName" jdbcType="VARCHAR" />
+    <result column="property_summary" property="propertySummary" jdbcType="VARCHAR" />
+    <result column="return_source" property="returnSource" jdbcType="VARCHAR" />
+    <result column="fund_security" property="fundSecurity" jdbcType="VARCHAR" />
+    <result column="orgnize_check" property="orgnizeCheck" jdbcType="VARCHAR" />
+    <result column="coop_protocol_pics" property="coopProtocolPics" jdbcType="VARCHAR" />
+    <result column="rating_grade" property="ratingGrade" jdbcType="VARCHAR" />
+    <result column="loan_protocol_pics" property="loanProtocolPics" jdbcType="VARCHAR" />
+    <result column="surplus_amount" property="surplusAmount" jdbcType="DOUBLE" />
+    <result column="orgnize_check_pics" property="orgnizeCheckPics" jdbcType="VARCHAR" />
+    <result column="rating_grade_pics" property="ratingGradePics" jdbcType="VARCHAR" />
+  </resultMap>
+
+   <resultMap id="ProductDetailVOMap" type="com.pinting.business.model.vo.ProductDetailVO" extends="BaseResultMap">
+    <result column="property_name" property="propertyName" jdbcType="VARCHAR" />
+    <result column="property_summary" property="propertySummary" jdbcType="VARCHAR" />
+    <result column="return_source" property="returnSource" jdbcType="VARCHAR" />
+    <result column="fund_security" property="fundSecurity" jdbcType="VARCHAR" />
+    <result column="orgnize_check" property="orgnizeCheck" jdbcType="VARCHAR" />
+    <result column="coop_protocol_pics" property="coopProtocolPics" jdbcType="VARCHAR" />
+    <result column="rating_grade" property="ratingGrade" jdbcType="VARCHAR" />
+    <result column="loan_protocol_pics" property="loanProtocolPics" jdbcType="VARCHAR" />
+    <result column="surplus_amount" property="surplusAmount" jdbcType="DOUBLE" />
+    <result column="orgnize_check_pics" property="orgnizeCheckPics" jdbcType="VARCHAR" />
+    <result column="rating_grade_pics" property="ratingGradePics" jdbcType="VARCHAR" />
+    <result column="property_symbol" property="propertySymbol" jdbcType="VARCHAR" />
+    <result column="term_month" property="termMonth" jdbcType="INTEGER" />
+    <result column="invest_count" property="investCount" jdbcType="INTEGER" />
+    <result column="remindTagContent" property="remindTagContent" jdbcType="VARCHAR" />
+    <result column="interestRatesTagContent" property="interestRatesTagContent" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <resultMap id="InvestRecordVOMap" type="com.pinting.business.model.vo.InvestRecordVO">
+	    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+	    <result column="balance" property="balance" jdbcType="DOUBLE" />
+	    <result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, type, activity_type, code, interest_type, base_rate, max_rate, term, max_total_amount,
+    min_invest_amount, max_single_invest_amount, max_invest_amount, max_invest_times,
+    start_time, end_time, curr_total_amount, status, note, invest_num, sys_return_rate,
+    serial_id, serial_order, serial_name, property_type, begin_interest_days, return_type,
+    interest_deal, is_support_transfer, manage_fee, show_terminal, property_id, is_suggest,
+    terminator, finish_time, checker, check_time, distributor, distribute_time, is_support_red_packet,
+    create_time, update_time, is_support_incr_interest
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsProductExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from bs_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from bs_product
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_product
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsProductExample" >
+    delete from bs_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsProduct" >
+    insert into bs_product (id, name, type,
+    activity_type, code, interest_type,
+    base_rate, max_rate, term,
+    max_total_amount, min_invest_amount, max_single_invest_amount,
+    max_invest_amount, max_invest_times, start_time,
+    end_time, curr_total_amount, status,
+    note, invest_num, sys_return_rate,
+    serial_id, serial_order, serial_name,
+    property_type, begin_interest_days, return_type,
+    interest_deal, is_support_transfer, manage_fee,
+    show_terminal, property_id, is_suggest,
+    terminator, finish_time, checker,
+    check_time, distributor, distribute_time,
+    is_support_red_packet, create_time, update_time,
+    is_support_incr_interest)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+    #{activityType,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{interestType,jdbcType=INTEGER},
+    #{baseRate,jdbcType=DOUBLE}, #{maxRate,jdbcType=DOUBLE}, #{term,jdbcType=INTEGER},
+    #{maxTotalAmount,jdbcType=DOUBLE}, #{minInvestAmount,jdbcType=DOUBLE}, #{maxSingleInvestAmount,jdbcType=DOUBLE},
+    #{maxInvestAmount,jdbcType=DOUBLE}, #{maxInvestTimes,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP},
+    #{endTime,jdbcType=TIMESTAMP}, #{currTotalAmount,jdbcType=DOUBLE}, #{status,jdbcType=INTEGER},
+    #{note,jdbcType=VARCHAR}, #{investNum,jdbcType=INTEGER}, #{sysReturnRate,jdbcType=DOUBLE},
+    #{serialId,jdbcType=INTEGER}, #{serialOrder,jdbcType=INTEGER}, #{serialName,jdbcType=VARCHAR},
+    #{propertyType,jdbcType=VARCHAR}, #{beginInterestDays,jdbcType=VARCHAR}, #{returnType,jdbcType=VARCHAR},
+    #{interestDeal,jdbcType=VARCHAR}, #{isSupportTransfer,jdbcType=VARCHAR}, #{manageFee,jdbcType=DOUBLE},
+    #{showTerminal,jdbcType=VARCHAR}, #{propertyId,jdbcType=INTEGER}, #{isSuggest,jdbcType=VARCHAR},
+    #{terminator,jdbcType=INTEGER}, #{finishTime,jdbcType=TIMESTAMP}, #{checker,jdbcType=INTEGER},
+    #{checkTime,jdbcType=TIMESTAMP}, #{distributor,jdbcType=INTEGER}, #{distributeTime,jdbcType=TIMESTAMP},
+    #{isSupportRedPacket,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+    #{isSupportIncrInterest,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsProduct" >
+    insert into bs_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="activityType != null" >
+        activity_type,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="interestType != null" >
+        interest_type,
+      </if>
+      <if test="baseRate != null" >
+        base_rate,
+      </if>
+      <if test="maxRate != null" >
+        max_rate,
+      </if>
+      <if test="term != null" >
+        term,
+      </if>
+      <if test="maxTotalAmount != null" >
+        max_total_amount,
+      </if>
+      <if test="minInvestAmount != null" >
+        min_invest_amount,
+      </if>
+      <if test="maxSingleInvestAmount != null" >
+        max_single_invest_amount,
+      </if>
+      <if test="maxInvestAmount != null" >
+        max_invest_amount,
+      </if>
+      <if test="maxInvestTimes != null" >
+        max_invest_times,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="currTotalAmount != null" >
+        curr_total_amount,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="investNum != null" >
+        invest_num,
+      </if>
+      <if test="sysReturnRate != null" >
+        sys_return_rate,
+      </if>
+      <if test="serialId != null" >
+        serial_id,
+      </if>
+      <if test="serialOrder != null" >
+        serial_order,
+      </if>
+      <if test="serialName != null" >
+        serial_name,
+      </if>
+      <if test="propertyType != null" >
+        property_type,
+      </if>
+      <if test="beginInterestDays != null" >
+        begin_interest_days,
+      </if>
+      <if test="returnType != null" >
+        return_type,
+      </if>
+      <if test="interestDeal != null" >
+        interest_deal,
+      </if>
+      <if test="isSupportTransfer != null" >
+        is_support_transfer,
+      </if>
+      <if test="manageFee != null" >
+        manage_fee,
+      </if>
+      <if test="showTerminal != null" >
+        show_terminal,
+      </if>
+      <if test="propertyId != null" >
+        property_id,
+      </if>
+      <if test="isSuggest != null" >
+        is_suggest,
+      </if>
+      <if test="terminator != null" >
+        terminator,
+      </if>
+      <if test="finishTime != null" >
+        finish_time,
+      </if>
+      <if test="checker != null" >
+        checker,
+      </if>
+      <if test="checkTime != null" >
+        check_time,
+      </if>
+      <if test="distributor != null" >
+        distributor,
+      </if>
+      <if test="distributeTime != null" >
+        distribute_time,
+      </if>
+      <if test="isSupportRedPacket != null" >
+        is_support_red_packet,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isSupportIncrInterest != null" >
+        is_support_incr_interest,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="activityType != null" >
+        #{activityType,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="interestType != null" >
+        #{interestType,jdbcType=INTEGER},
+      </if>
+      <if test="baseRate != null" >
+        #{baseRate,jdbcType=DOUBLE},
+      </if>
+      <if test="maxRate != null" >
+        #{maxRate,jdbcType=DOUBLE},
+      </if>
+      <if test="term != null" >
+        #{term,jdbcType=INTEGER},
+      </if>
+      <if test="maxTotalAmount != null" >
+        #{maxTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="minInvestAmount != null" >
+        #{minInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="maxSingleInvestAmount != null" >
+        #{maxSingleInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="maxInvestAmount != null" >
+        #{maxInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="maxInvestTimes != null" >
+        #{maxInvestTimes,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currTotalAmount != null" >
+        #{currTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="investNum != null" >
+        #{investNum,jdbcType=INTEGER},
+      </if>
+      <if test="sysReturnRate != null" >
+        #{sysReturnRate,jdbcType=DOUBLE},
+      </if>
+      <if test="serialId != null" >
+        #{serialId,jdbcType=INTEGER},
+      </if>
+      <if test="serialOrder != null" >
+        #{serialOrder,jdbcType=INTEGER},
+      </if>
+      <if test="serialName != null" >
+        #{serialName,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyType != null" >
+        #{propertyType,jdbcType=VARCHAR},
+      </if>
+      <if test="beginInterestDays != null" >
+        #{beginInterestDays,jdbcType=VARCHAR},
+      </if>
+      <if test="returnType != null" >
+        #{returnType,jdbcType=VARCHAR},
+      </if>
+      <if test="interestDeal != null" >
+        #{interestDeal,jdbcType=VARCHAR},
+      </if>
+      <if test="isSupportTransfer != null" >
+        #{isSupportTransfer,jdbcType=VARCHAR},
+      </if>
+      <if test="manageFee != null" >
+        #{manageFee,jdbcType=DOUBLE},
+      </if>
+      <if test="showTerminal != null" >
+        #{showTerminal,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyId != null" >
+        #{propertyId,jdbcType=INTEGER},
+      </if>
+      <if test="isSuggest != null" >
+        #{isSuggest,jdbcType=VARCHAR},
+      </if>
+      <if test="terminator != null" >
+        #{terminator,jdbcType=INTEGER},
+      </if>
+      <if test="finishTime != null" >
+        #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checker != null" >
+        #{checker,jdbcType=INTEGER},
+      </if>
+      <if test="checkTime != null" >
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="distributor != null" >
+        #{distributor,jdbcType=INTEGER},
+      </if>
+      <if test="distributeTime != null" >
+        #{distributeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isSupportRedPacket != null" >
+        #{isSupportRedPacket,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isSupportIncrInterest != null" >
+        #{isSupportIncrInterest,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsProductExample" resultType="java.lang.Integer" >
+    select count(*) from bs_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_product
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.activityType != null" >
+        activity_type = #{record.activityType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null" >
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interestType != null" >
+        interest_type = #{record.interestType,jdbcType=INTEGER},
+      </if>
+      <if test="record.baseRate != null" >
+        base_rate = #{record.baseRate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.maxRate != null" >
+        max_rate = #{record.maxRate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.term != null" >
+        term = #{record.term,jdbcType=INTEGER},
+      </if>
+      <if test="record.maxTotalAmount != null" >
+        max_total_amount = #{record.maxTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.minInvestAmount != null" >
+        min_invest_amount = #{record.minInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.maxSingleInvestAmount != null" >
+        max_single_invest_amount = #{record.maxSingleInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.maxInvestAmount != null" >
+        max_invest_amount = #{record.maxInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.maxInvestTimes != null" >
+        max_invest_times = #{record.maxInvestTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.startTime != null" >
+        start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null" >
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.currTotalAmount != null" >
+        curr_total_amount = #{record.currTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.investNum != null" >
+        invest_num = #{record.investNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.sysReturnRate != null" >
+        sys_return_rate = #{record.sysReturnRate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.serialId != null" >
+        serial_id = #{record.serialId,jdbcType=INTEGER},
+      </if>
+      <if test="record.serialOrder != null" >
+        serial_order = #{record.serialOrder,jdbcType=INTEGER},
+      </if>
+      <if test="record.serialName != null" >
+        serial_name = #{record.serialName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.propertyType != null" >
+        property_type = #{record.propertyType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginInterestDays != null" >
+        begin_interest_days = #{record.beginInterestDays,jdbcType=VARCHAR},
+      </if>
+      <if test="record.returnType != null" >
+        return_type = #{record.returnType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interestDeal != null" >
+        interest_deal = #{record.interestDeal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isSupportTransfer != null" >
+        is_support_transfer = #{record.isSupportTransfer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.manageFee != null" >
+        manage_fee = #{record.manageFee,jdbcType=DOUBLE},
+      </if>
+      <if test="record.showTerminal != null" >
+        show_terminal = #{record.showTerminal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.propertyId != null" >
+        property_id = #{record.propertyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isSuggest != null" >
+        is_suggest = #{record.isSuggest,jdbcType=VARCHAR},
+      </if>
+      <if test="record.terminator != null" >
+        terminator = #{record.terminator,jdbcType=INTEGER},
+      </if>
+      <if test="record.finishTime != null" >
+        finish_time = #{record.finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.checker != null" >
+        checker = #{record.checker,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkTime != null" >
+        check_time = #{record.checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.distributor != null" >
+        distributor = #{record.distributor,jdbcType=INTEGER},
+      </if>
+      <if test="record.distributeTime != null" >
+        distribute_time = #{record.distributeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isSupportRedPacket != null" >
+        is_support_red_packet = #{record.isSupportRedPacket,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isSupportIncrInterest != null" >
+        is_support_incr_interest = #{record.isSupportIncrInterest,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_product
+    set id = #{record.id,jdbcType=INTEGER},
+    name = #{record.name,jdbcType=VARCHAR},
+    type = #{record.type,jdbcType=VARCHAR},
+    activity_type = #{record.activityType,jdbcType=VARCHAR},
+    code = #{record.code,jdbcType=VARCHAR},
+    interest_type = #{record.interestType,jdbcType=INTEGER},
+    base_rate = #{record.baseRate,jdbcType=DOUBLE},
+    max_rate = #{record.maxRate,jdbcType=DOUBLE},
+    term = #{record.term,jdbcType=INTEGER},
+    max_total_amount = #{record.maxTotalAmount,jdbcType=DOUBLE},
+    min_invest_amount = #{record.minInvestAmount,jdbcType=DOUBLE},
+    max_single_invest_amount = #{record.maxSingleInvestAmount,jdbcType=DOUBLE},
+    max_invest_amount = #{record.maxInvestAmount,jdbcType=DOUBLE},
+    max_invest_times = #{record.maxInvestTimes,jdbcType=INTEGER},
+    start_time = #{record.startTime,jdbcType=TIMESTAMP},
+    end_time = #{record.endTime,jdbcType=TIMESTAMP},
+    curr_total_amount = #{record.currTotalAmount,jdbcType=DOUBLE},
+    status = #{record.status,jdbcType=INTEGER},
+    note = #{record.note,jdbcType=VARCHAR},
+    invest_num = #{record.investNum,jdbcType=INTEGER},
+    sys_return_rate = #{record.sysReturnRate,jdbcType=DOUBLE},
+    serial_id = #{record.serialId,jdbcType=INTEGER},
+    serial_order = #{record.serialOrder,jdbcType=INTEGER},
+    serial_name = #{record.serialName,jdbcType=VARCHAR},
+    property_type = #{record.propertyType,jdbcType=VARCHAR},
+    begin_interest_days = #{record.beginInterestDays,jdbcType=VARCHAR},
+    return_type = #{record.returnType,jdbcType=VARCHAR},
+    interest_deal = #{record.interestDeal,jdbcType=VARCHAR},
+    is_support_transfer = #{record.isSupportTransfer,jdbcType=VARCHAR},
+    manage_fee = #{record.manageFee,jdbcType=DOUBLE},
+    show_terminal = #{record.showTerminal,jdbcType=VARCHAR},
+    property_id = #{record.propertyId,jdbcType=INTEGER},
+    is_suggest = #{record.isSuggest,jdbcType=VARCHAR},
+    terminator = #{record.terminator,jdbcType=INTEGER},
+    finish_time = #{record.finishTime,jdbcType=TIMESTAMP},
+    checker = #{record.checker,jdbcType=INTEGER},
+    check_time = #{record.checkTime,jdbcType=TIMESTAMP},
+    distributor = #{record.distributor,jdbcType=INTEGER},
+    distribute_time = #{record.distributeTime,jdbcType=TIMESTAMP},
+    is_support_red_packet = #{record.isSupportRedPacket,jdbcType=VARCHAR},
+    create_time = #{record.createTime,jdbcType=TIMESTAMP},
+    update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+    is_support_incr_interest = #{record.isSupportIncrInterest,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsProduct" >
+    update bs_product
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="activityType != null" >
+        activity_type = #{activityType,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="interestType != null" >
+        interest_type = #{interestType,jdbcType=INTEGER},
+      </if>
+      <if test="baseRate != null" >
+        base_rate = #{baseRate,jdbcType=DOUBLE},
+      </if>
+      <if test="maxRate != null" >
+        max_rate = #{maxRate,jdbcType=DOUBLE},
+      </if>
+      <if test="term != null" >
+        term = #{term,jdbcType=INTEGER},
+      </if>
+      <if test="maxTotalAmount != null" >
+        max_total_amount = #{maxTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="minInvestAmount != null" >
+        min_invest_amount = #{minInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="maxSingleInvestAmount != null" >
+        max_single_invest_amount = #{maxSingleInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="maxInvestAmount != null" >
+        max_invest_amount = #{maxInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="maxInvestTimes != null" >
+        max_invest_times = #{maxInvestTimes,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currTotalAmount != null" >
+        curr_total_amount = #{currTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="investNum != null" >
+        invest_num = #{investNum,jdbcType=INTEGER},
+      </if>
+      <if test="sysReturnRate != null" >
+        sys_return_rate = #{sysReturnRate,jdbcType=DOUBLE},
+      </if>
+      <if test="serialId != null" >
+        serial_id = #{serialId,jdbcType=INTEGER},
+      </if>
+      <if test="serialOrder != null" >
+        serial_order = #{serialOrder,jdbcType=INTEGER},
+      </if>
+      <if test="serialName != null" >
+        serial_name = #{serialName,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyType != null" >
+        property_type = #{propertyType,jdbcType=VARCHAR},
+      </if>
+      <if test="beginInterestDays != null" >
+        begin_interest_days = #{beginInterestDays,jdbcType=VARCHAR},
+      </if>
+      <if test="returnType != null" >
+        return_type = #{returnType,jdbcType=VARCHAR},
+      </if>
+      <if test="interestDeal != null" >
+        interest_deal = #{interestDeal,jdbcType=VARCHAR},
+      </if>
+      <if test="isSupportTransfer != null" >
+        is_support_transfer = #{isSupportTransfer,jdbcType=VARCHAR},
+      </if>
+      <if test="manageFee != null" >
+        manage_fee = #{manageFee,jdbcType=DOUBLE},
+      </if>
+      <if test="showTerminal != null" >
+        show_terminal = #{showTerminal,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyId != null" >
+        property_id = #{propertyId,jdbcType=INTEGER},
+      </if>
+      <if test="isSuggest != null" >
+        is_suggest = #{isSuggest,jdbcType=VARCHAR},
+      </if>
+      <if test="terminator != null" >
+        terminator = #{terminator,jdbcType=INTEGER},
+      </if>
+      <if test="finishTime != null" >
+        finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checker != null" >
+        checker = #{checker,jdbcType=INTEGER},
+      </if>
+      <if test="checkTime != null" >
+        check_time = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="distributor != null" >
+        distributor = #{distributor,jdbcType=INTEGER},
+      </if>
+      <if test="distributeTime != null" >
+        distribute_time = #{distributeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isSupportRedPacket != null" >
+        is_support_red_packet = #{isSupportRedPacket,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isSupportIncrInterest != null" >
+        is_support_incr_interest = #{isSupportIncrInterest,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsProduct" >
+    update bs_product
+    set name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      activity_type = #{activityType,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      interest_type = #{interestType,jdbcType=INTEGER},
+      base_rate = #{baseRate,jdbcType=DOUBLE},
+      max_rate = #{maxRate,jdbcType=DOUBLE},
+      term = #{term,jdbcType=INTEGER},
+      max_total_amount = #{maxTotalAmount,jdbcType=DOUBLE},
+      min_invest_amount = #{minInvestAmount,jdbcType=DOUBLE},
+      max_single_invest_amount = #{maxSingleInvestAmount,jdbcType=DOUBLE},
+      max_invest_amount = #{maxInvestAmount,jdbcType=DOUBLE},
+      max_invest_times = #{maxInvestTimes,jdbcType=INTEGER},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      curr_total_amount = #{currTotalAmount,jdbcType=DOUBLE},
+      status = #{status,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR},
+      invest_num = #{investNum,jdbcType=INTEGER},
+      sys_return_rate = #{sysReturnRate,jdbcType=DOUBLE},
+      serial_id = #{serialId,jdbcType=INTEGER},
+      serial_order = #{serialOrder,jdbcType=INTEGER},
+      serial_name = #{serialName,jdbcType=VARCHAR},
+      property_type = #{propertyType,jdbcType=VARCHAR},
+      begin_interest_days = #{beginInterestDays,jdbcType=VARCHAR},
+      return_type = #{returnType,jdbcType=VARCHAR},
+      interest_deal = #{interestDeal,jdbcType=VARCHAR},
+      is_support_transfer = #{isSupportTransfer,jdbcType=VARCHAR},
+      manage_fee = #{manageFee,jdbcType=DOUBLE},
+      show_terminal = #{showTerminal,jdbcType=VARCHAR},
+      property_id = #{propertyId,jdbcType=INTEGER},
+      is_suggest = #{isSuggest,jdbcType=VARCHAR},
+      terminator = #{terminator,jdbcType=INTEGER},
+      finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      checker = #{checker,jdbcType=INTEGER},
+      check_time = #{checkTime,jdbcType=TIMESTAMP},
+      distributor = #{distributor,jdbcType=INTEGER},
+      distribute_time = #{distributeTime,jdbcType=TIMESTAMP},
+      is_support_red_packet = #{isSupportRedPacket,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_support_incr_interest = #{isSupportIncrInterest,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <resultMap id="selectGourpByTypeResultMap" type="java.util.HashMap">
+		<result column="name" 				property="name" 			jdbcType="VARCHAR" />
+		<result column="type" 				property="type" 			jdbcType="VARCHAR" />
+		<result column="invest_num" 		property="investNum" 		jdbcType="DOUBLE" javaType="INTEGER"/>
+		<result column="max_rate" 			property="maxRate" 			jdbcType="DOUBLE" />
+		<result column="base_rate" 			property="baseRate"			jdbcType="DOUBLE" />
+		<result column="curr_total_amount" 	property="currTotalAmount"	jdbcType="DOUBLE" />
+	</resultMap>
+  <select id="selectProductGroupByType" resultType="com.pinting.business.model.vo.BsProductSummaryVO">
+  		select type typeName,max(max_rate) maxRate,sum(invest_num) investNum,sum(curr_total_amount) currTotalAmount
+		from bs_product	group by type
+  
+  </select>
+  
+  <select id="selectProductGroupByCode" resultType="com.pinting.business.model.vo.BsProductSummaryVO">
+  		select id,type typeName,max_rate maxRate,sum(invest_num) investNum,sum(curr_total_amount) currTotalAmount,code, term,max_invest_amount maxInvestAmount
+		from bs_product	group by code
+		order by term, maxRate desc
+  </select>
+  
+  <select id="selectProByUserType" resultMap="BaseResultMap">
+	SELECT
+		p.*,u.id auth_id
+	FROM
+		bs_product p,
+		bs_user_type_auth u
+	WHERE
+		u.user_type = #{userType}
+	AND u.product_id = p.id
+	AND p.status = 6
+	<choose>
+		<when test="userType == 'NORMAL'">
+			ORDER BY u.id ASC
+			LIMIT 4
+		</when>
+		<otherwise>
+			ORDER BY u.id ASC
+			LIMIT 4
+		</otherwise>
+	</choose>
+  </select>
+  
+  <select id="selectProByUser" resultMap="BaseResultMap">
+	SELECT
+		p.*
+	FROM
+		bs_product p,
+		bs_user_type_auth a,
+		bs_user u
+	WHERE
+		u.id = #{userId}
+	AND	a.user_type = u.user_type
+	AND a.product_id = p.id
+	AND p.id = #{id}
+	AND p.status = 6
+  </select>
+  <select id="selectQianBaoProductList" resultMap="BaseResultMap">
+	SELECT * FROM bs_product p WHERE p.id BETWEEN 41 AND 48 ORDER BY p.name asc, p.base_rate asc
+  </select>
+   <select id="selectProductRateList" resultMap="BaseResultMap">
+	SELECT * FROM bs_product p GROUP  BY p.base_rate
+  </select>
+  
+  <select id="selectMProductVOsByPage" resultMap="MProductVOMap" parameterType="com.pinting.business.model.vo.MProductVO">
+  	select p.id,p.name,p.max_total_amount,p.curr_total_amount,p.base_rate,p.return_type,p.start_time,p.end_time,p.status,
+  	p.distribute_time,p.is_suggest,p.show_terminal,p.update_time,ps.serial_name as serialName,p.activity_type,p.min_invest_amount,
+  	case when ISNULL(p.checker) then '' else (select m.name  from m_user m where m.id = p.checker) end  checkerName,
+  	case when ISNULL(p.distributor) then '' else (select m.name  from m_user m where m.id = p.distributor) end  distributorName,
+  	case when p.term>0 AND p.term=12  then '365天' when  0>p.term then CONCAT(p.term*-1,'天') else CONCAT(p.term*30,'天') end as termStr
+  	from bs_product p left join bs_product_serial ps on ps.id = p.serial_id
+  	where 1=1
+  	<if test="sName != null and sName !=''">
+  		and p.name like concat(concat('%', #{sName}),'%')
+  	</if>
+  	<if test="sSerialId != null and sSerialId !=''">
+  		<if test="sSerialId != -1">and p.serial_id = #{sSerialId}</if>
+  		<if test="sSerialId == -1">and p.serial_id is null</if>
+  	</if>
+  	<if test="sDistributeTime != null and sDistributeTime !=''">
+  		and p.distribute_time &gt;= #{sDistributeTime}
+  	</if>
+  	<if test="eDistributeTime != null and eDistributeTime !=''">
+  		and p.distribute_time &lt;= DATE_FORMAT(#{eDistributeTime},'%Y-%m-%d 23:59:59')
+  	</if>
+  	<if test="sStartTime != null and sStartTime !=''">
+  		and p.start_time &gt;= #{sStartTime}
+  	</if>
+  	<if test="eStartTime != null and eStartTime !=''">
+  		and p.start_time &lt;= DATE_FORMAT(#{eStartTime},'%Y-%m-%d 23:59:59')
+  	</if>
+  	<if test="sEndTime != null and sEndTime !=''">
+  		and p.end_time &gt;= #{sEndTime}
+  	</if>
+  	<if test="eEndTime != null and eEndTime !=''">
+  		and p.end_time &lt;= DATE_FORMAT(#{eEndTime},'%Y-%m-%d 23:59:59')
+  	</if>
+  	<if test="sTerm != null and sTerm !=''">
+  		and p.term = #{sTerm}
+  	</if>
+  	<if test="sBaseRate != null and sBaseRate !=''">
+  		and p.base_rate = #{sBaseRate}
+  	</if>
+  	<if test="sStatus != null and sStatus !=''">
+  		and p.status = #{sStatus}
+  	</if>
+  	<if test="queryType != null and queryType =='PLAN_CHECK'">
+  		and p.status != 1
+  	</if>
+  	<if test="sIsSuggest != null and sIsSuggest !=''">
+  		and p.is_suggest = #{sIsSuggest}
+  	</if>
+  	<if test="showTerminalList != null">
+  		and 
+  		<foreach collection="showTerminalList" item="terminal" open="(" close=")" separator="or">
+  			LOCATE(concat(',',concat(#{terminal},',')),concat(',',concat(p.show_terminal,','))) > 0
+  		</foreach>
+  	</if>
+  	order by 
+   	<if test="orderDirection!=null and orderDirection != ''  and orderField != ''  and orderField!=null ">   
+   		${orderField}  ${orderDirection},
+   	</if>
+   	   p.status asc,p.update_time desc
+   	<include refid="sql-global.pagination"/>
+  </select>
+  
+  <select id="selectMProductVOsCount" resultType="java.lang.Integer" parameterType="com.pinting.business.model.vo.MProductVO">
+  	select count(p.id)
+  	from bs_product p left join bs_product_serial ps on ps.id = p.serial_id
+  	where 1=1
+  	<if test="sName != null and sName !=''">
+  		and p.name like concat(concat('%', #{sName}),'%')
+  	</if>
+  	<if test="sSerialId != null and sSerialId !=''">
+  		<if test="sSerialId != -1">and p.serial_id = #{sSerialId}</if>
+  		<if test="sSerialId == -1">and p.serial_id is null</if>
+  	</if>
+  	<if test="sDistributeTime != null and sDistributeTime !=''">
+  		and p.distribute_time &gt;= #{sDistributeTime}
+  	</if>
+  	<if test="eDistributeTime != null and eDistributeTime !=''">
+  		and p.distribute_time &lt;= DATE_FORMAT(#{eDistributeTime},'%Y-%m-%d 23:59:59')
+  	</if>
+  	<if test="sStartTime != null and sStartTime !=''">
+  		and p.start_time &gt;= #{sStartTime}
+  	</if>
+  	<if test="eStartTime != null and eStartTime !=''">
+  		and p.start_time &lt;= DATE_FORMAT(#{eStartTime},'%Y-%m-%d 23:59:59')
+  	</if>
+  	<if test="sEndTime != null and sEndTime !=''">
+  		and p.end_time &gt;= #{sEndTime}
+  	</if>
+  	<if test="eEndTime != null and eEndTime !=''">
+  		and p.end_time &lt;= DATE_FORMAT(#{eEndTime},'%Y-%m-%d 23:59:59')
+  	</if>
+  	<if test="sTerm != null and sTerm !=''">
+  		and p.term = #{sTerm}
+  	</if>
+  	<if test="sBaseRate != null and sBaseRate !=''">
+  		and p.base_rate = #{sBaseRate}
+  	</if>
+  	<if test="sStatus != null and sStatus !=''">
+  		and p.status = #{sStatus}
+  	</if>
+  	<if test="queryType != null and queryType =='PLAN_CHECK'">
+  		and p.status != 1
+  	</if>
+  	<if test="sIsSuggest != null and sIsSuggest !=''">
+  		and p.is_suggest = #{sIsSuggest}
+  	</if>
+  	<if test="showTerminalList != null">
+  		and 
+  		<foreach collection="showTerminalList" item="terminal" open="(" close=")" separator="or">
+  			LOCATE(concat(',',concat(#{terminal},',')),concat(',',concat(p.show_terminal,','))) > 0
+  		</foreach>
+  	</if>
+  	
+  </select>
+  
+  <resultMap id="ProductReleaseInfoResultMap" type="com.pinting.business.model.vo.ProductReleaseInfoVO" >
+  	<result column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="serial_name" property="serialName" jdbcType="VARCHAR" />
+    <result column="max_total_amount" property="maxTotalAmount" jdbcType="DOUBLE" />
+    <result column="curr_total_amount" property="currTotalAmount" jdbcType="DOUBLE" />
+    <result column="base_rate" property="baseRate" jdbcType="DOUBLE" />
+    <result column="term" property="term" jdbcType="INTEGER" />
+    <result column="return_type" property="returnType" jdbcType="VARCHAR" />
+    <result column="interest_type" property="interestType" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="distribute_time" property="distributeTime" jdbcType="TIMESTAMP" />
+    <result column="is_suggest" property="isSuggest" jdbcType="VARCHAR" />
+    <result column="distribute_user_name" property="distributeUserName" jdbcType="VARCHAR" />
+    <result column="check_user_name" property="checkUserName" jdbcType="VARCHAR" />
+    <result column="show_terminal" property="showTerminal" jdbcType="VARCHAR" />
+    <result column="p_activity_type" property="pActivityType" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="begin_interest_days" property="beginInterestDays" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectReleaseProductGrid" resultMap="ProductReleaseInfoResultMap" parameterType="com.pinting.business.model.vo.ProductReleaseInfoVO">
+	SELECT a.show_terminal, a.id, a.`name`, b.serial_name, a.max_total_amount, a.curr_total_amount, a.base_rate, a.term,
+		a.return_type, a.interest_type, a.start_time, a.end_time, a.`status`, a.distribute_time, a.update_time,
+		a.is_suggest, a.checker, a.distributor, a.activity_type as p_activity_type, c.name AS check_user_name, d.name AS distribute_user_name,
+        a.begin_interest_days, t1.content AS remindTagContent, t2.content AS interestRatesTagContent
+	FROM bs_product a 
+	LEFT JOIN bs_product_serial b ON a.serial_id = b.id
+	LEFT JOIN m_user c ON a.checker = c.id
+	LEFT JOIN m_user d ON a.distributor = d.id
+    LEFT JOIN bs_product_tag t1 ON a.id = t1.product_id AND t1.product_tag_type = 'REMIND_TAG'
+    LEFT JOIN bs_product_tag t2 ON a.id = t2.product_id AND t2.product_tag_type = 'INTEREST_RATES_TAG'
+	WHERE a.`status` != 1
+	<if test="record.name != null and record.name != ''">
+		AND a.name like concat(concat('%', #{record.name}),'%')
+	</if>
+	<if test="record.serialId != null">
+		<if test="record.serialId == -1"><!-- 非系列计划 -->
+			AND a.serial_id IS NULL
+		</if>
+		<if test="record.serialId != -1"><!-- 非系列计划 -->
+			AND a.serial_id = #{record.serialId}
+		</if>
+	</if>
+	<if test="record.distributeStartTime != null and record.distributeStartTime != ''">
+		AND DATE(a.distribute_time) >= #{record.distributeStartTime}
+	</if>
+	<if test="record.distributeEndTime != null and record.distributeEndTime != ''">
+		AND DATE(a.distribute_time) &lt;= #{record.distributeEndTime}
+	</if>
+	<if test="record.startTimeBegin != null and record.startTimeBegin != ''">
+		AND a.start_time >= #{record.startTimeBegin}
+	</if>
+	<if test="record.startTimeEnd != null and record.startTimeEnd != ''">
+		AND a.start_time &lt;= #{record.startTimeEnd}
+	</if>
+	<if test="record.endTimeBegin != null and record.endTimeBegin != ''">
+		AND a.end_time >= #{record.endTimeBegin}
+	</if>
+	<if test="record.endTimeEnd != null and record.endTimeEnd != ''">
+		AND a.end_time &lt;= #{record.endTimeEnd}
+	</if>
+	<if test="record.term != null and record.term != ''">
+		AND a.term = #{record.term}
+	</if>
+	<if test="record.baseRate != null and record.baseRate != ''">
+		AND a.base_rate = #{record.baseRate}
+	</if>
+	<if test="record.status != null and record.status != ''">
+		AND a.status = #{record.status}
+	</if>
+	<if test="record.isSuggest != null and record.isSuggest != ''">
+		AND a.is_suggest = #{record.isSuggest}
+	</if>
+	<if test="record.showTerminalList != null">
+		AND 
+		<foreach collection="record.showTerminalList" item="terminal" open="(" close=")" separator="or">
+			LOCATE(concat(',',concat(#{terminal},',')),concat(',',concat(a.show_terminal,','))) > 0
+		</foreach>
+	</if> 
+	ORDER BY a.status ASC, a.update_time DESC
+	LIMIT #{record.start}, #{record.numPerPage}
+  </select>
+  <select id="countReleaseProductGrid" resultType="java.lang.Integer" parameterType="com.pinting.business.model.vo.ProductReleaseInfoVO">
+	SELECT count(a.id)
+	FROM bs_product a 
+	WHERE a.`status` != 1
+	<if test="record.name != null and record.name != ''">
+		AND a.name like concat(concat('%', #{record.name}),'%')
+	</if>
+	<if test="record.serialId != null">
+		<if test="record.serialId == -1"><!-- 非系列计划 -->
+			AND a.serial_id IS NULL
+		</if>
+		<if test="record.serialId != -1"><!-- 非系列计划 -->
+			AND a.serial_id = #{record.serialId}
+		</if>
+	</if>
+	<if test="record.distributeStartTime != null and record.distributeStartTime != ''">
+		AND DATE(a.distribute_time) >= #{record.distributeStartTime}
+	</if>
+	<if test="record.distributeEndTime != null and record.distributeEndTime != ''">
+		AND DATE(a.distribute_time) &lt;= #{record.distributeEndTime}
+	</if>
+	<if test="record.startTimeBegin != null and record.startTimeBegin != ''">
+		AND a.start_time >= #{record.startTimeBegin}
+	</if>
+	<if test="record.startTimeEnd != null and record.startTimeEnd != ''">
+		AND a.start_time &lt;= #{record.startTimeEnd}
+	</if>
+	<if test="record.endTimeBegin != null and record.endTimeBegin != ''">
+		AND a.end_time >= #{record.endTimeBegin}
+	</if>
+	<if test="record.endTimeEnd != null and record.endTimeEnd != ''">
+		AND a.end_time &lt;= #{record.endTimeEnd}
+	</if>
+	<if test="record.term != null and record.term != ''">
+		AND a.term = #{record.term}
+	</if>
+	<if test="record.baseRate != null and record.baseRate != ''">
+		AND a.base_rate = #{record.baseRate}
+	</if>
+	<if test="record.status != null and record.status != ''">
+		AND a.status = #{record.status}
+	</if>
+	<if test="record.isSuggest != null and record.isSuggest != ''">
+		AND a.is_suggest = #{record.isSuggest}
+	</if>
+	<if test="record.showTerminalList != null">
+		AND 
+		<foreach collection="record.showTerminalList" item="terminal" open="(" close=")" separator="or">
+			LOCATE(concat(',',concat(#{terminal},',')),concat(',',concat(a.show_terminal,','))) > 0
+		</foreach>
+	</if> 
+  </select>
+  
+  <!-- 旧的H5||APP首页推荐理财计划 -->
+  <select id="selectProByRecommend" resultMap="BaseResultMap">
+	SELECT
+		p.*
+	FROM
+		bs_product p LEFT JOIN (SELECT id,concat(show_terminal,',') show_terminal_n FROM bs_product) c ON p.id = c.id,
+		bs_user_type_auth u
+	WHERE
+		u.user_type = #{userType}
+	AND u.product_id = p.id
+	AND p.activity_type = 'NORMAL'
+	AND p.status = 6
+	AND p.is_suggest = #{isSuggest}
+	AND c.show_terminal_n like concat(concat('%', #{terminal}),',%')
+	ORDER BY p.update_time desc
+	LIMIT 3
+  </select>
+  
+  <!-- 新的H5||APP首页推荐理财计划 -->
+  <select id="selectNewBuyerProByRecommend" resultMap="ProductDetailVOMap">
+	SELECT aa.* FROM ((
+		SELECT p.*,pr.property_symbol
+		FROM bs_product p LEFT JOIN (
+			SELECT id,concat(show_terminal,',') show_terminal_n FROM bs_product
+		) c ON p.id = c.id
+		LEFT JOIN bs_property_info pr ON p.property_id = pr.id, bs_user_type_auth u
+		WHERE 
+			u.user_type = #{userType} AND u.product_id = p.id AND p.status = 6
+			AND c.show_terminal_n LIKE concat(concat('%', #{terminal}),',%')
+			AND p.activity_type = 'NEW_BUYER'
+		ORDER BY p.is_suggest DESC, p.update_time DESC
+		LIMIT 1
+	) UNION (
+		SELECT
+			p.*,pr.property_symbol
+		FROM
+			bs_product p 
+			LEFT JOIN (SELECT id,concat(show_terminal,',') show_terminal_n FROM bs_product) c ON p.id = c.id
+			LEFT JOIN bs_property_info pr ON p.property_id = pr.id,
+			bs_user_type_auth u
+		WHERE
+			u.user_type = #{userType}
+		AND u.product_id = p.id
+		AND p.status = 6
+		AND p.is_suggest = #{isSuggest}
+		AND c.show_terminal_n LIKE concat(concat('%', #{terminal}),',%')
+		AND p.activity_type = 'NORMAL'
+		ORDER BY p.update_time DESC
+		LIMIT 3
+	)) AS aa
+  </select>
+  
+  <select id="selectProductRateIndex" resultType="java.util.HashMap">
+	SELECT
+		min(p.base_rate) minrate, max(p.base_rate) maxrate
+	FROM
+		bs_product p LEFT JOIN (SELECT id,concat(show_terminal,',') show_terminal_n FROM bs_product) c ON p.id = c.id,
+		bs_user_type_auth u
+	WHERE
+		u.user_type = #{userType}
+	AND u.product_id = p.id
+	<if test="activityType != null">
+		AND p.activity_type = #{activityType}
+	</if>
+	AND p.status in (5,6)
+	AND c.show_terminal_n like concat(concat('%', #{terminal}),',%')
+  </select>
+  
+  <select id="selectAllProductTerm" resultMap="BaseResultMap">
+  	select DISTINCT(term) from bs_product order by term asc
+  </select>
+  
+  <select id="selectAllProductBaseRate" resultMap="BaseResultMap">
+  	select DISTINCT(base_rate) from bs_product order by base_rate asc
+  </select>
+  
+  <select id="selectProductDetailById" resultMap="ProductDetailVOMap" parameterType="Map">
+		SELECT 
+			a.id,a.`name`,a.max_total_amount,a.property_type,
+			a.base_rate,a.term,a.begin_interest_days,a.start_time,
+			a.end_time,a.return_type,a.interest_deal,a.manage_fee,
+			a.show_terminal,b.*,a.min_invest_amount,a.note,a.activity_type, a.max_single_invest_amount, a.is_support_incr_interest, a.is_support_red_packet
+		FROM `bs_product` a
+		LEFT JOIN  bs_property_info b ON a.property_id = b.id
+		where a.id =  #{id}
+  </select>
+  
+  <select id="selectProductWithInformList" resultType="com.pinting.business.model.vo.BsProductUserVO" >
+  	select u.mobile userMobile, i.user_id userId, i.id pInformId, p.* from bs_product p,bs_product_inform i,bs_user u where 
+	p.id=i.product_id and u.id=i.user_id and p.status = 5 
+	and p.start_time &lt;= DATE_ADD(NOW(),INTERVAL #{minute} MINUTE) order by p.start_time
+  </select>
+
+  <select id="selectAllProduct" resultMap="BaseResultMap">
+  	(
+		SELECT t1.* FROM (
+			SELECT
+				p.*
+			FROM
+				bs_product p LEFT JOIN (SELECT id,concat(show_terminal,',') show_terminal_n FROM bs_product) c ON p.id = c.id,
+				bs_user_type_auth u
+			WHERE
+				u.user_type = #{userType}
+			AND u.product_id = p.id
+			<if test="activityType != null">
+				AND p.activity_type = #{activityType}
+			</if>
+			AND p.status IN (5, 6)
+			AND c.show_terminal_n like concat(concat('%', #{terminal}),',%')
+			ORDER BY
+				p.status DESC,
+				p.is_suggest DESC,
+				p.update_time DESC
+		) t1
+	)
+	UNION
+	(
+	SELECT t2.* FROM (
+		SELECT
+			pr.*
+		FROM
+			bs_product pr LEFT JOIN (SELECT id,concat(show_terminal,',') show_terminal_n FROM bs_product) cr ON pr.id = cr.id
+		WHERE
+			pr.status = 7
+		<if test="activityType != null">
+			AND pr.activity_type = #{activityType}
+		</if>
+		AND cr.show_terminal_n like concat(concat('%', #{terminal}),',%')
+		ORDER BY
+			pr.update_time DESC
+		) t2
+	)
+	LIMIT #{start},#{offset}
+  </select>
+  
+  <select id="selectAllProductCount" resultType="java.lang.Integer">
+  SELECT count(*) FROM
+  	(
+		(
+			SELECT
+				p.*
+			FROM
+				bs_product p LEFT JOIN (SELECT id,concat(show_terminal,',') show_terminal_n FROM bs_product) c ON p.id = c.id,
+				bs_user_type_auth u
+			WHERE
+				u.user_type = #{userType}
+			AND u.product_id = p.id
+			<if test="activityType != null">
+				AND p.activity_type = #{activityType}
+			</if>
+			AND p.status IN (5, 6)
+			AND c.show_terminal_n like concat(concat('%', #{terminal}),',%')
+		)
+		UNION
+		(
+			SELECT
+				pr.*
+			FROM
+				bs_product pr LEFT JOIN (SELECT id,concat(show_terminal,',') show_terminal_n FROM bs_product) cr ON pr.id = cr.id
+			WHERE
+				pr.status = 7
+			<if test="activityType != null">
+				AND pr.activity_type = #{activityType}
+			</if>
+			AND cr.show_terminal_n like concat(concat('%', #{terminal}),',%')
+		)
+	) t
+  </select>
+
+	<select id="selectProductDetailByProductId" resultMap="ProductDetailVOMap" parameterType="Map">
+		SELECT 
+			a.id,a.`name`,a.base_rate,a.min_invest_amount,
+			a.status,a.max_single_invest_amount,a.activity_type,
+			CASE WHEN a.term = 12 THEN 365 when a.term = -7 then 7
+			ELSE a.term*30 END term,a.term term_month,a.curr_total_amount,
+			a.max_total_amount,a.max_total_amount - a.curr_total_amount surplus_amount,
+			a.manage_fee,a.property_type,a.is_support_transfer,a.begin_interest_days,
+			a.return_type,a.interest_type,a.start_time,a.end_time,
+			a.note,a.finish_time,
+			b.coop_protocol_pics,
+			b.property_summary,b.return_source,b.fund_security,b.orgnize_check,
+			b.rating_grade,b.loan_protocol_pics,b.orgnize_check_pics,b.rating_grade_pics,
+			b.property_symbol
+		FROM `bs_product` a
+		LEFT JOIN  bs_property_info b ON a.property_id = b.id
+		where a.id =  #{productId}
+  </select>
+  
+  	<select id="selectInvestRecordByProductId" resultMap="InvestRecordVOMap" parameterType="Map">
+		SELECT 
+		concat(SUBSTRING(c.user_name,1,1),"**") user_name,
+		CASE WHEN a.product_type = 'AUTH'
+        THEN a.open_balance
+        WHEN a.product_type in ('AUTH_YUN', 'AUTH_ZSD', 'AUTH_7','AUTH_FREE') THEN a.open_balance + IFNULL(red.open_balance, 0)
+        ELSE a.balance
+        END balance,
+		a.open_time
+		FROM 
+		bs_sub_account a LEFT JOIN bs_sub_account_pair p ON p.auth_account_id = a.id LEFT JOIN bs_sub_account red ON red.id = p.red_account_id
+		LEFT JOIN bs_account b ON a.account_id = b.id
+		LEFT JOIN bs_user c ON b.user_id = c.id
+		LEFT JOIN bs_bank_card d ON c.recent_bank_card_id = d.id
+		WHERE (a.product_type in ('REG', 'AUTH', 'AUTH_YUN', 'AUTH_ZSD', 'AUTH_7', 'AUTH_FREE'))  AND a.`status` IN (2,3,5,7)
+		AND a.product_id = #{productId}
+		ORDER BY a.open_time DESC
+		limit #{start},#{numPerPage}
+  </select>
+  
+   <select id="selectInvestRecordCountByProductId" resultType="java.lang.Integer"  parameterType="Map">
+		SELECT 
+		COUNT(a.id)
+		FROM 
+		bs_sub_account a 
+		LEFT JOIN bs_account b ON a.account_id = b.id
+		LEFT JOIN bs_user c ON b.user_id = c.id
+		LEFT JOIN bs_bank_card d ON c.recent_bank_card_id = d.id
+		WHERE (a.product_type in ('REG', 'AUTH', 'AUTH_YUN', 'AUTH_ZSD', 'AUTH_7', 'AUTH_FREE')) AND a.`status` IN (2,3,5,7)
+		AND a.product_id = #{productId}
+  </select>
+	
+  <select id="selectAverageInvestRate" resultType="java.lang.Double" parameterType="java.util.Map"  >
+			SELECT SUM(DISTINCT(a.base_rate))/COUNT(DISTINCT(a.base_rate)) FROM
+			bs_product a
+			LEFT JOIN (SELECT id,concat(show_terminal,',') show_terminal_n FROM bs_product) c ON a.id = c.id
+			WHERE a.`status` in (5,6) and a.activity_type = 'NORMAL'
+			<if test="terminal != null and terminal == '178'">
+				AND (c.show_terminal_n like '%H5_178,%' OR c.show_terminal_n like '%PC_178,%')
+			</if>
+			<if test="terminal != null and terminal == 'NORMAL'">
+				AND (c.show_terminal_n like '%APP,%' OR c.show_terminal_n like '%PC,%' OR c.show_terminal_n like '%H5,%')
+			</if>
+			
+
+  	</select>
+  	
+ 
+  <!-- 查询所有产品列表 -->
+  <select id="selectProductGrid" resultMap="ProductDetailVOMap" parameterType="Map">
+	  SELECT * FROM ((
+	  		<!-- 进行中、未开放 -->
+			SELECT * FROM (
+				SELECT a.* FROM bs_product a, bs_user_type_auth b WHERE FIND_IN_SET(#{terminal}, a.show_terminal)
+				AND b.user_type = #{userType} AND a.id = b.product_id AND a.`status` IN (6, 5) 
+				ORDER BY a.is_suggest DESC, a.`status` DESC, a.update_time DESC, a.id DESC
+			) AS aa
+		) UNION (
+			SELECT * FROM (
+		 		<!-- 已完成 -->
+				SELECT a2.* FROM bs_product a2,bs_user_type_auth b2 WHERE FIND_IN_SET(#{terminal}, a2.show_terminal)
+				AND b2.user_type = #{userType} AND a2.id = b2.product_id AND a2.`status` = 7 
+				ORDER BY a2.update_time DESC, a2.id DESC 
+			) AS cc 
+		)
+	) AS aaa
+	<where>
+	  	<if test="status != null">
+	  		<if test="status == -1">
+	  			AND aaa.status IN (5,6)
+	  		</if>
+	  		<if test="status != -1">
+	  			AND aaa.status = #{status}
+	  		</if>
+	  	</if>
+	  	<if test="term != null">
+	  		<if test="term == '0-60'">
+	  			AND aaa.term <![CDATA[<=2 ]]>
+	  		</if>
+	  		<if test="term == '61-200'">
+	  			AND aaa.term in (3,4,5,6)
+	  		</if>
+	  		<if test="term == '200_over'">
+	  			AND aaa.term in (7,8,9,10,11,12)
+	  		</if>
+	  	</if>
+	  	<if test="isSuggest != null">
+	  		AND aaa.is_suggest = #{isSuggest}
+	  	</if>
+	  	<if test="returnType != null">
+	  		AND aaa.return_type = #{returnType}
+	  	</if>
+        <if test="activityType == 'ACTIVITY'">
+          AND aaa.activity_type = #{activityType}
+        </if>
+	</where>
+	<if test="numPerPage != null">
+		LIMIT #{start}, #{numPerPage}
+	</if>
+  </select>
+  <!-- 统计所有产品列表 -->
+  <select id="countProductGrid" resultType="java.lang.Integer" parameterType="Map">
+  	SELECT COUNT(a.id)
+	FROM bs_product a, bs_user_type_auth b 
+	<where>
+		FIND_IN_SET(#{terminal}, a.show_terminal)
+		AND b.user_type = #{userType} AND a.id = b.product_id 
+	  	<if test="status != null">
+	  		<if test="status == -1">
+	  			AND a.status IN (5,6)
+	  		</if>
+	  		<if test="status != -1">
+	  			AND a.status = #{status}
+	  		</if>
+	  	</if>
+	  	<if test="status == null">
+	  		AND a.`status` IN (6, 5, 7)
+	  	</if>
+	  	<if test="term != null">
+	  		<if test="term == '0-60'">
+	  			AND a.term <![CDATA[<=2 ]]>
+	  		</if>
+	  		<if test="term == '61-200'">
+	  			AND a.term in (3,4,5,6)
+	  		</if>
+	  		<if test="term == '200_over'">
+	  			AND a.term in (7,8,9,10,11,12)
+	  		</if>
+	  	</if>
+	  	<if test="isSuggest != null">
+	  		AND a.is_suggest = #{isSuggest}
+	  	</if>
+	  	<if test="returnType != null">
+	  		AND a.return_type = #{returnType}
+	  	</if>
+	</where>
+  </select>
+  
+  <!-- 新手推荐产品 未完成的新手标，推荐，进行中在前，update倒序，只查询一条数据 -->
+  <select id="selectNewUserProduct" resultMap="BaseResultMap" parameterType="Map" >
+  	SELECT a.* FROM bs_product a, bs_user_type_auth u WHERE a.`status` IN (5,6)
+	AND FIND_IN_SET(#{showTerminal}, a.show_terminal) AND u.product_id = a.id AND a.activity_type = 'NEW_BUYER'
+	ORDER BY a.is_suggest DESC, a.`status` DESC, a.update_time DESC
+	LIMIT 1
+  </select>
+  
+  <!-- 查询所有的新手推荐产品 包括已完成的，update倒序，只查询一条数据 -->
+  <select id="selectOverNewUserProduct" resultMap="BaseResultMap" parameterType="Map" >
+  	SELECT a.* FROM bs_product a, bs_user_type_auth u WHERE a.`status` = 7
+	AND FIND_IN_SET(#{showTerminal}, a.show_terminal) AND u.product_id = a.id AND a.activity_type = 'NEW_BUYER'
+	ORDER BY a.is_suggest DESC, a.`status` DESC, a.update_time DESC
+	LIMIT 1
+  </select>
+  
+  <!-- 新手推荐产品 可投资的计划中，期限最短（先判断），利率最高的，开始时间最早的 -->
+  <select id="selectNoviceRecommendedProduct" resultMap="BaseResultMap" parameterType="Map" >
+	SELECT a.* FROM bs_product a, bs_user_type_auth u WHERE a.`status` = 6
+	AND FIND_IN_SET(#{showTerminal}, a.show_terminal) AND u.product_id = a.id
+	ORDER BY a.term ASC, a.base_rate DESC, a.start_time ASC
+	LIMIT 1
+  </select>
+  <!-- 新手推荐产品 如果没有可投资计划，则显示1个月产品中结束时间最晚的 -->
+  <select id="selectOneMonthEndTimeLastestProduct" resultMap="BaseResultMap" parameterType="Map" >
+  	SELECT * FROM bs_product a, bs_user_type_auth u
+  	WHERE a.`status` IN (5,7) AND a.term = 1 AND u.product_id = a.id
+  	AND FIND_IN_SET(#{showTerminal}, a.show_terminal)
+	ORDER BY a.end_time DESC LIMIT 1
+  </select>
+  
+	
+  <select id="selectMProductVoById" resultMap="MProductVOMap" parameterType="java.lang.Integer">
+  	select p.id,p.name,p.max_total_amount,p.base_rate,p.property_type,p.begin_interest_days,p.start_time,p.end_time,p.status,
+  	p.return_type,p.interest_deal,p.manage_fee,p.show_terminal,p.min_invest_amount,p.note,
+  	b.coop_protocol_pics,b.property_summary,b.return_source,b.fund_security,b.orgnize_check,
+	b.rating_grade,b.loan_protocol_pics,b.orgnize_check_pics,b.rating_grade_pics,
+  	case when p.term>0 AND p.term=12 then '365天' when 0>p.term  then CONCAT(p.term*-1,'天') else CONCAT(p.term*30,'天') end as termStr,
+  	pi.property_name as propertyName
+  	from bs_product p left join bs_property_info pi on pi.id = p.property_id
+  	where p.id = #{id}
+  </select>
+  
+  <!--查询首页标的  -->
+    <select id="productPlanListIndex" resultMap="BaseResultMap" parameterType="Map">
+	SELECT * FROM (
+	(
+		SELECT * FROM (
+			SELECT a.*
+			FROM bs_product a, bs_user_type_auth b WHERE FIND_IN_SET('PC', a.show_terminal)
+			AND b.user_type = 'NORMAL' AND a.id = b.product_id AND a.`status` = 6
+			AND a.is_suggest = 'NO'
+			ORDER BY a.is_suggest DESC, a.start_time DESC
+			) AS aa
+		) UNION (
+			SELECT * FROM (
+				SELECT a1.*
+				FROM bs_product a1, bs_user_type_auth b1 WHERE FIND_IN_SET('PC', a1.show_terminal)
+				AND b1.user_type = 'NORMAL' AND a1.id = b1.product_id AND a1.`status` = 5
+				AND a1.is_suggest = 'NO'
+				ORDER BY a1.is_suggest DESC, a1.start_time ASC
+			) AS bb
+		)
+	) AS aaa
+	LIMIT 0, 3
+  </select>
+  
+  
+  <!--   
+	* 查询欧洲杯活动产品，只显示当天开始的产品
+	* @param showTerminal  展示端口
+    * @param type  类型（NORMAL：欧洲杯产品；NEW_USER：新用户产品）
+    * @param flag	标识，当天是否存在活动产品，为空，则是当天产品
+  -->
+  <select id="selectEcupProductGrid" resultMap="BaseResultMap" parameterType="Map" >
+  	SELECT a.* FROM bs_product a, bs_user_type_auth u 
+	WHERE a.`status` IN (5,6,7)
+	AND u.product_id = a.id AND a.activity_type = 'NORMAL'
+	<if test="showTerminal != null and showTerminal != ''">
+		AND FIND_IN_SET(#{showTerminal}, a.show_terminal) 
+	</if>
+	<if test="flag == null or flag == ''">
+		AND DATE(a.start_time) = DATE(NOW())
+	</if>
+	<if test="flag != null and flag != ''">
+		AND DATE(a.start_time) &lt; DATE(NOW())
+	</if>
+	<if test="type != null and type != ''">
+		<if test="type == 'NORMAL'">
+			AND a.`name` LIKE "%欧洲杯特享%"
+		</if>
+		<if test="type == 'NEW_USER'">
+			AND a.`name` LIKE "%欧洲杯新手专享%"
+		</if>
+	</if>
+	<if test="type == null or type == ''">
+		AND (a.`name` LIKE "%欧洲杯特享%" OR a.`name` LIKE "%欧洲杯新手专享%")
+	</if>
+	ORDER BY a.start_time DESC
+  </select>
+  
+  <select id="selectByIdLock" resultMap="BaseResultMap" parameterType="Map" >
+  	SELECT a.* FROM bs_product a where a.id = #{productId} for update
+  </select>
+  
+  
+  <select id="selectActivityProduct" resultMap="BaseResultMap" parameterType="Map" >
+  	SELECT a.* FROM bs_product a, bs_user_type_auth u WHERE a.`status` IN (5,6,7)
+	AND FIND_IN_SET(#{terminal}, a.show_terminal) AND u.product_id = a.id AND a.activity_type = #{activityType}
+	ORDER BY a.is_suggest DESC, field(a.`status`,'6','5','7'), a.update_time DESC
+	LIMIT 1
+  </select>
+  
+  
+  <select id="selectActivityAndNoviceProduct" resultMap="BaseResultMap" parameterType="Map" >
+  	(SELECT a.* FROM bs_product a, bs_user_type_auth u WHERE a.`status` IN (5,6)
+	AND FIND_IN_SET(#{terminal}, a.show_terminal) AND u.product_id = a.id AND a.activity_type = #{activityType}
+	ORDER BY a.is_suggest DESC, field(a.`status`,'6','5'), a.update_time DESC
+	LIMIT 1)
+	UNION
+	(SELECT a.* FROM bs_product a, bs_user_type_auth u WHERE a.`status` = 7
+	AND FIND_IN_SET(#{terminal}, a.show_terminal) AND u.product_id = a.id AND a.activity_type = #{activityType}
+	ORDER BY a.is_suggest DESC, field(a.`status`,'7'), a.update_time DESC
+	LIMIT 1) 
+	LIMIT 1
+  </select>
+  
+  <select id="selectProductList" resultMap="BaseResultMap">
+		SELECT
+			p.*
+		FROM
+			bs_product p, bs_user_type_auth u
+		WHERE
+		u.product_id = p.id
+		<if test="activityType != null and activityType != ''">
+			AND p.activity_type = #{activityType}
+		</if>
+		AND p.return_type = #{returnType}
+		AND p.status IN (5, 6)
+        AND FIND_IN_SET(#{terminal}, p.show_terminal)
+		ORDER BY p.is_suggest DESC, p.`status` DESC, p.update_time DESC, p.id DESC
+		LIMIT #{start},#{offset}
+  </select>
+  
+  <select id="selectProductListCount" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM
+			bs_product p, bs_user_type_auth u
+		WHERE
+		u.product_id = p.id
+		<if test="activityType != null and activityType != ''">
+			AND p.activity_type = #{activityType}
+		</if>
+		AND p.return_type = #{returnType}
+		AND p.status IN (5, 6)
+        AND FIND_IN_SET(#{terminal}, p.show_terminal)
+  </select>
+  
+  
+  
+    <select id="selectProductListStatusFinish30" resultMap="BaseResultMap">
+		SELECT
+			p.*
+		FROM bs_product p, bs_user_type_auth u
+		WHERE u.product_id = p.id
+		<if test="activityType != null and activityType != ''">
+			AND p.activity_type = #{activityType}
+		</if>
+		AND p.return_type = #{returnType}
+		AND p.status = 7
+        AND FIND_IN_SET(#{terminal}, p.show_terminal)
+		AND date(p.update_time) >= date_sub(curdate(), INTERVAL 30 DAY)
+		ORDER BY p.status DESC, p.is_suggest DESC, p.update_time DESC, p.id DESC
+		LIMIT #{start},#{offset}
+  </select>
+  
+  <select id="selectProductListStatusFinish30Count" resultType="java.lang.Integer">
+		SELECT
+			count(*)
+		FROM
+            bs_product p, bs_user_type_auth u
+		WHERE u.product_id = p.id
+		<if test="activityType != null and activityType != ''">
+			AND p.activity_type = #{activityType}
+		</if>
+		AND p.return_type = #{returnType}
+		AND p.status = 7
+        AND FIND_IN_SET(#{terminal}, p.show_terminal)
+        AND date(p.update_time) >= date_sub(curdate(), INTERVAL 30 DAY)
+  </select>
+
+  <!-- 查询累计投资额（平台自成立以来，用户累计成交的投资金额之和） -->
+  <select id="selectAccumulatedInvestment" resultType="java.lang.Double" >
+    SELECT
+      IFNULL((SUM(a.open_balance)), 0) total_invest
+    FROM
+    bs_sub_account a
+    WHERE
+    a.`status` NOT IN (1, 6)
+    AND a.product_type IN ('REG', 'AUTH', 'AUTH_YUN', 'AUTH_ZSD', 'RED', 'RED_ZSD', 'AUTH_7', 'RED_7', 'AUTH_FREE', 'RED_FREE')
+  </select>
+  
+  	<!-- 双旦活动的产品查询  -->
+	<select id="select00ActiveProduct" resultMap="BaseResultMap">
+		(
+			SELECT
+				p.*
+			FROM
+				bs_product p LEFT JOIN (SELECT id,concat(show_terminal,',') show_terminal_n FROM bs_product) c ON p.id = c.id,
+				bs_property_info pi
+			WHERE
+			p.activity_type = 'NORMAL'
+			AND p.status in (6,7)
+			AND c.show_terminal_n like concat(concat('%', #{terminal}),',%')
+			and p.start_time >=(select start_time from bs_activity where id = 4) 
+			and p.end_time &lt;=(select end_time from bs_activity where id = 4)
+			and p.term = 1 
+			and pi.id = p.property_id 
+			and (pi.property_symbol = '7_DAI' or pi.property_symbol = 'YUN_DAI')
+			ORDER BY p.`status`,finish_time desc
+			LIMIT 1
+		)
+		UNION ALL
+		(
+			SELECT
+				p.*
+			FROM
+				bs_product p LEFT JOIN (SELECT id,concat(show_terminal,',') show_terminal_n FROM bs_product) c ON p.id = c.id,
+				bs_property_info pi
+			WHERE
+			p.activity_type = 'NORMAL'
+			AND p.status in (6,7)
+			AND c.show_terminal_n like concat(concat('%', #{terminal}),',%')
+			and p.start_time >=(select start_time from bs_activity where id = 4) 
+			and p.end_time &lt;=(select end_time from bs_activity where id = 4)
+			and p.term = 3 
+			and pi.id = p.property_id 
+			and (pi.property_symbol = '7_DAI' or pi.property_symbol = 'YUN_DAI')
+			ORDER BY p.`status`,finish_time desc
+			LIMIT 1
+		)
+		UNION ALL
+		(
+			SELECT
+				p.*
+			FROM
+				bs_product p LEFT JOIN (SELECT id,concat(show_terminal,',') show_terminal_n FROM bs_product) c ON p.id = c.id,
+				bs_property_info pi
+			WHERE
+			p.activity_type = 'NORMAL'
+			AND p.status in (6,7)
+			AND c.show_terminal_n like concat(concat('%', #{terminal}),',%')
+			and p.start_time >=(select start_time from bs_activity where id = 4) 
+			and p.end_time &lt;=(select end_time from bs_activity where id = 4)
+			and p.term = 6 
+			and pi.id = p.property_id 
+			and (pi.property_symbol = '7_DAI' or pi.property_symbol = 'YUN_DAI')
+			ORDER BY p.`status`,finish_time desc
+			LIMIT 1
+		)
+		UNION ALL
+		(
+			SELECT
+				p.*
+			FROM
+				bs_product p LEFT JOIN (SELECT id,concat(show_terminal,',') show_terminal_n FROM bs_product) c ON p.id = c.id,
+				bs_property_info pi
+			WHERE
+			p.activity_type = 'NORMAL'
+			AND p.status in (6,7)
+			AND c.show_terminal_n like concat(concat('%', #{terminal}),',%')
+			and p.start_time >=(select start_time from bs_activity where id = 4) 
+			and p.end_time &lt;=(select end_time from bs_activity where id = 4)
+			and p.term = 12
+			and pi.id = p.property_id 
+			and (pi.property_symbol = '7_DAI' or pi.property_symbol = 'YUN_DAI')
+			ORDER BY p.`status`,finish_time desc
+			LIMIT 1
+		)
+  	</select>
+ 
+  <!-- 查询推荐产品列表，2个 -->
+  <select id="selectSuggestProductList" resultMap="BaseResultMap" parameterType="Map">
+  	SELECT * FROM ((
+	  		<!-- 进行中、未开放 -->
+			SELECT * FROM (
+				SELECT (
+                  SELECT COUNT(sub.id) FROM bs_sub_account sub
+                  WHERE (sub.product_type = 'REG' OR sub.product_type = 'AUTH') AND sub.`status` IN (2,3,5,7)
+                  AND sub.product_id = a.id
+                ) AS invest_count, a.*, c.property_symbol
+				FROM bs_product a, bs_user_type_auth b, bs_property_info c,
+				(select * from bs_activity where id = 19)d WHERE FIND_IN_SET(#{terminal}, a.show_terminal)
+				AND b.user_type = 'NORMAL' AND a.id = b.product_id AND a.`status` IN (6, 5) AND a.property_id = c.id
+				AND a.is_suggest = 'YES' and  a.start_time >= d.start_time
+				AND a.name like concat(concat('%', #{name}),'%')
+				ORDER BY a.`status` DESC, a.update_time DESC, a.id DESC
+			) AS aa
+		) UNION (
+			SELECT * FROM (
+		 		<!-- 已完成 -->
+				SELECT (
+                  SELECT COUNT(sub.id) FROM bs_sub_account sub
+                  WHERE (sub.product_type = 'REG' OR sub.product_type = 'AUTH') AND sub.`status` IN (2,3,5,7)
+                  AND sub.product_id = a2.id
+                ) AS invest_count, a2.*, c2.property_symbol
+				FROM bs_product a2, bs_user_type_auth b2, bs_property_info c2,
+				(select * from bs_activity where id = 19)d2 WHERE FIND_IN_SET(#{terminal}, a2.show_terminal)
+				AND b2.user_type = 'NORMAL' AND a2.id = b2.product_id AND a2.`status` = 7 AND a2.property_id = c2.id
+				AND a2.is_suggest = 'YES' and a2.start_time >= d2.start_time
+				AND a2.name like concat(concat('%', #{name}),'%')
+				ORDER BY a2.update_time DESC, a2.id DESC
+			) AS cc
+		)
+	) AS aaa limit 2
+  </select>
+
+  <!-- 钱报178APP 查询产品详情列表-->
+  <select id="select178ProductByPage" resultMap="ProductDetailVOMap" parameterType="Map">
+    SELECT
+    id,`name`,max_total_amount,
+    start_time,end_time, base_rate,
+    min_invest_amount, max_single_invest_amount,
+    term,status
+    FROM bs_product a
+    <where>
+      a.show_terminal like '%178%' AND a.`status` IN (5,6,7)
+      <if test="productId != null and productId != 0">
+        AND a.id = #{productId}
+      </if>
+      <if test="status != null and status != 0">
+        AND a.`status` = #{status}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND a.start_time >= #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND a.start_time &lt;= #{endTime}
+      </if>
+    </where>
+      ORDER BY a.start_time DESC
+      LIMIT #{start}, #{numPerPage}
+  </select>
+  
+  <resultMap id="PositionProductInfoMap" type="com.pinting.gateway.hessian.message.qb178.model.PositionProductInfo">
+	    <result column="product_code" property="product_code" jdbcType="VARCHAR" />
+	    <result column="product_name" property="product_name" jdbcType="VARCHAR" />
+	    <result column="total_prod_balance" property="total_prod_balance" jdbcType="BIGINT" />
+  </resultMap>
+  
+  <select id="selectProductInfoById" resultMap="PositionProductInfoMap" parameterType="Map"> 
+  	select IFNULL(sum(b.open_balance),0)*100 total_prod_balance ,
+  		d.id product_code,d.name product_name
+	from bs_user a,bs_sub_account b,bs_account c,bs_product d
+	where a.id = c.user_id and c.id = b.account_id and b.product_id = d.id
+		and a.agent_id =#{agentId} and b.product_id =#{productId}
+		and b.product_type in ('REG', 'AUTH_YUN','AUTH_ZSD') and b.`status` in (2,7)
+		<if test="createTimeBegin != null">
+			and b.open_time >= #{createTimeBegin}
+		</if>
+		<if test="createTimeEnd != null">
+			and b.open_time &lt;= #{createTimeEnd}
+		</if>;
+  </select>
+  
+  <select id="count178Products" resultType="java.lang.Integer" parameterType="Map">
+    SELECT
+    count(a.id)
+    FROM bs_product a
+    <where>
+      a.show_terminal like '%178%' AND a.`status` IN (5,6,7)
+      <if test="productId != null and productId != 0">
+        AND a.id = #{productId}
+      </if>
+      <if test="status != null and status != 0">
+        AND a.`status` = #{status}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND a.start_time >= #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND a.start_time &lt;= #{endTime}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectHomeProduct" resultMap="BaseResultMap" parameterType="Map">
+    select * from bs_product a where `status` in (5,6) and activity_type = #{activityType} and find_in_set(#{terminal}, a.show_terminal)
+    order by is_suggest desc, field(`status`, 6,5), distribute_time desc limit 1
+  </select>
+
+  <select id="selectHomeProduct2" resultMap="BaseResultMap" parameterType="Map">
+    select * from bs_product where `status` in (5,6,7) and find_in_set(#{terminal}, show_terminal)
+    <if test="activityType == 'NEW_BUYER'">
+      and activity_type != 'NEW_BUYER'
+    </if>
+    order by distribute_time desc limit 1
+  </select>
+
+  <select id="sumCurrTotalAmountAndInvestNum" resultMap="BaseResultMap" parameterType="Map">
+    select IFNULL(SUM(a.invest_num), 0) as invest_num, IFNULL(SUM(a.curr_total_amount), 0) as curr_total_amount from bs_product a
+  </select>
+
+  <update id="updateCurrTotalAmountAndInvestNumIncrement" parameterType="Map">
+    update bs_product
+    <set>
+      <if test="currTotalAmount != null">
+        curr_total_amount = curr_total_amount + #{currTotalAmount},
+      </if>
+      <if test="investNum != null">
+        invest_num = invest_num + #{investNum}
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <select id="selectByPrimaryKey4Lock" resultMap="BaseResultMap" parameterType="Map">
+    select * from bs_product where id = #{id} for update
+  </select>
+
+</mapper>

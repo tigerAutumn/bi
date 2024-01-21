@@ -1,0 +1,85 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/financial/sysBalanceDailyIndex.htm')" method="post" id="myform" class="pageForm required-validate">
+    	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+    	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+					   	截止日期： <input name="snapBeginTime"  type="text" id="snapBeginTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.snapBeginTime)" /> 到
+					   	<input name="snapEndTime"  type="text" id="snapEndTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.snapEndTime)" />
+	
+						<span style="margin-left:20px;">
+							<button  onclick="func()" type="button">查询</button>
+                        </span>
+					</td>
+				</tr>
+
+			</table>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+
+	<table class="table" width="1396" layoutH="128">
+		<thead>
+			<tr>
+                <th width="80">截止日期</th>
+				<th width="150">文件名</th>
+				<th width="120">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $balanceDailyList)
+			<tr target="sid_user" rel="1">
+				<td>$!date.formatYYYYMMDD($!grid.snapDate)</td>
+				<td>#if("$!grid.fileName" != "") $!grid.fileName#end</td>
+				<td><a href="$env.getWebURL('/financial/downloadSysBalanceDaily.htm?fid=')$!grid.id" target="_blank">
+				<img src="$env.getWebURL('/resources/dwz/external/dwz-ria/uploadify/download.png')" name="downloadImg" id="downloadImg" style="width:16px;"/>
+				</a></td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+function func(){
+	var snapBeginTime = $("#snapBeginTime").val();
+	var snapEndTime = $("#snapEndTime").val();
+
+	if(snapEndTime != "" && snapEndTime != ""){
+		var result = Date.parse(snapEndTime.replace(/-/g,"/"))- Date.parse(snapEndTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("截止日期不能在结束时间之后！！");
+			return false;
+		}
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/financial/sysBalanceDailyIndex.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+</script>

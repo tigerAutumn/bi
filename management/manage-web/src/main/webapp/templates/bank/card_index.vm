@@ -1,0 +1,150 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')"/>
+<form id="pagerForm" method="post" action="$env.getWebURL('/bank/card/index.htm')">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/bank/card/index.htm')" method="post">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						用户名：<input  id="cardOwner" type="text" name="cardOwner" value="$!cardOwner" size="15"/>
+						手机号码：<input  id="mobile" type="text" name="mobile" value="$!mobile" size="15"/>
+						银行预留手机号：<input  id="obligateMobile" type="text" name="obligateMobile" value="$!obligateMobile" size="15"/>
+						身份证号码：<input id="idCard" type="text" name="idCard" value="$!idCard" size="15"/>
+					</td>
+					</tr>
+					<tr>
+					<td >
+						银行卡号：<input id="cardNo" type="text" name="cardNo" value="$!cardNo" size="15"/>
+						银行卡类型：
+    						  <select name="bankId" >
+    							  <option value="" #if("$!banks"=="") selected #end>全部</option>
+								    #foreach($banks in $bankList)
+										<option value="$!banks.id" #if("$!bankId"=="$!banks.id") selected #end>$!banks.name</option>
+								    #end
+            				  </select>
+						卡绑定状态：
+    						  <select name="status" >
+    							  <option value="" #if("$!status"=="") selected #end>全部</option>
+    							  <option value="1" #if("$!status"=="1") selected  #end>正常</option>
+    							  <option value="2" #if("$!status"=="2") selected  #end>禁用</option>
+    							  <option value="3" #if("$!status"=="3") selected  #end>绑定中</option>
+    							  <option value="4" #if("$!status"=="4") selected  #end>绑定失败</option>
+								  <option value="5" #if("$!status"=="5") selected  #end>已解绑</option>
+            				  </select>
+						是否回款卡：
+    						  <select name="isFirst" >
+    						 	  <option value="" #if("$!isFirst"=="") selected #end>全部</option>
+    							  <option value="1" #if("$!isFirst"=="1") selected  #end>是</option>
+    							  <option value="2" #if("$!isFirst"=="2") selected  #end>否</option>
+            				  </select>
+						<spen style="padding-left:10px"><button type="submit">查询</button></spen>
+					</td>	
+                </tr>
+			</table>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li></li>
+			<li class="line">line</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="105">手机号</th>
+				<th width="60">用户名</th>
+				<th width="167">银行卡号</th>
+				<th width="157">身份证</th>
+				<th width="177">宝付回执单号</th>
+				<th width="105">银行预留手机号</th>
+                <th width="85">银行卡类型</th>
+				<th width="75">绑定状态</th>
+				<th width="85">是否安全卡</th>
+				<th width="152">绑定时间</th>
+				<th width="152">解绑时间</th>
+				<th width="76">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($bankCards in $bankCardsList)
+			<tr>
+                <td>$!bankCards.mobile</td>
+                <td>$!bankCards.cardOwner</td>
+				<td>$!bankCards.cardNo</td>
+				<td>$!bankCards.idCard</td>
+				<td>$!bankCards.receiptNo</td>
+				<td>$!bankCards.obligateMobile</td>
+				<td>$!bankCards.bankName</td>
+				<td>#if("$!bankCards.status" == 1)正常
+                    #elseif("$!bankCards.status" == 2)禁用
+                    #elseif("$!bankCards.status" == 3)绑定中
+                    #elseif("$!bankCards.status" == 4)
+					   <a title="失败记录" target="dialog" width="800" height="620" href="$env.getWebURL('/bank/record/index.htm?status=4&bankCardNo=')$!bankCards.cardNo" 
+						mask="true" rel="createBack" style="color:blue">绑定失败</a>
+					#elseif("$!bankCards.status" == 5)	
+						已解绑
+				    #end
+				</td>
+				<td>#if("$!bankCards.isFirst" == 1)是
+					#elseif("$!bankCards.isFirst" == 2)否#end
+                </td>
+				<td>$!date.format($!bankCards.bindTime)</td>
+				<td>$!date.format($!bankCards.unbindTime)</td>
+				<td>
+					#if("$!bankCards.status" == 1)
+					 <a title="解绑?" mask="true" onclick="modifyCard('$!bankCards.id', '$!bankCards.userId')" class="btnDel">注销</a>
+				    #end
+				</td>
+			</tr>
+			#end 
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+
+<script>
+	function modifyCard(bankId, userId) {
+            $.ajax({
+                type: 'post',
+                url: $("#APP_ROOT_PATH").val() + "/bank/statusModifyCard.htm",
+                data: {
+                    id: bankId,
+                    userId: userId,
+                    status: 5
+                },
+                success: function (data) {
+                    if (data.statusCode == "200") {
+                        alertMsg.correct("解绑成功");
+                        navTab.reload("$env.getWebURL('/bank/card/index.htm')");
+                    } else {
+                        if (data.message) {
+                            alertMsg.error(data.message);
+                        } else {
+                            alertMsg.error("操作失败");
+                        }
+                    }
+                }
+            })
+         
+    }
+</script> 

@@ -1,0 +1,114 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/sysMessage/index.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+				<tr>
+					<td>
+						标题：<input id="title" type="text" name="title" value="$!req.title" />
+						内容：<input id="content" type="text" name="content" value="$!req.content" />
+						接收人员类型：
+						<select name="receiverType" > 
+							<option value="" #if("$!req.receiverType"=="") selected #end>全部</option>
+							<option value="USER_NORMAL" #if("$!req.receiverType"=="USER_NORMAL") selected #end>普通用户</option>
+        					<option value="USER_178" #if("$!req.receiverType"=="USER_178") selected  #end>钱报用户</option>
+                            <option value="USER_KQ" #if("$!req.receiverType"=="USER_KQ") selected  #end>柯桥日报用户</option>
+                            <option value="USER_HN" #if("$!req.receiverType"=="USER_HN") selected  #end>海宁日报用户</option>
+							<option value="USER_RUIAN" #if("$!req.receiverType"=="USER_RUIAN") selected  #end>瑞安日报用户</option>
+        				</select>
+						状态：
+						<select name="status" > 
+							<option value="" #if("$!req.status"=="") selected #end>全部</option>
+							<option value="VISIBLE" #if("$!req.status"=="VISIBLE") selected #end>可见</option>
+        					<option value="INVISIBLE" #if("$!req.status"=="INVISIBLE") selected  #end>不可见</option>
+        				</select>
+						<span style="margin-left:20px;">
+							<button onclick="func()" type="button">查询</button>
+                        </span>
+						
+					</td>
+				</tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">	
+		<ul class="toolBar">
+			<li><a class="add" href="$env.getWebURL('/sysMessage/detail.htm')" target="dialog" mask="true" rel="createBack" height="400" width="720"><span>新增</span></a></li>
+			<li class="line">line</li>
+		</ul>
+	</div>
+	<table class="table" width="1346" layoutH="138">
+		<thead>
+			<tr>
+	            <th width="50">序号</th>
+				<th width="155">标题</th>
+				<th width="365">内容</th>
+				<th width="156">接收人员</th>
+				<th width="210">状态</th>
+				<th width="155">创建时间</th>
+				<th width="155">修改时间</th>
+				<th width="100">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $sysMessageList)
+			<tr target="sid_user" rel="1" >
+                <td>$!grid.id</td>
+				<td>$!grid.title</td>
+				<td>$!grid.content</td>
+                <td>
+					#if($!grid.receiverType == 'USER_NORMAL') 普通用户
+					#elseif($!grid.receiverType == 'USER_178') 钱报用户
+					#elseif($!grid.receiverType == 'USER_KQ') 柯桥日报用户
+					#elseif($!grid.receiverType == 'USER_HN') 海宁日报用户
+					#elseif($!grid.receiverType == 'USER_RUIAN') 瑞安日报用户
+					#else $!grid.USER_NORMAL
+					#end
+                </td>
+				<td>#if($!grid.status == 'VISIBLE') 可见  #elseif($!grid.status == 'INVISIBLE') 不可见    #else $!grid.status #end    </td>
+				<td>$!date.format($!grid.createTime)</td>
+				<td>$!date.format($!grid.updateTime)</td>
+				<td>
+					<a title="编辑?" target="dialog" href="$env.getWebURL('/sysMessage/detail.htm?id=')$!grid.id" class="btnEdit" mask="true" rel="createBack" height="400" width="720">编辑</a>
+					<a title="删除?" target="ajaxTodo" mask="true" href="$env.getWebURL('/sysMessage/delete.htm?id=')$!grid.id" class="btnDel">删除</a>
+                </td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+<script>
+
+function func(){
+	var url = $("#APP_ROOT_PATH").val() + "/sysMessage/index.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+</script>

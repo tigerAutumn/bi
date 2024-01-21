@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.MUserOpRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.MUserOpRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="op_user_id" property="opUserId" jdbcType="INTEGER" />
+    <result column="function_name" property="functionName" jdbcType="VARCHAR" />
+    <result column="function_url" property="functionUrl" jdbcType="VARCHAR" />
+    <result column="op_content" property="opContent" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="op_time" property="opTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="BaseResultVOMap" type="com.pinting.business.model.vo.MUserOpRecordVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="op_user_id" property="opUserId" jdbcType="INTEGER" />
+    <result column="function_name" property="functionName" jdbcType="VARCHAR" />
+    <result column="function_url" property="functionUrl" jdbcType="VARCHAR" />
+    <result column="op_content" property="opContent" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="op_time" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="manager_name" property="managerName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, op_user_id, function_name, function_url, op_content, ip, note, op_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.MUserOpRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from m_user_op_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from m_user_op_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from m_user_op_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.MUserOpRecordExample" >
+    delete from m_user_op_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.MUserOpRecord" >
+    insert into m_user_op_record (id, op_user_id, function_name, 
+      function_url, op_content, ip, 
+      note, op_time)
+    values (#{id,jdbcType=INTEGER}, #{opUserId,jdbcType=INTEGER}, #{functionName,jdbcType=VARCHAR}, 
+      #{functionUrl,jdbcType=VARCHAR}, #{opContent,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR}, #{opTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.MUserOpRecord" >
+    insert into m_user_op_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="opUserId != null" >
+        op_user_id,
+      </if>
+      <if test="functionName != null" >
+        function_name,
+      </if>
+      <if test="functionUrl != null" >
+        function_url,
+      </if>
+      <if test="opContent != null" >
+        op_content,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="opTime != null" >
+        op_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="opUserId != null" >
+        #{opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="functionName != null" >
+        #{functionName,jdbcType=VARCHAR},
+      </if>
+      <if test="functionUrl != null" >
+        #{functionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="opContent != null" >
+        #{opContent,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="opTime != null" >
+        #{opTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.MUserOpRecordExample" resultType="java.lang.Integer" >
+    select count(*) from m_user_op_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update m_user_op_record
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.opUserId != null" >
+        op_user_id = #{record.opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.functionName != null" >
+        function_name = #{record.functionName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.functionUrl != null" >
+        function_url = #{record.functionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.opContent != null" >
+        op_content = #{record.opContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ip != null" >
+        ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.opTime != null" >
+        op_time = #{record.opTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update m_user_op_record
+    set id = #{record.id,jdbcType=INTEGER},
+      op_user_id = #{record.opUserId,jdbcType=INTEGER},
+      function_name = #{record.functionName,jdbcType=VARCHAR},
+      function_url = #{record.functionUrl,jdbcType=VARCHAR},
+      op_content = #{record.opContent,jdbcType=VARCHAR},
+      ip = #{record.ip,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      op_time = #{record.opTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.MUserOpRecord" >
+    update m_user_op_record
+    <set >
+      <if test="opUserId != null" >
+        op_user_id = #{opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="functionName != null" >
+        function_name = #{functionName,jdbcType=VARCHAR},
+      </if>
+      <if test="functionUrl != null" >
+        function_url = #{functionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="opContent != null" >
+        op_content = #{opContent,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="opTime != null" >
+        op_time = #{opTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.MUserOpRecord" >
+    update m_user_op_record
+    set op_user_id = #{opUserId,jdbcType=INTEGER},
+      function_name = #{functionName,jdbcType=VARCHAR},
+      function_url = #{functionUrl,jdbcType=VARCHAR},
+      op_content = #{opContent,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      op_time = #{opTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="countMListByRecordVO" resultType="java.lang.Integer" parameterType="com.pinting.business.model.vo.MUserOpRecordVO">
+  	select count(a.id) from m_user_op_record a,m_user b
+	where a.op_user_id = b.id 
+	<if test="functionName != null and  functionName != ''">
+		and a.function_name=#{functionName}
+	</if>
+	<if test="managerName != null and  managerName != ''">
+		and b.name=#{managerName}
+	</if>
+	<if test="opContent != null and  opContent != ''">
+		and a.op_content like concat(concat('%', #{opContent,jdbcType=VARCHAR}),'%')
+	</if>
+	<if test="startTime != null and endTime != null and startTime != '' and endTime != '' ">
+         and a.op_time &gt;= #{startTime} and a.op_time &lt;= #{endTime}
+    </if>
+  </select>
+  
+  <select id="getMListByRecordVO" resultMap="BaseResultVOMap" parameterType="com.pinting.business.model.vo.MUserOpRecordVO">
+  	select a.id, a.op_user_id, a.function_name, 
+     a.function_url, a.op_content, a.ip, 
+     a.note, a.op_time,b.name as manager_name
+     from m_user_op_record a,m_user b
+	where a.op_user_id = b.id 
+	<if test="functionName != null and  functionName != ''">
+		and a.function_name=#{functionName}
+	</if>
+	<if test="managerName != null and  managerName != ''">
+		and b.name=#{managerName}
+	</if>
+	<if test="opContent != null and  opContent != ''">
+		and a.op_content like concat(concat('%', #{opContent,jdbcType=VARCHAR}),'%')
+	</if>
+	<if test="startTime != null and endTime != null and startTime != '' and endTime != '' ">
+         and a.op_time &gt;= #{startTime} and a.op_time &lt;= #{endTime}
+    </if>
+    order by a.op_time desc
+    <if test="numPerPage != null and numPerPage != 0">
+		<include refid="sql-global.pagination"/>
+     </if>
+  </select>
+</mapper>

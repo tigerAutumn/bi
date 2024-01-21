@@ -1,0 +1,225 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/statistics/gachaDaily/gachaIndex.htm')" method="post" id="myform" class="pageForm required-validate">
+    	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+    	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    	<input type="hidden" name="pageNum" value="$!pageNum" />
+        <input type="hidden" id="queryDataFlag" name="queryDataFlag" value="QUERYDATA" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						币港湾订单号：<input id="orderNo" type="text" name="orderNo" value="$!orderNo" size="36"/>&nbsp;&nbsp;
+						合作方订单号：<input id="thdOrderNo" type="text" name="thdOrderNo" value="$!thdOrderNo" size="36"/>&nbsp;&nbsp;
+						合作方：
+						<select name="partnerCode" >
+							<option value="" #if("$!partnerCode"=="") selected #end>全部</option>
+							<option value="YUN_DAI_SELF" #if("$!partnerCode"=="YUN_DAI_SELF") selected  #end>云贷</option>
+							<option value="7_DAI_SELF" #if("$!partnerCode"=="7_DAI_SELF") selected  #end>7贷</option>
+							<option value="ZSD" #if("$!partnerCode"=="ZSD") selected  #end>赞时贷</option>
+							<option value="ZAN" #if("$!partnerCode"=="ZAN") selected  #end>赞分期</option>
+						</select>
+						&nbsp;&nbsp;
+						商户通道：
+						<select name="paymentChannelId" >
+							<option value="" #if("$!paymentChannelId"=="") selected #end>全部</option>
+							<option value="MAIN" #if("$!paymentChannelId"=="MAIN") selected  #end>主</option>
+							<option value="ASSIST" #if("$!paymentChannelId"=="ASSIST") selected  #end>辅</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+					   	日期： 
+					   	<input name="startTime"  type="text" id="startTime" class="date textInput readonly" readonly="true" size="15"  value="$!startTime" /> 到
+					   	<input name="endTime"  type="text" id="endTime" class="date textInput readonly" readonly="true" size="15"  value="$!endTime" />
+						&nbsp;&nbsp;
+                     	 状态：
+						<select name="status" >
+							<option value="" #if("$!status"=="") selected #end>全部</option>
+							<option value="SUCC" #if("$!status"=="SUCC") selected  #end>成功</option>
+							<option value="FAIL" #if("$!status"=="FAIL") selected  #end>失败</option>
+							<option value="PROCESS" #if("$!status"=="PROCESS") selected  #end>处理中</option>
+						</select>&nbsp;&nbsp;
+						交易类型：
+						<select name="transType" >
+							<option value="" #if("$!transType"=="") selected #end>全部</option>
+							<option value="BALANCE_WITHDRAW" #if("$!transType"=="BALANCE_WITHDRAW") selected  #end>用户余额提现</option>
+							<option value="BONUS_WITHDRAW" #if("$!transType"=="BONUS_WITHDRAW") selected  #end>用户奖励金提现</option>
+							<option value="PARTNER_REVENUE" #if("$!transType"=="PARTNER_REVENUE") selected  #end>合作方营收划转</option>
+							<option value="PARTNER_REPEAT" #if("$!transType"=="PARTNER_REPEAT") selected  #end>合作方重复还款划转</option>
+							<option value="WITHDRAW_2_DEP_REPAY_CARD" #if("$!transType"=="WITHDRAW_2_DEP_REPAY_CARD") selected  #end>宝付代付到归集户</option>
+							<option value="CUT_REPAY_2_BORROW" #if("$!transType"=="CUT_REPAY_2_BORROW") selected  #end>归集户代扣到存管户</option>
+							<option value="SYS_RECEIVE_MONEY" #if("$!transType"=="SYS_RECEIVE_MONEY") selected  #end>老产品回款</option>
+							<option value="LN_COMPENSATE" #if("$!transType"=="LN_COMPENSATE") selected  #end>代偿</option>
+							<option value="DEPREPAY_MAIN_WITHHOLD_REPAY" #if("$!transType"=="DEPREPAY_MAIN_WITHHOLD_REPAY") selected  #end>主商户代扣还款</option>
+							<option value="DEPREPAY_ASSIST_WITHHOLD_REPAY" #if("$!transType"=="DEPREPAY_ASSIST_WITHHOLD_REPAY") selected  #end>辅商户代扣还款</option>
+							<option value="REPAY_TRANSFER_2_MAIN" #if("$!transType"=="REPAY_TRANSFER_2_MAIN") selected  #end>辅助通道转账到主通道</option>
+							<option value="PARTNER_OFFLINE_REPAY" #if("$!transType"=="PARTNER_OFFLINE_REPAY") selected  #end>线下还款</option>
+						</select>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<span style="margin-left:20px;">
+							<button  onclick="func()" type="button">查询</button> &nbsp;&nbsp;
+							<button  onclick="exp()" type="button">导出excel</button>
+                        </span>
+					</td>
+				</tr>	
+			</table>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li>
+				<span style="margin-left:10px;">
+    				<font color="red">合计金额：#if(!$!totalRepayBalance)0.00 #else $!money.format($!totalRepayBalance) #end 元</font>
+                </span>
+            </li>
+        </ul>
+    </div>
+	<table class="table" width="1396" layoutH="142">
+		<thead>
+			<tr>
+                <th width="8%">序号</th>
+                <th width="8%">合作方</th>
+				<th width="8%">交易类型</th>
+				<th width="6%">商户通道</th>
+				<th width="12%">币港湾订单号</th>
+				<th width="12%">合作方订单号</th>
+				<th width="8%">订单金额</th>
+				<th width="6%">状态</th>
+				<th width="8%">状态描述</th>
+				<th width="10%">请求时间</th>
+				<th width="10%">完成时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $gachaDailyList)
+			<tr target="sid_user" rel="1">
+				<td>$!grid.serialNo</td>
+				<td>$!grid.partnerCode</td>
+				<td>
+				#if("$!grid.transType" !="" )
+					#if($!grid.transType == "BALANCE_WITHDRAW")
+						用户余额提现
+					#elseif($!grid.transType == "BONUS_WITHDRAW")
+						用户奖励金提现
+					#elseif($!grid.transType == "SYS_PARTNER_REVENUE")
+						赞分期营收
+					#elseif($!grid.transType == "SYS_YUN_REPAY_REVENUE")
+						云贷营收
+					#elseif($!grid.transType == "SYS_SEVEN_REPAY_REVENUE")	
+						7贷营收
+					#elseif($!grid.transType == "SYS_ZSD_REPAY_REVENUE")	
+						赞时贷营收	
+					#elseif($!grid.transType == "SYS_YUN_REPEAT")
+						云贷重复还款
+					#elseif($!grid.transType == "SYS_ZSD_REPEAT")
+						赞时贷重复还款
+					#elseif($!grid.transType == "SYS_SEVEN_REPEAT")
+						7贷重复还款	
+					#elseif($!grid.transType == "WITHDRAW_2_DEP_REPAY_CARD")
+						宝付代付到归集户
+					#elseif($!grid.transType == "CUT_REPAY_2_BORROW")
+						归集户代扣到存管户	
+					#elseif($!grid.transType == "REPAY_TRANSFER_2_MAIN") 
+						辅助通道转账到主通道
+					#elseif($!grid.transType == "DEPREPAY_MAIN_WITHHOLD_REPAY")
+						存管产品还款-主商户代扣还款
+					#elseif($!grid.transType == "DEPREPAY_ASSIST_WITHHOLD_REPAY")
+						存管产品还款-辅商户代扣还款
+					#elseif($!grid.transType == "SYS_RECEIVE_MONEY")
+						老产品回款
+					#elseif($!grid.transType == "LN_COMPENSATE")  
+						代偿
+					#elseif($!grid.transType == "PARTNER_OFFLINE_REPAY")
+						合作方线下还款
+					#else
+						未知的业务类型	
+					#end
+				#else
+					无
+				#end
+				</td>
+				<td>$!grid.paymentChannelId</td>
+				<td>$!grid.orderNo</td>	
+				<td>$!grid.thdOrderNo</td>
+				<td><div>$!money.format($!grid.transAmount)</div></td>	
+				<td>$!grid.status</td>	
+				<td>$!grid.statusRemark</td>
+				<td>$!date.format($!grid.requestTime)</td>
+				<td>$!date.format($!grid.finishTime)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+function func(){
+	var startTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	var orderNo = $("#orderNo").val();
+	var thdOrderNo = $("#thdOrderNo").val();
+	if ((startTime == "" || endTime == "" || startTime == null || endTime == null ) && (orderNo
+			== "" && thdOrderNo== "")) {
+		alert("请求开始时间或请求结束时间不能为空！！");
+		return false;
+	}
+	if(startTime != "" && endTime != ""){
+		var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(startTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("请求开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/statistics/gachaDaily/gachaIndex.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+	
+	var startTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	var orderNo = $("#orderNo").val();
+	var thdOrderNo = $("#thdOrderNo").val();
+	if ((startTime == "" || endTime == "" || startTime == null || endTime == null ) && (orderNo
+			== "" && thdOrderNo== "")) {
+		alert("请求开始时间或请求结束时间不能为空！！");
+		return false;
+	}
+	if(startTime != "" && endTime != ""){
+		var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(startTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("请求开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	var url = $("#APP_ROOT_PATH").val() + "/statistics/gachaDaily/exportXls.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+</script>

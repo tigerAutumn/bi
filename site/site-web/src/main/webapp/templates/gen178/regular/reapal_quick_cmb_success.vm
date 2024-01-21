@@ -1,0 +1,96 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen178/styles/login_header")
+#LoadGenJS("/resources/gen178/scripts/regular/reapal_quick_cmb_success")
+#GenHead("end")
+	<body>
+
+	<input type="hidden" value="$!resp.userId" id="userId" />
+	<input type="hidden" value="$!resp.amount" id="amount" />
+	<input type="hidden" value="$!resp.cardNo" id="cardNo" />
+	<input type="hidden" value="$!resp.userName" id="userName" />
+	<input type="hidden" value="$!resp.idCard" id="idCard" />
+	<input type="hidden" value="$!resp.mobile" id="mobile" />
+	
+	<input type="hidden" value="$!resp.productId" id="productId" />
+	<input type="hidden" value="$!resp.productName" id="productName" />
+	<input type="hidden" value="$!resp.bankId" id="bankId" />
+	<input type="hidden" value="$!resp.bankName" id="bankName" />
+	
+	<input type="hidden" value="$!resp.isBind" id="isBind" />
+	<input type="hidden" value="$!resp.transType" id="transType" />
+	<input type="hidden" value="$!resp.terminalType" id="terminalType" />
+	<input type="hidden" value="$!resp.orderNo" id="orderNo" />
+	<input type="hidden" id="token" name="token" value="$!token" />
+	<!--header -s-->
+	#GenHeaderLogin()
+	<!--header -e-->
+
+<div class="naver_1">
+    	<div class="nav_1">
+            <div class="nav">
+                <a href="$!env.get('gen.server.web')/gen178/index?agentViewFlag=$!agentViewFlag">
+                    <div style="width: 300px;height: 64px;display: inline;">
+                      <img src="$!env.get('gen.server.web')/resources/gen178/images/nav.png" style="width: 300px;margin-top: 12px;">
+                    </div>
+                </a>
+                <a href="javascript:void(0)" style="color: #7D7D7D;font-size: 21px;position: relative;bottom: 14px;border-left: 1px solid #ddd;padding-left: 10px;margin-left: 10px;">
+        				#if($!resp.transType == 1)
+        				购买
+						#else
+						充值
+						#end
+                </a>
+            </div>
+    	</div>
+    </div>
+		
+		<div class="con_zf2">
+			<div class="con_z2">
+				<div class="z2con_top">
+					#if($!resp.transType == 1)
+					<span>购买金额：<i class="spani">$!resp.amount</i>元</span>
+					<span style="float:right;">产品名称：<em class="spanem">$!resp.productName</em></span>
+					#else
+					<span>充值金额：<i class="spani">$!resp.amount</i>元</span>	
+					#end
+				</div>
+				<div class="z2con_bottom">
+					<span class="z2con_bspanl" id="z2con_bspanl" style="border-right:1px solid #d7d7d7;">快捷支付</span>
+					<!-- <span class="z2con_bspanm" id="z2con_bspanm">网银支付</span> -->
+					<span class="z2con_bspanr" style="width:831px;"></span>
+					<div class="z2con_bspanll" style="position: relative;float: left;">
+						<div class="z2con_m">
+							<div class="cpm" style="border:0px;">
+								<div class="cpm_phone">
+									<div class="phone_ft">验证密码成功！已向您的手机号 <span> $!resp.mobile </span></div>
+									<div class="phone_ft2">发送验证码短信，请注意查收</div>
+								</div>
+								<div class="cpm_put">
+									<span class="put_left">验证码</span>
+									<div class="put_wrp">
+										<input class="put_text" id="mobileCode" maxlength="6" type="text" name="mobileCode"  placeholder="请输入短信验证码">
+										<span class="retransmission" id="sendCode" count="60">重发</span>
+									</div>
+
+								</div>
+								<a class="cpm_btn"  id= "buy_buut">确定</a>
+							</div>				
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<!--footer-->
+		
+		<!--浮动 -s-->
+	#GenShare()
+	<!--浮动 -e-->
+	
+	<!--footer -s-->
+	#GenFooter()
+	<!--footer -e-->
+	</body>
+#Html("end")

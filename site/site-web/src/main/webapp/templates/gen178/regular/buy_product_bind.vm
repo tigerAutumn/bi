@@ -1,0 +1,509 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen178/styles/user/purchase_pack")
+#LoadGenJS("/resources/gen178/scripts/regular/buy_product_bind")
+#LoadGenJS("/resources/gen178/scripts/common/common")
+#parse("/RiskTips.vm")
+#parse("/agreement_pay.vm")
+#parse("/agreement_account.vm")
+#parse("/agreement_entrust.vm")
+#parse("/financial.vm")
+#parse("/financial_new.vm")
+#parse("/financial_new_7dai.vm")
+#parse("/lend_service_agreement.vm")
+#parse("/zsd_loanService_template_agreement.vm")
+#GenHead("end")
+
+<body class="body">
+#Gen178Header("product")
+#LoadGenJS("/resources/gen178/scripts/fix")
+<input type="hidden" id="mobileToken" name="mobileToken" value="$!mobileToken">
+
+<input type="hidden" value="$!propertyType" id="propertyType"/>
+<input type="hidden" value="$!propertySymbol" id="propertySymbol"/>
+<input type="hidden" id="id" name="id" value="$!id"/>
+<input type="hidden" id="productName" name="productName" value="$!productName"/>
+<input type="hidden" id="rate" name="rate" value="$!rate"/>
+<input type="hidden" id="term" name="term" value="$!term"/>
+<input type="hidden" id="minInvestAmount" name="minInvestAmount" value="$!minInvestAmount"/>
+<input type="hidden" id="balance" name="balance" value="$!depBalance"/>
+<input type="hidden" id="mobile" name="mobile" value="$!mobile"/>
+<input type='hidden' id="amount" name='amount' value="$!buyMoney"/>
+<input type="hidden" id="proLimitAmout" name="proLimitAmout" value="$!proLimitAmout"/>
+<input type="hidden" id="maxSingleInvestAmount" name="maxSingleInvestAmount" value="$!maxSingleInvestAmount"/>
+<input type="hidden" id="isSupportRedPacket" name="isSupportRedPacket" value="$!isSupportRedPacket">
+<input type="hidden" id="isBindCard" name="isBindCard" value="$!isBindCard">
+<input type="hidden" id="dayNum" name="dayNum" value="$!dayNum">
+<input type="hidden" id="IsSupportInterestTicket" name="IsSupportInterestTicket" value="$!isSupportInterestTicket">
+<input type="hidden" id="pageFlag" value="$!pageFlag">
+
+<!--main-->
+<div class="main">
+    <div class="main_content">
+        <div class="payment_confirmation_content">
+            <ul class="paymentCon_topcontent">
+                <li class="paymentCon_topcontent_li product_name">
+                    $!{productName}
+                </li>
+                <li class="paymentCon_topcontent_li">
+                    <div class="paymentCon_topcontent_span withtips"><span>*</span>预期年化收益：
+                        <div class="detail_tips" style="left: -30px;">预期年化收益不代表对实际利息收益的承诺<span></span></div>
+                    </div>
+                    <i class="paymentCon_topcontent_i">$!number.format("0.00",$!rate)%</i>
+                </li>
+                <li class="paymentCon_topcontent_li">
+                    #if($!propertySymbol == "ZAN")
+                        <span class="paymentCon_topcontent_span">委托意向：</span>
+                        #if($!term < 0)
+                            <i class="paymentCon_topcontent_i">$!{term}天内</i>
+                        #else
+                            <i class="paymentCon_topcontent_i">$!{term}个月内</i>
+                        #end
+                    #else
+                        <span class="paymentCon_topcontent_span">产品期限：</span>
+                        <i class="paymentCon_topcontent_i">$!{dayNum}天</i>
+                    #end
+                </li>
+                <li class="paymentCon_topcontent_li">
+                    #if($!propertySymbol == "ZAN")
+                        <span class="paymentCon_topcontent_span">委托金额：</span>
+                    #else
+                        <span class="paymentCon_topcontent_span">加入金额：</span>
+                    #end
+                    <i class="paymentCon_topcontent_i">$!{buyMoney}元</i>
+                </li>
+                #if($!propertySymbol != "ZAN")
+                    <li class="paymentCon_topcontent_li">
+                        <div class="paymentCon_topcontent_span">
+                            预计收益：
+                        </div>
+                        <i class="paymentCon_topcontent_i income_i"></i>
+                    </li>
+                #end
+            </ul>
+            <div class="tickets_choose">
+                <div class="Use_red">
+                    <div class="tickets_filter">
+                        <ul>
+                            <li>
+                                <div class="filter_dot"><span></span></div>
+                                红包
+                                #if($!redCanUseCount)
+                                    $!redCanUseCount
+                                #else
+                                    0
+                                #end
+                                个
+                            </li>
+                            <li>
+                                <div class="filter_dot"><span></span></div>
+                                加息券
+                                #if($!ticketCanUseCount)
+                                    $!ticketCanUseCount
+                                #else
+                                    0
+                                #end
+                                个
+                            </li>
+                            <li class="clearfix"></li>
+                        </ul>
+                        <p>* 红包和加息券<span>不可同时使用</span>，系统会帮您推荐最佳可用优惠券。</p>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="tickets_frame">
+                        <div class="tickets_list redpacket">
+                            #if($!isSupportRedPacket == 'TRUE')
+                                <div class="tickets_list_pagination">
+                                    #if($!redPacketList.size()>0)
+                                        #foreach ($!redpack in $!redPacketList)
+                                            #if($!redpack.isWan == 'yes')
+                                                #set($full = $!number.format("0.00",$money.multiply("$!redpack.full", "10000")))
+                                            #else
+                                                #set($full = $!number.format("0.00", $!redpack.full))
+                                            #end
+                                            #if($money.subtract("$!buyMoney", "$full") < 0)
+                                                <div class="col_4">
+                                                    <div class="tickets_red_card">
+                                                        <div class="tickets_lines"></div>
+                                                        <div class="tickets_card_focuse"></div>
+                                                        <div class="tickets_red_top">
+                                                            <p class="tickets_red_amount">￥<span>$!number.format("0.00", $!redpack.subtract)</span></p>
+                                                            <div class="gap_wrap gap_wrap_left" style="left: -1px;"><span class="tickets_card_gap"></span></div>
+                                                            <div class="gap_wrap gap_wrap_right" style="right: -1px;"><span class="tickets_card_gap"></span></div>
+                                                        </div>
+                                                        <div class="tickets_red_bottom">
+                                                            <h5>$!redpack.serialName</h5>
+                                                            <ul class="tickets_rule">
+                                                                <li class="tickets_rule_li">$!redpack.termLimitMsg</li>
+                                                                <li class="tickets_rule_li">
+                                                                    #if($!redpack.isWan == "yes")
+                                                                        单笔加入满$!number.format("0.00", $!redpack.full)万元启用
+                                                                    #else
+                                                                        单笔加入满$!number.format("0.00", $!redpack.full)元启用
+                                                                    #end
+                                                                </li>
+                                                                <li class="tickets_rule_li"><span>$!date.formatYYYYMMDD($!redpack.useTimeStart)</span>至<span>$!date.formatYYYYMMDD($!redpack.useTimeEnd)</span></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            #else
+                                                <div class="col_4">
+                                                    <div class="tickets_red_card card_abled">
+                                                        <input type="hidden" value="$!number.format("0.00", $!redpack.subtract)" class="subtract">
+                                                        <input type="hidden" value="$!number.format("0.00", $!redpack.full)" class="full">
+                                                        <input type="hidden" value="$!date.formatYYYYMMDD($!redpack.useTimeEnd)" class="redpackEndTime">
+                                                        <input type="hidden" value="$!redpack.isWan" class="isWan">
+                                                        <input type="hidden" value="RED_PACKET" class="type">
+                                                        <input type="hidden" value="$!redpack.id" class="ticketId">
+                                                        <div class="tickets_lines"></div>
+                                                        <div class="tickets_card_focuse"></div>
+                                                        <div class="tickets_red_top">
+                                                            <p class="tickets_red_amount">￥<span>$!number.format("0.00", $!redpack.subtract)</span></p>
+                                                            <div class="gap_wrap gap_wrap_left"><span class="tickets_card_gap"></span></div>
+                                                            <div class="gap_wrap gap_wrap_right"><span class="tickets_card_gap"></span></div>
+                                                        </div>
+                                                        <div class="tickets_red_bottom">
+                                                            <h5>$!redpack.serialName</h5>
+                                                            <ul class="tickets_rule">
+                                                                <li class="tickets_rule_li">$!redpack.termLimitMsg</li>
+                                                                <li class="tickets_rule_li">
+                                                                    #if($!redpack.isWan == "yes")
+                                                                        单笔加入满$!number.format("0.00", $!redpack.full)万元启用
+                                                                    #else
+                                                                        单笔加入满$!number.format("0.00", $!redpack.full)元启用
+                                                                    #end
+                                                                </li>
+                                                                <li class="tickets_rule_li"><span>$!date.formatYYYYMMDD($!redpack.useTimeStart)</span>至<span>$!date.formatYYYYMMDD($!redpack.useTimeEnd)</span></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            #end
+                                        #end
+                                    #else
+                                        <div class="col_4">
+                                            <div class="tickets_abnormal tickets_abnormal_none_redpack">
+                                                <p>暂无红包</p>
+                                            </div>
+                                        </div>
+                                    #end
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                #if($!redPacketList.size()>3)
+                                    <div class="tickets_list_page">
+                                        #set($redPacketRemainder = $!redPacketList.size()%3)
+                                        #if($redPacketRemainder > 0)
+                                            #set($redPacketNumMore = 1)
+                                        #else
+                                            #set($redPacketNumMore = 0)
+                                        #end
+                                        #set($redPacketTotalPage = $!redPacketList.size()/3 + $redPacketNumMore)
+                                        #if($redPacketTotalPage > 1)
+                                            <div class="tickets_list_page_wrap">
+                                                <a href="javascript:void(0)" class="pagination_l"
+                                                   onclick="showPage('redPacket',0,'limit')">首页</a>
+                                                <a href="javascript:void(0)" class="pagination_ll"
+                                                   onclick="prePage('redPacket')"></a>
+                                                <a href="javascript:void(0)" class="pagination_c pagination_atpage"
+                                                   onclick="showPage('redPacket',0)">1</a>
+                                                #foreach($pageNum in [2..$redPacketTotalPage])
+                                                    #set($dataNum = $pageNum - 1)
+                                                    <a href="javascript:void(0)" class="pagination_c"
+                                                       onclick="showPage('redPacket',$dataNum)">$pageNum</a>
+                                                #end
+                                                <a href="javascript:void(0)" class="pagination_rr"
+                                                   onclick="nextPage('redPacket',$redPacketTotalPage -1)"></a>
+                                                <a href="javascript:void(0)" class="pagination_r"
+                                                   onclick="showPage('redPacket',$redPacketTotalPage - 1,'limit')">尾页</a>
+                                            </div>
+                                        #end
+                                    </div>
+                                #end
+                            #else
+                                <div class="tickets_list_pagination">
+                                    <div class="col_4">
+                                        <div class="tickets_abnormal tickets_abnormal_nonsupport_redpack">
+                                            <p>该计划不支持红包</p>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            #end
+                        </div>
+
+                        <div class="tickets_list increase">
+                            #if($!isSupportInterestTicket == 'TRUE')
+                                <div class="tickets_list_pagination">
+                                    #if($!ticketList.size()>0)
+                                        #foreach($!increase in $!ticketList)
+                                            #if($!increase.isWan == 'yes')
+                                                #set($full = $!number.format("0.00",$money.multiply("$!increase.full", "10000")))
+                                            #else
+                                                #set($full = $!number.format("0.00", $!increase.full))
+                                            #end
+                                            #if($money.subtract("$!buyMoney", "$full") < 0)
+                                                <div class="col_4">
+                                                    <div class="tickets_increase_card">
+                                                        <div class="tickets_increase_top">
+                                                            <p class="tickets_red_amount">加息$!money.format($!increase.rate)%</p>
+                                                            <div class="gap_wrap gap_wrap_left"><span class="tickets_card_gap"></span></div>
+                                                            <div class="gap_wrap gap_wrap_right"><span class="tickets_card_gap"></span></div>
+                                                        </div>
+                                                        <div class="tickets_increase_bottom">
+                                                            <h5>$!increase.serialName</h5>
+                                                            <ul class="tickets_rule">
+                                                                <li class="tickets_rule_li">
+                                                                    $!increase.termLimit，单笔加入...
+                                                                    <div class="Increase_mark">
+                                                                        ?
+                                                                        <div class="Increase_help">
+                                                                            #set($productLimitArr = $increase.productLimit.split(','))
+                                                                            #set($forNum = 0)
+                                                                            #set($serial="")
+                                                                            #if($productLimitArr.size()==4)
+                                                                                #set($serial='全部系列')
+                                                                            #else
+                                                                                #foreach($productName in $productLimitArr)
+                                                                                    #if($productName == 'BIGANGWAN_SERIAL')
+                                                                                        #set($serial=$!serial + '港湾系列')
+                                                                                    #elseif($productName == 'YONGJIN_SERIAL')
+                                                                                        #set($serial=$!serial + '涌金系列')
+                                                                                    #elseif($productName == 'KUAHONG_SERIAL')
+                                                                                        #set($serial=$!serial + '跨虹系列')
+                                                                                    #elseif($productName == 'BAOXIN_SERIAL')
+                                                                                        #set($serial=$!serial + '保信系列')
+                                                                                    #end
+                                                                                    #set($forNum = $forNum + 1)
+                                                                                    #if($forNum < $productLimitArr.size())
+                                                                                        #set($serial=$!serial + ',')
+                                                                                    #end
+                                                                                #end
+                                                                            #end
+                                                                            #set($serial=$!serial + '产品适用。加息收益将会在加入的产品到期后以奖励金的形式发放。')
+                                                                            #if($money.subtract("$full", "10000") >= 0)
+                                                                                $!{increase.termLimit}，单笔加入满$!number.format("0.00", $money.divide("$full", "10000"))万元启用，$!serial
+                                                                            #else
+                                                                                $!{increase.termLimit}，单笔加入满$!number.format("0.00", $full)元启用，$!serial
+                                                                            #end
+                                                                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/red_pack/help_triangle.png" class="help_triangle">
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="tickets_rule_li"><span>$!date.formatYYYYMMDD($!date.parseDateTime($!increase.useTimeStart))</span>至<span>$!date.formatYYYYMMDD($!date.parseDateTime($!increase.useTimeEnd))</span></li>                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            #else
+                                                <div class="col_4">
+                                                    <div class="tickets_increase_card increase_abled">
+                                                        <input type="hidden" value="$!number.format("0.00", $!increase.interest)" class="interest">
+                                                        <input type="hidden" value="$!number.format("0.00", $!increase.rate)" class="serialName">
+                                                        <input type="hidden" value="$!date.formatYYYYMMDD($!date.parseDateTime($!increase.useTimeEnd))" class="increaseEndTime">
+                                                        <input type="hidden" value="INTEREST_TICKET" class="type">
+                                                        <input type="hidden" value="$!increase.id" class="ticketId">
+                                                        <div class="tickets_card_focuse"></div>
+                                                        <div class="tickets_increase_top">
+                                                            <p class="tickets_red_amount">加息$!money.format($!increase.rate)%</p>
+                                                            <div class="gap_wrap gap_wrap_left"><span class="tickets_card_gap"></span></div>
+                                                            <div class="gap_wrap gap_wrap_right"><span class="tickets_card_gap"></span></div>
+                                                        </div>
+                                                        <div class="tickets_increase_bottom">
+                                                            <h5>$!increase.serialName</h5>
+                                                            <ul class="tickets_rule">
+                                                                <li class="tickets_rule_li">
+                                                                    $!increase.termLimit，单笔加入...
+                                                                    <div class="Increase_mark">
+                                                                        ?
+                                                                        <div class="Increase_help">
+                                                                            #set($productLimitArr = $increase.productLimit.split(','))
+                                                                            #set($forNum = 0)
+                                                                            #set($serial="")
+                                                                            #if($productLimitArr.size()==4)
+                                                                                #set($serial='全部系列')
+                                                                            #else
+                                                                                #foreach($productName in $productLimitArr)
+                                                                                    #if($productName == 'BIGANGWAN_SERIAL')
+                                                                                        #set($serial=$!serial + '港湾系列')
+                                                                                    #elseif($productName == 'YONGJIN_SERIAL')
+                                                                                        #set($serial=$!serial + '涌金系列')
+                                                                                    #elseif($productName == 'KUAHONG_SERIAL')
+                                                                                        #set($serial=$!serial + '跨虹系列')
+                                                                                    #elseif($productName == 'BAOXIN_SERIAL')
+                                                                                        #set($serial=$!serial + '保信系列')
+                                                                                    #end
+                                                                                    #set($forNum = $forNum + 1)
+                                                                                    #if($forNum < $productLimitArr.size())
+                                                                                        #set($serial=$!serial + ',')
+                                                                                    #end
+                                                                                #end
+                                                                            #end
+                                                                            #set($serial=$!serial + '产品适用。加息收益将会在加入的产品到期后以奖励金的形式发放。')
+                                                                            #if($money.subtract("$full", "10000") >= 0)
+                                                                                $!{increase.termLimit}，单笔加入满$!number.format("0.00", $money.divide("$full", "10000"))万元启用，$!serial
+                                                                            #else
+                                                                                $!{increase.termLimit}，单笔加入满$!number.format("0.00", $full)元启用，$!serial
+                                                                            #end
+                                                                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/red_pack/help_triangle.png" class="help_triangle">
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="tickets_rule_li"><span>$!date.formatYYYYMMDD($!date.parseDateTime($!increase.useTimeStart))</span>至<span>$!date.formatYYYYMMDD($!date.parseDateTime($!increase.useTimeEnd))</span></li>                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            #end
+                                        #end
+                                    #else
+                                        <div class="col_4">
+                                            <div class="tickets_abnormal tickets_abnormal_none_increase">
+                                                <p>暂无加息券</p>
+                                            </div>
+                                        </div>
+                                    #end
+                                    <div class="clearfix"></div>
+                                </div>
+                                #if($!ticketList.size()>3)
+                                    <div class="tickets_list_page">
+                                        #set($increaseRemainder = $!ticketList.size()%3)
+                                        #if($increaseRemainder > 0)
+                                            #set($increaseNumMore = 1)
+                                        #else
+                                            #set($increaseNumMore = 0)
+                                        #end
+                                        #set($increaseTotalPage = $!ticketList.size()/3 + $increaseNumMore)
+                                        #if($increaseTotalPage > 1)
+                                            <div class="tickets_list_page_wrap">
+                                                <a href="javascript:void(0)" class="pagination_l" onclick="showPage('increase',0,'limit')">首页</a>
+                                                <a href="javascript:void(0)" class="pagination_ll" onclick="prePage('increase')"></a>
+                                                <a href="javascript:void(0)" class="pagination_c pagination_atpage" onclick="showPage('increase',0)">1</a>
+                                                #foreach($pageNum in [2..$increaseTotalPage])
+                                                    #set($dataNum = $pageNum - 1)
+                                                    <a href="javascript:void(0)" class="pagination_c" onclick="showPage('increase',$dataNum)">$pageNum</a>
+                                                #end
+                                                <a href="javascript:void(0)" class="pagination_rr" onclick="nextPage('increase',$increaseTotalPage -1)"></a>
+                                                <a href="javascript:void(0)" class="pagination_r" onclick="showPage('increase',$increaseTotalPage - 1,'limit')">尾页</a>
+                                            </div>
+                                        #end
+                                    </div>
+                                #end
+                            #else
+                                <div class="tickets_list_pagination">
+                                    <div class="col_4">
+                                        <div class="tickets_abnormal tickets_abnormal_nonsupport_increase">
+                                            <p>该计划不支持加息券</p>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            #end
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="paymentCon_middlecontent">
+                <div class="paymentCon_middlecontent_des">优惠券使用：<span id="tickets_used"></span></div>
+                <div class="paymentCon_middlecontent_balance">应付金额：<span id="factPay">$!{buyMoney}</span> 元</div>
+                <div class="paymentCon_middlecontent_num">存管账户余额支付（可用余额：<span>$!number.format($!{depBalance}) 元</span>）</div>
+            </div>
+            <div class="Use_redbtn">
+                <a class="Use_redbtn_a send_sms_btn">确认加入</a>
+                <div class="Use_redbtn_txt">
+                    点击确认加入即表示您同意
+                ##<a class="Use_redbtn_txta rech_ok" name="pay_agree_div">《支付协议》</a>
+                ##<a class="Use_redbtn_txta rech_ok" name="account_agree_div">《账户服务协议》</a>
+                    #if($!propertySymbol == "ZAN")
+                        <a class="Use_redbtn_txta rech_ok" name="entrust_financial_div">《自动出借计划协议》</a>
+                        <a class="Use_redbtn_txta rech_ok" name="RiskTips">《风险提示》</a>
+                    #elseif($!propertySymbol == "YUN_DAI_SELF" || $!propertySymbol == "7_DAI_SELF" || $!propertySymbol == "FREE") ##存管类产品对应的-出借咨询与服务协议
+                        <a class="Use_redbtn_txta rech_ok" name="custody_financial_div">《授权委托书》</a>
+                        <a class="Use_redbtn_txta rech_ok" name="RiskTips">《风险提示》</a>
+                    #elseif($!propertySymbol == "ZSD") ##赞时贷类产品对应的-出借咨询与服务协议
+                        <a class="Use_redbtn_txta rech_ok" name="loanServicTemp_zsd_div">《出借咨询与服务协议》</a>
+                        <a class="Use_redbtn_txta rech_ok" name="RiskTips">《风险提示》</a>
+                    #else
+                        <a class="Use_redbtn_txta rech_ok" name="financial_div">《出借咨询与服务协议》</a>
+                        <a class="Use_redbtn_txta rech_ok" name="RiskTips">《风险提示》</a>
+                    #end
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--弹窗背景-->
+<div class="body_bg" style="display: none;"></div>
+<!-- 账户余额不足提示框 -->
+<div id="alert_listthree_one" class="alert_listthree" style="display: none;">
+    <div class="alert_listwrap">
+        <h3 class="alert_listthree_h3">
+            <span class="title">温馨提示</span>
+            <a class="alert_listthree_btn" href="javascript:void(0);" title="" onclick="">
+                <img src="https://www.bigangwan.com/resources/gen178/images/close_right.png">
+            </a>
+        </h3>
+        <div class="alert_listthree_txt">
+            <div class="alert_listthree_contitle">
+                <img src="$!env.get('gen.server.web')/resources/gen178/images/regular/balance_buy/tan1.png"/>
+                你的账户余额不足，请充值
+            </div>
+            <div class="alert_listthree_content">
+                <span class="alert_listthree_contentspan">计划加入金额：</span>
+                <i class="alert_listthree_contenti" id="promot_amount"></i>
+            </div>
+            <div class="alert_listthree_content red_div">
+                <span class="alert_listthree_contentspan">红包抵扣：</span>
+                <i class="alert_listthree_contenti" id="promot_red_amount"></i>
+            </div>
+            <div class="alert_listthree_content">
+                <span class="alert_listthree_contentspan">账户余额：</span>
+                <i class="alert_listthree_contenti" id="promot_balance"></i>
+            </div>
+            <div class="alert_listthree_content" style="font-weight: 600;">
+                <span class="alert_listthree_contentspan">需充值金额：</span>
+                <i class="alert_listthree_contenti" id="promot_top_up"></i>
+            </div>
+        </div>
+        <div class="alert_listthree_btnd">
+            <a class="alert_listthree_btnl go_recharge" href="javascript:void(0)">充值</a>
+        </div>
+    </div>
+</div>
+
+<!-- 预下单弹窗 -->
+<div id="alert_listthree_three" class="alert_listthree" style="display: none;">
+    <div class="alert_listwrap">
+        <h3 class="alert_listthree_h3"><span class="title">支付验证</span>
+            <a class="alert_listthree_btn" href="javascript:;" title="" onclick="">
+                <img src="https://www.bigangwan.com/resources/gen178/images/close_right.png">
+            </a>
+        </h3>
+        <div class="alert_listthree_txt">
+            <div class="alert_listthree_success">已向你的手机号<span>$!mobile</span></div>
+            <div class="alert_listthree_success">发送验证码短信，请注意查收</div>
+            <div class="cpm_put">
+                <span class="put_left">验证码</span>
+                <div class="put_wrp">
+                    <input class="put_text" type="text" name="mobileCode" id="mobileCode" maxlength="4"
+                           placeholder="请输入短信验证码">
+                    <span id="sendCode" class="retransmission btn_success" count="60" style="top: 5px">重发验证码</span>
+                </div>
+            </div>
+        </div>
+        <div class="alert_listthree_btnd">
+            <a class="alert_listthree_btnl balance_buy_btn" href="javascript:void(0);">确定</a>
+        </div>
+    </div>
+</div>
+    #LoadGenJS("/resources/gen178/scripts/regular/pagination")
+<!--footer-->
+#Gen178Footer()
+</body>
+
+#Html("end")

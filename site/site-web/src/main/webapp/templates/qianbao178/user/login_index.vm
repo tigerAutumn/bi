@@ -1,0 +1,48 @@
+#Html("begin")
+#Head("begin","登录币港湾,币港湾官网","欢迎登录币港湾!币港湾官网为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("登录【币港湾官网】")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/user/login_index.min")
+#WeChatShare()
+#Head("end")
+<body id="body">
+    <input type="hidden" value="$!env.getWebURL('')" id="APP_ROOT_PATH" />
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+    <div class="login_warp">
+
+    	<div class="banner"><img src="$!env.get('gen.server.web')$!agentView.getView($!agentViewFlag).get('H5_KEY_LOGIN_IMG_546_74')" class="banner_img"/></div>
+    	<form id="generalForm" action="$!env.getWebURL('micro2.0/user/login')" method="get" accept-charset="utf-8" class="login_form">
+    		<input type="hidden" id="qianbao" name="qianbao" value="qianbao" />
+    		<div class="login_box">
+    			<span class="login_icon icon1"></span>
+    			<input class="login_in name" type="text" name="nick" id="nick" value="" maxLength="16" placeholder="请输入用户名/手机">
+    		</div>
+            <div class="login_error"><span class="login_icon icon3"></span><span class="account_error"></span></div>
+            <div class="login_box">
+    			<span class="login_icon icon2"></span>
+				<input class="login_in passbefore" type="text" value="" maxlength="16" readonly="true" placeholder="请输入登录密码" onclick="pass(this)"/>
+    			<input class="login_in password" type="text" name="password" id="password" maxLength="16" placeholder="请输入登录密码" style="display:none;">
+    		</div>
+            <div class="login_error"><span class="login_icon icon3"></span><span class="password_error"></span></div>
+    
+            <input id="login_submit" class="login_submit" type="button" value="登录">
+    	</form>
+    	<div class="login_nav">
+    		<a href="$!env.getWebURL('micro2.0/user/register_first_new_index?qianbao=')$!qianbao&agentViewFlag=$!agentViewFlag" class="login_register">免费注册</a>
+    		<a class="login_forget" href="$!env.getWebURL('micro2.0/user/forget_password_first?qianbao=qianbao')&agentViewFlag=$!agentViewFlag" title="">忘记密码?</a>
+    	</div>
+    </div>
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/user/login_index")
+<script >
+	$("#logo_qianbao").click(function(){
+		location.href = $("#APP_ROOT_PATH").val() + "/micro2.0/index?qianbao=qianbao&agentViewFlag="+$('#agentViewFlag').val();
+	});
+	//兼容安卓手机自动获取密码问题
+    function pass(obj){
+    	$(obj).hide().next().show().attr({"type":"password"}).focus();
+    }
+</script>
+</body>
+#Html("end")

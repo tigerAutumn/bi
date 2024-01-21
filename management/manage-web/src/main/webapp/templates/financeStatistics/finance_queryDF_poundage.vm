@@ -1,0 +1,142 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+	
+<div class="page unitBox">	
+	<div class="pageHeader">
+    	<form id="generalForm" method="post"  rel="pagerForm" action="$env.getWebURL('/financeStatistics/queryDFpoundage.htm')" onsubmit="return navTabSearch(this);">
+        	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+        	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+        	<div class="searchBar">
+        		<table class="searchContent">
+        			<tbody>
+        				<tr>
+            				<td >
+            					<label>姓名：</label><input type="text" name="userName" maxlength="20" value="$!req.userName" style="float:left;width:80px;" class="clear"/>
+                            </td>
+            				<td>
+            					<label>手机号：</label><input type="text" name="userMobile" maxlength="20" value="$!req.userMobile" style="float:left;width:80px;" class="clear"/>
+            				</td>
+							<td >
+            					<label>客户类型：</label>
+								<select name="userType" class="valid">
+            						<option value="" #if("$!req.userType"=="") selected  #end>全部</option>
+            						<option value="BGW" #if("$!req.userType"=="BGW") selected  #end>币港湾</option>
+                    				<option value="ZAN" #if("$!req.userType"=="ZAN") selected  #end>赞分期</option>
+                    			</select>
+                            </td>
+            				<td>
+            					<label>手续费类型：</label>
+								<select name="payType" class="valid">
+            						<option value="" #if("$!req.payType"=="") selected  #end>全部</option>
+            						<option value="IN" #if("$!req.payType"=="IN") selected  #end>充值</option>
+                    				<option value="OUT" #if("$!req.payType"=="OUT") selected  #end>提现</option>
+                    			</select>
+            				</td>
+            				
+                        </tr>
+						<tr height="35px;">
+							<td>
+            					<label>生成日期：</label><input type="text" readonly="true" class="date textInput readonly" name="beginTime" id="beginTime" value="$!date.formatYYYYMMDD($!req.beginTime)" />
+            				</td>
+            				<td>
+            					到&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type="text" readonly="true" class="date textInput readonly" name="overTime" id="overTime" value="$!date.formatYYYYMMDD($!req.overTime)" />
+            				</td>
+							<td>
+            					<div class="buttonActive">
+            						<div class="buttonContent">
+            							<button onclick="searchFunction()" type="button">查询</button>
+            						</div>
+            					</div>
+                            </td>
+							<td>
+								<div class="buttonActive">
+            						<div class="buttonContent">
+										<button  onclick="exportFun()" type="button">导出Excel</button>
+            						</div>
+            					</div>
+							</td>
+                       </tr>
+                       <tr height="35px;">
+                            <td>代付手续费总额：$!money.format($!amount) 元</td>
+    						<td></td>
+    						<td></td>
+    						<td></td>
+    						<td></td>
+					   </tr>
+					   
+        			</tbody>
+    			</table>
+    		</div>
+        </form>
+	</div>
+	<div class="pageContent">
+		<table class="table" width="97%" layoutH="120">
+    		<thead>
+    			<tr>
+					<th width="7%">序号</th>
+    				<th width="10%">单据编号</th>
+    				<th width="10%">受让客户姓名</th>
+    				<th width="10%">受让客户代码</th>
+					<th width="10%">转让客户代码</th>
+    				<th width="10%">应付转让客户本息</th>
+					<th width="10%">支付日期</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+				#set($num = 1)
+    			#foreach($grid in $list)
+    			<tr target="sid_user" rel="1">
+    				<td>$num</td>
+					<td><lable>$grid.outLoanRelationId</lable>0000$grid.inLoanRelationId</td>
+					<td>$grid.userName</td>
+					<td>3.$grid.inUserId</td>
+					<td>3.$grid.outUserId</td>
+					<td>$!money.format($!grid.inAmount)</td>
+					<td>$!date.formatYYYYMMDD($!grid.createTime)</td>
+					#set($num = $num+1)
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+    			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!count条</span>
+    	</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+    </div>
+</div>
+	
+
+<script>  
+	function searchFunction(){
+    	var startTime = $("#beginTime").val();
+    	var endTime = $("#overTime").val();
+    	if(startTime && endTime && startTime>endTime){
+    		alertMsg.error("开始时间不能晚于结束时间！");
+    		return false;
+    	}
+		var url = $("#APP_ROOT_PATH").val() + "/financeStatistics/queryDFpoundage.htm";
+		$("#generalForm").attr("action",url);
+		$("#generalForm").attr("onsubmit","return navTabSearch(this);");
+    	$("#generalForm").submit();
+    }
+	
+	function exportFun(){
+    	var url = $("#APP_ROOT_PATH").val() + "/financeStatistics/queryDFpoundageExport.htm";
+    	$("#generalForm").attr("action",url);
+    	$("#generalForm").attr("onsubmit","");
+    	$("#generalForm").submit();
+	}
+	
+</script> 

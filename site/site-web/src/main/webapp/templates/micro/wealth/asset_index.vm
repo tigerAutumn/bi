@@ -1,0 +1,62 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾理财官网_安心可靠互联网金融投资理财平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#Head("end")
+	
+<body>
+	<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$!env.getWebURL('')" />
+    <!-- website wrapper starts -->
+    <div class="websiteWrapper"> 
+      
+      #Header("账户总资产", "", "", "micro/wealth/index")
+      
+      <!-- notification starts -->
+      
+      <!-- notification ends --> 
+      
+      <!--tab-s-->
+      
+      <div class="newrow">
+		<br/>
+		<h1 style="color:black">账户总资产<span style="color:#fa5c5b"> ￥ $!money.format($!resMsg.assetAmount) 元</span></h1>
+        <!-- page content wrapper starts -->
+        <div class="newbox" id="slider1">
+    	    <div class="box">
+                <a href="javascript:void(0)">
+					<div class="ll" style="background:url()">
+						投资本金<span>￥ $!money.format($!resMsg.regularAmount)</span>
+					</div>
+				</a>
+                <a href="$!env.getWebURL('')/micro/wealth/interest_detail?interest=$!resMsg.investEarnings"><div class="ll">投资收益<span>￥ $!money.format($!resMsg.investEarnings)</span></div></a>
+            </div>
+       
+        </div>
+		<div class="newbox" id="slider1">
+    	    <div class="box">
+				<a href="$!env.getWebURL('')/micro/wealth/bonus_detail?bonus=$!resMsg.bonus&withdrawFlag=1"><div class="ll">推荐奖励<span>￥ $!money.format($!resMsg.bonus)</span></div></a>
+				<a href="javascript:bonusWithdrawIndex($!resMsg.canWithdraw)"><div class="ll">
+					#if("$!withdrawPointFlag" == "true")
+						<span class="label2" style="padding-right:0;float:left;"></span>
+					#end
+						可提现奖励金<span>￥ $!money.format($!resMsg.canWithdraw)</span></div></a>
+			</div>
+       
+        </div>
+        <!-- page content wrapper ends --> 
+        
+		<br>
+		<br>
+		<br>
+		<br>
+      </div>
+
+	  <!--tab-e-->
+      
+      #Footer("4")
+      
+    </div>
+	<!-- website wrapper ends -->
+	#LoadJS("resources/micro/scripts/wealth/withdraw")
+</body>
+
+#Html("end")

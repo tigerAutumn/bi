@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsCompanyCustomerMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsCompanyCustomer" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="customer_code" property="customerCode" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, customer_code, user_id, customer_name, parent_id, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsCompanyCustomerExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_company_customer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_company_customer
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_company_customer
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsCompanyCustomerExample" >
+    delete from bs_company_customer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsCompanyCustomer" >
+    insert into bs_company_customer (id, customer_code, user_id, 
+      customer_name, parent_id, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{customerCode,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{customerName,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsCompanyCustomer" >
+    insert into bs_company_customer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="customerCode != null" >
+        customer_code,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="customerName != null" >
+        customer_name,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="customerCode != null" >
+        #{customerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="customerName != null" >
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsCompanyCustomerExample" resultType="java.lang.Integer" >
+    select count(*) from bs_company_customer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_company_customer
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.customerCode != null" >
+        customer_code = #{record.customerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.customerName != null" >
+        customer_name = #{record.customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentId != null" >
+        parent_id = #{record.parentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_company_customer
+    set id = #{record.id,jdbcType=INTEGER},
+      customer_code = #{record.customerCode,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      customer_name = #{record.customerName,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsCompanyCustomer" >
+    update bs_company_customer
+    <set >
+      <if test="customerCode != null" >
+        customer_code = #{customerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="customerName != null" >
+        customer_name = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsCompanyCustomer" >
+    update bs_company_customer
+    set customer_code = #{customerCode,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      customer_name = #{customerName,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+	<select id="countCompanyCustomer" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		select count(*) from (
+		SELECT * FROM (
+				SELECT
+					a.*, b.customer_name AS parent_name,
+					CASE WHEN (SELECT COUNT(c.id) FROM bs_company_customer c WHERE c.parent_id = a.id) > 0 THEN "FALSE"
+					ELSE "TRUE"  END customer_detail
+				FROM
+					bs_company_customer a 
+				LEFT JOIN bs_company_customer b ON a.parent_id = b.id
+				union
+				SELECT 
+				a.id,
+				concat('3.',a.id) customer_code,
+				a.id user_id,
+				a.user_name customer_name,
+				'' parent_id,
+				a.register_time create_time,
+				a.logout_time update_time,
+				'投资客户' parent_name,
+				"TRUE" customer_detail
+				FROM 
+				bs_user a
+		) aa
+		<where>
+	     	<if test="customerName != null and customerName != ''" >
+		   		AND aa.customer_name LIKE concat(concat('%', #{customerName}),'%')
+		 	</if>
+		 	<if test="customerCode != null and customerCode != ''" >
+		   		AND aa.customer_code LIKE concat(concat('%', #{customerCode}),'%')
+		 	</if>
+		 	<if test="parentName != null and parentName != ''" >
+		   		AND aa.customer_name LIKE concat(concat('%', #{parentName}),'%')
+		 	</if>
+		 	<if test="startTime != null and startTime != ''"> 
+				<![CDATA[
+					AND aa.create_time >= #{startTime}
+				]]>
+			</if>
+			<if test="endTime != null and endTime != ''"> 
+				<![CDATA[
+					AND aa.create_time <= #{endTime}
+				]]>
+			</if>
+     	</where>
+     ) bb	
+	</select>
+	<resultMap id="BsCompanyCustomerVOMap" type="com.pinting.business.model.vo.CompanyCustomerVO" extends="BaseResultMap">
+		<result column="parent_name" property="parentName" jdbcType="VARCHAR" />
+		<result column="customer_detail" property="customerDetail" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="selectCompanyCustomer" resultMap="BsCompanyCustomerVOMap" parameterType="java.util.Map" >
+		SELECT * FROM (
+				SELECT * FROM (
+					SELECT
+						a.*, b.customer_name AS parent_name,
+						CASE WHEN (SELECT COUNT(c.id) FROM bs_company_customer c WHERE c.parent_id = a.id) > 0 THEN "FALSE"
+						ELSE "TRUE"  END customer_detail
+					FROM
+						bs_company_customer a 
+					LEFT JOIN bs_company_customer b ON a.parent_id = b.id ORDER BY a.create_time desc ) p1
+
+				union
+				SELECT * FROM (
+					SELECT 
+					a.id,
+					concat('3.',a.id) customer_code,
+					a.id user_id,
+					a.user_name customer_name,
+					'' parent_id,
+					a.register_time create_time,
+					a.register_time update_time,
+					'投资客户' parent_name,
+					"TRUE" customer_detail
+					FROM 
+					bs_user a ORDER BY a.register_time desc) p2
+		) aa
+		<where>
+	     	<if test="customerName != null and customerName != ''" >
+		   		AND aa.customer_name LIKE concat(concat('%', #{customerName}),'%')
+		 	</if>
+		 	<if test="customerCode != null and customerCode != ''" >
+		   		AND aa.customer_code LIKE concat(concat('%', #{customerCode}),'%')
+		 	</if>
+		 	<if test="parentName != null and parentName != ''" >
+		   		AND aa.customer_name LIKE concat(concat('%', #{parentName}),'%')
+		 	</if>
+		 	<if test="startTime != null and startTime != ''"> 
+				<![CDATA[
+					AND aa.create_time >= #{startTime}
+				]]>
+			</if>
+			<if test="endTime != null and endTime != ''"> 
+				<![CDATA[
+					AND aa.create_time <= #{endTime}
+				]]>
+			</if>
+     	</where>
+     	limit #{start},#{numPerPage}
+ 	</select>
+ 	
+ 	
+ 	<select id="selectCompanyCustomerExport" resultMap="BsCompanyCustomerVOMap" parameterType="java.util.Map" >
+		SELECT * FROM (
+				SELECT * FROM (
+					SELECT
+						a.*, b.customer_name AS parent_name,
+						CASE WHEN (SELECT COUNT(c.id) FROM bs_company_customer c WHERE c.parent_id = a.id) > 0 THEN "FALSE"
+						ELSE "TRUE"  END customer_detail
+					FROM
+						bs_company_customer a 
+					LEFT JOIN bs_company_customer b ON a.parent_id = b.id ORDER BY a.create_time desc ) p1
+
+				union
+				SELECT * FROM (
+					SELECT 
+					a.id,
+					concat('3.',a.id) customer_code,
+					a.id user_id,
+					a.user_name customer_name,
+					'' parent_id,
+					a.register_time create_time,
+					a.register_time update_time,
+					'投资客户' parent_name,
+					"TRUE" customer_detail
+					FROM 
+					bs_user a ORDER BY a.register_time desc) p2
+		) aa
+		<where>
+	     	<if test="customerName != null and customerName != ''" >
+		   		AND aa.customer_name LIKE concat(concat('%', #{customerName}),'%')
+		 	</if>
+		 	<if test="customerCode != null and customerCode != ''" >
+		   		AND aa.customer_code LIKE concat(concat('%', #{customerCode}),'%')
+		 	</if>
+		 	<if test="parentName != null and parentName != ''" >
+		   		AND aa.customer_name LIKE concat(concat('%', #{parentName}),'%')
+		 	</if>
+		 	<if test="startTime != null and startTime != ''"> 
+				<![CDATA[
+					AND aa.create_time >= #{startTime}
+				]]>
+			</if>
+			<if test="endTime != null and endTime != ''"> 
+				<![CDATA[
+					AND aa.create_time <= #{endTime}
+				]]>
+			</if>
+     	</where>
+
+ 	</select>
+ 	
+ 	
+ 	
+ 		<select id="countCompanyCustomerBusiness" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		select count(*) from (
+			SELECT * FROM (
+				SELECT 
+					a.id,
+					concat('3.', a.id) customer_code,
+					a.id user_id,
+					a.user_name customer_name,
+					'' parent_id,
+					b.bind_time  create_time,
+					b.bind_time  update_time,
+					'投资客户' parent_name,
+					"TRUE" customer_detail
+				FROM 
+				bs_bank_card b,
+				bs_user a
+				WHERE b.user_id = a.id and
+				b.`status` = '1' AND b.is_first = '1'
+			) aa
+			<where>
+		     	<if test="customerName != null and customerName != ''" >
+			   		AND aa.customer_name LIKE concat(concat('%', #{customerName}),'%')
+			 	</if>
+			 	<if test="customerCode != null and customerCode != ''" >
+			   		AND aa.customer_code LIKE concat(concat('%', #{customerCode}),'%')
+			 	</if>
+			 	<if test="parentName != null and parentName != ''" >
+			   		AND aa.customer_name LIKE concat(concat('%', #{parentName}),'%')
+			 	</if>
+			 	<if test="startTime != null and startTime != ''"> 
+					<![CDATA[
+						AND aa.create_time >= #{startTime}
+					]]>
+				</if>
+				<if test="endTime != null and endTime != ''"> 
+					<![CDATA[
+						AND aa.create_time <= #{endTime}
+					]]>
+				</if>
+	     	</where>
+     ) bb	
+	</select>
+	<select id="selectCompanyCustomerBusiness" resultMap="BsCompanyCustomerVOMap" parameterType="java.util.Map" >
+		SELECT * FROM (
+				SELECT 
+					a.id,
+					concat('3.', a.id) customer_code,
+					a.id user_id,
+					a.user_name customer_name,
+					'' parent_id,
+					b.bind_time  create_time,
+					b.bind_time  update_time,
+					'投资客户' parent_name,
+					"TRUE" customer_detail
+				FROM 
+				bs_bank_card b,
+				bs_user a
+				WHERE b.user_id = a.id and
+				b.`status` = '1' AND b.is_first = '1'
+		) aa
+		<where>
+	     	<if test="customerName != null and customerName != ''" >
+		   		AND aa.customer_name LIKE concat(concat('%', #{customerName}),'%')
+		 	</if>
+		 	<if test="customerCode != null and customerCode != ''" >
+		   		AND aa.customer_code LIKE concat(concat('%', #{customerCode}),'%')
+		 	</if>
+		 	<if test="parentName != null and parentName != ''" >
+		   		AND aa.customer_name LIKE concat(concat('%', #{parentName}),'%')
+		 	</if>
+		 	<if test="startTime != null and startTime != ''"> 
+				<![CDATA[
+					AND aa.create_time >= #{startTime}
+				]]>
+			</if>
+			<if test="endTime != null and endTime != ''"> 
+				<![CDATA[
+					AND aa.create_time <= #{endTime}
+				]]>
+			</if>
+     	</where>
+     	limit #{start},#{numPerPage}
+ 	</select>
+ 	
+ 	
+	<select id="selectCompanyCustomerBusinessExport" resultMap="BsCompanyCustomerVOMap" parameterType="java.util.Map" >
+		SELECT * FROM (
+				SELECT 
+					a.id,
+					concat('3.', a.id) customer_code,
+					a.id user_id,
+					a.user_name customer_name,
+					'' parent_id,
+					b.bind_time  create_time,
+					b.bind_time  update_time,
+					'投资客户' parent_name,
+					"TRUE" customer_detail
+				FROM 
+				bs_bank_card b,
+				bs_user a
+				WHERE b.user_id = a.id and
+				b.`status` = '1' AND b.is_first = '1'
+		) aa
+		<where>
+	     	<if test="customerName != null and customerName != ''" >
+		   		AND aa.customer_name LIKE concat(concat('%', #{customerName}),'%')
+		 	</if>
+		 	<if test="customerCode != null and customerCode != ''" >
+		   		AND aa.customer_code LIKE concat(concat('%', #{customerCode}),'%')
+		 	</if>
+		 	<if test="parentName != null and parentName != ''" >
+		   		AND aa.customer_name LIKE concat(concat('%', #{parentName}),'%')
+		 	</if>
+		 	<if test="startTime != null and startTime != ''"> 
+				<![CDATA[
+					AND aa.create_time >= #{startTime}
+				]]>
+			</if>
+			<if test="endTime != null and endTime != ''"> 
+				<![CDATA[
+					AND aa.create_time <= #{endTime}
+				]]>
+			</if>
+     	</where>
+ 	</select>
+ 	
+</mapper>

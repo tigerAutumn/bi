@@ -1,0 +1,458 @@
+#Html("begin")
+#GenHead("begin","我的账户,币港湾,币港湾官网","欢迎来到币港湾！币港湾官网为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("我的账户【币港湾官网】")
+#LoadGenCSS("/resources/gen2.0/styles/assets/assets_public")
+#GenHead("end")
+<body id="body">
+<!--header -s-->
+    #Gen2Header("assets")
+<!--header -e-->
+<input type="hidden" id="user_balance" value="$!resMsg.balance" />
+<input type="hidden" id="withdraw" value="$!withdraw" />
+<input type="hidden" id="recharge" value="$!recharge" />
+<input type="hidden" id="safe" value="$!safe" />
+<input type="hidden" id="invite" value="$!invite" />
+<input type="hidden" id="selfbank" value="$!selfbank" />
+<input type="hidden" id="accountOverview" value="$!accountOverview">
+<input type="hidden" id="redPacket" value="$!redPacket">
+<input type="hidden" id="investManage" value="$!investManage">
+<input type="hidden" id="repayPlan" value="$!repayPlan">
+<input type="hidden" id="transactionDetails" value="$!transactionDetails">
+<input type="hidden" id="securityCenter" value="$!securityCenter">
+<input type="hidden" id="pageFlag" value="$!pageFlag">
+<div class="content">
+    <div class="con">
+        <div class="con_left2">
+            <p class="con_title"><span class="assets_icon1 assets_icon"></span>我的账户</p>
+            <ul class="con_left_nav">
+                <li class="leftbg li_style_index">
+                    <span class="con_style"></span>账户总览
+                </li>
+                <li class="invest_manage">
+                    <span class="con_style"></span>计划管理
+                </li>
+                <li class="payment_plant">
+                    <span class="con_style"></span>回款计划
+                </li>
+                <li class="item_ft">
+                    <span class="con_style"></span>交易明细
+                </li>
+                <li class="my_red_packet">
+                    <span class="con_style"></span>优惠券（<span class="my_red_packet_number">$!resMsg.redPacketNum</span>）
+                </li>
+                <li class="invite_friends">
+                    <span class="con_style"></span>邀请好友<span class="con_hot assets_icon"></span>
+                </li>
+            </ul>
+            <p class="con_title"><span class="assets_icon2 assets_icon"></span>安全中心</p>
+            <ul class="con_left_nav">
+                <li class="safe_center"><span class="con_style"></span>密码管理</li>
+                <li class="questionnaire">
+                    <span class="con_style"></span>
+                    风险测评
+                    #if($!questionResMsg.hasQuestionnaire==1)
+                    #else
+                        <span class="ceping_none"></span>
+                    #end
+                </li>
+                <li class="my_bank_card"><span class="con_style"></span>银行卡管理</li>
+                #if($!isShowReturnPath == 'yes')
+                    <li class="return_path"><span class="con_style"></span>回款路径</li>
+                #end
+            </ul>
+        </div>
+        <div class="con_right">
+            <ul class="con_right_nav">
+                <li id="right_content">
+                    <div class="rig2_1" >
+                        <dl>
+                            <dt class="rig2_top">
+                            <div class="overview_title">
+                                <span class="con_phone overview_icon"></span>
+                                <em class="phone_number">$!resMsg.mobile</em>
+                                <div class="con_icon">
+                                    #if($!hfDepGuideInfo.isOpened == "NO_BIND_CARD")
+                                        <!-- 未绑卡 -->
+                                        <a class="con_icon1 overview_icon" href="$!env.get('gen.server.web')/gen2.0/bankcard/index">
+                                            <div class="assets-hello">
+                                                <span>您尚未开通恒丰银行存管账户</span>
+                                                <span class="assets-hello_jiao overview_icon"></span>
+                                            </div>
+                                        </a>
+                                    #elseif($!hfDepGuideInfo.isOpened == "FAILED_BIND_HF")
+                                        <!-- 恒丰批量开户失败 -->
+                                        <a class="con_icon1 overview_icon" href="$!env.get('gen.server.web')/gen2.0/bankcard/index">
+                                            <div class="assets-hello">
+                                                <span>您尚未开通恒丰银行存管账户</span>
+                                                <span class="assets-hello_jiao overview_icon"></span>
+                                            </div>
+                                        </a>
+                                    #elseif($!hfDepGuideInfo.isOpened == "WAIT_ACTIVATE")
+                                        <!-- 待激活 -->
+                                        <a class="con_icon1_index overview_icon" href="$!env.get('gen.server.web')/gen2.0/bankcard/activate/index">
+                                            <div class="assets-hello">
+                                                <span>您已开通恒丰银行存管账户</span>
+                                                <span class="assets-hello_jiao overview_icon"></span>
+                                            </div>
+                                        </a>
+                                    #elseif($!hfDepGuideInfo.isOpened == "OPEN")
+                                        <!-- 已激活 -->
+                                        <a class="con_icon1_index overview_icon" href="javascript:void(0)">
+                                            <div class="assets-hello">
+                                                <span>您已开通恒丰银行存管账户</span>
+                                                <span class="assets-hello_jiao overview_icon"></span>
+                                            </div>
+                                        </a>
+                                    #end
+                                    #if($!hfDepGuideInfo.isBindName != 'YES')
+                                        <a class="con_icon2 overview_icon" href="$!env.get('gen.server.web')/gen2.0/bankcard/index">
+                                            <div class="assets-hello">
+                                                <span>尚未实名认证</span>
+                                                <span class="assets-hello_jiao overview_icon"></span>
+                                            </div>
+                                        </a>
+                                    #else
+                                        <a class="con_icon2_index overview_icon">
+                                            <div class="assets-hello">
+                                                <span>您已实名认证</span>
+                                                <span class="assets-hello_jiao overview_icon"></span>
+                                            </div>
+                                        </a>
+                                    #end
+                                    #if($!resMsg.havePayPsd == "YES")
+                                        <a class="con_icon3_index overview_icon">
+                                            <div class="assets-hello">
+                                                <span>您已设置交易密码</span>
+                                                <span class="assets-hello_jiao overview_icon"></span>
+                                            </div>
+                                        </a>
+                                    #else
+                                        <a class="con_icon3 overview_icon set_pay_password" href="javascript:void(0)">
+                                            <div class="assets-hello">
+                                                <span>尚未设置交易密码</span>
+                                                <span class="assets-hello_jiao overview_icon"></span>
+                                            </div>
+                                        </a>
+                                    #end
+                                    #if($!questionResMsg.hasQuestionnaire==1)
+                                        #if($!questionResMsg.isExpired==1)
+                                            <a class="con_icon4_index overview_icon go_questionnaire" href="javascript:void(0)">
+                                                <div class="assets-hello">
+                                                    <span class="con_wenjuan"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/assets/questionnaire/question_overtime.png" alt="">测评已过期，点击重新测评</span>
+                                                    <span class="assets-hello_jiao overview_icon"></span>
+                                                </div>
+                                            </a>
+                                        #else
+                                            <a class="con_icon4_index overview_icon go_questionnaire">
+                                                <div class="assets-hello">
+                                                        <span class="con_wenjuan">
+                                                        <img src="$!env.get('gen.server.web')/resources/gen2.0/images/assets/questionnaire/question_type.png" alt="">
+                                                            #if($!questionResMsg.assessType == "conservative")
+                                                                保守型
+                                                            #elseif($!questionResMsg.assessType == "steady")
+                                                                稳健型
+                                                            #elseif($!questionResMsg.assessType == "balanced")
+                                                                平衡型
+                                                            #elseif($!questionResMsg.assessType == "aggressive")
+                                                                进取型
+                                                            #elseif($!questionResMsg.assessType == "radical")
+                                                                激进型
+                                                            #end
+                                                    	</span>
+                                                    <span class="assets-hello_jiao overview_icon"></span>
+                                                </div>
+                                            </a>
+                                        #end
+                                    #else
+                                        <a class="con_icon4 overview_icon go_questionnaire" href="javascript:void(0)">
+                                            <div class="assets-hello">
+                                                <span class="con_wenjuan" ><img src="$!env.get('gen.server.web')/resources/gen2.0/images/assets/questionnaire/question_none.png" alt="">您尚未进行风险承受能力测评</span>
+                                                <span class="assets-hello_jiao overview_icon"></span>
+                                            </div>
+                                        </a>
+                                    #end
+                                </div>
+                                <div class="con_bar_box">安全等级：<span class="con_bar"><i class="con_barline" style="width: $!{percent}%;"></i></span>
+                                    #if($!{percent} == 20)
+                                        低
+                                    #elseif($!{percent} == 50)
+                                        中
+                                    #elseif($!{percent} == 100)
+                                        高
+                                    #end
+                                </div>
+                                <div class="con_btn">
+                                    <button class="recharge">充值</button>
+                                    <button class="butom-iput withdraw">提现</button>
+                                </div>
+                            </div>
+                            #if($!hfDepGuideInfo.accountType == "DEP")
+                                <!-- 存管户 -->
+                                <div class="con_account_line">
+                                    <div class="con_account_one help_ifo">
+                                        <div class="con_account_title">总资产（元）<span class="assets_help">?</span>
+                                            <div class="help_text" style="width: 350px;left: 0;">
+                                                <ul class="assets_detail" style="text-align: left;">
+													<li>加入本金：$!money.format($!resMsg.regularAmount)元</li>
+                                                    <li>产品收益：$!money.format($!resMsg.investEarnings)元</li>
+                                                    <li>存管账户余额：$!money.format($!resMsg.depBalance)元(处理中金额：$!money.format($!resMsg.depFreezeBalance)元)</li>
+                                                    <li>我的奖励：$!money.format($!resMsg.jljBalance)元</li>
+                                                </ul>
+                                                <span class="assets-hello_jiao overview_icon" style="left: 172px;"></span>
+                                            </div>
+                                        </div>
+                                        <div class="con_account_money">$!money.format($!resMsg.assetAmount)</div>
+                                    </div>
+                                    <div class="con_account_one">
+                                        <div class="con_account_title">存管账户余额（元）</div>
+                                        <div class="con_account_money">$!money.format($!resMsg.depAvailableBalance)</div>
+                                    </div>
+                                    <div class="con_account_two">
+                                        <div class="con_account_title">当日收益（元）</div>
+                                        <div class="con_account_money">$!money.format($!resMsg.dayInvestEarnings)</div>
+                                    </div>
+                                </div>
+                                <div class="con_account">
+                                    <div class="con_account_three">
+                                        <div class="con_account_title">累计产品收益（元）</div>
+                                        <div class="con_account_money">$!money.format($!resMsg.totalInvestEarnings)</div>
+                                    </div>
+                                    <div class="con_account_four">
+                                        <div class="con_account_title">累计奖励金额（元）</div>
+                                        <div class="con_account_money">$!money.format($!resMsg.totalBonus)</div>
+                                    </div>
+                                </div>
+                            #elseif($!hfDepGuideInfo.accountType == "SIMPLE")
+                                <!-- 普通账户 -->
+                                <div class="con_account_line">
+                                    <div class="con_account_one help_ifo">
+                                        <div class="con_account_title">总资产（元）<span class="assets_help">?</span>
+                                            <div class="help_text" style="width: 350px;left: 0; top: -90px;;">
+                                                <ul class="assets_detail" style="text-align: left;">
+                                                    <li>加入本金：$!money.format($!resMsg.regularAmount)元</li>
+                                                    <li>产品收益：$!money.format($!resMsg.investEarnings)元</li>
+                                                    <li>普通账户余额：$!money.format($!resMsg.balance)元(处理中金额：$!money.format($!resMsg.freezeBalance)元)</li>
+                                                    <li>我的奖励：$!money.format($!resMsg.jljBalance)元</li>
+                                                </ul>
+                                                <span class="assets-hello_jiao overview_icon" style="left: 172px;"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="con_account_money">$!money.format($!resMsg.assetAmount)</div>
+                                    </div>
+                                    <div class="con_account_one help_ifo">
+                                        <div class="con_account_title">普通账户余额（元）</div>
+                                        <div class="help_text">
+                                                <span>
+                                                    由于已全面对接恒丰银行存管系统，普通账户内的余额只提供提现服务，您可将资金提现后再充值到恒丰银行个人存管账户。                                                </span>
+                                            <span class="assets-hello_jiao overview_icon"></span>
+                                        </div>
+                                        <div class="con_account_money">$!money.format($!resMsg.availableBalance)</div>
+                                    </div>
+                                    <div class="con_account_two">
+                                        <div class="con_account_title">当日收益（元）</div>
+                                        <div class="con_account_money">$!money.format($!resMsg.dayInvestEarnings)</div>
+                                    </div>
+                                </div>
+                                <div class="con_account">
+                                    <div class="con_account_three">
+                                        <div class="con_account_title">累计产品收益（元）</div>
+                                        <div class="con_account_money">$!money.format($!resMsg.totalInvestEarnings)</div>
+                                    </div>
+                                    <div class="con_account_four">
+                                        <div class="con_account_title">累计奖励金额（元）</div>
+                                        <div class="con_account_money">$!money.format($!resMsg.totalBonus)</div>
+                                    </div>
+                                </div>
+                            #elseif($!hfDepGuideInfo.accountType == "DOUBLE")
+                                <!-- 双帐户 -->
+                                <div class="con_account_line">
+                                    <div class="con_account_one help_ifo">
+                                        <div class="con_account_title">总资产（元）<span class="assets_help">?</span>
+                                            <div class="help_text" style="width: 350px;left: 0;top: -105px;">
+                                                <ul class="assets_detail" style="text-align: left;">
+                                                    <li>加入本金：$!money.format($!resMsg.regularAmount)元</li>
+                                                    <li>产品收益：$!money.format($!resMsg.investEarnings)元</li>
+                                                    <li>存管账户余额：$!money.format($!resMsg.depBalance)元(处理中金额：$!money.format($!resMsg.depFreezeBalance)元)</li>
+                                                    <li>普通账户余额：$!money.format($!resMsg.balance)元(处理中金额：$!money.format($!resMsg.freezeBalance)元)</li>
+                                                    <li>我的奖励：$!money.format($!resMsg.jljBalance)元</li>
+                                                </ul>
+                                                <span class="assets-hello_jiao overview_icon" style="left: 172px;"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="con_account_money">$!money.format($!resMsg.assetAmount)</div>
+                                    </div>
+                                    <div class="con_account_one">
+                                        <div class="con_account_title">存管账户余额（元）</div>
+                                        <div class="con_account_money">$!money.format($!resMsg.depAvailableBalance)</div>
+                                    </div>
+                                    <div class="con_account_two help_ifo">
+                                        <div class="con_account_title">
+                                            普通账户余额（元）<i class="color_font">*</i>
+                                            <div class="help_text" style="">
+                                                <span>
+                                                    由于已全面对接恒丰银行存管系统，普通账户内的余额只提供提现服务，您可将资金提现后再充值到恒丰银行个人存管账户。
+                                                </span>
+                                                <span class="assets-hello_jiao overview_icon"></span>
+                                            </div>
+                                        </div>
+                                        <div class="con_account_money">$!money.format($!resMsg.availableBalance)</div>
+                                    </div>
+                                </div>
+                                <div class="con_account">
+                                    <div class="con_account_one">
+                                        <div class="con_account_title">当日收益（元）</div>
+                                        <div class="con_account_money">$!money.format($!resMsg.dayInvestEarnings)</div>
+                                    </div>
+                                    <div class="con_account_one">
+                                        <div class="con_account_title">累计产品收益（元）</div>
+                                        <div class="con_account_money">$!money.format($!resMsg.totalInvestEarnings)</div>
+                                    </div>
+                                    <div class="con_account_two">
+                                        <div class="con_account_title">累计奖励金额（元）</div>
+                                        <div class="con_account_money">$!money.format($!resMsg.totalBonus)</div>
+                                    </div>
+                                </div>
+                            #end
+                            </dt>
+                            <dt><div class="con_right_title"><span class="con_right_titleline"></span>产品分布</div></dt>
+                        ## 主内容s
+                            <dt class="rig2_bottom rig_shk" id="z_project_name">
+                            <div class="rig2_butb">
+                                <div id="chartS"></div>
+                                <input type="hidden" id="gwppRate" value="$string.replace($!money.format($!gwInvestRes.proportionRate),".00","")" />
+                                <input type="hidden" id="zanppRate" value="$string.replace($!money.format($!zanInvestRes.proportionRate),".00","")" />
+                                <ul class="chart_txt">
+                                    <li class="invest_manage_gw">
+											<span >
+												<span class="chart_color1"></span>
+												<span class="chart_plan">定期类计划<i class="txt_padding">$string.replace($!money.format($!gwInvestRes.proportionRate),".00","")%</i></span>
+												<span class="chart_plan">持有项目<i class="txt_padding">$!gwInvestRes.investNum</i></span>
+												<span class="chart_plan">持有资产<i class="txt_padding">$!money.format($!gwInvestRes.investAmount)</i></span>
+											</span>
+                                    </li>
+                                    <li class="invest_manage_zan no_border">
+											<span >
+												<span class="chart_color2"></span>
+												<span class="chart_plan">分期类计划<i class="txt_padding">$string.replace($!money.format($!zanInvestRes.proportionRate),".00","")%</i></span>
+												<span class="chart_plan">持有项目<i class="txt_padding">$!zanInvestRes.investNum</i></span>
+												<span class="chart_plan">持有资产<i class="txt_padding">$!money.format($!zanInvestRes.investAmount)</i></span>
+											</span>
+                                    </li>
+                                </ul>
+                                <div class="rig2_butp_padding">
+                                    <a href="$!env.get('gen.server.web')/gen2.0/regular/list" class="chart_btn">立即加入</a>
+                                </div>
+                            </div>
+                            </dt>
+                        </dl>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function clickme(){
+            /*箭头开关*/
+            $('#close,#close1').click(function(){
+                $('#close').toggle();
+                $('#close1').toggle();
+                $('.con_mr').toggle();
+            });
+            $('#close2,#close3').click(function(){
+                $('#close2').toggle();
+                $('#close3').toggle();
+                $('.con_mrr').toggle();
+            });
+            $('.yuan').click(function(){
+                $(this).css('background','url($!env.get('gen.server.web')/resources/gen2.0/images/duih.png)');
+                $(this).css('background-repeat','no-repeat');
+                $(this).css('border-color','#fff');
+            })
+        })
+    </script>
+
+    <!--footer -s-->
+    #Gen2Footer()
+    <!--footer -e-->
+    <!--弹窗背景-->
+    <div class="body_bg"></div>
+    <!-- 回款路径提示框 S-->
+    <div id="alert_listthree_one" class="alert_listthree">
+        <h3 class="alert_listthree_h3">
+            <span class="title">温馨提示</span>
+            <a class="alert_listthree_btn" href="javascript:void(0);" title="" onclick="">
+                <img src="https://www.bigangwan.com/resources/gen2.0/images/close_right.png">
+            </a>
+        </h3>
+        <div class="alert_listthree_txt">
+            <div class="alert_listthree_contitle">
+                <img src="$!env.get('gen.server.web')/resources/gen2.0/images/regular/balance_buy/tan1.png"/>
+                2017年1月1日起取消回款到银行卡设置，资金将自动回款到账户余额
+            </div>
+        </div>
+        <div class="alert_listthree_btnd">
+            <div class="alert_listthree_btnl"  id = "return_path_alert_ok">知道了</div>
+        </div>
+    </div>
+    #if($!hfDepGuideInfo.isOpened == "NO_BIND_CARD")
+        <!-- 未绑卡 -->
+        <div class="HF-bank">
+            <span class="HF-close"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/regular/HF-close.png"/></span>
+            <div class="HF-txt"><p>开通恒丰银行资金存管，</p><p>为您的资金保驾护航！</p></div>
+            <!--开通-->
+            <div class="HF-btnbox"><a href="javascript:void(0);" class="HF-btn go_bind_card">立即开通</a></div>
+        </div>
+    #elseif($!hfDepGuideInfo.isOpened == "FAILED_BIND_HF")
+        <!-- 恒丰批量开户失败 -->
+        <div class="HF-bank">
+            <span class="HF-close"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/regular/HF-close.png"/></span>
+            <div class="HF-txt"><p>开通恒丰银行资金存管，</p><p>为您的资金保驾护航！</p></div>
+            <!--开通-->
+            <div class="HF-btnbox"><a href="javascript:void(0);" class="HF-btn go_bind_card">立即开通</a></div>
+        </div>
+    #elseif($!hfDepGuideInfo.isOpened == "WAIT_ACTIVATE")
+        <!-- 待激活 -->
+        <div class="HF-bank">
+            <span class="HF-close"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/regular/HF-close.png"/></span>
+            <div class="HF-txt"><p>激活恒丰银行资金存管，</p><p>为您的资金保驾护航！</p></div>
+            <!--开通-->
+            <div class="HF-btnbox"><a href="javascript:void(0);" class="HF-btn go_activate">立即激活</a></div>
+        </div>
+    #elseif($!hfDepGuideInfo.isOpened == "OPEN")
+        #if($!hfDepGuideInfo.riskStatus == "no")
+            <div class="HF-bank">
+                <span class="HF-close"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/regular/HF-close.png"/></span>
+                <div class="HF-txt"><p>您尚未进行风险承受能力测评，<br>完成后可加入产品、充值、提现</p></div>
+                <!--开通-->
+                <div class="HF-btnbox"><a href="javascript:void(0);" class="HF-btn go_questionnaire">立即测评</a></div>
+            </div>
+        #elseif($!hfDepGuideInfo.riskStatus == "expire")
+            <div class="HF-bank">
+                <span class="HF-close"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/regular/HF-close.png"/></span>
+                <div class="HF-txt"><p>您的风险承受能力测评已过期，<br>重新测评后可加入产品、充值、提现</p></div>
+                <!--开通-->
+                <div class="HF-btnbox"><a href="javascript:void(0);" class="HF-btn go_questionnaire">重新测评</a></div>
+            </div>
+        #end
+    #end
+    <!--存管前账户问号弹窗-->
+    <div class="HF-assets-bank">
+        <span class="HF-close"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/regular/HF-close.png"/></span>
+        <div class="HF-txt"><p>由于已全面对接恒丰银行存管系统，普通账户余额</p><p>只提供提现服务，您可将资金提现后再充值到恒丰</p>银行个人存管账户。</div>
+        <div class="HF-assets-btnbox">确定</div>
+    </div>
+    <!--提示开通恒丰银行-->
+    <!-- 回款路径提示框 E-->
+</div>
+<div class="xy_wp"></div>
+<input type="hidden" value="$!hfDepGuideInfo.isOpened" id="isOpened">
+<input type="hidden" value="$!hfDepGuideInfo.riskStatus" id="riskStatus">
+    #LoadGenJS("/resources/gen2.0/scripts/jquery-1.11.1.min")
+    #LoadGenJS("/resources/gen2.0/scripts/assets/assets")
+    #LoadGenJS("/resources/gen2.0/scripts/assets/zhez")
+    #LoadGenJS("/resources/gen2.0/scripts/assets/chart")
+    #LoadGenJS("/resources/gen2.0/scripts/assets/investProportion")
+</body>
+#Html("end")

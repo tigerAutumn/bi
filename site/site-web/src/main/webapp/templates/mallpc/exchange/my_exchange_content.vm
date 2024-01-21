@@ -1,0 +1,61 @@
+#foreach($!grid in $!exchangeList)
+	<li class="exchangeHaveList">
+		<div class="exchangeHaveListTitle">
+			<div class="exchangeHaveListTitleTxt">兑换时间：$!date.formatDateTime($!grid.exchangeTime,'yyyy-MM-dd HH:mm')</div>
+			<div class="exchangeHaveListTitleTxt">
+				#if($!grid.sendStatus == "FINISHED")
+					#if($!grid.sendCommodityTime)
+						发货时间：$!date.formatDateTime($!grid.sendCommodityTime,'yyyy-MM-dd HH:mm')
+						#else
+							发货时间：暂无
+					#end
+					#else
+						发货时间：暂无
+				#end		
+			</div>
+		</div>
+		<div class="exchangeHaveListContent">
+			<div class="exchangeHaveListContentProduct"><img class="exchangeHaveListContentImg" src="$!grid.commPictureUrl" /></div>
+			<div class="exchangeHaveListContentName">$!grid.commName</div>
+			<div class="exchangeHaveListContentExpenditure">$!grid.payPoints积分</div>
+			<div class="exchangeHaveListContentCollectGoods">
+				#if($!grid.commProperty == "REAL")
+					$!grid.recName，$!grid.recMobile
+					<span class="exchangeHaveListContentCollectGoodsImg"></span>
+					<div class="exchangeHaveListContentCollectGoodsBox">
+						<span class="exchangeHaveListContentCollectGoodsAddress">收货信息：$!grid.recName，$!grid.recMobile，$!grid.recAdress，$!grid.recAdressDetail</span>
+					</div>
+				#else
+					$!grid.mobile
+				#end
+			</div>
+			#if($!grid.sendStatus == "FINISHED")
+				<div class="exchangeHaveListContentState StatusColor">已发货</div>
+				#if("$!grid.deliveryNote" == "")
+					<div class="exchangeHaveListContentDeliverGoods">暂无</div>
+				#elseif($!grid.deliveryNote)
+					#if($!grid.commProperty == "REAL")
+						<div class="exchangeHaveListContentDeliverGoods StatusColor">$!grid.deliveryNote</div>
+					#else
+						<div class="exchangeHaveListContentDeliverGoods StatusColor StatusTxt">$!grid.deliveryNote</div>
+					#end
+				#else
+					<div class="exchangeHaveListContentDeliverGoods">暂无</div>
+				#end						
+				#else
+					<div class="exchangeHaveListContentState">未发货</div>
+					<div class="exchangeHaveListContentDeliverGoods">暂无</div>
+			#end						
+		</div>
+	</li>
+#end
+<script>
+$(function(){
+	$(".exchangeHaveListContentCollectGoodsImg").hover(function(){
+		var H=$(this).next(".exchangeHaveListContentCollectGoodsBox").height()+6
+		$(this).next(".exchangeHaveListContentCollectGoodsBox").css("margin-top",-H).stop().show()
+	},function(){
+		$(this).next(".exchangeHaveListContentCollectGoodsBox").stop().hide()
+	})
+})
+</script>

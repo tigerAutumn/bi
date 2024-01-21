@@ -1,0 +1,110 @@
+#Html("begin")
+#Head("begin")
+#Title("财运大转盘")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/user/register.min")
+#WeChatShare()
+#Head("end")
+<body id="body">
+    <input type="hidden" value="$!env.getWebURL('')/micro2.0/common/captcha/code?ts=" id="VALIDATE_PATH" />
+    <input type="hidden" value="$!env.getWebURL('')" id="APP_ROOT_PATH" />
+    #if("$!qianbao" == "qianbao")
+        <div class="header">
+            <a class="header_arrow" href="javascript:history.go(-1)"></a>
+            <h1 class="heade_ft oran_color">$!agentView.getView($!agentViewFlag).get('H5_KEY_REGISTER_TITLE_TEXT')</h1>       
+        </div>
+        #if($!agentViewFlag == "46")
+            <div class="login_logo"><img src="$!env.getWebURL('')/resources/micro2.0/images/regist/logo_hn_min.png"/></div>
+        #elseif($!agentViewFlag == "47")
+            <div class="login_logo"><img src="$!env.getWebURL('')/resources/micro2.0/images/regist/logo_ra_min.png"/></div>
+        #elseif($!agentViewFlag == "15")
+            <div class="login_logo"><img src="$!env.getWebURL('')/resources/micro2.0/images/regist/logo_qb_min.png"/></div>
+        #elseif($!agentViewFlag == "36")
+            <div class="login_logo"><img src="$!env.getWebURL('')/resources/micro2.0/images/regist/logo_kq_min.png"/></div>
+		#elseif($!agentViewFlag == "49")
+            <div class="login_logo"><img src="$!env.getWebURL('')/resources/micro2.0/images/qd/nav_min.png"/></div>
+        #else
+            <div class="login_logo"><img src="$!env.getWebURL('')/resources/micro2.0/images/regist/logo_qb_min.png"/></div>
+        #end
+	 #else
+		<div class="header">
+            <a class="header_arrow" href="javascript:history.go(-1)"></a>
+            <h1 class="heade_ft oran_color">注册</h1>
+        </div>    
+		<div class="register_logo"><img src="$!env.getWebURL('')/resources/micro2.0/images/regist/logo.png"/></div>
+     #end
+    <div class="register_phone">[验证码会发送至手机号：<span class="register_phonecolor">$!mobile</span>]</div>
+    <form id="generalForm" class="register_form" action="$!env.getWebURL('/weixin/user/register_submit')">
+        <input type="hidden" id="agentId" name="agentId" value="$!agentId" />
+        <input type="hidden" value="$!mobile"  id="mobile" name="mobile">
+        <input type="hidden" value="$!qianbao"  id="qianbao" name="qianbao">
+        <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+        <input type="hidden" id="flagForQD" name="flagForQD" value="$!flagForQD">
+        <div class="register_box">
+            <span class="register_icon icon4"></span>
+            <input class="register_in" type="tel" name="mobileCode" id="mobileCode" maxlength="4" onfocus="this.type='tel'"placeholder="请输入验证码" autocomplete="off">
+            <span class="register_pass_yzm" id="beforeSendCode" count="60">发送</span>
+        </div>
+        <div class="register_error"><span class="register_icon icon3"></span><span class="code_error"></span></div>
+        <div class="register_box">
+            <span class="register_icon icon5"></span>
+			<input class="register_in passbefore" type="text" value="" maxlength="16" readonly="true" placeholder="请设置登录密码" onclick="pass(this)"/>
+            <input class="register_in" type="text" name="password" id="password" value="" maxlength="16" style="display:none;" placeholder="请设置登录密码">
+        </div>
+        <div class="register_password_prompt">(密码需6-16位，建议使用字母和数字的组合)</div>
+        <div class="register_error"><span class="register_icon icon3"></span><span class="password_error"></span></div>
+    
+        <div class="register_box">
+            <span class="register_icon icon5"></span>
+			<input class="register_in passbefore" type="text" value="" maxlength="16" readonly="true" placeholder="请再次输入密码" onclick="pass(this)"/>
+            <input class="register_in" type="text" name="password2" id="password2" value="" maxlength="16" placeholder="请再次输入密码" style="display:none;">
+        </div>
+        <div class="register_error"><span class="register_icon icon3"></span><span class="re_password_error"></span></div>
+    
+        #if("$!qianbao"=="qianbao")
+            <div class="register_box">
+                <span class="register_icon icon6"></span>
+                #if($!agentViewFlag == "49")
+                    #if($!agentPage)
+                        <input class="register_in" type="text" name="recommendId" id="recommendId" readonly="true" value="$!recommendId" maxlength="9" placeholder="如有邀请码，请输入（选填）">
+                    #else
+                        <input class="register_in" type="text" name="recommendId" id="recommendId" maxlength="9" placeholder="如有邀请码，请输入（选填）">
+                    #end
+                #else
+                    <input class="register_in" type="text" name="qianbao_recommend" id="qianbao_recommend" maxlength="9" placeholder="合作方$!agentView.getView($!agentViewFlag).get('PC_KEY_PARTNER_4REGISTER')" readonly>
+                #end
+            </div>
+            <div class="register_error"><span class="register_icon icon3"></span><span class="recommend_error"></span></div>
+        #elseif($!agentId)
+            &nbsp;&nbsp;
+        #else
+            <div class="register_box">
+                <span class="register_icon icon6"></span>
+                #if($!agentPage)
+                    <input class="register_in" type="tel" name="recommendId" id="recommendId" readonly="true" value="$!recommendId" maxlength="11" placeholder="如有邀请码，请输入（选填）">
+                #else
+                    <input class="register_in" type="tel" name="recommendId" id="recommendId" maxlength="11" placeholder="如有邀请码，请输入（选填）">
+                #end
+            </div>
+            <div class="register_error"><span class="register_icon icon3"></span><span class="recommend_error"></span></div>
+        #end   
+        <input class="register_submit_gray" type="button" value="完成" id="register_btn">
+    </form>
+    <div id="paylog" class="dialog_flex alert_hide">
+        <div class="deposit_dialog">
+            <h3 class="deposit_info_title">图片验证码</h3>            
+			<div class="yz_warp">
+				<input class="pass_input" type="tel" name="verCode" id="verCode" maxlength="4" value="$!verCode" placeholder="图片验证码">
+				<span class="register_yzm yzm_right"><img id="validateImg" src="$!env.getWebURL('')/micro2.0/common/captcha/code?ts=" onclick="change()" alt="点击切换验证码"></span>
+       		 </div>
+			 <div class="open-card-btn">
+				<i class="close">取消</i>
+				<div class="top_line" id="sendCode" count="60">确定</div>
+			 </div>           
+        </div>
+    </div>
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/weixin/scripts/user/register_second_index")
+</body>
+#Html("end")

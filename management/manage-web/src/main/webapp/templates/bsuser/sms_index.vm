@@ -1,0 +1,143 @@
+#LoadJS("resources/js/ajaxfileupload")
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	<form id="financeForm" method="post" action="$env.getWebURL('/bsuser/sms.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<div class="pageFormContent nowrap" layoutH="100">
+			<dl>
+				<dt>注意：</dt>
+				<dd>
+                    <p style="color:red;">发送较短短信时，短信内容长度控制在57个字符以内最佳！</p>
+				</dd>
+			</dl>
+			<dl>
+				<dt>手机号码：</dt>
+				<dd>
+					 <button  onclick="exp()" type="button">下载模板</button>&nbsp&nbsp&nbsp
+					 <input type="file" name="fileField" id="fileField" onchange="fileUpload()">
+					 <textarea name="mobile" id="mobile" cols="80" rows="12" tools="simple"  placeholder="请输入手机号码，多个用逗号隔开。"></textarea>
+				</dd>
+			</dl>
+			<dl>
+				<dt>发送内容:</dt>
+				<dd>
+					 <textarea id="content" name="content" cols="80" rows="12" tools="simple" maxlength="240" placeholder="请输入需要发送的内容。(不超过240个字符)"></textarea>
+				</dd>
+			</dl>
+			<dl >
+				<ul>
+                  <li ><div class="buttonActive" style="margin-left: 660px;"><div class="buttonContent"><button type="button" onclick="submit_from()">梦网发送</button></div></div></li>
+				   <li ><div class="buttonActive" style="margin-left: 10px;"><div class="buttonContent"><button type="button" onclick="submit_from1(this)" url="$env.getWebURL('/bsuser/sendWelinkMessage.htm')" >微网发送</button></div></div></li>
+			    </ul>
+			</dl>
+		</div>
+	</form>
+	
+</div>
+<script>
+   function submit_from(){
+	    var mobile = $("#mobile").val();
+		var content = $("#content").val();
+		if(mobile != null && mobile != ''){
+		   if(content != null && content != ''){
+    		   	if(content.length > 240){
+				alertMsg.warn("短信内容长度不能超过240个字符！");
+    			}else{
+    				$("#financeForm").submit();
+    			}
+		   }else{
+		     	alertMsg.warn("请输入发送内容！");
+		   }
+		}else{
+		   alertMsg.warn("请输入手机号码或选择文件！");
+		}
+    }
+	
+	function submit_from1(obj){
+	    var mobile = $("#mobile").val();
+		var content = $("#content").val();
+		if(mobile != null && mobile != ''){
+		   if(content != null && content != ''){
+    		   	if(content.length > 240){
+				alertMsg.warn("短信内容长度不能超过240个字符！");
+    			}else{
+    				var $this = $(obj);
+        			var title = "通过微网短信发送";
+                    alertMsg.confirm(title, {
+            			okCall: function(){
+            				jQuery.ajax({
+            				url:$this.attr("url"),
+            					data:{
+            						mobile : mobile,
+            						content : content
+            					},
+            					type:'post',
+								dataType:'json',
+            					success: function(result){
+                					if(result.statusCode == '200'){
+                						alertMsg.correct('操作成功！');
+                						$("#mobile").val("");
+                						$("#content").val("");
+                					}else{
+                						alertMsg.error('操作失败!');
+                					}
+            					}
+            				});
+            			}
+					});
+    			}
+		   }else{
+		     	alertMsg.warn("请输入发送内容！");
+		   }
+		}else{
+		   alertMsg.warn("请输入手机号码或选择文件！");
+		}
+        
+    }
+
+    function exp(){
+        location.href = $("#APP_ROOT_PATH").val() + "/bsuser/xls.htm";
+    }
+
+   	function navTabAjaxDone(json) {
+        if (json.statusCode == "200") {
+			alertMsg.correct(json.message);
+			navTab.closeCurrentTab();
+		}else if(json.statusCode == "2"){
+		    alertMsg.warn(json.message);
+			navTab.closeCurrentTab();
+		}else {
+			alertMsg.error('操作失败!');
+		}
+		$("#mobile").val("");
+		$("#content").val("");
+	}
+	
+	function fileUpload(){
+    	 var url = $("#APP_ROOT_PATH").val() + "/bsuser/readExcel.htm";
+         $.ajaxFileUpload
+		 ({
+               url:url,
+               secureuri :false,
+               fileElementId :'fileField',
+               dataType :'json',
+               success : function (data){
+				  var mobile = $("#mobile").val();
+				  if(data.mobile != 'undefined'){
+    				  if(mobile != null &&　mobile　!= ''){
+    				     $("#mobile").val(data.mobile)
+    				  }else{
+    				     $("#mobile").val(data.mobile)
+    				  }
+				  }
+				  if(data.code == 1){
+				     alertMsg.correct("文件读取成功");
+				  }else{
+				     alertMsg.warn("文件格式错误或文件内容为空！");
+				  }
+               },
+               error: function(data){
+    			 alertMsg.error("操作失败！");
+               }
+         });
+    }
+</script>

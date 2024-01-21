@@ -1,0 +1,55 @@
+<form id="pagerForm" method="post" action="$env.getWebURL('/sys/specialJnl/index.htm')">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+</div>
+<div class="pageContent">
+	
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="4%">编号</th>
+				<th width="6%">操作员编号（点击查看详情）</th>
+				<th width="6%">被操作用户编号（点击查看详情）</th>
+				<th width="8%">操作类型</th>
+				<th width="63%">操作详细内容</th>
+				<th width="8%">操作时间</th>
+				<th width="5%">操作ip</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $spercialList)
+			<tr target="sid_user" rel="1">
+				<td>$!grid.id</td>
+				<td ><a target="dialog" height="320"  width="420" href="$!env.getWebURL('/user/management/detail.htm')?flag=update&op=none&id=$!grid.mUserId" target="ajax" title="操作员详情" rel="jbsxBox">$!grid.mUserId </a></td>
+				<td><a title="被操作用户详情" height="320"  width="420" target="dialog" href="$!env.getWebURL('/bsuser/detail.htm')?op=none&userId=$!grid.userId" target="ajax" rel="jbsxBox">$!grid.userId </a></td>
+				<td>$!grid.type</td>
+				<td>$!grid.detail</td>
+				<td>$!date.format($!grid.opTime)</td>
+				<td>$!grid.ip</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+    	
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+	

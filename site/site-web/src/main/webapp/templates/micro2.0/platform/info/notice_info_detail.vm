@@ -1,0 +1,30 @@
+#Html("begin")
+#Head("begin","币港湾公告,币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#set($strTitle="$!{details.subject}【币港湾官网】")
+#Title("$!strTitle")
+#LoadJS("/resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("/resources/micro2.0/styles/platform/notice.min")
+#WeChatShare()
+#Head("end")
+<body id="body">
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="qianbao" name="qianbao" value="$!qianbao" />
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+    <!-- 头部 -->
+    <div class="header">
+        #if($!entrance == 'HOMEPAGE')
+            <a class="header_arrow" href="$!env.getWebURL('')"></a>
+        #else
+            <a class="header_arrow" href="javascript:history.go(-1)"></a>
+        #end
+        <h1 class="heade_ft color_bg">平台公告</h1>
+    </div>
+    <div class="main main_padding">
+        <div class="notice_ctitle">$!details.subject</div>
+        <div class="notice_ctime">$!date.formatYYYYMMDD($!details.publishTime)</div>
+        <div class="notice_ctxt">$!details.content</div>
+    </div>
+#LoadJS("/resources/micro2.0/scripts/platform/gw_info")
+</body>
+#Html("end")

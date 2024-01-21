@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.mall.dao.MallCommodityInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.mall.model.MallCommodityInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="comm_name" property="commName" jdbcType="VARCHAR" />
+    <result column="comm_type_id" property="commTypeId" jdbcType="INTEGER" />
+    <result column="comm_property" property="commProperty" jdbcType="VARCHAR" />
+    <result column="points" property="points" jdbcType="BIGINT" />
+    <result column="left_count" property="leftCount" jdbcType="INTEGER" />
+    <result column="is_recommend" property="isRecommend" jdbcType="VARCHAR" />
+    <result column="comm_picture_url" property="commPictureUrl" jdbcType="VARCHAR" />
+    <result column="sold_count" property="soldCount" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="INTEGER" />
+    <result column="last_operator" property="lastOperator" jdbcType="INTEGER" />
+    <result column="for_sale_time" property="forSaleTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.pinting.mall.model.MallCommodityInfoWithBLOBs" extends="BaseResultMap" >
+    <result column="comm_details" property="commDetails" jdbcType="LONGVARCHAR" />
+    <result column="exchange_note" property="exchangeNote" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, comm_name, comm_type_id, comm_property, points, left_count, is_recommend, comm_picture_url, 
+    sold_count, status, creator, last_operator, for_sale_time, create_time, update_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    comm_details, exchange_note
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.pinting.mall.model.MallCommodityInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from mall_commodity_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.mall.model.MallCommodityInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from mall_commodity_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from mall_commodity_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from mall_commodity_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.mall.model.MallCommodityInfoExample" >
+    delete from mall_commodity_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.mall.model.MallCommodityInfoWithBLOBs" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mall_commodity_info (id, comm_name, comm_type_id,
+      comm_property, points, left_count,
+      is_recommend, comm_picture_url, sold_count,
+      status, creator, last_operator,
+      for_sale_time, create_time, update_time,
+      comm_details, exchange_note)
+    values (#{id,jdbcType=INTEGER}, #{commName,jdbcType=VARCHAR}, #{commTypeId,jdbcType=INTEGER},
+      #{commProperty,jdbcType=VARCHAR}, #{points,jdbcType=BIGINT}, #{leftCount,jdbcType=INTEGER},
+      #{isRecommend,jdbcType=VARCHAR}, #{commPictureUrl,jdbcType=VARCHAR}, #{soldCount,jdbcType=INTEGER},
+      #{status,jdbcType=VARCHAR}, #{creator,jdbcType=INTEGER}, #{lastOperator,jdbcType=INTEGER},
+      #{forSaleTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{commDetails,jdbcType=LONGVARCHAR}, #{exchangeNote,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.mall.model.MallCommodityInfoWithBLOBs" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mall_commodity_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="commName != null" >
+        comm_name,
+      </if>
+      <if test="commTypeId != null" >
+        comm_type_id,
+      </if>
+      <if test="commProperty != null" >
+        comm_property,
+      </if>
+      <if test="points != null" >
+        points,
+      </if>
+      <if test="leftCount != null" >
+        left_count,
+      </if>
+      <if test="isRecommend != null" >
+        is_recommend,
+      </if>
+      <if test="commPictureUrl != null" >
+        comm_picture_url,
+      </if>
+      <if test="soldCount != null" >
+        sold_count,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="lastOperator != null" >
+        last_operator,
+      </if>
+      <if test="forSaleTime != null" >
+        for_sale_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="commDetails != null" >
+        comm_details,
+      </if>
+      <if test="exchangeNote != null" >
+        exchange_note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="commName != null" >
+        #{commName,jdbcType=VARCHAR},
+      </if>
+      <if test="commTypeId != null" >
+        #{commTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="commProperty != null" >
+        #{commProperty,jdbcType=VARCHAR},
+      </if>
+      <if test="points != null" >
+        #{points,jdbcType=BIGINT},
+      </if>
+      <if test="leftCount != null" >
+        #{leftCount,jdbcType=INTEGER},
+      </if>
+      <if test="isRecommend != null" >
+        #{isRecommend,jdbcType=VARCHAR},
+      </if>
+      <if test="commPictureUrl != null" >
+        #{commPictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="soldCount != null" >
+        #{soldCount,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="lastOperator != null" >
+        #{lastOperator,jdbcType=INTEGER},
+      </if>
+      <if test="forSaleTime != null" >
+        #{forSaleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commDetails != null" >
+        #{commDetails,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="exchangeNote != null" >
+        #{exchangeNote,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.mall.model.MallCommodityInfoExample" resultType="java.lang.Integer" >
+    select count(*) from mall_commodity_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update mall_commodity_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.commName != null" >
+        comm_name = #{record.commName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commTypeId != null" >
+        comm_type_id = #{record.commTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.commProperty != null" >
+        comm_property = #{record.commProperty,jdbcType=VARCHAR},
+      </if>
+      <if test="record.points != null" >
+        points = #{record.points,jdbcType=BIGINT},
+      </if>
+      <if test="record.leftCount != null" >
+        left_count = #{record.leftCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.isRecommend != null" >
+        is_recommend = #{record.isRecommend,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commPictureUrl != null" >
+        comm_picture_url = #{record.commPictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.soldCount != null" >
+        sold_count = #{record.soldCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=INTEGER},
+      </if>
+      <if test="record.lastOperator != null" >
+        last_operator = #{record.lastOperator,jdbcType=INTEGER},
+      </if>
+      <if test="record.forSaleTime != null" >
+        for_sale_time = #{record.forSaleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.commDetails != null" >
+        comm_details = #{record.commDetails,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.exchangeNote != null" >
+        exchange_note = #{record.exchangeNote,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update mall_commodity_info
+    set id = #{record.id,jdbcType=INTEGER},
+      comm_name = #{record.commName,jdbcType=VARCHAR},
+      comm_type_id = #{record.commTypeId,jdbcType=INTEGER},
+      comm_property = #{record.commProperty,jdbcType=VARCHAR},
+      points = #{record.points,jdbcType=BIGINT},
+      left_count = #{record.leftCount,jdbcType=INTEGER},
+      is_recommend = #{record.isRecommend,jdbcType=VARCHAR},
+      comm_picture_url = #{record.commPictureUrl,jdbcType=VARCHAR},
+      sold_count = #{record.soldCount,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=INTEGER},
+      last_operator = #{record.lastOperator,jdbcType=INTEGER},
+      for_sale_time = #{record.forSaleTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      comm_details = #{record.commDetails,jdbcType=LONGVARCHAR},
+      exchange_note = #{record.exchangeNote,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update mall_commodity_info
+    set id = #{record.id,jdbcType=INTEGER},
+      comm_name = #{record.commName,jdbcType=VARCHAR},
+      comm_type_id = #{record.commTypeId,jdbcType=INTEGER},
+      comm_property = #{record.commProperty,jdbcType=VARCHAR},
+      points = #{record.points,jdbcType=BIGINT},
+      left_count = #{record.leftCount,jdbcType=INTEGER},
+      is_recommend = #{record.isRecommend,jdbcType=VARCHAR},
+      comm_picture_url = #{record.commPictureUrl,jdbcType=VARCHAR},
+      sold_count = #{record.soldCount,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=INTEGER},
+      last_operator = #{record.lastOperator,jdbcType=INTEGER},
+      for_sale_time = #{record.forSaleTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.mall.model.MallCommodityInfoWithBLOBs" >
+    update mall_commodity_info
+    <set >
+      <if test="commName != null" >
+        comm_name = #{commName,jdbcType=VARCHAR},
+      </if>
+      <if test="commTypeId != null" >
+        comm_type_id = #{commTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="commProperty != null" >
+        comm_property = #{commProperty,jdbcType=VARCHAR},
+      </if>
+      <if test="points != null" >
+        points = #{points,jdbcType=BIGINT},
+      </if>
+      <if test="leftCount != null" >
+        left_count = #{leftCount,jdbcType=INTEGER},
+      </if>
+      <if test="isRecommend != null" >
+        is_recommend = #{isRecommend,jdbcType=VARCHAR},
+      </if>
+      <if test="commPictureUrl != null" >
+        comm_picture_url = #{commPictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="soldCount != null" >
+        sold_count = #{soldCount,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="lastOperator != null" >
+        last_operator = #{lastOperator,jdbcType=INTEGER},
+      </if>
+      <if test="forSaleTime != null" >
+        for_sale_time = #{forSaleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commDetails != null" >
+        comm_details = #{commDetails,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="exchangeNote != null" >
+        exchange_note = #{exchangeNote,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.pinting.mall.model.MallCommodityInfoWithBLOBs" >
+    update mall_commodity_info
+    set comm_name = #{commName,jdbcType=VARCHAR},
+      comm_type_id = #{commTypeId,jdbcType=INTEGER},
+      comm_property = #{commProperty,jdbcType=VARCHAR},
+      points = #{points,jdbcType=BIGINT},
+      left_count = #{leftCount,jdbcType=INTEGER},
+      is_recommend = #{isRecommend,jdbcType=VARCHAR},
+      comm_picture_url = #{commPictureUrl,jdbcType=VARCHAR},
+      sold_count = #{soldCount,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=INTEGER},
+      last_operator = #{lastOperator,jdbcType=INTEGER},
+      for_sale_time = #{forSaleTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      comm_details = #{commDetails,jdbcType=LONGVARCHAR},
+      exchange_note = #{exchangeNote,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.mall.model.MallCommodityInfo" >
+    update mall_commodity_info
+    set comm_name = #{commName,jdbcType=VARCHAR},
+      comm_type_id = #{commTypeId,jdbcType=INTEGER},
+      comm_property = #{commProperty,jdbcType=VARCHAR},
+      points = #{points,jdbcType=BIGINT},
+      left_count = #{leftCount,jdbcType=INTEGER},
+      is_recommend = #{isRecommend,jdbcType=VARCHAR},
+      comm_picture_url = #{commPictureUrl,jdbcType=VARCHAR},
+      sold_count = #{soldCount,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=INTEGER},
+      last_operator = #{lastOperator,jdbcType=INTEGER},
+      for_sale_time = #{forSaleTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectCommInfoByTypeId" resultMap="BaseResultMap" parameterType="java.util.Map">
+	  select * FROM (select id, comm_name, comm_type_id, points, left_count, is_recommend, comm_picture_url,
+	     status, for_sale_time
+		from mall_commodity_info where comm_type_id = #{typeId} and left_count >0 and status='FOR_SALE' ORDER BY is_recommend desc,for_sale_time desc
+	  )a
+	  union all
+	  select * FROM(
+		select id, comm_name, comm_type_id, points, left_count, is_recommend, comm_picture_url,
+		     status, for_sale_time
+		from mall_commodity_info where comm_type_id = #{typeId} and left_count =0 and status='FOR_SALE' ORDER BY for_sale_time desc
+	  )b
+  </select>
+
+  <!--查询商品信息列表-->
+  <select id="selectMallCommodityInfoList" resultType="com.pinting.mall.model.manange.MallCommodityInfoVO" parameterType="com.pinting.mall.model.manange.MallCommodityInfoVO" >
+    SELECT
+        a.id,
+        a.comm_picture_url,
+        a.comm_name,
+        a.comm_type_id,
+        b.comm_type_name,
+        a.comm_property,
+        a.points,
+        a.left_count,
+        a.is_recommend,
+        a.for_sale_time,
+        a.`status`,
+      	a.sold_count
+    FROM
+        mall_commodity_info a
+    LEFT JOIN mall_commodity_type b ON b.id = a.comm_type_id
+    WHERE
+        1 = 1
+    <if test="commNameSearch != null and commNameSearch != ''" >
+    AND a.comm_name LIKE CONCAT('%',#{commNameSearch},'%')
+    </if>
+    <if test="commTypeIdSearch != null" >
+      AND a.comm_type_id = #{commTypeIdSearch}
+    </if>
+    <if test="leftCountMinSearch != null" >
+      AND a.left_count &gt;= #{leftCountMinSearch}
+    </if>
+    <if test="leftCountMaxSearch != null" >
+      AND a.left_count &lt;= #{leftCountMaxSearch}
+    </if>
+    <if test="statusSearch != null and statusSearch != '' and statusSearch != 'ALL'" >
+      AND a.`status` = #{statusSearch}
+    </if>
+    <if test="statusSearch != null and statusSearch != '' and statusSearch == 'ALL'" >
+      AND a.`status` != 'DELETED'
+    </if>
+    ORDER BY a.create_time DESC
+  </select>
+
+  <!--根据商品ID查询（加锁）-->
+  <select id="selectMallCommodityByIdForLock" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT <include refid="Base_Column_List" /> FROM mall_commodity_info a WHERE a.id = #{id} FOR UPDATE
+  </select>
+
+  <!--查询商品基础信息与类型信息-->
+  <select id="selectMallCommodityInfoAndTypeById" resultType="com.pinting.mall.model.vo.MallCommodityInfoAndTypeVO" parameterType="java.lang.Integer">
+    SELECT
+      a.id,
+      a.comm_picture_url,
+      a.comm_name,
+      a.comm_type_id,
+      b.comm_type_code,
+      b.comm_type_name,
+      a.comm_property,
+      a.points,
+      a.left_count,
+      a.is_recommend,
+      a.for_sale_time,
+      a.`status`
+    FROM
+      mall_commodity_info a
+    LEFT JOIN mall_commodity_type b ON b.id = a.comm_type_id
+    WHERE
+      a.id = #{id}
+  </select>
+</mapper>

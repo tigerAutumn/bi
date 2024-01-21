@@ -1,0 +1,37 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/regular/payment_failed.min")
+#WeChatShare()
+#Head("end")
+<body>
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="errorMsg" value="$!errorMsg" />
+    <div class="header">
+    	<a class="header_arrow" href="javascript:history.go(-1)"></a>
+    	<h1 class="heade_ft oran_color">加入结果</h1>
+    </div>
+    <h2 class="result-title">抱歉，输入的验证码错误！</h2>
+    <div class="pay_img"></div>
+    #if($!backUrl)
+    	<a class="invite" href="$!backUrl" title="">再试一次</a>
+    #else
+    	#if("$!qianbao" == "qianbao")
+        <a class="invite" href="$!env.getWebURL('micro2.0/regular/list?qianbao=')$!qianbao&agentViewFlag=$!agentViewFlag" title="">再试一次</a>
+    	#else
+    		#if($!productId == 49 || $!productId == 50)
+            <a class="invite" href="$!env.getWebURL('micro2.0/index')" title="">再试一次</a>
+    		#else
+            <a class="invite" href="$!env.getWebURL('micro2.0/regular/list')" title="">再试一次</a>
+    		#end
+    	#end
+    #end
+    <div class="dep_service">
+    	<p class="service_info">如您对此次交易有疑问</p>
+    	<p class="service_info_number">请联系客服：<span><a class="ser_color" href="tel:4008061230">400-806-1230</a></span></p>
+    </div>
+#LoadJS("resources/micro2.0/scripts/zepto.min")
+#LoadJS("resources/micro2.0/scripts/regular/custom")</body>
+#Html("end")

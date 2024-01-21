@@ -1,0 +1,18 @@
+#LoadJS("/resources/js/jquery.qrcode.min")
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	<form id="financeForm" method="post" action="$env.getWebURL('/bank/save.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("id", "$!bsBank.id")
+		<div class="pageFormContent nowrap" layoutH="97">
+			<dl style="top:80px">
+				<dd style="text-align:center;">
+					<div id="output"></div>
+                </dd>
+			</dl>
+	</form>
+</div>
+<script>
+	$(function(){
+		$('#output').qrcode("$!bsSales.link");
+	});
+</script>

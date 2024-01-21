@@ -1,0 +1,158 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/activity/six_new")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadCSS("resources/micro2.0/styles/activity/2017/thanksgiven/thanksgiven")
+#LoadJS("resources/micro2.0/scripts/activity/2017/thanksgiven/thanksgiven")
+#WeChatShare()
+#Head("end")
+<body>
+<input type="hidden" value="3" id="pageNumber"/>
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<div class="T-third">
+		<div class="T-first-title">
+			<div class="T-first-title-txt">感恩第三步：够创意！</div>
+		</div>
+		<div class="T-index-title">
+			<img src="$!env.getWebURL('resources/micro2.0/images/activity/2017/thanksgiven/title.png')" alt="" />
+			<div class="T-index-title-txt">
+				<h3 class="T-index-mtitle">幸运投资号，幸运儿就是你！</h3>
+				<div class="T-index-stitle">每天送出100元，心动就行动！</div>
+			</div>
+		</div>
+		<div class="T-first-red">
+			<div class="T-first-red-box">
+				#if($!isStartThird == "not_start")
+					##活动开始前
+                    <div class="T-third-red-top">
+                        <img src="$!env.getWebURL('resources/micro2.0/images/activity/2017/thanksgiven/red6.png')" />
+                        <a href="javascript:void(0);" class="T-second-red-btn-start ">活动未开始</a>
+					</div>
+				#elseif($!isStartThird == "start" || $!isStartThird == "end")
+					#if($!isLogin == "yes")
+                        <div class="T-third-red-top">
+                            <div class="T-third-red-top-box">
+								#if(!$!luckyNumber)
+
+								#elseif($!luckyNumber.size() < 2)
+                                    <div class="T-third-red-top-title">开奖幸运号</div>
+                                    <div class="T-third-red-top-date">
+										<i class="T-third-red-top-date-img"></i>
+										$!luckyNumber[0].key
+										#if($!isStartThird == "start")
+                                            <i class="T-third-red-top-date-numtxt">明日公布，敬请期待！</i>
+										#end
+									</div>
+                                    <div class="T-third-red-top-num">
+										#if($!luckyNumber[0].value == "未产生")
+                                            <span class="T-third-red-top-number" style="font-size: 26px;">
+												未产生
+											</span>
+										#else
+                                            <span class="T-third-red-top-number">
+												#if($!luckyNumber[0].value)
+													$!luckyNumber[0].value
+												#else
+                                                    ?
+												#end
+											</span>
+										#end
+                                    </div>
+								#else
+                                    <div class="T-third-red-top-title">开奖幸运号</div>
+                                    <div class="T-third-red-top-date"><i class="T-third-red-top-date-img"></i>$!luckyNumber[0].key</div>
+                                    <div class="T-third-red-top-num">
+										#if($!luckyNumber[0].value == "未产生")
+                                            <span class="T-third-red-top-number" style="font-size: 26px;">
+												未产生
+											</span>
+										#else
+                                            <span class="T-third-red-top-number">
+												#if($!luckyNumber[0].value)
+													$!luckyNumber[0].value
+												#else
+                                                    ?
+												#end
+											</span>
+										#end
+                                    </div>
+                                    <div class="T-third-red-top-date">
+                                        <i class="T-third-red-top-date-img"></i> $!luckyNumber[1].key
+										#if($!isStartThird == "start")
+                                            <i class="T-third-red-top-date-numtxt">明日公布，敬请期待！</i>
+										#end
+                                    </div>
+                                    <div class="T-third-red-top-num">
+                                        <img src="$!env.getWebURL('resources/micro2.0/images/activity/2017/thanksgiven/bg7.png')" />
+                                    </div>
+								#end
+                            </div>
+                            <div class="T-third-red-top-box">
+                                <ul class="T-third-red-top-table">
+                                    <li class="T-third-red-top-table-date">日期</li>
+                                    <li class="T-third-red-top-table-number">我的投资号码</li>
+                                    <li class="T-third-red-top-table-lucky">幸运号码</li>
+                                    <li class="T-third-red-top-table-user">中奖用户</li>
+                                </ul>
+                                <ul class="T-third-red-top-tbody">
+									#foreach($!luckyNum in $!luckyNumberList)
+                                        <li>
+                                            <i class="T-third-red-top-table-date">$!date.formatDateTime($!luckyNum.investDate, "MM-dd")</i>
+                                            <i class="T-third-red-top-table-number">$!luckyNum.investNumber</i>
+                                            <i class="T-third-red-top-table-lucky color-lucky">$!luckyNum.luckyNumber</i>
+                                            <i class="T-third-red-top-table-user">$!luckyNum.luckyUser</i>
+                                        </li>
+									#end
+                                </ul>
+                            </div>
+							#if($!isStartThird == "end")
+                                <a href="javascript:;" class="T-second-red-btn-start">活动已结束</a>
+							#else
+								#if($!waitPublish == "YES")
+                                    <a href="javascript:;" class="T-second-red-btn-start">等待公布</a>
+								#else
+                                    <a href="javascript:;" class="T-second-red-btn-start go_invest">立即投资参与</a>
+								#end
+							#end
+                        </div>
+					#else
+						##活动开始未登录
+                        <div class="T-third-red-top">
+                            <img src="$!env.getWebURL('resources/micro2.0/images/activity/2017/thanksgiven/red7.png')" />
+                            <a href="javascript:;" class="T-second-red-btn-start go_login">
+								#if($!isStartThird == "end")
+                                    登录查看投资号码
+								#else
+                                    立即登录
+								#end
+							</a>
+                        </div>
+					#end
+				#end
+				<div class="T-second-red-bottom">
+					<div class="T-second-red-rule">
+						<div class="T-first-red-rule-title">活动规则：</div>
+						<div class="T-first-red-rule-content">
+							<i>①</i>幸运投资号活动仅限港湾计划产品、赞分期系列产品，新手标除外；
+						</div>
+						<div class="T-first-red-rule-content">
+							<i>②</i>活动期间，每位用户按每天首笔投资的时间排序，生成对应的投资号；
+						</div>
+						<div class="T-first-red-rule-content">
+							<i>③</i>活动期间，平台将于次日00:00时，在活动页面公布前一天的幸运投资号，及前一天的幸运用户，每天的幸运用户可获得平台发放的100元现金奖励；<br>
+								举例:11月14日，张先生首笔投资后产生号码牌为15，次日平台所公布的幸运投资号为15，则张先生可获得100元现金奖励；
+						</div>
+						<div class="T-first-red-rule-content">
+							<i>④</i>每位获得幸运号的中奖用户都将在1个工作日内，收到来自币港湾平台客服的电话通知，请您保持好电话畅通；
+						</div>
+						<div class="T-first-red-rule-content">
+							<i>⑤</i>每日幸运号码牌中奖用户的现金奖励，将以奖励金的形式于活动结束后的5个工作日内发放至您的奖励金账户，您可在我的资产-我的奖励金处查看。
+						</div>						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+#Html("end")

@@ -1,0 +1,105 @@
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!loanDTO.pageNum" />
+    <input type="hidden" name="numPerPage" value="$!loanDTO.numPerPage" />
+</form>
+<div class="pageHeader">
+    <form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/stagingProducts/qbIndex.htm')" onsubmit="return navTabSearch(this);">
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="pageNum" value="$!loanDTO.pageNum" />
+        <input type="hidden" name="numPerPage" value="$!loanDTO.numPerPage" />
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        成交日期：
+                        <input name="loanTimeStart"  type="text" maxdate="{%y}-%M-{%d}" id="loanTimeStart" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!loanDTO.loanTimeStart)" /> 到
+                        <input name="loanTimeEnd" maxdate="{%y}-%M-{%d}" type="text"id="loanTimeEnd" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!loanDTO.loanTimeEnd)" />
+						<span style="margin-left:20px;">
+                            <button onclick="func()" type="button">查询</button>
+							<button  onclick="exp()" type="button">导出excel</button>
+						</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <table class="table" width="1000" layoutH="108" >
+        <thead>
+            <tr>
+                <th width="15%">订单号</th>
+                <th width="15%">用户id</th>
+                <th width="15%">期数</th>
+                <th width="15%">出借金额</th>
+                <th width="15%">服务费</th>
+                <th width="15%">成交日期</th>
+                <th width="10%">渠道</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            #foreach($grid in $list)
+            <tr target="sid_user" rel="1" >
+                <td>$!grid.orderNo</td>
+                <td>$!grid.userId</td>
+                <td>$!grid.period</td>
+                <td>$!money.format($!grid.totalAmount)</td>
+                <td>$!money.format($!grid.serviceAmount)</td>
+                <td>$!date.format($!grid.loanTime)</td>
+                <td>$!grid.agentName</td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+                <option #if("$!loanDTO.numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!loanDTO.numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!loanDTO.numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!loanDTO.numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!totalRows条</span>
+        </div>
+
+        <div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!loanDTO.numPerPage" currentPage="$!loanDTO.pageNum"></div>
+
+    </div>
+</div>
+<script>
+    function func(){
+
+        var beginTime = $("#loanTimeStart").val();
+        var overTime = $("#loanTimeEnd").val();
+        if(beginTime != "" && overTime != ""){
+            var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+            if(result < 0){
+                alert("开始时间不能在结束时间之后！！");
+                return false;
+            }
+        }
+        var url = $("#APP_ROOT_PATH").val() + "/stagingProducts/qbIndex.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+
+    function exp(){
+        var beginTime = $("#loanTimeStart").val();
+        var overTime = $("#loanTimeEnd").val();
+        if(beginTime != "" && overTime != ""){
+            var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+            if(result < 0){
+                alert("开始时间不能在结束时间之后！！");
+                return false;
+            }
+        }
+        var url = $("#APP_ROOT_PATH").val() + "/stagingProducts/qianExportXls.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","");
+        $("#myform").submit();
+    }
+
+</script>

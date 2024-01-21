@@ -1,0 +1,64 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/user/six")
+#LoadCSS("resources/micro2.0/styles/user/default")
+#LoadCSS("resources/micro2.0/styles/user/register")
+#LoadJS("resources/micro2.0/scripts/zepto.min")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/user/custom")
+#LoadJS("resources/micro2.0/scripts/channel/register_second_index")
+#WeChatShare()
+#Head("end")
+<body>
+<input type="hidden" value="$!env.getWebURL('')/micro2.0/common/captcha/code?ts=" id="VALIDATE_PATH" />
+<input type="hidden" value="$!env.getWebURL('')" id="APP_ROOT_PATH" />
+<div class="header">
+	<a class="header_arrow" href="javascript:history.go(-1)"></a>
+	<h1 class="heade_ft oran_color">注册</h1>
+</div>
+<div class="tran_numbae">短信验证码发到您<span>$!mobile</span>手机</div>
+<form id="generalForm" action="$!env.getWebURL('/micro2.0/user/register_submit')">
+	<input type="hidden" id="agentId" name="agentId" value="$!agentId" />	  
+    <input type="hidden" value="$!mobile"  id="mobile" name="mobile">
+    <div class="former_pass reg_top">
+    	<div class="former_font">验证码</div>
+    	<input class="former_btn placehold_ft login_btn1" type="tel" id="mobileCode" name="mobileCode" maxlength="4" placeholder="请输入验证码">
+    	<span class="verification_code btn_fail" id="beforeSendCode" count="60">发送验证码</span>
+    </div>
+    <div class="New_passworld">
+    	<div class="New_pass">
+    		<div class="former_font">密码</div>
+    		<input class="former_btn placehold_ft login_btn2" maxlength="16" type="password" name="password" id="password" placeholder="请输入密码">
+    	</div>
+    	<div class="line"></div>
+    	<div class="New_pass">
+    		<div class="former_font">确认密码</div>
+    		<input class="former_btn placehold_ft login_btn3" maxlength="16" type="password" name="password2" id="password2" placeholder="请再次输入密码">
+    	</div>
+    	<div class="pass_info">密码需6-16位，建议使用字母和数字的组合</div>
+    </div>
+    </div>
+
+
+    <div id="paylog" class="dialog_flex alert_hide">
+        <div class="deposit_dialog reminder password_btn">
+            <h3 class="deposit_info_title">图片验证码</h3>
+            <i class="close">
+                <img src="$!{env.getWebURL('')}/resources/micro2.0/images/close.png" alt="">
+            </i>
+            <input class="pass_input" type="tel" name="verCode" id="verCode" maxLength="4" value="$!verCode" placeholder="图片验证码"  style="width: 50%;" />
+            <img id="validateImg" src="$!env.getWebURL('')/micro2.0/common/captcha/code?ts=" width="80" height="30" style="cursor: pointer;position: relative;height: 75px;bottom: -10px;width: 150px;margin-left: 20px;" onclick="change()" alt="点击切换验证码">
+            <div class="top_line oran_color real_send_code_btn" id="sendCode" count="60">确定</div>
+        </div>
+    </div>
+</form>
+<a href="javascript:void(0)" class="pass_ok btn_fail">完成</a>
+
+<!-- 弹窗 -->
+<div class="dialog" style="display:none;">
+	<img src="$!env.getWebURL('resources/micro2.0/images/seetting_ok.png')" alt="">
+	<div class="settign_ft">注册成功</div>
+</div>
+</body>
+#Html("end")

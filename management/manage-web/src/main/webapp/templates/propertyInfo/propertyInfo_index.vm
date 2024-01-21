@@ -1,0 +1,132 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/propertyInfo/index.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+				<tr>
+					<td>
+					</td>
+				</tr>
+		</table>
+	</div>
+	
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">	
+		<ul class="toolBar">
+			<li><a title="新增资产合作产品" class="add" href="$env.getWebURL('/propertyInfo/detail.htm')" target="navtab" mask="true" rel="createBack" height="550"><span>新增</span></a></li>
+			<li class="line">line</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="168">
+		<thead>
+			<tr>
+				<th width="10%">序号</th>
+				<th width="30%">站岗户标识</th>
+				<th width="30%">修改时间</th>
+				<th width="30%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $propertyInfoList)
+    			<tr target="sid_user" rel="1" >
+					#if($!numPerPage == 20)
+						#set($a=$!velocityCount + 20 * ($!pageNum - 1))
+						<td>$a</td>
+					#elseif($!numPerPage == 50)
+						#set($b=$!velocityCount + 50 * ($!pageNum - 1))
+						<td>$b</td>
+					#elseif($!numPerPage == 100)
+						#set($c=$!velocityCount + 100 * ($!pageNum - 1))
+						<td>$c</td>
+					#elseif($!numPerPage == 200)
+						#set($d=$!velocityCount + 200 * ($!pageNum - 1))
+						<td>$d</td>
+					#end
+    				##<td>$!velocityCount</td>
+    				<td>$!grid.propertyName</td>
+					<td>$!date.format($!grid.updateTime)</td>
+    				<td>
+    					##<a href="javascript:void(0)" onclick="detailBsPropertyInfo($!grid.count,$!grid.id)" class="btnEdit" >编辑资产合作产品</a>
+						<a title="编辑资产合作产品" target="navTab" href="$env.getWebURL('/propertyInfo/detail.htm?id=')$!grid.id&count=$!grid.count" class="btnEdit" mask="true" rel="createBack" >编辑资产合作产品</a>
+    					<a href="#" onclick="deleteBsPropertyInfo($!grid.count,$!grid.id)" class="btnDel">删除</a>
+                    </td>
+    			</tr>
+			#end
+		</tbody>
+		
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option> 
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+//编辑
+/**
+function detailBsPropertyInfo(count,id){
+	var url = $("#APP_ROOT_PATH").val() + "/propertyInfo/detail.htm?id="+id;
+	var content = "";
+	if(count > 0) {
+		content = "该合作方名称已经被"+count+"个产品引用，不能编辑！";
+		//alertMsg.confirm(content);
+		alertMsg.warn(content);
+	}
+	else {
+		content = "确认编辑？";
+		alertMsg.confirm(content,{okCall:function(){
+    		var options = {"close":"function","mask":true};
+			navTab.openTab('createBack', url,{title:'编辑资产合作产品'},options);
+		}});
+	}
+}
+*/
+
+//删除
+function deleteBsPropertyInfo(count,id){
+	var url = $("#APP_ROOT_PATH").val() + "/propertyInfo/delete.htm";
+	var content = "";
+	if(count > 0) {
+		content = "该合作方名称已经被"+count+"个产品引用，不能删除！";
+		//alertMsg.confirm(content);
+		alert(content);
+	}
+	else {
+		content = "确认删除？";
+		alertMsg.confirm(content,{okCall:function(){
+		jQuery.ajax({
+			type : 'post',
+			url : url,
+			data : {id:id},
+			dataType: 'json',
+			success : function(json) {
+				alertMsg.correct('删除成功!');
+				$("#myform").submit();
+			}
+    	});
+	}});
+	}
+}
+
+</script>

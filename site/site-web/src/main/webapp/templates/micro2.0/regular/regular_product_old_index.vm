@@ -1,0 +1,198 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/regular/product_detail_new_six")
+#LoadCSS("resources/micro2.0/styles/regular/product_detail_new_default")
+#LoadCSS("resources/micro2.0/styles/regular/swiper.min")
+#LoadCSS("resources/micro2.0/styles/regular/product_detail_new.min")
+#WeChatShare()
+#Head("end")
+<body>	
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="id" name="id" value="$!id" />
+    <input type="hidden" id="name" name="name" value="$!name" />
+    <input type="hidden" id="rate" name="rate" value="$!rate" />
+    <input type="hidden" id="term" name="term" value="$!term" />
+    <input type="hidden" id="totalCount" name="totalCount" value="$!totalCount" />	##总条数
+    <input type="hidden" id="pageNum" name="pageNum" value="$!pageNum" /> ##当前页码
+    <input type="hidden" id="minInvestAmount" name="minInvestAmount" value="$!minInvestAmount" />
+    <input type="hidden" id="qianbao" name="qianbao" value="$!qianbao" />
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+    <input type="hidden" id="tabFlag" name="tabFlag" value="0" />       	
+    <div id="header">
+		<!-- 头部 -->
+		<div class="header_title">
+			<a class="header_arrow" href="javascript:history.go(-1)"></a>
+			<h1 class="heade_ft color_bg">定期理财 </h1>
+		</div>
+		<div class="product_regular">
+    		<span class="pr_number">$!number.format("0.00",$!productDetail.baseRate)</span>
+    		<span class="pr_sign">%</span>
+    	</div>
+    	<div class="pr_box">
+			<span class="pr_txt">预期年化收益</span>
+		</div>   	
+    	<div class="pr_info">
+    		<div class="pr_info_left"><span class="pr_icon1"></span>投资期限$!productDetail.term天</div>
+    		<div class="pr_info_right">
+				<span class="pr_icon2"></span>
+    			#if($!productDetail.minInvestAmount >= 10000)
+    				#if($!productDetail.minInvestAmount %10000 >0 && $!productDetail.minInvestAmount %1000>0)
+    					#set($minInvestAmount = $!productDetail.minInvestAmount/10000)
+    					起投金额$!number.format("0.00",$minInvestAmount)万
+    				#elseif($!productDetail.minInvestAmount %10000 >0 && $!productDetail.minInvestAmount %1000==0)
+    					#set($minInvestAmount = $!productDetail.minInvestAmount/10000)
+    					起投金额$!number.format("0.0",$minInvestAmount)万
+    				#else
+    					#set($minInvestAmount = $!productDetail.minInvestAmount/10000)
+    					起投金额$!number.format("0",$minInvestAmount)万
+    				#end
+    			#else
+    				起投金额$!number.format("0",$!productDetail.minInvestAmount)元
+    			#end
+    		</div>
+    	</div>   
+    </div>
+    <div class="swiper-container">
+    	<div class="pr_wp">
+    		<ul class="pr_tab" id="tab_now">
+    			<li class="tab_li active">计划介绍<span class="pr_line swiper_active"></span></li>
+    			<li class="tab_li">风险控制<span class="pr_line"></span></li>
+    			<li class="tab_li">投资记录<span class="pr_line"></span></li>
+    		</ul>
+    	</div>
+        <div class="swiper-wrapper">
+            <div class="swiper-slide swiper_active">
+				<div class="content-silde">
+					<div class="plan_box">
+            			 <div class="slide1_tt"><span class="pr_tline"></span>计划基本信息</div>
+    					 <table id="tfhover" class="tftable" border="1">
+            				<tr>
+            					<td class="bg_td">计划名称</td>
+            					<td>$!productDetail.name </td>
+            				</tr>
+            				<tr>
+            					<td class="bg_td">收益管理费</td>
+            					<td>#if($!productDetail.manageFee == '0.0') 免收  #else $!number.format("0.00",$!productDetail.manageFee) %  #end</td>
+            				</tr>
+            
+            				<tr>
+            					<td class="bg_td">起息时间</td>
+            					<td>#if($!productDetail.beginInterestDays == 'NEXT_DAY' ) 出借成功当日起息  #else 出借成功当日起息 #end</td>
+            				</tr>
+            				<tr>
+            					<td class="bg_td">回款方式</td>
+            					<td>#if($!productDetail.returnType == 'FINISH_RETURN_ALL' ) 到期一次性本息兑付  #else $!productDetail.returnType #end</td>
+            				</tr>
+            				<tr>
+            					<td class="bg_td">计息方式</td>
+            					<td>按日计息</td>
+            				</tr>       
+            			</table>
+    				</div>
+    				<div class="plan_box">
+                    	<div class="slide1_tt"><span class="pr_tline"></span>产品特点</div>
+            			<div class="plan_p">
+            				<p >
+            					#if($!{term} == 30) 期限最短，收益适中，债权流动性好。
+                                #elseif($!{term} == 90) 期限较短，收益较高，债权流动性好。
+                                #elseif($!{term} == 180) 期限短，收益高，债权流动性好。
+                                #elseif($!{term} == 365) 期限最长，收益最高，债权流动性好。
+                                #end
+                            </p>        
+            			</div>
+    				</div>
+        			<div class="plan_box">
+                    	<div class="slide1_tt"><span class="pr_tline"></span>收益计息</div>
+            			<div class="plan_p">
+            				<p >
+            					购入第二天即开始计息；产品到期后，1-3天内自动本息回款；年化收益$!{rate}%；到期一次性本息兑付。
+                            </p>
+            			</div>
+    				</div>
+        			<div class="plan_box">
+                    	<div class="slide1_tt"><span class="pr_tline"></span>投资去向</div>
+            			<div class="plan_p">
+            				<p>
+            					币港湾的理财资金用于受让国内知名的达飞金融优质债权，具有金额小、借款人分散、资信状况良好、产品不良率极低四大特点。
+                            </p>
+            			</div>
+    				</div>
+        			<div class="plan_box">
+                    	<div class="slide1_tt"><span class="pr_tline"></span>本息保障</div>
+            			<div class="plan_p">
+            								
+            					<p >1. 利息和本金都托管于国资系三方支付平台，任何第三方包括币港湾均无权挪用用户资金； </p>
+                        		<p>&nbsp;</p>
+                        		<p >2. 用户在币港湾的投资债权均为优质的小微借款，此项债权由太平洋财险对债权对应的借款人进行人身意外险和履约险的承保；</p>
+                        		<p>&nbsp;</p>
+                        		<p>3. 币港湾受让的小微借款不良率只有2.3%，平台将会根据投资额提取3%（不良率的150%）的风险备付金用于不良兑付。</p>
+            			</div>
+    				</div>
+				</div>
+			</div>
+    		 <div class="swiper-slide">
+    			<div class="content-silde">
+        			<div class="plan_box">
+        				<div class="slide1_tt"><span class="pr_tline"></span>信用评级报告</div>
+        				<div class="plan_p">
+        					<img src="https://www.bigangwan.com/resources/gen2.0/images/pingji01.jpg" width="100%" height="100%" id="loan_0">
+        					<img src="https://www.bigangwan.com/resources/gen2.0/images/pingji02.jpg" width="100%" height="100%" id="loan_1">
+        					<img src="https://www.bigangwan.com/resources/gen2.0/images/pingji03.jpg" width="100%" height="100%" id="loan_2">
+        					<img src="https://www.bigangwan.com/resources/gen2.0/images/pingji04.jpg" width="100%" height="100%" id="loan_3">
+        					<img src="https://www.bigangwan.com/resources/gen2.0/images/pingji05.jpg" width="100%" height="100%" id="loan_4">
+            			</div>
+            		</div>
+            		<div class="deta_foor_info">
+                        <span class="pr_safe_img"></span>账户资金安全由全球网络安全领导者赛门铁克保障
+                    </div>  		
+    			</div>
+             </div>
+            <div class="swiper-slide slide3">
+				<div class="content-silde">
+                	<ul class="slide3_ul">
+        				
+        				#foreach($record in $!investRecord)
+                		<li class="slide3_li">
+                			<div class="name">$!record.userName </div>               			
+                			<div class="name_right">
+        						 #if($!record.balance >= 10000)
+                    				#if($!record.balance %10000 >0 && $!record.balance %1000>0)
+                    					#set($balanceAmount = $!record.balance/10000)
+                    					$!number.format("0.00",$balanceAmount)万
+                    				#elseif($!record.balance %10000 >0 && $!record.balance %1000==0)
+                    					#set($balanceAmount = $!record.balance/10000)
+                    					$!number.format("0.0",$balanceAmount)万
+                    				#else
+                    					#set($balanceAmount = $!record.balance/10000)
+                    					$!number.format("0",$balanceAmount)万
+                    				#end
+                    			#elseif($!record.balance >=100 && $!record.balance <10000)
+                    				$!number.format("0",$!record.balance)元
+            					#else
+            						0 元
+                    			#end
+        					</div>
+							<div class="name_time">$!date.format($!record.openTime)</div>
+                		</li>
+        				#end                     
+                	</ul>
+        			#if($!productDetail.totalRows == 0)
+        				<div id="showmore">暂无投资记录</div>
+        			#else
+        				<div id="showmore" >查看更多</div>
+        			#end
+        			<div class="place_btn"></div>
+    			</div>
+            </div>
+        </div>
+    </div>
+    <div class="place_btn"></div>   
+	<div class="pr_buy_btn">  
+		<div class="date_btn_over"><i class="date_btn_over_img"></i>已结束</div>
+	</div>
+#LoadJS("resources/micro2.0/scripts/regular/swiper.jquery.min")
+#LoadJS("resources/micro2.0/scripts/regular/product_detail_new")
+#LoadJS("resources/micro2.0/scripts/common/common")
+</body>
+#Html("end")

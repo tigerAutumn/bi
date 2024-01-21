@@ -1,0 +1,95 @@
+## 积分商城详情页
+### 一、页面数据
+#### 1、描述
+pc端点击积分商城首页上的产品，会跳转到积分商城详情页
+#### 2、接口
+##### a.接口链接
+{channel}/mallCommodity/commodityDetail
+> + 微信请求channel为h5
+> + 安卓请求channel为android
+> + 苹果请求channel为ios
+> + 电脑请求channel为pc
+##### b.接口地址
+com.pinting.mall.controller.commodity.MallCommodityController.commodityDetail
+#### 3、流程
+##### a.一期
+
+```
+    查询商品详情信息
+    判断channel
+        当channel为h5时
+            执行分享相关的代码
+            获取钱报标识
+            获取柯桥日报等标识
+            返回商品详情页 mall/commodity/commodity_detail_h5
+        当channel为android或者ios时
+            从请求request中获取userId
+            加密后的userId回传给app页面
+            返回商品详情页 mall/commodity/commodity_detail_app
+```
+##### b.二期
+```
+    查询商品详情信息
+    判断channel
+        当channel为android或者ios时
+            从请求request中获取userId
+            加密后的userId回传给app页面
+            返回商品详情页 mall/commodity/commodity_detail_app
+        否则
+            执行分享相关的代码
+            获取钱报标识
+            获取柯桥日报等标识
+            判断channel
+                当channel为h5时
+                    返回商品详情页 mall/commodity/commodity_detail_h5
+                当channel为pc时
+                    返回商品详情页 mall2.0/commodity/commodity_detail
+```
+
+### 二、商品兑换
+#### 1、描述
+积分商城产品详情页点击`立即兑换`，调用积分兑换商品的接口
+#### 2、接口
+##### a.接口链接
+{channel}/mallCommodity/exchangeCommodity
+> + 微信请求channel为h5
+> + 安卓请求channel为android
+> + 苹果请求channel为ios
+> + 电脑请求channel为pc
+##### b.接口地址
+com.pinting.mall.controller.commodity.MallCommodityController.exchangeCommodity
+#### 3、流程
+##### a.一期
+```
+    查询商品详情信息
+    判断channel
+        当channel为h5时
+            从cookie中获取userId
+        当channel为android或者ios时
+            从请求request中获取userId
+    判断userId
+        当userId为空时
+            返回错误码resCode为"999"，错误信息resMsg为"系统异常，请稍后重试"
+    判断channel和请求是否重复
+        当channel为h5且请求重复时
+            返回错误码resCode为"999"，错误信息resMsg为"请勿重复提交订单"
+    积分兑换商品
+    返回积分兑换商品结果
+```
+##### b.二期
+```
+    查询商品详情信息
+    判断channel
+        当channel为h5或者pc时
+            从cookie中获取userId
+        当channel为android或者ios时
+            从请求request中获取userId
+    判断userId
+        当userId为空时
+            返回错误码resCode为"999"，错误信息resMsg为"系统异常，请稍后重试"
+    判断channel和请求是否重复
+        当channel为h5或pc且请求重复时
+            返回错误码resCode为"999"，错误信息resMsg为"请勿重复提交订单"
+    积分兑换商品
+    返回积分兑换商品结果
+```

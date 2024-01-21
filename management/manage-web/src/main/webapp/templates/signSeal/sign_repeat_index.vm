@@ -1,0 +1,133 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" id="flag" value="$!flag" />
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/signSeal/signRepeat.htm')" onsubmit="return TabnavTabAjaxDone(this);">
+		
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" value="$!flag" />
+	<div class="searchBar">
+		<table class="searchContent">
+				<tr>
+					<td>
+
+						类型：
+						<select name="type" > 
+							<option value="" #if("$!type"=="") selected #end>全部</option>
+							<option value="LOAN_AGREEMENT" #if("$!type"=="LOAN_AGREEMENT") selected #end>云贷四方协议</option>
+							<option value="SEVEN_DAI_SELF_LOAN_AGREEMENT" #if("$!type"=="SEVEN_DAI_SELF_LOAN_AGREEMENT") selected #end>7贷四方协议</option>
+        					<option value="BORROW_SERVICES" #if("$!type"=="BORROW_SERVICES") selected  #end>赞分期借款咨询与服务协议</option>
+        					<option value="ZSD_BORROW_SERVICES" #if("$!type"=="ZSD_BORROW_SERVICES") selected  #end>赞时贷借款咨询与服务协议</option>
+        				</select>
+						<span style="margin-left:20px;">
+							<button onclick="func()" type="button">查询</button>
+                        </span>
+						
+					</td>
+				</tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">	
+
+	</div>
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="3%">ID</th>
+				<th width="3%">用户ID</th>
+				<th width="3%">用户来源</th>
+				<th width="8%">协议号</th>
+				<th width="13%">源地址</th>
+				<th width="13%">目标地址</th>
+				<th width="8%">类型</th>
+				<th width="3%">状态</th>
+				<th width="8%">备注</th>
+				<th width="8%">创建时间</th>
+				<th width="8%">更新时间</th>
+				<th width="22%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $userSealFiles)
+			<tr target="sid_user" rel="1" >
+				<td >$!grid.id</td>
+                <td>$!grid.userId</td>
+                <td>$!grid.userSrc</td>
+				<td >$!grid.agreementNo</td>
+				<td>$!grid.srcAddress</td>
+				<td>$!grid.fileAddress</td>
+				<td>$!grid.sealType</td>
+				<td>$!grid.sealStatus</td>
+				<td>$!grid.note</td>
+				<td>$!date.format($!grid.createTime)</td>
+				<td>$!date.format($!grid.updateTime)</td>
+				<td>
+					<a title="重发" target="ajaxTodo" href="$env.getWebURL('/signSeal/signRepeatSend.htm?id=')$!grid.id"  mask="true" >重发</a>&nbsp&nbsp&nbsp 
+                </td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+<script>
+
+function func(){
+	var url = $("#APP_ROOT_PATH").val() + "/signSeal/signRepeat.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function ajaxTodo(url, callback){
+	
+	jQuery.ajax({
+		url: url,
+		type: 'get',
+		success: function(data){
+			if(data.statusCode && data.statusCode == '200') {
+				alertMsg.info("重发成功");
+				navTab.reload("$env.getWebURL('/signSeal/signRepeat.htm')");
+			} else {
+				if(data.message) {
+    				alertMsg.error(data.message);
+    			} else {
+    				alertMsg.error('操作失败');
+    			}
+			}
+			navTab.reload('');
+		},
+		error: function(data){
+			if(data.message) {
+				alertMsg.error(data.message);
+			} else {
+				alertMsg.error('重发失败');
+			}
+		}
+	});
+	return false;
+}
+
+</script>

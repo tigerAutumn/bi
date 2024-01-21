@@ -1,0 +1,75 @@
+#### 资金互通管理台
+1. 需求描述
+	原型位置：/产品专用/项目需求/原型/2018年需求/5月份-资金放款互通管理台
+	doku需求发布-自由站岗户计划
+		
+2. 需求背景
+	svn/项目设计/资金放款互通/资金放款互通设计方案.docx
+	
+3. 业务逻辑
+### 业务实现点
+1. 涉及资金放款互通管理台菜单的，改为新的分页插件。
+	
+2. 产品计划发布
+	理财计划申请菜单新增、编辑、克隆、详情页操作，理财计划审核菜单审核操作，理财计划发布菜单详情操作，资产合作产品都是从bs_property_info取值的，
+	bs_property_info已在资产合作产品维护菜单中修改，所以不需要修改。
+	涉及理财字眼改成产品
+	<pre>
+		update m_menu set name='产品计划管理' where name='理财计划管理';
+		update m_menu set name='产品计划申请管理' where name='理财计划申请管理';
+		update m_menu set name='产品计划审核管理' where name='理财计划审核管理';
+		update m_menu set name='产品计划发布管理' where name='理财计划发布管理';
+		INSERT INTO `bs_term_product_code`(`property_symbol`, `term`, `code`, `create_time`, `update_time`) VALUES ( 'FREE', 1, '7030', '2018-06-05 19:21:00', '2018-06-05 19:21:03');
+		INSERT INTO `bs_term_product_code`(`property_symbol`, `term`, `code`, `create_time`, `update_time`) VALUES ( 'FREE', 3, '7090', '2018-06-05 19:21:37', '2018-06-05 19:21:39');
+		INSERT INTO `bs_term_product_code`(`property_symbol`, `term`, `code`, `create_time`, `update_time`) VALUES ( 'FREE', 6, '7180', '2018-06-05 19:21:53', '2018-06-05 19:21:56');
+		INSERT INTO `bs_term_product_code`(`property_symbol`, `term`, `code`, `create_time`, `update_time`) VALUES ( 'FREE', 12, '7365', '2018-06-05 19:22:08', '2018-06-05 19:22:12');
+	</pre>
+	
+3. 投资购买查询（存管后）(/statistics/buyMessage/queryDep/index)
+	筛选条件、列表页面、导出操作资产方更名为站岗户，并且新增自由站岗户。
+	对应计数sql和查询列表的sql，购买总金额sql修改(新增自由站岗户)
+	
+4. 存管后-出借匹配查询(/statistics/buyMessage/finance/query/depIndex)
+	筛选条件、列表页面、导出操作资产方更名为站岗户，并且新增自由站岗户。
+	债权匹配列表新增站岗户，
+	匹配金额统计站岗户的匹配情况，借款总金额根据实际资产方查询。
+	   
+5. 放款日常管理(/statistics/loanDaily/index)
+	统计ln_daily_amount表的 FreeAmount自由站岗户总额度、TermxLeftAmount自由站岗户剩余额度 
+	PartnerAmount资产方总额度、TermxAmount资产方剩余额度，状态是AVALIABLE
+	云贷资金计划总量= 云贷资产方的FreeAmount+PartnerAmount
+	7贷资金计划总量= 7贷资产方的FreeAmount+PartnerAmount
+	赞分期和赞时贷资金计划总量默认为0
+	
+6. 放款日常管理-退票功能
+	统计ln_daily_amount表的 FreeAmount自由站岗户总额度、TermxLeftAmount自由站岗户剩余额度 
+	PartnerAmount资产方总额度、TermxAmount资产方剩余额度，状态是AVALIABLE
+	云贷资金计划总量= 云贷资产方的FreeAmount+PartnerAmount
+	7贷资金计划总量= 7贷资产方的FreeAmount+PartnerAmount
+	赞分期和赞时贷资金计划总量默认为0
+	
+7. 业务统计总览(/statistics/business/index)
+	页面隐藏赞分期、赞时贷数据，后端删除赞分期、赞时贷数据、老7贷、老云贷查询数据代码。
+	新增自由产品计划(今日7天投资额、今日30天投资额、今日90天投资额、今日180天投资额、今日365天投资额、今日年化投资额、今日投资总额)
+	页面修改云贷七贷文案为云贷产品计划、七贷产品计划。
+	业务统计非产品的统计：除今日注册用户、昨日注册用户、累计注册用户新增了自由站岗户数据。
+	
+8. 渠道业绩统计(/statistics/agentUser/performance)	
+	统计口径需要包含自由站岗户，红包户，去掉原有逻辑中注册用户数统计关联了投资时间条件搜索。   
+	   
+9. 用户综合查询(/bsuserManage/index)
+	年化投资额、总资产、存量资产、累计投资收益，需要包含自由站岗户数据。
+	
+10. 用户投资概览(/statistics/userInvest/index和statisticUserInvestTask)
+	 统计维度需要包含自由站岗户产生的数据
+	 修改statisticUserInvestTask定时，修改了用户投资统计方法，用户注册、活跃情况统计未修改。
+	
+11. 产品投资概览(/productInvest/index)
+	 统计维度需要包含自由站岗户产生的数据
+	 修改ProductInvestViewTask定时，原先sql没有加上7贷数据，所以加了自由站岗户和7贷。
+	
+12. 用户复投查询(/bsuser/complexVote)	            
+	 需要包含自由站岗户的产品投资数据(原统计逻辑中只涉及REG户，需要加上AUTH_YUN、AUTH_7、AUTH_FREE户)	
+
+	 
+

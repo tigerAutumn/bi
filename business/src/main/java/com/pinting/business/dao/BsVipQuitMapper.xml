@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinting.business.dao.BsVipQuitMapper">
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsVipQuit">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="property_symbol" jdbcType="VARCHAR" property="propertySymbol" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="amount" jdbcType="DOUBLE" property="amount" />
+    <result column="check_time" jdbcType="TIMESTAMP" property="checkTime" />
+    <result column="quit_time" jdbcType="TIMESTAMP" property="quitTime" />
+    <result column="op_user_id" jdbcType="INTEGER" property="opUserId" />
+    <result column="ck_user_id" jdbcType="INTEGER" property="ckUserId" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, property_symbol, user_id, user_name, amount, check_time, quit_time, op_user_id, 
+    ck_user_id, status, create_time, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.pinting.business.model.BsVipQuitExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_vip_quit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bs_vip_quit
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bs_vip_quit
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsVipQuitExample">
+    delete from bs_vip_quit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsVipQuit">
+    insert into bs_vip_quit (id, property_symbol, user_id, 
+      user_name, amount, check_time, 
+      quit_time, op_user_id, ck_user_id, 
+      status, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{propertySymbol,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{userName,jdbcType=VARCHAR}, #{amount,jdbcType=DOUBLE}, #{checkTime,jdbcType=TIMESTAMP}, 
+      #{quitTime,jdbcType=TIMESTAMP}, #{opUserId,jdbcType=INTEGER}, #{ckUserId,jdbcType=INTEGER}, 
+      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsVipQuit">
+    insert into bs_vip_quit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="propertySymbol != null">
+        property_symbol,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="checkTime != null">
+        check_time,
+      </if>
+      <if test="quitTime != null">
+        quit_time,
+      </if>
+      <if test="opUserId != null">
+        op_user_id,
+      </if>
+      <if test="ckUserId != null">
+        ck_user_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="propertySymbol != null">
+        #{propertySymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="checkTime != null">
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="quitTime != null">
+        #{quitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opUserId != null">
+        #{opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="ckUserId != null">
+        #{ckUserId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsVipQuitExample" resultType="java.lang.Long">
+    select count(*) from bs_vip_quit
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update bs_vip_quit
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.propertySymbol != null">
+        property_symbol = #{record.propertySymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userName != null">
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null">
+        amount = #{record.amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.checkTime != null">
+        check_time = #{record.checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.quitTime != null">
+        quit_time = #{record.quitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.opUserId != null">
+        op_user_id = #{record.opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.ckUserId != null">
+        ck_user_id = #{record.ckUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update bs_vip_quit
+    set id = #{record.id,jdbcType=INTEGER},
+      property_symbol = #{record.propertySymbol,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      amount = #{record.amount,jdbcType=DOUBLE},
+      check_time = #{record.checkTime,jdbcType=TIMESTAMP},
+      quit_time = #{record.quitTime,jdbcType=TIMESTAMP},
+      op_user_id = #{record.opUserId,jdbcType=INTEGER},
+      ck_user_id = #{record.ckUserId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsVipQuit">
+    update bs_vip_quit
+    <set>
+      <if test="propertySymbol != null">
+        property_symbol = #{propertySymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="checkTime != null">
+        check_time = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="quitTime != null">
+        quit_time = #{quitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opUserId != null">
+        op_user_id = #{opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="ckUserId != null">
+        ck_user_id = #{ckUserId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsVipQuit">
+    update bs_vip_quit
+    set property_symbol = #{propertySymbol,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DOUBLE},
+      check_time = #{checkTime,jdbcType=TIMESTAMP},
+      quit_time = #{quitTime,jdbcType=TIMESTAMP},
+      op_user_id = #{opUserId,jdbcType=INTEGER},
+      ck_user_id = #{ckUserId,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <resultMap id="VipQuitVOMap" type="com.pinting.business.model.vo.VipQuitVO" extends="BaseResultMap" >
+    <result column="quit_user_name" property="quitUserName" jdbcType="VARCHAR"/>
+    <result column="check_user_name" property="checkUserName" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <select id="selectVipQuitList" parameterType="com.pinting.business.model.vo.VipQuitVO" resultMap="VipQuitVOMap" >
+    SELECT
+       tab.id, tab.user_id, tab.user_name, tab.amount, tab.create_time, tab.check_time, tab.quit_time,
+       tab.quit_user_name, tab.status, c.name AS check_user_name
+    FROM
+    (SELECT
+        a.id, a.user_id, a.user_name, a.amount, a.create_time, a.check_time, a.quit_time,
+        b.name AS quit_user_name, a.status, a.ck_user_id
+      FROM bs_vip_quit a,
+      m_user b
+      WHERE a.op_user_id = b.id ) tab
+    LEFT JOIN m_user c ON tab.ck_user_id = c.id
+    ORDER BY tab.create_time DESC
+    <include refid="sql-global.pagination" />
+  </select>
+
+  <select id="selectVipQuitCount" resultType="java.lang.Integer" >
+    SELECT
+      COUNT(*)
+    FROM bs_vip_quit a
+  </select>
+
+</mapper>

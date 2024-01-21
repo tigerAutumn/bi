@@ -1,0 +1,28 @@
+﻿
+-- 商户表删除福利折扣和福利说明字段，新增商户标签字段
+ALTER TABLE `hp_merchant`
+DROP COLUMN `welfare_discount`,
+DROP COLUMN `welfare_description`,
+ADD COLUMN `merchant_title`  varchar(64) NULL COMMENT '商户标签' AFTER `second_telephone`;
+
+-- 新增商户福利表
+drop table if exists hp_merchant_welfare;
+
+/*==============================================================*/
+/* Table: hp_merchant_welfare                                   */
+/*==============================================================*/
+create table hp_merchant_welfare
+(
+   id                   int not null comment '编号',
+   merchant_id          int comment '商户编号',
+   welfare_name         varchar(32) comment '福利名称',
+   welfare_description  varchar(512) comment '福利说明',
+   create_time          datetime comment '创建时间',
+   update_time          datetime comment '更新时间',
+   primary key (id)
+);
+
+alter table hp_merchant_welfare comment '乐港汇商户福利明细表';
+
+alter table hp_merchant_welfare add constraint FK_Reference_3 foreign key (merchant_id)
+      references hp_merchant (id) on delete restrict on update restrict;

@@ -1,0 +1,146 @@
+## 积分商城详情页
+### 一、页面数据
+#### 1、描述
+pc端点击积分商城首页上的产品，会跳转到积分商城详情页
+#### 2、接口
+##### a.接口链接
+{channel}/mallCommodity/commodityDetail
+> + 微信请求channel为h5
+> + 安卓请求channel为android
+> + 苹果请求channel为ios
+> + 电脑请求channel为pc
+##### b.接口地址
+com.pinting.mall.controller.commodity.MallCommodityController.commodityDetail
+#### 3、流程
+##### a.一期
+
+```
+    查询商品详情信息
+        查询mall_commodity_info
+    判断channel
+        当channel为h5时
+            执行分享相关的代码
+            获取钱报标识
+            获取柯桥日报等标识
+            返回商品详情页 mall/commodity/commodity_detail_h5
+        当channel为android或者ios时
+            从请求request中获取userId
+            加密后的userId回传给app页面
+            返回商品详情页 mall/commodity/commodity_detail_app
+```
+##### b.二期
+```
+    查询商品详情信息
+        查询mall_commodity_info
+    判断channel
+        当channel为android或者ios时
+            从请求request中获取userId
+            加密后的userId回传给app页面
+            返回商品详情页 mall/commodity/commodity_detail_app
+        否则
+            执行分享相关的代码
+            获取钱报标识
+            获取柯桥日报等标识
+            判断channel
+                当channel为h5时
+                    返回商品详情页 mall/commodity/commodity_detail_h5
+                当channel为pc时
+                    agentViewFlag为钱报系或秦皇岛系时
+                        返回商品详情页 mall178/commodity/commodity_detail
+                    否则
+                        返回商品详情页 mall2.0/commodity/commodity_detail
+```
+### 二、商品兑换
+#### 1、描述
+积分商城产品详情页点击`立即兑换`，调用积分兑换商品的接口
+#### 2、接口
+##### a.接口链接
+{channel}/mallCommodity/exchangeCommodity
+> + 微信请求channel为h5
+> + 安卓请求channel为android
+> + 苹果请求channel为ios
+> + 电脑请求channel为pc
+##### b.接口地址
+com.pinting.mall.controller.commodity.MallCommodityController.exchangeCommodity
+#### 3、流程
+##### a.一期
+```
+    判断channel
+        当channel为h5时
+            从cookie中获取userId
+        当channel为android或者ios时
+            从请求request中获取userId
+    判断userId
+        当userId为空时
+            返回错误码resCode为"999"，错误信息resMsg为"系统异常，请稍后重试"
+    判断channel和请求是否重复
+        当channel为h5且请求重复时
+            返回错误码resCode为"999"，错误信息resMsg为"请勿重复提交订单"
+    积分兑换商品
+    返回积分兑换商品结果
+```
+##### b.二期
+```
+    判断channel
+        当channel为h5或者pc时
+            从cookie中获取userId
+        当channel为android或者ios时
+            从请求request中获取userId
+    判断userId
+        当userId为空时
+            返回错误码resCode为"999"，错误信息resMsg为"系统异常，请稍后重试"
+    判断channel和请求是否重复
+        当channel为h5或pc且请求重复时
+            返回错误码resCode为"999"，错误信息resMsg为"请勿重复提交订单"
+    积分兑换商品
+    返回积分兑换商品结果
+```
+##### c.公共业务
+积分兑换商品
+
+```
+    商品兑换业务加锁
+    查询mall_commodity_info，校验商品信息（已下架，已售完）
+        不存在
+            抛出异常，错误码为"900003"，错误提示为"数据校验失败：兑换商品不存在"
+        已下架
+            抛出异常，错误码为"900003"，错误提示为"数据校验失败：兑换商品已下架"
+        库存为0
+            抛出异常，错误码为"920001"，错误提示为"兑换商品已售罄"
+    校验用户收货信息
+        收货人姓名不能为空
+        收货人姓名过长
+        收货人姓名格式错误
+        收货人手机号不能为空
+        收货人手机号格式错误
+        收货人地址不能为空
+        收货人详细地址不能为空
+        收货人详细地址过长
+    校验用户积分账户（可用积分是否足够）
+        查询mall_account
+            账户不存在或者积分不足
+                抛出异常，错误码为"920002"，错误提示为"您的积分不足"
+    事务开始
+        新增兑换订单表记录
+            mall_exchange_orders中新插入一条记录
+        新增用户收货地址信息
+            mall_consignee_address_info中新增或者更新记录
+        新增发货记录表
+            mall_send_commodity中新增一条记录
+        更新用户积分余额表
+            查询mall_account
+            判断用户积分是否足够
+                积分不足
+                    抛出异常，错误码为"920002"，错误提示为"您的积分不足"
+            更新mall_account中记录
+        新增用户积分余额流水表
+            mall_account_jnl中新插入一条记录
+        更新商品信息
+            查询mall_commodity_info
+            判断库存是否为0
+                库存为0
+                    抛出异常，错误码为"920001"，错误提示为"兑换商品已售罄"
+            更新mall_commodity_info中记录
+    事务结束
+    兑换结果"exchangeResult"设置为"true"
+```

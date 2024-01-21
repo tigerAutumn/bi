@@ -1,0 +1,178 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadCSS("resources/micro2.0/styles/activity/anniversary/celebration_02")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/activity/six")
+#LoadJS("resources/micro2.0/scripts/activity/anniversary/jquery.danmu")
+#LoadJS("resources/micro2.0/scripts/activity/anniversary/common")
+#LoadJS("resources/micro2.0/scripts/activity/anniversary/celebration_02")
+#LoadJS("resources/micro2.0/scripts/activity/anniversary/anniversary_second")
+#WeChatShare()
+#Head("end")
+
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<input type="hidden" id="isStartThird" value="$!secondPageInfo.isStartThird"/>
+<input type="hidden" id="isStartFourth" value="$!secondPageInfo.isStartFourth"/>
+<body class="BGImg">
+<img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/second/01.png" alt="" class="headerImg">
+
+<div class="win_border">
+    <div class="pos_title">
+        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/second/02.png" alt="">
+        <div class="right_title">
+            <div class="tit_info">送周年贺词，得周年礼包</div>
+            <div class="tit_time">3月14日-3月17日</div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="ner_font">
+            活动说明：活动期间，用户可进入活动页面发送对币港湾的2周年祝福。币港湾将于3月18日抽取100名幸运用户奖励周年庆礼包（奖励金），具体获奖名单将于3月18日在币港湾公众号（bigangwanlicai）中公布。
+        </div>
+        <div class="tanmu_wrap">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/second/04.png" alt="" class="bgtanmu">
+            <div class="tanmu_container">
+                <div id="danmu"></div>
+            </div>
+        </div>
+        <div class="btn" id="Click_blessing">祝福赢礼包</div>
+        <div id="Click_three_dialog" class="guize">活动规则</div>
+    </div>
+</div>
+
+<div class="win_border four_win">
+    <div class="pos_title">
+        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/second/03.png" alt="">
+        <div class="right_title">
+            <div class="tit_info">冲峰得桂冠，金主赢大礼</div>
+            <div class="tit_time">3月14日-3月24日</div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="ner_font" style="text-align:left;">
+            活动说明：根据用户活动期间内累计年化投资金额进行排名！大奖这么丰厚，最后花落谁家？
+        </div>
+        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/second/05.png" alt="" class="jianping">
+        <div class="infoshuoming">
+            活动期间累计年化投资额前4-10名，<br>
+            可获得200元现金奖励（奖励金）
+        </div>
+        <div class="neikuan paihan_hin">
+            <div class="paihang_title">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/second/06.png" alt="" class="title_piaodai">
+                <span class="toptitle">累计年化投资额实时排行榜</span>
+            </div>
+            <div class="alertRanking">
+                <span class="RankingName alertLeft">排名</span>
+                <span class="RankingName alertRight">购买金额</span>
+            </div>
+            <div class="OverHin">
+                <div class="alertWrap">
+                    <ul class="alertUl">
+                        #foreach($!investUser in $!secondPageInfo.investUserList)
+                            <li class="alertLi">
+                                <div class="OderLeft">
+                                        #if($!investUser.rank == 1)
+                                            <img class="OrderNumber" src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/second/thp01.png" alt="">
+                                        #elseif($!investUser.rank == 2)
+                                            <img class="OrderNumber" src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/second/thp02.png" alt="">
+                                        #elseif($!investUser.rank == 3)
+                                            <img class="OrderNumber" src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/second/thp03.png" alt="">
+                                        #else
+                                            <span class="Orderitem">$!investUser.rank</span>
+                                        #end
+                                </div>
+                                <div class="NameList">$!{investUser.userName}</div>
+                                <div class="RightMenory">$!{investUser.amount}元</div>
+                            </li>
+                        #end
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="btn go_product_list">立即投资</div>
+        <div id="Click_four_dialog" class="guize">活动规则</div>
+    </div>
+
+</div>
+<div class="footer_info">
+    本次活动的最终解释权归币港湾所有
+</div>
+
+<!-- 3重礼弹窗 -->
+<div id="threeDialog" class="dialog_notice alert_hide">
+    <div class="wrap_dialog">
+        <div class="dialog_title">
+            3重礼 活动规则
+            <div class="close">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/second/close.png" alt="" class="closeImg">
+            </div>
+        </div>
+        <ul class="dialog_ul">
+            <li class="dialog_li">1.活动时间：2017年3月14日-3月17日；</li>
+            <li class="dialog_li">2.参与用户为活动期间内，成功发送祝福的用户；</li>
+            <li class="dialog_li">3.获奖用户为3月18日，币港湾服务号（bigangwanlicai）发送的周年庆文章中公布的用户；</li>
+            <li class="dialog_li">4.用户获得的奖励将以奖励金的形式于活动结束后的5个工作日内发放至用户币港湾账户内。</li>
+        </ul>
+    </div>
+</div>
+<!-- 4重礼弹窗 -->
+<div id="fourDialog" class="dialog_notice alert_hide">
+    <div class="wrap_dialog">
+        <div class="dialog_title">
+            4重礼 活动规则
+            <div class="close">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/second/close.png" alt="" class="closeImg">
+            </div>
+        </div>
+        <ul class="dialog_ul">
+            <li class="dialog_li">1.活动时间:2017年3月14日-3月24日；</li>
+            <li class="dialog_li">2.本活动有效投资额为年化投资额，年化投资额计算公式：</li>
+            <li class="dialog_li">港湾系列，年化投资额 = 投资金额 * 投资期限（天数）/ 365，</li>
+            <li class="dialog_li">赞分期系列，年化投资额 = 投资金额 * 投资期限（月）/ 12 / 2；</li>
+            <li class="dialog_li">3.若出现投资额相同的情况下，按投资时间先后排名。投资时间以平台显示时间为准；</li>
+        </ul>
+    </div>
+</div>
+
+
+<!-- 提示框 -->
+<div class="dialog_notice smalldialog alert_hide prompt_dialog">
+    <div class="wrap_dialog">
+        <div class="dialog_title prompt_close" >
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/close_gray.png" alt="" class="closegrayImg">
+        </div>
+        <div class="dialog_font prompt_content">亲~今天已经送过祝福了喔~</div>
+        <div class="dialog_btn prompt_btn">知道了</div>
+    </div>
+</div>
+<!-- 祝福赢礼包弹窗 -->
+<div id="blessingDialog" class="dialog_notice alert_hide">
+    <div class="wrap_dialog">
+        <div class="dialog_title">
+            祝福赢礼包
+            <div class="close">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/second/close.png" alt="" class="closeImg">
+            </div>
+        </div>
+        <div class="bellwrap">
+            <textarea class="bless" name="" id="bless_textarea" maxlength="120"  placeholder="送祝福给你别样的惊喜~"></textarea>
+            <div class="limit">
+                <span class="limit_num">0</span>/120
+            </div>
+        </div>
+        <div class="bless_info">杜绝黄色、暴力、反动言论，一经发现立刻删除并取消活动资格 。
+            每个账户号限每天一次祝福。</div>
+        <div class="dialog_btn">提交</div>
+    </div>
+</div>
+
+
+#foreach($!benison in $!secondPageInfo.benisonList)
+    <input type="hidden" class="benison_list" value="$!benison.content">
+#end
+</body>
+
+#Html("end")
+

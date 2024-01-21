@@ -1,0 +1,82 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/regular/creditor.min")
+#WeChatShare()
+#Head("end")
+<body>
+<!-- 头部 -->
+<div class="header">
+	<a class="header_arrow" href="javascript:history.go(-1)"></a>
+	<h1 class="heade_ft color_bg">债权明细</h1>
+</div>
+<!-- main -->
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<input type="hidden" id="pageIndex" name="pageIndex" value="$!pageIndex" />
+<input type="hidden" id="totalCount" name="totalCount" value="$!pageNum" />
+<input type="hidden" id="total" name="total" value="$!total" />
+<input type="hidden" id="productId" name="productId" value="$!productId" />
+<input type="hidden" id="subAccountId" name="subAccountId" value="$!subAccountId" />
+<div class="main_pading">
+	#if($!total == 0)
+        <div class="msg">计划加入成功后，数据的更新需要1-3天，请您稍后再进行查询。（如有疑问，可详询客服热线400-806-1230）</div>
+		<table class="tftable" border="1"  id="mainContent" url='/micro2.0/match/myMatch_content?productId=$!productId&subAccountId=$!subAccountId'>
+			<tr>
+				<th>借款人</th>
+				<th>借款金额</th>
+				<th>还款状态</th>
+			</tr>
+		</table>
+	#else
+    <table class="tftable" border="1"  id="mainContent" url='/micro2.0/match/myMatch_content?productId=$!productId&subAccountId=$!subAccountId'>
+		<tr>
+    		<th>借款人</th>
+    		<th>借款金额</th>
+    		<th>还款状态</th>
+    	</tr>
+		#foreach($data in $!dataList)
+    	<tr>
+    		<td>$data.borrowerName</td>
+    		<td>$!money.format($!data.amount)</td>
+    		<td>
+	   	 		#if($!propertySymbol == "YUN_DAI_SELF" || $!propertySymbol == "ZSD" || $!propertySymbol == "7_DAI_SELF" || $!propertySymbol == "FREE")
+					#if($!data.repayStatus == "PAYING")
+                        借款中
+					#elseif($!data.repayStatus == "TRANSFERRED" || $!data.repayStatus == "REPAID")
+                        已还完
+					#end
+				#else
+					#if($!debtDetailsFlag == 'AUTH_YUN_FLAG' || $!debtDetailsFlag == 'AUTH_7_FLAG')
+						#if($!data.repayStatus == "PAYING")
+                            借款中
+						#elseif($!data.repayStatus == "TRANSFERRED" || $!data.repayStatus == "REPAID")
+                            已还完
+						#end
+					#else
+						#if($!data.repayStatus == 1)
+                            借款中
+						#elseif($!data.repayStatus == 2)
+                            部分还款
+						#elseif($!data.repayStatus == 3)
+                            已还完
+						#end
+					#end
+				#end
+		    </td>
+    	</tr>
+    	#end
+    </table>
+    </div>
+		<div class="main_height" id="showmore">查看更多</div>
+	</div>
+			
+	#end
+	<div class="main_height">更多详情请登录币港湾官网查看</div>
+</div>
+#LoadJS("resources/micro2.0/scripts/zepto.min")
+#LoadJS("resources/micro2.0/scripts/assets/custom")
+#LoadJS("resources/micro2.0/scripts/assets/match_detail_pagination")
+</body>
+#Html("end")

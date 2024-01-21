@@ -1,0 +1,137 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" id="flag" value="$!flag" />
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/yunDaiSelf/bill/index.htm')" onsubmit="return TabnavTabAjaxDone(this);">
+		
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" value="$!flag" />
+	<div class="searchBar">
+		<table class="searchContent">
+				<tr>
+					<td>
+
+						借款成功时间：<input name="startTime"  maxdate="{%y}-%M-{%d}"  type="text" id="startTime" class="date textInput readonly" readonly="true" size="8"  value="$!startTime" />
+						到 <input name="endTime" maxdate="{%y}-%M-{%d}"  type="text" id="endTime" class="date textInput readonly" readonly="true" size="8"  value="$!endTime"  />
+                  
+						类型：
+						<select name="type" > 
+							<option value="" #if("$!type"=="") selected #end>全部</option>
+							<option value="LOAN_AGREEMENT" #if("$!type"=="LOAN_AGREEMENT") selected #end>云贷四方协议</option>
+        					<option value="BORROW_SERVICES" #if("$!type"=="BORROW_SERVICES") selected  #end>赞分期借款咨询与服务协议</option>
+        					<option value="ZSD_BORROW_SERVICES" #if("$!type"=="ZSD_BORROW_SERVICES") selected  #end>赞时贷借款咨询与服务协议</option>
+        				</select>
+						<span style="margin-left:20px;">
+							<button onclick="func()" type="button">查询</button>
+                        </span>
+						
+					</td>
+				</tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">	
+		<a title="确实要批量同步操作吗?" target="selectedTodo" rel="ids" href="$env.getWebURL('/yunDaiSelf/bill/repeatSendBatch.htm')" class="delete"><span>批量同步账单</span></a>
+	</div>
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="4%"><input type="checkbox" group="ids" class="checkboxCtrl" /></th>
+				<th width="3%">借款编号</th>
+				<th width="6%">借款人编号</th>
+				<th width="3%">借款人</th>
+				<th width="8%">合作方借款人编号</th>
+				<th width="8%">合作方借款编号</th>
+				<th width="5%">金额</th>
+				<th width="13%">订单号</th>
+				<th width="8%">期数</th>
+				<th width="8%">合作方订单</th>
+				<th width="8%">创建时间</th>
+				<th width="8%">更新时间</th>
+				<th width="26%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $list)
+			<tr target="sid_user" rel="1" >
+				<td ><input name="ids" value="$!grid.partnerLoanId" type="checkbox"/></td>
+				<td >$!grid.loanId</td>
+                <td>$!grid.lnUserId</td>
+                <td>$!grid.userName</td>
+				<td>$!grid.partnerUserId</td>
+				<td >$!grid.partnerLoanId</td>
+				<td>$!grid.applyAmount</td>
+				<td>$!grid.payOrderNo</td>
+				<td>$!grid.period</td>
+				<td>$!grid.partnerOrderNo</td>
+				<td>$!date.format($!grid.createTime)</td>
+				<td>$!date.format($!grid.updateTime)</td>
+				<td>
+					<a title="同步账单" target="ajaxTodo" href="$env.getWebURL('/yunDaiSelf/bill/repeatSend.htm?partnerLoanId=')$!grid.partnerLoanId&partnerUserId=$!grid.partnerUserId"  mask="true" >同步账单</a>&nbsp&nbsp&nbsp 
+                </td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+<script>
+
+function func(){
+	var url = $("#APP_ROOT_PATH").val() + "/yunDaiSelf/bill/index.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function ajaxTodo(url, callback){
+	
+	jQuery.ajax({
+		url: url,
+		type: 'get',
+		success: function(data){
+			if(data.statusCode && data.statusCode == '200') {
+				alertMsg.info("同步成功");
+				navTab.reload("$env.getWebURL('/yunDaiSelf/bill/index.htm')");
+			} else {
+				if(data.message) {
+    				alertMsg.error(data.message);
+    			} else {
+    				alertMsg.error('操作失败');
+    			}
+			}
+			navTab.reload('');
+		},
+		error: function(data){
+			if(data.message) {
+				alertMsg.error(data.message);
+			} else {
+				alertMsg.error('同步失败');
+			}
+		}
+	});
+	return false;
+}
+
+</script>

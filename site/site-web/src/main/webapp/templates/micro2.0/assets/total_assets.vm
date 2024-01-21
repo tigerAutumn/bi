@@ -1,0 +1,140 @@
+#Html("begin")
+#Head("begin","币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("我的资产【币港湾官网】")
+#WeChatShare()
+#Head("end")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/assets/total_assets.min")
+<body>
+    <div class="container">
+    	<div class="header">
+    		#if("$!qianbao"=="qianbao")
+    			<a class="header_arrow" href="$!env.getWebURL('micro2.0/assets/assets')?qianbao=qianbao&agentViewFlag=$!agentViewFlag"></a>
+    		#else
+    			<a class="header_arrow" href="$!env.getWebURL('micro2.0/assets/assets')"></a>
+    		#end
+    		<h1 class="heade_ft oran_color">资产总计</h1>
+    		<span class="header_company">单位：元</span>
+    	</div>
+        <div class="total_money">$!money.format($!resMsg.assetAmount)</div>
+    	<div class="conta_h3">资产</div>
+    </div>
+    <div class="main">
+    	<ul class="total_content">
+    		<li class="item">
+    			<div class="item_title"><span class="item_line"></span>加入本金（元）</div>
+    			<div class="item_money">$!money.format($!resMsg.regularAmount)</div>
+    		</li>
+    		<li class="item">
+    			<div class="item_title"><span class="item_line iline_color1"></span>产品收益（元）</div>
+    			<div class="item_money">$!money.format($!resMsg.investEarnings)</div>
+    		</li>
+    	</ul>
+    </div>
+    #if($!hfDepGuideInfo.accountType == "DEP")
+        <!-- 存管户 -->
+        <div class="main">
+            <ul class="total_content">
+                <li class="item">        			
+        			<div class="item_title"><span class="item_line iline_color2"></span>存管账户余额（元）</div>
+        			<div class="item_money">$!money.format($!resMsg.depBalance)</div>
+        			#if($!resMsg.depFreezeBalance > 0)
+        				<div class="frozen">(其中处理中金额$!money.format($!resMsg.depFreezeBalance)元)</div>
+        			#end
+                </li>
+    			#if("$!qianbao"=="qianbao")
+    				#if("$!resMsg.jljBalance" != "")
+    					#if($!resMsg.jljBalance > 0)
+                    		<li class="item">
+        						<div class="item_title"><span class="item_line iline_color4"></span>我的奖励（元）</div>
+        						<span class="item_money">$!money.format($!resMsg.jljBalance)</span>
+                    		</li>
+    					#end
+    				#end
+    			#else
+            		<li class="item">
+        				<div class="item_title"><span class="item_line iline_color4"></span>我的奖励（元）</div>
+        				<div class="item_money">$!money.format($!resMsg.jljBalance)</div>
+            		</li>
+    			#end
+            </ul>
+        </div>
+    #elseif($!hfDepGuideInfo.accountType == "SIMPLE")
+        <!-- 普通账户 -->
+        <div class="main">
+            <ul class="total_content">
+                <li class="item">        			
+        			<div class="item_title"><span class="item_line iline_color3"></span>普通账户余额（元）</div>
+        			<div class="item_money">$!money.format($!resMsg.balance)</div>
+        			#if($!resMsg.freezeBalance > 0)
+        				<div class="frozen">(其中处理中金额$!money.format($!resMsg.freezeBalance)元)</div>
+        			#end
+                </li>
+    			#if("$!qianbao"=="qianbao")
+    				#if("$!resMsg.jljBalance" != "")
+    					#if($!resMsg.jljBalance > 0)
+                    		<li class="item">
+        						<div class="item_title"><span class="item_line iline_color4"></span>我的奖励（元）</div>
+        						<span class="item_money">$!money.format($!resMsg.jljBalance)</span>
+                    		</li>
+    					#end
+    				#end
+    			#else
+            		<li class="item">
+        				<div class="item_title"><span class="item_line iline_color4"></span>我的奖励（元）</div>
+        				<div class="item_money">$!money.format($!resMsg.jljBalance)</div>
+            		</li>
+    			#end
+            </ul>
+        </div>
+    #elseif($!hfDepGuideInfo.accountType == "DOUBLE")
+        <!-- 双帐户 -->
+        <div class="main">
+            <ul class="total_content">                		        
+        		<li class="item">
+        			<div class="item_title"><span class="item_line iline_color2"></span>存管账户余额（元）</div>
+        			<div class="item_money">$!money.format($!resMsg.depBalance)</div>
+        			#if($!resMsg.depFreezeBalance > 0)
+        				<div class="frozen">(其中处理中金额$!money.format($!resMsg.depFreezeBalance)元)</div>
+        			#end
+                </li>
+        		<li class="item">
+        			<div class="item_title"><span class="item_line iline_color3"></span>普通账户余额（元）</div>
+        			<div class="item_money">$!money.format($!resMsg.balance)</div>
+        			#if($!resMsg.freezeBalance > 0)
+        				<div class="frozen">(其中处理中金额$!money.format($!resMsg.freezeBalance)元)</div>
+        			#end
+                </li>
+            </ul>
+        </div>
+        #if("$!qianbao"=="qianbao")
+        	#if("$!resMsg.jljBalance" != "")
+        		#if($!resMsg.jljBalance > 0)
+        			<div class="main">
+                    	<ul class="total_content">
+                    		<li class="item">
+        						<div class="item_title"><span class="item_line iline_color4"></span>我的奖励（元）</div>
+        						<div class="item_money">$!money.format($!resMsg.jljBalance)</div>
+                    		</li>
+                    	</ul>
+                    </div>
+        		#end
+        	#end
+        #else
+        	<div class="main">
+            	<ul class="total_content">
+            		<li class="item">
+        				<div class="item_title"><span class="item_line iline_color4"></span>我的奖励（元）</div>
+        				<div class="item_money">$!money.format($!resMsg.jljBalance)</div>
+            		</li>
+            	</ul>	
+            </div>
+        #end
+    #end
+#LoadJS("resources/micro/scripts/common/form")
+#LoadJS("resources/micro/scripts/common/form-validate")
+#LoadJS("resources/micro/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/assets/custom")
+</body>
+#Html("end")

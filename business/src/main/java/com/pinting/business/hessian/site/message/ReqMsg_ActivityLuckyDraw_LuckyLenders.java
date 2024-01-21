@@ -1,0 +1,22 @@
+package com.pinting.business.hessian.site.message;
+
+import com.pinting.core.hessian.msg.ReqMsg;
+
+public class ReqMsg_ActivityLuckyDraw_LuckyLenders extends ReqMsg {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5237685430503051265L;
+
+	/*活动表主键id*/
+	private Integer activityId;
+	
+	public Integer getActivityId() {
+		return activityId;
+	}
+
+	public void setActivityId(Integer activityId) {
+		this.activityId = activityId;
+	}
+}

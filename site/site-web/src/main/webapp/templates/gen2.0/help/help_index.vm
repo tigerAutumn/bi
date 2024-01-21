@@ -1,0 +1,798 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/index/help_index")
+#LoadGenCSS("/resources/gen2.0/styles/index/news")
+#LoadGenCSS("/resources/gen2.0/styles/map/main1119")
+#LoadGenCSS("/resources/gen2.0/styles/index/data_index")
+#LoadGenJS("/resources/gen2.0/scripts/map/es5.min")
+<script src="https://webapi.amap.com/maps?v=1.3&key=5215d655dcc4e04cd696acedd1dddfc6"></script>
+#LoadGenJS("/resources/gen2.0/scripts/map/addToolbar")
+
+#Head("end")
+		<script>
+    		$(document).ready(function clickme(){
+		        //sign标记选定哪个
+				$i=$(document.getElementById("$!help")).index(); 
+            	$j=$(document.getElementById("$!help")).parent('dl').index();
+				$('.con_right_nav').children('li').eq($j).children('div').eq($i).css("display","block").siblings('div').css("display","none");
+				$('.con_right_nav').children('li').eq($j).siblings('li').children('div').css("display","none");
+            	$('.con_left_nav').children('dt').css({"background":"#fff","color":"#656565"});
+				$(document.getElementById("$!help")).css({"background":"#FF6634","color":"#fff"}).siblings('dt');
+			        
+                $('.wx').hover(function(){
+                	$('.imgs').fadeIn(100);
+                },function(){
+                	$('.imgs').hide(100);
+                });
+                
+//              侧导航-s
+                   
+                $('.con_left_nav').children('dt').click(function(){
+					if($(this).attr('id') && $(this).attr('id') == 'notice') {
+						location.href = "$!env.get('gen.server.web')/gen2.0/platform/notice/index";
+						return;
+					}
+					if($(this).attr('id') && $(this).attr('id') == 'news') {
+						location.href = "$!env.get('gen.server.web')/gen2.0/platform/news_list/index";
+						return;
+					}
+					if($(this).attr('id') && $(this).attr('id') == 'company_dynamic') {
+						location.href = "$!env.get('gen.server.web')/gen2.0/platform/company_dynamic_list/index";
+						return;
+					}
+					if($(this).attr('id') && $(this).attr('id') == 'data') {
+						location.href = "$!env.get('gen.server.web')/gen2.0/platform/data/index";
+						return;
+					}
+					if($(this).attr('id') && $(this).attr('id') == 'contact'){
+						var address = "<div class='rig_3_map' id='map'><iframe width='560' height='440' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='http://f.amap.com/0EB16Lb'></iframe></div>"
+						if($("#map")){
+							$("#map").remove();
+						}
+						$("#address").after(address);
+					}
+				   //document.getElementById("help");
+                	$i=$(this).index();      //dl里dt下标;li里div下标
+                	$j=$(this).parent('dl').index(); //dl下标;li下标
+                	$('.con_left_nav').children('dt').css({"background":"#fff","color":"#656565"});
+					$(this).css({"background":"#FF6634","color":"#fff"}).siblings('dt');
+					
+					$('.con_right_nav').children('li').eq($j).children('div').eq($i).css("display","block").siblings('div').css("display","none");
+					$('.con_right_nav').children('li').eq($j).siblings('li').children('div').css("display","none");
+                })
+           })
+		</script>
+		
+	</head>
+	<body>
+		#if("$!help" == "data")
+			#Gen2Header('info')
+		#elseif("$!help" == "help")
+			#Gen2Header("home", "help")
+		#else
+			#Gen2Header('about')
+		#end
+		
+		<div class="content">
+			<div class="con">
+				<div class="con_left con_height">
+					<p>关于我们</p>
+					<dl class="con_left_nav">
+						<dt id="platform">平台介绍</dt>
+						<dt id="team">管理团队</dt>
+						<dt id="data">平台数据</dt>
+						<dt id="contact">联系我们</dt>
+					</dl>
+						<p>产品服务</p>
+					<dl class="con_left_nav">
+						<dt id="service">服务协议</dt>
+						<dt id="privacy">隐私条例</dt>
+					</dl>
+						<p>帮助中心</p>
+					<dl class="con_left_nav">
+						<dt id="help">常见问题</dt>
+					</dl>
+						<p>新闻公告</p>
+					<dl class="con_left_nav">
+						<dt id="notice">公告内容</dt>
+						<dt id="news">媒体报道</dt>
+						<dt id="company_dynamic">公司动态</dt>
+					</dl>
+				</div>
+				<div class="con_right">
+					<ul class="con_right_nav">
+						<li></li>
+						<li>
+							<div class="rig_1">
+								<h3>平台介绍</h3>
+								<p>
+								币港湾是由浙大网新集团旗下币港湾科技有限公司开发，由杭商资产和泓淳科技联合运营的国资系互联网金融服务平台，平台对接海量优质小额债权，拥有完善的风控体系和第三方账户托管，并由担保公司承保，充分保障投资者的资金安全，是您实现财富增值的理想家园。 
+								</p>
+								
+								<h3>品牌内涵</h3>
+								<p>
+								“币”即钱币，“港湾”寓意安全、稳固。作为一家国资系上市公司背景的互联网金融服务平台，币港湾就是要为投资人提供一个能让资金安全避险、实现增值的家园。
+								</p>
+								
+								<h3>投资关系说明</h3>
+								<p>浙大网新是品听资产的大股东，品听是杭商资产的两大股东之一，杭商资产另一个股东是杭州市国资委（杭州市金融投资集团）；泓淳科技则是达飞财富旗下的互联网金融公司。
+								</p>
+								<p>浙大网新科技股份有限公司<br>
+									浙大网新集团是浙大网新科技股份有限公司（上交所：600797）的所属大股东，浙大网新是一家在以潘云鹤院士提出的“打造软件与网络业航母”远景目标下
+                                                                                                ，依托浙江大学综合应用学科优势组建的高科技企业，旗下拥有3家上市公司：网新科技、众合机电以及浙大兰德。自2001年6月创建以来，经过九年健康、快速发展，以“高端定位、服务主导、国际路线”为竞争策略的浙大网新已崛起为具有相当影响力的中国IT协同服务领军企业。
+								</p>
+								<p>杭商资产管理（杭州）有限公司<br>
+									杭商资产管理（杭州）有限公司（简称“杭商资产”），原杭商创业投资管理（杭州）有限公司，由杭州市金融投资集团有限公司与浙大网新集团强强联合组建。 杭州市金融投资集团有限公司于2012年2月揭牌成立，注册资金50亿元人民币，是杭州市政府直属国有独资企业，以金融服务为核心主业，立足于“服务产业升级、服务城镇建设”两大基本方向，着力构建财富管理、小微金融、公共服务、商贸金融、资产交易中介、数据服务和国际化业务等七大业务板块。2014年度公司实现净利润9.7亿元，管理资产规模345.9亿元人民币。 杭商资产已发行股权投资基金-“宝石基金”、商业地产基金-“跨虹基金”、政府类基金-“碧水基金”、“橙湾基金”等多只基金，直接管理资产总规模超过12亿元，联合管理资产总规模超过30亿元。
+								</p>
+								<p>
+									泓淳（杭州）科技有限公司<br>
+										泓淳（杭州）科技有限公司成立于2015年，是达飞财富旗下的一家集信用贷款和理财两种业务于一身的互联网金融公司，其目前运营的产品不但有适合于大学生灵活简便的小微借款业务，也有面向于全体人群的高收益理财产品。
+
+								</p>
+							</div>
+							<div class="rig_2">
+								<h3>团队介绍</h3>
+								<h4><em>周炜彤</em> 创始人 </h4>
+								<p>浙江大学经济学学士、计算机工学硕士，具有中国注册会计师资格。曾任职于中国工商银行、上海浦发银行、浙大网新科技股份有限公司、浙大网新集团，拥有丰富的信贷经验、上市公司及上市公司控股股东的资本运 作经验。历任浙大网新资产营运中心总经理、总裁助理，网新集团资金总监、副总裁，主持投融资管理，现任杭商资产管理（杭州）有限公司总裁。
+										</p>
+								<h4><em>王晶 </em>首席执行官</h4>
+								<p> 先后担任过上海银行、民生银行、浦发银行、光大银行等多家股份制商业银行高管。近20年的金融从业经历，具有专业的风控和信贷管理经验、熟悉投行业务，对互联网金融的商业运营有其深刻的认识和独特的见解。
+								</p>
+								<h4><em>张庆</em> 首席技术官</h4>
+								<p>12年软件、互联网软件设计、研发经验。<br> 曾就职于浙大网新(创新研究部技术总监)，恒生电子(银行事业部技术经理)，信雅达等知名上市科技公司，主导设计并实施多个金融相关的软件产品和项目。 代表项目包括移动互联网O2O报名吧，公益基金梦想盒子--梦想银行，批量联机交易处理平台，银行业务综合管理平台，商业银行支付宝卡通等。
+                                </p>
+                                <h4><em>王莹</em> 首席营销官</h4>
+								<p>中科院心理研究所研究生，十余年互联网经验，曾在百度等多家互联网公司担任市场部高级职位，主要方向为互联网电商以及互联网金融服务平台。任职互联网金融产品支付通先花花市场总监期间，用户数从0增至50万注册用户，交易额近亿元。
+								</p>
+								<h4><em>张军锋</em> 产品总监</h4>
+								<p>西安交大管理学学士，上海社会科学院经济学硕士，12年互联网产品管理经验。户外旅行网络杂志黑孩子联合创始人，ZOHO中国首席产品设计师，前后担任超星网、东方网力、365好老师等多个公司产品总监。
+								</p>
+							
+							</div>
+							
+							#if("$!help" == "data")
+								<div class="rig_3">
+								<div class="data_wrap" style="width: 739px; margin-bottom: 10px;">
+							#else
+								<div class="rig_3" style="display:none;">
+								<div class="data_wrap" style="width: 739px; margin-bottom: 10px;display:none;">
+							#end
+                            		<div class="data_title">平台数据</div>
+                            		<div class="data_center"></div>
+									<script >
+										var now = new Date();
+										var date = now.getDate();
+										var month = now.getMonth()+1;
+										var year = now.getFullYear();
+										var hour = now.getHours();
+										var minutes = now.getMinutes();
+										var second = now.getSeconds();
+										if(date < 10){
+											date = "0"+date;
+										}
+										if(month < 10){
+											month = "0"+month;
+										}
+										if(hour < 10){
+											hour = "0"+hour;
+										}
+										if(minutes < 10){
+											minutes = "0"+minutes;
+										}
+										if(second < 10){
+											second = "0"+second;
+										}
+										$(".data_center").text("平台数据 截止"+year+"-"+month+"-"+date+" "+hour+":"+minutes+":"+second);
+                                    </script>
+                            		<div class="data_item">
+                            			<div class="item_title">
+                            				<span class="itm_ft">累计投资额</span>
+                            				<i class="data_icon icon1"></i>
+                            			</div>
+                            			<div class="data_number">¥ $!totalInvestAmount</div>
+                            		</div>
+                            		<div class="data_item item_two">
+                            			<div class="item_title">
+                            				<span class="itm_ft">平台用户</span>
+                            				<i class="data_icon icon2"></i>
+                            			</div>
+                            			<div class="data_number">$!totalRegUser</div>
+                            		</div>
+                            		<div class="data_item item_three">
+                            			<div class="item_title">
+                            				<span class="itm_ft">累计赚取收益</span>
+                            				<i class="data_icon icon1"></i>
+                            			</div>
+                            			<div class="data_number">¥ $!totalInterestAmount</div>
+                            		</div>
+                            		<div class="data_item item_four">
+                            			<div class="item_title">
+                            				<span class="itm_ft">累计投资额</span>
+                            				<i class="data_icon icon3"></i>
+                            			</div>
+                            			<div id="data_one" investMonthArray='$!investMonthArray' investAmountMonthArray='$!investAmountMonthArray'></div>
+                            		</div>
+                            		<div class="data_item item_five">
+                            			<div class="item_title">
+                            				<span class="itm_ft">平台投资情况</span>
+                            				<i class="data_icon icon3"></i>
+                            			</div>
+                            			<div id="data_five" productNameArray='$!productNameArray' productAmountArray='$!productAmountArray'></div>
+                            		</div>
+                            		<div class="data_item item_six">
+                            			<div class="item_title">
+                            				<span class="itm_ft">收益概况</span>
+                            				<i class="data_icon icon3"></i>
+                            			</div>
+                            			<div id="data_six" totalInterestAmount='$!totalInterestAmount' investInterestWill='$!investInterestWill'></div>
+                            		</div>
+                            		<div class="data_item item_seven">
+                            			<div class="item_title">
+                            				<span class="itm_ft">年化收益率对比</span>
+                            				<i class="data_icon icon3"></i>
+                            			</div>
+                                		<div id="data_seven" averageInvestRate="$!averageInvestRateNormal"></div>
+                            		</div>
+									<div class="data_item item_age">
+                            			<div class="item_title">
+                            				<span class="itm_ft">投资人年龄分布</span>
+                            				<i class="data_icon icon3"></i>
+                            			</div>
+                            			<div id="data_age" investorTypeAgeArray='$!investorTypeAgeArray' investorTypeAgeValArray='$!investorTypeAgeValArray'></div>
+                            		</div>
+									<div class="data_item item_sex">
+                            			<div class="item_title">
+                            				<span class="itm_ft">投资人性别分布</span>
+                            				<i class="data_icon icon3"></i>
+                            			</div>
+                            			<div id="data_sex" investorTypeSexArray='$!investorTypeSexArray' investorTypeSexValArray='$!investorTypeSexValArray'></div>
+                            		</div>
+                            	</div>
+							</div>
+							
+							
+							
+							<div class="rig_3">
+								<h3>联系我们</h3>
+								<ul class="rig_3_1">
+									<li>
+										<p >联系方式</p>
+										<h5>客服热线：  400-806-1230</h5>
+										<h5>地址：杭州市，江干区，西子国际C座2305室</h5>
+									</li>
+									<div style="width: 500px;height: 450px;">
+										<div id="container" style="width:600px; height:440px;">
+										</div>
+									</div>
+									<li><p >公交乘车</p></li>
+									<li style="margin: 15px 0px;"><div style="margin-left: 38px; color: #666;">1600路，b支6路至庆春广场西站下；84路景昙路凤起路站下；305路至红菱新村站下。</div></li>
+								</ul>
+							</div>		
+						</li>
+						<script>
+                            var marker, map = new AMap.Map('container', {
+                                resizeEnable: true,
+                                zoom:17,
+                                center: [120.202876,30.25757]
+                            });
+                        
+                            marker = new AMap.Marker({
+								icon: "$!env.get('gen.server.web')/resources/gen2.0/images/mark_b.png",
+                                position: [120.203042,30.258223]
+                            });
+                            marker.setMap(map);
+							marker.setLabel({//label默认蓝框白底左上角显示，样式className为：amap-marker-label
+                                offset: new AMap.Pixel(20, 20),//修改label相对于maker的位置
+                                content: "币港湾"
+                            });
+                        </script>
+						<li style="display: block;"></li>
+						
+						
+						<li>
+							<div class="rig_5">
+								<h3>服务协议</h3>
+								<p>本网站由泓淳（杭州）科技有限公司负责运营（以下本网站均指网站及泓淳（杭州）科技有限公司）。在您注册成为本网站用户前请务必仔细阅读以下条款。若您一旦注册，则视为您接受本网站的服务并受以下条款的约束。若您不接受以下条款，请您停止注册本网站。<br>
+								本使用协议内容包括以下条款及已经发布的或将来可能发布的各类规则。所有规则为协议不可分割的一部分，与协议正文具有同等法律效力。本协议是由您与本网站共同签订的，适用于您在本网站的全部活动。在您注册成为用户时，您已经阅读、理解并接受本协议的全部条款及各类规则，并承诺遵守中华人民共和国现行的法律、法规、规章及其他政府规定，如有违反而导致任何法律后果的发生，您将以自己的名义独立承担所有相应的法律责任。<br>
+								本网站有权根据需要不时地制定、修改本协议或各类规则，如本协议及规则有任何变更，一切变更以本网站最新公布条例为准。经修订的协议、规则一经在本网站公布，即自动生效或在该等协议、规则指定的时间生效。您应不时地注意本协议及附属规则地变更，若您不同意相关变更，应当在本协议及附属规则变更后30日内按照本网站公开的联系方式提出异议，逾期未提出异议的视为您接收变更。如果您对相关变更提出异议，本网站有权不经任何告知终止、中止本协议或者限制您进入本网站的全部或者部分板块且不承担任何法律责任。但该终止、中止或限制行为并不能豁免您此前在本网站已经进行的交易下所应承担的义务。<br>
+								您确认本使用协议后，本使用协议即在您和本网站之间产生法律效力。您只要在注册页面点击“下一步”并按照本网站规定的注册程序成功注册为用户，您的行为即表示同意并签署了本使用协议。本网站接收您注册申请并为您开户后，本使用协议即生效。本使用协议不涉及您与本网站的其他用户之间因网上交易而产生的法律关系及法律纠纷，但您在此同意将全面接受和履行与本网站其他用户在本网站签订的任何电子法律文本，并承诺按该法律文本享有和/或放弃相应的权利、承担和/或豁免相应的义务。
+								</p>
+								
+									<h5>一、使用限制</h5>
+									<p>本网站中的全部内容的著作权、版权及其他知识产权均属于本网站所有，该等内容包括但不限于文本、数据、文章、设计、源代码、软件、图片、照片及其他全部信息（以下称“网站内容”）。网站内容受中华人民共和国著作权法及各国际版权公约的保护。未经本网站事先书面同意，您承诺不以任何方式、不以任何形式复制、模仿、传播、出版、公布、展示网站内容，包括但不限于电子的、机械的、复印的、录音录像的方式和形式等。您承认网站内容是属于本网站的财产。未经本网站书面同意，您亦不得将本网站包含的资料等任何内容镜像到任何其他网站或者服务器。任何未经授权对网站内容的使用均属于违法行为，本网站将追究您的法律责任。<br>
+										您承诺合法使用本网站提供的服务及网站内容。禁止在本网站从事任何可能违反中华人民共和国现行的法律、法规、规章和政府规范性文件的行为或者任何未经授权使用本网站的行为，如擅自进入本网站的未公开的系统、不正当的使用密码和网站的任何内容、窃取他人的账号和密码、窃取他人的个人隐私信息等。<br>
+										本网站只接受持有中国大陆有效身份证的（不包括香港特区、澳门特区及台湾地区）18周岁以上的具有完全民事行为能力的自然人成为网站用户。如您不符合资格，请勿注册。本网站保留随时中止或终止您用户资格的权利。您在此向本网站保证，您已符合年龄和国籍条件，如因您向本网站提供虚假信息或承诺而导致本网站或北京大家玩科技有限公司蒙受任何损失，您将承担全部责任并赔偿相关损失。<br>
+										您注册成功后，不得将本网站的用户名转让给第三方使用。您确认，您用您的用户名和密码登录本网站后在本网站的一切行为均代表您本身作出的行为并由您承担相应的法律后果。任何利用您的用户名以及密码登录本网站并从事交易等行为均将被视为您的行为。因此，您有义务非常谨慎的保管自己的用户名以及密码。本网站对您的用户名和密码的遗失或被盗取所产生的后果不承担任何责任。本网站托管账户收到的任何来自您在本网站关联的个人银行账户（含网银、第三方支付账户等，下同）的资金均被视为您自有资金。本网站托管账户支付到您在本网站关联的个人银行账户均视为已经向您完成支付。您有义务非常谨慎地保管自己的银行账户。本网站对您的银行账户被盗用所产生的后果不承担任何责任。<br>
+										您有义务在注册时提供自己的真实资料，并保证诸如电子邮件地址、联系电话、联系地址、邮政编码等内容的有效性及安全性。如您因网上交易与其他用户产生诉讼的，其他用户有权通过司法部门要求网站提供相关资料。<br>
+										经国家生效法律文书或行政处罚决定确认您存在违法行为，或者本网站有足够事实依据可以认定您存在违法或违反本使用协议的行为，或者您违反与本网站其他用户的协议借款逾期未还的，本网站有权在本网站及互联网络上公布您的违法、违约行为，并有权将该内容记入任何与您相关的信用资料和档案。提醒注意：上述公布可能会公开您的部分个人信息，例如姓名、部分号位身份证号码。您签署本协议即视为理解并接受上述措施，永久性不可撤销地授权本网站公开相关个人信息。
+								</p>
+								<h5>二、涉及第三方网站</h5>
+									<p>本网站的网站内容可能涉及由第三方所有、控制或者运营的其他网站的内容或链接（以下称“第三方网站”）。本网站不能保证也没有义务保证第三方网站上的信息的真实性和有效性。对于该等内容或链接，您确认按照第三方网站的使用协议确定相关权利义务，而不是按照本协议。第三方网站的内容、产品、广告和其他任何信息均由您自行判断并承担风险，而与本网站无关。
+								</p>
+								<h5>三、风险提示</h5>
+									<p>理财有风险，投资需谨慎。<br></p>
+								<h5>四、责任限制</h5>
+								<p>在任何情况下，本网站方对您使用本网站服务而产生的任何形式的直接或间接损失均不承担法律责任，包括但不限于资金损失、利润损失、营业中断损失等。因为本网站或者涉及的第三方网站的设备、系统问题或者因为计算机病毒造成的损失，本网站均不负责赔偿，您的补救措施只能是与本网站终止本协议并停止使用本网站。但是，中华人民共和国现行法律、法规另有规定的除外。
+								</p>
+								<h5>五、网站内容监测</h5>
+									<p>本网站没有义务监测网站内容，但是您确认并同意本网站有权不时地根据法律、法规、政府要求透露、修改、屏蔽或者删除必要的、合适的信息，以便更好地运营本网站并保护本网站的用户的合法权益。
+								</p>
+								<h5>六、个人信息的使用</h5>
+								<p>本网站对于您提供的、自行收集到的、经认证的个人信息将按照本协议以及本网站的隐私条款予以保护、使用或者披露。
+								</p>
+								<h5>七、补偿</h5>
+									<p>就任何第三方提出的，由于您违反本协议及纳入本协议的条款和规则或您违反任何法律、法规或侵害第三方的权利而产生或引起的每一种类和性质的任何索赔、要求、诉讼、损失和损害（实际的、特别的及有后果的），无论是已知或未知的，包括合理的律师费，您同意就此对本网站和本网站的母公司、 子公司、关联公司、高级职员、董事、代理人和雇员（如适用）进行补偿并使其免受损害。
+								</p>
+								
+								<h5>八、服务的中止或终止</h5>
+									<p>1、除非本网站终止本协议或者您申请终止本协议及注销相应用户账户且经本网站同意，否则本协议始终有效。在您违反了本协议、相关规则，或在相关法律法规、政府部门的要求下，本网站有权通过电子邮件告知方式终止本协议、关闭您的账户或者限制您使用本网站。但本网站的终止行为不能免除您根据本使用协议或在本网站生成的其他协议项下的还未履行完毕的义务<br>
+									2、发生下列情形之一的，本网站有权随时中止或终止向用户提供服务：<br>
+									（1）对于网络设备进行必要的保养及施工时；<br>
+									（2）出现突发性的网络设备故障时；<br>
+									（3）本网站所使用的网络通信设备由于不明原因停止，无法提供服务时；<br>
+									（4）由于不可抗力因素致使本网站无法提供线上服务时；<br>
+									（5）相关政府机构的要求。<br>
+									3、发生下列情形之一的，本网站有权随时中止或终止向用户提供服务而无需通知用户：<br>
+									（1）用户提供的个人资料不准确，不真实，不合法有效；<br>
+									（2）用户使用任何第三方程序进行登录或使用服务；<br>
+									（3）用户滥用所享受的权利；<br>
+									（4）用户有损害其他用户的行为；<br>
+									（5）用户有违背社会风俗和社会道德的行为；<br>
+									（6）用户有违反本协议中相关规定的行为。<br>
+									4、如因系统维护或升级的需要而需暂停网络服务，本网站将尽可能事先进行通告。<br>
+									5、终止用户服务后，用户使用本网站服务的权利立即终止。从终止用户服务即刻起，本网站不再对用户承担任何责任和义务。
+								</p>
+								<h5>九、适用法律和管辖</h5>
+									<p>因本网站提供服务所产生的争议均适用中华人民共和国法律，并由泓淳（杭州）科技有限公司住所地的人民法院管辖。
+								</p>
+								<h5>十、附加条款</h5>
+									<p>在本网站的某些部分或页面中、或者您使用本网站相关服务产品的过程中，可能存在除本协议以外的单独的附加服务条款或协议，当这些服务条款或协议与本协议条款及规则存在冲突时，则前述本协议条款和规则以外的服务条款或协议将优先适用。
+								</p>
+								<h5>十一、条款的独立性</h5>
+									<p>若本协议的部分条款被认定为无效或者无法实施时，本协议中的其他条款仍然有效。
+								</p>
+								<h5>十二、对应账户</h5>
+									<p>您在本网站注册成功后，将由本网站向您分配一个固定的普通账户并与您的用户名相绑定。该账户将与本网站以自己名义在指定第三方支付机构或银行开立的托管账户相对应。您可以通过向托管账户充值的方式，增加本网站普通账户上的余额。与本网站相关的所有资金的往来、划转均实际通过该托管账户进行。您在此特不可撤销地授权本网站按照本协议、附属规则及所有服务产品的具体使用协议及规则管理和划扣您普通账户余额对应于托管账户中的资金。<br>
+										在用户将资金汇入其在本网站托管账户但并未使用之前，本网站对于用户的资金有保管义务，本网站保证用户的资金安全。在此期间资金产生的孳息归属于本网站。该普通账户将在您在本网站注册的账户注销后自动关闭，关闭时普通账户余额对应的资金将进行退还。
+								</p>
+								<h5>十三、投诉和咨询</h5>
+									<p>若您在使用本网站的过程中有任何的疑问、投诉和咨询，可随时致电客服热线400-806-1230或发送电子邮件到本网站指定的电子邮箱：bigangwan@dafy.com。
+								</p>
+								</div>
+							
+							<div class="rig_7">
+								<h3>币港湾隐私条例</h3>
+								<p>以下是本网站（http://www.bigangwan.com）及其运营公司泓淳（杭州）科技有限公司（以下合称“本网站”）的隐私规则条款。 您成为本网站用户前务必仔细阅读本隐私条款并同意本隐私条款。作为本网站服务的正常操作程序的一部分，本网站收集、使用并（在一些情况下）向第三方披露有关您的资料。本隐私条款作为本网站服务协议的附件，在您注册成为本网站用户后立即生效，并对您及本网站产生约束力。
+								</p>
+								<h5>一、用户身份限制</h5>
+									<p>未成年人（年龄18周岁以下人士）、限制行为能力人、中国（包括港澳台地区）以外地区人士及自然人以外的组织无资格注册成为本网站用户并使用本网站的服务，本网站要求未成年人、限制行为能力人、中国（包括港澳台地区）以外地区人士及各类组织不要向本网站提交任何个人资料。
+								</p>
+								<h5>二、涉及的个人资料</h5>
+									<p>本网站收集个人资料的主要目的在于向您提供一个顺利、有效和度身订造的交易经历。本网站仅收集本网站认为就此目的及达成该目的所必须的关于您的个人资料。您同意本网站按照包括但不限于如下的方式收集您的个人资料： 本网站可能自公开及私人资料来源收集您的额外资料，以更好地了解本网站用户，并为其度身订造本网站服务、解决争议并有助确保在网站进行交易的安全性。<br>
+									本网站按照您在本网站网址上的行为自动追踪关于您的某些资料。本网站利用这些资料进行有关本网站之用户的人口统计、兴趣及行为的内部研究，以更好地了解您以便向您和本网站的用户社区提供更好的服务。<br>
+									如果您将个人通讯信息（例如：手机短信、电邮或信件）交付给本网站，或如果其他用户或第三方向本网站发出关于您在本网站上的活动或登录事项的通讯信息，本网站可以将这些资料收集在您的专门档案中。
+								</p>
+								<h5>三、本网站对您的资料的使用</h5>
+									<p>您同意本网站可使用关于您的个人资料（包括但不限于本网站持有的有关您的档案中的资料，及本网站从您目前及以前在本网站上的活动所获取的其他资料）以解决争议、对纠纷进行调停、有助于确保在本网站进行安全交易，并执行本网站的用户协议。本网站有时候可能调查多个用户以识别问题或解决争议，特别是本网站可审查您的资料以区分使用多个用户名或别名的用户。为限制在网站上的欺诈、非法或其他刑事犯罪活动，使本网站免受其害，您同意本网站可通过人工或自动程序对您的个人资料进行评价。<br>
+									您同意本网站可以使用您的个人资料以改进本网站的推广和促销工作、分析网站的使用率、改善本网站的内容和产品推广形式，并使本网站的网站内容、设计和服务更能符合用户的要求。这些使用能改善本网站的网页，以调整本网站的网页使其更能符合您的需求，从而使您在使用本网站服务时得到更为顺利、有效、安全及度身订造的交易体验。<br>
+									您同意本网站利用您的资料与您联络并（在某些情况下）向您传递针对您的兴趣而提供的信息，例如：有针对性的广告条、行政管理方面的通知、产品提供以及有关您使用本网站的通讯。您接受服务协议和隐私条款即为明示同意收取这些资料。<br>
+									您可以授权本网站帮助您修改您在本网站填写的一切个人资料。如您违反服务协议等本网站规则或法律规定，本网站有权经电子邮件告知后在网站数据库中删除您的个人资料、关闭账户或者限制您使用本网站。<br>
+									网站有权根据实际审核结果在不通知您的情况下对您所填写的与事实不符的资料进行修正或更改。
+								</p>
+								<h5>四、本网站对您的资料的披露</h5>
+									<p>本网站采用行业标准惯例以保护您的个人资料，但鉴于技术限制，本网站不能确保您的全部私人通讯及其他个人资料不会通过本隐私条款中未列明的途径泄露出去，对此本网站不承担任何责任。<br>
+									本网站有权根据有关法律和监管要求，本网站风险控制要求以及相关协议要求向司法机关等政府部门、社会组织或团体、其他第三方服务或合作机构提供您的个人资料。在您未能按照与本网站签订的服务协议、居间协议或者与本网站企业用户签订的借款（担保）协议的约定履行自己应尽的义务时，本网站有权根据自己的判断或者与该笔交易有关的其他用户的请求披露您的个人资料，并作出评论。
+								</p>
+                                <h5>五、您对其他用户的资料的使用</h5>
+								 <p>在本网站提供的交易活动中，您无权要求本网站提供其他用户的个人资料，除非符合以下条件：
+								 （1）您已向法院起诉其他用户的在本网站活动中的违约行为；
+								 （2）本网站被吊销营业执照、解散、清算、宣告破产或者其他有碍于您收回借款本息的情形。
+								</p>
+								<h5>六、电子邮件</h5>
+									<p>您不得使用本网站提供的服务或其他电子邮件转发服务发送垃圾邮件或其他可能影响本网站系统运行或违反本网站的用户协议或隐私条款的内容。<br>
+									如果您利用本网站的服务向没有在本网站内注册的电子邮件地址发出电子邮件，本网站除了利用该电子邮件地址发出您的电子邮件之外将不作任何其他用途。本网站不会出租或出售这些电子邮件地址。本网站不会永久储存电子邮件信息或电子邮件地址。
+								</p>
+								<h5>七、密码的安全性</h5>
+									<p>您须对使用您的用户名和密码所采取的一切行为负责。因此，本网站建议您不要向任何第三方披露您在本网站的用户名和密码。
+								</p>
+								<h5>八、规则修改</h5>
+									<p>本网站可能不时按照您的意见和本网站的需要修改本隐私条款，以准确地反映本网站的资料收集及披露惯例。本条款的所有修改，在本网站公布有关修改内容后自动生效或在该等条款指定的日期生效。
+								</p>
+								
+								
+								
+							</div>
+					
+						</li>
+						<li style="display: block;"></li>
+						<li>
+							<div class="rig_9">
+								<h3>常见问题</h3>
+                                <h4>注册与登录</h4>
+								<h5>为什么我收不到短信验证码？</h5>
+								<p>短信收发过程中会存在延迟，请耐心等待；请确认手机是否安装短信拦截或过滤软件；请确认手机是否能够正常接收短信（未处于停机或欠费状态）。</p>
+								<h5>为什么提示手机号已存在？</h5>
+								<p>手机号已被注册，不能重复使用。如您未注册，则您的信息可能被盗用，请联系客服。如您已注册但忘记了密码，请点击“忘记密码”找回。</p>
+								
+								<h4>账户</h4>
+								<h5>充值和提现时会扣手续费吗？</h5>
+								<p>充值对投资人是免费的，手续费由币港湾承担；提现每月有3次免收手续费机会，超过3次将按2.0元/笔收取手续费(实际扣费准则以提现页面说明为准)。
+								</p>
+								<h5>充值支持哪些银行？</h5>
+								<p>充值页面会提示您支持充值的银行。点击选择不同银行可查看对应银行的充值限额。
+								</p>
+								<h5>可以用信用卡或者存折充值吗？</h5>
+								<p>不可以，支持借记卡充值或者线下转账。转账可以通过网银、手机银行或者到银行柜台办理。
+								</p>
+								<h5>充值和提现需要多久？</h5>
+								<p>您将钱转入或转出币港湾都是采用高效快捷的支付通道，正常情况下当天就会到账。
+								</p>
+								<h5>为什么充值成功账户余额没有增加？</h5>
+								<p>在充值过程中会遇到各种问题可能导致充值数据未同步。此时请您稍后片刻进行刷新页面，查看是否充值已到账。如果刷新未能解决问题，请您致电客服 400-806-1230，或者发客服邮件bigangwan@dafy.com，及时联系我们，我们会尽快处理。
+								</p>
+								<h5>为什么账户余额显示和实际不一致？</h5>
+								<p>如果您有资金在提现中或支付中，您的账户余额显示可能会有延迟。如果您确认没有资金正在提现或支付中，账户余额显示仍有问题，请您拨打客服400-806-1230。</p>
+								<h5>网站上无法充值是怎么回事？</h5>
+								<p>因为受银行系统兼容性的限制，某些银行的充值只能在 Windows 操作系统上进行，建议使用特定版本的IE浏览器（一般是IE6以上、IE10以下）尝试一下。同时，请留意银行网上银行页面的提示，如确定充值数额是否超过银行卡的转账额度限制等。</p>
+								
+                                <h4>购买产品</h4>
+								<h5>什么是安全卡？</h5>
+								<p>安全卡是币港湾对用户资金安全的一项保障措施。您首次支付成功的银行卡将作为您的安全卡，您在币港湾上仅可使用此卡购买产品和提现。
+									由于安全卡只能设置一张，所以即使您的账户被盗，他人也无法将资金转移到其他账户，保障您的资金万无一失。</p>
+								<h5>为什么有购买限额？</h5>
+								<p>由于各大银行对网络支付的额度都做了一定的限制，所以您只能在相应额度内进行购买。额度限制规则各个银行有所不同，请您在支付时注意查看提示。</p>
+								<h5>理财产品的利息是怎么计算的？</h5>
+								<p>币港湾目前有两类理财产品：<br>1、到期还本付息产品，币港湾实行次日起息，您购买该类产品后均从第二天起开始计算利息，每日利息收益都体现在“我的账户”中。<br>2、等额本息产品，币港湾实行出借当日起息，您购买该类产品后系统次日开始为您匹配借款信息，匹配出借成功即开始计算利息，每月本息回款后体现在“我的账户”中。<br>
+								</p>
+								<h5>我该怎么提取我的收益和本金？</h5>
+								<p>币港湾投资理财产品都是固定期限投资的，当产品到期后，收益和本金会自动通过回款路径进入您的账户余额或银行卡。</p>
+								<h5>购买产品不成功怎么办？</h5>
+								<p>如果您购买产品不成功，可能由于多种因素造成，请您根据页面的提示进行操作，如果仍不成功，请您拨打客服400-806-1230咨询。</p>
+								<h5>投资过程中会有其他费用产生吗？</h5>
+								<p>投资过程中的所有手续费由币港湾承担，您不需要支付任何其他费用。</p>
+								<h5>如何查看出借相关的协议？</h5>
+								<p>在您购买产品时，可以在确认购买页中点击相关协议名称链接查看，购买成功后，您可以在“账户概述”中点击相关协议名称链接查看。</p>
+								
+								<h4>安全保障与密码</h4>
+								
+
+								<h5> 为什么说币港湾安全可靠？</h5>
+								<p>币港湾平台根据FICO风控体系对债权进行评分，严格审查，并进行实地调查，考证合作债权的真实性和风险可控性。通过对多个小微资产包的分散投资，达到统一控制风险的目的，保证资金安全。 币港湾对技术上的设计、体验、架构、安全认证、数据分析、测试、防黑客、防欺诈等多方面均做了保全的考虑，确保投资者的每一笔投资都安全、精准、高效。
+								<h5>什么是安全卡？</h5>
+								<p>安全卡是币港湾对用户资金安全的一项保障措施。您首次支付成功的银行卡将作为您的安全卡，您在币港湾上仅可使用此卡购买产品和提现。
+									由于安全卡只能设置一张，所以即使您的账户被盗，他人也无法将资金转移到其他账户，保障您的资金万无一失。</p>
+								<h5> 忘记了交易密码怎么办？</h5>
+								<p>进入个人中心”→“安全中心”→“忘记交易密码”→“通过手机验证码，设置新的交易密码。</p>
+								<h5>银行卡丢了怎么办？</h5>
+								<p>如果您不慎丢失了银行卡，请您马上挂失银行卡，并要求银行为您补办卡号相同的银行卡。如果新卡号与原卡号不同，请您联系客服400-806-1230人工解绑安全卡。</p>
+								<h5>手机被盗，钱会不会被人挪走?</h5>
+								<p>如果您的手机被盗，您的资金因为绑定了您的唯一一张安全卡，盗手机者，哪怕是知道您的币港湾登录密码也是不能提取您的资金的。但为了您的信息安全，请您联系客服400-806-1230更换手机号码。</p>
+							</div>
+						</li>
+						<li style="display: block;"></li>
+						<li>
+							#if("$!list" == "list")
+							<div class="rig_10" id="notice_content">
+									<h3>首页>新闻公告>公告内容</h3>
+    								<ul class="news_ul">
+    									#foreach($data in $!dataGrid)
+    									<li class="news_li">
+    										<i class="news_img"></i>
+    										<a class="news_link" href="$!env.get('gen.server.web')/gen2.0/platform/notice_detail/index?id=$!data.id">$!data.subject</a>
+    										<span class="news_time_float">$!date.formatYYYYMMDD($!data.publishTime)</span>
+    									</li>
+    									#end
+    								</ul>
+    								<div class="news_list notice">
+    									<div class="list_float" url="$!env.get('gen.server.web')/gen2.0/platform/notice/index">
+											#if($req.totalPages <=1)
+												<a class="last radius left_ns gray" index="$!req.pageNum" totalPages="$!req.totalPages"><</a>
+    										#else
+												<a class="last radius left_ns clk_bg" index="$!req.pageNum" totalPages="$!req.totalPages"><</a>
+											#end
+    										<div class="news_list_wrap">
+    											<ul class="news_list_ul" url="$!env.get('gen.server.web')/gen2.0/platform/notice/index">
+    												#set($pageNumLeft = $!req.pageNum - 2)
+													#set($pageNumRight = $!req.pageNum + 2)
+													#set($totalPagesLeft = $!req.totalPages - 1)
+													#if($!req.pageNum < 6)
+														#foreach($index in [1..$!req.totalPages])
+        													#if($!index == 6)
+    															<li index="$index" class="index radius #if($index == $!req.pageNum) active #end">$index</li>
+																#if($!req.totalPages >= 8)
+																	<li index="more" class="index radius radius_none">...</li>
+																#end
+        													#elseif($!index > 0 && $!index < 6)
+        														<li index="$index" class="index radius #if($index == $!req.pageNum) active #end">$index</li>
+        													#elseif($!req.totalPages > 6  && $!req.totalPages < 8)
+																<li index="$index" class="index radius #if($index == $!req.pageNum) active #end">$index</li>
+															#end
+														#end
+														#foreach($index in [$totalPagesLeft..$!req.totalPages])
+															#if($!req.totalPages >= 8)
+																<li index="$!index" class="index radius #if($!index == $!req.pageNum) active #end">$!index</li>
+															#end
+														#end
+													#end
+													#if($!req.pageNum >= 6 && $pageNumRight < $totalPagesLeft)
+														<li index="1" class="index radius #if(1 == $!req.pageNum) active #end">1</li>
+														<li index="2" class="index radius #if(2 == $!req.pageNum) active #end">2</li>
+														<li index="more" class="index radius radius_none">...</li>
+														#foreach($index in [$pageNumLeft..$!pageNumRight])
+															<li index="$!index" class="index radius #if($!index == $!req.pageNum) active #end">$!index</li>
+														#end
+														#set($f = $pageNumRight + 1)
+														#if($f != $totalPagesLeft)
+															<li index="more" class="index radius radius_none">...</li>
+														#end
+														#foreach($index in [$totalPagesLeft..$!req.totalPages])
+															<li index="$!index" class="index radius #if($!index == $!req.pageNum) active #end">$!index</li>
+														#end
+													#end
+													#if($!req.pageNum >= 6 && $pageNumRight >= $totalPagesLeft)
+														#set($totalPagesLeft = $req.totalPages - 5)
+														<li index="1" class="index radius #if(1 == $!req.pageNum) active #end">1</li>
+														<li index="2" class="index radius #if(2 == $!req.pageNum) active #end">2</li>
+														#if($totalPagesLeft > 3)
+															<li index="more" class="index radius radius_none">...</li>
+															#foreach($index in [$totalPagesLeft..$!req.totalPages])
+    															<li index="$!index" class="index radius #if($!index == $!req.pageNum) active #end">$!index</li>
+															#end
+														#else
+															#foreach($index in [3..$!req.totalPages])
+    															<li index="$!index" class="index radius #if($!index == $!req.pageNum) active #end">$!index</li>
+															#end
+														#end
+													#end
+    											</ul>
+    										</div>
+											#if($req.totalPages <=1)
+												<a class="next radius right_ns gray" index="$!req.pageNum" totalPages="$!req.totalPages">></a>
+    										#else
+												<a class="next radius right_ns clk_bg" index="$!req.pageNum" totalPages="$!req.totalPages">></a>
+											#end
+    									</div>
+    								</div>
+							</div>
+							#elseif("$!list" == "detail")
+                                <div class="rig_10">
+									<div class="news_tip">
+									<h3 class="news_center new_ti">$!details.subject</h3>
+    								<p class="news_center">$!date.formatYYYYMMDD($!details.publishTime)</p>
+    								<div class="news_main news">$!details.content</div>
+    								<div id="return_notice_btn" class="news_return_btn" url="$!env.get('gen.server.web')/gen2.0/platform/notice/index">返回列表</div>
+                                    </div>
+								</div>
+							#end
+							
+							#if("$!list" == "list")
+							<div class="rig_10" id="news_content">
+									<h3 >首页>新闻公告>媒体报道</h3>
+    								<ul class="news_ul">
+    									#foreach($data in $!dataGrid)
+    									<li class="news_li">
+    										<i class="news_img"></i>
+    										<a class="news_link" href="$!env.get('gen.server.web')/gen2.0/platform/news_detail/index?id=$!data.id">$!data.subject</a>
+    										<span class="news_time_float">$!date.formatYYYYMMDD($!data.publishTime)</span>
+    									</li>
+    									#end
+    								</ul>
+    								<div class="news_list notice">
+    									<div class="list_float" url="$!env.get('gen.server.web')/gen2.0/platform/news_list/index">
+    										#if($req.totalPages <=1)
+												<a class="last radius left_ns gray" index="$!req.pageNum" totalPages="$!req.totalPages"><</a>
+    										#else
+												<a class="last radius left_ns clk_bg" index="$!req.pageNum" totalPages="$!req.totalPages"><</a>
+											#end
+											<div class="news_list_wrap">
+    											<ul class="news_list_ul" url="$!env.get('gen.server.web')/gen2.0/platform/news_list/index">
+													#set($pageNumLeft = $!req.pageNum - 2)
+													#set($pageNumRight = $!req.pageNum + 2)
+													#set($totalPagesLeft = $!req.totalPages - 1)
+													#if($!req.pageNum < 6)
+														#foreach($index in [1..$!req.totalPages])
+        													#if($!index == 6)
+    															<li index="$index" class="index radius #if($index == $!req.pageNum) active #end">$index</li>
+																#if($!req.totalPages >= 8)
+																	<li index="more" class="index radius radius_none">...</li>
+																#end
+        													#elseif($!index > 0 && $!index < 6)
+        														<li index="$index" class="index radius #if($index == $!req.pageNum) active #end">$index</li>
+        													#elseif($!req.totalPages > 6  && $!req.totalPages < 8)
+																<li index="$index" class="index radius #if($index == $!req.pageNum) active #end">$index</li>
+															#end
+														#end
+														#foreach($index in [$totalPagesLeft..$!req.totalPages])
+															#if($!req.totalPages >= 8)
+																<li index="$!index" class="index radius #if($!index == $!req.pageNum) active #end">$!index</li>
+															#end
+														#end
+													#end
+													#if($!req.pageNum >= 6 && $pageNumRight < $totalPagesLeft)
+														<li index="1" class="index radius #if(1 == $!req.pageNum) active #end">1</li>
+														<li index="2" class="index radius #if(2 == $!req.pageNum) active #end">2</li>
+														<li index="more" class="index radius radius_none">...</li>
+														#foreach($index in [$pageNumLeft..$!pageNumRight])
+															<li index="$!index" class="index radius #if($!index == $!req.pageNum) active #end">$!index</li>
+														#end
+														#set($f = $pageNumRight + 1)
+														#if($f != $totalPagesLeft)
+															<li index="more" class="index radius radius_none">...</li>
+														#end
+														#foreach($index in [$totalPagesLeft..$!req.totalPages])
+															<li index="$!index" class="index radius #if($!index == $!req.pageNum) active #end">$!index</li>
+														#end
+													#end
+													#if($!req.pageNum >= 6 && $pageNumRight >= $totalPagesLeft)
+														#set($totalPagesLeft = $req.totalPages - 5)
+														<li index="1" class="index radius #if(1 == $!req.pageNum) active #end">1</li>
+														<li index="2" class="index radius #if(2 == $!req.pageNum) active #end">2</li>
+														#if($totalPagesLeft > 3)
+															<li index="more" class="index radius radius_none">...</li>
+															#foreach($index in [$totalPagesLeft..$!req.totalPages])
+    															<li index="$!index" class="index radius #if($!index == $!req.pageNum) active #end">$!index</li>
+															#end
+														#else
+															#foreach($index in [3..$!req.totalPages])
+    															<li index="$!index" class="index radius #if($!index == $!req.pageNum) active #end">$!index</li>
+															#end
+														#end
+													#end
+    											</ul>
+    										</div>
+											#if($req.totalPages <=1)
+												<a class="next radius right_ns gray" index="$!req.pageNum" totalPages="$!req.totalPages">></a>
+											#else
+												<a class="next radius right_ns clk_bg" index="$!req.pageNum" totalPages="$!req.totalPages">></a>
+											#end
+    									</div>
+    								</div>
+							</div>
+							#elseif("$!list" == "detail")
+								<div class="rig_10">
+									<div class="news_tip">
+									<h3 class="news_center new_ti">$!details.subject</h3>
+    								<p class="news_center">$!date.formatYYYYMMDD($!details.publishTime)</p>
+    								<div class="news_main news">$!details.content</div>
+									<div id="return_news_btn" class="news_return_btn" url="$!env.get('gen.server.web')/gen2.0/platform/news_list/index">返回列表</div>
+                                    </div>
+									</div>
+							#end
+							
+							
+							#if("$!list" == "list")
+							<div class="rig_10" id="company_dynamic_content">
+									<h3>首页>公司动态>动态内容</h3>
+    								<ul class="news_ul">
+    									#foreach($data in $!dataGrid)
+    									<li class="news_li">
+    										<i class="news_img"></i>
+    										<a class="news_link" href="$!env.get('gen.server.web')/gen2.0/platform/company_dynamic_detail/index?id=$!data.id">$!data.subject</a>
+    										<span class="news_time_float">$!date.formatYYYYMMDD($!data.publishTime)</span>
+    									</li>
+    									#end
+    								</ul>
+    								<div class="news_list notice">
+    									<div class="list_float" url="$!env.get('gen.server.web')/gen2.0/platform/company_dynamic_list/index">
+											#if($req.totalPages <=1)
+												<a class="last radius left_ns gray" index="$!req.pageNum" totalPages="$!req.totalPages"><</a>
+    										#else
+												<a class="last radius left_ns clk_bg" index="$!req.pageNum" totalPages="$!req.totalPages"><</a>
+											#end
+    										<div class="news_list_wrap">
+    											<ul class="news_list_ul" url="$!env.get('gen.server.web')/gen2.0/platform/company_dynamic_list/index">
+    												#set($pageNumLeft = $!req.pageNum - 2)
+													#set($pageNumRight = $!req.pageNum + 2)
+													#set($totalPagesLeft = $!req.totalPages - 1)
+													#if($!req.pageNum < 6)
+														#foreach($index in [1..$!req.totalPages])
+        													#if($!index == 6)
+    															<li index="$index" class="index radius #if($index == $!req.pageNum) active #end">$index</li>
+																#if($!req.totalPages >= 8)
+																	<li index="more" class="index radius radius_none">...</li>
+																#end
+        													#elseif($!index > 0 && $!index < 6)
+        														<li index="$index" class="index radius #if($index == $!req.pageNum) active #end">$index</li>
+        													#elseif($!req.totalPages > 6  && $!req.totalPages < 8)
+																<li index="$index" class="index radius #if($index == $!req.pageNum) active #end">$index</li>
+															#end
+														#end
+														#foreach($index in [$totalPagesLeft..$!req.totalPages])
+															#if($!req.totalPages >= 8)
+																<li index="$!index" class="index radius #if($!index == $!req.pageNum) active #end">$!index</li>
+															#end
+														#end
+													#end
+													#if($!req.pageNum >= 6 && $pageNumRight < $totalPagesLeft)
+														<li index="1" class="index radius #if(1 == $!req.pageNum) active #end">1</li>
+														<li index="2" class="index radius #if(2 == $!req.pageNum) active #end">2</li>
+														<li index="more" class="index radius radius_none">...</li>
+														#foreach($index in [$pageNumLeft..$!pageNumRight])
+															<li index="$!index" class="index radius #if($!index == $!req.pageNum) active #end">$!index</li>
+														#end
+														#set($f = $pageNumRight + 1)
+														#if($f != $totalPagesLeft)
+															<li index="more" class="index radius radius_none">...</li>
+														#end
+														#foreach($index in [$totalPagesLeft..$!req.totalPages])
+															<li index="$!index" class="index radius #if($!index == $!req.pageNum) active #end">$!index</li>
+														#end
+													#end
+													#if($!req.pageNum >= 6 && $pageNumRight >= $totalPagesLeft)
+														#set($totalPagesLeft = $req.totalPages - 5)
+														<li index="1" class="index radius #if(1 == $!req.pageNum) active #end">1</li>
+														<li index="2" class="index radius #if(2 == $!req.pageNum) active #end">2</li>
+														#if($totalPagesLeft > 3)
+															<li index="more" class="index radius radius_none">...</li>
+															#foreach($index in [$totalPagesLeft..$!req.totalPages])
+    															<li index="$!index" class="index radius #if($!index == $!req.pageNum) active #end">$!index</li>
+															#end
+														#else
+															#foreach($index in [3..$!req.totalPages])
+    															<li index="$!index" class="index radius #if($!index == $!req.pageNum) active #end">$!index</li>
+															#end
+														#end
+													#end
+    											</ul>
+    										</div>
+											#if($req.totalPages <=1)
+												<a class="next radius right_ns gray" index="$!req.pageNum" totalPages="$!req.totalPages">></a>
+    										#else
+												<a class="next radius right_ns clk_bg" index="$!req.pageNum" totalPages="$!req.totalPages">></a>
+											#end
+    									</div>
+    								</div>
+							</div>
+							#elseif("$!list" == "detail")
+                                <div class="rig_10">
+									<div class="news_tip">
+									<h3 class="news_center new_ti">$!details.subject</h3>
+    								<p class="news_center">$!date.formatYYYYMMDD($!details.publishTime)</p>
+    								<div class="news_main news">$!details.content</div>
+    								<div id="return_company_dynamic_btn" class="news_return_btn" url="$!env.get('gen.server.web')/gen2.0/platform/company_dynamic_list/index">返回列表</div>
+                                    </div>
+								</div>
+							#end
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	
+		
+	<!--footer -s-->
+	#Gen2Footer()
+	<!--footer -e-->
+	#LoadGenJS("/resources/gen2.0/scripts/common/jquery")
+	#LoadGenJS("/resources/gen2.0/scripts/common/news")
+	<script type="text/javascript">
+		$(window).load(function(){
+    		var news_auto=(function(){
+    		return{
+    			news_doHeight:function(id,cla){
+    				var main=$(id).find(cla).height();
+    				var news_tip=$(id).find(".news_tip").outerHeight();
+    				var news_content=$(id);
+    				if(news_tip>600){
+    					news_content.css({height:"auto"});
+    					news_content.find(".news_main").css({"height":"auto"});
+    				}else{
+    					news_content.css({height:"600"});
+    					news_content.find(".news_main").css({"height":"350"});
+    				}
+    			
+    			}
+    		}
+    		
+    	})();	
+    	news_auto.news_doHeight("#news_content",".news_main");
+    	news_auto.news_doHeight("#notice_content",".news_main");
+		news_auto.news_doHeight("#company_dynamic_content",".news_main");
+	})
+	
+	</script>
+#LoadGenJS("/resources/gen2.0/scripts/data/highcharts")
+#LoadGenJS("/resources/gen2.0/scripts/data/data_index")
+</body>
+#Html("end")

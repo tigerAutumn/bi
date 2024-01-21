@@ -1,0 +1,209 @@
+#Html("begin")
+#Head("begin")
+#Title("我的资产【币港湾官网】")
+#LoadJS("resources/micro2.0/scripts/six_new")
+#LoadCSS("/resources/micro2.0/styles/red_pack/default")
+#LoadCSS("resources/micro2.0/styles/red_pack/red_packet.min")
+#WeChatShare()
+#Head("end")
+<body>
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <form id="submitForm" method="get" action="$!env.getWebURL('/micro2.0/regular/bind')">
+    	<input type="hidden" id="id" name="id" value="$!id" />
+    	<input type="hidden" id="name" name="name" value="$!name" />
+    	<input type="hidden" id="rate" name="rate" value="$!rate" />
+    	<input type="hidden" id="term" name="term" value="$!term" />
+    	<input type="hidden" id="minInvestAmount" name="minInvestAmount" value="$!minInvestAmount" />
+    	<input type="hidden" id="bankName" name="bankName" value="$!bankName" />
+    	<input type="hidden" id="cardNo" name="cardNo" value="$!cardNo" />
+    	<input type="hidden" id="bankId" name="bankId" value="$!bankId" />
+    	<input type="hidden" id="isFirst" name="isFirst" value="$!isFirst" />
+    	<input type="hidden" id="oneTop" name="oneTop" value="$!oneTop" />
+    	<input type="hidden" id="dayTop" name="dayTop" value="$!dayTop" />
+    	<input type="hidden" id="accountId" name="accountId" value="$!accountId" />
+    	<input type="hidden" id="balance" name="balance" value="$!balance" />
+    	<input type="hidden" id="regMobile" name="regMobile" value="$!regMobile" />
+    	<input type="hidden" id="alreadyUse" name="alreadyUse" value="$!alreadyUse" />
+    	<input type="hidden" id="qianbao" name="qianbao" value="$!qianbao" />
+    	<input type="hidden" id="micro_token" name="micro_token" value="$!token" />
+    	<input type="hidden" id="dailyNotice" name="dailyNotice" value="$!dailyNotice" />
+    	<input type="hidden" id="amount" name="amount" value="$!amount" />
+    	<input type="hidden" id="redPacketId" name="redPacketId" value="$!redPacketId" />
+    	<!-- 是否选择红包 -->
+    	<input type="hidden" id="isBank" name="isBank" value="$!isBank" />
+    	<input type="hidden" id="useFlag" name="useFlag" value="$!useFlag" />
+        <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+        <input type="hidden" id="from" name="from" value="$!from">
+		<!--是否选择加息券-->
+		<input type="hidden" id="useticket" name="useticket" value="$!useticket" />
+		<input type="hidden" id="type" name="type" value="$!type" />
+    </form>
+	<input type="hidden" id="isSupportInterestTicket" name="isSupportInterestTicket" value="$!isSupportInterestTicket" />
+	<input type="hidden" id="backUrl" name="backUrl" value="$!backUrl">
+    <!-- 头部 -->
+    <div class="header_fixed">
+		<div class="header">
+            <a class="header_arrow" href="javascript:chooseSubmit()"></a>
+            <h1 class="heade_ft color_bg">优惠券</h1>
+			<div class="headerInfo" onclick="go_interes()">
+                <img class="InfoImg" src="$!{env.getWebURL('')}/resources/micro2.0/images/regular/listInfo.png">
+            </div>
+        </div>
+    	<div class="red_prompt">
+    		温馨提示：红包和加息券不可同时使用，系统会帮您推荐最佳可用优惠券。
+    	</div>
+    	<div class="red_tab">
+    		<div class="red_tab_li red_tab_li1 fy_dlclick">抵扣红包<span class="fy-line fy-line-active"></span></div>
+    		<div class="red_tab_li red_tab_li2">加息券<span class="fy-line"></span></div>
+    	</div>
+	</div>
+	<div class="fixed_height"></div>
+	<div class="pack_none" onclick="whetherToChooseClick(this)">
+		不使用优惠券
+		<div class="pack_click">
+			#if("$!useFlag" == "yes")
+				<div class="pack_active" use_flag="yes"></div>
+			#else
+				<div class="pack_active" use_flag="no" style="display: block;"></div>
+			#end
+		</div>
+	</div>
+    <div class="main">	
+		#if($!isSupportRedPacket=="TRUE")
+			#if($!redPacketList.size()>0)
+    		<div class="red_box red_box1">        	
+                #foreach($!grid in $!redPacketList)
+                    <div class="pack">			
+                		#if("$!grid.status" == "INIT")
+                			#if($money.subtract("$!amount", "$!grid.full") >= 0)
+            					<img class="pack_img" src="$!{env.getWebURL('')}/resources/micro2.0/images/red_pack/red_bg01.png" alt="">
+                				<div class="orange" can_choose="yes">
+    								<div class="pack_money" onclick="chooseRedPacket(this)" id="$!grid.id" status="$!grid.status" type="$!grid.type">
+                					<span class="number_small">¥</span>$!money.format($!grid.subtract)            				
+                    					#if($!redPacketId == $!grid.id)
+                    						<i class="choose_icon active"></i>
+                    					#else
+                    						<i class="choose_icon pack_icon1"></i>
+        								#end
+    								</div>
+                			#else
+            					<img class="pack_img" src="$!{env.getWebURL('')}/resources/micro2.0/images/red_pack/red_bg02.png" alt="">
+                				<div class="orange now_pack" can_choose="no">
+									<div class="pack_money" onclick="chooseRedPacket(this)" id="$!grid.id" status="$!grid.status" type="$!grid.type">
+										<span class="number_small">¥</span>$!money.format($!grid.subtract)           				
+									</div>
+                			#end
+                		#else
+            				<img class="pack_img" src="$!{env.getWebURL('')}/resources/micro2.0/images/red_pack/red_bg02.png" alt="">
+                			<div class="orange now_pack" can_choose="no">
+								<div class="pack_money" onclick="chooseRedPacket(this)" id="$!grid.id" status="$!grid.status" type="$!grid.type">
+                					<span class="number_small">¥</span>$!money.format($!grid.subtract)           				
+    							</div>
+                		#end		            				
+            				<div class="gray_title">$!grid.serialName</div>
+                    		<div class="pack_txt">
+            					<div class="pace_title">   						
+        							#if($money.subtract("$!grid.full", "10000") >= 0)
+        								<i class="pack_spot"></i>满 $!number.format("0.00", $money.divide("$!grid.full", "10000"))万元减$!grid.subtract元
+        						    #else
+        								<i class="pack_spot"></i>满$!number.format("0.00", $!grid.full)元减$!grid.subtract元
+        						    #end        							
+            					</div>
+                        		<span class="pace_tlimit"><i class="pack_spot"></i>$!grid.termLimitMsg</span>
+            				</div>
+            				<span class="pace_time"><i class="pack_spot"></i>$!date.formatYYYYMMDD($!grid.useTimeStart)至$!date.formatYYYYMMDD($!grid.useTimeEnd)</span>
+                    	</div>
+                    </div>
+                #end
+                <div class="placehlode_height"></div>
+                <div style="width:100%; height:200px;"></div>
+    		</div>			
+    		#else
+    			<div class="red_box red_box1">
+    				<div class="Acc_null_img red_init_bg"></div>
+                    <h2 class="ACC_null_title1">暂无可用红包</h2>
+    			</div>
+			#end
+		#else
+			<div class="red_box red_box1">
+				<div class="Acc_null_img red_used_bg"></div>
+				<h2 class="ACC_null_title1">该计划不支持红包</h2>
+			</div>
+		#end
+		#if($!isSupportInterestTicket=="TRUE")
+			#if($!ticketList.size()>0)
+    		<div class="red_box red_box2">
+    			#foreach($!grid in $!ticketList)			
+    				<div class="pack">
+    					#if("$!grid.status" == "INIT")
+    						#if($money.subtract("$!amount", "$!grid.full") >= 0)
+    							<img class="pack_img" src="$!{env.getWebURL('')}/resources/micro2.0/images/red_pack/Increase_bg01.png" alt="">
+                				<div class="orange increase_orange" can_choose="yes">
+									<div class="pack_money" onclick="chooseRedPacket(this)" id="$!grid.id" status="$!grid.status" type="$!grid.type">
+                    					<span class="number_small">+</span>$!money.format($!grid.rate)%                   				
+										#if($!redPacketId == $!grid.id)
+											<i class="choose_icon active"></i>
+										#else
+											<i class="choose_icon pack_icon1"></i>
+										#end
+									</div>
+    						#else							
+    							<img class="pack_img" src="$!{env.getWebURL('')}/resources/micro2.0/images/red_pack/Increase_bg02.png" alt="">
+                				<div class="orange now_pack" can_choose="no">
+									<div class="pack_money" onclick="chooseRedPacket(this)" id="$!grid.id" status="$!grid.status" type="$!grid.type">
+										<span class="number_small">+</span>$!money.format($!grid.rate)%            				
+									</div>
+    						#end							
+    					#else
+    						<img class="pack_img" src="$!{env.getWebURL('')}/resources/micro2.0/images/red_pack/Increase_bg02.png" alt="">
+    						<div class="orange now_pack" can_choose="no">
+								<div class="pack_money" onclick="chooseRedPacket(this)" id="$!grid.id" status="$!grid.status" type="$!grid.type">
+									<span class="number_small">+</span>$!money.format($!grid.rate)%           				
+								</div>
+    					#end       					
+            				<div class="gray_title">$!grid.serialName</div>
+                    		<div class="ticket_btn"> 	
+								#if($money.subtract("$!grid.full", "10000") >= 0)
+									<i class="pack_spot"></i><span class="ticker_txt">$!grid.termLimit，单笔加入满$!number.format("0.00", $money.divide("$!grid.full", "10000"))万元启用</span>
+								#else
+									<i class="pack_spot"></i><span class="ticker_txt">$!grid.termLimit，单笔加入满$!number.format("0.00", $!grid.full)元启用</span>
+								#end
+    							<span class="increase_img"></span>
+    							<input type="hidden" id="productLimit" name="productLimit" value="$!grid.productLimit" />
+            				</div>
+    						<div class="alert_info">
+            					<div class="alert_title">提示</div>
+            					<div class="alert_ul">
+									#if($money.subtract("$!grid.full", "10000") >= 0)
+            						$!money.format($!grid.rate)%$!grid.serialName，$!grid.termLimit，单笔加入满$!number.format("0.00", $money.divide("$!grid.full", "10000"))万元启用，<span class="bgw_name"></span>产品适用。加息收益将会在加入的产品到期后以奖励金的形式发放。
+									#else
+									$!money.format($!grid.rate)%$!grid.serialName，$!grid.termLimit，单笔加入满$!number.format("0.00", $!grid.full)元启用，<span class="bgw_name"></span>产品适用。加息收益将会在加入的产品到期后以奖励金的形式发放。
+									#end
+            					</div>
+            					<div class="btn_group">
+            						<div class="top_line close_btn">我知道了</div>
+            					</div>
+            				</div>
+            				<span class="pace_time"><i class="pack_spot"></i>$!date.formatYYYYMMDD($!date.parseDateTime($!grid.useTimeStart))至$!date.formatYYYYMMDD($!date.parseDateTime($!grid.useTimeEnd))</span>
+    					</div>
+    				</div>				
+    			#end
+    		</div>			
+    		#else
+    			<div class="red_box red_box2">
+    				<div class="Acc_null_img ticket_init_bg"></div>
+                    <h2 class="ACC_null_title1">暂无可用加息券</h2>
+    			</div>
+			#end
+		#else
+			<div class="red_box red_box2">
+				<div class="Acc_null_img ticket_used_bg"></div>
+				<h2 class="ACC_null_title1">该计划不支持加息券</h2>
+			</div>
+		#end
+    </div>
+	<div class="dialog_notice alert_hide"></div>
+#LoadJS("resources/micro2.0/scripts/red_pack/choose_red_pack")
+#LoadJS("resources/micro2.0/scripts/common/common")
+</body>
+#Html("end")

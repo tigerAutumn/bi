@@ -1,0 +1,145 @@
+<style type="text/css" >
+.dd{width:134px; height:30px;display:inline-block;}
+.dd_all_tag_select{width:134px; height:30px;display:inline-block;}
+</style>
+<div class="pageContent">
+	<form method="post" id="detail_form" action="">
+		<input type="hidden" id="tagTotalRows" name="tagTotalRows" value="$!tagTotalRows"/>
+		<div class="pageFormContent" layoutH="56">
+			#foreach($tag in $!tags)
+				<div class="dd_all_tag_select">
+				<input  class="all_tag_select_class" type="checkbox" value="$tag.id" name="tag"/>
+				<span class="all_tag_select_content_class"  title="$tag.content" content="$tag.content">$tag.content
+                </span>
+				</div>
+			#end
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li style="margin-top: 3px; margin-right: 423px"><input type="checkbox" id="tag_checked_all"/> 全选</li>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="doTag()" >确定</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+
+	$('.dd_all_tag_select').each(function(){
+    	var content = $(this).children('.all_tag_select_content_class').attr('content');
+    	var size = content.length;
+    	if(size > 8) {
+    		var contentStr = content.substr(0, 8);
+    		$(this).children('.all_tag_select_content_class').html(contentStr + "...");
+    	}
+    	
+	});
+
+	function doTag() {
+		var tagIds = "",
+		userIds = $.trim($('#userIds').val());
+		$("input[name=tag]:checkbox").each(function(){
+			if($(this).attr("checked")) {
+				tagIds += $(this).attr('value') + ",";
+			}
+		})
+		if(userIds == '') {
+			alertMsg.error("userid不能为空！！");
+		}else {
+			//去除回车符和空格
+        	userIds = userIds.replace(/[\r\n]/g,"");
+        	userIds = userIds.replace(/ /g,'');
+			var array = userIds.replace("，",",").split(",");
+			for(var i=0;i<array.length;i++) {
+				var reg = /^[+]?\d*$/;
+				if(!reg.test(array[i].trim())) {
+					alertMsg.error("userid输入不合法！！");
+					$.pdialog.close("createBack");
+					return;
+				}
+			}
+			
+			//验证userId有效性
+			jQuery.ajax({
+    			type : 'post',
+    			url : $("#APP_ROOT_PATH").val() + "/bsUserTags/userIdCount.htm",
+    			data : {userIds:userIds},
+    			success : function(data) {
+					var userCount = data.userCount;
+					if(userCount == 0) {
+						alertMsg.error("userid全部无效！！");
+						//关闭弹出框
+    					$.pdialog.close("createBack");
+						return;
+					}
+					if(array.length > userCount) {
+						var cha = array.length - userCount;
+						var show = "输入的userId字符串中，有效用户"+userCount+"个，无效用户"+cha+"个";
+						alertMsg.confirm(show,
+    						{okCall:function(){
+                            	updateUserTag(tagIds,userIds);
+                            },cancelCall:function(){
+    							//关闭弹出框
+    							$.pdialog.close("createBack");
+    						}
+						});
+					}
+					else {
+						updateUserTag(tagIds,userIds);
+					}
+    			}
+        	});
+		}
+	}
+	
+	function updateUserTag(tagIds,userIds) {
+		jQuery.ajax({
+			type : 'post',
+			url : $("#APP_ROOT_PATH").val() + "/bsUserTags/batchEdit.htm",
+			data : {tagIds:tagIds,userIds:userIds},
+			success : function(data) {
+				alertMsg.correct('操作成功!');
+				//关闭弹出框
+				$.pdialog.close("createBack");
+				//刷新页面
+				$("#user_id_tag_form").submit();
+			}
+    	});
+	}
+	
+	$(function(){
+	
+		var tagTotal = $.trim($('#tagTotalRows').val());
+		$('#tag_checked_all').on('click',function(){
+			if($('#tag_checked_all').attr('checked')) {
+				$("input[name=tag]:checkbox").each(function(){
+        			$(this).prop('checked',true);
+        		})
+    		}else {
+    			$("input[name=tag]:checkbox").each(function(){
+					$(this).prop('checked',false);
+        		})
+    		}
+		})
+		
+		$("input[name=tag]:checkbox").on('click',function(){
+			if($(this).attr('checked')) {
+				var len = 0;
+    			$("input[name=tag]:checkbox").each(function(){
+    				if($(this).attr('checked')) {
+    					len = parseInt(len) + 1;
+    				}
+            	})
+    			if(len == tagTotal) {
+    				$('#tag_checked_all').prop('checked',true);
+    			}else {
+    				$('#tag_checked_all').prop('checked',false);
+    			}
+			}else {
+				$('#tag_checked_all').prop('checked',false);
+			}
+		})
+	})
+</script>

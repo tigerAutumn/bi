@@ -1,0 +1,246 @@
+#Html("begin")
+#Head("begin","币港湾活动,大礼包,币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("PK活动-币港湾官网")
+
+#LoadGenCSS("/resources/gen2.0/styles/activity/pk1213/player_killing_index")
+#LoadGenJS("/resources/gen2.0/scripts/common/Custom")
+#LoadGenJS("/resources/gen2.0/scripts/activity/pk1213/player_killing_index")
+<script type="text/javascript">
+	$(function() {
+		if(window.PIE) {
+			$('.rounded').each(function() {
+				PIE.attach(this);
+			});
+		}
+	});
+</script>
+#GenHead("end")
+	<body class="body">
+		#Gen2Header("home")
+		<!--banner-->
+		<div class="banner"></div>
+		<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')"/>
+		<input type="hidden" id="product_id_contentment" value="$!productIdContentment"/>
+		<input type="hidden" id="product_id_real" value="$!productIdReal"/>
+		<!--main-->
+		<div class="main-content">
+			<!--pk-->
+			<div class="main-percentage">
+				<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/main9.png" class="main-percentage-img" />
+				<div class="main-percentage-content">
+					<div class="main-percentage-reality">
+						<div class="main-realityname">
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/main1.png" class="main-realityimg1" />
+							<!--胜利-->
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/main2.png" class="main-realityimg2" #if($!winner == 'real') #else style="display: none;" #end/>
+							<!--失败-->
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/main3.png" class="main-realityimg3" #if($!winner == 'contentment') #else style="display: none;" #end />
+						</div>
+						<div class="main-realitymore">
+							<div class="main-realitybg rounded">
+								<span class="main-realitynumspan">$!number.format('0',$!{investAmountRealPercentShow})%</span>
+								<!--进度宽度需做处理-->
+								<div class="main-realitynum rounded" style="width:$!{investAmountRealPercent}%;"></div>
+							</div>
+						</div>
+					</div>
+					<div class="main-percentage-contentment">
+						<div class="main-contentmentname">
+							<!--胜利-->
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/main5.png" class="main-contentmentimg1" #if($!winner == 'contentment') #else style="display: none;"#end />
+							<!--失败-->
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/main6.png" class="main-contentmentimg1" #if($!winner == 'real') #else style="display: none;" #end/>
+							
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/main4.png" class="main-contentmentimg2" />
+						</div>
+						<div class="main-contentmentmore">
+							<div class="main-contentmentbg rounded">
+								<span class="main-contentmentnumspan">$!number.format('0',$!{investAmountContentmentPercentShow})%</span>
+								<!--进度宽度需做处理-->
+								<div class="main-contentmentnum rounded" style="width: $!{investAmountContentmentPercent}%;"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--投资-->
+			<div class="main-product">
+				<div class="main-product-content">
+					<div class="main-product-reality">
+						<div class="main-product-realitytit">年化收益</div>
+						<div class="main-product-realitynum">
+							<i class="main-product-realitynumi">7</i>
+							<span class="main-product-realitynumspan">%</span>
+							<i class="main-product-realitynumi">+</i>
+							<i class="main-product-realitynumi">0.2</i>
+							<span class="main-product-realitynumspan">%</span>
+						</div>
+						<div class="main-product-realitytit">累计投资额$!{investAmountReal}万元</div>
+						<div class="main-product-realitybtn rounded">排行榜<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/main11.png" class="main-product-realitybtn-img" /></div>
+						<div class="main-product-realitybtn2"><span class="main-product-realitybtn2-span">投资期限30天</span>
+							<a href="javascript:;" class="main-product-realitybtn2-btn" id = "buy_real">马上投资</a>
+						</div>
+					</div>
+					<div class="main-product-contentment">
+						<div class="main-product-realitytit">年化收益</div>
+						<div class="main-product-realitynum">
+							<i class="main-product-realitynumi">8</i>
+							<span class="main-product-realitynumspan">%</span>
+							<i class="main-product-realitynumi">+</i>
+							<i class="main-product-realitynumi">0.3</i>
+							<span class="main-product-realitynumspan">%</span>
+						</div>
+						<div class="main-product-realitytit">累计投资额$!{investAmountContentment}万元</div>
+						<div class="main-product-contentmentbtn rounded">排行榜<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/main13.png" class="main-product-realitybtn-img" /></div>
+						<div class="main-product-realitybtn2 main-product-realitybtn2copy"><span class="main-product-realitybtn2-span">投资期限90天</span>
+							<a href="javascript:;" class="main-product-realitybtn2-btn" id = "buy_contentment">马上投资</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--投资说明-->
+			<div class="main-description">
+				<h3 class="main-description-title">福利说明</h3>
+				<div class="main-description-bg"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/main17.png" /></div>
+				<div class="main-description-txt">
+					<div class="main-description-tcon">
+						<div class="main-description-tconi">01</div>
+						<div class="main-description-tconspan">
+							<p>现实派享受加息<b class="main-descriptionb">0.2%</b>福利，</p>
+							<p>知足派享受加息<b class="main-descriptionb">0.3%</b>福利</p>
+						</div>
+					</div>
+					<div class="main-description-tcon">
+						<div class="main-description-tconi">02</div>
+						<div class="main-description-tconspan">
+							<p>现实派pk知足派，先投资</p>
+							<p>满<b class="main-descriptionb">1500万</b>的一方即为获胜方</p>
+						</div>
+					</div>
+					<div class="main-description-tcon">
+						<div class="main-description-tconi">03</div>
+						<div class="main-description-tconspan">
+							<p>参与本活动即有机会</p>
+							<p>瓜分<b class="main-descriptionb">2万现金</b>大奖</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--奖励说明-->
+			<div class="main-reward">
+				<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/main19.png" class="main-reward-img" />
+				<h3 class="main-reward-title">奖励说明</h3>
+				<div class="main-reward-content">
+					<div class="main-reward-tconi">胜方</div>
+					<div class="main-reward-tconspan">
+						<p>1.排行榜第1名—第5名，瓜分现金大奖的40%；</p>
+						<p>2.排行榜第6名—第20名，瓜分现金大奖的20%；</p>
+						<p>3.剩余所有投资用户瓜分现金大奖的10%；</p>
+					</div>
+				</div>
+				<div class="main-reward-content">
+					<div class="main-reward-tconi">败方</div>
+					<div class="main-reward-tconspan">
+						<p>1.排行榜第1名—第5名，瓜分现金大奖的30%；</p>
+						<p>2.败方未得奖的每位用户将得到10元投资红包；</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--活动规则-->
+		<div class="activity-rule">
+			<div class="activity-rule-content">
+				<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/rule2.png" class="activity-rule-img1" />
+				<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/rule3.png" class="activity-rule-img2" />
+				<h3 class="activity-rule-title">活动规则</h3>
+				<div class="activity-rule-txt">
+					<p>1.活动时间为12月13日-12月19日；</p>
+					<p>2.若两方战队皆在活动时间截止前满标，则活动提前结束；</p>
+					<p>3.活动截止时，若两方战队都未达到满标金额，则2万元奖金和红包奖励皆失效；</p>
+					<p>4.活动期间若出现投资金额相同的情况，按投资时间进行先后排序，投资时间以平台显示时间为准；</p>
+					<p>5.奖金以奖励金形式发放，我们会在活动结束后的五个工作日内将奖励金发放至用户账户，可在【我的资产】-【我的奖励】中查看；</p>
+					<p>6.奖励金只保留整数部分，不足一元不返；</p>
+					<p>7.我们会在活动结束后的五个工作日内将红包发放至用户账户，可在【我的资产】-【我的红包】中查看；</p>
+					<p>8.币港湾公司拥有对本次活动的最终解释权。</p>
+				</div>
+			</div>
+		</div>
+		<!--遮罩层-->
+		<div class="tan-bg"></div>
+		<!--提示弹窗-->
+		<div id="alert_listthree_one" class="alert_listthree">
+			<h3 class="alert_listthree_h3">
+        		<span class="title">温馨提示</span>
+        		<a class="alert_listthree_btn" href="javascript:;" title="" onclick="">
+            		<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/close_right.png">
+        		</a>
+    		</h3>
+    		<!--活动未开始-->
+			<div class="alert_listthree_txt">不在活动时间内哦~~</div>
+		
+			<div class="alert_listthree_btnd">
+				<a class="alert_listthree_btnl" href="javascript:;">知道了</a>
+			</div>
+		</div>
+		<!--现实派排行榜弹窗-->
+		<div class="popup-window rounded" id="real_rank">
+			<div class="popup-close rounded"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/close.png" /></div>
+			<h3 class="popup-title"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/trophy.png" class="popup-titleimg"/>现实派 排行榜TOP20</h3>
+			<div class="popup-catalog">
+				<div class="popup-catalog-num">排名</div>
+				<div class="popup-catalog-money">购买金额</div>
+			</div>
+			<div class="popup-content">
+				<ul class="popup-content-box">
+					#foreach($rankR in $!rankingReal)
+					<li>
+						<div class="popup-content-ranking">
+							<span class="popup-content-rankingimg">
+								#if($!rankR.rowno == 1) 
+									<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/trophy1.png"/> 
+								#elseif($!rankR.rowno == 2)
+									<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/trophy2.png"/>
+								#elseif($!rankR.rowno == 3)
+									<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/trophy3.png"/> 
+								#else  
+									$!rankR.rowno  
+								#end
+							</span>
+							<i class="popup-content-rankingname" id="real_ranking_name_$!{rankR.rowno}">$!rankR.userName</i>
+						</div>
+						<div class="popup-content-money" id="real_ranking_buy_amount_$!{rankR.rowno}">$!rankR.buyAmount</div>
+					</li>
+					#end
+
+				</ul>
+			</div>
+		</div>
+		
+		<!--知足派排行榜弹窗-->
+		<div class="popup-window rounded" id="contentment_rank">
+			<div class="popup-close rounded"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/close.png" /></div>
+			<h3 class="popup-title"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/trophy.png" class="popup-titleimg"/>知足派 排行榜TOP20</h3>
+			<div class="popup-catalog">
+				<div class="popup-catalog-num">排名</div>
+				<div class="popup-catalog-money">购买金额</div>
+			</div>
+			<div class="popup-content">
+				<ul class="popup-content-box">
+					#foreach($rankC in $!rankingContentment)
+					<li>
+						<div class="popup-content-ranking"><span class="popup-content-rankingimg">#if($!rankC.rowno == 1) <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/trophy1.png"/> #elseif($!rankC.rowno == 2)<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/trophy2.png"/>#elseif($!rankC.rowno == 3)<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/pk1213/trophy3.png"/> #else  $!rankC.rowno  #end</span>
+									
+									<i class="popup-content-rankingname" id="contentment_ranking_name_$!{rankC.rowno}">$!rankC.userName</i>
+						</div>
+						<div class="popup-content-money" id="contentment_ranking_buy_amount_$!{rankC.rowno}">$!rankC.buyAmount</div>
+					</li>
+					#end
+
+				</ul>
+			</div>
+		</div>
+		
+		
+	</body>
+
+</html>

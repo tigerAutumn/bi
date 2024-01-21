@@ -1,0 +1,62 @@
+<div class="pageContent">
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <form method="post"  id="myform" name="detail_form" action="$env.getWebURL('baofoo/ebank.htm')"
+          class="pageForm required-validate" >
+        <div class="pageFormContent" layoutH="56">
+            <input type="hidden" id="trans_id" value=""/>
+            <input type="hidden" id="business_no" value=""/>
+            <p>
+                <label>金额：</label>
+                <input id="amount" name="amount" type="text" size="10" maxlength="10" class="required number"/>
+            </p>
+            <p>
+                <label>银行：</label>
+                <select  id="bankCode" name="bankCode">
+                    <option  value="-1">请选择银行</option>
+                    #foreach($bank in $bankList.keySet())
+                        <option  value="$!bank">$!{bankList.get($!bank)}</option>
+                    #end
+                </select>
+            </p>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="buttonActive">
+                        <div class="buttonContent">
+                            <button id="sub" type="button">确定</button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button type="button" class="close">取消</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </form>
+</div>
+<script>
+    function navTabAjaxDone(json) {
+    }
+
+    $("#sub").click(function () {
+
+        var amount=$("#amount").val();
+
+        if(!amount){
+            alertMsg.error("金额不能为空");
+            return;
+        }
+
+        if(isNaN(amount)){
+            alertMsg.error("金额无效");
+            return;
+        }
+        $("#myform").submit();
+    });
+</script>

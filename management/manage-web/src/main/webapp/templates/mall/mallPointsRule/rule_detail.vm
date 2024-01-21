@@ -1,0 +1,480 @@
+<style>
+    .hide_div {
+        display: none;
+    }
+    .show_div {
+        display: block;
+    }
+</style>
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	#Hidden("serverToken", $!serverToken)
+    <input type='hidden' id='scene' value='$!mallPointsRule.getScene'>
+    <input type='hidden' id='updRuleId' value='$!mallPointsRule.id'>
+    <input type='hidden' id='updRuleStatus' value='$!mallPointsRule.status'>
+
+    <form id="financeForm" method="post" action="$env.getWebURL('/mallPointsRule/operateRule.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+
+        <div class="pageFormContent nowrap" layoutH="97" >
+            <dl>
+                <dt>场景：</dt>
+                <select id="getScene" name="getScene" #if("$!mallPointsRule.getScene"!="") disabled='disabled' #end>
+                    <option value="REGISTER" #if("$!mallPointsRule.getScene"=="REGISTER") selected #end >成功注册 </option>
+                    <option value="OPEN_DEPOSIT" #if("$!mallPointsRule.getScene"=="OPEN_DEPOSIT") selected #end >成功开通存管账户</option>
+                    <option value="FINISH_RISK_ASSESSMENT" #if("$!mallPointsRule.getScene"=="FINISH_RISK_ASSESSMENT") selected #end >成功完成风险测评</option>
+                    <option value="FIRST_INVEST" #if("$!mallPointsRule.getScene"=="FIRST_INVEST") selected #end >成功完成首次加入产品</option>
+                    <option value="INVEST" #if("$!mallPointsRule.getScene"=="INVEST") selected #end >成功加入产品</option>
+                    <option value="TOTAL_INVEST" #if("$!mallPointsRule.getScene"=="TOTAL_INVEST") selected #end >累计加入产品积分奖励</option>
+                    <option value="SIGN" #if("$!mallPointsRule.getScene"=="SIGN") selected #end >签到</option>
+                    <option value="BIRTHDAY" #if("$!mallPointsRule.getScene"=="BIRTHDAY") selected #end >用户生日奖励</option>
+                </select>
+            </dl>
+
+            <div id="REGISTER" class="content_div show_div">
+                <dl>
+                    <dt id="timeText">注册时间：</dt>
+                    <input name="triggerTimeStart" type="text" size="20" id="triggerTimeStart" class=" date dateInitStart textInput readonly" readonly="true" datefmt="yyyy-MM-dd HH:mm:ss" value="$!date.format($!mallPointsRule.triggerTimeStart)" />
+                    <label style="width:15px">至</label>
+                    <input name="triggerTimeEnd" type="text" size="20" id="triggerTimeEnd" class=" date dateInitEnd textInput readonly" readonly="true" datefmt="yyyy-MM-dd HH:mm:ss" value="$!date.format($!mallPointsRule.triggerTimeEnd)" />
+
+                </dl>
+                <dl>
+                    <dt>成功注册，可获得</dt>
+                    <input type="text" id="points" name="points" maxlength="20" value="$!mallPointsRule.points" style="float:none;" />
+                    &nbsp;&nbsp;积分
+                </dl>
+                <dl>
+                    <dt>状态：</dt>
+                    <input type="radio" id="status_open" name="status" value="OPEN" #if("$!mallPointsRule.status"=="OPEN") checked #end checked />开启
+                    <input type="radio" id="status_close" name="status" value="CLOSE" #if("$!mallPointsRule.status"=="CLOSE") checked #end />关闭
+                </dl>
+            </div>
+
+            <div id="OPEN_DEPOSIT" class="content_div hide_div">
+                <dl>
+                    <dt id="timeText">开通存管时间：</dt>
+                    <input name="triggerTimeStart" type="text" size="20" id="triggerTimeStart" class=" date dateInitStart textInput readonly"  readonly="true" datefmt="yyyy-MM-dd HH:mm:ss" value="$!date.format($!mallPointsRule.triggerTimeStart)" />
+                    <label style="width:15px">至</label>
+                    <input name="triggerTimeEnd" type="text" size="20" id="triggerTimeEnd" class=" date dateInitEnd textInput readonly"  readonly="true" datefmt="yyyy-MM-dd HH:mm:ss" value="$!date.format($!mallPointsRule.triggerTimeEnd)" />
+                </dl>
+                <dl>
+                    <dt style="width:150px">成功开通存管账户，可获得</dt>
+                    <input type="text" id="points" name="points" maxlength="20" value="$!mallPointsRule.points" style="float:none;" />
+                    &nbsp;&nbsp;积分
+                </dl>
+                <dl>
+                    <dt>状态：</dt>
+                    <input type="radio" id="status_open2" name="status" value="OPEN" #if("$!mallPointsRule.status"=="OPEN") checked #end />开启
+                    <input type="radio" id="status_close2" name="status" value="CLOSE" #if("$!mallPointsRule.status"=="CLOSE") checked #end />关闭
+                </dl>
+            </div>
+
+            <div id="FINISH_RISK_ASSESSMENT" class="content_div hide_div">
+                <dl>
+                    <dt id="timeText">风险测评时间：</dt>
+                    <input name="triggerTimeStart" type="text" size="20" id="triggerTimeStart" class=" date dateInitStart textInput readonly" readonly="true" datefmt="yyyy-MM-dd HH:mm:ss" value="$!date.format($!mallPointsRule.triggerTimeStart)" />
+                    <label style="width:15px">至</label>
+                    <input name="triggerTimeEnd" type="text" size="20" id="triggerTimeEnd" class=" date dateInitEnd textInput readonly" readonly="true" datefmt="yyyy-MM-dd HH:mm:ss" value="$!date.format($!mallPointsRule.triggerTimeEnd)" />
+                </dl>
+                <dl>
+                    <dt style="width:150px">成功完成风险测评，可获得</dt>
+                    <input type="text" id="points" name="points" maxlength="20" value="$!mallPointsRule.points" style="float:none;" />
+                    &nbsp;&nbsp;积分
+                </dl>
+                <dl>
+                    <dt>状态：</dt>
+                    <input type="radio" id="status_open3" name="status" value="OPEN" #if("$!mallPointsRule.status"=="OPEN") checked #end />开启
+                    <input type="radio" id="status_close3" name="status" value="CLOSE" #if("$!mallPointsRule.status"=="CLOSE") checked #end />关闭
+                </dl>
+            </div>
+
+            <div id="FIRST_INVEST" class="content_div hide_div">
+                <dl>
+                    <dt id="timeText">首次加入产品时间：</dt>
+                    <input name="triggerTimeStart" type="text" size="20" id="triggerTimeStart" class=" date dateInitStart textInput readonly" readonly="true" datefmt="yyyy-MM-dd HH:mm:ss" value="$!date.format($!mallPointsRule.triggerTimeStart)" />
+                    <label style="width:15px">至</label>
+                    <input name="triggerTimeEnd" type="text" size="20" id="triggerTimeEnd" class=" date dateInitEnd textInput readonly" readonly="true" datefmt="yyyy-MM-dd HH:mm:ss" value="$!date.format($!mallPointsRule.triggerTimeEnd)" />
+                </dl>
+                <dl>
+                    <dt style="width:175px">成功完成首次加入产品，可获得</dt>
+                    <input type="text" id="points" name="points" maxlength="20" value="$!mallPointsRule.points" style="float:none;" />
+                    &nbsp;&nbsp;积分
+                </dl>
+                <dl>
+                    <dt>状态：</dt>
+                    <input type="radio" id="status_open4" name="status" value="OPEN" #if("$!mallPointsRule.status"=="OPEN") checked #end />开启
+                    <input type="radio" id="status_close4" name="status" value="CLOSE" #if("$!mallPointsRule.status"=="CLOSE") checked #end />关闭
+                </dl>
+            </div>
+
+            <div id="INVEST" class="content_div hide_div">
+                <dl>
+                    <dt id="timeText">加入产品时间：</dt>
+                    <input name="triggerTimeStart" type="text" size="20" id="triggerTimeStart" class=" date dateInitStart textInput readonly" readonly="true" datefmt="yyyy-MM-dd HH:mm:ss" value="$!date.format($!mallPointsRule.triggerTimeStart)" />
+                    <label style="width:15px">至</label>
+                    <input name="triggerTimeEnd" type="text" size="20" id="triggerTimeEnd" class=" date dateInitEnd textInput readonly" readonly="true" datefmt="yyyy-MM-dd HH:mm:ss" value="$!date.format($!mallPointsRule.triggerTimeEnd)" />
+                </dl>
+                <dl>
+                    <dt>产品收益</dt>
+                    <input type="text" id="ruleValueExchangeRate" name="ruleValueExchangeRate" maxlength="20" value="$!ruleValueExchangeRate.ruleValue" style="float:none;" />
+                    &nbsp;&nbsp;元兑换1积分
+                </dl>
+                <dl>
+                    <dt>状态：</dt>
+                    <input type="radio" id="status_open5" name="status" value="OPEN" #if("$!mallPointsRule.status"=="OPEN") checked #end />开启
+                    <input type="radio" id="status_close5" name="status" value="CLOSE" #if("$!mallPointsRule.status"=="CLOSE") checked #end />关闭
+                </dl>
+            </div>
+
+            <div id="TOTAL_INVEST" class="content_div hide_div">
+                <dl>
+                    <dt id="timeText">投资时间：</dt>
+                    <input name="triggerTimeStart" type="text" size="20" id="triggerTimeStart" class=" date dateInitStart textInput readonly" readonly="true" datefmt="yyyy-MM-dd HH:mm:ss" value="$!date.format($!mallPointsRule.triggerTimeStart)" />
+                    <label style="width:15px">至</label>
+                    <input name="triggerTimeEnd" type="text" size="20" id="triggerTimeEnd" class=" date dateInitEnd textInput readonly" readonly="true" datefmt="yyyy-MM-dd HH:mm:ss" value="$!date.format($!mallPointsRule.triggerTimeEnd)" />
+                </dl>
+                <dl>
+                    <dt>累计年化投资金额</dt>
+                    <input type="text" id="ruleValueInvestAmountBegin" name="ruleValueInvestAmountBegin" maxlength="20" value="$!ruleValueInvestAmountBegin.ruleValue" />
+                    <label style="width:15px">至</label>
+                    <input type="text" id="ruleValueInvestAmountEnd" name="ruleValueInvestAmountEnd" maxlength="20" value="$!ruleValueInvestAmountEnd.ruleValue" />
+                </dl>
+                <dl>
+                    <dt>可获得</dt>
+                    <input type="text" id="ruleValueTotalInvest" name="ruleValueTotalInvest" maxlength="20" value="$!mallPointsRule.points" style="float:none;" />
+                    &nbsp;&nbsp;积分
+                </dl>
+                <dl>
+                    <dt>状态：</dt>
+                    <input type="radio" id="status_open6" name="status" value="OPEN" #if("$!mallPointsRule.status"=="OPEN") checked #end />开启
+                    <input type="radio" id="status_close6" name="status" value="CLOSE" #if("$!mallPointsRule.status"=="CLOSE") checked #end />关闭
+                </dl>
+            </div>
+
+            <div id="SIGN" class="content_div hide_div">
+                <dl>
+                    <dt style="width:360px">每日签到送不同积分，7日为一个周期，签到7日后，重新开始，</dt>
+                    <dt style="width:280px">每连续签到满7天，可额外获得积分。</dt>
+                </dl>
+                <dl>
+                    <dt id="timeText">签到时间：</dt>
+                    <input name="triggerTimeStart" type="text" size="20" id="triggerTimeStart" class=" date dateInitStart textInput readonly" readonly="true"  datefmt="yyyy-MM-dd HH:mm:ss" value="$!date.format($!mallPointsRule.triggerTimeStart)" />
+                    <label style="width:15px">至</label>
+                    <input name="triggerTimeEnd" type="text" size="20" id="triggerTimeEnd" class=" date dateInitEnd textInput readonly" readonly="true" datefmt="yyyy-MM-dd HH:mm:ss" value="$!date.format($!mallPointsRule.triggerTimeEnd)" />
+                </dl>
+                <dl>
+                    <dt>第一日签到</dt>
+                    <input type="text" id="ruleValueSignInitPoint" name="ruleValueSignInitPoint" maxlength="20" value="$!ruleValueSignInitPoint.ruleValue" />
+                    &nbsp;&nbsp;<label style="width:35px">积分</label>
+                    <label style="width:40px">APP端</label>
+                    <input type="text" id="ruleValueSignInitPointApp" name="ruleValueSignInitPointApp" maxlength="20" value="$!ruleValueSignInitPointApp.ruleValue" />
+                    &nbsp;&nbsp;<label style="width:35px">积分</label>
+                </dl>
+                <dl>
+                    <dt style="width:180px">第二日起签到在前一日基础上递增</dt>
+                    <input type="text" id="ruleValueSignIncrementPoint" name="ruleValueSignIncrementPoint" maxlength="20" value="$!ruleValueSignIncrementPoint.ruleValue" />
+                    &nbsp;&nbsp;<label style="width:35px">积分</label>
+                    <label style="width:40px">APP端</label>
+                    <input type="text" id="ruleValueSignIncrementPointApp" name="ruleValueSignIncrementPointApp" maxlength="20" value="$!ruleValueSignIncrementPointApp.ruleValue" />
+                    &nbsp;&nbsp;<label style="width:35px">积分</label>
+                </dl>
+                <dl>
+                    <dt style="width:180px">每连续签到满7天，可额外获得</dt>
+                    <input type="text" id="ruleValueSignAwardPoint" name="ruleValueSignAwardPoint" maxlength="20" value="$!ruleValueSignAwardPoint.ruleValue" />
+                    &nbsp;&nbsp;<label style="width:35px">积分</label>
+                    <label style="width:40px">APP端</label>
+                    <input type="text" id="ruleValueSignAwardPointApp" name="ruleValueSignAwardPointApp" maxlength="20" value="$!ruleValueSignAwardPointApp.ruleValue" />
+                    &nbsp;&nbsp;<label style="width:35px">积分</label>
+                </dl>
+                <dl>
+                    <dt>状态：</dt>
+                    <input type="radio" id="status_open7" name="status" value="OPEN" #if("$!mallPointsRule.status"=="OPEN") checked #end />开启
+                    <input type="radio" id="status_close7" name="status" value="CLOSE" #if("$!mallPointsRule.status"=="CLOSE") checked #end />关闭
+                </dl>
+            </div>
+
+            <div id="BIRTHDAY" class="content_div hide_div">
+                <dl>
+                    <dt id="timeText">生日时间：</dt>
+                    <input name="triggerTimeStart" type="text" size="20" id="triggerTimeStart" class=" date dateInitStart textInput readonly" readonly="true" datefmt="yyyy-MM-dd HH:mm:ss" value="$!date.format($!mallPointsRule.triggerTimeStart)" />
+                    <label style="width:15px">至</label>
+                    <input name="triggerTimeEnd" type="text" size="20" id="triggerTimeEnd" class=" date dateInitEnd textInput readonly" readonly="true" datefmt="yyyy-MM-dd HH:mm:ss" value="$!date.format($!mallPointsRule.triggerTimeEnd)" />
+
+                </dl>
+                <dl>
+                    <dt>生日当天，可获得</dt>
+                    <input type="text" id="points" name="points" maxlength="20" value="$!mallPointsRule.points" style="float:none;" />
+                    &nbsp;&nbsp;积分
+                </dl>
+                <dl>
+                    <dt>状态：</dt>
+                    <input type="radio" id="status_open" name="status" value="OPEN" #if("$!mallPointsRule.status"=="OPEN") checked #end />开启
+                    <input type="radio" id="status_close" name="status" value="CLOSE" #if("$!mallPointsRule.status"=="CLOSE") checked #end />关闭
+                </dl>
+            </div>
+
+        </div>
+
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+                </li>
+				#if("$!mallPointsRule.id" == "")
+                    <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_ruleForm('add')">保存</button></div></div></li>
+				#else
+                    <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_ruleForm('update')">保存</button></div></div></li>
+				#end
+            </ul>
+        </div>
+    </form>
+</div>
+<script>
+
+    $('#getScene').change(function() {
+        $('.content_div').addClass('hide_div').removeClass('show_div');
+        $('.content_div').children('input').val('');
+        $('#' + $(this).val()).removeClass('hide_div').addClass('show_div');
+        var statusArray = $('#' + $(this).val()).children('dl').children('input[name="status"]');
+        $(statusArray[0]).attr('checked', true);
+    });
+
+    // 时间控件取消
+    $('button').click(function(){
+        $('#calendar').hide();
+    });
+
+    /**
+     * 页初始化，展示编辑对应页面
+     */
+    (function(){
+        var rule = {
+            REGISTER: 'REGISTER',
+            OPEN_DEPOSIT: 'OPEN_DEPOSIT',
+            FINISH_RISK_ASSESSMENT: 'FINISH_RISK_ASSESSMENT',
+            FIRST_INVEST: 'FIRST_INVEST',
+            INVEST: 'INVEST',
+            TOTAL_INVEST: 'TOTAL_INVEST',
+            SIGN: 'SIGN',
+            BIRTHDAY: 'BIRTHDAY'
+        }
+
+        $('.content_div').addClass('hide_div').removeClass('show_div');
+        $('.content_div').children('input').val('');
+        var ruleId = '';
+        switch ($('#scene').val()) {
+            case rule.REGISTER: ruleId = rule.REGISTER; break;
+            case rule.OPEN_DEPOSIT: ruleId = rule.OPEN_DEPOSIT; break;
+            case rule.FINISH_RISK_ASSESSMENT: ruleId = rule.FINISH_RISK_ASSESSMENT; break;
+            case rule.FIRST_INVEST: ruleId = rule.FIRST_INVEST; break;
+            case rule.INVEST: ruleId = rule.INVEST; break;
+            case rule.TOTAL_INVEST: ruleId = rule.TOTAL_INVEST; break;
+            case rule.SIGN: ruleId = rule.SIGN; break;
+            case rule.BIRTHDAY: ruleId = rule.BIRTHDAY; break;
+            default: ruleId = rule.REGISTER; break;
+        }
+        $('#' + ruleId).removeClass('hide_div').addClass('show_div');
+
+        var status = $('#updRuleStatus').val();
+
+        var statusArray = $('#' + ruleId).children('dl').children('input[name="status"]');
+        for(var index = 0; index < statusArray.length; index ++) {
+            if(status == $(statusArray[index]).val()) {
+                $(statusArray[index]).attr('checked', true);
+            }
+        }
+
+    })();
+
+    function submit_ruleForm(operateFlag) {
+
+        var regAmount = /^[0-9]*[1-9][0-9]*$/;
+        var regPoints = /^[1-9]\d*|0$/;
+        var triggerTimeStart = $('div.show_div').children('dl').children('input[name="triggerTimeStart"]').val();
+        var triggerTimeEnd = $('div.show_div').children('dl').children('input[name="triggerTimeEnd"]').val();
+        var points = $.trim($('div.show_div').children('dl').children('input[name="points"]').val());
+        var status = $('div.show_div').children('dl').children('input[name="status"]:checked').val();
+
+
+        var serverToken = $.trim($("#serverToken").val());
+        var getScene = $.trim($("#getScene option:selected").val());
+        var operateFlag = operateFlag;
+
+        var ruleValueExchangeRate = $.trim($("#ruleValueExchangeRate").val());
+        var ruleValueInvestAmountBegin = $.trim($("#ruleValueInvestAmountBegin").val());
+        var ruleValueInvestAmountEnd = $.trim($("#ruleValueInvestAmountEnd").val());
+        var investPoints = $.trim($("#ruleValueTotalInvest").val());
+        var ruleValueSignInitPoint = $.trim($("#ruleValueSignInitPoint").val());
+        var ruleValueSignIncrementPoint = $.trim($("#ruleValueSignIncrementPoint").val());
+        var ruleValueSignAwardPoint = $.trim($("#ruleValueSignAwardPoint").val());
+        var ruleValueSignInitPointApp = $.trim($("#ruleValueSignInitPointApp").val());
+        var ruleValueSignIncrementPointApp = $.trim($("#ruleValueSignIncrementPointApp").val());
+        var ruleValueSignAwardPointApp = $.trim($("#ruleValueSignAwardPointApp").val());
+        var updRuleId = $.trim($("#updRuleId").val());
+
+
+        if((triggerTimeStart == null || triggerTimeStart == "") ||
+                (triggerTimeEnd == null || triggerTimeEnd == "")){
+            alertMsg.warn("触发时间不能为空！");
+            return false;
+        }
+        var result = Date.parse(triggerTimeEnd.replace(/-/g,"/"))- Date.parse(triggerTimeStart.replace(/-/g,"/"));
+        if(result < 0){
+            alertMsg.info("触发开始时间不能在结束时间之后！！");
+            return false;
+        }
+        if(result == 0) {
+            alertMsg.info("触发开始时间不能和结束时间相等！");
+            return false;
+        }
+
+        //
+        if (getScene != null && getScene == "INVEST") {
+            if((ruleValueExchangeRate == null || ruleValueExchangeRate == "")){
+                alertMsg.warn("产品收益值不能为空！");
+                return false;
+            }
+            if(!regAmount.test(ruleValueExchangeRate)) {
+                alertMsg.warn("产品收益值必须是正整数！");
+                return false;
+            }
+        }
+        //
+        if (getScene != null && getScene == "TOTAL_INVEST") {
+            if((ruleValueInvestAmountBegin == null || ruleValueInvestAmountBegin == "")){
+                alertMsg.warn("累计年化投资起始金额不能为空！");
+                return false;
+            }
+            if(!regPoints.test(ruleValueInvestAmountBegin)) {
+                alertMsg.warn("累计年化投资起始金额必须是正整数！");
+                return false;
+            }
+            if((ruleValueInvestAmountEnd == null || ruleValueInvestAmountEnd == "")){
+                alertMsg.warn("累计年化投资截止金额不能为空！");
+                return false;
+            }
+            if(!regPoints.test(ruleValueInvestAmountEnd)) {
+                alertMsg.warn("累计年化投资截止金额必须是正整数！");
+                return false;
+            }
+            if (parseInt(ruleValueInvestAmountBegin) >= parseInt(ruleValueInvestAmountEnd)) {
+                alertMsg.warn("累计年化投资截止金额必须大于起始金额！");
+                return false;
+            }
+        }
+        if (getScene != null && getScene == "SIGN") {
+            if((ruleValueSignInitPoint == null || ruleValueSignInitPoint == "")){
+                alertMsg.warn("签到初始积分不能为空！");
+                return false;
+            }
+            if(!regAmount.test(ruleValueSignInitPoint)) {
+                alertMsg.warn("签到初始积分必须是正整数！");
+                return false;
+            }
+            if((ruleValueSignIncrementPoint == null || ruleValueSignIncrementPoint == "")){
+                alertMsg.warn("签到递增积分不能为空！");
+                return false;
+            }
+            if(!regAmount.test(ruleValueSignIncrementPoint)) {
+                alertMsg.warn("签到递增积分必须是正整数！");
+                return false;
+            }
+            if((ruleValueSignAwardPoint == null || ruleValueSignAwardPoint == "")){
+                alertMsg.warn("签到额外奖励积分不能为空！");
+                return false;
+            }
+            if(!regAmount.test(ruleValueSignAwardPoint)) {
+                alertMsg.warn("签到额外奖励积分必须是正整数！");
+                return false;
+            }
+            // APP签到积分
+            if((ruleValueSignInitPointApp == null || ruleValueSignInitPointApp == "")){
+                alertMsg.warn("签到初始积分不能为空！");
+                return false;
+            }
+            if(!regAmount.test(ruleValueSignInitPointApp)) {
+                alertMsg.warn("签到初始积分必须是正整数！");
+                return false;
+            }
+            if((ruleValueSignIncrementPointApp == null || ruleValueSignIncrementPointApp == "")){
+                alertMsg.warn("签到递增积分不能为空！");
+                return false;
+            }
+            if(!regAmount.test(ruleValueSignIncrementPointApp)) {
+                alertMsg.warn("签到递增积分必须是正整数！");
+                return false;
+            }
+            if((ruleValueSignAwardPointApp == null || ruleValueSignAwardPointApp == "")){
+                alertMsg.warn("签到额外奖励积分不能为空！");
+                return false;
+            }
+            if(!regAmount.test(ruleValueSignAwardPointApp)) {
+                alertMsg.warn("签到额外奖励积分必须是正整数！");
+                return false;
+            }
+        }
+
+        if (getScene != null && !(getScene == "INVEST" || getScene == "TOTAL_INVEST" || getScene == "SIGN")) {
+            if((points == null || points == "")){
+                alertMsg.warn("积分不能为空！");
+                return false;
+            }
+            if(!regAmount.test(points)) {
+                alertMsg.warn("积分必须是正整数！");
+                return false;
+            }
+        }
+        if (getScene != null && getScene == "TOTAL_INVEST") {
+            if((investPoints == null || investPoints == "")){
+                alertMsg.warn("积分不能为空！");
+                return false;
+            }
+            if(!regAmount.test(investPoints)) {
+                alertMsg.warn("积分必须是正整数！");
+                return false;
+            }
+        }
+
+        jQuery.ajax({
+            url: $('#APP_ROOT_PATH').val() + '/mallPointsRule/operateRule.htm',
+            data:{
+                points: points,
+                getScene: getScene,
+                status: status,
+                operateFlag: operateFlag,
+                triggerTimeStart: triggerTimeStart,
+                triggerTimeEnd: triggerTimeEnd,
+                ruleId: updRuleId,
+
+                ruleValueExchangeRate: ruleValueExchangeRate,
+                ruleValueInvestAmountBegin: ruleValueInvestAmountBegin,
+                ruleValueInvestAmountEnd: ruleValueInvestAmountEnd,
+                ruleValueTotalInvest: investPoints,
+                ruleValueSignInitPoint: ruleValueSignInitPoint,
+                ruleValueSignIncrementPoint: ruleValueSignIncrementPoint,
+                ruleValueSignAwardPoint: ruleValueSignAwardPoint,
+                ruleValueSignInitPointApp: ruleValueSignInitPointApp,
+                ruleValueSignIncrementPointApp: ruleValueSignIncrementPointApp,
+                ruleValueSignAwardPointApp: ruleValueSignAwardPointApp
+            },
+            type:'post',
+            success: function(data){
+
+                if (data.statusCode == "200") {
+                    alertMsg.correct('操作成功!');
+                    $.pdialog.closeCurrent();
+                    $("#serverToken").val(data.serverToken);
+                    navTab.reload("$env.getWebURL('/mallPointsRule/findList.htm')");
+                } else {
+                    if (data.message) {
+                        alertMsg.error(data.message);
+                    } else {
+                        alertMsg.error("操作失败");
+                    }
+                }
+
+            }
+        });
+    }
+
+</script>

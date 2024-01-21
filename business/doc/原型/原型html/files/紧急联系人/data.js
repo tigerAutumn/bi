@@ -1,0 +1,139 @@
+﻿$axure.loadCurrentPage({
+  "url":"紧急联系人.html",
+  "generationDate":new Date(1423549441360.92),
+  "isCanvasEnabled":false,
+  "variables":["OnLoadVariable"],
+  "page":{
+    "packageId":"dac008c5032548eb8225f806730cf0cf",
+    "type":"Axure:Page",
+    "name":"紧急联系人",
+    "notes":{
+},
+    "style":{
+      "baseStyle":"627587b6038d43cca051c114ac41ad32",
+      "pageAlignment":"near",
+      "fill":{
+        "fillType":"solid",
+        "color":0xFFFFFFFF},
+      "image":null,
+      "imageHorizontalAlignment":"near",
+      "imageVerticalAlignment":"near",
+      "imageRepeat":"auto",
+      "favicon":null,
+      "sketchFactor":"0",
+      "colorStyle":"appliedColor",
+      "fontName":"应用字体",
+      "borderWidth":"0"},
+    "adaptiveStyles":{
+},
+    "interactionMap":{
+},
+    "diagram":{
+      "objects":[{
+          "id":"4b3da7a0da704088a15814a6b2a61167",
+          "label":"",
+          "type":"imageBox",
+          "styleType":"imageBox",
+          "visible":true,
+          "style":{
+            "size":{
+              "width":355,
+              "height":479}},
+          "adaptiveStyles":{
+},
+          "objects":[{
+              "id":"a69684f06c394a7bb9323e7bea131e9e",
+              "label":"",
+              "isContained":true,
+              "type":"richTextPanel",
+              "styleType":"paragraph",
+              "visible":true,
+              "style":{
+                "size":{
+                  "width":355,
+                  "height":479}},
+              "adaptiveStyles":{
+}}],
+          "images":{
+            "normal~":"images/紧急联系人/u0.png"}},
+{
+          "id":"fea9cd818292434bafc966dfd3098753",
+          "label":"",
+          "type":"imageBox",
+          "styleType":"imageBox",
+          "visible":true,
+          "style":{
+            "location":{
+              "x":80,
+              "y":100},
+            "size":{
+              "width":100,
+              "height":33}},
+          "adaptiveStyles":{
+},
+          "objects":[{
+              "id":"912ab754a61a42798e265fb7c14062a2",
+              "label":"",
+              "isContained":true,
+              "type":"richTextPanel",
+              "styleType":"paragraph",
+              "visible":true,
+              "style":{
+                "location":{
+                  "x":80,
+                  "y":100},
+                "size":{
+                  "width":100,
+                  "height":33}},
+              "adaptiveStyles":{
+}}],
+          "images":{
+            "normal~":"images/紧急联系人/u2.png"}},
+{
+          "id":"49e47d9d1d114943b2f56fa152ccabec",
+          "label":"",
+          "type":"imageBox",
+          "styleType":"imageBox",
+          "visible":true,
+          "style":{
+            "location":{
+              "x":80,
+              "y":150},
+            "size":{
+              "width":130,
+              "height":33}},
+          "adaptiveStyles":{
+},
+          "objects":[{
+              "id":"bab04edb74db4197b94abc2bb4ec9094",
+              "label":"",
+              "isContained":true,
+              "type":"richTextPanel",
+              "styleType":"paragraph",
+              "visible":true,
+              "style":{
+                "location":{
+                  "x":80,
+                  "y":150},
+                "size":{
+                  "width":130,
+                  "height":33}},
+              "adaptiveStyles":{
+}}],
+          "images":{
+            "normal~":"images/紧急联系人/u2.png"}}]}},
+  "masters":{
+},
+  "objectPaths":{
+    "4b3da7a0da704088a15814a6b2a61167":{
+      "scriptId":"u0"},
+    "a69684f06c394a7bb9323e7bea131e9e":{
+      "scriptId":"u1"},
+    "fea9cd818292434bafc966dfd3098753":{
+      "scriptId":"u2"},
+    "912ab754a61a42798e265fb7c14062a2":{
+      "scriptId":"u3"},
+    "49e47d9d1d114943b2f56fa152ccabec":{
+      "scriptId":"u4"},
+    "bab04edb74db4197b94abc2bb4ec9094":{
+      "scriptId":"u5"}}});

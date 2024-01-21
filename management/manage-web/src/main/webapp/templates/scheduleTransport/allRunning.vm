@@ -1,0 +1,66 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!record.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!record.numPerPage" />
+</form>
+<div class="pageHeader">
+	<form id="myform" method="post" rel="pagerForm" action="$env.getWebURL('/scheduleTransport/allRunning.htm')" onsubmit="return navTabSearch(this);">
+	<div class="searchBar">
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1050" layoutH="150">
+		<thead>
+			<tr>
+				<th width="20%">任务描述</th>
+				<th width="15%">任务名称</th>
+				<th width="10%">任务组别</th>
+                <th width="10%">任务状态</th>
+				<th width="10%">执行表达式</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($sche in $!list)
+			<tr target="sid_user" rel="1" style="height:30px;">
+				<td width="20%">$!sche.description</td>
+                <td width="15%">$!sche.jobName</td>
+				<td width="5%">$!sche.jobGroup</td>
+                <td width="5%">
+					$!sche.jobStatus
+				</td>
+				<td width="10%">$!sche.cronExpression</td>
+			</tr>
+			#end
+            
+		</tbody>
+	</table>
+	
+	<div class="panelBar">
+		<div class="pages">
+			共$!totalRows条
+		</div>
+		
+
+	</div>
+	
+</div>
+
+<script>
+function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			navTab.closeCurrentTab();
+			navTab.reload("$env.getWebURL('/scheduleTransport/allRunning.htm')");
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+function func(){	
+	$("#myform").submit();
+}
+
+</script>
+		

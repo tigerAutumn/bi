@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.LnDailyAmountMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.LnDailyAmount" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="partner_code" property="partnerCode" jdbcType="VARCHAR" />
+    <result column="term2_left_amount" property="term2LeftAmount" jdbcType="DOUBLE" />
+    <result column="term2_amount" property="term2Amount" jdbcType="DOUBLE" />
+    <result column="term1_left_amount" property="term1LeftAmount" jdbcType="DOUBLE" />
+    <result column="term1_amount" property="term1Amount" jdbcType="DOUBLE" />
+    <result column="term3_amount" property="term3Amount" jdbcType="DOUBLE" />
+    <result column="term3_left_amount" property="term3LeftAmount" jdbcType="DOUBLE" />
+    <result column="term5_left_amount" property="term5LeftAmount" jdbcType="DOUBLE" />
+    <result column="term5_amount" property="term5Amount" jdbcType="DOUBLE" />
+    <result column="term4_left_amount" property="term4LeftAmount" jdbcType="DOUBLE" />
+    <result column="term4_amount" property="term4Amount" jdbcType="DOUBLE" />
+    <result column="term6_amount" property="term6Amount" jdbcType="DOUBLE" />
+    <result column="term6_left_amount" property="term6LeftAmount" jdbcType="DOUBLE" />
+    <result column="term9_amount" property="term9Amount" jdbcType="DOUBLE" />
+    <result column="term9_left_amount" property="term9LeftAmount" jdbcType="DOUBLE" />
+    <result column="term12_amount" property="term12Amount" jdbcType="DOUBLE" />
+    <result column="term12_left_amount" property="term12LeftAmount" jdbcType="DOUBLE" />
+    <result column="termx_amount" property="termxAmount" jdbcType="DOUBLE" />
+    <result column="termx_left_amount" property="termxLeftAmount" jdbcType="DOUBLE" />
+    <result column="free_rate" jdbcType="DOUBLE" property="freeRate" />
+    <result column="free_amount" jdbcType="DOUBLE" property="freeAmount" />
+    <result column="partner_amount" jdbcType="DOUBLE" property="partnerAmount" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="available_end_time" jdbcType="TIMESTAMP" property="availableEndTime" />
+    <result column="use_date" property="useDate" jdbcType="DATE" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, partner_code, term2_left_amount, term2_amount, term1_left_amount, term1_amount, 
+    term3_amount, term3_left_amount, term5_left_amount, term5_amount, term4_left_amount, 
+    term4_amount, term6_amount, term6_left_amount, term9_amount, term9_left_amount, term12_amount, 
+    term12_left_amount, termx_amount, termx_left_amount, free_rate, free_amount, partner_amount, 
+    status, available_end_time, use_date, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.LnDailyAmountExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ln_daily_amount
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ln_daily_amount
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ln_daily_amount
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.LnDailyAmountExample" >
+    delete from ln_daily_amount
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.LnDailyAmount" >
+    insert into ln_daily_amount (id, partner_code, term2_left_amount, 
+      term2_amount, term1_left_amount, term1_amount, 
+      term3_amount, term3_left_amount, term5_left_amount, 
+      term5_amount, term4_left_amount, term4_amount, 
+      term6_amount, term6_left_amount, term9_amount, 
+      term9_left_amount, term12_amount, term12_left_amount, 
+      termx_amount, termx_left_amount, free_rate, 
+      free_amount, partner_amount, status, 
+      available_end_time, use_date, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{partnerCode,jdbcType=VARCHAR}, #{term2LeftAmount,jdbcType=DOUBLE}, 
+      #{term2Amount,jdbcType=DOUBLE}, #{term1LeftAmount,jdbcType=DOUBLE}, #{term1Amount,jdbcType=DOUBLE}, 
+      #{term3Amount,jdbcType=DOUBLE}, #{term3LeftAmount,jdbcType=DOUBLE}, #{term5LeftAmount,jdbcType=DOUBLE}, 
+      #{term5Amount,jdbcType=DOUBLE}, #{term4LeftAmount,jdbcType=DOUBLE}, #{term4Amount,jdbcType=DOUBLE}, 
+      #{term6Amount,jdbcType=DOUBLE}, #{term6LeftAmount,jdbcType=DOUBLE}, #{term9Amount,jdbcType=DOUBLE}, 
+      #{term9LeftAmount,jdbcType=DOUBLE}, #{term12Amount,jdbcType=DOUBLE}, #{term12LeftAmount,jdbcType=DOUBLE}, 
+      #{termxAmount,jdbcType=DOUBLE}, #{termxLeftAmount,jdbcType=DOUBLE}, #{freeRate,jdbcType=DOUBLE}, 
+      #{freeAmount,jdbcType=DOUBLE}, #{partnerAmount,jdbcType=DOUBLE}, #{status,jdbcType=VARCHAR}, 
+      #{availableEndTime,jdbcType=TIMESTAMP}, #{useDate,jdbcType=DATE}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.LnDailyAmount" >
+    insert into ln_daily_amount
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="partnerCode != null" >
+        partner_code,
+      </if>
+      <if test="term2LeftAmount != null" >
+        term2_left_amount,
+      </if>
+      <if test="term2Amount != null" >
+        term2_amount,
+      </if>
+      <if test="term1LeftAmount != null" >
+        term1_left_amount,
+      </if>
+      <if test="term1Amount != null" >
+        term1_amount,
+      </if>
+      <if test="term3Amount != null" >
+        term3_amount,
+      </if>
+      <if test="term3LeftAmount != null" >
+        term3_left_amount,
+      </if>
+      <if test="term5LeftAmount != null" >
+        term5_left_amount,
+      </if>
+      <if test="term5Amount != null" >
+        term5_amount,
+      </if>
+      <if test="term4LeftAmount != null" >
+        term4_left_amount,
+      </if>
+      <if test="term4Amount != null" >
+        term4_amount,
+      </if>
+      <if test="term6Amount != null" >
+        term6_amount,
+      </if>
+      <if test="term6LeftAmount != null" >
+        term6_left_amount,
+      </if>
+      <if test="term9Amount != null" >
+        term9_amount,
+      </if>
+      <if test="term9LeftAmount != null" >
+        term9_left_amount,
+      </if>
+      <if test="term12Amount != null" >
+        term12_amount,
+      </if>
+      <if test="term12LeftAmount != null" >
+        term12_left_amount,
+      </if>
+      <if test="termxAmount != null" >
+        termx_amount,
+      </if>
+      <if test="termxLeftAmount != null" >
+        termx_left_amount,
+      </if>
+      <if test="freeRate != null">
+        free_rate,
+      </if>
+      <if test="freeAmount != null">
+        free_amount,
+      </if>
+      <if test="partnerAmount != null">
+        partner_amount,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="availableEndTime != null">
+        available_end_time,
+      </if>
+      <if test="useDate != null" >
+        use_date,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="partnerCode != null" >
+        #{partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="term2LeftAmount != null" >
+        #{term2LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="term2Amount != null" >
+        #{term2Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="term1LeftAmount != null" >
+        #{term1LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="term1Amount != null" >
+        #{term1Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="term3Amount != null" >
+        #{term3Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="term3LeftAmount != null" >
+        #{term3LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="term5LeftAmount != null" >
+        #{term5LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="term5Amount != null" >
+        #{term5Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="term4LeftAmount != null" >
+        #{term4LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="term4Amount != null" >
+        #{term4Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="term6Amount != null" >
+        #{term6Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="term6LeftAmount != null" >
+        #{term6LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="term9Amount != null" >
+        #{term9Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="term9LeftAmount != null" >
+        #{term9LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="term12Amount != null" >
+        #{term12Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="term12LeftAmount != null" >
+        #{term12LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="termxAmount != null" >
+        #{termxAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="termxLeftAmount != null" >
+        #{termxLeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="freeRate != null">
+        #{freeRate,jdbcType=DOUBLE},
+      </if>
+      <if test="freeAmount != null">
+        #{freeAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="partnerAmount != null">
+        #{partnerAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="availableEndTime != null">
+        #{availableEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useDate != null" >
+        #{useDate,jdbcType=DATE},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.LnDailyAmountExample" resultType="java.lang.Integer" >
+    select count(*) from ln_daily_amount
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ln_daily_amount
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.partnerCode != null" >
+        partner_code = #{record.partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.term2LeftAmount != null" >
+        term2_left_amount = #{record.term2LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.term2Amount != null" >
+        term2_amount = #{record.term2Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.term1LeftAmount != null" >
+        term1_left_amount = #{record.term1LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.term1Amount != null" >
+        term1_amount = #{record.term1Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.term3Amount != null" >
+        term3_amount = #{record.term3Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.term3LeftAmount != null" >
+        term3_left_amount = #{record.term3LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.term5LeftAmount != null" >
+        term5_left_amount = #{record.term5LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.term5Amount != null" >
+        term5_amount = #{record.term5Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.term4LeftAmount != null" >
+        term4_left_amount = #{record.term4LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.term4Amount != null" >
+        term4_amount = #{record.term4Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.term6Amount != null" >
+        term6_amount = #{record.term6Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.term6LeftAmount != null" >
+        term6_left_amount = #{record.term6LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.term9Amount != null" >
+        term9_amount = #{record.term9Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.term9LeftAmount != null" >
+        term9_left_amount = #{record.term9LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.term12Amount != null" >
+        term12_amount = #{record.term12Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.term12LeftAmount != null" >
+        term12_left_amount = #{record.term12LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.termxAmount != null" >
+        termx_amount = #{record.termxAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.termxLeftAmount != null" >
+        termx_left_amount = #{record.termxLeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.freeRate != null">
+        free_rate = #{record.freeRate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.freeAmount != null">
+        free_amount = #{record.freeAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.partnerAmount != null">
+        partner_amount = #{record.partnerAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.availableEndTime != null">
+        available_end_time = #{record.availableEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.useDate != null" >
+        use_date = #{record.useDate,jdbcType=DATE},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ln_daily_amount
+    set id = #{record.id,jdbcType=INTEGER},
+      partner_code = #{record.partnerCode,jdbcType=VARCHAR},
+      term2_left_amount = #{record.term2LeftAmount,jdbcType=DOUBLE},
+      term2_amount = #{record.term2Amount,jdbcType=DOUBLE},
+      term1_left_amount = #{record.term1LeftAmount,jdbcType=DOUBLE},
+      term1_amount = #{record.term1Amount,jdbcType=DOUBLE},
+      term3_amount = #{record.term3Amount,jdbcType=DOUBLE},
+      term3_left_amount = #{record.term3LeftAmount,jdbcType=DOUBLE},
+      term5_left_amount = #{record.term5LeftAmount,jdbcType=DOUBLE},
+      term5_amount = #{record.term5Amount,jdbcType=DOUBLE},
+      term4_left_amount = #{record.term4LeftAmount,jdbcType=DOUBLE},
+      term4_amount = #{record.term4Amount,jdbcType=DOUBLE},
+      term6_amount = #{record.term6Amount,jdbcType=DOUBLE},
+      term6_left_amount = #{record.term6LeftAmount,jdbcType=DOUBLE},
+      term9_amount = #{record.term9Amount,jdbcType=DOUBLE},
+      term9_left_amount = #{record.term9LeftAmount,jdbcType=DOUBLE},
+      term12_amount = #{record.term12Amount,jdbcType=DOUBLE},
+      term12_left_amount = #{record.term12LeftAmount,jdbcType=DOUBLE},
+      termx_amount = #{record.termxAmount,jdbcType=DOUBLE},
+      termx_left_amount = #{record.termxLeftAmount,jdbcType=DOUBLE},
+      free_rate = #{record.freeRate,jdbcType=DOUBLE},
+      free_amount = #{record.freeAmount,jdbcType=DOUBLE},
+      partner_amount = #{record.partnerAmount,jdbcType=DOUBLE},
+      status = #{record.status,jdbcType=VARCHAR},
+      available_end_time = #{record.availableEndTime,jdbcType=TIMESTAMP},
+      use_date = #{record.useDate,jdbcType=DATE},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.LnDailyAmount" >
+    update ln_daily_amount
+    <set >
+      <if test="partnerCode != null" >
+        partner_code = #{partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="term2LeftAmount != null" >
+        term2_left_amount = #{term2LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="term2Amount != null" >
+        term2_amount = #{term2Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="term1LeftAmount != null" >
+        term1_left_amount = #{term1LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="term1Amount != null" >
+        term1_amount = #{term1Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="term3Amount != null" >
+        term3_amount = #{term3Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="term3LeftAmount != null" >
+        term3_left_amount = #{term3LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="term5LeftAmount != null" >
+        term5_left_amount = #{term5LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="term5Amount != null" >
+        term5_amount = #{term5Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="term4LeftAmount != null" >
+        term4_left_amount = #{term4LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="term4Amount != null" >
+        term4_amount = #{term4Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="term6Amount != null" >
+        term6_amount = #{term6Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="term6LeftAmount != null" >
+        term6_left_amount = #{term6LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="term9Amount != null" >
+        term9_amount = #{term9Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="term9LeftAmount != null" >
+        term9_left_amount = #{term9LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="term12Amount != null" >
+        term12_amount = #{term12Amount,jdbcType=DOUBLE},
+      </if>
+      <if test="term12LeftAmount != null" >
+        term12_left_amount = #{term12LeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="termxAmount != null" >
+        termx_amount = #{termxAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="termxLeftAmount != null" >
+        termx_left_amount = #{termxLeftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="freeRate != null">
+        free_rate = #{freeRate,jdbcType=DOUBLE},
+      </if>
+      <if test="freeAmount != null">
+        free_amount = #{freeAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="partnerAmount != null">
+        partner_amount = #{partnerAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="availableEndTime != null">
+        available_end_time = #{availableEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useDate != null" >
+        use_date = #{useDate,jdbcType=DATE},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.LnDailyAmount" >
+    update ln_daily_amount
+    set partner_code = #{partnerCode,jdbcType=VARCHAR},
+      term2_left_amount = #{term2LeftAmount,jdbcType=DOUBLE},
+      term2_amount = #{term2Amount,jdbcType=DOUBLE},
+      term1_left_amount = #{term1LeftAmount,jdbcType=DOUBLE},
+      term1_amount = #{term1Amount,jdbcType=DOUBLE},
+      term3_amount = #{term3Amount,jdbcType=DOUBLE},
+      term3_left_amount = #{term3LeftAmount,jdbcType=DOUBLE},
+      term5_left_amount = #{term5LeftAmount,jdbcType=DOUBLE},
+      term5_amount = #{term5Amount,jdbcType=DOUBLE},
+      term4_left_amount = #{term4LeftAmount,jdbcType=DOUBLE},
+      term4_amount = #{term4Amount,jdbcType=DOUBLE},
+      term6_amount = #{term6Amount,jdbcType=DOUBLE},
+      term6_left_amount = #{term6LeftAmount,jdbcType=DOUBLE},
+      term9_amount = #{term9Amount,jdbcType=DOUBLE},
+      term9_left_amount = #{term9LeftAmount,jdbcType=DOUBLE},
+      term12_amount = #{term12Amount,jdbcType=DOUBLE},
+      term12_left_amount = #{term12LeftAmount,jdbcType=DOUBLE},
+      termx_amount = #{termxAmount,jdbcType=DOUBLE},
+      termx_left_amount = #{termxLeftAmount,jdbcType=DOUBLE},
+      free_rate = #{freeRate,jdbcType=DOUBLE},
+      free_amount = #{freeAmount,jdbcType=DOUBLE},
+      partner_amount = #{partnerAmount,jdbcType=DOUBLE},
+      status = #{status,jdbcType=VARCHAR},
+      available_end_time = #{availableEndTime,jdbcType=TIMESTAMP},
+      use_date = #{useDate,jdbcType=DATE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectLnDailyAmountForIdLock" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from ln_daily_amount
+    where id = #{id,jdbcType=INTEGER} for update
+  </select>
+</mapper>

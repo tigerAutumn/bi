@@ -1,0 +1,350 @@
+
+-- ==================发放积分sql准备 除累计投资======================
+
+-- 查询注册用户id
+select id from bs_user where register_time <= '2018-5-28 23:59:59' and `status` = 1 and id;
+
+-- 查询开通存管用户id
+select DISTINCT(user_id) from bs_hfbank_user_ext where `status` in('WAIT_ACTIVATE','OPEN') and create_time<= '2018-5-28 23:59:59' ;
+
+-- 完成风险测评用户id
+select DISTINCT(user_id) from bs_questionnaire where create_time<= '2018-5-28 23:59:59' ;
+
+-- 首次投资 
+select id from bs_user where first_buy_time <= '2018-5-28 23:59:59' and `status` = 1;
+
+-- ==================sql准备 除累计投资======================
+
+-- 积分商城开户,sql准备
+INSERT INTO mall_account (user_id, account_type, balance, avaliable_balance, freeze_balance, total_gain_points, 
+    total_used_points, status, note, create_time, update_time) 
+select id,'POINTS_JSH', 0, 0, 0, 0, 0, 1, NULL, NOW(), NOW() from bs_user where register_time <= '2018-5-28 23:59:59' 
+and `status` = 1 and id not in (
+				35895,38954,37195,22208,-- 代偿人
+				24992,1824,35893,22210,36684 -- VIP
+			);
+
+
+-- 开户--mall_account_jnl流水
+INSERT INTO `mall_account_jnl` (user_id, account_id,  trans_type, trans_name, trans_time, create_time, update_time)
+select a.user_id,a.id,'OPEN_ACCOUNT','积分账户开户',NOW(), NOW(), NOW()
+from mall_account a, bs_user b where a.user_id = b.id and b.register_time <= '2018-5-28 23:59:59' and b.`status` = 1;
+
+-- 注册存量积分-- mall_account_jnl流水-- 1，成功注册，发放100积分
+INSERT INTO `mall_account_jnl` (user_id, account_id, rule_id, trans_type, trans_name, trans_time, points, before_balance, 
+    after_balance, before_avaliable_balance, after_avaliable_balance, before_freeze_balance, 
+    after_freeze_balance, note, create_time, update_time) 
+select a.user_id,a.id,1,'REGISTER','成功注册',NOW(),100,0,100,0,100,0,0,'存量注册初始' ,NOW(), NOW()
+from mall_account a, bs_user b where a.user_id = b.id and b.register_time <= '2018-5-28 23:59:59' and b.`status` = 1;
+
+-- 注册存量积分--mall_account修改
+update mall_account set balance=balance+100,avaliable_balance = avaliable_balance+100, total_gain_points = total_gain_points+100,
+update_time= NOW() where id in (select id from(select a.id id
+from mall_account a, bs_user b where a.user_id = b.id and b.register_time <= '2018-5-28 23:59:59' and b.`status` = 1 )t);
+
+-- 开通存管积分--mall_account_jnl流水-- 2，成功开通存管，发放50积分
+INSERT INTO `mall_account_jnl` (user_id, account_id, rule_id, trans_type, trans_name, trans_time, points, before_balance, 
+    after_balance, before_avaliable_balance, after_avaliable_balance, before_freeze_balance, 
+    after_freeze_balance, note, create_time, update_time) 
+select a.user_id,a.id,2,'OPEN_DEPOSIT','成功开通存管账户',NOW(),50,a.balance,a.balance+50,a.avaliable_balance,a.avaliable_balance+50,0,0,'存量开通存管初始' ,NOW(), NOW()
+from mall_account a,bs_hfbank_user_ext b where b.`status` in('WAIT_ACTIVATE','OPEN') and b.user_id = a.user_id and b.create_time <= '2018-5-28 23:59:59';
+-- 开通存管积分--mall_account修改
+update mall_account set balance=balance+50,avaliable_balance = avaliable_balance+50, total_gain_points = total_gain_points+50,
+update_time= NOW() where id in (select id from(select a.id id
+from mall_account a,bs_hfbank_user_ext b where b.`status` in('WAIT_ACTIVATE','OPEN') and b.user_id = a.user_id and b.create_time <= '2018-5-28 23:59:59')t);
+
+-- 完成风险测评--mall_account_jnl流水-- 3，成功完成风险测评，发放50积分
+INSERT INTO `mall_account_jnl` (user_id, account_id, rule_id, trans_type, trans_name, trans_time, points, before_balance, 
+    after_balance, before_avaliable_balance, after_avaliable_balance, before_freeze_balance, 
+    after_freeze_balance, note, create_time, update_time) 
+select a.user_id,a.id,3,'FINISH_RISK_ASSESSMENT','成功完成风险测评',NOW(),50,a.balance,a.balance+50,a.avaliable_balance,a.avaliable_balance+50,0,0,'风险测评初始' ,NOW(), NOW()
+from mall_account a,bs_questionnaire b where b.user_id = a.user_id and b.create_time <='2018-5-28 23:59:59';
+
+-- 完成风险测评--mall_account修改
+update mall_account set balance=balance+50,avaliable_balance = avaliable_balance+50, total_gain_points = total_gain_points+50,
+update_time= NOW() where id in(select id from(select a.id id
+from mall_account a,bs_questionnaire b where b.user_id = a.user_id and b.create_time <='2018-5-28 23:59:59')t);
+
+
+-- 首次投资--mall_account_jnl流水-- 4，成功完成首次加入产品，发放100积分
+INSERT INTO `mall_account_jnl` (user_id, account_id, rule_id, trans_type, trans_name, trans_time, points, before_balance, 
+    after_balance, before_avaliable_balance, after_avaliable_balance, before_freeze_balance, 
+    after_freeze_balance, note, create_time, update_time) 
+select a.user_id,a.id,4,'FIRST_INVEST','成功完成首次加入产品',NOW(),100,a.balance,a.balance+100,a.avaliable_balance,a.avaliable_balance+100,0,0,'首次投资初始' ,NOW(), NOW()
+from mall_account a,bs_user b where b.first_buy_time <= '2018-5-28 23:59:59' and b.`status` = 1  and b.id = a.user_id ;
+
+-- 首次投资--mall_account_jnl流水
+update mall_account set balance=balance+100,avaliable_balance = avaliable_balance+100, total_gain_points = total_gain_points+100,
+update_time= NOW() where id in(select id from(select a.id id
+from mall_account a,bs_user b where b.first_buy_time <= '2018-5-28 23:59:59' and b.`status` = 1  and b.id = a.user_id )t);
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- ========================累计投资发放=============================
+
+-- 查询累计投资总数据
+select * from(
+SELECT
+sum(sub.open_balance*DATEDIFF(last_finish_interest_date,interest_begin_date)/365) year_balance,
+	u.id user_id
+FROM
+    bs_sub_account sub, bs_user u, bs_account a
+WHERE
+			sub.account_id=a.id and a.user_id=u.id
+			and a.user_id not in (
+				35895,38954,37195,22208,-- 代偿人
+				24992,1824,35893,22210,36684 -- VIP
+			)
+     and sub.`status` in  (2,5,7)
+     and product_type in ('REG','RED','AUTH_YUN','AUTH_ZSD','RED_ZSD','AUTH_7','RED_7')
+	 and sub.open_time <= '2018-5-28 23:59:59'
+group by account_id )tt ORDER BY year_balance desc;
+
+
+
+-- [0,500000) ?1000积分
+INSERT INTO `mall_account_jnl` (user_id, account_id, rule_id, trans_type, trans_name, trans_time, points, before_balance, 
+    after_balance, before_avaliable_balance, after_avaliable_balance, before_freeze_balance, 
+    after_freeze_balance, note, create_time, update_time)
+select a.user_id,a.id,5,'TOTAL_INVEST','累计加入产品积分奖励',NOW(),1000,a.balance,a.balance+1000,a.avaliable_balance,
+	a.avaliable_balance+1000,0,0,'存量累计投资初始[0,500000)1000积分' ,NOW(), NOW()
+from mall_account a,(
+SELECT
+sum(sub.open_balance*DATEDIFF(last_finish_interest_date,interest_begin_date)/365) year_balance,
+	u.id user_id
+FROM
+    bs_sub_account sub, bs_user u, bs_account a
+WHERE
+			sub.account_id=a.id and a.user_id=u.id
+			and a.user_id not in (
+				35895,38954,37195,22208,-- 代偿人
+				24992,1824,35893,22210,36684 -- VIP
+			)
+     and sub.`status` in  (2,5,7)
+     and product_type in ('REG','RED','AUTH_YUN','AUTH_ZSD','RED_ZSD','AUTH_7','RED_7')
+		 and sub.open_time <= '2018-5-28 23:59:59'
+group by account_id )tt where tt.user_id = a.user_id and tt.year_balance > 0 and tt.year_balance<500000 ;
+
+
+
+update mall_account set balance=balance+1000,avaliable_balance = avaliable_balance+1000, total_gain_points = total_gain_points+1000,
+update_time= NOW() where id in(select id from(select a.id id
+from mall_account a,(
+SELECT
+sum(sub.open_balance*DATEDIFF(last_finish_interest_date,interest_begin_date)/365) year_balance,
+	u.id user_id
+FROM
+    bs_sub_account sub, bs_user u, bs_account a
+WHERE
+			sub.account_id=a.id and a.user_id=u.id
+			and a.user_id not in (
+				35895,38954,37195,22208,-- 代偿人
+				24992,1824,35893,22210,36684 -- VIP
+			)
+     and sub.`status` in  (2,5,7)
+     and product_type in ('REG','RED','AUTH_YUN','AUTH_ZSD','RED_ZSD','AUTH_7','RED_7')
+		 and sub.open_time <= '2018-5-28 23:59:59'
+group by account_id )tt where tt.user_id = a.user_id and tt.year_balance > 0 and tt.year_balance<500000 
+)t);
+
+
+
+
+-- [500000,1000000) ?2000积分
+INSERT INTO `mall_account_jnl` (user_id, account_id, rule_id, trans_type, trans_name, trans_time, points, before_balance, 
+    after_balance, before_avaliable_balance, after_avaliable_balance, before_freeze_balance, 
+    after_freeze_balance, note, create_time, update_time)
+select a.user_id,a.id,6,'TOTAL_INVEST','累计加入产品积分奖励',NOW(),2000,a.balance,a.balance+2000,a.avaliable_balance,
+	a.avaliable_balance+2000,0,0,'存量累计投资初始[500000,1000000)2000积分' ,NOW(), NOW()
+from mall_account a,(
+SELECT
+sum(sub.open_balance*DATEDIFF(last_finish_interest_date,interest_begin_date)/365) year_balance,
+	u.id user_id
+FROM
+    bs_sub_account sub, bs_user u, bs_account a
+WHERE
+			sub.account_id=a.id and a.user_id=u.id
+			and a.user_id not in (
+				35895,38954,37195,22208,-- 代偿人
+				24992,1824,35893,22210,36684 -- VIP
+			)
+     and sub.`status` in  (2,5,7)
+     and product_type in ('REG','RED','AUTH_YUN','AUTH_ZSD','RED_ZSD','AUTH_7','RED_7')
+		 and sub.open_time <= '2018-5-28 23:59:59'
+group by account_id )tt where tt.user_id = a.user_id and tt.year_balance >= 500000 and tt.year_balance<1000000;
+
+
+update mall_account set balance=balance+2000,avaliable_balance = avaliable_balance+2000, total_gain_points = total_gain_points+2000,
+update_time= NOW() where id in(select id from(select a.id id
+from mall_account a,(
+SELECT
+sum(sub.open_balance*DATEDIFF(last_finish_interest_date,interest_begin_date)/365) year_balance,
+	u.id user_id
+FROM
+    bs_sub_account sub, bs_user u, bs_account a
+WHERE
+			sub.account_id=a.id and a.user_id=u.id
+			and a.user_id not in (
+				35895,38954,37195,22208,-- 代偿人
+				24992,1824,35893,22210,36684 -- VIP
+			)
+     and sub.`status` in  (2,5,7)
+     and product_type in ('REG','RED','AUTH_YUN','AUTH_ZSD','RED_ZSD','AUTH_7','RED_7')
+		 and sub.open_time <= '2018-5-28 23:59:59'
+group by account_id )tt where tt.user_id = a.user_id and tt.year_balance >= 500000 and tt.year_balance<1000000 
+)t);
+
+
+
+-- [1000000,5000000) ?4000积分
+INSERT INTO `mall_account_jnl` (user_id, account_id, rule_id, trans_type, trans_name, trans_time, points, before_balance, 
+    after_balance, before_avaliable_balance, after_avaliable_balance, before_freeze_balance, 
+    after_freeze_balance, note, create_time, update_time)
+select a.user_id,a.id,7,'TOTAL_INVEST','累计加入产品积分奖励',NOW(),4000,a.balance,a.balance+4000,a.avaliable_balance,
+	a.avaliable_balance+4000,0,0,'存量累计投资初始[1000000,5000000)4000积分' ,NOW(), NOW()
+from mall_account a,(
+SELECT
+sum(sub.open_balance*DATEDIFF(last_finish_interest_date,interest_begin_date)/365) year_balance,
+	u.id user_id
+FROM
+    bs_sub_account sub, bs_user u, bs_account a
+WHERE
+			sub.account_id=a.id and a.user_id=u.id
+			and a.user_id not in (
+				35895,38954,37195,22208,-- 代偿人
+				24992,1824,35893,22210,36684 -- VIP
+			)
+     and sub.`status` in  (2,5,7)
+     and product_type in ('REG','RED','AUTH_YUN','AUTH_ZSD','RED_ZSD','AUTH_7','RED_7')
+		 and sub.open_time <= '2018-5-28 23:59:59'
+group by account_id )tt where tt.user_id = a.user_id and tt.year_balance >= 1000000 and tt.year_balance<5000000;
+
+
+update mall_account set balance=balance+4000,avaliable_balance = avaliable_balance+4000, total_gain_points = total_gain_points+4000,
+update_time= NOW() where id in(select id from(select a.id id
+from mall_account a,(
+SELECT
+sum(sub.open_balance*DATEDIFF(last_finish_interest_date,interest_begin_date)/365) year_balance,
+	u.id user_id
+FROM
+    bs_sub_account sub, bs_user u, bs_account a
+WHERE
+			sub.account_id=a.id and a.user_id=u.id
+			and a.user_id not in (
+				35895,38954,37195,22208,-- 代偿人
+				24992,1824,35893,22210,36684 -- VIP
+			)
+     and sub.`status` in  (2,5,7)
+     and product_type in ('REG','RED','AUTH_YUN','AUTH_ZSD','RED_ZSD','AUTH_7','RED_7')
+		 and sub.open_time <= '2018-5-28 23:59:59'
+group by account_id )tt where tt.user_id = a.user_id and tt.year_balance >= 1000000 and tt.year_balance<5000000
+)t);
+
+
+-- [5000000,10000000) ?6000 积分
+INSERT INTO `mall_account_jnl` (user_id, account_id, rule_id, trans_type, trans_name, trans_time, points, before_balance, 
+    after_balance, before_avaliable_balance, after_avaliable_balance, before_freeze_balance, 
+    after_freeze_balance, note, create_time, update_time)
+select a.user_id,a.id,8,'TOTAL_INVEST','累计加入产品积分奖励',NOW(),6000,a.balance,a.balance+6000,a.avaliable_balance,
+	a.avaliable_balance+6000,0,0,'存量累计投资初始[5000000,10000000)6000积分' ,NOW(), NOW()
+from mall_account a,(
+SELECT
+sum(sub.open_balance*DATEDIFF(last_finish_interest_date,interest_begin_date)/365) year_balance,
+	u.id user_id
+FROM
+    bs_sub_account sub, bs_user u, bs_account a
+WHERE
+			sub.account_id=a.id and a.user_id=u.id
+			and a.user_id not in (
+				35895,38954,37195,22208,-- 代偿人
+				24992,1824,35893,22210,36684 -- VIP
+			)
+     and sub.`status` in  (2,5,7)
+     and product_type in ('REG','RED','AUTH_YUN','AUTH_ZSD','RED_ZSD','AUTH_7','RED_7')
+		 and sub.open_time <= '2018-5-28 23:59:59'
+group by account_id )tt where tt.user_id = a.user_id and tt.year_balance >= 5000000 and tt.year_balance<10000000;
+
+
+update mall_account set balance=balance+6000,avaliable_balance = avaliable_balance+6000, total_gain_points = total_gain_points+6000,
+update_time= NOW() where id in(select id from(select a.id id
+from mall_account a,(
+SELECT
+sum(sub.open_balance*DATEDIFF(last_finish_interest_date,interest_begin_date)/365) year_balance,
+	u.id user_id
+FROM
+    bs_sub_account sub, bs_user u, bs_account a
+WHERE
+			sub.account_id=a.id and a.user_id=u.id
+			and a.user_id not in (
+				35895,38954,37195,22208,-- 代偿人
+				24992,1824,35893,22210,36684 -- VIP
+			)
+     and sub.`status` in  (2,5,7)
+     and product_type in ('REG','RED','AUTH_YUN','AUTH_ZSD','RED_ZSD','AUTH_7','RED_7')
+		 and sub.open_time <= '2018-5-28 23:59:59'
+group by account_id )tt where tt.user_id = a.user_id and tt.year_balance >= 5000000 and tt.year_balance<10000000
+)t);
+
+
+
+-- [10000000,100000000)    8000积分
+INSERT INTO `mall_account_jnl` (user_id, account_id, rule_id, trans_type, trans_name, trans_time, points, before_balance, 
+    after_balance, before_avaliable_balance, after_avaliable_balance, before_freeze_balance, 
+    after_freeze_balance, note, create_time, update_time)
+select a.user_id,a.id,8,'TOTAL_INVEST','累计加入产品积分奖励',NOW(),8000,a.balance,a.balance+8000,a.avaliable_balance,
+	a.avaliable_balance+8000,0,0,'存量累计投资初始[10000000,100000000)8000积分' ,NOW(), NOW()
+from mall_account a,(
+SELECT
+sum(sub.open_balance*DATEDIFF(last_finish_interest_date,interest_begin_date)/365) year_balance,
+	u.id user_id
+FROM
+    bs_sub_account sub, bs_user u, bs_account a
+WHERE
+			sub.account_id=a.id and a.user_id=u.id
+			and a.user_id not in (
+				35895,38954,37195,22208,-- 代偿人
+				24992,1824,35893,22210,36684 -- VIP
+			)
+     and sub.`status` in  (2,5,7)
+     and product_type in ('REG','RED','AUTH_YUN','AUTH_ZSD','RED_ZSD','AUTH_7','RED_7')
+		 and sub.open_time <= '2018-5-28 23:59:59'
+group by account_id )tt where tt.user_id = a.user_id and tt.year_balance >= 10000000 and tt.year_balance<100000000;
+
+
+update mall_account set balance=balance+8000,avaliable_balance = avaliable_balance+8000, total_gain_points = total_gain_points+8000,
+update_time= NOW() where id in(select id from(select a.id id
+from mall_account a,(
+SELECT
+sum(sub.open_balance*DATEDIFF(last_finish_interest_date,interest_begin_date)/365) year_balance,
+	u.id user_id
+FROM
+    bs_sub_account sub, bs_user u, bs_account a
+WHERE
+			sub.account_id=a.id and a.user_id=u.id
+			and a.user_id not in (
+				35895,38954,37195,22208,-- 代偿人
+				24992,1824,35893,22210,36684 -- VIP
+			)
+     and sub.`status` in  (2,5,7)
+     and product_type in ('REG','RED','AUTH_YUN','AUTH_ZSD','RED_ZSD','AUTH_7','RED_7')
+		 and sub.open_time <= '2018-5-28 23:59:59'
+group by account_id )tt where tt.user_id = a.user_id and tt.year_balance >= 10000000 and tt.year_balance<100000000
+)t);
+
+
+
+
+
+
+
+

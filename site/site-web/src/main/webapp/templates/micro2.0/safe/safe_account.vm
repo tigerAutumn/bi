@@ -1,0 +1,109 @@
+#Html("begin")
+#Head("begin","币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("我的资产【币港湾官网】")
+#WeChatShare()
+#Head("end")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/assets/safe_account.min")
+#if("$!qianbao" == "qianbao")
+	#LoadCSS("resources/micro2.0/styles/footer-qianbao.min")
+#else
+    #LoadCSS("resources/micro2.0/styles/footer.min")
+#end
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$!env.getWebURL('')" />
+    #if("$!qianbao" == "qianbao")
+        <input type="hidden" id="qianbao" name="qianbao" value="$!qianbao" />
+		<input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+    #end
+    <div class="header">
+    #if("$!qianbao"=="qianbao")
+    	<a class="header_arrow" href="$!env.getWebURL('micro2.0/assets/assets')?qianbao=qianbao&agentViewFlag=$!agentViewFlag"></a>
+    #else
+    	<a class="header_arrow" href="$!env.getWebURL('micro2.0/assets/assets')"></a>
+    #end
+    	<h1 class="heade_ft oran_color">账户安全中心</h1>
+    </div>
+    <div class="main">
+    	<ul>
+    		<li class="sa-content">
+    			<div class="sa-small">
+    				<span class="sa-font-left">交易密码</span>
+    				#if("$!qianbao" == "qianbao")
+    					<a class="sa-seteeing" href="$!env.getWebURL('')/micro2.0/profile/modify_pay_password?qianbao=qianbao&agentViewFlag=$!agentViewFlag">
+    				#else
+    					<a class="sa-seteeing" href="$!env.getWebURL('')/micro2.0/profile/modify_pay_password">
+    				#end
+    					<div class="sa-font-right">
+    						#if($!isBindPayPassword == false)
+    							<span class="sa-setting sa_color">未设置</span>
+    						#else
+    							<span class="sa-setting">修改</span>
+    						#end
+    						<i class="Acc_arrow"></i>
+    					</div>
+    				</a>
+    			</div>
+    		</li>
+    		<li class="sa-content">
+    			<div class="sa-small sa_bottom">
+    				<span class="sa-font-left">登录密码</span>
+    				#if("$!qianbao" == "qianbao")
+    					<a class="sa-seteeing" href="$!env.getWebURL('')/micro2.0/profile/modify_login_password?qianbao=qianbao&agentViewFlag=$!agentViewFlag">
+    				#else
+    					<a class="sa-seteeing" href="$!env.getWebURL('')/micro2.0/profile/modify_login_password">
+    				#end
+    					<div class="sa-font-right">
+    						<span class="sa-setting">修改</span>
+    						<i class="Acc_arrow"></i>
+    					</div>
+    				</a>
+    			</div>
+    		</li>
+    		#if($!h5ReturnPathHide == 'yes')
+    		<li class="sa-content sa_top_border">
+    			<div class="sa-small">
+    				<span class="sa-font-left">回款路径</span>
+    				<a id="return_amount_path_a" class="sa-seteeing">
+    					<div class="sa-font-right">
+    						#if("$!cardId" == "")
+    							<span class="sa-setting">$!bankName</span>
+    						#else
+    							<span class="sa-setting">$!bankName（$!string.right($!cardNo, 4)）</span>
+    						#end
+    						<i class="Acc_arrow"></i>
+    					</div>
+    				</a>
+    			</div>
+    		</li>
+    		#end
+    	</ul>
+    </div>
+    <div class="sa-understand">
+    	#if($!h5ReturnPathHide == 'yes')
+        	#if("$!qianbao" == "qianbao")
+        		<img class="sa-understand-img" src="$!env.get('gen.server.web')/resources/micro2.0/images/wenhao.png" /><a class="sa-info-return" href="$!env.getWebURL('/micro2.0/assets/safe_remittance_path')?qianbao=qianbao&agentViewFlag=$!agentViewFlag">了解回款路径 </a>
+        	#else
+        		<img class="sa-understand-img" src="$!env.get('gen.server.web')/resources/micro2.0/images/wenhao.png" /><a class="sa-info-return" href="$!env.getWebURL('/micro2.0/assets/safe_remittance_path')">了解回款路径 </a>
+    		#end
+    	#end
+    </div>
+	<a href="javascript:void(0)" class="Exit_login">退出登录</a>
+    <!-- 弹窗 -->
+    <div class="dialog_wrap">
+    	<div class="deposit_dialog">
+    		<h3 class="deposit_info_title">请输入币港湾交易密码</h3>
+    		<i class="dep_img"></i>
+    		<div class="yz_warp">
+    			<input class="pass_input" type="password" name="payPassword" id="payPassword" maxLength="16" placeholder="请输入交易密码">
+    		</div>
+    		<a class="down_ok" href="javascript:void(0)" title=""><div class="top_line">确定</div></a>
+    	</div>
+    </div>
+#LoadJS("resources/micro2.0/scripts/assets/zepto.min")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/assets/custom")
+#LoadJS("resources/micro2.0/scripts/safe/safe_account")
+</body>
+#Html("end")

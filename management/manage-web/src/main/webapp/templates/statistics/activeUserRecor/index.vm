@@ -1,0 +1,95 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+	
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+	<input type="hidden" name="startDate" value="$!req.startDate" />
+	<input type="hidden" name="endDate" value="$!req.endDate" />
+	<input type="hidden" name="agents" value="$!agents" />
+</form>
+	
+
+<div class="page unitBox">
+	<div class="pageHeader">
+    	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('statistics/activeUserRecor/index.htm')" id="myform"  method="post">
+        	<div class="searchBar">
+                <table class="searchContent">
+        			<tr>
+						<td>
+                       		<label>日期</label>
+                            <input type="text" id="startDate" name="startDate" value="$!req.startDate" class="date" dateFmt="yyyy-MM-dd" readonly/>
+							至
+							<input type="text" id="endDate" name="endDate" value="$!req.endDate" class="date" dateFmt="yyyy-MM-dd" readonly/>
+						</td>
+                        <td>
+							<a href="$env.getWebURL('/autoPacket/agent.htm')" class="button" target="dialog" mask="true" rel="createBack" height="500" width="450"><span>选择渠道</span></a>
+							
+							<input type="hidden" id="agentIds" name="agents" value="$!agents"/>
+						</td>
+						<td>
+							<div class="buttonActive">
+        						<div class="buttonContent">
+        							<button onclick="searchFunction()" type="button">查询</button>
+        						</div>
+        					</div>
+        				</td>
+                        <td><div id="showAgentChoose" style="">#if($!agentSize == 0) #else 已选择 $!agentSize 个渠道#end</div>
+						</td>
+					</tr>
+        		</table>
+        	</div>
+    	</form>
+    </div>
+    <div class="pageContent" >
+    	<table class="table" width="80%" layoutH="135">
+    		<thead>
+    			<tr>
+					<th width="10%">日期</th>
+    				<th width="10%">当日活跃总用户数</th>
+					<th width="10%">当日微网活跃用户数</th>
+    				<th width="10%">当日PC活跃用户数</th>
+					<th width="10%">当日APP活跃用户数</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			#foreach($grid in $list)
+    			<tr target="sid_user" rel="1">
+    				<td>$!date.formatYYYYMMDD($!grid.loginDate)</td>
+					<td>$!grid.sum</td>
+    				<td>$!grid.h5num</td>
+    				<td>$!grid.pcnum</td>
+					<td>$!grid.appnum</td>
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+    			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!count条</span>
+    	</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+    </div>
+    </div>
+	
+</div>
+<script>  
+	function searchFunction(){
+    	var beginTime = $("#startDate").val();
+    	var overTime = $("#endDate").val();
+    	if(beginTime != "" && overTime != ""){
+    		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+    		if(result < 0){
+    			alert("开始时间不能在结束时间之后！！");
+    			return false;
+    		}
+    	}
+    	$("#myform").submit();
+    }
+</script> 

@@ -1,0 +1,173 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+<div class="page unitBox">
+
+	<div class="pageHeader">
+    	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/financial/statistics/company_employee/index.htm')" id="employee_myform" method="post">
+        	<div class="searchBar">
+                <table class="searchContent">
+        			<tr>
+						<td >
+        				<label>职员代码：</label>
+						 <input type="text" id="serialNameSearch" name="employeeCode" maxlength="20" value="$!req.employeeCode" style="float:left;width:150px;" class="clear"/>
+						 
+						 <label>职员名字：</label>
+						 <input type="text" id="serialNoSearch" name="employeeName" maxlength="20" value="$!req.employeeName" style="float:left;width:150px;" class="clear"/>
+						 
+						 <label>所属部门：</label>
+						 <input type="text" id="serialNoSearch" name="deptName" maxlength="20" value="$!req.deptName" style="float:left;width:150px;"  class="clear"/>
+						</td>
+						
+                    </tr>
+					<tr>
+    					<td > <label>创建日期：</label>
+							<input name="startTime" type="text" id="startTime" class=" date textInput readonly" readonly="true" value="$!startTime" dateFmt="yyyy-MM-dd" maxdate="{%y}-%M-{%d-1}"/>
+							&nbsp;&nbsp; 到  &nbsp;&nbsp;
+    						<input name="endTime" type="text" id="endTime" class=" date textInput readonly" readonly="true" value="$!endTime" dateFmt="yyyy-MM-dd" maxdate="{%y}-%M-{%d-1}"/>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+        					 <button  onclick="searchFunction()" type="button">查询</button> &nbsp
+							 <button  onclick="exp()" type="button">导出excel</button>
+        				 </td>
+                    </tr>
+        		</table>
+        	</div>
+    	</form>
+    </div>
+    <div class="pageContent">
+    	<div class="panelBar">
+    		<ul class="toolBar">
+    			<li><a class="add" href="$env.getWebURL('/financial/statistics/company_employee/detail.htm?detailFlag=add')" target="navtab" mask="true" rel="createBack" ><span>新增</span></a></li>
+    		</ul>
+        </div>
+    	<table class="table" width="1396" layoutH="150">
+    		<thead>
+    			<tr>
+					<th width="15%">职员代码</th>
+					<th width="15%">职员名字</th>
+    				<th width="15%">所属部门</th>
+					<th width="15%">创建时间</th>
+					<th width="15%">更新时间</th>
+					<th width="25%">操作</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			#foreach($grid in $dataGrid)
+    			<tr target="sid_user" rel="1">
+    				<td>$!grid.employeeCode</td>
+					<td>$!grid.employeeName</td>
+					<td>$!grid.deptName</td>
+					<td>$!date.format($!grid.createTime)</td>
+					<td>$!date.format($!grid.updateTime)</td>
+
+					<td>
+						<a title="删除后不可恢复，确定删除吗?" target="ajaxTodo" href="$env.getWebURL('/financial/statistics/company_employee/delete.htm')?id=$!grid.id" class="btnDel">删除</a>&nbsp&nbsp&nbsp 
+						<a title="编辑" target="navTab" href="$env.getWebURL('/financial/statistics/company_employee/detail.htm?id=')$!grid.id" mask="true" rel="createBack">编辑</a> 
+					</td>
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+    			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!count条</span>
+    	</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+    </div>
+    </div>
+	
+</div>
+#LoadJS("/resources/js/global_validate")
+<script>  
+
+	function navTabAjaxDone(json) {
+		 if (json.statusCode == "200") {
+			var url = $("#APP_ROOT_PATH").val() + "/financial/statistics/company_employee/index.htm";
+        	$("#employee_myform").attr("action",url);
+        	$("#employee_myform").attr("onsubmit","return navTabSearch(this);");
+    		
+        	$("#employee_myform").submit();
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+
+
+	function searchFunction(){
+		var beginTime = $("#startTime").val();
+    	var endTime = $("#endTime").val();
+		
+		if(endTime){
+			if(!beginTime) {
+        		alertMsg.warn("开始时间不能为空！");
+        		return;
+        	}
+		}
+		
+		if(beginTime){
+        	if(!endTime) {
+        		alertMsg.warn("结束时间不能为空！");
+        		return;
+        	}
+		}
+		
+    	if(beginTime && endTime) {
+     			var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+            	if(result < 0){
+            		alertMsg.warn("开始时间不能在结束时间之后！");
+            		return;
+            	}
+    	}
+		var url = $("#APP_ROOT_PATH").val() + "/financial/statistics/company_employee/index.htm";
+    	$("#employee_myform").attr("action",url);
+    	$("#employee_myform").attr("onsubmit","return navTabSearch(this);");
+		
+    	$("#employee_myform").submit();
+    }
+	
+	
+	function exp(){
+    	var beginTime = $("#startTime").val();
+    	var endTime = $("#endTime").val();
+		
+		if(endTime){
+			if(!beginTime) {
+        		alertMsg.warn("开始时间不能为空！");
+        		return;
+        	}
+		}
+		
+		if(beginTime){
+        	if(!endTime) {
+        		alertMsg.warn("结束时间不能为空！");
+        		return;
+        	}
+		}
+		
+    	if(beginTime && endTime) {
+     			var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+            	if(result < 0){
+            		alertMsg.warn("开始时间不能在结束时间之后！");
+            		return;
+            	}
+    	}
+    
+    	var url = $("#APP_ROOT_PATH").val() + "/financial/statistics/company_employee/export.htm";
+    	$("#employee_myform").attr("action",url);
+    	$("#employee_myform").attr("onsubmit","");
+    	$("#employee_myform").submit();
+	}
+</script> 

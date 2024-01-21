@@ -1,0 +1,16 @@
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('REGISTER_AGREEMENT', '《注册账户服务协议》', '注册页面《注册账户服务协议》', 'app协议名称');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('BUY_AGREEMENT_GW', '《授权委托书》', '购买页面港湾计划《授权委托书》', 'app协议名称');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('RISK_WARNING_GW', '《风险提示》', '购买页面港湾计划《风险提示》', 'app协议名称');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('BUY_AGREEMENT_ZAN', '《自动出借计划协议》', '购买页面赞分期《自动出借计划协议》', 'app协议名称');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('RISK_WARNING_ZAN', '《风险提示》', '购买页面赞分期《风险提示》', 'app协议名称');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('BUY_AGREEMENT_ZSD', '《出借服务协议》', '购买页面赞时贷《出借服务协议》', 'app协议名称');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('RISK_WARNING_ZSD', '《风险提示》', '购买页面赞时贷《风险提示》', 'app协议名称');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('REGULAR_AGREEMENT_YES', '《授权委托书》', '计划管理页面定期类计划《授权委托书》,powerAttorneyFlag为yes', 'app协议名称');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('REGULAR_DETAILS_YES', '《债权明细》', '计划管理页面定期类计划《债权明细》,powerAttorneyFlag为yes', 'app协议名称');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('REGULAR_AGREEMENT_NO', '《出借服务协议》', '计划管理页面定期类计划《授权委托书》,powerAttorneyFlag为no', 'app协议名称');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('REGULAR_DETAILS_NO', '《债权明细》', '计划管理页面定期类计划《债权明细》,powerAttorneyFlag为no', 'app协议名称');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('INSTALMENT_AGREEMENT', '《自动出借计划协议》', '计划管理页面分期类计划《自动出借计划协议》', 'app协议名称');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('INSTALMENT_DETAILS', '《债权明细》', '计划管理页面分期类计划《债权明细》', 'app协议名称');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('PAYMENT_AGREEMENT', '《支付协议》和《授权委托书》', '充值页面《支付协议》和《授权委托书》', 'app协议名称');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('ACTIVATE_AGREEMENT', '《网络交易资金存管账户服务协议》', '激活页面《网络交易资金存管账户服务协议》', 'app协议名称');
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('OPEN_AGREEMENT', '《网络交易资金存管账户服务协议》', '开通页面《网络交易资金存管账户服务协议》', 'app协议名称');

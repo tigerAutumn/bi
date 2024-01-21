@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <mvc:interceptors>
+    
+    	<!--存管上线过程中拦截赞分期、云贷自主放款、APP所有请求、钱报178请求-->
+<!--       	<mvc:interceptor>
+            <mvc:mapping path="/rest_zsd/**"/>
+            <mvc:mapping path="/rest/**"/>
+            <mvc:mapping path="/dafyLoan/**"/>
+            <mvc:mapping path="/qb178/business/**"/>
+            <mvc:mapping path="/mobile/**"/>
+            <bean class="com.pinting.gateway.util.DepositoryInterceptor"/>
+        </mvc:interceptor>  -->
+    
+        <mvc:interceptor>
+            <mvc:mapping path="/dafy/business"/>
+            <bean class="com.pinting.gateway.dafy.in.interceptor.DafyInMessageInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/loan7/business"/>
+            <bean class="com.pinting.gateway.loan7.in.interceptor.Loan7InMessageInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/dafyLoan/business"/>
+            <bean class="com.pinting.gateway.dafy.in.interceptor.DafyLoanInMessageInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/hfbank/business"/>
+            <bean class="com.pinting.gateway.hfbank.in.interceptor.HfbankInMessageInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/depLoan7/business"/>
+            <bean class="com.pinting.gateway.loan7.in.interceptor.DepLoan7InMessageInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/qidian/business"/>
+            <bean class="com.pinting.gateway.qidian.in.interceptor.QiDianInMessageInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/mobile/**"/>
+            <bean class="com.pinting.gateway.mobile.in.interceptor.ActiveUserRecordInterceptor"/>
+        </mvc:interceptor>
+
+        <!--赞分期拦截器-->
+        <!--  <mvc:interceptor>
+            <mvc:mapping path="/rest/**"/>
+            <bean class="com.pinting.gateway.bird.in.interceptor.CertificateInterceptor"/>
+        </mvc:interceptor>-->
+        <!--赞分期&赞时贷路由转发拦截器-->
+	    <mvc:interceptor>
+            <mvc:mapping path="/rest/**"/>
+            <bean class="com.pinting.gateway.bird.in.interceptor.RouteInterceptor"/>
+        </mvc:interceptor>
+        
+        <!--赞时贷拦截器-->
+<!--         <mvc:interceptor>
+            <mvc:mapping path="/rest_zsd/**"/>
+            <bean class="com.pinting.gateway.zsd.in.interceptor.CertificateInterceptor"/>
+        </mvc:interceptor> -->
+
+        <!-- 币港湾用户核心业务ip登记拦截器 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/**/index/login/*"/> <!-- 登陆 -->
+            <mvc:mapping path="/**/index/password_change/*"/> <!-- 登录密码_修改 -->
+            <mvc:mapping path="/**/index/forgetPassword/*"/> <!-- 忘记密码 -->
+            <mvc:mapping path="/**/asset/safe_pay_password_change/*"/> <!-- 修改交易密码 -->
+            <mvc:mapping path="/**/asset/preBindCard/*"/> <!-- 预绑卡 -->
+            <mvc:mapping path="/**/asset/bindCard/*"/> <!-- 正式绑卡 -->
+            <mvc:mapping path="/**/asset/balance_recharge_pro/*"/> <!-- 充值预下单 -->
+            <mvc:mapping path="/**/asset/balance_recharge_form/*"/> <!-- 充值正式下单 -->
+            <mvc:mapping path="/**/asset/balance_withdraw/*"/> <!-- 提现 -->
+            <mvc:mapping path="/**/asset/my_bonus_to_jsh/*"/> <!-- 奖励金转余额 -->
+            <mvc:mapping path="/**/product/balanceBuy/*"/><!-- 余额购买 -->
+            <bean class="com.pinting.gateway.mobile.in.interceptor.UserCoreBusinessInterceptor" />
+        </mvc:interceptor>
+        
+        
+        
+
+    </mvc:interceptors>
+
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+</beans>

@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.mall.dao.MallBsSubAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.mall.model.MallBsSubAccount" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="account_id" property="accountId" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="product_id" property="productId" jdbcType="INTEGER" />
+    <result column="product_type" property="productType" jdbcType="VARCHAR" />
+    <result column="product_code" property="productCode" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="product_rate" property="productRate" jdbcType="DOUBLE" />
+    <result column="bank_card" property="bankCard" jdbcType="VARCHAR" />
+    <result column="extra_rate" property="extraRate" jdbcType="DOUBLE" />
+    <result column="open_balance" property="openBalance" jdbcType="DOUBLE" />
+    <result column="balance" property="balance" jdbcType="DOUBLE" />
+    <result column="available_balance" property="availableBalance" jdbcType="DOUBLE" />
+    <result column="can_withdraw" property="canWithdraw" jdbcType="DOUBLE" />
+    <result column="freeze_balance" property="freezeBalance" jdbcType="DOUBLE" />
+    <result column="trans_status" property="transStatus" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="check_status" property="checkStatus" jdbcType="VARCHAR" />
+    <result column="interest_begin_date" property="interestBeginDate" jdbcType="DATE" />
+    <result column="last_trans_date" property="lastTransDate" jdbcType="DATE" />
+    <result column="last_cal__interest_date" property="lastCalInterestDate" jdbcType="DATE" />
+    <result column="last_finish_interest_date" property="lastFinishInterestDate" jdbcType="DATE" />
+    <result column="accumulation_inerest" property="accumulationInerest" jdbcType="DOUBLE" />
+    <result column="open_time" property="openTime" jdbcType="TIMESTAMP" />
+    <result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+    <result column="transfer_time" property="transferTime" jdbcType="TIMESTAMP" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, account_id, code, product_id, product_type, product_code, product_name, product_rate, 
+    bank_card, extra_rate, open_balance, balance, available_balance, can_withdraw, freeze_balance, 
+    trans_status, status, check_status, interest_begin_date, last_trans_date, last_cal__interest_date, 
+    last_finish_interest_date, accumulation_inerest, open_time, close_time, transfer_time, 
+    note
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.mall.model.MallBsSubAccountExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_sub_account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_sub_account
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_sub_account
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.mall.model.MallBsSubAccountExample" >
+    delete from bs_sub_account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.mall.model.MallBsSubAccount" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bs_sub_account (id, account_id, code, 
+      product_id, product_type, product_code, 
+      product_name, product_rate, bank_card, 
+      extra_rate, open_balance, balance, 
+      available_balance, can_withdraw, freeze_balance, 
+      trans_status, status, check_status, 
+      interest_begin_date, last_trans_date, last_cal__interest_date, 
+      last_finish_interest_date, accumulation_inerest, 
+      open_time, close_time, transfer_time, 
+      note)
+    values (#{id,jdbcType=INTEGER}, #{accountId,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, 
+      #{productId,jdbcType=INTEGER}, #{productType,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, 
+      #{productName,jdbcType=VARCHAR}, #{productRate,jdbcType=DOUBLE}, #{bankCard,jdbcType=VARCHAR}, 
+      #{extraRate,jdbcType=DOUBLE}, #{openBalance,jdbcType=DOUBLE}, #{balance,jdbcType=DOUBLE}, 
+      #{availableBalance,jdbcType=DOUBLE}, #{canWithdraw,jdbcType=DOUBLE}, #{freezeBalance,jdbcType=DOUBLE}, 
+      #{transStatus,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{checkStatus,jdbcType=VARCHAR}, 
+      #{interestBeginDate,jdbcType=DATE}, #{lastTransDate,jdbcType=DATE}, #{lastCalInterestDate,jdbcType=DATE}, 
+      #{lastFinishInterestDate,jdbcType=DATE}, #{accumulationInerest,jdbcType=DOUBLE}, 
+      #{openTime,jdbcType=TIMESTAMP}, #{closeTime,jdbcType=TIMESTAMP}, #{transferTime,jdbcType=TIMESTAMP}, 
+      #{note,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.mall.model.MallBsSubAccount" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bs_sub_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="accountId != null" >
+        account_id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="productType != null" >
+        product_type,
+      </if>
+      <if test="productCode != null" >
+        product_code,
+      </if>
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="productRate != null" >
+        product_rate,
+      </if>
+      <if test="bankCard != null" >
+        bank_card,
+      </if>
+      <if test="extraRate != null" >
+        extra_rate,
+      </if>
+      <if test="openBalance != null" >
+        open_balance,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="availableBalance != null" >
+        available_balance,
+      </if>
+      <if test="canWithdraw != null" >
+        can_withdraw,
+      </if>
+      <if test="freezeBalance != null" >
+        freeze_balance,
+      </if>
+      <if test="transStatus != null" >
+        trans_status,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="checkStatus != null" >
+        check_status,
+      </if>
+      <if test="interestBeginDate != null" >
+        interest_begin_date,
+      </if>
+      <if test="lastTransDate != null" >
+        last_trans_date,
+      </if>
+      <if test="lastCalInterestDate != null" >
+        last_cal__interest_date,
+      </if>
+      <if test="lastFinishInterestDate != null" >
+        last_finish_interest_date,
+      </if>
+      <if test="accumulationInerest != null" >
+        accumulation_inerest,
+      </if>
+      <if test="openTime != null" >
+        open_time,
+      </if>
+      <if test="closeTime != null" >
+        close_time,
+      </if>
+      <if test="transferTime != null" >
+        transfer_time,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="accountId != null" >
+        #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productType != null" >
+        #{productType,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null" >
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productRate != null" >
+        #{productRate,jdbcType=DOUBLE},
+      </if>
+      <if test="bankCard != null" >
+        #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="extraRate != null" >
+        #{extraRate,jdbcType=DOUBLE},
+      </if>
+      <if test="openBalance != null" >
+        #{openBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DOUBLE},
+      </if>
+      <if test="availableBalance != null" >
+        #{availableBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="canWithdraw != null" >
+        #{canWithdraw,jdbcType=DOUBLE},
+      </if>
+      <if test="freezeBalance != null" >
+        #{freezeBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="transStatus != null" >
+        #{transStatus,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="checkStatus != null" >
+        #{checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="interestBeginDate != null" >
+        #{interestBeginDate,jdbcType=DATE},
+      </if>
+      <if test="lastTransDate != null" >
+        #{lastTransDate,jdbcType=DATE},
+      </if>
+      <if test="lastCalInterestDate != null" >
+        #{lastCalInterestDate,jdbcType=DATE},
+      </if>
+      <if test="lastFinishInterestDate != null" >
+        #{lastFinishInterestDate,jdbcType=DATE},
+      </if>
+      <if test="accumulationInerest != null" >
+        #{accumulationInerest,jdbcType=DOUBLE},
+      </if>
+      <if test="openTime != null" >
+        #{openTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closeTime != null" >
+        #{closeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="transferTime != null" >
+        #{transferTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.mall.model.MallBsSubAccountExample" resultType="java.lang.Integer" >
+    select count(*) from bs_sub_account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_sub_account
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.accountId != null" >
+        account_id = #{record.accountId,jdbcType=INTEGER},
+      </if>
+      <if test="record.code != null" >
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productId != null" >
+        product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productType != null" >
+        product_type = #{record.productType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productCode != null" >
+        product_code = #{record.productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productName != null" >
+        product_name = #{record.productName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productRate != null" >
+        product_rate = #{record.productRate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.bankCard != null" >
+        bank_card = #{record.bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.extraRate != null" >
+        extra_rate = #{record.extraRate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.openBalance != null" >
+        open_balance = #{record.openBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.balance != null" >
+        balance = #{record.balance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.availableBalance != null" >
+        available_balance = #{record.availableBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.canWithdraw != null" >
+        can_withdraw = #{record.canWithdraw,jdbcType=DOUBLE},
+      </if>
+      <if test="record.freezeBalance != null" >
+        freeze_balance = #{record.freezeBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.transStatus != null" >
+        trans_status = #{record.transStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkStatus != null" >
+        check_status = #{record.checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interestBeginDate != null" >
+        interest_begin_date = #{record.interestBeginDate,jdbcType=DATE},
+      </if>
+      <if test="record.lastTransDate != null" >
+        last_trans_date = #{record.lastTransDate,jdbcType=DATE},
+      </if>
+      <if test="record.lastCalInterestDate != null" >
+        last_cal__interest_date = #{record.lastCalInterestDate,jdbcType=DATE},
+      </if>
+      <if test="record.lastFinishInterestDate != null" >
+        last_finish_interest_date = #{record.lastFinishInterestDate,jdbcType=DATE},
+      </if>
+      <if test="record.accumulationInerest != null" >
+        accumulation_inerest = #{record.accumulationInerest,jdbcType=DOUBLE},
+      </if>
+      <if test="record.openTime != null" >
+        open_time = #{record.openTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.closeTime != null" >
+        close_time = #{record.closeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.transferTime != null" >
+        transfer_time = #{record.transferTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_sub_account
+    set id = #{record.id,jdbcType=INTEGER},
+      account_id = #{record.accountId,jdbcType=INTEGER},
+      code = #{record.code,jdbcType=VARCHAR},
+      product_id = #{record.productId,jdbcType=INTEGER},
+      product_type = #{record.productType,jdbcType=VARCHAR},
+      product_code = #{record.productCode,jdbcType=VARCHAR},
+      product_name = #{record.productName,jdbcType=VARCHAR},
+      product_rate = #{record.productRate,jdbcType=DOUBLE},
+      bank_card = #{record.bankCard,jdbcType=VARCHAR},
+      extra_rate = #{record.extraRate,jdbcType=DOUBLE},
+      open_balance = #{record.openBalance,jdbcType=DOUBLE},
+      balance = #{record.balance,jdbcType=DOUBLE},
+      available_balance = #{record.availableBalance,jdbcType=DOUBLE},
+      can_withdraw = #{record.canWithdraw,jdbcType=DOUBLE},
+      freeze_balance = #{record.freezeBalance,jdbcType=DOUBLE},
+      trans_status = #{record.transStatus,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      check_status = #{record.checkStatus,jdbcType=VARCHAR},
+      interest_begin_date = #{record.interestBeginDate,jdbcType=DATE},
+      last_trans_date = #{record.lastTransDate,jdbcType=DATE},
+      last_cal__interest_date = #{record.lastCalInterestDate,jdbcType=DATE},
+      last_finish_interest_date = #{record.lastFinishInterestDate,jdbcType=DATE},
+      accumulation_inerest = #{record.accumulationInerest,jdbcType=DOUBLE},
+      open_time = #{record.openTime,jdbcType=TIMESTAMP},
+      close_time = #{record.closeTime,jdbcType=TIMESTAMP},
+      transfer_time = #{record.transferTime,jdbcType=TIMESTAMP},
+      note = #{record.note,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.mall.model.MallBsSubAccount" >
+    update bs_sub_account
+    <set >
+      <if test="accountId != null" >
+        account_id = #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productType != null" >
+        product_type = #{productType,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null" >
+        product_code = #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productRate != null" >
+        product_rate = #{productRate,jdbcType=DOUBLE},
+      </if>
+      <if test="bankCard != null" >
+        bank_card = #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="extraRate != null" >
+        extra_rate = #{extraRate,jdbcType=DOUBLE},
+      </if>
+      <if test="openBalance != null" >
+        open_balance = #{openBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=DOUBLE},
+      </if>
+      <if test="availableBalance != null" >
+        available_balance = #{availableBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="canWithdraw != null" >
+        can_withdraw = #{canWithdraw,jdbcType=DOUBLE},
+      </if>
+      <if test="freezeBalance != null" >
+        freeze_balance = #{freezeBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="transStatus != null" >
+        trans_status = #{transStatus,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="checkStatus != null" >
+        check_status = #{checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="interestBeginDate != null" >
+        interest_begin_date = #{interestBeginDate,jdbcType=DATE},
+      </if>
+      <if test="lastTransDate != null" >
+        last_trans_date = #{lastTransDate,jdbcType=DATE},
+      </if>
+      <if test="lastCalInterestDate != null" >
+        last_cal__interest_date = #{lastCalInterestDate,jdbcType=DATE},
+      </if>
+      <if test="lastFinishInterestDate != null" >
+        last_finish_interest_date = #{lastFinishInterestDate,jdbcType=DATE},
+      </if>
+      <if test="accumulationInerest != null" >
+        accumulation_inerest = #{accumulationInerest,jdbcType=DOUBLE},
+      </if>
+      <if test="openTime != null" >
+        open_time = #{openTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closeTime != null" >
+        close_time = #{closeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="transferTime != null" >
+        transfer_time = #{transferTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.mall.model.MallBsSubAccount" >
+    update bs_sub_account
+    set account_id = #{accountId,jdbcType=INTEGER},
+      code = #{code,jdbcType=VARCHAR},
+      product_id = #{productId,jdbcType=INTEGER},
+      product_type = #{productType,jdbcType=VARCHAR},
+      product_code = #{productCode,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      product_rate = #{productRate,jdbcType=DOUBLE},
+      bank_card = #{bankCard,jdbcType=VARCHAR},
+      extra_rate = #{extraRate,jdbcType=DOUBLE},
+      open_balance = #{openBalance,jdbcType=DOUBLE},
+      balance = #{balance,jdbcType=DOUBLE},
+      available_balance = #{availableBalance,jdbcType=DOUBLE},
+      can_withdraw = #{canWithdraw,jdbcType=DOUBLE},
+      freeze_balance = #{freezeBalance,jdbcType=DOUBLE},
+      trans_status = #{transStatus,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      check_status = #{checkStatus,jdbcType=VARCHAR},
+      interest_begin_date = #{interestBeginDate,jdbcType=DATE},
+      last_trans_date = #{lastTransDate,jdbcType=DATE},
+      last_cal__interest_date = #{lastCalInterestDate,jdbcType=DATE},
+      last_finish_interest_date = #{lastFinishInterestDate,jdbcType=DATE},
+      accumulation_inerest = #{accumulationInerest,jdbcType=DOUBLE},
+      open_time = #{openTime,jdbcType=TIMESTAMP},
+      close_time = #{closeTime,jdbcType=TIMESTAMP},
+      transfer_time = #{transferTime,jdbcType=TIMESTAMP},
+      note = #{note,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="sumYearInvestByUserId" parameterType="java.util.Map"  resultType="java.lang.Double">
+	select ifnull( sum(
+			case when pro.term &lt;0 then round(ABS(pro.term)*(aa.open_balance+IFNULL(red.open_balance,0))/365,2)
+				when pro.term= 12 then aa.open_balance+IFNULL(red.open_balance,0)
+				else round((aa.open_balance+IFNULL(red.open_balance,0))*pro.term*30/365,2) end ) ,0) 
+	from (	
+		select a.id,a.open_balance,a.product_id from  bs_sub_account a, (
+				select id,user_id from bs_account where user_id = #{userId} 
+		) b where a.account_id = b.id 
+			and a.`status` in(2,5,7) 
+			and a.product_type in ('REG','AUTH_YUN','AUTH_7','AUTH_ZSD') 
+			<if test=" startTime != null and startTime != '' ">
+			and	a.open_time >= #{startTime}
+			</if> 
+			<if test=" endTime != null and endTime != '' ">
+			and	a.open_time &lt;= #{endTime}
+			</if> 
+	) aa LEFT JOIN bs_sub_account_pair c on c.auth_account_id= aa.id 
+		LEFT JOIN bs_sub_account red on red.id = c.red_account_id
+	,bs_product pro where aa.product_id = pro.id 
+	</select>
+</mapper>

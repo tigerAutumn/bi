@@ -1,0 +1,143 @@
+<div class="pageContent">
+	<form method="post" id="detail_form" action="$env.getWebURL('/bank/bs19PayBank/save.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		#Hidden("id", "$!bs19PayBank.id")
+		<div class="pageFormContent" layoutH="56">
+            <p>
+				<label>银行名称：</label>
+				<select name="bankId" >
+					#foreach($!bsBanks in $!bsBankList)
+					<option value="$!bsBanks.id" #if("$!bsBanks.id"=="$!bs19PayBank.bankId") selected  #end>$!bsBanks.name</option>
+					#end
+				</select>
+			</p>
+			<p>
+				<label>支付类型：</label>
+				<select name="payType" class="required combox">		
+					<option value="1" #if("$!bs19PayBank.payType"=="1") selected  #end>快捷</option>
+					<option value="2" #if("$!bs19PayBank.payType"=="2") selected  #end>代付</option>
+					<option value="3" #if("$!bs19PayBank.payType"=="3") selected  #end>代扣</option>
+					<option value="4" #if("$!bs19PayBank.payType"=="4") selected  #end>网银</option>
+				</select>
+			</p>
+			<p>
+				<label>渠道类型：</label>
+				<select name="channel" id="channel" class="required combox" onchange="onchangeSelect()">	
+					<option value="BAOFOO" #if("$!bs19PayBank.channel"=="BAOFOO") selected  #end>宝付</option>
+					<option value="PAY19" #if("$!bs19PayBank.channel"=="PAY19") selected  #end>19付</option>
+					<option value="REAPAL" #if("$!bs19PayBank.channel"=="REAPAL") selected  #end>融宝</option>
+                    <option value="HFBANK" #if("$!bs19PayBank.channel"=="HFBANK") selected  #end>恒丰</option>
+				</select>
+			</p>
+			<p>
+				<label>优先级：</label>
+				<select name="channelPriority">		
+					<option value="1" #if("$!bs19PayBank.channelPriority"=="1") selected  #end>1</option>
+					<option value="2" #if("$!bs19PayBank.channelPriority"=="2") selected  #end>2</option>
+					<option value="3" #if("$!bs19PayBank.channelPriority"=="3") selected  #end>3</option>
+				</select>
+			</p>
+			<p>
+				<label>是否主通道：</label>
+				<select name="isMain" id="isMain" onchange="onchangeSelect()">		
+					<option value="1" #if("$!bs19PayBank.isMain"=="1") selected  #end>是</option>
+					<option value="2" #if("$!bs19PayBank.isMain"=="2") selected  #end>否</option>
+				</select>
+			</p>
+			<p>
+				<label>19付银行编码：</label>
+				<input name="pay19BankCode" type="text" size="30" maxlength="20" value="$!bs19PayBank.pay19BankCode" />
+			</p>
+			<p>
+				<label>单笔限额：</label>
+				#if($bs19PayBank.oneTop && $!bs19PayBank.oneTop != "")
+					<input type="text" name="oneTop" size="30" maxlength="7" class="number" value="$string.replace($!money.format($!bs19PayBank.oneTop).replaceAll(",",""),".00","")" />
+				#else
+					<input type="text" name="oneTop" size="30" maxlength="7" class="number" value="" />
+				#end
+			</p>
+			<p>
+				<label>单日限额：</label>
+				#if($bs19PayBank.dayTop && $!bs19PayBank.dayTop != "")
+					<input type="text" name="dayTop" size="30" maxlength="7" class="number" value="$string.replace($!money.format($!bs19PayBank.dayTop).replaceAll(",",""),".00","")" />
+				#else
+					<input type="text" name="dayTop" size="30" maxlength="7" class="number" value="" />
+				#end
+			</p>
+			<p>
+				<label>单月限额：</label>
+				#if($bs19PayBank.monthTop && $!bs19PayBank.monthTop != "")
+					<input type="text" name="monthTop" size="30" maxlength="13" class="number" value="$string.replace($!money.format($!bs19PayBank.monthTop).replaceAll(",",""),".00","")" />
+				#else
+					<input type="text" name="monthTop" size="30" maxlength="13" class="number" value="" />
+				#end
+			</p>
+			<p>
+				<label>停用开始时间：</label>
+				<input name="forbiddenStart"  dateFmt="yyyy-MM-dd HH:mm:ss"    type="text" size="28" id="forbiddenStart" class=" date textInput readonly" readonly="true"   value="$!date.format($!bs19PayBank.forbiddenStart)" />
+				<a class="inputDateButton" ></a>
+			</p>
+			<p>
+				<label>停用结束时间：</label>
+				<input name="forbiddenEnd" dateFmt="yyyy-MM-dd HH:mm:ss"    type="text" size="28"  id="forbiddenEnd" class=" date textInput readonly" readonly="true"   value="$!date.format($!bs19PayBank.forbiddenEnd)" />
+				<a class="inputDateButton" ></a>
+			</p>
+			<p>
+				<label>重要提示：</label>
+				<input name="notice" type="text" size="30" maxlength="25" value="$!bs19PayBank.notice" />
+			</p>
+			<p>
+				<label>日常提示：</label>
+				<input name="dailyNotice" type="text" size="30" maxlength="50" value="$!bs19PayBank.dailyNotice" />
+			</p>
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_from()">保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+    function submit_from(){
+    	var beginTime = $("#forbiddenStart").val();
+    	var overTime = $("#forbiddenEnd").val();
+    	if(beginTime != "" && overTime != ""){
+    		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+    		if(result < 0){
+				alertMsg.error('开始时间不能在结束时间之后！！');
+    			return false;
+    		}
+    	}
+	    $("#detail_form").submit();
+    }
+
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "301") {
+			alertMsg.warn('该银行渠道已存在!');
+		}else if(json.statusCode == "302"){
+		   alertMsg.warn('该银行渠道必须要有优先级为1!');
+		} else if (json.statusCode == "200") {
+			alertMsg.correct('保存成功!');
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('bank/bs19PayBank/index.htm')");
+		} else {
+			alertMsg.error('操作失败');
+		}
+	}
+	function onchangeSelect(){
+	  var channel = $("#channel").val();
+	  var isMain = $("#isMain").val();
+	  if(channel == "REAPAL"){
+	    $("#isMain option[value='"+2+"']").attr("selected", true);
+	  }else if(channel == "PAY19"){
+	  	$("#isMain option[value='"+2+"']").attr("selected", true);
+	  }else{
+		$("#isMain option[value='"+1+"']").attr("selected", true); 
+	  }
+	 
+	}
+	
+</script>

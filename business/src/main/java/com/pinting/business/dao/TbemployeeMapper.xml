@@ -1,0 +1,899 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.TbemployeeMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.Tbemployee" >
+    <id column="lUserId" property="luserid" jdbcType="BIGINT" />
+    <result column="strLoginId" property="strloginid" jdbcType="VARCHAR" />
+    <result column="strName" property="strname" jdbcType="VARCHAR" />
+    <result column="nSex" property="nsex" jdbcType="INTEGER" />
+    <result column="strEmployeeNo" property="stremployeeno" jdbcType="VARCHAR" />
+    <result column="strTitle" property="strtitle" jdbcType="VARCHAR" />
+    <result column="strRole" property="strrole" jdbcType="VARCHAR" />
+    <result column="strMobile" property="strmobile" jdbcType="VARCHAR" />
+    <result column="strEmail" property="stremail" jdbcType="VARCHAR" />
+    <result column="strBirthday" property="strbirthday" jdbcType="VARCHAR" />
+    <result column="strDeptCode" property="strdeptcode" jdbcType="VARCHAR" />
+    <result column="strDeptName" property="strdeptname" jdbcType="VARCHAR" />
+    <result column="nCurrentLevel" property="ncurrentlevel" jdbcType="INTEGER" />
+    <result column="nWorkState" property="nworkstate" jdbcType="INTEGER" />
+    <result column="nIsShutdown" property="nisshutdown" jdbcType="INTEGER" />
+    <result column="strDeptCode0" property="strdeptcode0" jdbcType="VARCHAR" />
+    <result column="strDeptCode1" property="strdeptcode1" jdbcType="VARCHAR" />
+    <result column="strDeptCode2" property="strdeptcode2" jdbcType="VARCHAR" />
+    <result column="strDeptCode3" property="strdeptcode3" jdbcType="VARCHAR" />
+    <result column="strDeptCode4" property="strdeptcode4" jdbcType="VARCHAR" />
+    <result column="strDeptCode5" property="strdeptcode5" jdbcType="VARCHAR" />
+    <result column="strDeptCode6" property="strdeptcode6" jdbcType="VARCHAR" />
+    <result column="strDeptCode7" property="strdeptcode7" jdbcType="VARCHAR" />
+    <result column="strDeptCode8" property="strdeptcode8" jdbcType="VARCHAR" />
+    <result column="strDeptCode9" property="strdeptcode9" jdbcType="VARCHAR" />
+    <result column="dtCreateTime" property="dtcreatetime" jdbcType="TIMESTAMP" />
+    <result column="strDeptProvinceCode" property="strdeptprovincecode" jdbcType="VARCHAR" />
+    <result column="strDeptProvinceName" property="strdeptprovincename" jdbcType="VARCHAR" />
+    <result column="strDeptCityCode" property="strdeptcitycode" jdbcType="VARCHAR" />
+    <result column="strDeptCityName" property="strdeptcityname" jdbcType="VARCHAR" />
+    <result column="strDeptAddress" property="strdeptaddress" jdbcType="VARCHAR" />
+    <result column="dtUpdateTime" property="dtupdatetime" jdbcType="TIMESTAMP" />
+    <result column="strWorkDay" property="strworkday" jdbcType="VARCHAR" />
+    <result column="lOldSalesId" property="loldsalesid" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    lUserId, strLoginId, strName, nSex, strEmployeeNo, strTitle, strRole, strMobile, 
+    strEmail, strBirthday, strDeptCode, strDeptName, nCurrentLevel, nWorkState, nIsShutdown, 
+    strDeptCode0, strDeptCode1, strDeptCode2, strDeptCode3, strDeptCode4, strDeptCode5, 
+    strDeptCode6, strDeptCode7, strDeptCode8, strDeptCode9, dtCreateTime, strDeptProvinceCode, 
+    strDeptProvinceName, strDeptCityCode, strDeptCityName, strDeptAddress, dtUpdateTime, 
+    strWorkDay, lOldSalesId
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.TbemployeeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tbemployee
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbemployee
+    where lUserId = #{luserid,jdbcType=BIGINT}
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tbemployee
+    where lUserId = #{luserid,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.TbemployeeExample" >
+    delete from tbemployee
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.Tbemployee" >
+    insert into tbemployee (lUserId, strLoginId, strName, 
+      nSex, strEmployeeNo, strTitle, 
+      strRole, strMobile, strEmail, 
+      strBirthday, strDeptCode, strDeptName, 
+      nCurrentLevel, nWorkState, nIsShutdown, 
+      strDeptCode0, strDeptCode1, strDeptCode2, 
+      strDeptCode3, strDeptCode4, strDeptCode5, 
+      strDeptCode6, strDeptCode7, strDeptCode8, 
+      strDeptCode9, dtCreateTime, strDeptProvinceCode, 
+      strDeptProvinceName, strDeptCityCode, strDeptCityName, 
+      strDeptAddress, dtUpdateTime, strWorkDay, 
+      lOldSalesId)
+    values (#{luserid,jdbcType=BIGINT}, #{strloginid,jdbcType=VARCHAR}, #{strname,jdbcType=VARCHAR}, 
+      #{nsex,jdbcType=INTEGER}, #{stremployeeno,jdbcType=VARCHAR}, #{strtitle,jdbcType=VARCHAR}, 
+      #{strrole,jdbcType=VARCHAR}, #{strmobile,jdbcType=VARCHAR}, #{stremail,jdbcType=VARCHAR}, 
+      #{strbirthday,jdbcType=VARCHAR}, #{strdeptcode,jdbcType=VARCHAR}, #{strdeptname,jdbcType=VARCHAR}, 
+      #{ncurrentlevel,jdbcType=INTEGER}, #{nworkstate,jdbcType=INTEGER}, #{nisshutdown,jdbcType=INTEGER}, 
+      #{strdeptcode0,jdbcType=VARCHAR}, #{strdeptcode1,jdbcType=VARCHAR}, #{strdeptcode2,jdbcType=VARCHAR}, 
+      #{strdeptcode3,jdbcType=VARCHAR}, #{strdeptcode4,jdbcType=VARCHAR}, #{strdeptcode5,jdbcType=VARCHAR}, 
+      #{strdeptcode6,jdbcType=VARCHAR}, #{strdeptcode7,jdbcType=VARCHAR}, #{strdeptcode8,jdbcType=VARCHAR}, 
+      #{strdeptcode9,jdbcType=VARCHAR}, #{dtcreatetime,jdbcType=TIMESTAMP}, #{strdeptprovincecode,jdbcType=VARCHAR}, 
+      #{strdeptprovincename,jdbcType=VARCHAR}, #{strdeptcitycode,jdbcType=VARCHAR}, #{strdeptcityname,jdbcType=VARCHAR}, 
+      #{strdeptaddress,jdbcType=VARCHAR}, #{dtupdatetime,jdbcType=TIMESTAMP}, #{strworkday,jdbcType=VARCHAR}, 
+      #{loldsalesid,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.Tbemployee" >
+    insert into tbemployee
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="luserid != null" >
+        lUserId,
+      </if>
+      <if test="strloginid != null" >
+        strLoginId,
+      </if>
+      <if test="strname != null" >
+        strName,
+      </if>
+      <if test="nsex != null" >
+        nSex,
+      </if>
+      <if test="stremployeeno != null" >
+        strEmployeeNo,
+      </if>
+      <if test="strtitle != null" >
+        strTitle,
+      </if>
+      <if test="strrole != null" >
+        strRole,
+      </if>
+      <if test="strmobile != null" >
+        strMobile,
+      </if>
+      <if test="stremail != null" >
+        strEmail,
+      </if>
+      <if test="strbirthday != null" >
+        strBirthday,
+      </if>
+      <if test="strdeptcode != null" >
+        strDeptCode,
+      </if>
+      <if test="strdeptname != null" >
+        strDeptName,
+      </if>
+      <if test="ncurrentlevel != null" >
+        nCurrentLevel,
+      </if>
+      <if test="nworkstate != null" >
+        nWorkState,
+      </if>
+      <if test="nisshutdown != null" >
+        nIsShutdown,
+      </if>
+      <if test="strdeptcode0 != null" >
+        strDeptCode0,
+      </if>
+      <if test="strdeptcode1 != null" >
+        strDeptCode1,
+      </if>
+      <if test="strdeptcode2 != null" >
+        strDeptCode2,
+      </if>
+      <if test="strdeptcode3 != null" >
+        strDeptCode3,
+      </if>
+      <if test="strdeptcode4 != null" >
+        strDeptCode4,
+      </if>
+      <if test="strdeptcode5 != null" >
+        strDeptCode5,
+      </if>
+      <if test="strdeptcode6 != null" >
+        strDeptCode6,
+      </if>
+      <if test="strdeptcode7 != null" >
+        strDeptCode7,
+      </if>
+      <if test="strdeptcode8 != null" >
+        strDeptCode8,
+      </if>
+      <if test="strdeptcode9 != null" >
+        strDeptCode9,
+      </if>
+      <if test="dtcreatetime != null" >
+        dtCreateTime,
+      </if>
+      <if test="strdeptprovincecode != null" >
+        strDeptProvinceCode,
+      </if>
+      <if test="strdeptprovincename != null" >
+        strDeptProvinceName,
+      </if>
+      <if test="strdeptcitycode != null" >
+        strDeptCityCode,
+      </if>
+      <if test="strdeptcityname != null" >
+        strDeptCityName,
+      </if>
+      <if test="strdeptaddress != null" >
+        strDeptAddress,
+      </if>
+      <if test="dtupdatetime != null" >
+        dtUpdateTime,
+      </if>
+      <if test="strworkday != null" >
+        strWorkDay,
+      </if>
+      <if test="loldsalesid != null" >
+        lOldSalesId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="luserid != null" >
+        #{luserid,jdbcType=BIGINT},
+      </if>
+      <if test="strloginid != null" >
+        #{strloginid,jdbcType=VARCHAR},
+      </if>
+      <if test="strname != null" >
+        #{strname,jdbcType=VARCHAR},
+      </if>
+      <if test="nsex != null" >
+        #{nsex,jdbcType=INTEGER},
+      </if>
+      <if test="stremployeeno != null" >
+        #{stremployeeno,jdbcType=VARCHAR},
+      </if>
+      <if test="strtitle != null" >
+        #{strtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="strrole != null" >
+        #{strrole,jdbcType=VARCHAR},
+      </if>
+      <if test="strmobile != null" >
+        #{strmobile,jdbcType=VARCHAR},
+      </if>
+      <if test="stremail != null" >
+        #{stremail,jdbcType=VARCHAR},
+      </if>
+      <if test="strbirthday != null" >
+        #{strbirthday,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode != null" >
+        #{strdeptcode,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptname != null" >
+        #{strdeptname,jdbcType=VARCHAR},
+      </if>
+      <if test="ncurrentlevel != null" >
+        #{ncurrentlevel,jdbcType=INTEGER},
+      </if>
+      <if test="nworkstate != null" >
+        #{nworkstate,jdbcType=INTEGER},
+      </if>
+      <if test="nisshutdown != null" >
+        #{nisshutdown,jdbcType=INTEGER},
+      </if>
+      <if test="strdeptcode0 != null" >
+        #{strdeptcode0,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode1 != null" >
+        #{strdeptcode1,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode2 != null" >
+        #{strdeptcode2,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode3 != null" >
+        #{strdeptcode3,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode4 != null" >
+        #{strdeptcode4,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode5 != null" >
+        #{strdeptcode5,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode6 != null" >
+        #{strdeptcode6,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode7 != null" >
+        #{strdeptcode7,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode8 != null" >
+        #{strdeptcode8,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode9 != null" >
+        #{strdeptcode9,jdbcType=VARCHAR},
+      </if>
+      <if test="dtcreatetime != null" >
+        #{dtcreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="strdeptprovincecode != null" >
+        #{strdeptprovincecode,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptprovincename != null" >
+        #{strdeptprovincename,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcitycode != null" >
+        #{strdeptcitycode,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcityname != null" >
+        #{strdeptcityname,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptaddress != null" >
+        #{strdeptaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="dtupdatetime != null" >
+        #{dtupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="strworkday != null" >
+        #{strworkday,jdbcType=VARCHAR},
+      </if>
+      <if test="loldsalesid != null" >
+        #{loldsalesid,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.TbemployeeExample" resultType="java.lang.Integer" >
+    select count(*) from tbemployee
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tbemployee
+    <set >
+      <if test="record.luserid != null" >
+        lUserId = #{record.luserid,jdbcType=BIGINT},
+      </if>
+      <if test="record.strloginid != null" >
+        strLoginId = #{record.strloginid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strname != null" >
+        strName = #{record.strname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nsex != null" >
+        nSex = #{record.nsex,jdbcType=INTEGER},
+      </if>
+      <if test="record.stremployeeno != null" >
+        strEmployeeNo = #{record.stremployeeno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strtitle != null" >
+        strTitle = #{record.strtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strrole != null" >
+        strRole = #{record.strrole,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strmobile != null" >
+        strMobile = #{record.strmobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stremail != null" >
+        strEmail = #{record.stremail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strbirthday != null" >
+        strBirthday = #{record.strbirthday,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strdeptcode != null" >
+        strDeptCode = #{record.strdeptcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strdeptname != null" >
+        strDeptName = #{record.strdeptname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ncurrentlevel != null" >
+        nCurrentLevel = #{record.ncurrentlevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.nworkstate != null" >
+        nWorkState = #{record.nworkstate,jdbcType=INTEGER},
+      </if>
+      <if test="record.nisshutdown != null" >
+        nIsShutdown = #{record.nisshutdown,jdbcType=INTEGER},
+      </if>
+      <if test="record.strdeptcode0 != null" >
+        strDeptCode0 = #{record.strdeptcode0,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strdeptcode1 != null" >
+        strDeptCode1 = #{record.strdeptcode1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strdeptcode2 != null" >
+        strDeptCode2 = #{record.strdeptcode2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strdeptcode3 != null" >
+        strDeptCode3 = #{record.strdeptcode3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strdeptcode4 != null" >
+        strDeptCode4 = #{record.strdeptcode4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strdeptcode5 != null" >
+        strDeptCode5 = #{record.strdeptcode5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strdeptcode6 != null" >
+        strDeptCode6 = #{record.strdeptcode6,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strdeptcode7 != null" >
+        strDeptCode7 = #{record.strdeptcode7,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strdeptcode8 != null" >
+        strDeptCode8 = #{record.strdeptcode8,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strdeptcode9 != null" >
+        strDeptCode9 = #{record.strdeptcode9,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dtcreatetime != null" >
+        dtCreateTime = #{record.dtcreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.strdeptprovincecode != null" >
+        strDeptProvinceCode = #{record.strdeptprovincecode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strdeptprovincename != null" >
+        strDeptProvinceName = #{record.strdeptprovincename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strdeptcitycode != null" >
+        strDeptCityCode = #{record.strdeptcitycode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strdeptcityname != null" >
+        strDeptCityName = #{record.strdeptcityname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.strdeptaddress != null" >
+        strDeptAddress = #{record.strdeptaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dtupdatetime != null" >
+        dtUpdateTime = #{record.dtupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.strworkday != null" >
+        strWorkDay = #{record.strworkday,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loldsalesid != null" >
+        lOldSalesId = #{record.loldsalesid,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tbemployee
+    set lUserId = #{record.luserid,jdbcType=BIGINT},
+      strLoginId = #{record.strloginid,jdbcType=VARCHAR},
+      strName = #{record.strname,jdbcType=VARCHAR},
+      nSex = #{record.nsex,jdbcType=INTEGER},
+      strEmployeeNo = #{record.stremployeeno,jdbcType=VARCHAR},
+      strTitle = #{record.strtitle,jdbcType=VARCHAR},
+      strRole = #{record.strrole,jdbcType=VARCHAR},
+      strMobile = #{record.strmobile,jdbcType=VARCHAR},
+      strEmail = #{record.stremail,jdbcType=VARCHAR},
+      strBirthday = #{record.strbirthday,jdbcType=VARCHAR},
+      strDeptCode = #{record.strdeptcode,jdbcType=VARCHAR},
+      strDeptName = #{record.strdeptname,jdbcType=VARCHAR},
+      nCurrentLevel = #{record.ncurrentlevel,jdbcType=INTEGER},
+      nWorkState = #{record.nworkstate,jdbcType=INTEGER},
+      nIsShutdown = #{record.nisshutdown,jdbcType=INTEGER},
+      strDeptCode0 = #{record.strdeptcode0,jdbcType=VARCHAR},
+      strDeptCode1 = #{record.strdeptcode1,jdbcType=VARCHAR},
+      strDeptCode2 = #{record.strdeptcode2,jdbcType=VARCHAR},
+      strDeptCode3 = #{record.strdeptcode3,jdbcType=VARCHAR},
+      strDeptCode4 = #{record.strdeptcode4,jdbcType=VARCHAR},
+      strDeptCode5 = #{record.strdeptcode5,jdbcType=VARCHAR},
+      strDeptCode6 = #{record.strdeptcode6,jdbcType=VARCHAR},
+      strDeptCode7 = #{record.strdeptcode7,jdbcType=VARCHAR},
+      strDeptCode8 = #{record.strdeptcode8,jdbcType=VARCHAR},
+      strDeptCode9 = #{record.strdeptcode9,jdbcType=VARCHAR},
+      dtCreateTime = #{record.dtcreatetime,jdbcType=TIMESTAMP},
+      strDeptProvinceCode = #{record.strdeptprovincecode,jdbcType=VARCHAR},
+      strDeptProvinceName = #{record.strdeptprovincename,jdbcType=VARCHAR},
+      strDeptCityCode = #{record.strdeptcitycode,jdbcType=VARCHAR},
+      strDeptCityName = #{record.strdeptcityname,jdbcType=VARCHAR},
+      strDeptAddress = #{record.strdeptaddress,jdbcType=VARCHAR},
+      dtUpdateTime = #{record.dtupdatetime,jdbcType=TIMESTAMP},
+      strWorkDay = #{record.strworkday,jdbcType=VARCHAR},
+      lOldSalesId = #{record.loldsalesid,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.Tbemployee" >
+    update tbemployee
+    <set >
+      <if test="strloginid != null" >
+        strLoginId = #{strloginid,jdbcType=VARCHAR},
+      </if>
+      <if test="strname != null" >
+        strName = #{strname,jdbcType=VARCHAR},
+      </if>
+      <if test="nsex != null" >
+        nSex = #{nsex,jdbcType=INTEGER},
+      </if>
+      <if test="stremployeeno != null" >
+        strEmployeeNo = #{stremployeeno,jdbcType=VARCHAR},
+      </if>
+      <if test="strtitle != null" >
+        strTitle = #{strtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="strrole != null" >
+        strRole = #{strrole,jdbcType=VARCHAR},
+      </if>
+      <if test="strmobile != null" >
+        strMobile = #{strmobile,jdbcType=VARCHAR},
+      </if>
+      <if test="stremail != null" >
+        strEmail = #{stremail,jdbcType=VARCHAR},
+      </if>
+      <if test="strbirthday != null" >
+        strBirthday = #{strbirthday,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode != null" >
+        strDeptCode = #{strdeptcode,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptname != null" >
+        strDeptName = #{strdeptname,jdbcType=VARCHAR},
+      </if>
+      <if test="ncurrentlevel != null" >
+        nCurrentLevel = #{ncurrentlevel,jdbcType=INTEGER},
+      </if>
+      <if test="nworkstate != null" >
+        nWorkState = #{nworkstate,jdbcType=INTEGER},
+      </if>
+      <if test="nisshutdown != null" >
+        nIsShutdown = #{nisshutdown,jdbcType=INTEGER},
+      </if>
+      <if test="strdeptcode0 != null" >
+        strDeptCode0 = #{strdeptcode0,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode1 != null" >
+        strDeptCode1 = #{strdeptcode1,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode2 != null" >
+        strDeptCode2 = #{strdeptcode2,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode3 != null" >
+        strDeptCode3 = #{strdeptcode3,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode4 != null" >
+        strDeptCode4 = #{strdeptcode4,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode5 != null" >
+        strDeptCode5 = #{strdeptcode5,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode6 != null" >
+        strDeptCode6 = #{strdeptcode6,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode7 != null" >
+        strDeptCode7 = #{strdeptcode7,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode8 != null" >
+        strDeptCode8 = #{strdeptcode8,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcode9 != null" >
+        strDeptCode9 = #{strdeptcode9,jdbcType=VARCHAR},
+      </if>
+      <if test="dtcreatetime != null" >
+        dtCreateTime = #{dtcreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="strdeptprovincecode != null" >
+        strDeptProvinceCode = #{strdeptprovincecode,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptprovincename != null" >
+        strDeptProvinceName = #{strdeptprovincename,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcitycode != null" >
+        strDeptCityCode = #{strdeptcitycode,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptcityname != null" >
+        strDeptCityName = #{strdeptcityname,jdbcType=VARCHAR},
+      </if>
+      <if test="strdeptaddress != null" >
+        strDeptAddress = #{strdeptaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="dtupdatetime != null" >
+        dtUpdateTime = #{dtupdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="strworkday != null" >
+        strWorkDay = #{strworkday,jdbcType=VARCHAR},
+      </if>
+      <if test="loldsalesid != null" >
+        lOldSalesId = #{loldsalesid,jdbcType=BIGINT},
+      </if>
+    </set>
+    where lUserId = #{luserid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.Tbemployee" >
+    update tbemployee
+    set strLoginId = #{strloginid,jdbcType=VARCHAR},
+      strName = #{strname,jdbcType=VARCHAR},
+      nSex = #{nsex,jdbcType=INTEGER},
+      strEmployeeNo = #{stremployeeno,jdbcType=VARCHAR},
+      strTitle = #{strtitle,jdbcType=VARCHAR},
+      strRole = #{strrole,jdbcType=VARCHAR},
+      strMobile = #{strmobile,jdbcType=VARCHAR},
+      strEmail = #{stremail,jdbcType=VARCHAR},
+      strBirthday = #{strbirthday,jdbcType=VARCHAR},
+      strDeptCode = #{strdeptcode,jdbcType=VARCHAR},
+      strDeptName = #{strdeptname,jdbcType=VARCHAR},
+      nCurrentLevel = #{ncurrentlevel,jdbcType=INTEGER},
+      nWorkState = #{nworkstate,jdbcType=INTEGER},
+      nIsShutdown = #{nisshutdown,jdbcType=INTEGER},
+      strDeptCode0 = #{strdeptcode0,jdbcType=VARCHAR},
+      strDeptCode1 = #{strdeptcode1,jdbcType=VARCHAR},
+      strDeptCode2 = #{strdeptcode2,jdbcType=VARCHAR},
+      strDeptCode3 = #{strdeptcode3,jdbcType=VARCHAR},
+      strDeptCode4 = #{strdeptcode4,jdbcType=VARCHAR},
+      strDeptCode5 = #{strdeptcode5,jdbcType=VARCHAR},
+      strDeptCode6 = #{strdeptcode6,jdbcType=VARCHAR},
+      strDeptCode7 = #{strdeptcode7,jdbcType=VARCHAR},
+      strDeptCode8 = #{strdeptcode8,jdbcType=VARCHAR},
+      strDeptCode9 = #{strdeptcode9,jdbcType=VARCHAR},
+      dtCreateTime = #{dtcreatetime,jdbcType=TIMESTAMP},
+      strDeptProvinceCode = #{strdeptprovincecode,jdbcType=VARCHAR},
+      strDeptProvinceName = #{strdeptprovincename,jdbcType=VARCHAR},
+      strDeptCityCode = #{strdeptcitycode,jdbcType=VARCHAR},
+      strDeptCityName = #{strdeptcityname,jdbcType=VARCHAR},
+      strDeptAddress = #{strdeptaddress,jdbcType=VARCHAR},
+      dtUpdateTime = #{dtupdatetime,jdbcType=TIMESTAMP},
+      strWorkDay = #{strworkday,jdbcType=VARCHAR},
+      lOldSalesId = #{loldsalesid,jdbcType=BIGINT}
+    where lUserId = #{luserid,jdbcType=BIGINT}
+  </update>
+  
+  <resultMap id="CustomerQueryVOMap" type="com.pinting.business.model.vo.CustomerQueryVO" >
+	 <result column="id" property="id" jdbcType="INTEGER" />
+	 <result column="user_id" property="userId" jdbcType="INTEGER" />
+	 <result column="user_name" property="userName" jdbcType="VARCHAR" />
+	 <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+	 <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+	 <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+	 <result column="dafy_dept_name" property="dafyDeptName" jdbcType="VARCHAR" />
+	 <result column="first_buy_time" property="firstBuyTime" jdbcType="TIMESTAMP" />
+	  <result column="register_time" property="registerTime" jdbcType="TIMESTAMP" />
+	 <result column="is_bind_bank" property="isBindBank" jdbcType="VARCHAR" />
+	 <result column="age" property="age" jdbcType="VARCHAR" />
+	 <result column="sex" property="sex" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="customerQueryIndex" resultMap="CustomerQueryVOMap" parameterType="java.util.Map" >
+		SELECT 
+			a.id,
+			a.user_id ,
+			CONCAT(SUBSTRING(b.user_name FROM 1 FOR 1),"**") user_name,
+			CONCAT(SUBSTRING(b.mobile FROM 1 FOR 7),"****") mobile,
+			CONCAT("****",SUBSTRING(b.id_card FROM 5 FOR 10),"****") id_card,
+			c.strName customer_name,
+			c.strDeptName dafy_dept_name,
+			b.register_time,
+			b.first_buy_time,
+			CASE WHEN b.is_bind_bank = 1 AND b.is_bind_name = 1 THEN 1 
+			ELSE 2 END is_bind_bank,
+			YEAR(NOW())-SUBSTRING(b.id_card FROM 7 FOR 4) age,
+			CASE  WHEN SUBSTR(b.id_card,17,1)%2 = 1 THEN '男'
+			WHEN b.id_card IS NOT NULL AND SUBSTR(b.id_card,17,1)%2 = 0 THEN '女'
+			ELSE  '' END sex
+		FROM
+			bs_user_customer_manager a
+		LEFT JOIN bs_user b ON a.user_id = b.id 
+		LEFT JOIN tbemployee c ON a.customer_manager_dafy_id = c.lUserId
+		LEFT JOIN tbdepartment d ON c.strDeptCode = d.strDeptCode
+     	where a.grade = 1
+     	<if test="dafyUserId != null and dafyUserId != ''" >
+     		and a.customer_manager_dafy_id = #{dafyUserId}
+     	</if>
+     	<if test="dafyDeptId != null and dafyDeptId != ''" >
+     		and d.lid = #{dafyDeptId}
+     	</if>
+     	<if test="userName != null and userName != ''" >
+     		and b.user_name LIKE concat(concat('%', #{userName}),'%')
+     	</if>
+     	<if test="mobile != null and mobile != ''" >
+     		and b.mobile = #{mobile}
+     	</if>
+     	<if test="idcard != null and idcard != ''" >
+     		and b.id_card = #{idcard}
+     	</if>
+     	<if test="isBindBank != null and isBindBank != ''" >
+     		and b.is_bind_bank = #{isBindBank} and b.is_bind_name = #{isBindBank}
+     	</if>
+     	ORDER BY b.register_time DESC
+     	LIMIT #{position}, #{offset}
+  </select>
+  <select id="customerQueryCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		SELECT 
+			COUNT(*)
+		FROM
+			bs_user_customer_manager a
+		LEFT JOIN bs_user b ON a.user_id = b.id 
+		LEFT JOIN tbemployee c ON a.customer_manager_dafy_id = c.lUserId
+		LEFT JOIN tbdepartment d ON c.strDeptCode = d.strDeptCode
+     	where a.grade = 1
+     	<if test="dafyUserId != null and dafyUserId != ''" >
+     		and a.customer_manager_dafy_id = #{dafyUserId}
+     	</if>
+     	<if test="dafyDeptId != null and dafyDeptId != ''" >
+     		and d.lid = #{dafyDeptId}
+     	</if>
+     	<if test="userName != null and userName != ''" >
+     		and b.user_name LIKE concat(concat('%', #{userName}),'%')
+     	</if>
+     	<if test="mobile != null and mobile != ''" >
+     		and b.mobile = #{mobile}
+     	</if>
+     	<if test="idcard != null and idcard != ''" >
+     		and b.id_card = #{idcard}
+     	</if>
+     	<if test="isBindBank != null and isBindBank != ''" >
+     		and b.is_bind_bank = #{isBindBank} and b.is_bind_name = #{isBindBank}
+     	</if>
+  </select>
+  
+  
+  <select id="selectSyncTime" resultType="java.util.Date">
+  	select max(dtUpdateTime) from tbemployee
+  </select>
+  
+  <insert id="batchInsertTbemployee">
+  	${sql}
+  </insert>
+  
+  
+  
+   <select id="customerQueryByEmployee" resultMap="CustomerQueryVOMap" parameterType="java.util.Map" >
+		SELECT 
+			a.id,
+			a.user_id ,
+			CONCAT(SUBSTRING(b.user_name FROM 1 FOR 1),"**") user_name,
+			CONCAT(SUBSTRING(b.mobile FROM 1 FOR 7),"****") mobile,
+			CONCAT("****",SUBSTRING(b.id_card FROM 5 FOR 10),"****") id_card,
+			c.strName customer_name,
+			c.strDeptName dafy_dept_name,
+			b.register_time ,
+			b.first_buy_time,
+			CASE WHEN b.is_bind_bank = 1 AND b.is_bind_name = 1 THEN 1 
+			ELSE 2 END is_bind_bank,
+			YEAR(NOW())-SUBSTRING(b.id_card FROM 7 FOR 4) age,
+			CASE  WHEN b.id_card IS NOT NULL AND SUBSTR(b.id_card,17,1)%2 = 1 THEN '男'
+			WHEN b.id_card IS NOT NULL AND SUBSTR(b.id_card,17,1)%2 = 0 THEN '女'
+			ELSE  '' END sex 
+		FROM
+			bs_user_customer_manager a
+		LEFT JOIN bs_user b ON a.user_id = b.id 
+		LEFT JOIN tbemployee c ON a.customer_manager_dafy_id = c.lUserId
+		LEFT JOIN tbdepartment d ON c.strDeptCode = d.strDeptCode
+     	where a.grade = 1
+     	<if test="userName != null and userName != ''" >
+     		and b.user_name LIKE concat(concat('%', #{userName}),'%')
+     	</if>
+     	<if test="mobile != null and mobile != ''" >
+     		and b.mobile = #{mobile}
+     	</if>
+     	<if test="idcard != null and idcard != ''" >
+     		and b.id_card = #{idcard}
+     	</if>
+     	<if test="isBindBank != null and isBindBank != ''" >
+     		and b.is_bind_bank = #{isBindBank} and b.is_bind_name = #{isBindBank}
+     	</if>
+     	<if test="employee != null and employee != '' and (dafyUserId == null or dafyUserId == '' )" >
+     		and d.lid IN 
+			<foreach item="item" index="index" collection="employee"   
+                        open="(" separator="," close=")">  
+                       #{item}  
+            </foreach>  
+     	</if>
+     	
+     	<if test="employee != null and employee != '' and dafyUserId != null and dafyUserId != '' " >
+     		and ( c.lUserId = #{dafyUserId} or d.lid IN 
+			<foreach item="item" index="index" collection="employee"   
+                        open="(" separator="," close=")">  
+                       #{item}  
+            </foreach>  
+            )
+     	</if>
+         
+         <if test="(employee == null or employee == '' ) and dafyUserId != null and dafyUserId != ''">
+     			and c.lUserId = #{dafyUserId} 
+     	</if>
+     	<!-- <if test="employee != null and employee != '' and (dafyUserId == null or dafyUserId == '' )" >
+     		and d.lid IN 
+			<foreach item="item" index="index" collection="employee"   
+                        open="(" separator="," close=")">  
+                       #{item}  
+            </foreach>  
+     	</if> -->
+     	<!-- <if test="employee != null and employee != '' and dafyUserId != null and dafyUserId != '' " >
+     		and ( c.lUserId = #{dafyUserId} or d.lid IN 
+			<foreach item="item" index="index" collection="employee"   
+                        open="(" separator="," close=")">  
+                       #{item}  
+            </foreach>  
+            )
+     	</if> -->
+     	ORDER BY b.register_time DESC
+     	LIMIT #{position}, #{offset}
+  </select>
+  <select id="customerQueryByEmployeeCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		SELECT 
+			COUNT(*)
+		FROM
+			bs_user_customer_manager a
+		LEFT JOIN bs_user b ON a.user_id = b.id 
+		LEFT JOIN tbemployee c ON a.customer_manager_dafy_id = c.lUserId
+		LEFT JOIN tbdepartment d ON c.strDeptCode = d.strDeptCode
+     	where a.grade = 1
+     	<if test="userName != null and userName != ''" >
+     		and b.user_name LIKE concat(concat('%', #{userName}),'%')
+     	</if>
+     	<if test="mobile != null and mobile != ''" >
+     		and b.mobile = #{mobile}
+     	</if>
+     	<if test="idcard != null and idcard != ''" >
+     		and b.id_card = #{idcard}
+     	</if>
+     	<if test="isBindBank != null and isBindBank != ''" >
+     		and b.is_bind_bank = #{isBindBank} and b.is_bind_name = #{isBindBank}
+     	</if>
+     	<if test="employee != null and employee != '' and (dafyUserId == null or dafyUserId == '' )" >
+     		and d.lid IN 
+			<foreach item="item" index="index" collection="employee"   
+                        open="(" separator="," close=")">  
+                       #{item}  
+            </foreach>  
+     	</if>
+     	
+     	<if test="employee != null and employee != '' and dafyUserId != null and dafyUserId != '' " >
+     		and ( c.lUserId = #{dafyUserId} or d.lid IN 
+			<foreach item="item" index="index" collection="employee"   
+                        open="(" separator="," close=")">  
+                       #{item}  
+            </foreach>  
+            )
+     	</if>
+     	<if test="(employee == null or employee == '' ) and dafyUserId != null and dafyUserId != ''">
+     			and c.lUserId = #{dafyUserId} 
+     	</if>
+     	
+  </select>
+
+  <select id="selectByMobile" resultType="com.pinting.business.model.vo.AscriptionChangeDetailVO" parameterType="java.util.Map" >
+    select
+      e.strName manageName,
+      d.strDeptName deptName,
+      d.strDeptCode afterDeptCode,
+      d.lId afterDeptId,
+      e.strName afterManageName,
+      e.lUserId afterManageId
+    from tbemployee e LEFT JOIN tbdepartment d ON e.strDeptCode=d.strDeptCode
+    where e.strMobile = #{mobile}
+  </select>
+</mapper>

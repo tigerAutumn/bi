@@ -1,0 +1,174 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="userId" value="$!userId" />
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+	<input type="hidden" name="orderField" value="$!req.orderField" />
+	<input type="hidden" name="orderDirection" value="$!req.orderDirection" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/bsuser/change.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!req.pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+		<input type="hidden" name="id" value="$!req.id" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						手机号码：<input id="search" type="text" name="searchMobile" maxlength="11" value="$!req.searchMobile" class="clear num" />
+					</td>
+					<td>
+						姓名：<input id="sName" type="text" name="sName" maxlength="20" value="$!req.sName" class="clear"/>
+					</td>
+					<td>
+						身份证：<input id="sIdCard" type="text" name="sIdCard" maxlength="18" value="$!req.sIdCard" class="clear num"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						回款银行卡号：<input id="sBankCard" type="text" name="sBankCard" value="$!req.sBankCard" class="clear num"/>
+					</td>
+					<td>累计奖励金额<input id="sReward"  style="width:40px;" type="text" name="sReward" value="$!number.format("0",$!req.sReward)" class="number"/>到<input id="eReward" style="width:40px;" type="text" name="eReward" value="$!number.format("0",$!req.eReward)" class="number"/>元</td>
+					<td>
+						<a class="add" href="$env.getWebURL('/agent/agent_list.htm')" target="dialog" mask="true" rel="createBack" height="390" width="600"><span><button type="button">选择渠道</button></span></a>
+						<input type="hidden" id="agentTotal" name="agentTotal" value="$!agentTotal"/>
+						<input type="hidden" id="agentIds" name="agentIds" value="$!req.agentIds"/>
+						<input type="hidden" id="nonAgentId" name="nonAgentId" value="$!req.nonAgentId"/>
+					</td>
+				</tr>
+				<tr>
+					<td >注册日期：<input style="width:70px;" name="SregistTime" maxdate="{%y}-%M-{%d}"   type="text"  id="SregistTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.SregistTime)" />
+						到  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input style="width:70px;" name="EregistTime" maxdate="{%y}-%M-{%d}"  type="text"id="EregistTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.EregistTime)" />
+					</td>
+					<td >首次购买日期：<input style="width:70px;" name="sFirstBuyTime" maxdate="{%y}-%M-{%d}"   type="text"  id="sFirstBuyTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.sFirstBuyTime)" />
+						到  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input style="width:70px;" name="eFirstBuyTime" maxdate="{%y}-%M-{%d}"   type="text"  id="eFirstBuyTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.eFirstBuyTime)" />
+					</td >
+					<td>
+						<button  onclick="func()" type="button">查询</button>
+					</td>
+				</tr>
+			</table>
+	
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+
+	<table class="table" width="1396" layoutH="208">
+		<thead>
+			<tr>
+				<th width="73">手机号</th>
+				<th width="53">姓名</th>
+				<th width="53">身份证</th>
+				<th width="73">银行名称</th>
+				<th width="196">银行卡号</th>
+				<th width="73">绑卡状态</th>
+				<th orderfield="sumBalance"  class=#if("$!sumBalance" != "") $!sumBalance #else "asc" #end width="73">总资产</th>
+				##<th orderfield="totalBalance"  class=#if("$!totalBalance" != "") $!totalBalance #else "asc" #end width="73">账户余额</th>
+				<th orderfield="account_balance"  class=#if("$!account_balance" != "") $!account_balance #else "asc" #end width="73">账户余额</th>
+				<th  orderfield="currentBalance"  class=#if("$!currentBalance" != "") $!currentBalance #else "asc" #end  width="73">当前投资本金</th>
+				<th  orderfield="totalPrincipal"  class=#if("$!totalPrincipal" != "") $!totalPrincipal #else "asc" #end  width="73">累计投资本金</th>
+				<th  orderfield="total_interest"  class=#if("$!total_interest" != "") $!total_interest #else "asc" #end  width="73">累计投资收益</th>
+				<th  orderfield="total_bonus"  class=#if("$!total_bonus" != "") $!total_bonus #else "asc" #end  width="73">累计推荐奖励</th>
+				<th width="98">注册日期</th>
+				<th width="63">首次购买日期</th>
+                <th width="53">推荐人</th>
+				<th width="73">渠道来源</th>
+				<th width="77">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $users)
+			<tr target="sid_user" rel="1">
+				<td>#if("$!grid.mobile" != "") $!grid.mobile#end</td>
+				<td>#if("$!grid.userName" != "") $!grid.userName #end</td>
+				<td>#if("$!grid.idCard" != "") $!grid.idCard#end</td>
+				<td>#if("$!grid.bankName" != "") $!grid.bankName#end</td>
+				<td>$!grid.cardNo</td>
+				<td>
+					#if("$!grid.bankStatus" == 1)
+						 正常
+					#elseif("$!grid.bankStatus" == 2)
+						禁用
+					#elseif("$!grid.bankStatus" == 3)
+						绑定中
+					#elseif("$!grid.bankStatus" == 4) 
+						绑定失败
+					#elseif("$!grid.bankStatus" == 5)
+					          已解绑
+					#else
+						未绑定
+					#end
+				</td>
+				<td ><div class="gridCol">$!money.format($!grid.sumBalance)</div></td>
+				<td ><div class="gridCol">$!money.format($!grid.accountBalance)</div></td>
+				<td><div class="gridCol">$!money.format($!grid.currentBalance)</div></td>
+				<td><div class="gridCol">$!money.format($!grid.totalPrincipal)</div></td>
+				<td><div class="gridCol">$!money.format($!grid.totalInterest)</div></td>
+				<td><div class="gridCol">$!money.format($!grid.totalBonus)</div></td>
+				<td>$!date.format($!grid.registerTime)</td>
+				<td>$!date.format($!grid.firstBuyTime)</td>
+				<td>$!grid.recommendName</td>
+				<td>$!grid.agentName</td>
+				<td>
+						
+					<div class="panelBar">	
+                		<ul class="toolBar">
+                			<li><a class="add" target="dialog" href="$env.getWebURL('/bsUserChannel/add_detail.htm')?userId=$!grid.id&userName=$!grid.userName&id=$!req.id" target="dialog" mask="true" rel="createBack" height="665" width="720"><span>确定</span></a></li>
+                			<li class="line">line</li>
+                		</ul>
+                	</div>
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+
+	</div>
+</div>
+<script>
+
+function func(){
+	var beginTime = $("#SregistTime").val();
+	var overTime = $("#EregistTime").val();
+	
+	if(beginTime != "" && overTime == ""){
+		alert("请输入结束时间！");
+		return false;
+	}
+	
+	if(beginTime == "" && overTime != ""){
+		alert("请输入开始时间！");
+		return false;
+	}
+	
+	if(beginTime != "" && overTime != ""){
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	var url = $("#APP_ROOT_PATH").val() + "/bsuser/change.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+</script>

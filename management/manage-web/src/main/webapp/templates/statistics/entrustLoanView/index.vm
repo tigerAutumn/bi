@@ -1,0 +1,225 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+	
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+	<input type="hidden" name="startDate" value="$!req.startDate" />
+	<input type="hidden" name="endDate" value="$!req.endDate" />
+	<input type="hidden" name="propertySymbol" value="$!req.propertySymbol" />
+</form>
+	
+
+<div class="page unitBox">
+	<div class="pageHeader">
+    	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('statistics/entrustLoanView/index.htm')" id="myform"  method="post">
+			<input type="hidden" name="propertySymbol" value="$!req.propertySymbol" />
+        	<div class="searchBar">
+                <table class="searchContent" border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+                    <tr height="50px;">
+                        <td width="10%">
+						#if($req.propertySymbol == 'ZAN')
+							<button id="ZAN" type="button"style="margin-right: 30px;background-color:#5cb85c;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">赞分期</button>
+						#else
+							<button id="ZAN" type="button"style="margin-right: 30px;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">赞分期</button>
+						#end
+						</td>
+						<td width="10%">
+						#if($req.propertySymbol == 'YUN_DAI')
+							<button id="YUN_DAI" type="button"style="margin-right: 30px;background-color:#5cb85c;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">云贷</button>
+						#else
+							<button id="YUN_DAI" type="button"style="margin-right: 30px;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">云贷</button>
+						#end
+						</td>
+						<td width="10%">
+						#if($req.propertySymbol == '7_DAI')
+							<button id="7_DAI" type="button"style="margin-right: 30px;background-color:#5cb85c;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">七贷</button>
+						#else
+							<button id="7_DAI" type="button"style="margin-right: 30px;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">七贷</button>
+						#end
+						</td>
+						<td width="10%"></td>
+						<td width="10%"></td>
+						<td width="10%"></td>
+						<td width="30%"></td>
+					</tr>
+					#if($req.propertySymbol == 'ZAN')
+						 <tr height="100px;">
+							<td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">VIP持有1个月债权：<br><br>$!VIPview.todayLoan30 元</div></td>
+							<td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">VIP持有2个月债权：<br><br>$!VIPview.todayLoan60 元</div></td>
+                            <td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">VIP持有3个月债权：<br><br>$!VIPview.todayLoan90 元</div></td>
+							<td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">VIP持有4个月债权：<br><br>$!VIPview.todayLoan120 元</div></td>
+							<td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">VIP持有5个月债权：<br><br>$!VIPview.todayLoan150 元</div></td>
+							<td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">VIP持有6个月债权：<br><br>$!VIPview.todayLoan180 元</div></td>
+							<td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">VIP持有9个月债权：<br><br>$!VIPview.todayLoan270 元</div></td>
+							<td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">VIP持有12个月债权：<br><br>$!VIPview.todayLoan365 元</div></td>
+							<td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">VIP持有债权总额：<br><br>$!VIPview.todayLoanSum 元</div></td>
+						</tr>
+						 <tr height="100px;">
+							<td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">1个月站岗余额：<br><br>$!VIPview.left2Loan30 元</div></td>
+							<td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">2个月站岗余额：<br><br>$!VIPview.left2Loan60 元</div></td>
+                            <td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">3个月站岗余额：<br><br>$!VIPview.left2Loan90 元</div></td>
+							<td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">4个月站岗余额：<br><br>$!VIPview.left2Loan120 元</div></td>
+							<td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">5个月站岗余额：<br><br>$!VIPview.left2Loan150 元</div></td>
+							<td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">6个月站岗余额：<br><br>$!VIPview.left2Loan180 元</div></td>
+							<td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">9个月站岗余额：<br><br>$!VIPview.left2Loan270 元</div></td>
+							<td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">12个月站岗余额：<br><br>$!VIPview.left2Loan365 元</div></td>
+							<td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">站岗总余额：<br><br>$!VIPview.left2LoanSum 元</div></td>
+							<td width="10%" ><div style="border:1px solid #000; height:45px;padding-top: 10px;padding-left: 10px;">VIP站岗总余额：<br><br>$!VIPview.left2LoanVIP 元</div></td>
+						</tr>
+					#end
+        			<tr>
+						<td colspan="2">
+                       		<label>日期</label>
+                            <input type="text" id="startDate" name="startDate" value="$!req.startDate" class="date" dateFmt="yyyy-MM-dd" readonly/>
+						</td>
+						<td colspan="2">
+							<label style="text-align: center;">至</label>
+							<input type="text" id="endDate" name="endDate" value="$!req.endDate" class="date" dateFmt="yyyy-MM-dd" readonly/>
+						</td>
+						<td style="padding-left: 20px;">
+							<div class="buttonActive">
+        						<div class="buttonContent">
+        							<button onclick="searchFunction()" type="button">查询</button>
+        						</div>
+        					</div>
+        				</td>
+					</tr>
+        		</table>
+        	</div>
+    	</form>
+    </div>
+    <div class="pageContent" >
+		#if($req.propertySymbol == 'ZAN')
+			<table class="table" width="90%" layoutH="340">
+		#else
+			<table class="table" width="90%" layoutH="140">
+		#end
+    		<thead>
+    			<tr>
+					<th width="8%">日期</th>
+					#if($req.propertySymbol == 'ZAN')
+						
+						<th width="8%">1个月普通用户购买</th>
+    					<th width="8%">1个月借款</th>
+						
+						<th width="8%">2个月普通用户购买</th>
+    					<th width="8%">2个月借款</th>
+						
+        				<th width="8%">3个月普通用户购买</th>
+    					<th width="8%">3个月借款</th>
+    					
+						<th width="8%">4个月普通用户购买</th>
+    					<th width="8%">4个月借款</th>
+						
+						<th width="8%">5个月普通用户购买</th>
+    					<th width="8%">5个月借款</th>
+						
+    					<th width="8%">6个月普通用户购买</th>
+    					<th width="8%">6个月借款</th>
+    					
+    					<th width="8%">9个月普通用户购买</th>
+    					<th width="8%">9个月借款</th>
+    					
+    					<th width="8%">12个月普通用户购买</th>
+    					<th width="8%">12个月借款</th>
+					#else
+						#if($req.propertySymbol == 'YUN_DAI')
+						<th width="7%">7天普通用户购买</th>
+    					<th width="7%">7天借款</th>
+    					#end
+    					<th width="7%">30天普通用户购买</th>
+    					<th width="7%">30天借款</th>
+    					
+    					<th width="7%">90天普通用户购买</th>
+    					<th width="7%">90天借款</th>
+    					
+    					<th width="7%">180天普通用户购买</th>
+    					<th width="7%">180天借款</th>
+						
+						<th width="7%">365天普通用户购买</th>
+    					<th width="7%">365天借款</th>
+					#end
+    			</tr>
+    		</thead>
+    		<tbody>
+    			#foreach($grid in $list)
+    			<tr target="sid_user" rel="1">
+					#if($!grid.id == '-1')
+						<td>合计</td>
+					#else
+						<td>$!date.formatYYYYMMDD($!grid.date)</td>
+					#end
+					#if($req.propertySymbol == 'YUN_DAI')
+						<td>$!money.format($!grid.todayInvest7)</td>
+						<td>$!money.format($!grid.todayLoan7)</td>
+					#end
+					#if($req.propertySymbol == 'YUN_DAI' or $req.propertySymbol == '7_DAI')
+						<td>$!money.format($!grid.todayInvest30)</td>
+						<td>$!money.format($!grid.todayLoan30)</td>
+					#end
+					#if($req.propertySymbol == 'ZAN')
+						<td>$!money.format($!grid.todayInvest30)</td>
+						<td>$!money.format($!grid.todayLoan30)</td>
+						<td>$!money.format($!grid.todayInvest60)</td>
+						<td>$!money.format($!grid.todayLoan60)</td>
+					#end
+					<td>$!money.format($!grid.todayInvest90)</td>
+					<td>$!money.format($!grid.todayLoan90)</td>
+					#if($req.propertySymbol == 'ZAN')
+						<td>$!money.format($!grid.todayInvest120)</td>
+						<td>$!money.format($!grid.todayLoan120)</td>
+						<td>$!money.format($!grid.todayInvest150)</td>
+						<td>$!money.format($!grid.todayLoan150)</td>
+					#end
+					<td>$!money.format($!grid.todayInvest180)</td>
+					<td>$!money.format($!grid.todayLoan180)</td>
+					#if($req.propertySymbol == 'ZAN')
+					<td>$!money.format($!grid.todayInvest270)</td>
+					<td>$!money.format($!grid.todayLoan270)</td>
+					#end
+					<td>$!money.format($!grid.todayInvest365)</td>
+					<td>$!money.format($!grid.todayLoan365)</td>
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+    			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!count条</span>
+    	</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+    </div>
+    </div>
+	
+</div>
+<script>  
+	function searchFunction(){
+    	var beginTime = $("#startDate").val();
+    	var overTime = $("#endDate").val();
+    	if(beginTime != "" && overTime != ""){
+    		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+    		if(result < 0){
+    			alert("开始时间不能在结束时间之后！！");
+    			return false;
+    		}
+    	}
+    	$("#myform").submit();
+    }
+	
+	$("#ZAN").click(function(){
+		navTab.reload("$env.getWebURL('statistics/entrustLoanView/index.htm?toPropertySymbol=ZAN')");
+	});
+	$("#YUN_DAI").click(function(){
+		navTab.reload("$env.getWebURL('statistics/entrustLoanView/index.htm?toPropertySymbol=YUN_DAI')");
+	});
+	$("#7_DAI").click(function(){
+		navTab.reload("$env.getWebURL('statistics/entrustLoanView/index.htm?toPropertySymbol=7_DAI')");
+	});
+</script> 

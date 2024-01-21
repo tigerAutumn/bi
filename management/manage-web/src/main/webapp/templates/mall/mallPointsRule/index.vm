@@ -1,0 +1,131 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')"/>
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageList.pageNum" />
+    <input type="hidden" name="numPerPage" value="$!pageList.numPerPage" />
+</form>
+<div class="pageHeader">
+    <form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/mallPointsRule/findList.htm')" onsubmit="return navTabSearch(this);">
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="pageNum" value="$!pageList.pageNum" />
+        <input type="hidden" name="numPerPage" value="$!pageList.numPerPage" />
+        <div class="searchBar">
+            <table class="searchContent">
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li>
+            	<a class="add" target="dialog" href="$env.getWebURL('/mallPointsRule/detail.htm')" mask="true" rel="createBack" height="360" width="680"><span>新增</span></a>
+            </li>
+        </ul>
+    </div>
+    <table class="table" width="1396" layoutH="108">
+        <thead>
+        <tr>
+            <th width="15%">序号</th>
+            <th width="15%">场景</th>
+            <th width="15%">获取方式</th>
+            <th width="25%">时间</th>
+            <th width="15%">状态</th>
+            <th width="15%">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+            #set($index = $!pageList.offset)
+            #foreach($grid in $!pageList.list)
+            <tr target="sid_user" rel="1" >
+            	#set($index = $index + 1)
+                <td>$!index</td>
+                <td>
+                	#if("$!grid.getScene"=="REGISTER")
+                    	成功注册
+                    #elseif("$!grid.getScene"=="OPEN_DEPOSIT")
+                    	成功开通存管
+                    #elseif("$!grid.getScene"=="FINISH_RISK_ASSESSMENT")
+                    	成功完成风险测评
+                    #elseif("$!grid.getScene"=="FIRST_INVEST")
+                    	成功完成首次加入产品
+                    #elseif("$!grid.getScene"=="INVEST")	
+                    	成功加入产品
+                    #elseif("$!grid.getScene"=="TOTAL_INVEST")
+                    	累计加入产品积分奖励
+                    #elseif("$!grid.getScene"=="SIGN")	
+                    	签到
+                    #elseif("$!grid.getScene"=="BIRTHDAY")	
+                    	用户生日奖励	
+                    #end
+                </td>
+                <td>
+                    #if("$!grid.getTimes"=="ONE")
+                    	单次获取
+                    #elseif("$!grid.getTimes"=="MORE")
+                    	多次获取
+                    #else
+                    	
+                    #end
+                </td>
+                <td>$!date.format($!grid.triggerTimeStart)至$!date.format($!grid.triggerTimeEnd)</td>
+                <td>
+                	#if("$!grid.status"=="OPEN")
+                    	开启
+                    #elseif("$!grid.status"=="CLOSE")
+                    	关闭
+                    #elseif("$!grid.status"=="DELETED")
+                    	已删除
+                    #end
+                </td>
+                <td>
+                    <a title="编辑" target="dialog" href="$env.getWebURL('/mallPointsRule/detail.htm?ruleId=')$!grid.id" mask="true" rel="createBack" height="360" width="680">编辑</a>
+                	<a title="删除" onclick="closeRule('$!grid.id')" mask="true">删除</a>
+                </td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                <option #if("$!pageList.numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!pageList.numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!pageList.numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!pageList.numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!pageList.totalRow条</span>
+        </div>
+        <div class="pagination" targetType="navTab" totalCount="$!pageList.totalRow" numPerPage="$!pageList.numPerPage" currentPage="$!pageList.pageNum"></div>
+    </div>
+</div>
+
+<script>
+    function closeRule(ruleId) {
+        var ruleId = ruleId;
+        alertMsg.confirm("你确定删除此规则？", {
+            okCall: function () {
+                $.ajax({
+                    type: 'post',
+                    url: $("#APP_ROOT_PATH").val() + "/mallPointsRule/updateStatus.htm",
+                    data: {
+                        ruleId: ruleId
+                    },
+                    success: function (data) {
+                        if (data.statusCode == "200") {
+                            alertMsg.correct("删除规则成功");
+                            navTab.reload("$env.getWebURL('/mallPointsRule/findList.htm')");
+                        } else {
+                            if (data.message) {
+                                alertMsg.error(data.message);
+                            } else {
+                                alertMsg.error("操作失败");
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    }
+    
+</script>

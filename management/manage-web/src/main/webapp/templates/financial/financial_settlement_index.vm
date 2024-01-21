@@ -1,0 +1,365 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+
+<div class="pageHeader" style="overflow:visible;">
+	<form rel="pagerForm" style="overflow:visible;" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" method="post" action="$env.getWebURL('/financialIntention/financialSettlementIndex.htm?isSelect=y')">
+		<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!req.pageNum" />
+		<input type="hidden" name="totalRows" value="$!req.totalRows" />
+		
+		<input type="hidden" id="dafyUserId" value="$!dafyUserId" />
+		<input type="hidden" id="dafyUserName" value="$!dafyUserName" />
+		<input type="hidden" id="dafyDeptId" value="$!dafyDeptId" />
+		<input type="hidden" id="dafyDeptName" value="$!dafyDeptName" />
+		<input type="hidden" id="isDafyUser" value="$!isDafyUser" />
+		<input type="hidden" id="deptStatus" value="$!deptStatus" />
+		<input type="hidden" id="userStatus" value="$!userStatus" />
+		<input type="hidden" id="productType" name="productType" value="$!productType"/>
+    	<div class="searchBar">
+            <table class="searchContent">
+				<tr>
+                    <td>
+						#if($!productType == 'NORMAL')
+							<button id="NORMAL" type="button"style="margin-right: 30px;background-color:#5cb85c;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">普通产品业务</button>
+    					#else
+    						<button id="NORMAL" type="button"style="margin-right: 30px;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">普通产品业务</button>
+    					#end
+					</td>
+					<td>
+						#if($!productType == 'ZAN')
+							<button id="ZAN" type="button"style="margin-right: 30px;background-color:#5cb85c;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">分期产品业务</button>
+    					#else
+    						<button id="ZAN" type="button"style="margin-right: 30px;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">分期产品业务</button>
+    					#end
+					</td>
+                </tr>
+                <tr><td></td><td></td></tr>
+			</table>
+    		<table class="searchContent">
+    			<tr>
+    				<td style="position:relative;">
+    					<label >
+    						营业部：
+                        </label>
+    					<input id="deptName" type="text" name="deptName" maxlength="20" value="$!req.deptName" class="clear" autocomplete="off" onkeyup="selectDept(this)"/>
+						<input type="hidden" id="selectDeptId" name="selectDeptId" value="$!selectDeptId"/>
+    				</td>
+    				<td >
+    					<label style="width:60px;">
+    						客户经理：
+                        </label>
+						<select id="managerName" name="managerName" style="width:125px;">
+							#if("$!userList" == "")
+								<option value="-1">暂无客户经理</option>
+							#else
+								<option value="-1">&nbsp;</option>
+							#end
+							
+							#foreach($user in $userList)
+								<option value="$!user.luserid">$!user.strname$!user.strmobile</option>
+							#end
+                        </select>
+						<input type="hidden" id="selectUserId" value="$!req.managerName"/>
+    				</td>
+    				<td>
+    					<label >
+    						产品名称：
+                        </label>
+    					<input id="productName" type="text" name="productName" maxlength="20" value="$!req.productName" class="clear trim"/>
+    				</td>
+    				<td>
+    					<label >
+    						投资状态：
+                        </label>
+    					<select name="status" id="status">
+                            <option value="">全部</option>
+    						<option value="2" #if($!req.status == 2) selected #end>投资中</option>
+    						#if($!productType=='NORMAL')<option value="7" #if($!req.status == 7) selected #end>回款中</option>#end
+    						<option value="5" #if($!req.status == 5) selected #end>已完成</option>
+                        </select>
+    				</td>
+				</tr>
+
+                <tr>
+    				<td colspan = "2">
+    					<label >
+    						划扣日期：
+                        </label>
+    					<input name="timeStart" type="text" id="timeStart" class=" date textInput readonly" readonly="true" value="$!req.timeStart" dateFmt="yyyy-MM-dd" />
+						&nbsp;&nbsp;&nbsp;&nbsp;至  &nbsp;&nbsp;&nbsp;&nbsp;
+    					<input name="timeEnd" type="text" id="timeEnd" class=" date textInput readonly" readonly="true" value="$!req.timeEnd" dateFmt="yyyy-MM-dd"/>
+    				</td>
+					
+    				<td colspan = "2">
+    					<label >
+    						出借金额（元）：
+                        </label>
+    					<input name="amountStart" type="text" id="amountStart"  class="clear num" maxlength="20" value="$!req.amountStart" />
+						&nbsp;&nbsp;&nbsp;&nbsp;	至  &nbsp;&nbsp;&nbsp;&nbsp;
+    					<input name="amountEnd" type="text" id="amountEnd"  class="clear num" maxlength="20" value="$!req.amountEnd" />
+    				</td>
+					
+					<td>
+    					<button  onclick="func('/financialIntention/financialSettlementIndex.htm?isSelect=y','select')" type="button">查询</button>
+						<button  onclick="func('/financialIntention/financialSettlementExport.htm','export')" type="button">导出Excel</button>
+    				</td>
+    			</tr>
+    		</table>
+    	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1500" layoutH="160">
+		<thead>
+			<tr>
+				<th width="6%">划扣成功日期</th>
+				<th width="6%">计息日期</th>
+				<th width="4%">出借人</th>
+				<th width="8%">出借人手机</th>
+				<th width="9%">出借人身份证</th>
+				<th width="10%">产品</th>
+				<th width="6%">合同编号</th>
+				<th width="7%">出借金额（元）</th>
+				<th width="7%">实际出借金额（元）</th>
+				<th width="4%">投资状态</th>
+				<th width="4%">期限（天）</th>
+				<th width="6%">到期时间</th>
+				<th width="4%">利率（%）</th>
+				<th width="5%">营业员</th>
+				<th width="8%">营业部名称</th>
+				<th width="6%">营业部编号</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($data in $dataGrid)
+			<tr>
+				<td>$!date.formatYYYYMMDD($!data.successTime)</td>
+				<td>$!date.formatYYYYMMDD($!data.interestBeginDate)</td>
+				<td>$!data.userName</td>
+				<td>$!data.mobile</td>
+				<td>$!data.idCard</td>
+				<td>$!data.productName</td>
+				<td>$!data.contractId</td>
+				<td>$!money.format($!data.balance)</td>
+				<td>$!money.format($!data.actualAmount)</td>
+				<td>
+					#if($!data.status == 2)
+						<span color='blue'>投资中</span>
+					#elseif($!data.status == 5)
+						<span color='green'>已完成</span>
+					#elseif($!data.status == 7)
+						<span color='red'>回款中</span>
+					#end
+				</td>
+				<td>$!data.term 天</td>
+				<td>$!date.formatYYYYMMDD($!data.returnDay)</td>
+				<td>$!money.format($!data.baseRate)</td>
+				<td>$!data.managerName</td>
+				<td>$!data.deptName</td>
+				<td>$!data.deptCode</td>
+
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!req.totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!req.totalRows" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+	</div>
+</div>
+#LoadJS("/resources/js/global_validate")
+<script>
+$("#NORMAL").click(function(){
+		navTab.reload("$env.getWebURL('/financialIntention/financialSettlementIndex.htm?productType=NORMAL')");
+	});
+	
+$("#ZAN").click(function(){
+		navTab.reload("$env.getWebURL('/financialIntention/financialSettlementIndex.htm?productType=ZAN')");
+	});
+
+$(function(){
+	var isDafyUser = $("#isDafyUser").val();
+	var deptStatus = $("#deptStatus").val();
+	var userStatus = $("#userStatus").val();
+	var dafyDeptId = $("#dafyDeptId").val();
+	var dafyDeptName = $("#dafyDeptName").val();
+	var dafyUserId = $("#dafyUserId").val();
+	if(isDafyUser == "yes") {
+		if(deptStatus == "disable") {
+			$("#selectDeptId").val(dafyDeptId);
+			$("#deptName").val(dafyDeptName);
+			$("#deptName").attr("readonly","readonly");
+		}
+		if(userStatus == "disable") {
+			$("#managerName").val(dafyUserId);
+			$("#managerName option[value='-1']").remove();
+		}
+		else {
+			var selectUserId = $("#selectUserId").val();
+			if(selectUserId) {
+				if($("#managerName option").size() == 2) {
+					$("#managerName option[value='-1']").remove();
+				}
+				$("#managerName").val(selectUserId);
+			}
+			else {
+				$("#managerName").val("-1");
+			}
+		}
+		
+	}
+	else {
+		$("#deptName").attr("readonly","readonly");
+		$("#managerName").attr("disabled","disabled");
+	}
+	
+	$('.trim').keyup(function(){
+    	$(this).val(this.value.replace(/^ +| +$/g,''));
+    });
+	
+	$(document).click(function(){
+		if(!$(this).is("#show_all_policy_div")) {
+			$("#show_all_policy_div").remove();
+		}
+	});
+	
+});
+
+function selectDept(obj) {
+	$(obj).val(obj.value.replace(/^ +| +$/g,''));
+	var value = $(obj).val();
+	
+	if(value) {
+		$("#selectDeptId").val("-1");
+	}
+	else {
+		$("#selectDeptId").val("");
+	}
+	$("#managerName option").remove();
+	var html = "<option value='-1'>&nbsp;</option>";
+	$("#managerName").append(html);
+	
+	var codeReg = /^[A-Za-z0-9]{2,}$/;
+	var nameReg = /^[\u4e00-\u9fa5（）()、]{4,}$/;
+	if(codeReg.test(value) || nameReg.test(value)) {
+		var url = $("#APP_ROOT_PATH").val() + "/financialIntention/selectDeptByParam.htm";
+    	jQuery.ajax({
+    		type : "post",
+    		url : url,
+			async : false,
+    		data : {"param":value},
+    		success : function(data) {
+				if(data.deptList.length>0){
+					if($("#show_all_policy_div")) {
+						$("#show_all_policy_div").remove();
+					}
+					var showHtml ='<div id="show_all_policy_div" style="border: 1px solid #aaa;line-height: 25px;position: absolute;top: 25px;left: 90px;cursor:pointer;width: auto;height:250px;overflow-x:hidden;;overflow-y:auto;background-color: #fff;padding: 6px;z-index: 100;">';
+					for(var i=0;i<data.deptList.length;i++){
+						showHtml = showHtml + '<div onclick="choose('+data.deptList[i].lid+',\''+data.deptList[i].strdeptname+'\')" style="font-size: 14px;padding:5px;">'+data.deptList[i].strdeptcode+'-'+data.deptList[i].strdeptname+'</div>';
+					}
+					showHtml = showHtml + '</div>';
+        			$('#deptName').after(showHtml);
+				} else {
+					$("#show_all_policy_div").remove();
+					var showHtml ='<div id="show_all_policy_div" style="border: 1px solid #aaa;line-height: 25px;position: absolute;top: 25px;left: 90px;cursor:pointer;width: auto;height:250px;overflow-x:hidden;;overflow-y:auto;background-color: #fff;padding: 6px;z-index: 100;">';
+					showHtml = showHtml + '<div  style="font-size: 14px;padding:5px;">未查询到相关营业部</div>';
+					showHtml = showHtml + '</div>';
+        			$('#deptName').after(showHtml);
+				}
+    		}
+    	});
+	}
+	else {
+		$("#show_all_policy_div").remove();
+	}
+}
+
+function choose(dafyDeptId,dafyDeptName) {
+	$("#selectDeptId").val(dafyDeptId);
+	$("#deptName").val(dafyDeptName);
+	$("#show_all_policy_div").remove();
+	
+	var url = $("#APP_ROOT_PATH").val() + "/financialIntention/selectUserByDeptId.htm";
+	$.post(url,{"deptId":dafyDeptId},function(data){
+		$("#managerName option").remove();
+		var html = "";
+		if(data.userList.length > 1) {
+			html += "<option value='-1'>&nbsp;</option>";
+		}else if(data.userList.length < 1){
+			html += "<option value='-1'>暂无客户经理</option>";
+		}
+		for(var i=0;i<data.userList.length;i++) {
+			var obj = data.userList[i];
+			html += "<option value='"+obj.luserid+"'>"+obj.strname+obj.strmobile+"</option>";
+		}
+		$("#managerName").append(html);
+	},"json");
+}
+
+function onlyInteger(input_obj) {
+	input_obj.value = input_obj.value.replace(/\D/g, '');
+}
+
+function func(url,type){
+	var isDafyUser = $("#isDafyUser").val();
+	if(isDafyUser != "yes") {
+		alertMsg.warn("当前用户没有权限进行此操作！");
+		return;
+	}
+	
+	var selectDeptId = $("#selectDeptId").val();
+	var managerName = $("#managerName").val();
+	var productName = $("#productName").val();
+	var status = $("#status").val();
+		
+
+	var amountStart =$("#amountStart").val();
+	var amountEnd =$("#amountEnd").val();
+	var timeStart = $("#timeStart").val();
+	var timeEnd = $("#timeEnd").val();
+	
+
+
+	if(timeStart && timeEnd) {
+        var result = Date.parse(timeEnd.replace(/-/g,"/"))- Date.parse(timeStart.replace(/-/g,"/"));
+    	if(result < 0){
+    		alertMsg.warn("申请开始时间不能在申请结束时间之后！");
+    		return;
+    	}
+	}
+	if(amountStart && amountEnd) {
+        var result = parseFloat(amountEnd) - parseFloat(amountStart);
+    	if(result < 0){
+    		alertMsg.warn("出借结束金额必须大于等于开始金额！");
+    		return;
+    	}
+	}
+	
+	if(!amountStart && amountEnd){
+		$("#amountStart").val(0)
+	}
+
+	
+	var url = $("#APP_ROOT_PATH").val() + url;
+	$("#myform").attr("action",url);
+	if(type == "select") {
+		$("#myform").attr("onsubmit","return navTabSearch(this);");
+	}
+	else {
+		$("#myform").attr("onsubmit","");
+	}
+	$("#myform").submit();
+}
+</script>

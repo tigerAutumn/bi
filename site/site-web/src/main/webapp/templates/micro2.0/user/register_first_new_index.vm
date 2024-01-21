@@ -1,0 +1,54 @@
+#Html("begin")
+#Head("begin","注册,币港湾,币港湾官网","欢迎注册币港湾!币港湾官网为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("注册【币港湾官网】")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/user/register.min")
+#WeChatShare()
+#Head("end")
+<body id="body">
+    <input type="hidden" value="$!env.getWebURL('')" id="APP_ROOT_PATH" />
+    <input type="hidden" value="$!env.getWebURL('')/micro2.0/common/captcha/code?ts=" id="VALIDATE_PATH" />
+	 #if("$!qianbao" == "qianbao")
+        <div class="header">
+            <a class="header_arrow" href="javascript:history.go(-1)"></a>
+            <h1 class="heade_ft oran_color">$!agentView.getView($!agentViewFlag).get('H5_KEY_REGISTER_TITLE_TEXT')</h1>       
+        </div>
+		<div class="login_logo">
+            <img src="$!env.get('gen.server.web')$!agentView.getView($!agentViewFlag).get('H5_KEY_LOGIN_IMG_546_74')"/>
+        </div>
+	 #else
+		<div class="header">
+            <a class="header_arrow" href="javascript:history.go(-1)"></a>
+            <h1 class="heade_ft oran_color">注册</h1>
+        </div>    
+		<div class="register_logo"><img src="$!env.getWebURL('')/resources/micro2.0/images/regist/logo.png"/></div>
+     #end
+    <form action="$!env.getWebURL('/micro2.0/user/register_first_validate/mobile')" method="post" class="register_form" id="generalForm">
+        <div class="register_box">
+            <span class="register_icon icon1"></span>
+            <input class="register_in" type="tel" name="mobile" id="mobile" maxLength="11" placeholder="请输入手机号">
+        </div>
+        <div class="register_error"><span class="register_icon icon3"></span><span class="mobile_error"></span></div>
+        <div class="register_box">
+            <span class="register_icon icon2"></span>
+            <input class="register_in" type="text" name="verCode" id="verCode" maxlength="4" placeholder="验证码">
+            <span class="register_yzm"><img id="validateImg" src="$!env.getWebURL('')/micro2.0/common/captcha/code?ts=" alt="点击切换验证码" onclick="change()"></span>
+        </div>
+        <div class="register_error"><span class="register_icon icon3"></span><span class="code_error"></span></div>    
+        <input class="former_btn" type="hidden" name="qianbao" id="qianbao" value="$!qianbao" >
+        <input class="former_btn" type="hidden" name="recommendId" id="recommendId" value="$!recommendId" >
+        <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+        <input type="hidden" id="mobileToken" name="mobileToken" value="$!mobileToken">
+        <input type="hidden" id="flagForQD" name="flagForQD" value="$!flagForQD">
+        <input type="hidden" id="type" name="type" value="not_exist">
+        <input class="register_submit_gray" type="button" value="下一步" id="register_btn">
+    </form>
+    <div class="register_nav">
+		点击下一步即代表您同意
+        <a href="$!env.getWebURL('micro2.0/agreement/registAccountServiceAgreement')" class="register_agreement1">《注册账户服务协议》</a>
+    </div>
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/user/register_first_new_index")
+</body>
+#Html("end")

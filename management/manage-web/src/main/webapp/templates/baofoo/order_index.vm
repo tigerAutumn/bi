@@ -1,0 +1,155 @@
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!req.pageNum"/>
+    <input type="hidden" name="numPerPage" value="$!req.numPerPage"/>
+</form>
+<div class="pageHeader">
+    <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('baofoo/order/index.htm')"
+          method="post">
+        <input type="hidden" name="pageNum" value="$!req.pageNum"/>
+        <input type="hidden" name="numPerPage" value="$!req.numPerPage"/>
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        姓名：<input id="userName" type="text" name="userName" value="$!req.userName"/>
+                    </td>
+                    <td>
+                        手机号：<input id="mobile" type="text" name="mobile" value="$!req.mobile"/>
+                    </td>
+                    <td>
+                        银行卡号：<input id="bankCard" type="text" name="bankCard" value="$!req.bankCard"/>
+                    </td>
+                    <td>
+                        订单号：<input id="orderNo" type="text" name="orderNo" value="$!req.orderNo"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        订单状态:
+                        <select class="valid" name="transStatus">
+                            <option value="">全部</option>
+                            <option value="INIT" #if("$!req.transStatus"=="INIT") selected  #end>新建</option>
+                            <option value="COMM_FAIL" #if("$!req.transStatus"=="COMM_FAIL") selected  #end>通讯失败</option>
+                            <option value="PRE_ORDER_SUCCESS" #if("$!req.transStatus"=="PRE_ORDER_SUCCESS") selected  #end>预下单成功</option>
+                            <option value="PRE_ORDER_FAIL" #if("$!req.transStatus"=="PRE_ORDER_FAIL") selected  #end>预下单失败</option>
+                            <option value="PAYING" #if("$!req.transStatus"=="PAYING") selected  #end>支付处理中</option>
+                            <option value="PAY_SUCCESS" #if("$!req.transStatus"=="PAY_SUCCESS") selected  #end>支付成功</option>
+                            <option value="PAY_FAIL" #if("$!req.transStatus"=="PAY_FAIL") selected  #end>支付失败</option>
+                        </select>
+                    </td>
+                    <td>
+                        交易类型:
+                        <select class="valid" name="businessType">
+                            <option value="">全部</option>
+                            <option value="TOP_UP" #if("$!req.businessType"=="TOP_UP") selected  #end>充值</option>
+                            <option value="BALANCE_WITHDRAW" #if("$!req.businessType"=="BALANCE_WITHDRAW")
+                                    selected  #end>余额提现
+                            </option>
+
+                        </select>
+                    </td>
+                    <td>
+                        <div class="buttonActive">
+                            <div class="buttonContent">
+                                <button type="submit">查询</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li><a class="add" href="$env.getWebURL('baofoo/top_up/detail.htm')" target="dialog" mask="true" rel="createBack"
+                   height="300"><span>充值</span></a></li>
+            <li class="line">line</li>
+            <li><a class="add" href="$env.getWebURL('baofoo/balance_withdraw/detail.htm')" target="dialog" mask="true" rel="createBack"
+                   height="300"><span>提现</span></a></li>
+            <li class="line">line</li>
+            <li><a class="add" href="$env.getWebURL('baofoo/ebank/detail.htm')" target="dialog" mask="true" rel="createBack"
+                   height="300"><span>网银</span></a></li>
+        </ul>
+    </div>
+    <table class="table" width="1150" layoutH="138">
+        <thead>
+        <tr>
+            <th width="3%">订单号</th>
+            <th width="2%">用户姓名</th>
+            <th width="2%">手机</th>
+            <th width="3%">身份证号</th>
+            <th width="3%">银行类型</th>
+            <th width="3%">银行卡号</th>
+            <th width="5%">金额</th>
+            <th width="1%">交易类型</th>
+            <th width="2%">状态</th>
+            <th width="5%">返回消息</th>
+            <th width="3%">交易时间</th>
+            <th width="3%">更新时间</th>
+            <th width="5%">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach($user in $orderList)
+            <tr target="sid_user" rel="1">
+                <td>$!user.orderNo</td>
+                <td>$!user.userName</td>
+                <td>$!user.mobile</td>
+                <td>$!user.idCard</td>
+                <td>$!user.bankName</td>
+                <td>$!user.bankCard</td>
+                <td>$!money.format($!user.amount)</td>
+                <td>
+                    #if("$!user.businessType" == "TOP_UP")
+                        充值
+                    #elseif("$!user.businessType" == "BALANCE_WITHDRAW")
+                        余额提现
+                    #end
+                </td>
+                <td>
+                    #if("$!user.transStatus" == "PAY_SUCCESS")
+                        支付成功
+                    #elseif("$!user.transStatus" == "INIT")
+                        新建
+                    #elseif("$!user.transStatus" == "COMM_FAIL")
+                        通讯失败
+                    #elseif("$!user.transStatus" == "PRE_ORDER_FAIL")
+                        预下单失败
+                    #elseif("$!user.transStatus" == "PRE_ORDER_SUCCESS")
+                        预下单成功
+                    #elseif("$!user.transStatus" == "PAY_FAIL")
+                        支付失败
+                    #elseif("$!user.transStatus" == "PAYING")
+                        处理中
+                    #end
+
+                </td>
+                <td>$!user.returnMsg</td>
+                <td>$!date.format($!user.createTime)</td>
+                <td>$!date.format($!user.updateTime)</td>
+                <td><a href="$env.getWebURL('baofoo/order_status.htm?transId=')$!user.orderNo&businessType=$!user.businessType" target="ajaxTodo" title="同步此订单状态？">查询同步</a></td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+                <option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!totalNum条</span>
+        </div>
+
+        <div class="pagination" targetType="navTab" totalCount="$!totalNum" numPerPage="$!req.numPerPage"
+             currentPage="$!req.pageNum"></div>
+
+    </div>
+</div>
+	

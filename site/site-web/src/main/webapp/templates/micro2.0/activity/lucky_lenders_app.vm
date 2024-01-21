@@ -1,0 +1,129 @@
+#Html("begin")
+#Head("begin", "币港湾平台活动,币港湾,币港湾官网", "关注币港湾,活动不停歇!币港湾官网为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("幸运出借人【币港湾官网】")
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+#LoadJS("resources/micro2.0/scripts/activity/rem_750")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadCSS("resources/micro2.0/styles/activity/2018/lucky_lenders")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/activity/lucky_lenders")
+#WeChatShare()
+#Head("end")
+<body>
+
+<input type="hidden" value="$!countdown" id="countdown">
+<input type="hidden" value="$!participate" id="participate">
+<input type="hidden" value="$!client" id="client">
+<div class="lucky_lenders">
+    <div class="lucky_lenders_banner"></div>
+    <div class="lucky_lenders_container">
+        <div class="lenders_bar">
+            <div class="lenders_bar_left">
+                <img src="$!env.get('gen.server.web')/resources/micro2.0/images/activity/lucky_lenders/lucky_leder_pack_h5.png">
+            </div>
+            <div class="lenders_bar_right">
+                <p>幸运出借人，幸运奖金跟你走！</p>
+                <p>凡在本周四成功出借的用户，即有机会成为幸运出借人，获得最高150元幸运奖金！</p>
+            </div>
+        </div>
+        <div class="lenders_winnerlist">
+            #if($!participate == 'end')
+                #if($!luckyList.size() == 3)
+                    <img class="lenders_wrap_pic" src="$!env.get('gen.server.web')/resources/micro2.0/images/activity/lucky_lenders/lucky_leder_list_wrap_h5_3.png">
+                #elseif($!luckyList.size() == 4)
+                    <img class="lenders_wrap_pic" src="$!env.get('gen.server.web')/resources/micro2.0/images/activity/lucky_lenders/lucky_leder_list_wrap_h5_4.png">
+                #else
+                    <img class="lenders_wrap_pic" src="$!env.get('gen.server.web')/resources/micro2.0/images/activity/lucky_lenders/lucky_leder_list_wrap_h5.png">
+                #end
+            #else
+                <img class="lenders_wrap_pic" src="$!env.get('gen.server.web')/resources/micro2.0/images/activity/lucky_lenders/lucky_leder_list_wrap_h5.png">
+            #end
+            <div class="lenders_list_content">
+                #if($!participate == 'end')
+                    #if($!luckyList)
+                        <div class="list_from">
+                            <h5>本期中奖名单</h5>
+                            <div class="list_title">
+                                <div class="list_title_side" style="border-left: none;border-right: none;">
+                                    中奖用户
+                                </div>
+                                <div class="list_title_side" style="border-right: none;">
+                                    幸运奖金
+                                </div>
+                            </div>
+                            <ul class="list_content">
+                                #set($listIndex = 1)
+                                #foreach($list in $!luckyList)
+                                    #if($listIndex % 2 == 0)
+                                        <li class="list_content_even">
+                                            <div class="list_content_side">$list.mobile</div>
+                                            <div class="list_content_side">$list.note</div>
+                                        </li>
+                                    #else
+                                        <li class="list_content_odd">
+                                            <div class="list_content_side">$list.mobile</div>
+                                            <div class="list_content_side">$list.note</div>
+                                        </li>
+                                    #end
+                                    #set($listIndex = $listIndex + 1)
+                                #end
+                            </ul>
+                        </div>
+                    #else
+                        <div class="list_null">
+                            <div class="list_null_img">
+                                <img src="$!env.get('gen.server.web')/resources/micro2.0/images/activity/lucky_lenders/lucky_leder_null.jpg">
+                            </div>
+                            <p>幸运出借人，即将揭晓！</p>
+                            <p>出借一下，下一个幸运儿可能就是你！</p>
+                        </div>
+                    #end
+                #else
+                    <div class="list_null">
+                        <div class="list_null_img">
+                            <img src="$!env.get('gen.server.web')/resources/micro2.0/images/activity/lucky_lenders/lucky_leder_null.jpg">
+                        </div>
+                        <p>幸运出借人，即将揭晓！</p>
+                        <p>出借一下，下一个幸运儿可能就是你！</p>
+                    </div>
+                #end
+            </div>
+            <div class="lenders_list_btn">
+                #if($!participate == 'notBegin')
+                    <a>本期尚未开始</a>
+                #elseif($!participate == 'processing')
+                    <a id="join_app">立即参与</a>
+                #else
+                    <a>本期已结束</a>
+                #end
+            </div>
+        </div>
+        <div class="lenders_rule">
+            <img class="lenders_wrap_pic" src="$!env.get('gen.server.web')/resources/micro2.0/images/activity/lucky_lenders/lucky_leder_rule_wrap_h5.png">
+            <div class="lenders_rule_text">
+                <h5>活动规则：</h5>
+                <p>1、活动时间：本周四0:00:00-24:00:00；</p>
+                <p>2、活动标的：仅限港湾计划系列标的（除新手标）；</p>
+                <p>3、活动期间，成功出借活动产品的用户可参与幸运出借人的随机抽取；</p>
+                <p>4、平台将在本周五0:00:00，公布本周四的幸运出借人名单及可获得幸运奖金金额；</p>
+                <p>5、幸运奖金将以奖励金形式发放，于活动结束后的4个工作日内发放至您的账户，请在【我的资产】-【我的奖励】中查看。</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function toAndroidPage(json) {
+        javascript:coinharbour.toAndroidPage(json);
+    }
+    $('#join_app').on('click', function() {
+        var json = '{"appActive":{"page":"b"}}';
+        var client = document.getElementById("client").value;
+        if(client == "ios") {
+            toiOSPage(json);
+        } else if(client == "android") {
+            toAndroidPage(json);
+        }
+    });
+</script>
+</body>
+#Html("end")

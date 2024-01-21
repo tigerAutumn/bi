@@ -1,0 +1,97 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!product.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!product.numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+ <div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/account/customerWithdraw.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" name="pageNum" value="$!product.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!product.numPerPage" />
+	 <div class="searchBar">
+		<table class="searchContent">
+			<tr>
+				<td>
+					用户编号：<input  id="applyNo" type="text" name="applyNo" value="$!req.applyNo" size="18"/>
+                </td>
+				<td>
+    				<label>提现状态：</label>
+        			<select class="combox" name="status">
+        				<option value="0">请选择</option>
+        				<option value="1" #if($!req.status == 1) selected #end>发起提现</option>
+        				<option value="2" #if($!req.status == 2) selected #end>提现成功</option>
+        				<option value="3" #if($!req.status == 3) selected #end>提现失败</option>
+        			</select>
+				</td>
+				<td>
+					提现日期：<input type="text" readonly="true" class="date textInput readonly" name="withdrawTime" id="withdrawTime" value="$!date.formatYYYYMMDD($!req.withdrawTime)">
+				</td>
+				<td>
+					到账日期：<input type="text" readonly="true" class="date textInput readonly" name="finishTime" id="finishTime" value="$!date.formatYYYYMMDD($!req.finishTime)">
+				</td>
+				<td>
+					<input type="button" id="search" onclick="func()" value="查询"/>
+                </td>
+			</tr>
+		</table>
+	</div>
+	</form>
+</div> 
+<div class="pageContent">
+	
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+	            <th width="15%">用户编号</th>
+				<th width="12.5%">金额</th>
+				<th width="12.5%">提现时间</th>
+				<th width="12.5%">到账时间</th>
+				<th width="10%">状态</th>
+				<th width="12.5%">开始流水号</th>
+				<th width="12.5%">结束流水号</th>
+				<th width="12.5%">失败原因</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($product in $accountList)
+			<tr target="sid_user" rel="1" style="color:
+						#if("$!product.status" == "2") green">
+						#else ">
+				        #end 
+                <td>$!product.applyNo</td>
+				<td>$!product.amount</td>
+				<td>$!date.formatYYYYMMDD($!product.withdrawTime)</td>
+				<td>$!date.formatYYYYMMDD($!product.finishTime)</td>
+				<td>$!message.get("BSUSER_WITHDRAW_STATUS_$!product.status")</td>
+				<td>$!product.startJnlNo</td>
+				<td>$!product.endJnlNo</td>
+				<td>$!product.failReason</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!product.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!product.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!product.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!product.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!product.totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!product.totalRows" numPerPage="$!product.numPerPage" currentPage="$!product.pageNum"></div>
+
+	</div>
+</div>
+<script>
+
+function func(){
+	
+	
+	$("#myform").submit();
+}
+
+</script>

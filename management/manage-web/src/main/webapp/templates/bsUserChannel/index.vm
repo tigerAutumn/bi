@@ -1,0 +1,89 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/bsUserChannel/index.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+				<tr>
+					<td>
+						用户名：<input id="userName" type="text" name="userName" value="$!req.userName" />
+						注册手机号：<input id="mobile" type="text" name="mobile" value="$!req.mobile" />
+						<span style="margin-left:20px;">
+							<button onclick="func()" type="button">查询</button>
+                        </span>
+						
+					</td>
+				</tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">	
+		<ul class="toolBar">
+			<li><a class="add" href="$env.getWebURL('/bsUserChannel/detail.htm')" target="dialog" mask="true" rel="createBack" height="665" width="720"><span>新增</span></a></li>
+			<li class="line">line</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="168">
+		<thead>
+			<tr>
+	            <th width="15%">用户名</th>
+				<th width="15%">注册手机号</th>
+				<th width="15%">19付银行名称</th>
+				<th width="15%">渠道类型</th>
+				<th width="15%">渠道优先级</th>
+				<th width="15%">添加时间</th>
+				<th width="10%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $userChannelList)
+			<tr target="sid_user" rel="1" >
+				<td>$!grid.userName</td>
+				<td>$!grid.mobile</td>
+				<td>$!grid.name</td>
+				<td>$message.get("BSUSERCHANNEL_CHANNEL_$!grid.channel")</td>
+				<td>$!grid.channelPriority</td>
+				<td>$!date.format($!grid.createTime)</td>
+				<td>
+					<a title="编辑?" target="dialog" href="$env.getWebURL('/bsUserChannel/detail.htm?id=')$!grid.id" class="btnEdit" mask="true" rel="createBack" height="665" width="720">编辑</a>
+					<a title="删除?" target="ajaxTodo" mask="true" href="$env.getWebURL('/bsUserChannel/delete.htm?id=')$!grid.id" class="btnDel">删除</a>
+                </td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+function func(){
+	var url = $("#APP_ROOT_PATH").val() + "/bsUserChannel/index.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+</script>

@@ -1,0 +1,50 @@
+<div class="pageContent" id="topUp">
+	#Hidden("APP_ROOT_PATH",$!env.getWebURL(''))
+	<form id="topUpForm" method="post" action="$env.getWebURL('/financial/margin_recharge.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabModalAjaxDone)">
+		<div class="pageFormContent nowrap" layoutH="60">
+			<label >验证码：</label>
+			<input type="text" name="smsCode" id="smsCode" maxLength="6"/>
+			
+			<input type="hidden" name="transId" id="transId" value="$!transId"/>
+			<input type="hidden" name="bindId" id="bindId" value="20170724103813304107263"/>
+			<input type="hidden" name="amount" id="amount" value="$!amount"/>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li>
+					<div class="buttonActive">
+						<div class="buttonContent">
+							<button onclick="topUp()" type="button">提交</button>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
+							<button type="button" class="close">取消</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+	
+<script>
+    function topUp(){
+		if($('#smsCode').val()) {
+    		$("#topUpForm").submit();
+    	} else if(!$('#smsCode').val()) {
+    		alertMsg.info('请输入验证码！');
+    	}
+    }
+	function navTabModalAjaxDone(json) {
+		if (json.statusCode == 200) {
+			alertMsg.correct('您的数据提交成功!');
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('financial/margin_recharge_index.htm')");
+		} else {
+			alertMsg.error('保存失败：'+json.message);
+		}
+	}
+</script>

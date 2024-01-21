@@ -1,0 +1,115 @@
+#foreach($!invest in $!investList)
+	<section class="invest_main">
+		<div class="invest_title">$!invest.productName</div>
+		<div class="invest_wp">
+			<ul class="invest_ul_one">
+				<li class="invest_li">
+					<span class="invest_ft">预期年化收益：</span>
+					<span class="invest_number">$!number.format("0.00", $!{invest.productRate})%</span>
+					#if($!invest.ticketApr != 0)
+						<span class="ticketRight">+$!{money.format($!invest.ticketApr)}%</span>
+					#end
+				</li>
+				<li class="invest_li ticketBox">
+					<div class="ticketChild">
+						<span class="invest_ft">加入本金：</span>
+						<span class="invest_number">¥$!money.format($!invest.balance)</span>
+					</div>
+					<div class="ticketChild">
+    					<span class="invest_ft">预期收益：</span>
+    					<span class="invest_number">
+    					#if(0>$!invest.term)
+    						#set($termShow = $!invest.balance * $!invest.productRate * $!invest.term *-1/36500)
+    						¥$!money.format($termShow)
+        				#elseif($!invest.term == 12)
+    						#set($termShow = $!invest.balance * $!invest.productRate / 100)
+    						¥$!money.format($termShow)
+    					#else
+    						#set($termShow = $!invest.balance * $!invest.productRate * $!invest.term *30/36500)
+    						¥$!money.format($termShow)
+    					#end
+    					</span>
+					</div>
+				</li>
+				#if($!invest.redAmount > 0)
+					<li class="invest_li">
+    					<span class="invest_ft">红包抵扣：</span>
+    					<span class="invest_number">¥$!money.format($!invest.redAmount)</span>
+    				</li>
+				#end				
+				#if($!invest.interestAmount != 0)
+					<li class="invest_li increase_li">
+						<span class="invest_ft increase_color">预期加息收益：</span>
+						<span class="invest_number increase_color">¥$!money.format($!invest.interestAmount)</span>
+						<img class="increase_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/increase_color.png" alt=""/>
+					</li>					
+					<li class="alert_info">
+						<div class="alert_title">提示</div>
+						<div class="alert_ul">
+							本产品您已使用$!{money.format($!invest.ticketApr)}%加息券，预期加息收益会以奖励金形式于$!date.formatDateTime($!invest.investEndTime,'yyyy-MM-dd')发放。
+						</div>
+						<div class="btn_group">
+							<div class="top_line close_btn">我知道了</div>
+						</div>
+					</li>						
+				#end
+			</ul>
+			<ul class="invest_ul_one inve_two">
+				<li class="invest_li">
+					<span class="invest_ft">起息时间：</span>
+					<span class="invest_number">$!date.formatDateTime($!invest.interestBeginDate,'yyyy-MM-dd')</span>
+				</li>
+				<li class="invest_li">
+					<span class="invest_ft">到期时间：</span>
+					<span class="invest_number">$!date.formatDateTime($!invest.investEndTime,'yyyy-MM-dd')
+						
+						#if($!tomorrowDate == $!date.formatDateTime($!invest.interestBeginDate,'yyyy-MM-dd'))
+						#else
+							#if($!invest.investDay > 0)
+								（剩余$!{invest.investDay}天）
+							#end
+						#end
+					</span>
+				</li>
+			</ul>			
+		</div>
+		#if($!invest.status == 2)
+			#if($!invest.investDay > 7)
+				<img class="status_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/horn1.png" alt=""> ##投资中
+			#else
+				<img class="status_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/horn2.png" alt=""> ##即将到期 
+			#end
+		#elseif($!invest.status == 7)
+			<img class="status_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/horn6.png" alt=""> ##已结算
+		#elseif($!invest.status == 5)
+			<img class="status_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/horn5.png" alt=""> ##回款中
+		#end
+		<div class="invest_footer">			
+			#if("$!invest.loan" == "yes")
+				<div class="footer_btn bnt_right_border" onclick="investment_agreement($!invest.id,'$!invest.propertyType')">
+					#if($!invest.powerAttorneyFlag == 'no')
+                        出借服务协议
+					#elseif($!invest.powerAttorneyFlag == 'yes')
+                        授权委托书
+					#else
+                        出借服务协议
+					#end
+				</div>
+				<div class="footer_btn" onclick="creditor_rights($!invest.productId,$!invest.id,'')">债权明细</div>
+			#else
+				<div class="footer_btn" onclick="investment_agreement($!invest.id,'$!invest.propertyType')">出借服务协议</div>
+			#end
+		</div>
+	</section>
+#end
+<script>
+	//加息券弹窗
+	$(".increase_li").click(function(){
+		$(".dialog_notice").addClass("alert_show").removeClass("alert_hide");
+		$(this).next(".alert_info").stop().show();
+	})
+	$(".close_btn").click(function(){
+		$(".dialog_notice").addClass("alert_hide").removeClass("alert_show");
+		$(".alert_info").stop().hide();
+	})
+</script>

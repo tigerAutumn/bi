@@ -1,0 +1,154 @@
+package com.pinting.business.hessian.manage.message;
+
+import java.util.Date;
+
+import com.pinting.core.hessian.msg.ReqMsg;
+
+public class ReqMsg_PropertyInfo_PropertyInfoModify extends ReqMsg {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1682655478004516813L;
+	
+	private Integer id;
+
+    private String propertyName;
+
+    private String propertySummary;
+
+    private String returnSource;
+
+    private String fundSecurity;
+
+    private String orgnizeCheck;
+
+    private String coopProtocolPics; //合作协议图片
+
+    private String ratingGrade;
+
+    private String loanProtocolPics; //借款合同图片
+
+    private Date createTime;
+
+    private Date updateTime;
+    
+    private String orgnizeCheckPics; //合作方信息披露图片
+    
+    private String ratingGradePics; //第三方担保合同图片
+    
+    private String propertySymbol;  // 资金接收方标识
+
+	public String getPropertySymbol() {
+        return propertySymbol;
+    }
+
+    public void setPropertySymbol(String propertySymbol) {
+        this.propertySymbol = propertySymbol;
+    }
+
+    public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getPropertyName() {
+		return propertyName;
+	}
+
+	public void setPropertyName(String propertyName) {
+		this.propertyName = propertyName;
+	}
+
+	public String getPropertySummary() {
+		return propertySummary;
+	}
+
+	public void setPropertySummary(String propertySummary) {
+		this.propertySummary = propertySummary;
+	}
+
+	public String getReturnSource() {
+		return returnSource;
+	}
+
+	public void setReturnSource(String returnSource) {
+		this.returnSource = returnSource;
+	}
+
+	public String getFundSecurity() {
+		return fundSecurity;
+	}
+
+	public void setFundSecurity(String fundSecurity) {
+		this.fundSecurity = fundSecurity;
+	}
+
+	public String getOrgnizeCheck() {
+		return orgnizeCheck;
+	}
+
+	public void setOrgnizeCheck(String orgnizeCheck) {
+		this.orgnizeCheck = orgnizeCheck;
+	}
+
+	public String getCoopProtocolPics() {
+		return coopProtocolPics;
+	}
+
+	public void setCoopProtocolPics(String coopProtocolPics) {
+		this.coopProtocolPics = coopProtocolPics;
+	}
+
+	public String getRatingGrade() {
+		return ratingGrade;
+	}
+
+	public void setRatingGrade(String ratingGrade) {
+		this.ratingGrade = ratingGrade;
+	}
+
+	public String getLoanProtocolPics() {
+		return loanProtocolPics;
+	}
+
+	public void setLoanProtocolPics(String loanProtocolPics) {
+		this.loanProtocolPics = loanProtocolPics;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public String getOrgnizeCheckPics() {
+		return orgnizeCheckPics;
+	}
+
+	public void setOrgnizeCheckPics(String orgnizeCheckPics) {
+		this.orgnizeCheckPics = orgnizeCheckPics;
+	}
+
+	public String getRatingGradePics() {
+		return ratingGradePics;
+	}
+
+	public void setRatingGradePics(String ratingGradePics) {
+		this.ratingGradePics = ratingGradePics;
+	}
+
+}

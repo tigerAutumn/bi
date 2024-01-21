@@ -1,0 +1,148 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/financial/qbDepServiceFeeIndex.htm')" method="post" id="myform" class="pageForm required-validate">
+    	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+    	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						产品期限：
+						<select name="productTerm" >
+							<option value="" #if("$!req.productTerm"=="") selected #end>全部</option>
+							<option value="1" #if("$!req.productTerm"=="1") selected  #end>30天</option>
+							<option value="3" #if("$!req.productTerm"=="3") selected  #end>90天</option>
+							<option value="6" #if("$!req.productTerm"=="6") selected  #end>180天</option>
+							<option value="12" #if("$!req.productTerm"=="12") selected  #end>365天</option>
+						</select>
+						产品名称：<input id="productName" type="text" name="productName" value="$!req.productName" size="15"/>
+					</td>
+					<td>
+					   	购买日期： <input name="buyBeginTime"  type="text" id="buyBeginTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.buyBeginTime)" /> 到
+					   	<input name="buyEndTime"  type="text" id="buyEndTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.buyEndTime)" />
+						渠道:钱报178
+						<span style="margin-left:20px;">
+							<button  onclick="func()" type="button">查询</button>
+							<button  onclick="exp()" type="button">导出excel</button>
+                        </span>
+
+					</td>
+				</tr>
+
+			</table>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li>		
+				<span style="margin-left:10px;">
+    				<font color="red">购买总金额：#if(!$!sumBuyAmount)0.00 #else $!money.format($!sumBuyAmount) #end 元</font>
+                    <font color="red" style="margin-left:10px;">信息服务费：#if(!$!sumQbServiceFee)0.00 #else $!money.format($!sumQbServiceFee) #end 元</font>
+                </span>
+			</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="128">
+		<thead>
+			<tr>
+                <th width="10%">购买日期</th>
+				<th width="8%">手机号</th>
+				<th width="6%">姓名</th>
+				<th width="16%">订单号</th>
+				<th width="8%">产品名称</th>
+				<th width="5%">期限(天)</th>
+				<th width="5%">利率</th>
+				<th width="6%" orderfield="balance"  class=#if("$!balance" != "") $!balance #else "asc" #end >购买金额</th>
+				<th width="8%">提现银行</th>
+				<th width="6%" orderfield="investEndTime"  class=#if("$!investEndTime" != "") $!investEndTime #else "asc" #end >到期提现日期</th>
+				<th width="5%" orderfield="openTime" >账户状态</th>
+				<th width="5%">渠道来源</th>
+				<th width="5%">结算比例</th>
+				<th width="6%">信息服务费</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $transferList)
+			<tr target="sid_user" rel="1">
+				<td>$!date.format($!grid.openTime)</td>
+				<td>#if("$!grid.mobile" != "" && $!grid.mobile.length() == 11)
+				 $!grid.mobile.substring(0,3)****$!grid.mobile.substring(7,11)
+				 #else 
+				 $!grid.mobile
+				 #end</td>
+				<td>#if("$!grid.userName" != "") $!grid.userName#end</td>
+				<td>$!grid.orderNo</td>	
+				<td>#if("$!grid.productName" != "") $!grid.productName#end</td>
+				<td>$!grid.productTerm</td>	
+				<td>$!grid.productRate</td>	
+				<td><div class="gridCol">$!money.format($!grid.openBalance)</div></td>
+				<td><div class="gridCol">$!grid.bankName</div></td>
+				<td>$!date.formatYYYYMMDD($!grid.withdrawTime)</td>
+				<td>$!message.get("ACCOUNT_STATUS_$!grid.accountStatus")</td>
+				<td>钱报178</td>	
+				<td>$!grid.revenueRate%</td>	
+				<td><div>$!money.format($!grid.depServiceFee)</div></td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+function func(){
+	var buyBeginTime = $("#buyBeginTime").val();
+	var buyEndTime = $("#buyEndTime").val();
+
+	if(buyBeginTime != "" && buyEndTime != ""){
+		var result = Date.parse(buyEndTime.replace(/-/g,"/"))- Date.parse(buyBeginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("购买开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/financial/qbDepServiceFeeIndex.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+	
+	var buyBeginTime = $("#buyBeginTime").val();
+	var buyEndTime = $("#buyEndTime").val();
+
+	if(buyBeginTime != "" && buyEndTime != ""){
+		var result = Date.parse(buyEndTime.replace(/-/g,"/"))- Date.parse(buyBeginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("购买开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	var url = $("#APP_ROOT_PATH").val() + "/financial/qbDepServiceFee/exportXls.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+</script>

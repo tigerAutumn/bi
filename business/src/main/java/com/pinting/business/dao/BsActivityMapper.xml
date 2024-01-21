@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsActivityMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsActivity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, start_time, end_time, note, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsActivityExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_activity
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_activity
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_activity
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsActivityExample" >
+    delete from bs_activity
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsActivity" >
+    insert into bs_activity (id, name, start_time, 
+      end_time, note, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{note,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsActivity" >
+    insert into bs_activity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsActivityExample" resultType="java.lang.Integer" >
+    select count(*) from bs_activity
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_activity
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startTime != null" >
+        start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null" >
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_activity
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsActivity" >
+    update bs_activity
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsActivity" >
+    update bs_activity
+    set name = #{name,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <resultMap type="com.pinting.business.model.vo.ActivityYouFuRankInfoVO" id="ActivityYouFuRankInfoVOMap" >
+    <result column="rank" property="rank" jdbcType="INTEGER"/>
+    <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+    <result column="balance" property="balance" jdbcType="DOUBLE"/>
+    <result column="recommended_num" property="recommendedNum" jdbcType="INTEGER"/>
+  </resultMap>
+  <resultMap type="com.pinting.business.model.vo.ActivityYouFuSelfInfoVO" id="ActivityYouFuSelfInfoVOMap" >
+    <result column="rank" property="rank" jdbcType="INTEGER"/>
+    <result column="balance" property="balance" jdbcType="DOUBLE"/>
+    <result column="recommended_num" property="recommendedNum" jdbcType="INTEGER"/>
+    <result column="qualify" property="qualify" jdbcType="VARCHAR"/>
+  </resultMap>
+
+
+  <select id="selectYouFuRankList" parameterType="java.util.Map" resultMap="ActivityYouFuRankInfoVOMap">
+    select @rank:=@rank+1 as rank, a.* from (
+        select
+                a.id as user_id, CONCAT(LEFT(a.mobile,3),'****',RIGHT(a.mobile,4)) as user_name, IFNULL(sum(b.balance), 0) as balance, b.open_time, count(a.id) as recommended_num
+        from bs_user a, (
+            select a.id, a.recommend_id, b.balance, b.user_id, b.open_time from (
+                select * from bs_user a where a.recommend_id is not null
+                and date(a.register_time) between date((select start_time from bs_activity where id = 26)) and date((select end_time from bs_activity where id = 26))
+            ) as a left join (
+                select IFNULL(ROUND(sum(a.open_balance), 2), 0) as balance, a.recommend_id, a.user_id, a.open_time from (
+                    select case
+                             when d.term > 0 and d.term != 12 then a.open_balance * d.term * 30 / 365
+                             when d.term > 0 and d.term = 12 then a.open_balance
+                             else a.open_balance * ABS(d.term) / 365
+                    end as open_balance, b.user_id, c.recommend_id, a.id, a.open_time
+                    from bs_sub_account a left join bs_product d on d.id = a.product_id
+                    and !FIND_IN_SET('PC_178', d.show_terminal) and !FIND_IN_SET('H5_178', d.show_terminal)
+                    and !FIND_IN_SET('PC_KQ', d.show_terminal) and !FIND_IN_SET('H5_KQ', d.show_terminal)
+                    and !FIND_IN_SET('PC_HN', d.show_terminal) and !FIND_IN_SET('H5_HN', d.show_terminal)
+                    and !FIND_IN_SET('PC_RUIAN', d.show_terminal) and !FIND_IN_SET('H5_RUIAN', d.show_terminal)
+                    , bs_account b, bs_user c
+                    where a.product_type in ('AUTH_YUN', 'RED', 'AUTH_ZSD','RED_ZSD') and a.`status` in (2,5,7)
+                    and a.account_id = b.id and c.id = b.user_id
+                    and date(c.register_time) between date((select start_time from bs_activity where id = 26))
+                    and date((select end_time from bs_activity where id = 26))
+                    and date(a.open_time) between date((select start_time from bs_activity where id = 26))
+                    and date((select end_time from bs_activity where id = 26))
+                    order by a.open_time desc
+                ) as a
+                group by a.user_id
+            ) b on a.id = b.user_id
+            order by b.open_time desc
+        ) b
+        where a.id = b.recommend_id
+        group by a.id
+        order by balance desc, open_time asc
+    ) as a, (
+        select @rank := 0
+    ) as b
+    where a.balance >= 100000
+    limit 6
+  </select>
+
+  <select id="selectYouFuSelfInfo" parameterType="java.util.Map" resultMap="ActivityYouFuSelfInfoVOMap">
+    select * from (
+        select @rank:=@rank+1 as rank, a.* from (
+            select
+                    a.id as user_id, CONCAT(LEFT(a.mobile,3),'****',RIGHT(a.mobile,4)) as user_name, IFNULL(sum(b.balance), 0) as balance,
+                    case when IFNULL(sum(b.balance), 0) >= 100000 then 'YES' else 'NO' end as qualify,
+                    b.open_time, count(a.id) as recommended_num
+            from bs_user a, (
+                select a.id, a.recommend_id, b.balance, b.user_id, b.open_time from (
+                    select * from bs_user a where a.recommend_id is not null
+                    and date(a.register_time) between date((select start_time from bs_activity where id = 26)) and date((select end_time from bs_activity where id = 26))
+                ) as a left join (
+                    select IFNULL(ROUND(sum(a.open_balance), 2), 0) as balance, a.recommend_id, a.user_id, a.open_time from (
+                        select case
+                                 when d.term > 0 and d.term != 12 then a.open_balance * d.term * 30 / 365
+                                 when d.term > 0 and d.term = 12 then a.open_balance
+                                 else a.open_balance * ABS(d.term) / 365
+                        end as open_balance, b.user_id, c.recommend_id, a.id, a.open_time
+                        from bs_sub_account a left join bs_product d on d.id = a.product_id
+                        and !FIND_IN_SET('PC_178', d.show_terminal) and !FIND_IN_SET('H5_178', d.show_terminal)
+                        and !FIND_IN_SET('PC_KQ', d.show_terminal) and !FIND_IN_SET('H5_KQ', d.show_terminal)
+                        and !FIND_IN_SET('PC_HN', d.show_terminal) and !FIND_IN_SET('H5_HN', d.show_terminal)
+                        and !FIND_IN_SET('PC_RUIAN', d.show_terminal) and !FIND_IN_SET('H5_RUIAN', d.show_terminal)
+                        , bs_account b, bs_user c
+                        where a.product_type in ('AUTH_YUN', 'RED', 'AUTH_ZSD','RED_ZSD') and a.`status` in (2,5,7)
+                        and a.account_id = b.id and c.id = b.user_id
+                        and date(c.register_time) between date((select start_time from bs_activity where id = 26))
+                        and date((select end_time from bs_activity where id = 26))
+                        and date(a.open_time) between date((select start_time from bs_activity where id = 26))
+                        and date((select end_time from bs_activity where id = 26))
+                        order by a.open_time desc
+                    ) as a
+                    group by a.user_id
+                ) b on a.id = b.user_id
+                order by b.open_time desc
+            ) b
+            where a.id = b.recommend_id
+            group by a.id
+            order by balance desc, open_time asc
+        ) as a, (
+            select @rank := 0
+        ) as b
+    ) as a
+    where a.user_id = #{userId}
+  </select>
+
+  <select id="sumThanksGiving" parameterType="java.util.Map" resultType="java.lang.Double">
+    select IFNULL(sum(a.open_balance),0) from bs_sub_account a left join bs_activity e on e.id = 28, bs_account b, bs_user c, bs_product d, bs_product_serial f
+    where a.account_id = b.id and b.user_id = c.id and a.product_id = d.id
+     and d.return_type = 'FINISH_RETURN_ALL' and d.activity_type = 'NORMAL'
+    and !FIND_IN_SET('PC_178', d.show_terminal) and !FIND_IN_SET('H5_178', d.show_terminal) and !FIND_IN_SET('PC_KQ', d.show_terminal)
+    and !FIND_IN_SET('H5_KQ', d.show_terminal)  and !FIND_IN_SET('PC_HN', d.show_terminal) and !FIND_IN_SET('H5_HN', d.show_terminal)
+    and !FIND_IN_SET('PC_RUIAN', d.show_terminal) and !FIND_IN_SET('H5_RUIAN', d.show_terminal)
+    and a.product_type in ('AUTH_YUN', 'AUTH_ZSD', 'RED', 'RED_ZSD') and a.`status` in (2,5,7)
+    and date(a.open_time) between date(e.start_time) and date(e.end_time) and f.id = d.serial_id
+    and c.id = #{userId} and d.term = #{term}
+      <if test="term == 1">
+          and f.serial_name like '%港湾计划短期乐%'
+      </if>
+      <if test="term == 3">
+          and f.serial_name like '%港湾计划安心投%'
+      </if>
+      <if test="term == 6">
+          and f.serial_name like '%港湾计划稳定收%'
+      </if>
+      <if test="term == 12">
+          and f.serial_name like '%港湾计划长安赢%'
+      </if>
+  </select>
+
+</mapper>

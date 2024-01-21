@@ -1,0 +1,207 @@
+<style type="text/css" >
+	.dd{
+		width:134px;
+		height:30px;
+		display:inline-block;
+	}
+	
+	.dd_user_select{
+		width:134px;
+		height:30px;
+		display:inline-block;
+	}
+</style>
+<div class="pageContent" id="dialog_tag_list">
+	#if("$!isAll" == "yes")
+		<form id="is_all_form">
+        	<input type="hidden" name="userId" value="$!req.userId"/>
+        	<input type="hidden" name="gender" value="$!req.gender"/>
+        	<input type="hidden" name="sAge" value="$!req.sAge" />
+        	<input type="hidden" name="eAge" value="$!req.eAge" />
+        	<input type="hidden" name="buyBankType" value="$!buyBankTypeList.bankId" />
+        	<input type="hidden" name="sSumBalance" value="$!number.format("0",$!req.sSumBalance)" />
+        	<input type="hidden" name="eSumBalance" value="$!number.format("0",$!req.eSumBalance)"/>
+        	<input type="hidden" name="bankStatus" value="$!req.bankStatus"/>
+        	<input type="hidden" name="sInvestmentTimes" value="$!req.sInvestmentTimes" />
+        	<input type="hidden" name="eInvestmentTimes" value="$!req.eInvestmentTimes"/></td>
+        	<input type="hidden" name="sCurrentBalance" value="$!number.format("0",$!req.sCurrentBalance)" />
+        	<input type="hidden" name="eCurrentBalance" value="$!number.format("0",$!req.eCurrentBalance)" />
+        	<input type="hidden" name="sReward" value="$!number.format("0",$!req.sReward)" />
+        	<input type="hidden" name="eReward" value="$!number.format("0",$!req.eReward)" />
+            <input type="hidden" name="SregistTime" value="$!date.formatYYYYMMDD($!req.SregistTime)" />
+        	<input type="hidden" name="EregistTime" value="$!date.formatYYYYMMDD($!req.EregistTime)" />
+        	<input type="hidden" name="sFirstBuyTime"  value="$!date.formatYYYYMMDD($!req.sFirstBuyTime)" />
+        	<input type="hidden" name="eFirstBuyTime"  value="$!date.formatYYYYMMDD($!req.eFirstBuyTime)" />
+        	<input type="hidden" name="sBalance" value="$!number.format("0",$!req.sBalance)"/>
+        	<input type="hidden" name="eBalance" value="$!number.format("0",$!req.eBalance)"/>
+            <input type="hidden" name="sTotalPrincipal" value="$!number.format("0",$!req.sTotalPrincipal)" />
+        	<input type="hidden" name="eTotalPrincipal" value="$!number.format("0",$!req.eTotalPrincipal)" />
+        	<input type="hidden" name="sTotalInterest" value="$!number.format("0",$!req.sTotalInterest)"/>
+        	<input type="hidden" name="eTotalInterest" value="$!number.format("0",$!req.eTotalInterest)"/>
+        	<input type="hidden" name="sRecommendNum" value="$!req.sRecommendNum" />
+        	<input type="hidden" name="eRecommendNum" value="$!req.eRecommendNum"/>
+        	<input type="hidden" name="agentIds" value="$!req.agentIds"/>
+        	<input type="hidden" name="nonAgentId" value="$!req.nonAgentId"/>
+        </form>
+	#end
+	<input type="hidden" name="userIdDialog" id="userIdDialog" value="$!userIds"/>
+	<input type="hidden" id="tagTotalRows" name="tagTotalRows" value="$!tagTotalRows"/>
+	<form method="post" id="detail_form" action="">
+		<div class="pageFormContent" layoutH="56">
+			#foreach($tag in $!tags)
+				<div class="dd_user_select">
+					#if("$!is_user_list" == "yes")
+						<input class="user_tag_class" type="checkbox" value="$tag.id" name="tag"/> 
+						<span class="content_class_user_select"  title="$tag.content" content="$tag.content">$tag.content
+						</span>
+					#else
+						#if("$!tag.isSelected" == "yes")
+    						<input class="user_tag_class" type="checkbox" checked value="$tag.id" name="tag"/>
+							<span class="content_class_user_select"  title="$tag.content" content="$tag.content">$tag.content
+							</span>
+    					#else
+    						<input class="user_tag_class" type="checkbox" value="$tag.id" name="tag"/> 
+							<span class="content_class_user_select"  title="$tag.content" content="$tag.content">$tag.content
+							</span>
+    					#end
+					#end
+				</div>
+			#end
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li style="margin-top: 3px; margin-right: 423px"><input type="checkbox" id="tag_checked_all" onchange="selectUserCheckBox()"/> 全选</li>
+                <li >
+					<div class="buttonActive">
+						<div class="buttonContent">
+							<button type="button" onclick="doTag('$!isAll')" >确定</button>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	$(function(){
+		var source = "$!source";
+		$("#source_input").val(source);
+		
+		var len = parseInt($(".user_tag_class").length);
+		var chekedLen = 0;
+		$(".user_tag_class").each(function(){
+			if($(this).attr('checked')) {
+				chekedLen++;
+			}
+		});
+		if(chekedLen == len) {
+			$("#tag_checked_all").prop("checked",true);
+		}
+	});
+	$('.dd_user_select').each(function(){
+    	var content = $(this).children('.content_class_user_select').attr('content');
+    	var size = content.length;
+    	if(size > 8) {
+    		var contentStr = content.substr(0, 8);
+    		$(this).children('.content_class_user_select').html(contentStr + "...");
+    	}
+    	
+	});	
+
+	function doTag(isAll) {
+		// 全量添加标签
+		if('yes' == isAll) {
+			var tagIds = "";
+    		var url = $("#APP_ROOT_PATH").val() + "/bsUserTags/batchAllUserTag.htm";
+    		userIds = $.trim($('#userIdDialog').val());
+    		$("input[name=tag]:checkbox").each(function(){
+    			if($(this).attr("checked")) {
+    				tagIds += $(this).attr('value') + ",";
+    			}
+    		});
+			var is_all_form = $("#is_all_form").serialize()+"&tagIds="+tagIds;
+    		jQuery.ajax({
+    			type : 'post',
+    			url : url,
+    			data : is_all_form,
+    			dataType: 'json',
+    			success : function(json) {
+    				alertMsg.correct('操作成功!');
+    				//关闭弹出框
+    				$.pdialog.closeCurrent();
+    				navTab.reload("$!env.getWebURL('/bsuser/tagManage.htm')");
+    			}
+        	});
+		}
+		// 批量添加标签 || 单个修改标签
+		else {
+			var tagIds = "";
+    		var url = $("#APP_ROOT_PATH").val() + "/bsUserTags/singleEdit.htm";
+    		userIds = $.trim($('#userIdDialog').val());
+    		$("input[name=tag]:checkbox").each(function(){
+    			if($(this).attr("checked")) {
+    				tagIds += $(this).attr('value') + ",";
+    			}
+    		})
+    		if(userIds == '') {
+    			alertMsg.error("userid不能为空！！");
+    			return;
+    		}
+    		if(userIds.indexOf(",") != -1) {
+    			url = $("#APP_ROOT_PATH").val() + "/bsUserTags/batchEdit.htm";
+    		}
+    		jQuery.ajax({
+    			type : 'post',
+    			url : url,
+    			data : {tagIds:tagIds,userIds:userIds},
+    			dataType: 'json',
+    			success : function(json) {
+    				alertMsg.correct('操作成功!');
+    				//关闭弹出框
+    				$.pdialog.closeCurrent();
+					if($("#source_input").val() == 'user_tag') {
+						navTab.reload("$!env.getWebURL('/bsuser/tagManage.htm')");
+					} else if($("#source_input").val() == 'id_tag') {
+						formSubmit();
+						// navTab.reload("$!env.getWebURL('/bsuser/tagManage.htm')");
+					} else {
+						navTab.reload("$!env.getWebURL('/bsuser/tagManage.htm')");
+					}
+    			}
+        	});
+		}
+	}
+	
+	function selectUserCheckBox() {
+    	var status = $("#tag_checked_all").prop("checked");
+    	if(status) {
+    		$(".user_tag_class").prop("checked",true);
+    	}
+    	else{
+    		$(".user_tag_class").prop("checked",false);
+    	}
+    }
+	
+	// 勾选事件
+	$("input[name=tag]:checkbox").on('click',function(){
+		var tagTotal = parseInt($.trim($('#tagTotalRows').val()));
+		if($(this).attr('checked')) {
+			var len = 0;
+			$("input[name=tag]:checkbox").each(function(){
+				if($(this).attr('checked')) {
+					len = parseInt(len) + 1;
+				}
+        	});
+			if(len == tagTotal) {
+				$('#tag_checked_all').prop('checked',true);
+			}else {
+				$('#tag_checked_all').prop('checked',false);
+			}
+		}else {
+			$('#tag_checked_all').prop('checked',false);
+		}
+	});
+</script>

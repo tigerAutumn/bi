@@ -1,0 +1,77 @@
+#Html("begin")
+#Head("begin","互联网金融产品,币港湾,币港湾官网","欢迎了解币港湾产品,币港湾官网为您提供多种互联网金融产品,是优质的互联网金融服务平台。")
+#set($strTitle="$!{productDetail.name}【币港湾官网】")
+#Title("$!strTitle")
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+#LoadJS("resources/micro2.0/scripts/activity/rem_750")
+#LoadCSS("resources/mall/styles/common/default")
+#LoadCSS("resources/mall/styles/home/home")
+#WeChatShare()
+#Head("end")
+<body>
+<input type="hidden" id="totalCount" value="$!count">
+<input type="hidden" id="ROOT_PATH" value="$!env.getWebURL('')">
+<input type="hidden" id="qianbao" value="$!qianbao">
+<input type="hidden" id="agentViewFlag" value="$!agentViewFlag">
+<div class="mall_history">
+    <div class="mall_information">
+        <div class="mall_topbar">
+            <a class="back" onclick="javacript:history.go(-1);"><img src="$!env.getWebURL('')/resources/mall/images/common/back_arrow_white.png"></a>
+            积分记录
+        </div>
+        <div class="mall_info_row" style="margin-top: 0.3rem;margin-bottom: 0.3rem">
+            <p>积分</p>
+            <p class="my_integral">$!money.format($!points).replace(".00","")</p>
+        </div>
+        <div class="mall_info_row">
+            <a class="my_record_btn" onclick="linkUrl('/h5/mallExchange/myExchangeList')">
+                <img src="$!env.getWebURL('')/resources/mall/images/home/icon_charge.png">我的兑换
+            </a>
+        </div>
+    </div>
+    #if($!recordList)
+        <div class="history_list">
+            #foreach($record in $!recordList)
+                #if($!record.points > 0)
+                    <div class="history_card">
+                        <div class="history_card_left">
+                            <p class="history_note">$!record.transName</p>
+                            <p class="history_date">$!date.formatDateTime($!record.transTime,'yyyy-MM-dd HH:mm')</p>
+                        </div>
+                        <div class="history_card_right">
+                            <p class="history_num income">+$!money.format($!record.points).replace(".00","")</p>
+                        </div>
+                    </div>
+                #else
+                    <div class="history_card">
+                        <div class="history_card_left">
+                            <p class="history_note">$!record.transName</p>
+                            <p class="history_date">$!date.formatDateTime($!record.transTime,'yyyy-MM-dd HH:mm')</p>
+                        </div>
+                        <div class="history_card_right">
+                            <p class="history_num output">$!money.format($!record.points).replace(".00","")</p>
+                        </div>
+                    </div>
+                #end
+            #end
+        </div>
+        #if($!count > 10)
+            <div class="scroll_tips" id="showmore">
+                查看更多
+            </div>
+        #else
+            <div class="scroll_tips">
+                以上为全部记录
+            </div>
+        #end
+    #else
+        <div class="history_null">
+            <img src="$!env.getWebURL('')/resources/mall/images/home/icon_myhistory.png">
+            <p class="null_tips">暂无积分记录</p>
+        </div>
+    #end
+</div>
+    #LoadJS("resources/mall/scripts/common/common")
+    #LoadJS("resources/mall/scripts/home/record_pagetion")
+</body>
+#Html("end")

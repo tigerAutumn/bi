@@ -1,0 +1,22 @@
+#foreach($!data in $!dataGrid)
+<div class="main_content" onclick="clickActivityDetail($data.appActiveStatus,'$data.url', $data.id)">
+    <div class="info_img">
+        <span class="info_label">
+            #if("$!data.appActiveStatus" == "1")
+                <i class="info_label_icon1"></i>进行中
+            #elseif("$!data.appActiveStatus" == "2")
+                <i class="info_label_icon2"></i>预热中
+            #elseif("$!data.appActiveStatus" == "3")
+                <i class="info_label_icon3"></i>已结束
+            #end
+        </span>
+        <!--活动结束黑色遮罩-->
+        <span class="info_stopbg"></span>
+        <!--活动图片-->
+        <img class="info_img_content" src="$!env.get('gen.server.web')$!data.imgUrl" alt="">
+    </div>
+    <div class="info_title">$!data.title</div>
+    <div class="info_txt">$!data.summary</div>
+    <div class="info_time">活动时间：$!date.formatDateTime($!data.startTime,'yyyy-MM-dd')~$!date.formatDateTime($!data.endTime,'yyyy-MM-dd')</div>
+</div>
+#end

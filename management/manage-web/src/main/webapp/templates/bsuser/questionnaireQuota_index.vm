@@ -1,0 +1,86 @@
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+    <form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/bsuser/questionnaireQuotaIndex.htm')" method="post">
+        <input type="hidden" name="numPerPage" value="$!numPerPage" />
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="pageNum" value="$!pageNum" />
+        <input type="hidden" name="totalRows" value="$!totalRows" />
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <table class="table" width="1396" layoutH="95">
+        <thead>
+            <tr>
+                <th width="16%">编号</th>
+                <th width="16%">风险测评结果</th>
+                <th width="16%">出借额度（万元）</th>
+                <th width="16%">产品期限限制</th>
+                <th width="16%">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            #foreach($grid in $quotaList)
+                <tr target="sid_user" rel="1">
+                    <td>$!grid.id</td>
+                    <td>
+						#if($!grid.evaluateType == "conservative")
+							保守型
+						#elseif($!grid.evaluateType == "steady")
+							稳健型
+						#elseif($!grid.evaluateType == "balanced")
+							平衡型
+						#elseif($!grid.evaluateType == "aggressive")
+							进取型
+						#elseif($!grid.evaluateType == "radical")
+							激进型
+						#end
+                    </td>
+                    <td>$!grid.amountLimit</td>
+                    <td>$!grid.periodLimit天内</td>
+                    <td>
+                      	<a title="编辑" target="dialog" href="$env.getWebURL('/bsuser/questionnaireQuotaDetail.htm?quotaId=')$!grid.id" class="btnEdit" mask="true" rel="createBack" height="300" width="500">编辑</a>
+ 
+                    </td>
+                </tr>
+            #end
+        </tbody>
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+                <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!totalRows条</span>
+        </div>
+        <div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+    </div>
+</div>
+#LoadJS("/resources/js/global_validate")
+<script>
+
+    function func(){
+       
+        var url = $("#APP_ROOT_PATH").val() + "/bsuser/questionnaireQuotaIndex.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+
+</script>

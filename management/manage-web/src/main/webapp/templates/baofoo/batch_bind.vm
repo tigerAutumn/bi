@@ -1,0 +1,57 @@
+<div class="pageContent">
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <form method="post" name="detail_form" action="$env.getWebURL('')"
+          class="pageForm required-validate" >
+        <div class="pageFormContent" layoutH="56">
+                <label>用户信息：</label>
+				<textarea name="bindCardInfo" id="bindCardInfo"  class="textInput" cols="85" rows="10"></textarea>
+                <label ><font color="red">格式：userName:xxx,mobile:158...,idCard:520...,bankCard:622...;</font></label>
+		</div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="buttonActive">
+                        <div class="buttonContent">
+                            <button id="batch_bind_sub" type="button">确定</button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button type="button" class="close">取消</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </form>
+</div>
+<script>
+
+    $("#batch_bind_sub").click(function () {
+	
+	
+		$.ajax({
+			url: $("#APP_ROOT_PATH").val() + "/baofoo/bind_card/batch_bind_sub.htm",
+			data: {
+				bindInfo: $("#bindCardInfo").val(),
+			},
+			type : 'post',
+			success : function(data) {
+  				if (data.statusCode == "200") {
+     				$.pdialog.closeCurrent();
+                    navTab.reload("$env.getWebURL('baofoo/bind_card/index.htm')");
+                }else{
+					if(data.message){
+						 alertMsg.error(data.message);
+					}else{
+						 alertMsg.error("操作失败");
+					}
+                }
+			}
+		});
+	
+    });
+</script>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>宝付对账优化和每日日终快照新增借款人余额_沈国平</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h2>宝付对账定时</h2>
+<ol>
+<li>
+<p>需求描述</p>
+<ul>
+<li>优化对账异常提示信息和库表记录</li>
+<li>统计对账结果信息</li>
+</ul>
+</li>
+<li>
+<p>需求背景</p>
+<ul>
+<li>原始需求优化 </li>
+<li>对账业务优化 </li>
+</ul>
+</li>
+<li>
+<p>业务逻辑</p>
+</li>
+</ol>
+<h3>入口（BaoFooCheckAccountTask定时）</h3>
+<h3>宝付对账流程：见宝付对账流程(20180418)文件</h3>
+<h3>说明：</h3>
+<ul>
+<li>主通道理财端对账包含业务：奖励金/余额提现,营收划转,重复还款营收划转</li>
+<li>主通道借款端对账包含业务：宝付代付到归集户,代扣还款</li>
+<li>主通道宝付间转账入账对账包含业务：云贷系统回款、代偿转账、线下还款、宝付辅助通道转账到主通道</li>
+<li>辅助通道理财端对账包含业务：奖励金/余额提现,营收划转,重复还款营收划转</li>
+<li>辅助通道借款端对账包含业务：宝付代付到归集户,代扣还款</li>
+<li>辅助通道不会有宝付间转账入账，不用进行宝付间转账入账对账</li>
+</ul>
+<h3>改动点</h3>
+<ol>
+<li>主商户的理财端对账和借款端对账不一致情况，优化提示信息bs<em>19pay</em>check<em>error表info字段，对账记录入bs<em>19pay</em>check</em>error，
+   提示信息改为本地订单状态或金额与三方不一致
+   新增的字段（宝付支付单号取宝付出账入账文件对应宝付订单号，宝付订单状态取宝付出账入账文件对应订单状态），告警信息不变;</li>
+<li>查询主通道宝付间转账入账业务对账数据的时候，之前sql有关联资产合作方的，但未关联7贷资产方的，本次修改加上。</li>
+<li>
+<p>业务类型存值说明：
+   <code>业务类型存值说明
+	WITHHOLDING_REPAY 代扣(还款)
+	WALLET_TRANSFER_OFFLINE_REPAY 钱包转账(线下还款)
+	WALLET_TRANSFER_LN_COMPENSATE 钱包转账(代偿)
+	WALLET_TRANSFER_ASSIST_2_MAIN 钱包转账(辅转主)
+	WALLET_TRANSFER_SYS_RECEIVE_MONEY 钱包转账(老产品回款)
+	WALLET_TRANSFER_PARTNER_SETTLE 钱包转账(结算合作方)
+	PAID_BALANCE_WITHDRAW 代付(余额提现)
+	PAID_BONUS_WITHDRAW 代付(奖励金提现)
+	PAID_2_DEP_REPAY_CARD 代付(归集户)</code> </p>
+</li>
+<li>
+<p>主商户和辅商户对账完成后，增加宝付对账结果信息的汇总，下面是对应业务汇总的sql语句
+   ```  汇总sql</p>
+</li>
+</ol>
+<p>``` </p>
+<ol>
+<li>数据库表操作</li>
+</ol>
+<pre>
+		ALTER TABLE bs_19pay_check_error ADD COLUMN `merchant_no` VARCHAR (64) NULL
+		DEFAULT NULL COMMENT '商户号' AFTER `deal_time`, ADD COLUMN `partner_code` VARCHAR (16) NULL
+		DEFAULT NULL COMMENT '资产合作方' AFTER `merchant_no`, ADD COLUMN `business_type` VARCHAR (32) NULL
+		DEFAULT NULL COMMENT '业务类型' AFTER `partner_code`, ADD COLUMN `bf_order_no` VARCHAR (64) NULL
+		DEFAULT NULL COMMENT '宝付支付单号' AFTER `business_type`, ADD COLUMN `host_sys_status` VARCHAR (32) NULL
+		DEFAULT NULL COMMENT '宝付订单状态' AFTER `bf_order_no`;
+   </pre>
+<p><br> </p>
+<h2>管理台对账可疑记录查询</h2>
+<ol>
+<li>
+<p>需求描述</p>
+<ul>
+<li>显示对账异常订单</li>
+<li>能够获取对账结果表</li>
+<li>处理常规异常订单</li>
+</ul>
+</li>
+<li>
+<p>需求背景</p>
+<ul>
+<li>原始需求优化 </li>
+<li>对账业务优化 </li>
+</ul>
+</li>
+<li>
+<p>业务逻辑</p>
+</li>
+</ol>
+<h3>入口（FinanceStatisticsController类的queryPayCheckErrorIndex方法）</h3>
+<h3>原型地址: 项目需求\原型\2018年需求\4月份-宝付对账可疑记录查询优化及处理</h3>
+<h3>说明：</h3>
+<pre><code>&lt;br&gt;对账可疑记录查询的是显示与宝付对账中发现的差错账务，对应数据库表是bs_19pay_check_error（具体含义参考PDM）
+&lt;pre&gt;商户类型merchant_no，资产方partner_code，业务类型business_type，本地订单编号order_no，
+     宝付支付单号bf_order_no，本地订单状态sys_status，宝付订单状态host_sys_status，主机金额done_amount，本地金额sys_amount，
+     对账结果info，对账日期create_time
+&lt;/pre&gt;
+</code></pre>
+
+<h3>改动点</h3>
+<ol>
+<li>对账可疑记录查询条件新增资产方，业务类型，商户类型</li>
+<li>对账可疑记录新增商户类型、资产方、业务类型、本地订单编号、宝付支付单号、本地订单状态、宝付订单状态字段，导出也一样</li>
+<li>
+根据日期导出对账结果表，模板见文件夹（对应原型目录），对应数据库表是bs<em>sys</em>daily<em>check</em>gacha（具体含义参考PDM） 
+   <code>对账日期check_date，渠道channel，资产合作方partner_code，商户号merchant_no，
+	出账入账标识financial_flag，业务类型business_type，成功交易金额transfer_succ_amount，成功交易笔数transfer_succ_count</code> 
+</li>
+<li>主商户入账业务：代偿，代扣还款，线下还款， 主商户出账业务：余额提现，奖励金提现，归集户，资产合作方营收，资产合作方重复还款；
+   辅商户入账业务：代扣还款， 辅商户出账业务：辅助通道转账到主通道</li>
+<li>
+<p>异常订单处理：  	
+<br>
+5.1 代扣异常
+<br>根据本地订单号查询ln<em>pay</em>orders状态为预下单/处理中，如果有记录则更新ln<em>pay<em>orders状态为失败	
+ 显示资产合作方和代扣金额用于财务确认
+5.2 代偿异常	
+<br>根据本地订单号order</em>no查询ln</em>compensate的id，再关联ln<em>compensate</em>detail查询对应状态为INIT的，如果有记录则更新ln<em>compensate</em>detail状态为失败
+ 显示资产合作方和代偿金额用于财务确认	 </p>
+</li>
+<li>
+<p>异常订单处理流程：	 </p>
+<pre> 
+	1. 重复提交校验
+	2. 处理的业务类型MULTI_COMPENSATE：代偿异常（代偿多账）{
+		2.1.根据宝付支付单号+状态INIT，查询符合条件的代偿明细集合;
+			ln_compensate_detail.compensate_id=ln_compensate.id
+			ln_compensate_detail.status='INIT'
+			ln_compensate.pay_order_no='宝付支付单号'
+		2.2.代偿明细集合不为空判断后遍历{
+			a.根据ln_compensate_detail.partner_repay_id,支付单号,查询本地账单状态 ObjectA
+				ln_compensate_detail.compensate_id=ln_compensate.id
+				ln_compensate_detail.status='INIT'
+				ln_compensate_detail.partner_repay_id=ln_loan.partner_loan_id
+				ln_repay_schedule.loan_id=ln_loan.id
+				ln_compensate_detail.partner_repay_id='账单编号'
+				ln_compensate.pay_order_no='宝付支付单号'
+			b.判断{
+				if ObjectA!=null || (ObjectA.status=LATE_NOT&&ObjectA.status='CANCELLED') -- 支持账单状态INIT 的重复代偿退款
+					更新ln_compensate_detail.status='FAIL';(新增更新update_time)
+					回显笔数+1
+			}
+			c.如果最终 回显笔数 > 0 则返回成功, 否则失败;
+			}
+		}
+	3. 成功，失败，异常返回异常原因
+</pre>
+</li>
+<li>
+<p>异常订单处理信息回显：	</p>
+<pre>	
+	 1. 获取页面宝付支付单号
+	 2. 处理的业务类型MULTI_COMPENSATE：代偿异常（代偿多账）{
+		2.1.根据宝付支付单号+状态INIT，查询符合条件的代偿明细集合ListA;
+			ln_compensate_detail.compensate_id=ln_compensate.id
+			ln_compensate_detail.status='INIT'
+			ln_compensate.pay_order_no='宝付支付单号'
+		2.2.代偿明细集合不为空判断{
+			获取代偿合作方ln_compensate.partner_code
+			ln_compensate.id=ListA.get(0).compensate_id
+			循环ListA获取代偿账单列表
+			根据宝付支付单号、账单列表 查询需要退款的订单笔数和(ln_repay_schedule.id)、金额和(ln_compensate_detail.total)
+			ln_repay_schedule.partner_repay_id=ln_compenste_detail.partner_repay_id
+			ln_repay_schedule.loan_id=ln_loan.id
+			ln_compensate_detail.partner_loan_id=ln_loan.partner_loan_id
+			ln_compensate_detail.compensate_id=ln_compensate.id
+			ln_compensate_detail.status='INIT'
+			ln_repay_schedule.status in('INIT','LATE_NOT','CANCELLED')
+			ln_compensate.pay_order_no='宝付支付单号'
+			ln_compensate_detail.partner_repay_id in(账单列表)
+			返回成功{合作方,笔数,金额}
+		}
+		2.3.代偿明细集合为空{
+			返回失败{合作方,0,0}
+		}
+	}
+</pre>	  
+</li>
+<li>
+<p>数据库表操作
+   宝付主通道对账完成后，会存主商户号对应类型汇总数据，统计本地成功发生的业务，入账出账标识参考第4点，主商户号对应类型参考宝付对账结果模板。
+   宝付辅助通道对账完成后，会存辅商户号对应类型汇总数据，统计本地成功发生的业务，入账出账标识参考第4点，辅商户号对应类型参考宝付对账结果模板。
+   理财端资产合作方记BGW。
+   例如：7贷营收划转业务（假使当天成功发生100笔业务），是宝付主通道对账完成后，bs<em>sys</em>daily<em>check</em>gacha存入一条数据，
+	 资产合作方记7贷，商户号记主商户号，成功交易笔数记100，成功交易金额就是100笔数据金额总和 	</p>
+</li>
+</ol>
+<pre>
+		drop table sys_daily_check_gacha;
+		CREATE TABLE `bs_sys_daily_check_gacha` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT,
+		  `check_date` datetime DEFAULT NULL COMMENT '对账日期',
+		  `channel` varchar(32) DEFAULT NULL,
+		  `partner_code` varchar(16) DEFAULT NULL COMMENT '资产合作方',
+		  `merchant_no` VARCHAR(64) DEFAULT NULL COMMENT '商户号',
+		  `financial_flag` VARCHAR(16) DEFAULT NULL COMMENT '出账入账标识',
+		  `business_type` VARCHAR(32) DEFAULT NULL COMMENT '业务类型',
+		  `transfer_succ_amount` double(15,2) DEFAULT NULL COMMENT '成功交易金额',
+		  `transfer_succ_count` int(11) DEFAULT NULL COMMENT '成功交易笔数',
+		  PRIMARY KEY (`id`)
+		) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='系统日常对账轧差信息汇总表';
+	</pre>
+<ol>
+<li>
+manage配置文件，还得上传模版文件到此目录下，模版文件见原型
+dep.daily.gacha.excel = /home/pinting/server/htdocs/manage/resources/depFinanceTemplate/\u5b9d\u4ed8\u5bf9\u8d26\u7ed3\u679c\u8868.xls
+</li>
+</ol>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

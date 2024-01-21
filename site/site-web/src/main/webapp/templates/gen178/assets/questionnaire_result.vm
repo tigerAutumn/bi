@@ -1,0 +1,74 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen178/styles/assets/questionnaire")
+#GenHead("end")
+<body>
+<!--header -s-->
+    #Gen178Header("assets")
+<!--header -e-->
+    <div class="result">
+        <div class="question-result">
+            <img src="$!env.get('gen.server.web')/resources/gen178/images/assets/questionnaire/question_result_bg.jpg"  alt="">
+            <div class="result-content">
+                <div class="result-content-main">
+                    <div class="result-img">
+                        #if($!resCode == "000")
+                            #if($!resMsg == "conservative")
+                                <img src="$!env.get('gen.server.web')/resources/gen2.0/images/assets/questionnaire/bs.png" alt="保守">
+                            #elseif($!resMsg == "steady")
+                                <img src="$!env.get('gen.server.web')/resources/gen2.0/images/assets/questionnaire/wj.png" alt="稳健">
+                            #elseif($!resMsg == "balanced")
+                                <img src="$!env.get('gen.server.web')/resources/gen2.0/images/assets/questionnaire/ph.png" alt="平衡">
+                            #elseif($!resMsg == "aggressive")
+                                <img src="$!env.get('gen.server.web')/resources/gen2.0/images/assets/questionnaire/jq.png" alt="进取">
+                            #elseif($!resMsg == "radical")
+                                <img src="$!env.get('gen.server.web')/resources/gen2.0/images/assets/questionnaire/jj.png" alt="激进">
+                            #end
+                        #else
+                            <div class="result-none">测评失败</div>
+                        #end
+                    </div>
+                    <div class="result-title" style="margin-bottom: 0">
+                        风险承受能力评测结果
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="result-des">
+            <p class="result-destext">
+                #if($!resMsg == "conservative")
+                    在参与任何产品项目中，保证本金不受损失和保持资产的流动性是您的首要目标。您对参与产品项目的态度是希望收益极度稳定，不愿承担高风险以换取高收益，不愿意承受太大波动对心理的煎熬，追求稳定。
+                #elseif($!resMsg == "steady")
+                    在参与任何产品项目中，稳定是您首要考虑的因素。您希望在保证本金安全的基础上能有一些增值收入。追求较低的风险，对回报的要求不高。
+                #elseif($!resMsg == "balanced")
+                    在参与任何产品项目中，在风险较小的情况下获得一定的收益是您主要目的。您通常愿意面临一定的风险，但在做决定时，会仔细地对将要面临的风险进行认真的分析。您对风险总是客观存在有清楚的认识。
+                #elseif($!resMsg == "aggressive")
+                    在参与任何产品项目中，您渴望有较高的收益，但又不愿承受较大的风险；可以承受一定的资金波动，但是希望自己的资金风险小于市场的整体风险。您有较高的收益目标，且对风险有清醒的认识。
+                #elseif($!resMsg == "radical")
+                    在参与任何产品项目中，您通常专注于资本的长期增值，并愿意为此承受较大的风险。短期的资金波动并不会对您造成大的影响，追求超高的回报才是您关注的目标。
+                #else
+                    尊敬的客户，您的风险承受能力测评结果万分之一的概率走丢了，请点击下方按钮，重新测评！
+                #end
+            </p>
+            <div class="result-btn">
+                #if($!resCode == "999")
+                    <a href="$!env.get('gen.server.web')/gen178/assets/questionnaire?agentViewFlag=$!agentViewFlag">
+                        重新测评
+                    </a>
+                #else
+                    <a href="$!env.get('gen.server.web')/gen178/assets/assets?agentViewFlag=$!agentViewFlag">
+                        确定
+                    </a>
+                #end
+            </div>
+            <p class="result-tips">测评结果仅供参考，请结合自身情况选择产品！</p>
+        </div>
+    </div>
+<!--footer -s-->
+    #Gen178Footer()
+<!--footer -e-->
+    #LoadGenJS("/resources/gen178/scripts/jquery-1.11.1.min")
+    #LoadGenJS("/resources/gen178/scripts/assets/questionnaire")
+</body>
+#Html("end")

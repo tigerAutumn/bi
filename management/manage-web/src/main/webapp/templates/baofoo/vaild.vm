@@ -1,0 +1,52 @@
+<div class="pageContent">
+    <form method="post" name="vaild_form" action="$env.getWebURL('/baofoo/bind_card.htm')"
+          class="pageForm required-validate" >
+        <div class="pageFormContent" layoutH="56">
+            <input type="hidden" id="accNo" value="$!accNo"/>
+            <p>
+                <label>已向您的手机号$!{mobile}发送了短信验证码，请注意查收</label>
+                <input id="smsCode" name="idHolder" type="text" size="10" maxlength="15" class="required textInput"
+                       />
+            </p>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="buttonActive">
+                        <div class="buttonContent">
+                            <button id="sub" type="button">验证</button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button type="button" class="close">取消</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </form>
+</div>
+<script>
+
+
+    function navTabAjaxDone(json) {
+        if (json.statusCode == "961003") {
+            alertMsg.error('此卡已绑定!');
+        } else if (json.statusCode == "200") {
+            alertMsg.correct('绑卡成功!');
+            $.pdialog.closeCurrent();
+            navTab.reload("$env.getWebURL('/bank/index.htm')");
+        }else if(json.statusCode=="900001") {
+            alertMsg.error('没有预绑卡信息!');
+        }
+        else {
+            alertMsg.error('操作失败!');
+        }
+    }
+
+
+</script>

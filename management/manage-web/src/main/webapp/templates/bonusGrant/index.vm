@@ -1,0 +1,137 @@
+#LoadJS("resources/js/ajaxfileupload")
+
+<div class="pageHeader">
+	<div class="searchBar">
+		<table class="searchContent">
+			<tr height="50px;">
+                <td width="30%">
+					<span>预览导入：</span><input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" name="fileFieldCheck" id="fileFieldCheck" onchange="fileUploadCheck()" value="导入">
+				</td>
+				<td width="30%">
+					<a class="icon" href="$!env.getWebURL('')/bonusGrant/exportExcel.htm" target="dwzExport" targetType="navTab">
+						<input type="button" value="下载模板">
+					</a>
+				</td>
+				<td width="30%">
+					 <span>确认导入：</span><input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" name="fileField" id="fileField" onchange="fileUpload()" value="导入">
+				</td>
+			</tr>
+        </table>
+    </div>
+</div>
+<div class="pageContent">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" id="checkFlag" value="false"/>
+	<table class="table" width="1900" layoutH="140" >
+		<thead>
+			<tr>
+                <th width="10%">用户编号</th>
+                <th width="10%">金额</th>
+                <th width="10%">发放时间（最早为当天）</th>
+                <th width="10%">备注</th>
+				
+			</tr>
+		</thead>
+	
+		<tbody id="tableBody">
+			
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span id="sizeShow">共上传0条数据</span>
+		</div>
+	</div>
+</div>
+	
+<script>
+/*上传预览*/
+	function fileUploadCheck(){
+		var url = $("#APP_ROOT_PATH").val() + "/bonusGrant/readExcelCheck.htm";
+		$.ajaxFileUpload
+		({
+			url:url,
+			secureuri :false,
+			fileElementId :'fileFieldCheck',
+			dataType :'json',
+			success : function (data){
+				$("#tableBody").html("");
+				$("#sizeShow").html("共上传0条数据");
+				var showStr = '';
+				$("#checkFlag").val("false");
+				for(i=0;i<data.bonusGrantList.length;i++){
+             		showStr = showStr+ '<tr>';
+					if(data.bonusGrantList[i].userIdFlag == 'error'){
+						showStr = showStr+'<td style="color:red;">';
+					}else{
+						showStr = showStr+'<td>';
+					}
+    				showStr = showStr +data.bonusGrantList[i].userIdStr+'</td>';
+					if(data.bonusGrantList[i].amountFlag == 'error'){
+						showStr = showStr+'<td style="color:red;">';
+					}else{
+						showStr = showStr+'<td>';
+					}
+					showStr = showStr +data.bonusGrantList[i].amountStr+'</td>';
+					if(data.bonusGrantList[i].grantDateFlag == 'error'){
+						showStr = showStr+'<td style="color:red;">';
+					}else{
+						showStr = showStr+'<td>';
+					}
+					showStr = showStr +data.bonusGrantList[i].grantDateStr+'</td>';
+					if(data.bonusGrantList[i].noteFlag == 'error'){
+						showStr = showStr+'<td style="color:red;">';
+					}else{
+						showStr = showStr+'<td>';
+					}
+					showStr = showStr +data.bonusGrantList[i].note+'</td></tr>';
+				}
+				$("#tableBody").html(showStr);
+				if(data.errorMessage != ''){
+					alertMsg.error(data.errorMessage);
+				}else{
+					$("#checkFlag").val("true");
+					alertMsg.correct("通过校验，可以上传");
+				}
+				if(data.showSize != 0){
+					$("#sizeShow").html("共上传"+data.showSize+"条数据");
+				}
+            },
+			error: function(data){
+				alertMsg.error("操作失败！");
+			}
+         });
+    }
+	
+	/*真正导入*/
+	function fileUpload(){
+		if($("#checkFlag").val() == 'true'){
+			var url = $("#APP_ROOT_PATH").val() + "/bonusGrant/readExcel.htm";
+			$.ajaxFileUpload
+			({
+    			url:url,
+    			secureuri :false,
+    			fileElementId :'fileField',
+    			dataType :'json',
+    			success : function (data){
+    				if(data.errorMessage != ''){
+    					alertMsg.error(data.errorMessage+"请重新进行预览");
+						$("#checkFlag").val("false");
+    				}else{
+    					alertMsg.correct("导入成功！");
+						$("#tableBody").html("");
+						$("#checkFlag").val("false");
+						$("#sizeShow").html("共上传0条数据");
+    				}
+                },
+    			error: function(data){
+    				alertMsg.error("操作失败！");
+    			}
+         	});
+		}else{
+			alertMsg.error("预览校验通过才能确认导入");
+			var obj = document.getElementById('fileField') ; 
+			obj.outerHTML=obj.outerHTML; 
+		}
+	}
+</script>

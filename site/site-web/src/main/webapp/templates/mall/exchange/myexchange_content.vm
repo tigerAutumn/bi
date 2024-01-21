@@ -1,0 +1,20 @@
+#foreach($!grid in $!exchangeList)
+	<li onclick="selPro(this)">
+		<input type="hidden" name="commId" id="commId" value="$!grid.commId"/>
+		<input type="hidden" name="orderId" id="orderId" value="$!grid.orderId"/>
+        <input type="hidden" name="commProperty" id="commProperty" value="$!grid.commProperty"/>
+		<img class="recordExchangeRight" src="$!env.getWebURL('')/resources/mall/images/exchange/landingPage03.png"/>
+		<div class="recordExchangeImg">
+			<img class="recordExchangeImgMin" src="$!grid.commPictureUrl"/>
+		</div>
+		<div class="recordExchangeTxt">
+			<div class="recordExchangeName">$!grid.commName</div>
+			<div class="recordExchangeTime">$!date.formatDateTime($!grid.exchangeTime,'yyyy-MM-dd HH:mm')</div>
+			#if($!grid.sendStatus == "FINISHED")
+				<div class="recordExchangeAlready">已发货</div>
+			#else
+				<div class="recordExchangeNot">未发货</div>
+			#end
+		</div>
+	</li>
+#end

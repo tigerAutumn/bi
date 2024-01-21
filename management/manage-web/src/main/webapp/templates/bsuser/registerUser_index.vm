@@ -1,0 +1,97 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/bsuser/registerUserIndex.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" id="queryFlag" name="queryFlag" value="QUERY"/>
+	<div class="searchBar">
+		<table class="searchContent">
+				<tr>
+					<td>
+						姓名：<input id="userName" type="text" name="userName" value="$!req.userName" maxlength="4" style="width:120px; height:16px" />
+						手机号：<input  id="mobile" type="text" name="mobile" value="$!req.mobile" size="15" maxlength="11" style="width:120px; height:16px" />
+						
+						<span style="margin-left:20px;">
+						<span style="margin-left:20px;">
+							<button onclick="func()" type="button">查询</button>
+                        </span>
+					</td>
+				</tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="138" >
+		<thead>
+			<tr>
+				<th width="10%">姓名</th>
+				<th width="20%">手机号</th>
+				<th width="20%">注册时间</th>
+				<th width="15%">绑卡银行</th>
+				<th width="15%">推荐人</th>
+				<th width="10%">渠道</th>
+				<th width="10%">状态</th>
+			</tr>
+		</thead>
+	
+		<tbody>
+			#foreach($grid in $registerUserList)
+			<tr target="sid_user" rel="1" >
+                <td>$!grid.userName</td>
+				<td>$!grid.mobile</td>
+				<td>$!date.format($!grid.registerTime)</td>
+				<td>#if($!grid.bankName && $!grid.isFirst == 1 && $!grid.bankStatus == 1) $!grid.bankName
+					#else 未绑定
+					#end
+				</td>
+				<td>$!grid.recommendName</td>
+				<td>$!grid.agentName</td>
+				<td>
+					<span style="color:
+						#if("$!grid.status" == "2") #e17604">已经注销
+						#elseif("$!grid.status" == "3") red">已经禁用</span>
+						#else green">正在使用</span>
+				        #end
+    			</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+function func(){
+	var userName = $("#userName").val();
+	var mobile = $("#mobile").val();
+	if((userName == "" || userName == null) && (mobile == "" || mobile == null)){
+		 alertMsg.warn("用户姓名或手机号必须输入一个！");
+    	 return false;
+	}
+	var url = $("#APP_ROOT_PATH").val() + "/bsuser/registerUserIndex.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+</script>

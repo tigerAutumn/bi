@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsUserKeepViewMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsUserKeepView" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="regist_date" property="registDate" jdbcType="DATE" />
+    <result column="extensive_agent_id" property="extensiveAgentId" jdbcType="INTEGER" />
+    <result column="agent_name" property="agentName" jdbcType="VARCHAR" />
+    <result column="regist_num" property="registNum" jdbcType="INTEGER" />
+    <result column="day2_login_num" property="day2LoginNum" jdbcType="INTEGER" />
+    <result column="day3_login_num" property="day3LoginNum" jdbcType="INTEGER" />
+    <result column="day7_login_num" property="day7LoginNum" jdbcType="INTEGER" />
+    <result column="day14_login_num" property="day14LoginNum" jdbcType="INTEGER" />
+    <result column="day30_login_num" property="day30LoginNum" jdbcType="INTEGER" />
+    <result column="day60_login_num" property="day60LoginNum" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="BsUserKeepResultMap" type="com.pinting.business.model.vo.BsUserKeepViewVO" extends="BaseResultMap">
+	<result column="regist_user_count" property="registUserCount" jdbcType="INTEGER" />
+	<result column="active_user_count" property="activeUserCount" jdbcType="INTEGER" />
+	<result column="login_date" property="loginDate" jdbcType="DATE" />
+	<result column="regist_date" property="registDate" jdbcType="DATE" />
+	<result column="agentIdRegistTotal" property="agentIdRegistTotal" jdbcType="INTEGER" />
+	<result column="day2LoginNumTotal" property="day2LoginNumTotal" jdbcType="INTEGER" />
+	<result column="day2RegistNumTotal" property="day2RegistNumTotal" jdbcType="INTEGER" />
+	<result column="day3LoginNumTotal" property="day3LoginNumTotal" jdbcType="INTEGER" />
+	<result column="day3RegistNumTotal" property="day3RegistNumTotal" jdbcType="INTEGER" />
+	<result column="day7LoginNumTotal" property="day7LoginNumTotal" jdbcType="INTEGER" />
+	<result column="day7RegistNumTotal" property="day7RegistNumTotal" jdbcType="INTEGER" />
+	<result column="day14LoginNumTotal" property="day14LoginNumTotal" jdbcType="INTEGER" />
+	<result column="day14RegistNumTotal" property="day14RegistNumTotal" jdbcType="INTEGER" />
+	<result column="day30LoginNumTotal" property="day30LoginNumTotal" jdbcType="INTEGER" />
+	<result column="day30RegistNumTotal" property="day30RegistNumTotal" jdbcType="INTEGER" />
+	<result column="day60LoginNumTotal" property="day60LoginNumTotal" jdbcType="INTEGER" />
+	<result column="day60RegistNumTotal" property="day60RegistNumTotal" jdbcType="INTEGER" />
+	<result column="all_agent_ids" property="allAgentIds" jdbcType="VARCHAR" />
+	<result column="all_agent_names" property="allAgentNames" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, regist_date, extensive_agent_id, agent_name, regist_num, day2_login_num, day3_login_num, 
+    day7_login_num, day14_login_num, day30_login_num, day60_login_num, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsUserKeepViewExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_user_keep_view
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_user_keep_view
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_user_keep_view
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsUserKeepViewExample" >
+    delete from bs_user_keep_view
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsUserKeepView" >
+    insert into bs_user_keep_view (id, regist_date, extensive_agent_id, 
+      agent_name, regist_num, day2_login_num, 
+      day3_login_num, day7_login_num, day14_login_num, 
+      day30_login_num, day60_login_num, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{registDate,jdbcType=DATE}, #{extensiveAgentId,jdbcType=INTEGER}, 
+      #{agentName,jdbcType=VARCHAR}, #{registNum,jdbcType=INTEGER}, #{day2LoginNum,jdbcType=INTEGER}, 
+      #{day3LoginNum,jdbcType=INTEGER}, #{day7LoginNum,jdbcType=INTEGER}, #{day14LoginNum,jdbcType=INTEGER}, 
+      #{day30LoginNum,jdbcType=INTEGER}, #{day60LoginNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsUserKeepView" >
+    insert into bs_user_keep_view
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="registDate != null" >
+        regist_date,
+      </if>
+      <if test="extensiveAgentId != null" >
+        extensive_agent_id,
+      </if>
+      <if test="agentName != null" >
+        agent_name,
+      </if>
+      <if test="registNum != null" >
+        regist_num,
+      </if>
+      <if test="day2LoginNum != null" >
+        day2_login_num,
+      </if>
+      <if test="day3LoginNum != null" >
+        day3_login_num,
+      </if>
+      <if test="day7LoginNum != null" >
+        day7_login_num,
+      </if>
+      <if test="day14LoginNum != null" >
+        day14_login_num,
+      </if>
+      <if test="day30LoginNum != null" >
+        day30_login_num,
+      </if>
+      <if test="day60LoginNum != null" >
+        day60_login_num,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="registDate != null" >
+        #{registDate,jdbcType=DATE},
+      </if>
+      <if test="extensiveAgentId != null" >
+        #{extensiveAgentId,jdbcType=INTEGER},
+      </if>
+      <if test="agentName != null" >
+        #{agentName,jdbcType=VARCHAR},
+      </if>
+      <if test="registNum != null" >
+        #{registNum,jdbcType=INTEGER},
+      </if>
+      <if test="day2LoginNum != null" >
+        #{day2LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="day3LoginNum != null" >
+        #{day3LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="day7LoginNum != null" >
+        #{day7LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="day14LoginNum != null" >
+        #{day14LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="day30LoginNum != null" >
+        #{day30LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="day60LoginNum != null" >
+        #{day60LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsUserKeepViewExample" resultType="java.lang.Integer" >
+    select count(*) from bs_user_keep_view
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_user_keep_view
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.registDate != null" >
+        regist_date = #{record.registDate,jdbcType=DATE},
+      </if>
+      <if test="record.extensiveAgentId != null" >
+        extensive_agent_id = #{record.extensiveAgentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.agentName != null" >
+        agent_name = #{record.agentName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.registNum != null" >
+        regist_num = #{record.registNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.day2LoginNum != null" >
+        day2_login_num = #{record.day2LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.day3LoginNum != null" >
+        day3_login_num = #{record.day3LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.day7LoginNum != null" >
+        day7_login_num = #{record.day7LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.day14LoginNum != null" >
+        day14_login_num = #{record.day14LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.day30LoginNum != null" >
+        day30_login_num = #{record.day30LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.day60LoginNum != null" >
+        day60_login_num = #{record.day60LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_user_keep_view
+    set id = #{record.id,jdbcType=INTEGER},
+      regist_date = #{record.registDate,jdbcType=DATE},
+      extensive_agent_id = #{record.extensiveAgentId,jdbcType=INTEGER},
+      agent_name = #{record.agentName,jdbcType=VARCHAR},
+      regist_num = #{record.registNum,jdbcType=INTEGER},
+      day2_login_num = #{record.day2LoginNum,jdbcType=INTEGER},
+      day3_login_num = #{record.day3LoginNum,jdbcType=INTEGER},
+      day7_login_num = #{record.day7LoginNum,jdbcType=INTEGER},
+      day14_login_num = #{record.day14LoginNum,jdbcType=INTEGER},
+      day30_login_num = #{record.day30LoginNum,jdbcType=INTEGER},
+      day60_login_num = #{record.day60LoginNum,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsUserKeepView" >
+    update bs_user_keep_view
+    <set >
+      <if test="registDate != null" >
+        regist_date = #{registDate,jdbcType=DATE},
+      </if>
+      <if test="extensiveAgentId != null" >
+        extensive_agent_id = #{extensiveAgentId,jdbcType=INTEGER},
+      </if>
+      <if test="agentName != null" >
+        agent_name = #{agentName,jdbcType=VARCHAR},
+      </if>
+      <if test="registNum != null" >
+        regist_num = #{registNum,jdbcType=INTEGER},
+      </if>
+      <if test="day2LoginNum != null" >
+        day2_login_num = #{day2LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="day3LoginNum != null" >
+        day3_login_num = #{day3LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="day7LoginNum != null" >
+        day7_login_num = #{day7LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="day14LoginNum != null" >
+        day14_login_num = #{day14LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="day30LoginNum != null" >
+        day30_login_num = #{day30LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="day60LoginNum != null" >
+        day60_login_num = #{day60LoginNum,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsUserKeepView" >
+    update bs_user_keep_view
+    set regist_date = #{registDate,jdbcType=DATE},
+      extensive_agent_id = #{extensiveAgentId,jdbcType=INTEGER},
+      agent_name = #{agentName,jdbcType=VARCHAR},
+      regist_num = #{registNum,jdbcType=INTEGER},
+      day2_login_num = #{day2LoginNum,jdbcType=INTEGER},
+      day3_login_num = #{day3LoginNum,jdbcType=INTEGER},
+      day7_login_num = #{day7LoginNum,jdbcType=INTEGER},
+      day14_login_num = #{day14LoginNum,jdbcType=INTEGER},
+      day30_login_num = #{day30LoginNum,jdbcType=INTEGER},
+      day60_login_num = #{day60LoginNum,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 查询7个时间点  所有注册用户 -->
+  <select id="selectUserRegisterList" parameterType="com.pinting.business.model.vo.BsUserKeepViewVO" resultMap="BsUserKeepResultMap" >
+  	SELECT DATE_FORMAT(u.register_time,'%Y-%m-%d') as regist_date,
+	  	COUNT(DATE_FORMAT(u.register_time,'%Y-%m-%d')) as regist_user_count,
+	  	a.id as extensive_agent_id,a.agent_name as agent_name 
+	  FROM bs_user u LEFT JOIN bs_agent a ON u.agent_id =a.id		WHERE DATE_FORMAT(u.register_time,'%Y-%m-%d') in 
+		(
+			DATE_FORMAT(DATE_SUB(#{yesterday},INTERVAL 0 DAY),'%Y-%m-%d'),
+			DATE_FORMAT(DATE_SUB(#{yesterday},INTERVAL 1 DAY),'%Y-%m-%d'),
+			DATE_FORMAT(DATE_SUB(#{yesterday},INTERVAL 2 DAY),'%Y-%m-%d'),
+			DATE_FORMAT(DATE_SUB(#{yesterday},INTERVAL 6 DAY),'%Y-%m-%d'),
+			DATE_FORMAT(DATE_SUB(#{yesterday},INTERVAL 13 DAY),'%Y-%m-%d'),
+			DATE_FORMAT(DATE_SUB(#{yesterday},INTERVAL 29 DAY),'%Y-%m-%d'),
+			DATE_FORMAT(DATE_SUB(#{yesterday},INTERVAL 59 DAY),'%Y-%m-%d')
+		)
+    	<if test="agentId !=null and agentId !='' and agentId == 'all_user' ">   
+        	and 1 = 1
+    	</if>
+    	<if test="agentId !=null and agentId !='' and agentId == 'is_null' ">   
+        	and u.agent_id is null
+    	</if>
+    	<if test="agentId !=null and agentId !='' and agentId != 'all_user' and agentId != 'is_null' ">   
+        	and u.agent_id = cast(#{agentId} as SIGNED INTEGER) 
+    	</if>
+	  GROUP BY DATE_FORMAT(u.register_time,'%Y-%m-%d')
+  </select>
+  
+  <!-- 活跃用户登录次数 -->
+  <select id="selectActiveUserList" parameterType="com.pinting.business.model.vo.BsUserKeepViewVO" resultMap="BsUserKeepResultMap" >
+  	SELECT COUNT(*) as active_user_count, aa.login_date as login_date, bb.extensive_agent_id, bb.agent_name as agent_name, bb.register_time as regist_date 
+	  FROM
+		(
+			select a1.user_id,a1.login_date from bs_active_user_record a1 
+			where a1.login_date = DATE_FORMAT(DATE_SUB(#{yesterday},INTERVAL 0 DAY),'%Y-%m-%d')
+			GROUP BY DATE_FORMAT(a1.login_date,'%Y-%m-%d'),a1.user_id 
+		) aa,
+		(
+			SELECT u.id,DATE_FORMAT(u.register_time,'%Y-%m-%d') as register_time,COUNT(DATE_FORMAT(u.register_time,'%Y-%m-%d')),
+			 a.id as extensive_agent_id,a.agent_name as agent_name 
+			  FROM bs_user u LEFT JOIN bs_agent a ON u.agent_id = a.id 
+				WHERE DATE_FORMAT(u.register_time,'%Y-%m-%d') in 
+				(
+					DATE_FORMAT(DATE_SUB(#{yesterday},INTERVAL 0 DAY),'%Y-%m-%d'),
+					DATE_FORMAT(DATE_SUB(#{yesterday},INTERVAL 1 DAY),'%Y-%m-%d'),
+					DATE_FORMAT(DATE_SUB(#{yesterday},INTERVAL 2 DAY),'%Y-%m-%d'),
+					DATE_FORMAT(DATE_SUB(#{yesterday},INTERVAL 6 DAY),'%Y-%m-%d'),
+					DATE_FORMAT(DATE_SUB(#{yesterday},INTERVAL 13 DAY),'%Y-%m-%d'),
+					DATE_FORMAT(DATE_SUB(#{yesterday},INTERVAL 29 DAY),'%Y-%m-%d'),
+					DATE_FORMAT(DATE_SUB(#{yesterday},INTERVAL 59 DAY),'%Y-%m-%d')
+				)
+			<if test="agentId !=null and agentId !='' and agentId == 'all_user' ">   
+	        	and 1 = 1
+	    	</if>
+	    	<if test="agentId !=null and agentId !='' and agentId == 'is_null' ">   
+	        	and u.agent_id is null
+	    	</if>
+	    	<if test="agentId !=null and agentId !='' and agentId != 'all_user' and agentId != 'is_null' ">   
+	        	and u.agent_id = cast(#{agentId} as SIGNED INTEGER) 
+	    	</if>
+			
+			GROUP BY DATE_FORMAT(u.register_time,'%Y-%m-%d'),u.id
+		) bb
+	  WHERE aa.user_id = bb.id
+	GROUP BY bb.register_time;
+ </select>
+ 
+ <select id="selectUserKeepViewList" parameterType="com.pinting.business.model.vo.BsUserKeepViewVO" resultMap="BsUserKeepResultMap" >
+   SELECT aa.regist_date, aa.create_time, 
+   		  group_concat(aa.extensive_agent_id) as all_agent_ids, 
+   		  group_concat(aa.agent_name) as all_agent_names, 
+   		  SUM(aa.regist_num) as agentIdRegistTotal, 
+		  SUM(aa.day2_login_num) as day2LoginNumTotal, 
+		  SUM(aa.day3_login_num) as day3LoginNumTotal, 
+		  SUM(aa.day7_login_num) as day7LoginNumTotal, 
+		  SUM(aa.day14_login_num) as day14LoginNumTotal, 
+		  SUM(aa.day30_login_num) as day30LoginNumTotal, 
+		  SUM(aa.day60_login_num) as day60LoginNumTotal
+		FROM
+		   ( SELECT 
+			  		<include refid="Base_Column_List" />
+			  	FROM bs_user_keep_view u 
+			  	WHERE 1 = 1
+			  	<if test="agentIds != null and agentIds !='' and (nonAgentId == null or nonAgentId == '')">
+					and extensive_agent_id in
+			  		<foreach collection="agentIds" item="agentId" index="index"
+			          open="(" close=")" separator=",">
+			          #{agentId}
+			        </foreach>
+				</if>
+				<if test="(agentIds == null or agentIds =='' ) and nonAgentId != null and nonAgentId != ''">
+					and extensive_agent_id = -1
+				</if>
+				<!-- 渠道全选 返回所有注册用户对应的一条记录 -->
+				<if test="agentIds != null and agentIds !='' and nonAgentId != null and nonAgentId != ''">
+					and (extensive_agent_id in 
+					<foreach collection="agentIds" item="agentId" index="index"
+			            open="(" close=")" separator=",">
+			            #{agentId}
+			        </foreach>
+			        or extensive_agent_id = -1)
+				</if>
+				<if test="(agentIds == null or agentIds =='' ) and (nonAgentId == null or nonAgentId == '') ">
+					and extensive_agent_id = -2
+				</if>
+			   	<if test="sRegisterTime != null  and eRegisterTime != null ">   
+			       	and regist_date between   #{sRegisterTime} and  #{eRegisterTime}
+			   	</if>
+		 	) aa	
+		
+ 		GROUP BY aa.regist_date
+ 		order by aa.regist_date desc
+ 		<include refid="sql-global.pagination"/> 
+  </select>
+  
+  <select id="selectUserKeepViewCount" parameterType="com.pinting.business.model.vo.BsUserKeepViewVO" resultType="java.lang.Integer" >
+    SELECT COUNT(*)
+	  FROM
+	  (
+	  	SELECT aa.regist_date, aa.id 
+		FROM
+		  	(SELECT 
+			  		<include refid="Base_Column_List" />
+			  	FROM bs_user_keep_view u 
+			  	WHERE 1 = 1
+			  	<if test="agentIds != null and agentIds !='' and (nonAgentId == null or nonAgentId == '')">
+					and extensive_agent_id in
+			  		<foreach collection="agentIds" item="agentId" index="index"
+			          open="(" close=")" separator=",">
+			          #{agentId}
+			        </foreach>
+				</if>
+				<if test="(agentIds == null or agentIds =='' ) and nonAgentId != null and nonAgentId != ''">
+					and extensive_agent_id = -1
+				</if>
+				<!-- 渠道全选 返回所有注册用户对应的一条记录 -->
+				<if test="agentIds != null and agentIds !='' and nonAgentId != null and nonAgentId != ''">
+					and (extensive_agent_id in 
+					<foreach collection="agentIds" item="agentId" index="index"
+			            open="(" close=")" separator=",">
+			            #{agentId}
+			        </foreach>
+			        or extensive_agent_id = -1)
+				</if>
+				<if test="(agentIds == null or agentIds =='' ) and (nonAgentId == null or nonAgentId == '') ">
+					and extensive_agent_id = -2
+				</if>
+			   	<if test="sRegisterTime != null  and eRegisterTime != null ">   
+			       	and regist_date between   #{sRegisterTime} and  #{eRegisterTime}
+			   	</if> ) aa
+	 		GROUP BY aa.regist_date
+		  ) test
+  </select>
+  
+  <!-- 根据注册时间和渠道查询对象 -->
+   <select id="selectByRegistDateAgent" parameterType="map" resultMap="BaseResultMap" >
+   	select * from bs_user_keep_view where regist_date = #{registDate} and extensive_agent_id = #{agentId}
+   </select>
+</mapper>

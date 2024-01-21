@@ -1,0 +1,298 @@
+## 自由站岗户计划-前端 ##
+
+
+### 1、产品详情页 ###
+
+- 回款方式：到期还本付息，不涉及开发，本次不用修改
+
+### 1、债权明细页 ###
+
+```
+根据 bs_property_info property_symbol = 'FREE'判断，债权明细页显示如下文案：
+```
+<pre>
+该产品计划所投向的合作产品为小微借款业务， 该业务向借款人授予一个信用额度，借款人可以在该额度内进行借还款。借款人的每笔借款均与出借人的投资对应，您的该笔出借对应关系如下表所示：（如有疑问，可详询客服热线400-806-1230）
+</pre>
+
+- 修改点：
+- **PC** 
+- gen2.0/my_match.vm；gen178/my_match.vm
+- 包含了赞时贷、老云贷/老七贷、存量云贷、存量七贷、存管云贷、存管七贷所有的定期产品
+
+[原型-债权明细页，文案调整](https://tower.im/projects/3d05349e05b2474dbd3198d04ac77804/todos/e65948cb991a4adda48e0a54ec2f5a47/)
+
+
+## 自由站岗户计划-管理台 ##
+
+
+### 1. 渠道业绩查询-渠道用户查询 ###
+<pre>
+总资产、投资收益、当前投资本金、累计推荐奖励、累计投资收益，需要包含自由站岗户产生的数据，可以兼容；
+BsUserMapper --> selectAgentUser
+总资产 total_balance
+投资收益 bs_user.current_interest
+当前投资本金 total_balance
+累计推荐奖励 bs_user.total_bonus
+累计投资收益 bs_user.total_interest
+总资产，当前投资本金
+bs_sub_account
+CASE WHEN c.product_type ='JSH' THEN c.`status` = 1
+WHEN c.product_type ='JLJ' THEN c.`status` = 1
+WHEN c.product_type ='DEP_JSH' THEN c.`status` = 1
+ELSE c.`status` = 2 END
+GROUP BY c.account_id
+</pre>
+
+### 2. 渠道业绩查询-渠道用户投资查询 ###
+需要包含自由站岗户的产品投资数据
+<pre>
+sql修改：
+BsUserMapper --> countAgentBuyMessage
+bs_sub_account.product_type IN ('AUTH_YUN', 'AUTH_7', 'AUTH_ZSD', 'AUTH_FREE','REG', 'AUTH')
+
+BsUserMapper --> findAgentUserMessageList
+bs_sub_account.product_type IN ('AUTH_YUN', 'AUTH_7', 'AUTH_ZSD','AUTH_FREE', 'REG', 'AUTH')
+
+BsUserMapper --> selectAgentSumBalance
+bs_sub_account.product_type IN ('AUTH_YUN', 'AUTH_7', 'AUTH_ZSD', 'AUTH_FREE','REG', 'AUTH')
+</pre>
+
+### 3. 渠道业绩查询-渠道用户统计 ###
+<pre>
+<font color=#DC143C>
+（1）需要包含自由站岗户的产品投资数据（跟产品确认后需要统计老站岗户、七贷存管、云贷存管、赞时贷、自由户；赞分期数据不统计）</font>
+<font color=#008080>注：只查询投资金额</font>
+
+修改前：只统计了REG，AUTH_YUN 老站岗户跟云贷站岗户部分的数据；
+修改后：需要统计老站岗户、七贷存管、云贷存管、赞时贷、自由户的数据；赞分期数据不统计；
+交易总笔数统计站岗户
+bs_sub_account.product_type IN ('REG','AUTH_YUN', 'AUTH_ZSD', 'AUTH_7', 'AUTH_FREE') 
+交易总金额（站岗户金额+红包户金额）
+
+改动的sql：
+bsAgentMapper --> selectAgentStatList
+交易总笔数
+bs_sub_account.product_type IN ('REG','AUTH_YUN', 'AUTH_ZSD', 'AUTH_7', 'AUTH_FREE') 
+交易总金额
+bs_sub_account.product_type IN ('REG','AUTH_YUN', 'AUTH_ZSD', 'AUTH_7', 'RED_ZSD', 'RED_7', 'RED', 'AUTH_FREE', 'RED_FREE') 
+
+（2）某个渠道每个用户的投资总笔数、投资总金额统计
+某渠道用户投资记录数统计
+BsUserMapper --> countAgentUserList
+bs_sub_account e
+(e.product_type='REG' OR e.product_type='AUTH_YUN' OR e.product_type='AUTH_ZSD' OR e.product_type='AUTH_7' OR e.product_type='AUTH_FREE')
+
+某渠道用户投资记录查询
+BsUserMapper --> selectAgentUserList
+<font color=#008080>注：只查询投资金额</font>
+投资总笔数
+bs_sub_account.product_type IN ('REG','AUTH_YUN', 'AUTH_ZSD', 'AUTH_7', 'AUTH_FREE') 
+投资总金额统计
+bs_sub_account e
+(e.product_type='REG' OR e.product_type='AUTH_YUN' OR e.product_type='AUTH_ZSD' OR e.product_type='AUTH_7' OR e.product_type='AUTH_FREE',
+OR e.product_type='RED_ZSD', OR e.product_type='RED_7', OR e.product_type='RED', OR e.product_type='RED_FREE')
+</pre>
+
+### 4. 财务管理-财务总账查询 ###
+<pre>
+恒丰账户，新增自由站岗户业务数据
+StatisticsController  -->  financeTotal
+自由产品户余额
+自由站岗户余额
+自有产品站岗红包
+
+（1）自由产品户余额
+bsSysSubAccountMapper --> countDepSysSubAccountBalance
+select sum(case when code = 'BGW_AUTH_FREE' then balance else 0 end )as depFreeAccBalance from bs_sys_sub_account;
+（2）自由站岗户余额
+SELECT SUM(IFNULL(balance, 0)) FROM bs_sub_account WHERE product_type = 'AUTH_FREE' AND `status` = 2;
+（3）自有产品站岗红包
+select
+IFNULL(round(sum(s.balance),2), 0) as redFreeAccBalance
+from bs_sub_account s
+where s.product_type = 'RED_FREE' and s.status='2';
+</pre>
+
+### 5. 财务管理-销售渠道结算查询 ###
+<pre>
+需要包含自由站岗户的产品投资数据
+列表数据
+bsSubAccountMapper --> selectSaleAgentData
+bs_sub_account.product_type IN ('REG', 'AUTH_YUN', 'AUTH_ZSD', 'AUTH_7', 'AUTH_FREE')
+
+交易金额 年化资金购买值合计
+bsSubAccountMapper --> sumCPSaleAgentData
+bs_sub_account.product_type IN ('REG', 'AUTH_YUN', 'AUTH_ZSD', 'AUTH_7', 'AUTH_FREE', 'RED', 'RED_ZSD', 'RED_7', 'RED_FREE')
+
+记录条数统计
+bsSubAccountMapper --> countSaleAgentData
+('REG', 'AUTH_YUN', 'AUTH_ZSD', 'AUTH_7', 'AUTH_FREE') 
+</pre>
+
+### 6. 财务管理-存管未来30天兑付查询 ###
+StatisticsController depCash30
+新增自由站岗户业务数据
+<pre>
+（1）页面当前VIP持有债权剩余本金，当前VIP站岗余额，资产方站岗余额金额统计，新加自由站岗户金额
+
+a、自由站岗户 未来30天兑付查询-vip当前债权本金
+LnLoanRelationMapper --> depVipDeptsLoanFreeAmount
+select IFNULL(sum(IFNULL(a.left_amount,0) - IFNULL(d.plan_principal,0)),0) vip_amount
+    from ln_loan_relation a
+    left join ln_finance_repay_schedule d on a.id = d.relation_id and d.status = 'REPAYING'
+    where a.status = 'SUCCESS'
+    and FIND_IN_SET(a.bs_user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'FREE_SUPER_FINANCE_USER_ID'));
+
+b、自由站岗户 未来30天兑付查询-vip站岗余额
+LnLoanRelationMapper --> depVipStandLoanFreeAmount
+SELECT IFNULL(SUM(a.available_balance ),0) FROM
+    bs_sub_account a,
+    bs_account b
+    WHERE
+    a.account_id = b.id
+    AND FIND_IN_SET(b.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'FREE_SUPER_FINANCE_USER_ID'))
+    AND a.product_type = 'AUTH_FREE';
+
+c、自由站岗户 资产方站岗余额金额
+SELECT SUM(IFNULL(balance, 0)) FROM bs_sub_account WHERE product_type = 'AUTH_FREE' AND `status` = 2
+
+（2）查询条件新增 “自由”；
+（3）统计中 “资产方站岗余额” 文案修改为 “当前站岗户余额”；
+（4）DepCash30Task定时，云贷存管未来30天兑付查询 统计自由站岗户金额
+新增sql 
+自由站岗户-未来30天兑付查询
+LnLoanRelationMapper --> loanFreeDepCash30 
+自由站岗户-未来30天兑付查询-查询某日预计退出债权利息
+LnLoanRelationMapper --> slectQuitInterestBalanceByDateLoanFree
+查询的数据入bs_dep_cash30
+</pre>
+[原型-资金放款互通管理台](E:\项目需求\原型\2018年需求\5月份-资金放款互通管理台\修改菜单.html)
+
+
+### 7. 财务管理-每日日终账务查询 ###
+新增自由站岗户业务数据
+<pre>
+1. SysBalanceDailySnapTask 系统余额快照记录表定时
+2. 系统余额快照记录表bs_sys_balance_daily_snap，新增自由产品户余额-恒丰、自由产品站岗红包-恒丰、自由站岗户余额-恒丰的数据
+
+每日日终账务查询
+3. 自由产品户余额-恒丰 -- "AUTH_FREE";//站岗户（自由资金）
+4. 自由产品站岗红包-恒丰 -- "RED_FREE";//红包子账户（自由资金）
+【购买时红包金额】
+5. 自由站岗户余额-恒丰 "BGW_AUTH_FREE" //币港湾体系-存管自由资金站岗户
+【出借到的待还本金（出借10000，还了1000，自由产品户余额 = 9000）】
+
+6. SysBalanceDailyFileTask 系统余额快照日终中生成文件，数据落库bs_sys_balance_daily_file
+
+</pre>
+
+### 8. 运营管理-导出每月运营数据 ###
+需要包含自由站岗户的产品投资数据，平台数据定时修改，
+<pre>
+平台数据定时 PlatformDataTask --> manageExport
+
+<font color=#DC143C>累计成交额-BsProductMapper.selectAccumulatedInvestment	product_type加AUTH_FREE和对应红包户RED_FREE;</font>
+<font color=#DC143C>本月成交额-BsSubAccountMapper.monthBuyAmount	product_type加AUTH_FREE和对应红包户RED_FREE;</font>
+<font color=#DC143C>本月成交人数-BsSubAccountMapper.monthBuyUserNumber	product_type加AUTH_FREE;</font>
+<font color=#DC143C>本月成交笔数-BsSubAccountMapper.monthBuyNumber	product_type加AUTH_FREE;</font>
+<font color=#DC143C>本月各期限计划成交额-BsSubAccountMapper.buyGroupList	product_type加AUTH_FREE;</font>
+<font color=#DC143C>单日最高成交额-BsSubAccountMapper.mostDayBuyAmount	product_type加AUTH_FREE(需要包含红包，已跟产品确认)</font>
+<font color=#DC143C>单笔最高成交额-BsSubAccountMapper.mostOneBuyAmount	product_type加AUTH_FREE(需要包含红包，已跟产品确认)</font>
+<font color=#DC143C>投资最多列表-BsSubAccountMapper.richerList	product_type加AUTH_FREE和对应红包户RED_FREE;</font>
+
+最快满标时间-BsSubAccountMapper.fastestSecond	和产品相关，无需修改;
+网页版端口占比-BsSubAccountMapper.pcProportion	和订单相关，无需修改;
+H5端口占比-BsSubAccountMapper.h5Proportion	和订单相关，无需修改;
+本月用户收益-BsSubAccountMapper.monthIncomeAmount	和每日收益相关，无需修改;
+本月借贷金额-BsSubAccountMapper.monthLoanAmount	和借款相关，无需修改;
+本月借贷笔数-BsSubAccountMapper.monthLoanNumber	和借款相关，无需修改;
+累计出借额-BsSubAccountMapper.sumLoanAmount	和借款相关，无需修改;
+用户累计收益-bsUserMapper.countUserIncome	无需修改;
+自成立以来累计借贷笔数-BsSubAccountMapper.countLoanTimes	和借款相关，无需修改;
+当前待还借贷金额-BsSubAccountMapper.sumLeftAmount	和债权关系列表相关，无需修改;
+当前待还借贷笔数-BsSubAccountMapper.countLeftAmountTimes	和债权关系列表相关，无需修改;
+累计出借人数-BsSubAccountMapper.countLoanUserTimes	排除结算户和奖励金户，无需修改;
+当期出借人数-BsSubAccountMapper.countCurrentLoanUserTimes	和债权关系列表相关，无需修改;
+前十大出借人出借余额占比-BsSubAccountMapper.sumTenLargestLeftAmount	和债权关系列表相关，无需修改;
+最大单一出借人出借余额占比-BsSubAccountMapper.sumLargestLeftAmount	和债权关系列表相关，无需修改;
+累计借款人数-BsSubAccountMapper.countBorrowerUserTimes	和借款相关，无需修改;
+当期借款人数-BsSubAccountMapper.countCurrentBorrowerUserTimes	和债权关系列表相关，无需修改;
+前十大借款人待还金额占比-BsSubAccountMapper.sumTenBorrowerLargestLeftAmount	和债权关系列表相关，无需修改;
+最大单一借款人待还金额占比-BsSubAccountMapper.sumBorrowerLargestLeftAmount	和债权关系列表相关，无需修改;
+借款人逾期金额-BsSubAccountMapper.sumLateAmount	和借款还款相关，无需修改;
+借款人逾期笔数-BsSubAccountMapper.countLateAmount	和借款还款相关，无需修改;
+借款人逾期90天以上金额-BsSubAccountMapper.sum90LateAmount	和借款还款相关，无需修改;
+借款人逾期90天以上笔数-BsSubAccountMapper.count90LateAmount	和借款还款相关，无需修改;
+累计代偿金额-BsSubAccountMapper.sumLateNotAmount	和借款还款相关，无需修改;
+累计代偿笔数-BsSubAccountMapper.countLateNotAmount	和借款还款相关，无需修改;
+</pre>
+
+### 9. 存管产品统计（恒丰）-投资到期统计 ###
+
+<pre>
+<1>. 页面资产方更名为站岗户，新增自由站岗户；
+<2>. 导出excel需要验证数据；
+
+（1）bsDepositionReturnMapper --> investExpire
+if test="partnerCode != null and partnerCode != '' and partnerCode == 'FREE'"
+    AND bs_sub_account.product_type = 'AUTH_FREE'
+    if test="type != null and type != '' and type == 'VIP'"
+      AND FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'FREE_SUPER_FINANCE_USER_ID'))
+    if
+    if test="type != null and type != '' and type == 'NORMAL'">
+      AND !FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key ='FREE_SUPER_FINANCE_USER_ID'))
+    if
+if
+
+（2）bsDepositionReturnMapper --> investExpireCount
+if test="partnerCode != null and partnerCode != '' and partnerCode == 'FREE'"
+    AND bs_sub_account.product_type = 'AUTH_FREE'
+    if test="type != null and type != '' and type == 'VIP'"
+      AND FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'FREE_SUPER_FINANCE_USER_ID'))
+    if
+    if test="type != null and type != '' and type == 'NORMAL'">
+      AND !FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key ='FREE_SUPER_FINANCE_USER_ID'))
+    if
+if
+
+（3）bsDepositionReturnMapper --> investExpireTotalAmount
+if test="partnerCode != null and partnerCode != '' and partnerCode == 'FREE'"
+    AND bs_sub_account.product_type = 'AUTH_FREE'
+    if test="type != null and type != '' and type == 'VIP'"
+      AND FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'FREE_SUPER_FINANCE_USER_ID'))
+    if
+    if test="type != null and type != '' and type == 'NORMAL'">
+      AND !FIND_IN_SET(a.user_id,(SELECT conf_value FROM bs_sys_config WHERE conf_key ='FREE_SUPER_FINANCE_USER_ID'))
+    if
+if
+
+</pre>
+
+
+### 10. 存管产品统计（恒丰）-存管债转及支付 ###
+<pre>
+<font color=#DC143C>
+功能没有修改，但是数据上需要验证；
+功能没有修改，验证查询条件为云贷或七贷时，查询出来的数据是否包含自有账户的数据；
+</font>
+债转前利息 = 应付老客户利息 + 公司手续费
+
+FinancialLnCreditTransferController lnCreditTransferYunZSDIndex
+
+债转支付-列表查询
+lnCreditTransferMapper.selectLnCreditTransferPayYunZSD
+债转支付-应付客户利息总额/应付公司手续费总额
+lnCreditTransferMapper.transSumAmountYunZSD
+债转支付-存管后，云贷/赞时贷-总条数查询
+lnCreditTransferMapper.countLnCreditTransferPayYunZSD
+
+</pre>
+
+### 11. 产品计划管理-资产合作产品维护 ###
+
+<pre>
+列表页、编辑页面，“新加资金接收方标识”改为“站岗户标识”
+
+propertyInfo_detail页面，新加资金接收方标识，property_symbol = FREE 自由站岗户
+</pre>
+

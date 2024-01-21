@@ -1,0 +1,83 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾理财官网_安心可靠互联网金融投资理财平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#Head("end")
+</head>
+
+<body>
+<!-- website wrapper starts -->
+<div style="min-height: 57px;" class="websiteWrapper">
+   #Header("我要付款")
+  <!-- header wrapper ends --> 
+</div>
+<div class="newrow">
+  <input name="transferId" id="transferId" value="$!transferId" type="hidden"/>
+  <input name="productId" id="productId" value="$!productId" type="hidden">
+  <input name="money" id="amount" value="$!amount" type="hidden">
+  <input name="isBind" id="isBind" value="$!isBind" type="hidden">
+	
+	
+ <input type="hidden" id="cardIdReg" value="$!reg.get('idNo')" />
+ <input type="hidden" id="nameReg" value="$!reg.get('userName')" />
+  <div class="newbox" id="slider1">
+    <div class="dq2" style="margin-top:0px;">
+		
+		<div class="gm1 formFieldWrapper"><span style="color:#333;">支&nbsp;付&nbsp;金&nbsp;额 </span>
+    			<input name="price" id="price" class="nameField requiredField regExpField"  type="text" value="$!amount 元" disabled="disabled"/>
+            <span style="color:#F00">*</span></div>
+		
+		<div class="gm1" style="padding-bottom:10px;  #if($!bankSize == 0)display:none#end">
+			<span style="color:#333;">选择银行卡</span>
+       
+            <select name="bank" id="bank">
+			  #foreach($!bank in $!bankList)
+              <option value="$!bank.cardNo">$!bank.no</option>
+			  #end
+			  <option value="no">其他</option>
+            </select>
+		 </div>
+		 
+		<div id="card" #if($!bankSize != 0)style="display:none" #end>
+			<div class="gm1"><span style="color:#333;">卡&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</span>
+			<input name="cardNo" id="cardNo" placeholder="请输入您的卡号" type="text" >
+			<span style="color:#F00">*</span></div>
+        </div>
+		<div class="validate">
+    		<div class="gm1 formFieldWrapper"><span style="color:#333;">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名 </span>
+    			<input name="name" id="name" class="nameField requiredField regExpField" placeholder="请输入您的姓名" type="text" value="$!name" #if($!isBind)disabled="disabled" #end/>
+            <span style="color:#F00">*</span></div>
+    		<div class="gm1 formFieldWrapper"><span style="color:#333;">身&nbsp;&nbsp;份&nbsp;&nbsp;证</span>
+    				<input name="cardId" id="cardId" class="cardIdField requiredField regExpField" placeholder="请输入您的身份证" type="text" value="$!cardId" #if($!isBind)disabled="disabled" #end/>
+            <span style="color:#F00">*</span></div>
+        </div>
+      
+		 <div class="formSubmitButtonErrorsWrapper"> 
+           <!-- form errors start -->              
+               <span class="formValidationError" id="cardIdFieldError">
+                	<span>请输入身份证号</span>
+            		<span>身份证号格式不正确</span>
+               </span>
+                <span class="formValidationError" id="nameFieldError">
+                	<span>请输入姓名</span>
+            		<span>姓名格式不正确</span>
+               </span>
+		    <!-- form errors end -->
+         </div>
+    </div>
+    <!--tab-e-->
+    <div class="wz4"> 
+		<input id="payment"  class="go_btn3" type="button"  value="立即购买" style="color:#fff;margin-top:20px;">
+      <div class="xy1" style="margin-bottom:50px;">点击确认购买即代表您同意<a href="$!env.getWebURL('/micro/regular/buyagreement')">《投资协议》</a></div>
+    </div>
+  </div>
+  <!-- footer wrapper starts -->
+ #LoadJS("resources/micro/scripts/regular/buy")
+ #LoadJS("resources/micro/scripts/regular/bankTest")
+ #Footer("2")
+  <!-- footer wrapper ends --> 
+  <!-- footer wrapper ends --> 
+</div>
+
+<!-- website wrapper ends -->
+</body>
+</html>

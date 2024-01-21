@@ -1,0 +1,132 @@
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	<form id="financeForm" method="post" action="$env.getWebURL('/sysNews/save.htm?sign=update')" class="pageForm " onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("id", "$!bsSysNews.id")
+		#Hidden("status", "$!bsSysNews.status")
+		<div class="pageFormContent nowrap" layoutH="97">
+			<dl>
+				<dt>
+					发布端口：
+				</dt>
+                <dd>
+					$!bsSysNews.receiverType
+                </dd>
+			</dl>
+			
+			<dl>
+				<dt>
+					是否推荐：
+                </dt>
+				<dd >
+					#if("$!bsSysNews.priority"=="1") 是  #else 否#end
+                </dd>
+			</dl>
+			<dl>
+				<dt >
+					标题：
+                </dt>
+				<dd >
+					<input readonly = "readonly"  type="text" id="subject" name="subject"  style="width:500px;"  maxlength="60" value="$!bsSysNews.subject" />
+                </dd>
+			</dl>
+			<dl>
+				<dt >
+					来源：
+                </dt>
+				<dd >
+					<input readonly = "readonly"  type="text" id="source" name="source"  style="width:500px;"  maxlength="60" value="$!bsSysNews.source" />
+                </dd>
+			</dl>
+			<dl>
+				<dt >
+					摘要：
+                </dt>
+				<dd >
+					<textarea class="textInput" readonly = "readonly"  rows="2" cols="100" maxlength="50" name="summary" >$!bsSysNews.summary</textarea>
+                </dd>
+			</dl>
+			
+			#if("$!bsSysNews.type"=="NEWS" || "$!bsSysNews.type"=="COMPANY_DYNAMIC" || "$!bsSysNews.type"=="WFANS_ACTIVITY")  
+				<dl >
+				<dt>封面图： </dt>
+				<dd>
+					<div class="unit" style="width:372;height:206px;float:left;margin-left:20px;">
+            		<div id="fileQueue"></div>
+            		<img src="$!bsSysNews.subjectImg" name="imgPho" id="imgPho" style="width:372px;height:206px;"/>
+					</div>
+				</dd>
+				</dl>
+			#end
+
+			<dl>
+				<dt>内容：</dt>
+				#if("$!bsSysNews.type"=="NEWS")  
+    				<dd  id="dd_editor">
+                        <textarea name="content" class="editor" readonly = "readonly"  rows="50" cols="115"   tools="simple" upImgUrl="$env.getWebURL('/upload/newsImg.htm')" upImgExt="jpg,jpeg,gif,png">$!bsSysNews.content</textarea>
+    				</dd>
+					 <dd style="display:none" id="dd_content">
+    					<textarea class="textInput content" rows="50" readonly = "readonly" cols="115"  name="other">$!bsSysNews.content</textarea>
+    				</dd>
+				#elseif("$!bsSysNews.type"=="NOTICE")
+    				<dd style="display:none"  id="dd_editor">
+                        <textarea name="other" class="editor"  rows="50" cols="115"   tools="simple" upImgUrl="$env.getWebURL('/upload/newsImg.htm')" upImgExt="jpg,jpeg,gif,png">$!bsSysNews.content</textarea>
+    				</dd>
+					 <dd id="dd_content">
+    					<textarea class="textInput content" readonly = "readonly" rows="50" cols="115"  name="content">$!bsSysNews.content</textarea>
+    				</dd>
+				#elseif("$!bsSysNews.type"=="COMPANY_DYNAMIC" || "$!bsSysNews.type"=="WFANS_ACTIVITY")
+				 <dd  id="dd_editor">
+                        <textarea name="content" class="editor"  rows="50" cols="115"   tools="simple" upImgUrl="$env.getWebURL('/upload/newsImg.htm')" upImgExt="jpg,jpeg,gif,png">$!bsSysNews.content</textarea>
+    			 </dd>
+    			 <dd style="display:none" id="dd_content">
+    					<textarea class="textInput content" readonly = "readonly" rows="50" cols="115" name="other">$!bsSysNews.content</textarea>
+    			 </dd>
+				#end
+			</dl>
+			
+		</div>
+		<div class="formBar">
+			<ul>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+	
+</div>
+<script>
+
+	function navTabAjaxDone(json) {
+		 if (json.statusCode == "200") {
+			alertMsg.correct(json.message);
+			navTab.reload("$env.getWebURL('/sysNews/index.htm')");
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+	
+	
+	$("#type").change(function(){
+		if($(this).val() == 'NOTICE') {
+			$("#dd_editor").hide();
+			$("#dd_content").show();
+			$('.editor').attr('name', 'other');
+			$('.content').attr('name', 'content');
+		}
+		
+		if($(this).val() == 'NEWS'  || $(this).val() == 'COMPANY_DYNAMIC') {
+			$("#dd_content").hide();
+			$("#dd_editor").show();
+			$('.content').attr('name', 'other');
+			$('.editor').attr('name', 'content');
+		}
+	});
+	
+	
+	
+</script>

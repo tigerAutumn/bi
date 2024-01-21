@@ -1,0 +1,162 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/bsRedPacketApply/indexCheck.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+			<tr>
+				<td>
+					审请名称：<input id="rpName" type="text" name="rpName" value="$!req.rpName" />
+					审核状态：
+					<select name="checkStatus" > 
+						<option value="" #if("$!req.checkStatus"=="") selected #end>全部</option>
+						<option value="INIT" #if("$!req.checkStatus"=="INIT") selected #end>审核中</option>
+						<option value="PASS" #if("$!req.checkStatus"=="PASS") selected #end>已通过</option>
+						<option value="REFUSE" #if("$!req.checkStatus"=="REFUSE") selected #end>已拒绝</option>
+    				</select>
+					申请人：
+					<select name="creator" >
+						<option value="" #if("$!req.creator"=="") selected #end>全部</option>
+						#foreach($grid in $!creatorList)
+						<option value="$!grid.creator" #if("$!req.creator"=="$!grid.creator") selected #end>$!grid.name</option>
+						#end
+    				</select>
+					<span style="margin-left:20px;">
+						<button onclick="func()" type="button">查询</button>
+                    </span>
+					
+				</td>
+			</tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+        <ul class="toolBar">
+			<li>		
+        		<span style="margin-left:5px;">
+            		<font color="blue">总审核通过：#if(!$!totalBudgetAmount)0.00 #else $!money.format($!totalBudgetAmount) #end 元</font>
+                </span>
+				##<span style="margin-left:5px;">
+            	##	<font color="blue">红包已逾期：#if(!$!expiryAmount)0.00 #else $!money.format($!expiryAmount) #end 元</font>
+                ##</span>
+				<span style="margin-left:5px;">
+            		<font color="red">已使用预算额度：#if(!$!usedBudgetAmount)0.00 #else $!money.format($!usedBudgetAmount) #end 元</font>
+							=
+					<font color="red">红包已使用：#if(!$!usedRedPaktAmount)0.00 #else $!money.format($!usedRedPaktAmount) #end 元</font>
+							+
+					<font color="red">红包未使用：#if(!$!unUsedRedPaktAmount)0.00 #else $!money.format($!unUsedRedPaktAmount) #end 元</font>
+                </span>
+				
+				<span style="margin-left:5px;">
+            		
+                </span>
+				
+				<span style="margin-left:5px;">
+            		
+                </span>
+        	</li>
+        </ul>
+    </div>
+	<table class="table" width="1396" layoutH="158">
+		<thead>
+			<tr>
+				<th width="10%">申请时间</th>
+				<th width="9%">申请名称</th>
+				<th width="43">申请备注</th>
+				<th width="5%">申请金额</th>
+				<th width="5%">申请人</th>
+				<th width="5%">审核人员</th>
+				<th width="10%">审核时间</th>
+				<th width="5%">审核状态</th>
+				<th width="8%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $redPacketApplyList)
+			<tr target="sid_user" rel="1" >
+				<td>$!date.format($!grid.createTime)</td>
+				<td>$!grid.rpName</td>
+				<td>$!grid.note</td>
+				<td>$!money.format($!grid.budget)</td>
+				<td>$!grid.name</td>
+				<td>$!grid.checkerName</td>
+				<td>$!date.format($!grid.checkTime)</td>
+				<td style="color: 
+					   #if("$!grid.checkStatus" == "PASS") green;
+					   #elseif("$!grid.checkStatus" == "REFUSE") red;
+					   #else 
+					   #end ">
+					   $!message.get("BSREDPACKET_APPLY_$!grid.checkStatus")</td>
+				<td >
+    				#if($!grid.checkStatus == "INIT")
+					&nbsp&nbsp&nbsp 
+					<a title="通过" class="pass_a" onclick="click_a(this)" grid_id="$!grid.id" href="javascript:void(0)" mask="true" url="$env.getWebURL('/bsRedPacketApply/updatePass.htm')">通过</a> &nbsp&nbsp&nbsp 
+					<a title="不通过" class="refuse_a" onclick="click_a(this)" grid_id="$!grid.id" href="javascript:void(0)" mask="true" url="$env.getWebURL('/bsRedPacketApply/updateRefuse.htm')">不通过</a> &nbsp&nbsp&nbsp 
+					#elseif($!grid.checkStatus == "PASS")
+    				#elseif($!grid.checkStatus == "REFUSE")
+    				#end
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+function func(){
+	var url = $("#APP_ROOT_PATH").val() + "/bsRedPacketApply/indexCheck.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+	function click_a(obj){
+            var $this = $(obj);
+            var title = $this.attr("title");
+                  alertMsg.confirm(title, {
+                        okCall: function(){
+                            jQuery.ajax({
+                            	url:$this.attr("url"),
+                            	data:{
+                            		id: $this.attr('grid_id')
+                            	},
+                            	type:'post',
+                            	success: function(data){
+									if(data.statusCode == '200'){
+										alertMsg.correct('操作成功！');
+                            			navTab.reload("$env.getWebURL('bsRedPacketApply/indexCheck.htm')");
+									}else{
+										alertMsg.error('操作失败!');
+                            			navTab.reload("$env.getWebURL('bsRedPacketApply/indexCheck.htm')");
+									}
+
+                            	}
+                            });
+                        }
+                  });
+	}	
+</script>

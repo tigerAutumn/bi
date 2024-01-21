@@ -1,0 +1,58 @@
+<div class="pageHeader">
+
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+
+    </div>
+    <table class="table" width="1396" layoutH="128">
+        <thead>
+        <tr>
+            <th width="10%">借款id</th>
+            <th width="10%">期数</th>
+            <th width="10%">合约还款日</th>
+            <th width="10%">应还本金</th>
+            <th width="10%">应还利息</th>
+            <th width="10%">逾期滞纳金</th>
+            <th width="10%">应还总额</th>
+            <th width="10%">实际还款额</th>
+            <th width="10%">实际还款时间</th>
+            <th width="10%">还款状态</th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach($grid in $repaymentPlanList)
+            <tr target="sid_user" rel="1" >
+                <td>$!grid.loanId</td>
+                <td>$!grid.serialId</td>
+                <td>$!date.formatYYYYMMDD($!grid.planDate)</td>
+                <td>$!money.format($!grid.shouldPrincipal)</td>
+                <td>$!money.format($!grid.shouldServiceCharges)</td>
+                <td>$!money.format($!grid.overdueManagementFee)</td>
+                <td>$!money.format($!grid.planTotal)</td>
+                <td>
+                    #if($!grid.doneTotal)$!money.format($!grid.doneTotal)
+                    #else 0.00
+                    #end
+                </td>
+                <td>$!date.format($!grid.doneTime)</td>
+                <td>
+                    #if("$!grid.status" == "INIT")未还款
+                    #elseif("$!grid.status" == "PART_REPAY")部分还款
+                    #elseif("$!grid.status" == "REPAIED")已还款
+                    #elseif("$!grid.status" == "LATE_NOT")逾期未还款
+                    #elseif("$!grid.status" == "LATE_REPAIED")逾期已还款
+                    #end
+                </td>
+            </tr>
+            #end
+        </tbody>
+
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+
+        </div>
+
+    </div>
+</div>

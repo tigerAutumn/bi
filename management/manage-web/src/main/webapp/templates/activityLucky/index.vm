@@ -1,0 +1,194 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+	<input type="hidden" name="mobile" value="$!req.mobile" />
+	<input type="hidden" name="isUserDraw" value="$!req.isUserDraw" />
+	<input type="hidden" name="agents" value="$!agents" />
+	<input type="hidden" name="startDate" value="$!req.startDate" />
+	<input type="hidden" name="endDate" value="$!req.endDate" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/userActivityLucky/index.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+	<input type="hidden" id="queryDateFlag" name="queryDateFlag" value="QUERYDATE" />
+	<input type="hidden" name="count" value="$!count" />
+	<div class="searchBar">
+		<table class="searchContent">
+				<tr>
+					<td>
+						手机号：<input  id="mobile" type="text" name="mobile" value="$!req.mobile" size="15"/>
+					</td>
+                    <td>
+                        姓名：<input  id="userName" type="text" name="userName" value="$!req.userName" size="15"/>
+                    </td>
+					<td>
+						是否抽奖：
+						<select name="isUserDraw" id="isUserDraw"> 
+							<option value="" #if("$!req.isUserDraw"=="") selected #end>全部</option>
+							<option value="Y" #if("$!req.isUserDraw"=="Y") selected  #end>已抽奖</option>
+							<option value="N" #if("$!req.isUserDraw"=="N") selected  #end>未抽奖</option>
+        				</select>
+					</td>
+					<td>
+                       		<label>中奖时间：</label>
+                            <input type="text" id="drawTimeStart" name="drawTimeStart" value="$!req.drawTimeStart" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" />
+							至
+							<input type="text" id="drawTimeEnd" name="drawTimeEnd" value="$!req.drawTimeEnd" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" />
+					</td>
+					<td>
+							<a href="$env.getWebURL('/autoPacket/agent.htm')" class="button" target="dialog" mask="true" rel="createBack" height="500" width="450"><span>选择渠道</span></a>
+							
+							<input type="hidden" id="agentIds" name="agents" value="$!agents"/>
+						</td>
+					<td>
+						<div id="showAgentChoose" style="">#if($!agentSize == 0) #else 已选择 $!agentSize 个渠道#end</div>
+					</td>
+					
+				</tr>
+                <tr>
+					<td>
+						奖品：<input  id="awardContent" type="text" name="awardContent" value="$!req.awardContent" size="15"/>
+					</td>
+					<td>
+						是否中奖：
+						<select name="isWin" > 
+							<option value="" #if("$!req.isWin"=="") selected #end>全部</option>
+							<option value="Y" #if("$!req.isWin"=="Y") selected  #end>已中奖</option>
+							<option value="N" #if("$!req.isWin"=="N") selected  #end>未中奖</option>
+        				</select>
+					</td>
+                    <td>
+                        活动类型：
+                        <select name="activityName" >
+                            <option value="" #if("$!req.activityName"=="") selected #end>全部</option>
+                            <option value="25" #if("$!req.activityName"=="25") selected  #end>全民刮刮乐</option>
+                            <option value="36" #if("$!req.activityName"=="36") selected  #end>幸运出借人</option>
+                            <option value="37" #if("$!req.activityName"=="37") selected  #end>财运大转盘（小程序）</option>
+							<option value="38" #if("$!req.activityName"=="38") selected  #end>加薪计划</option>
+                        </select>
+                    </td>
+					<td>
+						<span style="margin-left:20px;">
+							<button  onclick="searchFunction()" type="button">查询</button>&nbsp;&nbsp;
+							<button  onclick="exp()" type="button">导出excel</button>
+						</span>
+        			</td>
+				</tr>
+				
+							
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="128" >
+		<thead>
+			<tr>
+                <th width="15%">活动类型</th>
+                <th width="10%">中奖时间</th>
+                <th width="10%">手机号码</th>
+                <th width="7.5%">姓名</th>
+                <th width="7.5%">性别</th>
+                <th width="10%">奖品</th>
+                <th width="10%">交易编号</th>
+				<th width="10%">渠道</th>
+				<th width="10%">是否抽奖</th>
+				<th width="10%">是否中奖</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($lucky in $list)
+			<tr target="sid_user" rel="1" >
+				<td>
+					#if($!lucky.activityName == "2017周周乐活动")
+                        全民刮刮乐
+					#else
+						$!lucky.activityName
+					#end
+				</td>
+				<td>$!date.format($!lucky.userDrawTime)</td>
+                <td>$!lucky.mobile</td>
+                <td>$!lucky.userName</td>
+                <td>$!lucky.gender</td>
+                <td>$!lucky.awardContent</td>
+                <td>$!lucky.id</td>
+				<td>$!lucky.agentName</td>
+				<td>
+					#if($!lucky.isUserDraw == 'Y')
+						已抽奖
+					#else
+						未抽奖
+					#end
+				</td>
+				<td>
+					#if($!lucky.isWin == 'Y')
+						已中奖
+					#else
+						未中奖
+					#end
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!count条</span>
+		</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+	</div>
+</div>
+<script>
+function searchFunction(){
+	if($("#isUserDraw").val() == 'N'){
+		$("#drawTimeStart").val('');
+		$("#drawTimeEnd").val('');
+	}
+	var beginTime = $("#drawTimeStart").val();
+    var overTime = $("#drawTimeEnd").val();
+    if(beginTime != "" && overTime != ""){
+    	var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+    	if(result < 0){
+    		alert("开始时间不能在结束时间之后！！");
+    		return false;
+    	}
+    }
+	
+    var url = $("#APP_ROOT_PATH").val() + "/userActivityLucky/index.htm";
+    $("#myform").attr("action",url);
+    $("#myform").attr("onsubmit","return navTabSearch(this);");
+    $("#myform").submit();
+
+
+}
+
+function exp(){
+    if($("#isUserDraw").val() == 'N'){
+        $("#drawTimeStart").val('');
+        $("#drawTimeEnd").val('');
+    }
+    var beginTime = $("#drawTimeStart").val();
+    var overTime = $("#drawTimeEnd").val();
+    if(beginTime != "" && overTime != ""){
+        var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+        if(result < 0){
+            alert("开始时间不能在结束时间之后！！");
+            return false;
+        }
+    }
+    var url = $("#APP_ROOT_PATH").val() + "/userActivityLucky/exportXls.htm";
+    $("#myform").attr("action",url);
+    $("#myform").attr("onsubmit","");
+    $("#myform").submit();
+}
+
+</script>

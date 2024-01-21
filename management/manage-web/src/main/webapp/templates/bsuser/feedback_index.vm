@@ -1,0 +1,57 @@
+<form id="pagerForm" method="post" action="$env.getWebURL('/bsuser/feedback/index.htm')">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li></li>
+			<li class="line">line</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="40">序号</th>
+				<th width="90">反馈用户编号</th>
+				<th width="110">反馈用户姓名</th>
+				<th width="110">反馈用户手机</th>
+				<th widht="135">用户反馈时间</th>
+                <th width="841">反馈信息</th>
+				<th width="70">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($feedback in $feedbackList)
+			<tr>
+                <td>$!feedback.id</td>
+				<td>$!feedback.userId</td>
+				<td>$!feedback.nick#if("$!feedback.userName"!="") ($!feedback.userName) #end</td>
+				<td>$!feedback.userPhone</td>
+				<td>$!date.format($feedback.createTime)</td>
+				<td>$!feedback.info</td>
+				<td>
+					<a title="反馈详细查看" target="dialog" href="$env.getWebURL('/bsuser/feedback/detail.htm')?info=$!feedback.info" class="btnLook">查看</a>
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>

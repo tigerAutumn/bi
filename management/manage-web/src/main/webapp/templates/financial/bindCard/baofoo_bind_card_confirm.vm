@@ -1,0 +1,55 @@
+<div class="pageContent" id="topUp">
+	#Hidden("APP_ROOT_PATH",$!env.getWebURL(''))
+	<form id="topUpForm" method="post" action="$env.getWebURL('/financial/bindCardConfirmSub.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<div class="pageFormContent nowrap" layoutH="60">
+			<label >验证码：</label>
+			<input type="text" name="smsCode" id="smsCode" maxLength="6"/>
+			
+			<input type="hidden" name="bankCardNo" id="bankCardNo" value="$!bankCardNo"/>
+			<input type="hidden" name="mobile" id="mobile" value="$!mobile"/>
+			<input type="hidden" name="transId" id="transId" value="$!transId"/>
+			
+			<input type="hidden" name="idCard" id="idCard" value="330521199004153028"/>
+			<input type="hidden" name="userName" id="userName" value="孙春燕"/>
+			<input type="hidden" name="bankCode" id="bankCode" value="CCB"/>
+			
+		</div>
+		<div class="formBar">
+			<ul>
+				<li>
+					<div class="buttonActive">
+						<div class="buttonContent">
+							<button onclick="topUp()" type="button">提交</button>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
+							<button type="button" class="close">取消</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+	
+<script>
+    function topUp(){
+		if($('#smsCode').val()) {
+    		$("#topUpForm").submit();
+    	} else if(!$('#smsCode').val()) {
+    		alertMsg.info('请输入验证码！');
+    	}
+    }
+	function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			alertMsg.correct('您的数据提交成功!');
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('financial/baofooBindCard.htm')");
+		} else {
+			alertMsg.error('保存失败：'+json.message);
+		}
+	}
+</script>

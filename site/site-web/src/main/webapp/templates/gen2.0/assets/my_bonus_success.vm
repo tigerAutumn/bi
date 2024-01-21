@@ -1,0 +1,41 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/login_header")
+#LoadGenCSS("/resources/gen2.0/styles/recharge/recharge_first")
+#LoadGenJS("/resources/gen2.0/scripts/echarts")
+#LoadGenJS("/resources/gen2.0/scripts/switchable")
+#LoadGenJS("/resources/gen2.0/scripts/textSlider")
+#LoadGenJS("/resources/gen2.0/scripts/index_style")
+#GenHead("end")
+	<body>
+		<!--header -s-->
+		#Gen2Header("assets")
+		<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')"/>
+		
+		<div class="con_gmcg">
+			<div class="con_gcg">
+				<div class="con_gcbuttom">
+					#if($!flag == 'success')
+						<p>奖励金转入账户余额已成功</p>
+						<p><button style="cursor:pointer;" id="go_assets" url="$!env.get('gen.server.web')/gen2.0/assets/assets">完成</button></p>
+                	#else
+                		<p>奖励金转入账户余额申请已提交</p>
+						<div class="receive_time">预计到账时间 $!date.formatDateTime($!time,'yyyy-MM-dd')</div>
+						<p><button style="cursor:pointer;" id="go_assets" url="$!env.get('gen.server.web')/gen2.0/assets/assets">完成</button></p>
+                	#end
+				</div>
+			</div>
+		</div>
+		<script >
+			$("#go_assets").click(function(){
+				location.href = $(this).attr('url');
+			});
+        </script>
+		
+	</body>
+
+<!--footer -s-->
+#Gen2Footer()
+<!--footer -e-->
+#Html("end")

@@ -1,0 +1,112 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/bsErrorCode/index.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+				<tr>
+					<td>
+						错误码：<input id="errorCodeOther" type="text" name="errorCodeOther" value="$!req.errorCodeOther" />
+						错误码内部描述：<input id="errorInMsg" type="text" name="errorInMsg" value="$!req.errorInMsg" />
+						错误码外部描述：<input id="errorOutMsg" type="text" name="errorOutMsg" value="$!req.errorOutMsg" />
+						渠道类型：
+						<select name="errorCodeChannel" > 
+							<option value="" #if("$!req.errorCodeChannel"=="") selected #end>全部</option>
+							<option value="BAOFOO" #if("$!req.errorCodeChannel"=="BAOFOO") selected  #end>宝付渠道</option>
+							<option value="PAY19" #if("$!req.errorCodeChannel"=="PAY19") selected #end>19支付渠道</option>
+							<option value="REAPAL" #if("$!req.errorCodeChannel"=="REAPAL") selected #end>融宝渠道</option>
+        					<option value="DAFY" #if("$!req.errorCodeChannel"=="DAFY") selected  #end>达飞渠道</option>
+        				</select>
+						接口类型：
+						<select name="interfaceType" > 
+							<option value="" #if("$!req.interfaceType"=="") selected #end>全部</option>
+							<option value="QUICK_PAY" #if("$!req.interfaceType"=="QUICK_PAY") selected #end>快捷</option>
+        					<option value="DF" #if("$!req.interfaceType"=="DF") selected  #end>代付</option>
+						    <option value="NETBANK" #if("$!req.interfaceType"=="NETBANK") selected #end>网银</option>
+        					<option value="TRANSFER" #if("$!req.interfaceType"=="TRANSFER") selected  #end>钱包转账</option>
+        					<option value="DK" #if("$!req.interfaceType"=="DK") selected  #end>代扣</option>
+							<option value="REAL_NAME" #if("$!req.interfaceType"=="REAL_NAME") selected  #end>实名认证</option>
+        				</select>
+						<span style="margin-left:20px;">
+							<button onclick="func()" type="button">查询</button>
+                        </span>
+						
+					</td>
+				</tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">	
+		<ul class="toolBar">
+			<li><a class="add" href="$env.getWebURL('/bsErrorCode/detail.htm')" target="dialog" mask="true" rel="createBack" height="665" width="720"><span>新增</span></a></li>
+			<li class="line">line</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+	            <th width="100">编号</th>
+				<th width="155">渠道类型</th>
+				<th width="155">接口类型</th>
+				<th width="156">错误码</th>
+				<th width="210">错误码内部描述</th>
+				<th width="210">错误码外部描述</th>
+				<th width="155">创建时间</th>
+				<th width="155">修改时间</th>
+				<th width="100">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $errorCodeList)
+			<tr target="sid_user" rel="1" >
+                <td>$!grid.id</td>
+				<td>$message.get("BSERRORCODE_CHANNEL_TYPE_$!grid.channel")</td>
+				<td>$!message.get("ACCOUNT_ORDER_CHANNEL_TRANS_TYPE_$!grid.interfaceType")</td>
+				<td>$!grid.errorCode</td>
+				<td>$!grid.errorInMsg</td>
+				<td>$!grid.errorOutMsg</td>
+				<td>$!date.format($!grid.createTime)</td>
+				<td>$!date.format($!grid.updateTime)</td>
+				<td>
+					<a title="编辑?" target="dialog" href="$env.getWebURL('/bsErrorCode/detail.htm?id=')$!grid.id" class="btnEdit" mask="true" rel="createBack" height="665" width="720">编辑</a>
+					<a title="删除?" target="ajaxTodo" mask="true" href="$env.getWebURL('/bsErrorCode/delete.htm?id=')$!grid.id" class="btnDel">删除</a>
+                </td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+<script>
+
+function func(){
+	var url = $("#APP_ROOT_PATH").val() + "/bsErrorCode/index.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+</script>

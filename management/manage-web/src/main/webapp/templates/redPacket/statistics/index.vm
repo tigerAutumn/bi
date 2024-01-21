@@ -1,0 +1,145 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+<div class="page unitBox">
+	<div class="pageHeader">
+    	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('redPacket/redPacketStatisticsIndex.htm')" id="myform" method="post">
+        	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+			<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+			<div class="searchBar">
+                <table class="searchContent">
+        			<tr>
+        				
+						<td>
+        				<label>红包名称：</label>
+						 <input type="text" id="serialName" name="serialName" maxlength="25" value="$!req.serialName" />
+						</td>
+						<td>
+							<label>预算来源</label>
+							<select name="applyNo" id="applyNo">
+    							<option value="">所有</option>
+								#foreach($rpName in $!rpNameList)
+									<option value="$!rpName.applyNo" #if("$!req.applyNo"=="$!rpName.applyNo") selected #end >$!rpName.rpName</option>
+								#end
+    						</select>
+        				</td>
+						<td>
+							<label>申请人</label>
+							<select name="applicant" id="applicant">
+    							<option value="">所有</option>
+								#foreach($applica in $!applicantList)
+									<option value="$!applica.id" #if("$!req.applicant"=="$!applica.id") selected #end >$!applica.name</option>
+								#end
+    						</select>
+        				</td>
+        				 <td>
+        					<div class="buttonActive">
+        						<div class="buttonContent">
+        							<button  onclick="searchFunction()" type="button">查询</button>
+        						</div>
+        					</div>
+        				 </td>
+                    </tr>
+        		</table>
+        	</div>
+    	</form>
+    </div>
+    <div class="pageContent">
+			<div class="panelBar">
+        		<ul class="toolBar">
+					<li>
+    					<span style="margin-left:5px;">
+                		<font color="red">预算总额：#if(!$!budgetTotal)0.00 #else $!money.format($!budgetTotal) #end 元</font>
+    					</span>
+						##<span style="margin-left:5px;">
+                		##<font color="red">预算余额：#if(!$!budgetAmount)0.00 #else $!money.format($!budgetAmount) #end 元</font>
+    					##</span>
+					</li>
+				
+        		</ul>
+        	</div>
+    	<table class="table" width="1396" layoutH="128">
+    		<thead>
+    			<tr>
+					<th width="9%">红包名称</th>
+    				<th width="8%">批次号</th>
+					<th width="5%">单个红包金额</th>
+					<th width="8%">使用条件</th>
+					<th width="8%">限用标的</th>
+    				<th width="8%">已发出红包</th>
+					<th width="6%">已使用红包</th>
+					<th width="6%">使用中红包</th>
+    				<th width="6%">已过期红包</th>
+    				<th width="8%">预算来源</th>
+    				<th width="10%">发放时间</th>
+					<th width="9%">投资金额</th>
+					<th width="9%">年化投资金额</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			#foreach($grid in $dataGrid)
+    			<tr target="sid_user" rel="1">
+    				<td>$!grid.serialName</td>
+    				<td>$!grid.serialNo</td>
+					<td>#if(!$!grid.amount)&nbsp #else  $!number.format("0.00", $!grid.amount) 元 #end</td>
+					<td>#if($!grid.useCondition =="FULL_SUBTRACT")  满 $!number.format("0.00", $!grid.full)  减   #else $!grid.useCondition #end </td>
+    				<td>#if(!$!grid.termLimit)&nbsp #else $!grid.termLimit 个月 #end </td>
+    				<td>#if(!$!grid.total) 0 #else $!grid.total #end 个 / #if(!$!grid.totalAmount) 0.00 #else $!number.format("0.00",$!grid.totalAmount) #end 元</td>
+    				<td>#if(!$!grid.usedRedPocket) 0 #else $!grid.usedRedPocket #end 个/ #if(!$!grid.usedRedPocketAmount) 0.00 #else $!number.format("0.00",$!grid.usedRedPocketAmount ) #end 元</td>
+					<td>#if(!$!grid.initRedPocket) 0 #else $!grid.initRedPocket #end 个/ #if(!$!grid.initRedPocketAmount) 0.00 #else $!number.format("0.00",$!grid.initRedPocketAmount )#end 元</td>
+					<td>#if(!$!grid.overRedPocket) 0 #else $!grid.overRedPocket #end 个/ #if(!$!grid.overRedPocketAmount) 0.00 #else $!number.format("0.00",$!grid.overRedPocketAmount )#end 元</td>
+					<td>$!grid.rpName </td>
+					<td>$!date.format($!grid.updateTime)</td>
+					<td>
+						<div  serial_no="$!grid.serialNo" class="d_$!grid.serialNo"  onclick="yearAmountFunction(this)">---</div>
+					</td>
+					<td>
+						<div  serial_no="$!grid.serialNo" class="c_$!grid.serialNo"  onclick="yearAmountFunction(this)">---</div>
+					</td>
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+    			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!count条</span>
+    	</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+    </div>
+    </div>
+	
+</div>
+	
+<script>  
+	function searchFunction(){
+    	$("#myform").submit();
+    }
+	
+	function yearAmountFunction(obj){
+    	var serial_no = $(obj).attr("serial_no");
+		var url = $("#APP_ROOT_PATH").val() + "/redPacket/queryAmountYear.htm";
+		
+		jQuery.ajax({
+    		type : "post",
+    		url : url,
+			async : false,
+    		data : {"serialNo":serial_no},
+    		success : function(data) {
+				if(data.resCode == 200){
+					$(".d_"+serial_no).html(data.buyAmount);
+					$(".c_"+serial_no).html(data.buyYearAmount);
+				}
+    		}
+    	});
+    }
+	
+</script> 

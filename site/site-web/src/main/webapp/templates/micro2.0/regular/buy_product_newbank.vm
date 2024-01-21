@@ -1,0 +1,120 @@
+## 已绑卡 添加新的银行卡
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/regular/buy_product.min")
+#WeChatShare()
+#Head("end")
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="id" name="id" value="$!id" />
+    <input type="hidden" id="rate" name="rate" value="$!rate" />
+    <input type="hidden" id="term" name="term" value="$!term" />
+    <input type="hidden" id="idCard" name="idCard" value="$!idCard" />
+    <input type="hidden" id="minInvestAmount" name="minInvestAmount" value="$!minInvestAmount" />
+    <div class="header">
+    	<a class="header_arrow" href="javascript:history.go(-1)"></a>
+    	<h1 class="heade_ft oran_color">$!name</h1>
+    </div>
+    <div class="main">
+    	<ul>
+    		<li class="item">
+    			<div class="item_small bor_none">
+    				<span class="font_left">购入金额</span>
+    				<input class="rech_money" maxlength="9" type="text" name="amount" id="amount" placeholder="请输入100元整数倍" oninput="checkNumber(this)">
+    			</div>
+    		</li>
+    		<div class="rech_bank regu_color"><span class="regu_sp1">预期收益</span><span class="oran_color number" id="lixi">0.00</span>元</div>
+    	</ul>
+    </div>
+    <div class="main rech_main">
+    	<div class="rech_bank">银行卡支付</div>
+    	<ul>
+    		<li class="item item_top_border">
+    			<div class="item_small">
+    				<span class="font_left">姓名</span>
+    				<input class="rech_money" type="text" name="userName" id="userName" placeholder="请输入持卡人姓名" value="$!userName" readonly>
+    			</div>
+    		</li>
+    		
+    	</ul>
+    </div>
+    <div class="main">
+    	<ul>
+    		<li class="item item_top_border">
+    			<div class="item_small">
+    				<span class="font_left">卡号</span>
+    				<input class="rech_money" type="tel" name="cardNo" id="cardNo" placeholder="请输入银行卡号" maxlength="20" oninput="cardbin()">
+    			</div>
+    		</li>
+    		<li class="item">
+    			<div class="item_small bor_none">
+    				<span class="font_left">类型</span>
+    				<a class="a_seteeing slect_a" href="javascript:void(0)">
+    					<div class="secl_over">
+    					<select class="font_right rela_top" id="selbank">
+    						<option class="rela_ft ft_setting" value="-1">请选择银行</option>
+    						#foreach($bank in $bankList)
+    							#if($bank.isAvailable == 1)
+    								<option class="rela_ft" value="$!bank.bankId" isAvailable="$!bank.isAvailable" oneTop="$!bank.oneTop" dayTop="$!bank.dayTop">$!{bank.bankName}</option>
+    							#else
+    								<option class="rela_ft" value="$!bank.bankId" isAvailable="$!bank.isAvailable" oneTop="$!bank.oneTop" dayTop="$!bank.dayTop">$!{bank.bankName}(暂不可用)</option>
+    							#end
+    						#end
+    					</select>
+    					</div>
+    					<i class="Acc_arrow secl_arr"></i>
+    				</a>
+    			</div>
+    		</li>
+    	</ul>
+    	<div class="rech_bank regu_color" id="limit">
+    		<span class="regu_sp1">单笔限额</span><span class="oran_color number" id="onelimit">0.00</span>万元，
+    		<span class="regu_sp1">单日限额</span><span class="oran_color number" id="daylimit">0.00</span>万元
+    	</div>
+    </div>
+    <div class="main rech_phone">
+    	<ul>
+    		<li class="item">
+    			<div class="item_small bor_none">
+    				<span class="font_left">手机号</span>
+    				<input class="rech_money" type="tel" name="mobile" id="mobile" placeholder="请输入银行卡预留手机号" maxlength="11" oninput="checkNumber(this)">
+    			</div>
+    		</li>
+    	</ul>
+    </div>
+    <a href="javascript:void(0)" class="Exit_login">确认购买</a>
+    <div class="rech_yes">点击提交即代表您同意
+    	#if("$!qianbao" == "qianbao")
+    		<a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/financial')?qianbao=qianbao&agentViewFlag=$!agentViewFlag">《出借服务协议》</a>
+        	<a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/pay')?qianbao=qianbao&agentViewFlag=$!agentViewFlag">《支付协议》</a>
+        	<a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/account')?qianbao=qianbao&agentViewFlag=$!agentViewFlag">《账户服务协议》</a>
+    	#else
+    		<a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/financial')">《出借服务协议》</a>
+        	<a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/pay')">《支付协议》</a>
+        	<a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/account')">《账户服务协议》</a>
+    	#end
+    	
+    </div>
+    
+    <!-- 弹窗 -->
+    <div class="dialog_wrap">
+    	<div class="deposit_dialog">
+    		<h3 class="deposit_info_title">支付验证</h3>
+    		<i class="dep_img"></i>
+    		<div class="yz_info">已向您的手机号18601042224<br>发送验证短信，请注意查收</div>
+    		<div class="yz_warp">
+    			<span class="yz_ft">验证码</span>
+    			<input class="pass_input" type="tel" name="" value="" placeholder="请输入短信验证码">
+    			<div class="phone_time">重发(<span>60</span>)</div>
+    		</div>
+    		<a class="down_ok" href="$!env.getWebURL('micro2.0/finance/buy_product_result')" title=""><div class="top_line">确定</div></a>
+    	</div>
+    </div>
+#LoadJS("resources/micro2.0/scripts/zepto.min")
+#LoadJS("resources/micro2.0/scripts/regular/custom")
+#LoadJS("resources/micro2.0/scripts/regular/regular_product_firstBuy")
+</body>
+#Html("end")

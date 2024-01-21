@@ -1,0 +1,102 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+	<input type="hidden" name="startTime" value="$!req.startTime" />
+	<input type="hidden" name="eRndTime" value="$!req.endTime" />
+</form>
+<div class="page unitBox">
+	<div class="pageHeader">
+    	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('financial/financeWithdrawRecords.htm')" id="generalForm"  method="post">
+        	<div class="searchBar">
+                <table class="searchContent">
+        			<tr>
+						<td>
+                       		<label>提现开始日期</label>
+							<input type="text" name="startTime" value="$!req.startTime" class="date" pattern="yyyy-MM-dd" yearstart="-20" yearend="5" readonly/>
+        				</td>
+						<td>
+							<label>提现结束日期</label>
+							<input type="text" name="endTime" value="$!req.endTime" class="date" pattern="yyyy-MM-dd" yearstart="-20" yearend="5" readonly/>
+						</td>
+        				<td>
+        					<div class="buttonActive">
+        						<div class="buttonContent">
+        							<button onclick="searchFunction()" type="button">查询</button>
+        						</div>
+        					</div>
+        				</td>
+                    </tr>
+        		</table>
+        	</div>
+    	</form>
+    </div>
+    <div class="pageContent">
+		<div class="panelBar">
+    		<ul class="toolBar">
+    			<li>
+					<a class="add" href="$env.getWebURL('financial/addFinanceWithdrawRecord.htm')" target="dialog" mask="true" rel="createBack" height="300" width="300" title="添加财务提现确认">
+						<span>添加财务提现确认</span>
+					</a>
+				</li>
+    		</ul>
+    	</div>
+    	<table class="table" width="100%" layoutH="120">
+    		<thead>
+    			<tr>
+					<th width="10%">提现金额</th>
+    				<th width="10%">提现时间</th>
+					<th width="10%">操作人</th>
+    				<th width="10%">确认人</th>
+					<th width="10%">确认时间</th>
+    				<th width="10%">备注</th>
+    				<th width="10%">创建时间</th>
+					<th width="10%">操作</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			#foreach($grid in $dataGrid)
+    			<tr target="sid_user" rel="1">
+    				<td>$!money.format($!grid.amount)</td>
+    				<td>$!date.format($!grid.withdrawTime)</td>
+    				<td>$!grid.opUserName</td>
+    				<td>$!grid.confirmUserName</td>
+    				<td>$!date.format($!grid.confirmTime)</td>
+					<td>$!grid.note</td>
+					<td>$!date.format($!grid.createTime)</td>
+                    <td>
+						#if("$!isSupperManager" == "yes")
+							#if("$!grid.confirmUserId" == "")
+								<a class="icon" href="$!env.getWebURL('')/financial/confirmFinancialRegistry.htm?id=$!grid.id" target="ajaxTodo" title="确定?">
+                					<span>确认</span>
+                				</a>
+							#else
+							#end
+						#else
+						#end
+					</td>
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+    			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!count条</span>
+    	</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+    </div>
+    </div>
+	
+</div>
+<script>  
+	function searchFunction(){
+    	$("#generalForm").submit();
+    }
+</script> 

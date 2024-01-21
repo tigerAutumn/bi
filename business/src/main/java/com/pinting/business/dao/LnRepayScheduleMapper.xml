@@ -1,0 +1,2407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinting.business.dao.LnRepayScheduleMapper">
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.LnRepaySchedule">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="loan_id" jdbcType="INTEGER" property="loanId" />
+    <result column="partner_repay_id" jdbcType="VARCHAR" property="partnerRepayId" />
+    <result column="serial_id" jdbcType="INTEGER" property="serialId" />
+    <result column="plan_date" jdbcType="DATE" property="planDate" />
+    <result column="finish_time" jdbcType="TIMESTAMP" property="finishTime" />
+    <result column="plan_total" jdbcType="DOUBLE" property="planTotal" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="return_flag" jdbcType="VARCHAR" property="returnFlag" />
+    <result column="pay_order_no" jdbcType="VARCHAR" property="payOrderNo" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, loan_id, partner_repay_id, serial_id, plan_date, finish_time, plan_total, status, 
+    return_flag, pay_order_no, create_time, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.pinting.business.model.LnRepayScheduleExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ln_repay_schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ln_repay_schedule
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ln_repay_schedule
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.LnRepayScheduleExample">
+    delete from ln_repay_schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.LnRepaySchedule">
+    insert into ln_repay_schedule (id, loan_id, partner_repay_id, 
+      serial_id, plan_date, finish_time, 
+      plan_total, status, return_flag, 
+      pay_order_no, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{loanId,jdbcType=INTEGER}, #{partnerRepayId,jdbcType=VARCHAR}, 
+      #{serialId,jdbcType=INTEGER}, #{planDate,jdbcType=DATE}, #{finishTime,jdbcType=TIMESTAMP}, 
+      #{planTotal,jdbcType=DOUBLE}, #{status,jdbcType=VARCHAR}, #{returnFlag,jdbcType=VARCHAR}, 
+      #{payOrderNo,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.LnRepaySchedule" useGeneratedKeys="true" keyProperty="id">
+    insert into ln_repay_schedule
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="loanId != null">
+        loan_id,
+      </if>
+      <if test="partnerRepayId != null">
+        partner_repay_id,
+      </if>
+      <if test="serialId != null">
+        serial_id,
+      </if>
+      <if test="planDate != null">
+        plan_date,
+      </if>
+      <if test="finishTime != null">
+        finish_time,
+      </if>
+      <if test="planTotal != null">
+        plan_total,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="returnFlag != null">
+        return_flag,
+      </if>
+      <if test="payOrderNo != null">
+        pay_order_no,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="loanId != null">
+        #{loanId,jdbcType=INTEGER},
+      </if>
+      <if test="partnerRepayId != null">
+        #{partnerRepayId,jdbcType=VARCHAR},
+      </if>
+      <if test="serialId != null">
+        #{serialId,jdbcType=INTEGER},
+      </if>
+      <if test="planDate != null">
+        #{planDate,jdbcType=DATE},
+      </if>
+      <if test="finishTime != null">
+        #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planTotal != null">
+        #{planTotal,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="returnFlag != null">
+        #{returnFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="payOrderNo != null">
+        #{payOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.LnRepayScheduleExample" resultType="java.lang.Long">
+    select count(*) from ln_repay_schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ln_repay_schedule
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.loanId != null">
+        loan_id = #{record.loanId,jdbcType=INTEGER},
+      </if>
+      <if test="record.partnerRepayId != null">
+        partner_repay_id = #{record.partnerRepayId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serialId != null">
+        serial_id = #{record.serialId,jdbcType=INTEGER},
+      </if>
+      <if test="record.planDate != null">
+        plan_date = #{record.planDate,jdbcType=DATE},
+      </if>
+      <if test="record.finishTime != null">
+        finish_time = #{record.finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.planTotal != null">
+        plan_total = #{record.planTotal,jdbcType=DOUBLE},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.returnFlag != null">
+        return_flag = #{record.returnFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payOrderNo != null">
+        pay_order_no = #{record.payOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ln_repay_schedule
+    set id = #{record.id,jdbcType=INTEGER},
+      loan_id = #{record.loanId,jdbcType=INTEGER},
+      partner_repay_id = #{record.partnerRepayId,jdbcType=VARCHAR},
+      serial_id = #{record.serialId,jdbcType=INTEGER},
+      plan_date = #{record.planDate,jdbcType=DATE},
+      finish_time = #{record.finishTime,jdbcType=TIMESTAMP},
+      plan_total = #{record.planTotal,jdbcType=DOUBLE},
+      status = #{record.status,jdbcType=VARCHAR},
+      return_flag = #{record.returnFlag,jdbcType=VARCHAR},
+      pay_order_no = #{record.payOrderNo,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.LnRepaySchedule">
+    update ln_repay_schedule
+    <set>
+      <if test="loanId != null">
+        loan_id = #{loanId,jdbcType=INTEGER},
+      </if>
+      <if test="partnerRepayId != null">
+        partner_repay_id = #{partnerRepayId,jdbcType=VARCHAR},
+      </if>
+      <if test="serialId != null">
+        serial_id = #{serialId,jdbcType=INTEGER},
+      </if>
+      <if test="planDate != null">
+        plan_date = #{planDate,jdbcType=DATE},
+      </if>
+      <if test="finishTime != null">
+        finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planTotal != null">
+        plan_total = #{planTotal,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="returnFlag != null">
+        return_flag = #{returnFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="payOrderNo != null">
+        pay_order_no = #{payOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.LnRepaySchedule">
+    update ln_repay_schedule
+    set loan_id = #{loanId,jdbcType=INTEGER},
+      partner_repay_id = #{partnerRepayId,jdbcType=VARCHAR},
+      serial_id = #{serialId,jdbcType=INTEGER},
+      plan_date = #{planDate,jdbcType=DATE},
+      finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      plan_total = #{planTotal,jdbcType=DOUBLE},
+      status = #{status,jdbcType=VARCHAR},
+      return_flag = #{returnFlag,jdbcType=VARCHAR},
+      pay_order_no = #{payOrderNo,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="countByLoanIdNotInit" parameterType="java.util.Map" resultType="java.lang.Integer">
+  	select count(*) from ln_repay_schedule where loan_id=#{loanId} and `status` != 'INIT'
+  </select>
+
+  <resultMap id="OverdueRepayScheduleMap" type="com.pinting.business.model.vo.RepayScheduleVO">
+  <result column="id" jdbcType="INTEGER" property="id" />
+  <result column="loan_id" jdbcType="INTEGER" property="loanId" />
+  <result column="partner_repay_id" jdbcType="VARCHAR" property="partnerRepayId" />
+  <result column="serial_id" jdbcType="INTEGER" property="serialId" />
+  <result column="plan_date" jdbcType="DATE" property="planDate" />
+  <result column="plan_total" jdbcType="DOUBLE" property="planTotal" />
+  <result column="status" jdbcType="VARCHAR" property="status" />
+  <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  <result column="ln_user_id" jdbcType="INTEGER" property="lnUserId" />
+  <result column="bgw_order_no" jdbcType="VARCHAR" property="bgwOrderNo" />
+  <result column="repay_pay_status" jdbcType="VARCHAR" property="repayPayStatus" />
+  <result column="principal" jdbcType="DOUBLE" property="principal" />
+  <result column="subject_code" jdbcType="VARCHAR" property="subjectCode" />
+  <result column="plan_amount" jdbcType="DOUBLE" property="planAmount" />
+  <result column="user_name" jdbcType="VARCHAR" property="userName" />
+  <result column="loan_time" jdbcType="TIMESTAMP" property="loanTime" />
+</resultMap>
+
+<resultMap id="RepaySchedulePlanVOMap" type="com.pinting.business.model.vo.RepaySchedulePlanVO">
+  <result column="loan_id" jdbcType="INTEGER" property="loanId" />
+  <result column="serial_id" jdbcType="INTEGER" property="serialId" />
+  <result column="plan_date" jdbcType="DATE" property="planDate" />
+  <result column="should_principal" jdbcType="DOUBLE" property="shouldPrincipal" />
+  <result column="should_service_charges" jdbcType="DOUBLE" property="shouldServiceCharges" />
+  <result column="overdue_management_fee" jdbcType="DOUBLE" property="overdueManagementFee" />
+  <result column="plan_total" jdbcType="DOUBLE" property="planTotal" />
+  <result column="done_total" jdbcType="DOUBLE" property="doneTotal" />
+  <result column="done_time" jdbcType="TIMESTAMP" property="doneTime" />
+  <result column="status" jdbcType="VARCHAR" property="status" />
+</resultMap>
+
+  <select id="selectOverdueRepaySchedules" resultMap="OverdueRepayScheduleMap">
+    SELECT aa.*, b.ln_user_id, b.pay_order_no as bgw_order_no, b.status as repay_pay_status from (
+      SELECT a.*, c.plan_amount as principal  from ln_repay_schedule a, ln_repay_schedule_detail c, ln_loan e
+      where a.loan_id=e.id and e.`status`='PAIED' AND  a.status = 'INIT' and DATE_ADD(a.plan_date,INTERVAL 1 DAY) &lt; NOW()
+        and a.id=c.plan_id and c.subject_code='PRINCIPAL' and e.charge_rule_id is not NULL
+    ) aa
+    LEFT JOIN ln_repay b ON aa.id = b.repay_plan_id and b.status IN ('REPAYING','REPAIED')
+  </select>
+
+  <select id="selectNotCompensated" resultMap="OverdueRepayScheduleMap" parameterType="java.lang.String">
+    SELECT r.partner_repay_id from ln_repay_schedule r, ln_loan l, ln_user lu
+    where r.loan_id = l.id and r.status = 'INIT' and r.plan_date &lt; DATE_FORMAT(NOW(),'%y-%m-%d')
+				and l.status = 'PAIED' and l.ln_user_id = lu.id and lu.partner_code &lt;&gt; #{excludePartnerCode}
+  </select>
+  <select id="selectNotCompensatedDetail" resultMap="OverdueRepayScheduleMap" parameterType="java.lang.String">
+  	  SELECT r.partner_repay_id,r.loan_id from ln_repay_schedule r, ln_loan l, ln_user lu
+  		where r.loan_id = l.id and r.status = 'INIT' and l.status = 'PAIED' and l.ln_user_id = lu.id 
+			and r.plan_date=DATE(#{planDate}) and lu.partner_code=#{partnerCode}
+  </select>
+  <select id="selectNotCompensatedPartner" resultType="java.lang.String" parameterType="java.lang.String">
+    SELECT DISTINCT(lu.partner_code) from ln_repay_schedule r, ln_loan l, ln_user lu
+    where r.loan_id = l.id and r.status = 'INIT' and r.plan_date &lt; DATE_FORMAT(NOW(),'%y-%m-%d')
+    and l.status = 'PAIED' and l.ln_user_id = lu.id and lu.partner_code &lt;&gt; #{excludePartnerCode}
+  </select>
+  
+  <select id="countLateNot" parameterType="java.util.Map" resultType="java.lang.Integer">
+  select count(a.id) from ln_repay_schedule a,ln_loan b
+	where a.loan_id = b.id and b.ln_user_id = #{loanUserId}
+	<if test="loanId != null and loanId != ''">
+		and a.loan_id = #{loanId}
+	</if>
+	<if test="serialId != null and serialId != ''">
+		and a.serial_id = #{serialId}
+	</if>
+	and a.status ='LATE_NOT' 
+  </select>
+
+  <select id="selectFeeByLoanId" parameterType="java.util.Map" resultMap="OverdueRepayScheduleMap">
+    SELECT b.subject_code, b.plan_amount, d.user_name, c.loan_time, c.id AS loan_id
+    FROM ln_repay_schedule a LEFT JOIN ln_repay_schedule_detail b ON a.id = b.plan_id
+    LEFT JOIN ln_loan c ON a.loan_id = c.id
+    LEFT JOIN ln_user d ON c.ln_user_id = d.id
+    WHERE a.serial_id = 1 AND a.loan_id = #{loanId}
+  </select>
+
+  <select id="selectRepaySchedulePlanList" parameterType="java.util.Map" resultMap="RepaySchedulePlanVOMap">
+    SELECT a.loan_id, a.serial_id, a.plan_date, a.plan_total, a.`status`,
+    b.done_total, b.done_time,
+    aa.plan_amount AS should_principal,
+    bb.done_amount AS overdue_management_fee
+    FROM ln_repay_schedule a
+    LEFT JOIN ln_repay b ON a.id = b.repay_plan_id AND b.`status` = 'REPAIED'
+    LEFT JOIN
+      (SELECT a.id, b.plan_amount
+        FROM ln_repay_schedule a, ln_repay_schedule_detail b
+        WHERE a.id = b.plan_id
+        AND (b.subject_code = 'PRINCIPAL')) aa ON a.id = aa.id
+    LEFT JOIN
+      (SELECT a.id, d.done_amount
+        FROM ln_repay_schedule a, ln_repay_schedule_detail b, ln_repay c, ln_repay_detail d
+        WHERE a.id = b.plan_id AND b.plan_id = c.repay_plan_id AND c.id = d.repay_id
+        AND a.`status`='LATE_REPAIED' AND c.`status` = 'REPAIED' AND (d.subject_code = 'LATE_FEE')
+        AND a.loan_id = #{loanId}
+        GROUP BY d.repay_id) bb ON a.id = bb.id
+    WHERE a.loan_id = #{loanId}
+    ORDER BY a.serial_id DESC
+  </select>
+  
+  <!-- ####################管理台业务######################## -->
+  <!-- ================保证金代收代付 ，赞分期、赞时贷 start================== -->
+  <resultMap id="MDepositDsDfResVOMap" type="com.pinting.business.model.vo.MDepositDsDfResVO">
+    <result column="rowno" jdbcType="INTEGER" property="rowno" />
+    <result column="ln_user_name" jdbcType="VARCHAR" property="lnUserName" />
+    <result column="ln_user_mobile" jdbcType="VARCHAR" property="lnUserMobile" />
+    <result column="dsdf_type" jdbcType="VARCHAR" property="dsdfType" />
+    <result column="ln_user_code" jdbcType="VARCHAR" property="lnUserCode" />
+    <result column="ds_amount" jdbcType="DOUBLE" property="dsAmount" />
+    <result column="df_amount" jdbcType="DOUBLE" property="dfAmount" />
+    <result column="sum_ds_amount" jdbcType="DOUBLE" property="sumDsAmount" />
+    <result column="sum_df_amount" jdbcType="DOUBLE" property="sumDfAmount" />
+    <result column="done_time" jdbcType="DATE" property="doneTime" />
+  </resultMap>
+  
+  <select id="selectDepositDsDfList" parameterType="com.pinting.business.model.vo.MDepositDsDfQueryVO" resultMap="MDepositDsDfResVOMap">
+  	SELECT
+		(@rowNO := @rowNo + 1) rowno,
+		t.*
+		FROM
+		(SELECT @rowNO := #{start}) b,
+          (select a.loan_id,a.done_time,a.dsdf_type,ROUND(a.df_amount,2)df_amount,
+          case when a.dsdf_type='计提' then ROUND(ll.approve_amount *0.03/12,2) else a.ds_amount end ds_amount,
+          1.3 ln_user_code,lu.user_name ln_user_name,lu.mobile ln_user_mobile FROM ln_user lu,ln_loan ll,
+            (
+              <choose>
+                <when test="dsdfType == null or dsdfType == '' or dsdfType == '逾期垫付'">
+                (SELECT lrs.id, lrs.loan_id, lrs.serial_id, lrs.`status`, DATE(b.done_time) AS done_time, '逾期垫付' AS dsdf_type,
+                  sum(b.plan_total) AS df_amount, NULL AS ds_amount
+                FROM
+                  (SELECT lrs.id, lrs.loan_id, lrs.serial_id, lrs.`status` FROM ln_repay_schedule lrs where (lrs.`status` = 'LATE_NOT' or lrs.`status` = 'LATE_REPAIED')) lrs
+                  INNER JOIN ln_loan_relation a ON a.loan_id = lrs.loan_id
+                  INNER JOIN ln_finance_repay_schedule b ON b.relation_id = a.id
+                  AND b.repay_serial = lrs.serial_id
+                  <if test="(userName != null and userName != '') or (userMobile != null and userMobile != '')">
+                    INNER JOIN ln_user lu on lu.id = a.ln_user_id
+                    <if test="userName != null and userName != '' ">
+                      and lu.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+                    </if>
+                    <if test="userMobile != null and userMobile != '' ">
+                      and lu.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+                    </if>
+                  </if>,
+                  (SELECT * FROM bs_sys_config WHERE conf_key = 'DEP_SYSTEM_PUBLISH_TIME') cf
+                WHERE
+                  b.`status` = 'REPAIED'
+                AND b.done_time &lt; cf.conf_value
+                <if test="beginTime != null and beginTime != ''">
+                  AND DATE(cf.conf_value) >= #{beginTime}
+                  and DATE(b.done_time) &gt;= #{beginTime}
+                </if>
+                <if test="overTime != null and overTime!= '' ">
+                  and DATE(b.done_time) &lt;= #{overTime}
+                </if>
+                GROUP BY
+                  a.loan_id,
+                  b.repay_serial
+              )
+              </when>
+              <otherwise>
+                (select NULL AS id,NULL AS loan_id,NULL AS serial_id,NULL AS `status`, NULL AS done_time,NULL as dsdf_type, NULL as df_amount, NULL as ds_amount)
+              </otherwise>
+            </choose>
+            UNION ALL
+            <choose>
+              <when test="dsdfType == null or dsdfType == '' or dsdfType == '计提'">
+              (select  lrs.id, lrs.loan_id, lrs.serial_id, lrs.`status`, DATE(lr.done_time) as done_time,
+               '计提' as dsdf_type, null as df_amount, null as ds_amount
+              from ln_repay_schedule lrs
+                INNER JOIN ln_repay lr on lr.repay_plan_id = lrs.id and lr.`status`='REPAIED'
+                  <if test="(userName != null and userName != '') or (userMobile != null and userMobile != '')">
+                  INNER JOIN ln_user lu on lu.id = lr.ln_user_id
+                      <if test="userName != null and userName != '' ">
+                          and lu.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+                      </if>
+                      <if test="userMobile != null and userMobile != '' ">
+                          and lu.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+                      </if>
+                  </if>
+              where lrs.`status`!='INIT'
+              <if test="beginTime != null and beginTime != ''">
+                  AND DATE(lr.done_time) &gt;= #{beginTime}
+              </if>
+              <if test="overTime != null and overTime!= '' ">
+                  AND DATE(lr.done_time) &lt;= #{overTime}
+              </if>
+              AND lrs.`status` != 'LATE_NOT'
+              AND lrs.`status` != 'LATE_REPAIED'
+              )
+              </when>
+              <otherwise>
+                (select NULL AS id,NULL AS loan_id,NULL AS serial_id,NULL AS `status`, NULL AS done_time,NULL as dsdf_type, NULL as df_amount, NULL as ds_amount)
+              </otherwise>
+            </choose>
+          UNION ALL
+            <choose>
+              <when test="dsdfType == null or dsdfType == '' or dsdfType == '计提' ">
+              (select  lrs.id,lrs.loan_id,lrs.serial_id,lrs.`status`,DATE(lr.done_time) done_time,'计提'as dsdf_type,null as df_amount,null as ds_amount
+              from ln_repay_schedule lrs
+                INNER JOIN ln_repay lr on lr.repay_plan_id = lrs.id and lr.`status`='REPAIED'
+                  <if test="(userName != null and userName != '') or (userMobile != null and userMobile != '')">
+                  INNER JOIN ln_user lu on lu.id = lr.ln_user_id
+                      <if test="userName != null and userName != '' ">
+                          and lu.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+                      </if>
+                      <if test="userMobile != null and userMobile != '' ">
+                          and lu.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+                      </if>
+                  </if>,
+                  (SELECT conf_value FROM bs_sys_config WHERE conf_key = 'DEP_SYSTEM_PUBLISH_TIME') cf
+                  where lrs.`status`='LATE_REPAIED' AND lr.done_time &gt;= cf.conf_value
+              <if test="beginTime != null and beginTime != ''">
+                  and DATE(lr.done_time) &gt;= #{beginTime}
+              </if>
+              <if test="overTime != null and overTime!= '' ">
+                  and DATE(lr.done_time) &lt;= #{overTime}
+                  AND DATE(cf.conf_value) &lt;= #{overTime}
+              </if>
+              )
+              </when>
+              <otherwise>
+                (select NULL AS id,NULL AS loan_id,NULL AS serial_id,NULL AS `status`, NULL AS done_time,NULL as dsdf_type, NULL as df_amount, NULL as ds_amount)
+              </otherwise>
+            </choose>
+          UNION ALL
+            <choose>
+              <when test="dsdfType == null or dsdfType == '' or dsdfType == '逾期回款' ">
+              (select  lrs.id,lrs.loan_id,lrs.serial_id,lrs.`status`,DATE(lr.done_time) done_time,'逾期回款'as dsdf_type,
+              null as df_amount,
+              (SELECT sum(b.plan_total) bgw_plan_total FROM ln_loan_relation a, ln_finance_repay_schedule b
+              WHERE a.id = b.relation_id AND a.loan_id = lrs.loan_id AND b.repay_serial = lrs.serial_id
+              GROUP BY a.loan_id, b.repay_serial
+              ) as ds_amount
+              from ln_repay_schedule lrs
+                INNER JOIN ln_repay lr on lr.repay_plan_id = lrs.id  and lr.`status`='REPAIED'
+                  <if test="(userName != null and userName != '') or (userMobile != null and userMobile != '')">
+                  INNER JOIN ln_user lu on lu.id = lr.ln_user_id
+                      <if test="userName != null and userName != '' ">
+                          and lu.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+                      </if>
+                      <if test="userMobile != null and userMobile != '' ">
+                          and lu.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+                      </if>
+                  </if>,
+              (SELECT conf_value FROM bs_sys_config WHERE conf_key = 'DEP_SYSTEM_PUBLISH_TIME') cf
+              where lrs.`status`='LATE_REPAIED' AND lr.done_time &lt; cf.conf_value
+              <if test="beginTime != null and beginTime != ''">
+                  and DATE(lr.done_time) &gt;= #{beginTime}
+                  AND DATE(cf.conf_value) &gt;= #{beginTime}
+              </if>
+              <if test="overTime != null and overTime!= '' ">
+                  and DATE(lr.done_time) &lt;= #{overTime}
+              </if>
+              )
+            </when>
+            <otherwise>
+              (select NULL AS id,NULL AS loan_id,NULL AS serial_id,NULL AS `status`, NULL AS done_time,NULL as dsdf_type, NULL as df_amount, NULL as ds_amount)
+            </otherwise>
+          </choose>
+            )a
+			where lu.partner_code = 'ZAN' and a.loan_id = ll.id and ll.ln_user_id = lu.id 
+			<if test="beginTime != null and beginTime != ''">
+				and a.done_time &gt;= #{beginTime}
+			</if>
+			<if test="overTime != null and overTime!= '' ">
+				and a.done_time &lt;= #{overTime}
+			</if>
+			<if test="userName != null and userName != '' ">
+				and lu.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="userMobile != null and userMobile != '' ">
+				and lu.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="dsdfType != null and dsdfType != '' ">
+				and a.dsdf_type =#{dsdfType}
+			</if>
+			ORDER BY a.done_time desc
+			)t
+  	<include refid="sql-global.pagination" />
+	
+  </select>
+  
+  <select id="countDepositDsDfList" parameterType="com.pinting.business.model.vo.MDepositDsDfQueryVO" resultType="java.lang.Integer">
+  	SELECT
+		count(t.loan_id)
+          from
+          (select a.loan_id,a.done_time,a.dsdf_type,ROUND(a.df_amount,2)df_amount,
+          case when a.dsdf_type='计提' then ROUND(ll.approve_amount *0.03/12,2) else a.ds_amount end ds_amount,
+          1.3 ln_user_code,lu.user_name ln_user_name,lu.mobile ln_user_mobile FROM ln_user lu,ln_loan ll,
+              (
+              <choose>
+                <when test="dsdfType == null or dsdfType == '' or dsdfType == '逾期垫付'">
+                  (SELECT lrs.id, lrs.loan_id, lrs.serial_id, lrs.`status`, DATE(b.done_time) AS done_time, '逾期垫付' AS dsdf_type,
+                  sum(b.plan_total) AS df_amount, NULL AS ds_amount
+                  FROM
+                  (SELECT lrs.id, lrs.loan_id, lrs.serial_id, lrs.`status` FROM ln_repay_schedule lrs where (lrs.`status` = 'LATE_NOT' or lrs.`status` = 'LATE_REPAIED')) lrs
+                  INNER JOIN ln_loan_relation a ON a.loan_id = lrs.loan_id
+                  INNER JOIN ln_finance_repay_schedule b ON b.relation_id = a.id
+                  AND b.repay_serial = lrs.serial_id
+                  <if test="(userName != null and userName != '') or (userMobile != null and userMobile != '')">
+                    INNER JOIN ln_user lu on lu.id = a.ln_user_id
+                    <if test="userName != null and userName != '' ">
+                      and lu.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+                    </if>
+                    <if test="userMobile != null and userMobile != '' ">
+                      and lu.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+                    </if>
+                  </if>,
+                  (SELECT * FROM bs_sys_config WHERE conf_key = 'DEP_SYSTEM_PUBLISH_TIME') cf
+                  WHERE
+                    b.`status` = 'REPAIED'
+                  AND b.done_time &lt; cf.conf_value
+                  <if test="beginTime != null and beginTime != ''">
+                    AND DATE(cf.conf_value) >= #{beginTime}
+                    and DATE(b.done_time) &gt;= #{beginTime}
+                  </if>
+                  <if test="overTime != null and overTime!= '' ">
+                    and DATE(b.done_time) &lt;= #{overTime}
+                  </if>
+                  GROUP BY
+                  a.loan_id,
+                  b.repay_serial
+                  )
+                </when>
+                <otherwise>
+                  (select NULL AS id,NULL AS loan_id,NULL AS serial_id,NULL AS `status`, NULL AS done_time,NULL as dsdf_type, NULL as df_amount, NULL as ds_amount)
+                </otherwise>
+              </choose>
+              UNION ALL
+              <choose>
+                <when test="dsdfType == null or dsdfType == '' or dsdfType == '计提'">
+                  (select  lrs.id, lrs.loan_id, lrs.serial_id, lrs.`status`, DATE(lr.done_time) as done_time,
+                  '计提' as dsdf_type, null as df_amount, null as ds_amount
+                  from ln_repay_schedule lrs
+                  INNER JOIN ln_repay lr on lr.repay_plan_id = lrs.id and lr.`status`='REPAIED'
+                  <if test="(userName != null and userName != '') or (userMobile != null and userMobile != '')">
+                    INNER JOIN ln_user lu on lu.id = lr.ln_user_id
+                    <if test="userName != null and userName != '' ">
+                      and lu.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+                    </if>
+                    <if test="userMobile != null and userMobile != '' ">
+                      and lu.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+                    </if>
+                  </if>
+                  where lrs.`status`!='INIT'
+                  <if test="beginTime != null and beginTime != ''">
+                    AND DATE(lr.done_time) &gt;= #{beginTime}
+                  </if>
+                  <if test="overTime != null and overTime!= '' ">
+                    AND DATE(lr.done_time) &lt;= #{overTime}
+                  </if>
+                  AND lrs.`status` != 'LATE_NOT'
+                  AND lrs.`status` != 'LATE_REPAIED'
+                  )
+                </when>
+                <otherwise>
+                  (select NULL AS id,NULL AS loan_id,NULL AS serial_id,NULL AS `status`, NULL AS done_time,NULL as dsdf_type, NULL as df_amount, NULL as ds_amount)
+                </otherwise>
+              </choose>
+              UNION ALL
+              <choose>
+                <when test="dsdfType == null or dsdfType == '' or dsdfType == '计提' ">
+                  (select  lrs.id,lrs.loan_id,lrs.serial_id,lrs.`status`,DATE(lr.done_time) done_time,'计提'as dsdf_type,null as df_amount,null as ds_amount
+                  from ln_repay_schedule lrs
+                  INNER JOIN ln_repay lr on lr.repay_plan_id = lrs.id and lr.`status`='REPAIED'
+                  <if test="(userName != null and userName != '') or (userMobile != null and userMobile != '')">
+                    INNER JOIN ln_user lu on lu.id = lr.ln_user_id
+                    <if test="userName != null and userName != '' ">
+                      and lu.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+                    </if>
+                    <if test="userMobile != null and userMobile != '' ">
+                      and lu.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+                    </if>
+                  </if>,
+                  (SELECT conf_value FROM bs_sys_config WHERE conf_key = 'DEP_SYSTEM_PUBLISH_TIME') cf
+                  where lrs.`status`='LATE_REPAIED' AND lr.done_time &gt;= cf.conf_value
+                  <if test="beginTime != null and beginTime != ''">
+                    and DATE(lr.done_time) &gt;= #{beginTime}
+                  </if>
+                  <if test="overTime != null and overTime!= '' ">
+                    and DATE(lr.done_time) &lt;= #{overTime}
+                    AND DATE(cf.conf_value) &lt;= #{overTime}
+                  </if>
+                  )
+                </when>
+                <otherwise>
+                  (select NULL AS id,NULL AS loan_id,NULL AS serial_id,NULL AS `status`, NULL AS done_time,NULL as dsdf_type, NULL as df_amount, NULL as ds_amount)
+                </otherwise>
+              </choose>
+              UNION ALL
+              <choose>
+                <when test="dsdfType == null or dsdfType == '' or dsdfType == '逾期回款' ">
+                  (select  lrs.id,lrs.loan_id,lrs.serial_id,lrs.`status`,DATE(lr.done_time) done_time,'逾期回款'as dsdf_type,
+                  null as df_amount,
+                  (SELECT sum(b.plan_total) bgw_plan_total FROM ln_loan_relation a, ln_finance_repay_schedule b
+                  WHERE a.id = b.relation_id AND a.loan_id = lrs.loan_id AND b.repay_serial = lrs.serial_id
+                  GROUP BY a.loan_id, b.repay_serial
+                  ) as ds_amount
+                  from ln_repay_schedule lrs
+                  INNER JOIN ln_repay lr on lr.repay_plan_id = lrs.id  and lr.`status`='REPAIED'
+                  <if test="(userName != null and userName != '') or (userMobile != null and userMobile != '')">
+                    INNER JOIN ln_user lu on lu.id = lr.ln_user_id
+                    <if test="userName != null and userName != '' ">
+                      and lu.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+                    </if>
+                    <if test="userMobile != null and userMobile != '' ">
+                      and lu.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+                    </if>
+                  </if>,
+                  (SELECT conf_value FROM bs_sys_config WHERE conf_key = 'DEP_SYSTEM_PUBLISH_TIME') cf
+                  where lrs.`status`='LATE_REPAIED' AND lr.done_time &lt; cf.conf_value
+                  <if test="beginTime != null and beginTime != ''">
+                    and DATE(lr.done_time) &gt;= #{beginTime}
+                    AND DATE(cf.conf_value) &gt;= #{beginTime}
+                  </if>
+                  <if test="overTime != null and overTime!= '' ">
+                    and DATE(lr.done_time) &lt;= #{overTime}
+                  </if>
+                  )
+                </when>
+                <otherwise>
+                  (select NULL AS id,NULL AS loan_id,NULL AS serial_id,NULL AS `status`, NULL AS done_time,NULL as dsdf_type, NULL as df_amount, NULL as ds_amount)
+                </otherwise>
+              </choose>
+              )a
+              where lu.partner_code = 'ZAN' and a.loan_id = ll.id and ll.ln_user_id = lu.id
+			<if test="beginTime != null and beginTime != ''">
+				and a.done_time &gt;= #{beginTime}
+			</if>
+			<if test="overTime != null and overTime!= '' ">
+				and a.done_time &lt;= #{overTime}
+			</if>
+			<if test="userName != null and userName != '' ">
+				and lu.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="userMobile != null and userMobile != '' ">
+				and lu.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="dsdfType != null and dsdfType != '' ">
+				and a.dsdf_type =#{dsdfType}
+			</if>
+		)t
+	
+  </select>
+  
+  
+  <select id="sumAmount4DsDf" parameterType="com.pinting.business.model.vo.MDepositDsDfQueryVO" resultMap="MDepositDsDfResVOMap">
+  	SELECT
+		case when sum(t.ds_amount) is not null then ROUND(sum(t.ds_amount),2) else 0 end sum_ds_amount,
+		case when sum(t.df_amount) is not null then ROUND(sum(t.df_amount),2) else 0 end sum_df_amount
+		from
+		  (select a.loan_id,a.done_time,a.dsdf_type,ROUND(a.df_amount,2)df_amount,
+			case when a.dsdf_type='计提' then ROUND(ll.approve_amount *0.03/12,2) else a.ds_amount end ds_amount,
+			1.3 ln_user_code,lu.user_name ln_user_name,lu.mobile ln_user_mobile FROM ln_user lu,ln_loan ll,
+			(
+              <choose>
+                <when test="dsdfType == null or dsdfType == '' or dsdfType == '逾期垫付'">
+                  (SELECT lrs.id, lrs.loan_id, lrs.serial_id, lrs.`status`, DATE(b.done_time) AS done_time, '逾期垫付' AS dsdf_type,
+                  sum(b.plan_total) AS df_amount, NULL AS ds_amount
+                  FROM
+                  (SELECT lrs.id, lrs.loan_id, lrs.serial_id, lrs.`status` FROM ln_repay_schedule lrs where (lrs.`status` = 'LATE_NOT' or lrs.`status` = 'LATE_REPAIED')) lrs
+                  INNER JOIN ln_loan_relation a ON a.loan_id = lrs.loan_id
+                  INNER JOIN ln_finance_repay_schedule b ON b.relation_id = a.id
+                  AND b.repay_serial = lrs.serial_id
+                  <if test="(userName != null and userName != '') or (userMobile != null and userMobile != '')">
+                    INNER JOIN ln_user lu on lu.id = a.ln_user_id
+                    <if test="userName != null and userName != '' ">
+                      and lu.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+                    </if>
+                    <if test="userMobile != null and userMobile != '' ">
+                      and lu.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+                    </if>
+                  </if>,
+                  (SELECT * FROM bs_sys_config WHERE conf_key = 'DEP_SYSTEM_PUBLISH_TIME') cf
+                  WHERE
+                    b.`status` = 'REPAIED'
+                  AND b.done_time &lt; cf.conf_value
+                  <if test="beginTime != null and beginTime != ''">
+                    AND DATE(cf.conf_value) >= #{beginTime}
+                    and DATE(b.done_time) &gt;= #{beginTime}
+                  </if>
+                  <if test="overTime != null and overTime!= '' ">
+                    and DATE(b.done_time) &lt;= #{overTime}
+                  </if>
+                  GROUP BY
+                  a.loan_id,
+                  b.repay_serial
+                  )
+                </when>
+                <otherwise>
+                  (select NULL AS id,NULL AS loan_id,NULL AS serial_id,NULL AS `status`, NULL AS done_time,NULL as dsdf_type, NULL as df_amount, NULL as ds_amount)
+                </otherwise>
+              </choose>
+              UNION ALL
+              <choose>
+                <when test="dsdfType == null or dsdfType == '' or dsdfType == '计提'">
+                  (select  lrs.id, lrs.loan_id, lrs.serial_id, lrs.`status`, DATE(lr.done_time) as done_time,
+                  '计提' as dsdf_type, null as df_amount, null as ds_amount
+                  from ln_repay_schedule lrs
+                  INNER JOIN ln_repay lr on lr.repay_plan_id = lrs.id and lr.`status`='REPAIED'
+                  <if test="(userName != null and userName != '') or (userMobile != null and userMobile != '')">
+                    INNER JOIN ln_user lu on lu.id = lr.ln_user_id
+                    <if test="userName != null and userName != '' ">
+                      and lu.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+                    </if>
+                    <if test="userMobile != null and userMobile != '' ">
+                      and lu.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+                    </if>
+                  </if>
+                  where lrs.`status`!='INIT'
+                  <if test="beginTime != null and beginTime != ''">
+                    AND DATE(lr.done_time) &gt;= #{beginTime}
+                  </if>
+                  <if test="overTime != null and overTime!= '' ">
+                    AND DATE(lr.done_time) &lt;= #{overTime}
+                  </if>
+                  AND lrs.`status` != 'LATE_NOT'
+                  AND lrs.`status` != 'LATE_REPAIED'
+                  )
+                </when>
+                <otherwise>
+                  (select NULL AS id,NULL AS loan_id,NULL AS serial_id,NULL AS `status`, NULL AS done_time,NULL as dsdf_type, NULL as df_amount, NULL as ds_amount)
+                </otherwise>
+              </choose>
+              UNION ALL
+              <choose>
+                <when test="dsdfType == null or dsdfType == '' or dsdfType == '计提' ">
+                  (select  lrs.id,lrs.loan_id,lrs.serial_id,lrs.`status`,DATE(lr.done_time) done_time,'计提'as dsdf_type,null as df_amount,null as ds_amount
+                  from ln_repay_schedule lrs
+                  INNER JOIN ln_repay lr on lr.repay_plan_id = lrs.id and lr.`status`='REPAIED'
+                  <if test="(userName != null and userName != '') or (userMobile != null and userMobile != '')">
+                    INNER JOIN ln_user lu on lu.id = lr.ln_user_id
+                    <if test="userName != null and userName != '' ">
+                      and lu.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+                    </if>
+                    <if test="userMobile != null and userMobile != '' ">
+                      and lu.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+                    </if>
+                  </if>,
+                  (SELECT conf_value FROM bs_sys_config WHERE conf_key = 'DEP_SYSTEM_PUBLISH_TIME') cf
+                  where lrs.`status`='LATE_REPAIED' AND lr.done_time &gt;= cf.conf_value
+                  <if test="beginTime != null and beginTime != ''">
+                    and DATE(lr.done_time) &gt;= #{beginTime}
+                  </if>
+                  <if test="overTime != null and overTime!= '' ">
+                    and DATE(lr.done_time) &lt;= #{overTime}
+                    AND DATE(cf.conf_value) &lt;= #{overTime}
+                  </if>
+                  )
+                </when>
+                <otherwise>
+                  (select NULL AS id,NULL AS loan_id,NULL AS serial_id,NULL AS `status`, NULL AS done_time,NULL as dsdf_type, NULL as df_amount, NULL as ds_amount)
+                </otherwise>
+              </choose>
+              UNION ALL
+              <choose>
+                <when test="dsdfType == null or dsdfType == '' or dsdfType == '逾期回款' ">
+                  (select  lrs.id,lrs.loan_id,lrs.serial_id,lrs.`status`,DATE(lr.done_time) done_time,'逾期回款'as dsdf_type,
+                  null as df_amount,
+                  (SELECT sum(b.plan_total) bgw_plan_total FROM ln_loan_relation a, ln_finance_repay_schedule b
+                  WHERE a.id = b.relation_id AND a.loan_id = lrs.loan_id AND b.repay_serial = lrs.serial_id
+                  GROUP BY a.loan_id, b.repay_serial
+                  ) as ds_amount
+                  from ln_repay_schedule lrs
+                  INNER JOIN ln_repay lr on lr.repay_plan_id = lrs.id  and lr.`status`='REPAIED'
+                  <if test="(userName != null and userName != '') or (userMobile != null and userMobile != '')">
+                    INNER JOIN ln_user lu on lu.id = lr.ln_user_id
+                    <if test="userName != null and userName != '' ">
+                      and lu.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+                    </if>
+                    <if test="userMobile != null and userMobile != '' ">
+                      and lu.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+                    </if>
+                  </if>,
+                  (SELECT conf_value FROM bs_sys_config WHERE conf_key = 'DEP_SYSTEM_PUBLISH_TIME') cf
+                  where lrs.`status`='LATE_REPAIED' AND lr.done_time &lt; cf.conf_value
+                  <if test="beginTime != null and beginTime != ''">
+                    and DATE(lr.done_time) &gt;= #{beginTime}
+                    AND DATE(cf.conf_value) &gt;= #{beginTime}
+                  </if>
+                  <if test="overTime != null and overTime!= '' ">
+                    and DATE(lr.done_time) &lt;= #{overTime}
+                  </if>
+                  )
+                </when>
+                <otherwise>
+                  (select NULL AS id,NULL AS loan_id,NULL AS serial_id,NULL AS `status`, NULL AS done_time,NULL as dsdf_type, NULL as df_amount, NULL as ds_amount)
+                </otherwise>
+              </choose>
+              )a
+              where lu.partner_code = 'ZAN' and a.loan_id = ll.id and ll.ln_user_id = lu.id
+			<if test="beginTime != null and beginTime != ''">
+				and a.done_time &gt;= #{beginTime}
+			</if>
+			<if test="overTime != null and overTime!= '' ">
+				and a.done_time &lt;= #{overTime}
+			</if>
+			<if test="userName != null and userName != '' ">
+				and lu.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="userMobile != null and userMobile != '' ">
+				and lu.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="dsdfType != null and dsdfType != '' ">
+				and a.dsdf_type =#{dsdfType}
+			</if>
+			)t
+  </select>
+
+  <select id="selectDepositDsDfList4ZSD" parameterType="com.pinting.business.model.vo.MDepositDsDfQueryVO" resultMap="MDepositDsDfResVOMap">
+  	SELECT
+		(@rowNO := @rowNo + 1) rowno,
+		t.*
+		FROM
+		(SELECT @rowNO := #{start}) b,
+		(
+			select c.user_name ln_user_name,c.mobile ln_user_mobile,
+			a.update_time done_time,'计提' as dsdf_type,1.5 ln_user_code,
+			ROUND(b.approve_amount *0.03/12,2) ds_amount
+			from ln_repay_schedule a,ln_loan b,ln_user c
+			where a.loan_id = b.id and b.ln_user_id = c.id 
+			and a.`status` in ('REPAIED','LATE_REPAIED') 
+			and c.partner_code = 'ZSD'
+			
+			<if test="beginTime != null and beginTime != ''">
+				and a.update_time &gt;= #{beginTime}
+			</if>
+			<if test="overTime != null and overTime!= '' ">
+				and a.update_time &lt;= #{overTime}
+			</if>
+			<if test="userName != null and userName != '' ">
+				and c.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="userMobile != null and userMobile != '' ">
+				and c.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+			</if>
+			ORDER BY a.update_time desc
+		)t
+		<include refid="sql-global.pagination" />
+  </select>
+  <select id="countDepositDsDfList4ZSD" parameterType="com.pinting.business.model.vo.MDepositDsDfQueryVO" resultType="java.lang.Integer">
+		select count(a.id)
+			from ln_repay_schedule a,ln_loan b,ln_user c
+			where a.loan_id = b.id and b.ln_user_id = c.id 
+			and a.`status` in ('REPAIED','LATE_REPAIED') 
+			and c.partner_code = 'ZSD'
+			
+			<if test="beginTime != null and beginTime != ''">
+				and a.update_time &gt;= #{beginTime}
+			</if>
+			<if test="overTime != null and overTime!= '' ">
+				and a.update_time &lt;= #{overTime}
+			</if>
+			<if test="userName != null and userName != '' ">
+				and c.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="userMobile != null and userMobile != '' ">
+				and c.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+			</if>
+  </select>
+  <select id="sumAmount4DsDf4ZSD" parameterType="com.pinting.business.model.vo.MDepositDsDfQueryVO" resultMap="MDepositDsDfResVOMap">
+  		select SUM(ROUND(b.approve_amount *0.03/12,2)) AS sum_ds_amount,
+			'0' AS sum_df_amount
+			from ln_repay_schedule a,ln_loan b,ln_user c
+			where a.loan_id = b.id and b.ln_user_id = c.id 
+			and a.`status` in ('REPAIED','LATE_REPAIED') 
+			and c.partner_code = 'ZSD'
+			
+			<if test="beginTime != null and beginTime != ''">
+				and a.update_time &gt;= #{beginTime}
+			</if>
+			<if test="overTime != null and overTime!= '' ">
+				and a.update_time &lt;= #{overTime}
+			</if>
+			<if test="userName != null and userName != '' ">
+				and c.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="userMobile != null and userMobile != '' ">
+				and c.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+			</if>
+			ORDER BY a.update_time desc
+  </select>
+  
+  <!-- ================保证金代收代付 ，赞分期、赞时贷 end================== -->
+  <resultMap id="selectVoByLoanIdMap" type="com.pinting.business.accounting.loan.model.LnRepayScheduleVO">
+    <result column="loan_id" jdbcType="INTEGER" property="loanId" />
+    <result column="plan_date" jdbcType="DATE" property="planDate" />
+    <result column="loan_date" jdbcType="DATE" property="loanDate" />
+  </resultMap>
+  <!-- 根据借款id查询最近一次利息还款的还款时间，及借款的成功时间 -->
+  <select id="selectVoByLoanId" resultMap="selectVoByLoanIdMap">
+  select a.id loan_id, DATE(a.loan_time) loan_date,d.plan_date
+	from ln_loan a LEFT JOIN 
+		(
+			select b.plan_date,b.loan_id from ln_repay_schedule b, ln_repay_schedule_detail c
+			where b.status in('PART_REPAY','REPAIED','LATE_NOT','LATE_REPAIED') 
+			and b.loan_id = #{loanId} and b.id = c.plan_id and c.subject_code='PRINCIPAL'
+			and c.plan_amount = 0 and b.finish_time is not null 
+			<if test="planDate != null">
+				and b.plan_date &gt;#{planDate}
+			</if> 
+			<if test="schedulId != null">
+				and b.id != #{schedulId}
+			</if> 
+			
+			ORDER BY plan_date desc LIMIT 1
+		)d ON a.id = d.loan_id
+	where a.id = #{loanId}
+  </select>
+
+  <!-- 根据借款id，当期还款计划时间，查询上一期还款计划的计划还款时间，及借款的成功时间 -->
+  <select id="selectLnRepayScheduleVOByLoanId" resultMap="selectVoByLoanIdMap">
+    SELECT
+        a.id loan_id,
+        DATE(a.loan_time) loan_date,
+        d.plan_date
+    FROM
+        ln_loan a
+    LEFT JOIN (
+        SELECT
+            b.plan_date,
+            b.loan_id
+        FROM
+            ln_repay_schedule b
+        WHERE
+            b. STATUS NOT IN ('CANCELLED')
+        AND b.loan_id = #{loanId}
+        AND b.finish_time IS NOT NULL
+        AND b.plan_date &lt;#{planDate}
+    ORDER BY
+        plan_date DESC
+    LIMIT 1
+    ) d ON a.id = d.loan_id
+    WHERE
+        a.id = #{loanId}
+  </select>
+
+    <resultMap id="RepayBillMap" type="com.pinting.business.model.vo.RepayBillVO">
+        <result column="repay_plan_id" jdbcType="INTEGER" property="repayPlanId" />
+        <result column="loan_id" jdbcType="INTEGER" property="loanId" />
+        <result column="partner_repay_id" jdbcType="VARCHAR" property="partnerRepayId" />
+        <result column="partner_loan_id" jdbcType="VARCHAR" property="partnerLoanId" />
+        <result column="partner_user_id" jdbcType="VARCHAR" property="partnerUserId" />
+        <result column="sche_status" jdbcType="VARCHAR" property="scheStatus" />
+        <result column="partner_business_flag" jdbcType="VARCHAR" property="partnerBusinessFlag" />
+    </resultMap>
+
+    <select id="selectRepayBill" resultMap="RepayBillMap">
+        select a.id as repay_plan_id, a.loan_id, a.partner_repay_id, b.partner_loan_id,
+        b.partner_business_flag, c.partner_user_id, a.status as sche_status
+        from ln_repay_schedule a
+        left join ln_loan b on a.loan_id = b.id
+        left join ln_user c on b.ln_user_id = c.id
+        <where>
+            <if test="repayPlanIds != null and repayPlanIds.size() &gt;0 ">
+                and a.id in
+                <foreach close=")" collection="repayPlanIds" index="index" item="item" open="(" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="loanIds != null and loanIds.size() &gt; 0">
+                or (a.status not in ("REPAIED","CANCELLED") and a.loan_id in
+                <foreach close=")" collection="loanIds" index="index" item="item" open="(" separator=",">
+                    #{item}
+                </foreach>
+                )
+            </if>
+        </where>
+        ORDER BY a.plan_date ASC
+    </select>
+    
+  <resultMap id="CompensateTransfersMap" type="com.pinting.business.model.vo.CompensateTransfersVO">
+     <result column="approve_amount" jdbcType="DOUBLE" property="approveAmount" />
+     <result column="agreement_rate" jdbcType="DOUBLE" property="agreementRate" />
+     <result column="period" jdbcType="INTEGER" property="period" />
+     <result column="plan_amount" jdbcType="DOUBLE" property="planAmount" />
+     <result column="loan_user_name" jdbcType="VARCHAR" property="loanUserName" />
+     <result column="loan_id_card" jdbcType="VARCHAR" property="loanIdCard" />
+     <result column="before_amount" jdbcType="DOUBLE" property="beforeAmount" />
+     <result column="agreement_amount" jdbcType="DOUBLE" property="agreementAmount" />
+     <result column="no_billing_period" jdbcType="INTEGER" property="noBillingPeriod" />
+     <result column="loan_agreement_number" jdbcType="VARCHAR" property="loanAgreementNumber" />
+     <result column="debt_service_fee" jdbcType="DOUBLE" property="debtServiceFee" />
+     <result column="transfer_creditor_amount" jdbcType="DOUBLE" property="transferCreditorAmount"/>
+  </resultMap>
+
+  <select id="selectLastPeriodPartnerRepayId" resultType="java.lang.String">
+     select partner_repay_id from ln_repay_schedule where loan_id = #{loanId} and status!='CANCELLED' order by plan_date desc limit 1
+  </select>
+
+  <select id="selectCompensateTransfersByLoanId" parameterType="java.util.Map" resultMap="CompensateTransfersMap">
+    SELECT c.approve_amount, c.agreement_rate, c.period,b.plan_amount,
+    d.user_name AS loan_user_name, d.id_card AS loan_id_card
+    FROM ln_repay_schedule a, ln_repay_schedule_detail b, ln_loan c, ln_user d
+    WHERE a.id = b.plan_id AND a.loan_id = c.id  AND c.ln_user_id = d.id  AND b.subject_code = 'PRINCIPAL' AND a.loan_id = #{loanId}
+    ORDER BY a.plan_date DESC LIMIT 1
+  </select>
+  
+    <!-- =========================管理台-云贷自主放款无账单借款主动获取账单S================================== -->
+  <resultMap id="YunDaiSelfBillMap" type="com.pinting.business.model.vo.YunDaiSelfBillVO">
+    <result column="loan_id" jdbcType="INTEGER" property="loanId" />
+    <result column="ln_user_id" jdbcType="INTEGER" property="lnUserId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="partner_user_id" jdbcType="VARCHAR" property="partnerUserId" />
+    <result column="partner_loan_id" jdbcType="VARCHAR" property="partnerLoanId" />
+    <result column="apply_amount" jdbcType="DOUBLE" property="applyAmount" />
+    <result column="pay_order_no" jdbcType="VARCHAR" property="payOrderNo" />
+    <result column="period" jdbcType="INTEGER" property="period" />
+    <result column="partner_order_no" jdbcType="VARCHAR" property="partnerOrderNo" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  
+  <select id="countLoanNoBillData" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT 
+			count(aa.id)
+		FROM
+			 (SELECT 
+					a.id
+			FROM  `ln_loan` a LEFT JOIN ln_user c ON a.ln_user_id = c.id WHERE c.partner_code = 'YUN_DAI_SELF' AND a.`status` = 'PAIED' 
+				<if test="startTime != null and startTime != ''">
+					and DATE(loan_time) >= DATE(#{startTime})
+				</if>
+				<if test="endTime != null and endTime != ''">
+					and DATE(loan_time) &lt;= DATE(#{endTime})	
+				</if>				
+			) aa 
+		LEFT JOIN (SELECT b.loan_id FROM ln_repay_schedule b GROUP BY b.loan_id) bb
+			ON aa.id = bb.loan_id
+			WHERE bb.loan_id IS NULL
+  </select>
+  
+  <select id="queryLoanNoBillData" parameterType="java.util.Map" resultMap="YunDaiSelfBillMap">
+	   SELECT 
+			aa.id loan_id,
+			aa.ln_user_id,
+			aa.user_name,
+			aa.partner_user_id,
+			aa.partner_loan_id,
+			aa.apply_amount,
+			aa.pay_order_no,
+			aa.period,
+			aa.partner_order_no,
+			aa.update_time,
+			aa.create_time
+		FROM
+			 (SELECT 
+					a.id,
+					a.ln_user_id,
+					c.user_name,
+					c.partner_user_id,
+					a.partner_loan_id,
+					a.apply_amount,
+					a.pay_order_no,
+					a.period,
+					a.partner_order_no,
+					a.update_time,
+					a.create_time
+			FROM  `ln_loan` a LEFT JOIN ln_user c ON a.ln_user_id = c.id WHERE c.partner_code = 'YUN_DAI_SELF' AND a.`status` = 'PAIED' 
+					<if test="startTime != null and startTime != ''">
+						and DATE(loan_time) >= DATE(#{startTime})
+					</if>
+					<if test="endTime != null and endTime != ''">
+						and DATE(loan_time) &lt;= DATE(#{endTime})	
+					</if>
+				    ) aa 
+		LEFT JOIN (SELECT b.loan_id FROM ln_repay_schedule b GROUP BY b.loan_id) bb
+		ON aa.id = bb.loan_id
+			WHERE bb.loan_id IS NULL
+	 		ORDER BY aa.id DESC 
+			LIMIT #{start}, #{numPerPage}
+  </select>
+    
+     <!-- =========================管理台-云贷自主放款无账单借款主动获取账单E================================== -->
+     
+ <!-- =========================管理台-融资客户结算（总）S================================== -->
+ <resultMap id="LnCustomerSettlementVOMap" type="com.pinting.business.model.vo.LnCustomerSettlementVO">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="row_no" jdbcType="INTEGER" property="rowNo" />
+    <result column="bill_no" jdbcType="VARCHAR" property="billNo" />
+    <result column="fn_customer_id" jdbcType="VARCHAR" property="fnCustomerId" />
+    <result column="fn_user_name" jdbcType="VARCHAR" property="fnUserName" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="ln_user_name" jdbcType="VARCHAR" property="lnUserName" />
+    <result column="ln_customer_id" jdbcType="VARCHAR" property="lnCustomerId" />
+    <result column="partner_code" jdbcType="VARCHAR" property="partnerCode" />
+    <result column="plan_principal" jdbcType="DOUBLE" property="planPrincipal" />
+    <result column="ln_plan_interest" jdbcType="DOUBLE" property="lnPlanInterest" />
+    <result column="fn_plan_interest" jdbcType="DOUBLE" property="fnPlanInterest" />
+    <result column="fee" jdbcType="DOUBLE" property="fee" />
+    <result column="trans_time" jdbcType="TIMESTAMP" property="transTime" />
+    <result column="repay_type" jdbcType="VARCHAR" property="repayType" />
+    <result column="serial_id" jdbcType="INTEGER" property="serialId" />
+    <result column="partner_business_flag" jdbcType="VARCHAR" property="partnerBusinessFlag" />
+  </resultMap>
+
+  <select id="selectLnCustomerSettlementList" parameterType="java.util.Map" resultMap="LnCustomerSettlementVOMap">
+    select (@rowNO := @rowNo + 1) row_no, a.* from ((
+              select concat("061", a.partner_repay_id,a.id) bill_no, concat('3.', b.id) as fn_customer_id,
+                          b.user_name as fn_user_name, b.mobile, a.id,a.ln_user_name,a.ln_customer_id,a.partner_code,
+										 a.plan_principal,a.interest ln_plan_interest,a.fn_plan_interest,a.interest fee,a.loan_id,a.serial_id,
+											a.partner_repay_id,a.repay_type,a.fn_user_id,a.trans_time, a.partner_business_flag
+    from (
+                    select
+                    b.id,f.user_name as ln_user_name,
+                    case f.partner_code when 'YUN_DAI_SELF' then 1.4 when 'ZSD' then 1.5 when '7_DAI_SELF' then 1.6 end as ln_customer_id,
+                    f.partner_code,0 as plan_principal,
+                    null as ln_plan_interest,
+                    0 as fn_plan_interest, null as fee,b.loan_id, b.serial_id, b.partner_repay_id, 'ZC' as repay_type,
+                    (select min(g.bs_user_id) from ln_loan_relation g where e.id = g.loan_id ) as fn_user_id,
+                    b.finish_time trans_time,
+                    case when f.partner_code = 'ZSD' then round(ifnull(a.done_total - c.plan_total - d.revenue_amount - (approve_amount*3/1200), 0), 2)
+                    when f.partner_code = 'YUN_DAI_SELF' then round(ifnull(a.done_total - c.plan_total - d.revenue_amount, 0), 2)
+                    when f.partner_code = '7_DAI_SELF' then round(ifnull(a.done_total - c.plan_total - d.revenue_amount, 0), 2)
+                    end as interest, e.partner_business_flag
+                    FROM
+                    (SELECT * FROM ln_repay_schedule WHERE `status` = 'REPAIED'
+                    <if test="startDate != null or endDate != null">
+                      <if test="startDate != null">
+                        and date(finish_time) &gt;= #{startDate}
+                      </if>
+                      <if test="endDate != null">
+                        and date(finish_time) &lt;= #{endDate}
+                      </if>
+                    </if>
+                    AND serial_id != 0
+                    ) b
+                    INNER JOIN ln_repay a ON (b.id = a.repay_plan_id)
+                    INNER JOIN ln_deposition_repay_schedule c ON c.partner_repay_id = b.partner_repay_id
+                    INNER JOIN bs_revenue_trans_detail d ON (d.repay_schedule_id = b.id)
+                    INNER JOIN ln_loan e ON (
+                    e.id = a.loan_id
+                    AND e.id = b.loan_id
+                    AND e.id = c.loan_id
+                    )
+                    INNER JOIN ln_user f ON (f.id = e.ln_user_id)
+                    WHERE
+                        a.`status` = 'REPAIED'
+                    AND d.trans_type = 'REVENUE_INCOME'
+                    <if test="partnerCode != null and partnerCode != ''">
+                        and f.partner_code = #{partnerCode}
+                    </if>
+                    <if test="partnerCode == null or partnerCode == ''">
+                        and f.partner_code in ('ZSD', 'YUN_DAI_SELF','7_DAI_SELF')
+                    </if>
+                    <if test="repayType != null and repayType == 'DC'">
+                        and 1=0
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag !='666' and queryPartnerBusinessFlag !='777' and queryPartnerBusinessFlag !='888' and queryPartnerBusinessFlag !='999' ">
+                      AND e.partner_business_flag = #{queryPartnerBusinessFlag}
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='777' ">
+                      AND e.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='888' ">
+                      AND e.partner_business_flag IN ('现金循环贷', 'REPAY_ANY_TIME')
+                    </if>
+                    UNION
+                    select
+                    b.id,f.user_name as ln_user_name,
+                    case f.partner_code when 'YUN_DAI_SELF' then 1.4 when 'ZSD' then 1.5 when '7_DAI_SELF' then 1.6 end as ln_customer_id,
+                    f.partner_code,0 as plan_principal,
+                    null as ln_plan_interest,
+                    0 as fn_plan_interest, null as fee,b.loan_id, b.serial_id, b.partner_repay_id, 'ZC' as repay_type,
+                    (select min(g.bs_user_id) from ln_loan_relation g where e.id = g.loan_id ) as fn_user_id,
+                    b.finish_time trans_time,
+                    case when f.partner_code = 'ZSD' then round(ifnull(b.plan_total - c.plan_total - d.revenue_amount - (approve_amount*3/1200), 0), 2)
+                    when f.partner_code = 'YUN_DAI_SELF' then round(ifnull(b.plan_total - c.plan_total - d.revenue_amount, 0), 2)
+                    when f.partner_code = '7_DAI_SELF' then round(ifnull(b.plan_total - c.plan_total - d.revenue_amount, 0), 2)
+                    end as interest, e.partner_business_flag
+                    FROM
+                    (SELECT * FROM ln_repay_schedule WHERE `status` = 'REPAIED'
+                    <if test="startDate != null or endDate != null">
+                      <if test="startDate != null">
+                        and date(finish_time) &gt;= #{startDate}
+                      </if>
+                      <if test="endDate != null">
+                        and date(finish_time) &lt;= #{endDate}
+                      </if>
+                    </if>
+                    AND serial_id = 0
+                    ) b
+                    INNER JOIN ln_deposition_repay_schedule c ON c.partner_repay_id = b.partner_repay_id
+                    INNER JOIN bs_revenue_trans_detail d ON d.repay_schedule_id = b.id
+                    INNER JOIN ln_loan e ON (
+                    e.id = b.loan_id
+                    AND e.id = c.loan_id
+                    )
+                    INNER JOIN ln_user f ON f.id = e.ln_user_id
+                    WHERE
+                        d.trans_type = 'REVENUE_INCOME'
+                    <if test="partnerCode != null and partnerCode != ''">
+                        and f.partner_code = #{partnerCode}
+                    </if>
+                    <if test="partnerCode == null or partnerCode == ''">
+                        and f.partner_code in ('ZSD', 'YUN_DAI_SELF','7_DAI_SELF')
+                    </if>
+                    <if test="repayType != null and repayType == 'DC'">
+                      and 1=0
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag !='666' and queryPartnerBusinessFlag !='777' and queryPartnerBusinessFlag !='888' and queryPartnerBusinessFlag !='999' ">
+                      AND e.partner_business_flag = #{queryPartnerBusinessFlag}
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='777' ">
+                      AND e.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='888' ">
+                      AND e.partner_business_flag IN ('现金循环贷', 'REPAY_ANY_TIME')
+                    </if>
+                  ) as a, bs_user b where a.fn_user_id = b.id
+                <if test="fnUserName != null">
+                  and b.user_name like concat(concat('%', #{fnUserName}),'%')
+                </if>
+                <if test="mobile != null">
+                  and b.mobile like concat(concat('%', #{mobile}),'%')
+                </if>
+                <if test="repayType != null and repayType == 'DC'">
+                  and 1=0
+                </if>
+
+      ) union (
+          select a.*
+          from (
+              select concat("062", a.partner_repay_id,a.id) bill_no, concat('3.', b.id) as fn_customer_id,
+                          b.user_name as fn_user_name, b.mobile,  a.id,a.ln_user_name,a.ln_customer_id,a.partner_code,
+										 a.plan_principal,a.interest ln_plan_interest,a.fn_plan_interest,a.interest fee,a.loan_id,a.serial_id,
+											a.partner_repay_id,a.repay_type,a.fn_user_id,a.trans_time, a.partner_business_flag
+							from (
+														select b.id, f.user_name as ln_user_name,
+																case f.partner_code when 'YUN_DAI_SELF' then 1.4 when 'ZSD' then 1.5 when '7_DAI_SELF' then 1.6 end as ln_customer_id, f.partner_code, 0 as plan_principal,
+																null as ln_plan_interest, 0 as fn_plan_interest, null as fee, b.loan_id, b.serial_id, b.partner_repay_id, 'DC' as repay_type,
+																(select min(g.bs_user_id) from ln_loan_relation g where e.id = g.loan_id ) as fn_user_id,
+																b.finish_time trans_time,
+														case when f.partner_code = 'ZSD' then round(ifnull(a.total - c.plan_total, 0), 2)
+														when f.partner_code = 'YUN_DAI_SELF' then round(ifnull(a.total - c.plan_total, 0), 2)
+                                                        when f.partner_code = '7_DAI_SELF' then round(ifnull(a.total - c.plan_total, 0), 2)
+														end as interest, e.partner_business_flag
+														from (SELECT total,partner_repay_id,partner_loan_id,`status`,repay_type,create_time FROM ln_compensate_detail WHERE 
+																						 `status` = 'SUCC' 
+																	                     <if test="startDate != null or endDate != null">
+																				             <if test="startDate != null">
+																				               and date(create_time) >= #{startDate}
+																				             </if>
+																				             <if test="endDate != null">
+																				               and date(create_time) &lt;= #{endDate}
+																				             </if>
+																			             </if>
+														) a
+                                                        INNER JOIN (
+                                                          SELECT
+                                                            id,
+                                                            loan_id,
+                                                            serial_id,
+                                                            partner_repay_id,
+                                                            finish_time,
+                                                            `status`
+                                                          FROM
+                                                            ln_repay_schedule
+                                                          WHERE
+                                                          (
+                                                            `status` = 'LATE_REPAIED'
+                                                            OR `status` = 'LATE_NOT'
+                                                          )
+                                                        ) b ON b.partner_repay_id = a.partner_repay_id
+                                                        INNER JOIN ln_deposition_repay_schedule c ON c.partner_repay_id = a.partner_repay_id
+                                                        INNER JOIN ln_loan e ON (
+                                                          e.id = c.loan_id
+                                                          AND e.id = b.loan_id
+                                                        )
+                                                        INNER JOIN ln_user f ON f.id = e.ln_user_id
+														where
+														1=1
+														<if test="partnerCode != null and partnerCode != ''">
+											                and f.partner_code = #{partnerCode}
+											            </if>
+											            <if test="partnerCode == null or partnerCode == ''">
+															and f.partner_code in ('ZSD', 'YUN_DAI_SELF', '7_DAI_SELF')
+														</if>
+                                                        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag !='666' and queryPartnerBusinessFlag !='777' and queryPartnerBusinessFlag !='888' and queryPartnerBusinessFlag !='999' ">
+                                                          AND e.partner_business_flag = #{queryPartnerBusinessFlag}
+                                                        </if>
+                                                        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='777' ">
+                                                          AND e.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+                                                        </if>
+                                                        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='888' ">
+                                                          AND e.partner_business_flag IN ('现金循环贷', 'REPAY_ANY_TIME')
+                                                        </if>
+              ) as a, bs_user b where a.fn_user_id = b.id
+              <if test="fnUserName != null">
+                and b.user_name like concat(concat('%', #{fnUserName}),'%')
+              </if>
+              <if test="mobile != null">
+                and b.mobile like concat(concat('%', #{mobile}),'%')
+              </if>
+          ) as a
+      )
+    ) as a, (
+      select @rowNO := #{start}
+    ) as b
+    order by a.id desc
+    limit #{start}, #{numPerPage}
+  </select>
+
+
+  <select id="countLnCustomerSettlementList" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(a.id) from (
+(
+              select concat("061", a.partner_repay_id,a.id) bill_no, concat('3.', b.id) as fn_customer_id,
+                          b.user_name as fn_user_name, b.mobile, a.id,a.ln_user_name,a.ln_customer_id,a.partner_code,
+										 a.plan_principal,a.interest ln_plan_interest,a.fn_plan_interest,a.interest fee,a.loan_id,a.serial_id,
+											a.partner_repay_id,a.repay_type,a.fn_user_id,a.trans_time, a.partner_business_flag
+              from (
+                    select
+                    b.id,f.user_name as ln_user_name,
+                    case f.partner_code when 'YUN_DAI_SELF' then 1.4 when 'ZSD' then 1.5 when '7_DAI_SELF' then 1.6 end as ln_customer_id,
+                    f.partner_code,0 as plan_principal,
+                    null as ln_plan_interest,
+                    0 as fn_plan_interest, null as fee,b.loan_id, b.serial_id, b.partner_repay_id, 'ZC' as repay_type,
+                    (select min(g.bs_user_id) from ln_loan_relation g where e.id = g.loan_id ) as fn_user_id,
+                    b.finish_time trans_time,
+                    case when f.partner_code = 'ZSD' then round(ifnull(a.done_total - c.plan_total - d.revenue_amount - (approve_amount*3/1200), 0), 2)
+                    when f.partner_code = 'YUN_DAI_SELF' then round(ifnull(a.done_total - c.plan_total - d.revenue_amount, 0), 2)
+                    when f.partner_code = '7_DAI_SELF' then round(ifnull(a.done_total - c.plan_total - d.revenue_amount, 0), 2)
+                    end as interest, e.partner_business_flag
+                    FROM
+                    (SELECT * FROM ln_repay_schedule WHERE `status` = 'REPAIED'
+                    <if test="startDate != null or endDate != null">
+                      <if test="startDate != null">
+                        and date(finish_time) &gt;= #{startDate}
+                      </if>
+                      <if test="endDate != null">
+                        and date(finish_time) &lt;= #{endDate}
+                      </if>
+                    </if>
+                    AND serial_id != 0
+                    ) b
+                    INNER JOIN ln_repay a ON (b.id = a.repay_plan_id)
+                    INNER JOIN ln_deposition_repay_schedule c ON c.partner_repay_id = b.partner_repay_id
+                    INNER JOIN bs_revenue_trans_detail d ON (d.repay_schedule_id = b.id)
+                    INNER JOIN ln_loan e ON (
+                    e.id = a.loan_id
+                    AND e.id = b.loan_id
+                    AND e.id = c.loan_id
+                    )
+                    INNER JOIN ln_user f ON (f.id = e.ln_user_id)
+                    WHERE
+                    a.`status` = 'REPAIED'
+                    AND d.trans_type = 'REVENUE_INCOME'
+                    <if test="partnerCode != null and partnerCode != ''">
+                      and f.partner_code = #{partnerCode}
+                    </if>
+                    <if test="partnerCode == null or partnerCode == ''">
+                      and f.partner_code in ('ZSD', 'YUN_DAI_SELF','7_DAI_SELF')
+                    </if>
+                    <if test="repayType != null and repayType == 'DC'">
+                      and 1=0
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag !='666' and queryPartnerBusinessFlag !='777' and queryPartnerBusinessFlag !='888' and queryPartnerBusinessFlag !='999' ">
+                      AND e.partner_business_flag = #{queryPartnerBusinessFlag}
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='777' ">
+                      AND e.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='888' ">
+                      AND e.partner_business_flag IN ('现金循环贷', 'REPAY_ANY_TIME')
+                    </if>
+                    UNION
+                    select
+                    b.id,f.user_name as ln_user_name,
+                    case f.partner_code when 'YUN_DAI_SELF' then 1.4 when 'ZSD' then 1.5 when '7_DAI_SELF' then 1.6 end as ln_customer_id,
+                    f.partner_code,0 as plan_principal,
+                    null as ln_plan_interest,
+                    0 as fn_plan_interest, null as fee,b.loan_id, b.serial_id, b.partner_repay_id, 'ZC' as repay_type,
+                    (select min(g.bs_user_id) from ln_loan_relation g where e.id = g.loan_id ) as fn_user_id,
+                    b.finish_time trans_time,
+                    case when f.partner_code = 'ZSD' then round(ifnull(b.plan_total - c.plan_total - d.revenue_amount - (approve_amount*3/1200), 0), 2)
+                    when f.partner_code = 'YUN_DAI_SELF' then round(ifnull(b.plan_total - c.plan_total - d.revenue_amount, 0), 2)
+                    when f.partner_code = '7_DAI_SELF' then round(ifnull(b.plan_total - c.plan_total - d.revenue_amount, 0), 2)
+                    end as interest, e.partner_business_flag
+                    FROM
+                    (SELECT * FROM ln_repay_schedule WHERE `status` = 'REPAIED'
+                    <if test="startDate != null or endDate != null">
+                      <if test="startDate != null">
+                        and date(finish_time) &gt;= #{startDate}
+                      </if>
+                      <if test="endDate != null">
+                        and date(finish_time) &lt;= #{endDate}
+                      </if>
+                    </if>
+                    AND serial_id = 0
+                    ) b
+                    INNER JOIN ln_deposition_repay_schedule c ON c.partner_repay_id = b.partner_repay_id
+                    INNER JOIN bs_revenue_trans_detail d ON d.repay_schedule_id = b.id
+                    INNER JOIN ln_loan e ON (
+                    e.id = b.loan_id
+                    AND e.id = c.loan_id
+                    )
+                    INNER JOIN ln_user f ON f.id = e.ln_user_id
+                    WHERE
+                    d.trans_type = 'REVENUE_INCOME'
+                    <if test="partnerCode != null and partnerCode != ''">
+                      and f.partner_code = #{partnerCode}
+                    </if>
+                    <if test="partnerCode == null or partnerCode == ''">
+                      and f.partner_code in ('ZSD', 'YUN_DAI_SELF','7_DAI_SELF')
+                    </if>
+                    <if test="repayType != null and repayType == 'DC'">
+                      and 1=0
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag !='666' and queryPartnerBusinessFlag !='777' and queryPartnerBusinessFlag !='888' and queryPartnerBusinessFlag !='999' ">
+                      AND e.partner_business_flag = #{queryPartnerBusinessFlag}
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='777' ">
+                      AND e.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='888' ">
+                      AND e.partner_business_flag IN ('现金循环贷', 'REPAY_ANY_TIME')
+                    </if>
+                ) as a, bs_user b where a.fn_user_id = b.id
+              <if test="fnUserName != null">
+                and b.user_name like concat(concat('%', #{fnUserName}),'%')
+              </if>
+              <if test="mobile != null">
+                and b.mobile like concat(concat('%', #{mobile}),'%')
+              </if>
+              <if test="repayType != null and repayType == 'DC'">
+                and 1=0
+              </if>
+      ) union (
+          select a.*
+          from (
+              select concat("062", a.partner_repay_id,a.id) bill_no, concat('3.', b.id) as fn_customer_id,
+                          b.user_name as fn_user_name, b.mobile,  a.id,a.ln_user_name,a.ln_customer_id,a.partner_code,
+										 a.plan_principal,a.interest ln_plan_interest,a.fn_plan_interest,a.interest fee,a.loan_id,a.serial_id,
+											a.partner_repay_id,a.repay_type,a.fn_user_id,a.trans_time, a.partner_business_flag
+    from (
+														select b.id, f.user_name as ln_user_name,
+																case f.partner_code when 'YUN_DAI_SELF' then 1.4 when 'ZSD' then 1.5 when '7_DAI_SELF' then 1.6 end as ln_customer_id, f.partner_code, 0 as plan_principal,
+																null as ln_plan_interest, 0 as fn_plan_interest, null as fee, b.loan_id, b.serial_id, b.partner_repay_id, 'DC' as repay_type,
+																(select min(g.bs_user_id) from ln_loan_relation g where e.id = g.loan_id ) as fn_user_id,
+																b.finish_time trans_time,
+														case when f.partner_code = 'ZSD' then round(ifnull(a.total - c.plan_total, 0), 2)
+														when f.partner_code = 'YUN_DAI_SELF' then round(ifnull(a.total - c.plan_total, 0), 2)
+                                                        when f.partner_code = '7_DAI_SELF' then round(ifnull(a.total - c.plan_total, 0), 2)
+														end as interest, e.partner_business_flag
+														from (SELECT total,partner_repay_id,partner_loan_id,`status`,repay_type,create_time FROM ln_compensate_detail WHERE 
+																						 `status` = 'SUCC' 
+																	                     <if test="startDate != null or endDate != null">
+																				             <if test="startDate != null">
+																				               and date(create_time) >= #{startDate}
+																				             </if>
+																				             <if test="endDate != null">
+																				               and date(create_time) &lt;= #{endDate}
+																				             </if>
+																			             </if>
+                                                        ) a
+                                                        INNER JOIN (
+                                                          SELECT
+                                                            id,
+                                                            loan_id,
+                                                            serial_id,
+                                                            partner_repay_id,
+                                                            finish_time,
+                                                            `status`
+                                                          FROM
+                                                            ln_repay_schedule
+                                                          WHERE
+                                                          (
+                                                            `status` = 'LATE_REPAIED'
+                                                            OR `status` = 'LATE_NOT'
+                                                          )
+                                                        ) b ON b.partner_repay_id = a.partner_repay_id
+                                                        INNER JOIN ln_deposition_repay_schedule c ON c.partner_repay_id = a.partner_repay_id
+                                                        INNER JOIN ln_loan e ON (
+                                                          e.id = c.loan_id
+                                                          AND e.id = b.loan_id
+                                                        )
+                                                        INNER JOIN ln_user f ON f.id = e.ln_user_id
+                                                        where
+                                                        1=1
+														<if test="partnerCode != null and partnerCode != ''">
+											                and f.partner_code = #{partnerCode}
+											            </if>
+											            <if test="partnerCode == null or partnerCode == ''">
+															and f.partner_code in ('ZSD', 'YUN_DAI_SELF','7_DAI_SELF')
+														</if>
+                                                        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag !='666' and queryPartnerBusinessFlag !='777' and queryPartnerBusinessFlag !='888' and queryPartnerBusinessFlag !='999' ">
+                                                          AND e.partner_business_flag = #{queryPartnerBusinessFlag}
+                                                        </if>
+                                                        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='777' ">
+                                                          AND e.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+                                                        </if>
+                                                        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='888' ">
+                                                          AND e.partner_business_flag IN ('现金循环贷', 'REPAY_ANY_TIME')
+                                                        </if>
+              ) as a, bs_user b where a.fn_user_id = b.id
+              <if test="fnUserName != null">
+                and b.user_name like concat(concat('%', #{fnUserName}),'%')
+              </if>
+              <if test="mobile != null">
+                and b.mobile like concat(concat('%', #{mobile}),'%')
+              </if>
+          ) as a
+      )
+    ) as a
+  </select>
+
+  <select id="sumLnCustomerSettlementInterest" parameterType="java.util.Map" resultType="java.lang.Double">
+    select sum(aa.fee) from (
+(
+              select concat("061", a.partner_repay_id,a.id) bill_no, concat('3.', b.id) as fn_customer_id,
+                          b.user_name as fn_user_name, b.mobile, a.id,a.ln_user_name,a.ln_customer_id,a.partner_code,
+										 a.plan_principal,a.interest ln_plan_interest,a.fn_plan_interest,a.interest fee,a.loan_id,a.serial_id,
+											a.partner_repay_id,a.repay_type,a.fn_user_id,a.trans_time, a.partner_business_flag
+              from (
+                    select
+                    b.id,f.user_name as ln_user_name,
+                    case f.partner_code when 'YUN_DAI_SELF' then 1.4 when 'ZSD' then 1.5 when '7_DAI_SELF' then 1.6 end as ln_customer_id,
+                    f.partner_code,0 as plan_principal,
+                    null as ln_plan_interest,
+                    0 as fn_plan_interest, null as fee,b.loan_id, b.serial_id, b.partner_repay_id, 'ZC' as repay_type,
+                    (select min(g.bs_user_id) from ln_loan_relation g where e.id = g.loan_id ) as fn_user_id,
+                    b.finish_time trans_time,
+                    case when f.partner_code = 'ZSD' then round(ifnull(a.done_total - c.plan_total - d.revenue_amount - (approve_amount*3/1200), 0), 2)
+                    when f.partner_code = 'YUN_DAI_SELF' then round(ifnull(a.done_total - c.plan_total - d.revenue_amount, 0), 2)
+                    when f.partner_code = '7_DAI_SELF' then round(ifnull(a.done_total - c.plan_total - d.revenue_amount, 0), 2)
+                    end as interest, e.partner_business_flag
+                    FROM
+                    (SELECT * FROM ln_repay_schedule WHERE `status` = 'REPAIED'
+                    <if test="startDate != null or endDate != null">
+                      <if test="startDate != null">
+                        and date(finish_time) &gt;= #{startDate}
+                      </if>
+                      <if test="endDate != null">
+                        and date(finish_time) &lt;= #{endDate}
+                      </if>
+                    </if>
+                    AND serial_id != 0
+                    ) b
+                    INNER JOIN ln_repay a ON (b.id = a.repay_plan_id)
+                    INNER JOIN ln_deposition_repay_schedule c ON c.partner_repay_id = b.partner_repay_id
+                    INNER JOIN bs_revenue_trans_detail d ON (d.repay_schedule_id = b.id)
+                    INNER JOIN ln_loan e ON (
+                    e.id = a.loan_id
+                    AND e.id = b.loan_id
+                    AND e.id = c.loan_id
+                    )
+                    INNER JOIN ln_user f ON (f.id = e.ln_user_id)
+                    WHERE
+                    a.`status` = 'REPAIED'
+                    AND d.trans_type = 'REVENUE_INCOME'
+                    <if test="partnerCode != null and partnerCode != ''">
+                      and f.partner_code = #{partnerCode}
+                    </if>
+                    <if test="partnerCode == null or partnerCode == ''">
+                      and f.partner_code in ('ZSD', 'YUN_DAI_SELF','7_DAI_SELF')
+                    </if>
+                    <if test="repayType != null and repayType == 'DC'">
+                      and 1=0
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag !='666' and queryPartnerBusinessFlag !='777' and queryPartnerBusinessFlag !='888' and queryPartnerBusinessFlag !='999' ">
+                      AND e.partner_business_flag = #{queryPartnerBusinessFlag}
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='777' ">
+                      AND e.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='888' ">
+                      AND e.partner_business_flag IN ('现金循环贷', 'REPAY_ANY_TIME')
+                    </if>
+                    UNION
+                    select
+                    b.id,f.user_name as ln_user_name,
+                    case f.partner_code when 'YUN_DAI_SELF' then 1.4 when 'ZSD' then 1.5 when '7_DAI_SELF' then 1.6 end as ln_customer_id,
+                    f.partner_code,0 as plan_principal,
+                    null as ln_plan_interest,
+                    0 as fn_plan_interest, null as fee,b.loan_id, b.serial_id, b.partner_repay_id, 'ZC' as repay_type,
+                    (select min(g.bs_user_id) from ln_loan_relation g where e.id = g.loan_id ) as fn_user_id,
+                    b.finish_time trans_time,
+                    case when f.partner_code = 'ZSD' then round(ifnull(b.plan_total - c.plan_total - d.revenue_amount - (approve_amount*3/1200), 0), 2)
+                    when f.partner_code = 'YUN_DAI_SELF' then round(ifnull(b.plan_total - c.plan_total - d.revenue_amount, 0), 2)
+                    when f.partner_code = '7_DAI_SELF' then round(ifnull(b.plan_total - c.plan_total - d.revenue_amount, 0), 2)
+                    end as interest, e.partner_business_flag
+                    FROM
+                    (SELECT * FROM ln_repay_schedule WHERE `status` = 'REPAIED'
+                    <if test="startDate != null or endDate != null">
+                      <if test="startDate != null">
+                        and date(finish_time) &gt;= #{startDate}
+                      </if>
+                      <if test="endDate != null">
+                        and date(finish_time) &lt;= #{endDate}
+                      </if>
+                    </if>
+                    AND serial_id = 0
+                    ) b
+                    INNER JOIN ln_deposition_repay_schedule c ON c.partner_repay_id = b.partner_repay_id
+                    INNER JOIN bs_revenue_trans_detail d ON d.repay_schedule_id = b.id
+                    INNER JOIN ln_loan e ON (
+                    e.id = b.loan_id
+                    AND e.id = c.loan_id
+                    )
+                    INNER JOIN ln_user f ON f.id = e.ln_user_id
+                    WHERE
+                    d.trans_type = 'REVENUE_INCOME'
+                    <if test="partnerCode != null and partnerCode != ''">
+                      and f.partner_code = #{partnerCode}
+                    </if>
+                    <if test="partnerCode == null or partnerCode == ''">
+                      and f.partner_code in ('ZSD', 'YUN_DAI_SELF','7_DAI_SELF')
+                    </if>
+                    <if test="repayType != null and repayType == 'DC'">
+                      and 1=0
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag !='666' and queryPartnerBusinessFlag !='777' and queryPartnerBusinessFlag !='888' and queryPartnerBusinessFlag !='999' ">
+                      AND e.partner_business_flag = #{queryPartnerBusinessFlag}
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='777' ">
+                      AND e.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+                    </if>
+                    <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='888' ">
+                      AND e.partner_business_flag IN ('现金循环贷', 'REPAY_ANY_TIME')
+                    </if>
+              ) as a, bs_user b where a.fn_user_id = b.id
+            <if test="fnUserName != null">
+              and b.user_name like concat(concat('%', #{fnUserName}),'%')
+            </if>
+            <if test="mobile != null">
+              and b.mobile like concat(concat('%', #{mobile}),'%')
+            </if>
+            <if test="repayType != null and repayType == 'DC'">
+              and 1=0
+            </if>
+
+      ) union (
+          select a.*
+          from (
+              select concat("062", a.partner_repay_id,a.id) bill_no, concat('3.', b.id) as fn_customer_id,
+                          b.user_name as fn_user_name, b.mobile,  a.id,a.ln_user_name,a.ln_customer_id,a.partner_code,
+										 a.plan_principal,a.interest ln_plan_interest,a.fn_plan_interest,a.interest fee,a.loan_id,a.serial_id,
+											a.partner_repay_id,a.repay_type,a.fn_user_id,a.trans_time,a.partner_business_flag
+							from (
+														select b.id, f.user_name as ln_user_name,
+																case f.partner_code when 'YUN_DAI_SELF' then 1.4 when 'ZSD' then 1.5 when '7_DAI_SELF' then 1.6 end as ln_customer_id, f.partner_code, 0 as plan_principal,
+																null as ln_plan_interest, 0 as fn_plan_interest, null as fee, b.loan_id, b.serial_id, b.partner_repay_id, 'DC' as repay_type,
+																(select min(g.bs_user_id) from ln_loan_relation g where e.id = g.loan_id ) as fn_user_id,
+																b.finish_time trans_time,
+														case when f.partner_code = 'ZSD' then round(ifnull(a.total - c.plan_total, 0), 2)
+														when f.partner_code = 'YUN_DAI_SELF' then round(ifnull(a.total - c.plan_total, 0), 2)
+                                                        when f.partner_code = '7_DAI_SELF' then round(ifnull(a.total - c.plan_total, 0), 2)
+														end as interest, e.partner_business_flag
+														from (SELECT total,partner_repay_id,partner_loan_id,`status`,repay_type,create_time FROM ln_compensate_detail WHERE 
+																						 `status` = 'SUCC' 
+																	                     <if test="startDate != null or endDate != null">
+																				             <if test="startDate != null">
+																				               and date(create_time) >= #{startDate}
+																				             </if>
+																				             <if test="endDate != null">
+																				               and date(create_time) &lt;= #{endDate}
+																				             </if>
+																			             </if>
+                                                        ) a
+                                                        INNER JOIN (
+                                                          SELECT
+                                                            id,
+                                                            loan_id,
+                                                            serial_id,
+                                                            partner_repay_id,
+                                                            finish_time,
+                                                            `status`
+                                                          FROM
+                                                            ln_repay_schedule
+                                                          WHERE
+                                                          (
+                                                            `status` = 'LATE_REPAIED'
+                                                            OR `status` = 'LATE_NOT'
+                                                          )
+                                                        ) b ON b.partner_repay_id = a.partner_repay_id
+                                                        INNER JOIN ln_deposition_repay_schedule c ON c.partner_repay_id = a.partner_repay_id
+                                                        INNER JOIN ln_loan e ON (
+                                                          e.id = c.loan_id
+                                                          AND e.id = b.loan_id
+                                                        )
+                                                        INNER JOIN ln_user f ON f.id = e.ln_user_id
+                                                        where
+                                                        1=1
+														<if test="partnerCode != null and partnerCode != ''">
+											                and f.partner_code = #{partnerCode}
+											            </if>
+											            <if test="partnerCode == null or partnerCode == ''">
+															and f.partner_code in ('ZSD', 'YUN_DAI_SELF','7_DAI_SELF')
+														</if>
+                                                        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag !='666' and queryPartnerBusinessFlag !='777' and queryPartnerBusinessFlag !='888' and queryPartnerBusinessFlag !='999' ">
+                                                          AND e.partner_business_flag = #{queryPartnerBusinessFlag}
+                                                        </if>
+                                                        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='777' ">
+                                                          AND e.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+                                                        </if>
+                                                        <if test="queryPartnerBusinessFlag != null and queryPartnerBusinessFlag != '' and queryPartnerBusinessFlag =='888' ">
+                                                          AND e.partner_business_flag IN ('现金循环贷', 'REPAY_ANY_TIME')
+                                                        </if>
+              ) as a, bs_user b where a.fn_user_id = b.id
+              <if test="fnUserName != null">
+                and b.user_name like concat(concat('%', #{fnUserName}),'%')
+              </if>
+              <if test="mobile != null">
+                and b.mobile like concat(concat('%', #{mobile}),'%')
+              </if>
+          ) as a
+      )
+  	) aa
+  </select>
+
+
+  <select id="lnCustomerSettlementInterest" parameterType="java.util.Map" resultType="java.lang.Double">
+    <if test="repayType == 'DC'">
+      select
+      case when f.partner_code = 'ZSD' then round(ifnull(a.total - c.plan_total, 0), 2)
+      when f.partner_code = 'YUN_DAI_SELF' then round(ifnull(a.total - c.plan_total, 0), 2)
+      end as interest
+      from ln_compensate_detail a, ln_repay_schedule b,ln_deposition_repay_schedule c, ln_loan e, ln_user f
+      where a.partner_repay_id = b.partner_repay_id and a.status = 'SUCC' 
+      and b.partner_repay_id = c.partner_repay_id
+      and e.id = b.loan_id and e.ln_user_id = f.id 
+      and f.partner_code in ('ZSD', 'YUN_DAI_SELF')
+      and c.loan_id = e.id
+      and a.partner_loan_id = e.partner_loan_id and b.loan_id = e.id
+      and b.id = #{repayScheduleId}
+      ORDER BY c.id ASC 
+	  LIMIT 0,1
+    </if>
+    <if test="repayType == 'ZC'">
+      select
+      case when f.partner_code = 'ZSD' then round(ifnull(a.done_total - c.plan_total - d.revenue_amount - (approve_amount*3/1200), 0), 2)
+      when f.partner_code = 'YUN_DAI_SELF' then round(ifnull(a.done_total - c.plan_total - d.revenue_amount, 0), 2)
+      end as interest
+      from ln_repay a, ln_repay_schedule b, ln_deposition_repay_schedule c, bs_revenue_trans_detail d, ln_loan e, ln_user f
+      where a.repay_plan_id = b.id and b.status = 'REPAIED' and a.status ='REPAIED'  and b.partner_repay_id = c.partner_repay_id
+      and d.trans_type = 'REVENUE_INCOME' and d.repay_schedule_id = b.id and e.id = a.loan_id and e.ln_user_id = f.id
+      and f.partner_code in ('ZSD', 'YUN_DAI_SELF')
+      and a.loan_id = e.id and b.loan_id = e.id and c.loan_id = e.id
+      and a.repay_plan_id = #{repayScheduleId}
+      limit 1
+    </if>
+    <if test="repayType == 'TQ'">
+      select
+      case when f.partner_code = 'ZSD' then round(ifnull(b.plan_total - c.plan_total - d.revenue_amount - (approve_amount*3/1200), 0), 2)
+      when f.partner_code = 'YUN_DAI_SELF' then round(ifnull(b.plan_total - c.plan_total - d.revenue_amount, 0), 2)
+      end as interest
+      from ln_repay_schedule b, ln_deposition_repay_schedule c, bs_revenue_trans_detail d, ln_loan e, ln_user f
+      where b.partner_repay_id = c.partner_repay_id
+      and b.status = 'REPAIED'
+      and d.trans_type = 'REVENUE_INCOME' and d.repay_schedule_id = b.id and e.id = b.loan_id and e.ln_user_id = f.id
+      and f.partner_code in ('ZSD', 'YUN_DAI_SELF')
+      and b.loan_id = e.id and c.loan_id = e.id
+      and b.id = #{repayScheduleId}
+      limit 1
+    </if>
+  </select>
+<!-- =========================管理台-融资客户结算（总）E================================== -->
+  
+  <select id="selectRepaySchedulePrincipal" resultMap="OverdueRepayScheduleMap">
+    select a.loan_id, a.partner_repay_id, a.serial_id, a.plan_date, a.finish_time, a.plan_total, a.`status`, a.create_time, a.update_time, b.plan_amount from ln_repay_schedule a, ln_repay_schedule_detail b
+		where a.id = b.plan_id and b.subject_code = 'PRINCIPAL'
+		and a.partner_repay_id = #{partnerRepayId} and a.loan_id = #{loanId}
+  </select>
+
+  <select id="selectYunCollectionLettersByOrderNo" parameterType="java.util.Map" resultMap="CompensateTransfersMap">
+    SELECT
+      tab.user_name AS loan_user_name, tab.id_card AS loan_id_card, tab.approve_amount, tab.agreement_rate, tab.period,
+      tab.transfer_creditor_amount, tab.debt_service_fee, f.agreement_no AS loan_agreement_number
+    FROM
+    (
+      SELECT
+          g.user_name,g.id_card,e.approve_amount,e.agreement_rate,e.period,e.id,
+          ROUND(SUM(d.amount + (d.principal*d.interest_day*(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'LOAN_SERVICE_RATE_YUN_DAI')/36500)), 2) as transfer_creditor_amount,
+          ROUND(SUM(d.principal*d.interest_day*((SELECT conf_value FROM bs_sys_config WHERE conf_key = 'YUN_DAI_SELF_SYS_SETTLE_RATE')-e.agreement_rate
+          -(SELECT conf_value FROM bs_sys_config WHERE conf_key = 'LOAN_SERVICE_RATE'))/36500), 2) AS debt_service_fee
+      FROM
+      (SELECT a.id, b.partner_loan_id, b.partner_repay_id FROM ln_compensate a, ln_compensate_detail b WHERE a.order_no = #{orderNo} AND a.id = b.compensate_id) b,
+      ln_deposition_repay_schedule c,
+      ln_compensate_relation d,ln_loan e,
+      ln_user g
+      WHERE
+      b.partner_repay_id = c.partner_repay_id
+      AND c.id = d.dep_plan_id
+      AND b.partner_loan_id = e.partner_loan_id
+      AND e.id = c.loan_id
+      AND e.ln_user_id = g.id
+      AND g.partner_code = 'YUN_DAI_SELF'
+      GROUP BY b.partner_loan_id
+    ) tab LEFT JOIN (
+      SELECT bc.relative_info,bc.agreement_no  FROM
+      (SELECT a.id, b.partner_loan_id, b.partner_repay_id
+      FROM ln_compensate a, ln_compensate_detail b
+      WHERE a.order_no = #{orderNo} AND a.id = b.compensate_id) ba,
+      ln_loan bb,bs_user_seal_file bc
+      WHERE
+      ba.partner_loan_id = bb.partner_loan_id
+      AND bb.id = bc.relative_info
+      AND user_src = 'YUN_DAI_SELF'
+      AND seal_type = 'LOAN_AGREEMENT'
+      AND bc.relative_info IS NOT NULL
+    ) f ON tab.id = f.relative_info
+  </select>
+
+  <select id="selectSevenCollectionLettersByOrderNo" parameterType="java.util.Map" resultMap="CompensateTransfersMap">
+    SELECT
+      tab.user_name AS loan_user_name, tab.id_card AS loan_id_card, tab.approve_amount, tab.agreement_rate, tab.period,
+      tab.transfer_creditor_amount, tab.debt_service_fee, f.agreement_no AS loan_agreement_number
+    FROM
+    (
+      SELECT
+          g.user_name,g.id_card,e.approve_amount,e.agreement_rate,e.period,e.id,
+          SUM(d.amount) as transfer_creditor_amount,
+          ROUND(SUM(d.principal*d.interest_day*((SELECT conf_value FROM bs_sys_config WHERE conf_key = '7_DAI_SELF_SYS_SETTLE_RATE')-e.agreement_rate)/36500), 2) AS debt_service_fee
+      FROM
+      (SELECT a.id, b.partner_loan_id, b.partner_repay_id FROM ln_compensate a, ln_compensate_detail b WHERE a.order_no = #{orderNo} AND a.id = b.compensate_id) b,
+      ln_deposition_repay_schedule c,
+      ln_compensate_relation d,ln_loan e,
+      ln_user g
+      WHERE
+      b.partner_repay_id = c.partner_repay_id
+      AND c.id = d.dep_plan_id
+      AND b.partner_loan_id = e.partner_loan_id
+      AND e.id = c.loan_id
+      AND e.ln_user_id = g.id
+      AND g.partner_code = '7_DAI_SELF'
+      GROUP BY b.partner_loan_id
+    ) tab LEFT JOIN (
+      SELECT bc.relative_info,bc.agreement_no  FROM
+      (SELECT a.id, b.partner_loan_id, b.partner_repay_id
+      FROM ln_compensate a, ln_compensate_detail b
+      WHERE a.order_no = #{orderNo} AND a.id = b.compensate_id) ba,
+      ln_loan bb,bs_user_seal_file bc
+      WHERE
+      ba.partner_loan_id = bb.partner_loan_id
+      AND bb.id = bc.relative_info
+      AND user_src = '7_DAI_SELF'
+      AND seal_type = 'LOAN_AGREEMENT'
+      AND bc.relative_info IS NOT NULL
+    ) f ON tab.id = f.relative_info
+  </select>
+  
+  <select id="sumNotRepayByLnUserId" parameterType="java.util.Map"  resultType="java.lang.Double">
+  select ifnull(SUM(c.plan_amount),0)
+	from ln_loan a,ln_repay_schedule b,ln_repay_schedule_detail c 
+	where a.id = b.loan_id and a.ln_user_id=#{lnUserId}
+	and b.id = c.plan_id and c.subject_code = 'PRINCIPAL' and c.plan_amount > 0 
+	and b.`status`='INIT' AND a.`status`='PAIED'
+  </select>
+
+  <select id="selectYunCollectionLettersByOrderNoRenew" parameterType="java.util.Map" resultMap="CompensateTransfersMap">
+    SELECT
+      tab.user_name AS loan_user_name, tab.id_card AS loan_id_card, tab.approve_amount, tab.agreement_rate, tab.period,
+      tab.transfer_creditor_amount, tab.debt_service_fee, f.agreement_no AS loan_agreement_number
+    FROM
+    (
+      SELECT
+        g.user_name,g.id_card,e.approve_amount,e.agreement_rate,e.period,e.id,
+        SUM(d.amount) as transfer_creditor_amount,
+        ROUND(SUM(d.principal*d.interest_day*((SELECT conf_value FROM bs_sys_config WHERE conf_key = 'YUN_DAI_SELF_SYS_SETTLE_RATE')-e.agreement_rate)/36500), 2) AS debt_service_fee
+      FROM
+      (SELECT a.id, b.partner_loan_id, b.partner_repay_id FROM ln_compensate a, ln_compensate_detail b WHERE a.order_no = #{orderNo} AND a.id = b.compensate_id) b,
+      ln_deposition_repay_schedule c,
+      ln_compensate_relation d,ln_loan e,
+      ln_user g
+      WHERE
+      b.partner_repay_id = c.partner_repay_id
+      AND c.id = d.dep_plan_id
+      AND b.partner_loan_id = e.partner_loan_id
+      AND e.id = c.loan_id
+      AND e.ln_user_id = g.id
+      AND g.partner_code = 'YUN_DAI_SELF'
+      GROUP BY b.partner_loan_id
+    ) tab LEFT JOIN (
+      SELECT
+        bc.relative_info,bc.agreement_no
+      FROM
+      (SELECT a.id, b.partner_loan_id, b.partner_repay_id
+      FROM ln_compensate a, ln_compensate_detail b
+      WHERE a.order_no = #{orderNo} AND a.id = b.compensate_id) ba,
+      ln_loan bb,bs_user_seal_file bc
+      WHERE
+      ba.partner_loan_id = bb.partner_loan_id
+      AND bb.id = bc.relative_info
+      AND user_src = 'YUN_DAI_SELF'
+      AND seal_type = 'LOAN_AGREEMENT'
+      AND bc.relative_info IS NOT NULL
+    ) f ON tab.id = f.relative_info
+  </select>
+
+
+ <select id="sumRepaiedByLoanId" parameterType="java.util.Map"  resultType="java.lang.Double">
+ 	select ifnull(SUM(c.plan_amount),0)
+	from ln_repay_schedule b,ln_repay_schedule_detail c 
+	where b.id = c.plan_id and c.subject_code = 'PRINCIPAL' and c.plan_amount > 0 
+	and b.`status` in('LATE_NOT','LATE_REPAIED','REPAIED') and b.loan_id = #{loanId}
+  </select>
+  
+  <resultMap id="RepaySchedule4DetailResultMap" type="com.pinting.business.model.vo.RepaySchedule4DetailVO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="loan_id" jdbcType="INTEGER" property="loanId" />
+    <result column="partner_repay_id" jdbcType="VARCHAR" property="partnerRepayId" />
+    <result column="serial_id" jdbcType="INTEGER" property="serialId" />
+    <result column="plan_date" jdbcType="DATE" property="planDate" />
+    <result column="finish_time" jdbcType="TIMESTAMP" property="finishTime" />
+    <result column="plan_total" jdbcType="DOUBLE" property="planTotal" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="return_flag" jdbcType="VARCHAR" property="returnFlag" />
+    <result column="pay_order_no" jdbcType="VARCHAR" property="payOrderNo" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    
+    <result column="principal" jdbcType="DOUBLE" property="principal" />
+    <result column="interest" jdbcType="DOUBLE" property="interest" />
+    <result column="principal_overdue" jdbcType="DOUBLE" property="principalOverdue" />
+    <result column="interest_overdue" jdbcType="DOUBLE" property="interestOverdue" />
+    <result column="principal_id" jdbcType="INTEGER" property="principalId" />
+    <result column="interest_id" jdbcType="INTEGER" property="interestId" />
+    <result column="principal_overdue_id" jdbcType="INTEGER" property="principalOverdueId" />
+    <result column="interest_overdue_id" jdbcType="INTEGER" property="interestOverdueId" />
+  </resultMap>
+  <select id="selectAllSchedule" parameterType="java.util.Map" resultMap="RepaySchedule4DetailResultMap">
+  	select a.id,a.loan_id,a.partner_repay_id,a.plan_total,a.plan_date,a.`status`,a.serial_id,
+		p.plan_amount principal,p.id principal_id,i.plan_amount interest,i.id interest_id,
+		over_p.plan_amount principal_overdue,over_p.id principal_overdue_id,
+		over_i.plan_amount interest_overdue,over_i.id interest_overdue_id
+	from ln_repay_schedule a,ln_repay_schedule_detail p,
+	ln_repay_schedule_detail i,
+	ln_repay_schedule_detail over_p,
+	ln_repay_schedule_detail over_i
+	where a.loan_id=#{loanId} and a.`status` in('INIT','LATE_NOT','LATE_REPAIED','REPAIED')
+	and a.id = p.plan_id and p.subject_code='PRINCIPAL'
+	and a.id = i.plan_id and i.subject_code='INTEREST'
+	and a.id = over_p.plan_id and over_p.subject_code='PRINCIPAL_OVERDUE'
+	and a.id = over_i.plan_id and over_i.subject_code='INTEREST_OVERDUE';
+  </select>
+  
+  
+    <select id="lastPlanByLoanId" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select id,plan_date,`status`
+	from ln_repay_schedule where loan_id = #{loanId}
+		and `status`!='CANCELLED'
+		ORDER BY plan_date desc LIMIT 1
+    </select>
+    
+  <select id="selectRepayScheduleWithCompensate" parameterType="java.util.Map" resultMap="BaseResultMap">
+     select a.id, a.loan_id, a.partner_repay_id, a.status, a.return_flag 
+     from ln_repay_schedule a, ln_compensate_detail b, ln_loan c
+     <where>
+     	a.partner_repay_id = b.partner_repay_id and a.loan_id = c.id
+     	and b.partner_loan_id = c.partner_loan_id and b.status = 'INIT'
+     	<if test="partnerRepayId != null and partnerRepayId != ''">
+           and b.partner_repay_id= #{partnerRepayId}
+        </if>
+     </where>     
+  </select> 
+    
+  <select id="selectRepayScheduleWithCompensateSum" parameterType="java.util.Map" resultType="java.lang.Double">
+     select IFNULL(sum(b.total), 0)
+     from ln_repay_schedule a, ln_compensate_detail b, ln_loan c, ln_compensate d
+     <where>
+     	a.partner_repay_id = b.partner_repay_id and a.loan_id = c.id
+     	and b.partner_loan_id = c.partner_loan_id 
+     	and b.compensate_id = d.id
+     	and b.status = 'INIT' and a.status in ('LATE_NOT', 'CANCELLED')
+     	<if test="payOrderNo != null and payOrderNo != ''">
+     		and d.pay_order_no = #{payOrderNo}
+     	</if>
+     	and b.partner_repay_id in
+		<foreach collection="partnerRepayIds" item="partnerRepayId" index="index" open="(" close=")" separator=",">
+			#{partnerRepayId}
+		</foreach>
+     </where>      
+  </select> 
+  
+  <select id="selectRepayScheduleWithCompensateCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+     select count(*)
+     from ln_repay_schedule a, ln_compensate_detail b, ln_loan c, ln_compensate d
+     <where>
+     	a.partner_repay_id = b.partner_repay_id and a.loan_id = c.id
+     	and b.partner_loan_id = c.partner_loan_id
+     	and b.compensate_id = d.id
+     	and b.status = 'INIT' and a.status in ('LATE_NOT', 'CANCELLED')
+     	<if test="payOrderNo != null and payOrderNo != ''">
+     		and d.pay_order_no = #{payOrderNo}
+     	</if>
+     	and b.partner_repay_id in
+		<foreach collection="partnerRepayIds" item="partnerRepayId" index="index" open="(" close=")" separator=",">
+			#{partnerRepayId}
+		</foreach>
+     </where>     
+  </select> 
+    
+  <select id="selectRepayScheduleWithCompensateAndOrderNo" parameterType="java.util.Map" resultMap="BaseResultMap">
+     select a.id, a.loan_id, a.partner_repay_id, a.status, a.return_flag 
+     from ln_repay_schedule a, ln_compensate_detail b, ln_loan c, ln_compensate d
+     <where>
+     	a.partner_repay_id = b.partner_repay_id and a.loan_id = c.id
+     	and b.partner_loan_id = c.partner_loan_id
+     	and b.compensate_id = d.id
+     	and b.status = 'INIT'
+     	<if test="partnerRepayId != null and partnerRepayId != ''">
+           and b.partner_repay_id= #{partnerRepayId}
+        </if>
+        <if test="payOrderNo != null and payOrderNo != ''">
+     		and d.pay_order_no = #{payOrderNo}
+     	</if>
+     </where>     
+  </select> 
+    
+  <select id="queryDailyCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+     SELECT count(a.id) 
+		FROM ln_repay_schedule a, ln_loan b, ln_user c
+		WHERE a.`status` = 'INIT'
+			and a.plan_date = DATE_FORMAT(NOW(),'%Y-%m-%d')
+			and a.loan_id = b.id
+			and b.ln_user_id = c.id
+			and c.partner_code = #{partnerCode}
+  </select>
+  
+  <!-- ==================日常业务-借款账单管理 start================================ -->
+   <resultMap id="LoanBillVOMap" type="com.pinting.business.model.vo.LoanBillVO">
+    <result column="partner_code" jdbcType="VARCHAR" property="partnerCode" />
+    <result column="partner_business_flag" jdbcType="VARCHAR" property="partnerBusinessFlag" />
+    <result column="plan_date" property="planDate" jdbcType="TIMESTAMP" />
+    <result column="partner_loan_id" jdbcType="VARCHAR" property="partnerLoanId" />
+    <result column="partner_repay_id" jdbcType="VARCHAR" property="partnerRepayId" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="schedule_principal_plan_amount" property="schedulePrincipalPlanAmount" jdbcType="DOUBLE" />
+    <result column="schedule_interest_plan_amount" property="scheduleInterestPlanAmount" jdbcType="DOUBLE" />
+    <result column="repay_type" jdbcType="VARCHAR" property="repayType" />
+    <result column="done_time" jdbcType="TIMESTAMP" property="doneTime" />
+    <result column="repay_total" jdbcType="DOUBLE" property="repayTotal" />
+    <result column="repay_principal_done_amount" property="repayPrincipalDoneAmount" jdbcType="DOUBLE" />
+    <result column="repay_interest_done_amount" property="repayInterestDoneAmount" jdbcType="DOUBLE" />
+  </resultMap>
+  <!-- 借款账单管理，列表数据查询 -->
+   <select id="selectLoanBillList" parameterType="com.pinting.business.model.vo.LoanBillVO" resultMap="LoanBillVOMap">
+		select 
+		b.partner_code, a.partner_business_flag,
+		c.plan_date, a.partner_loan_id,c.partner_repay_id,c.`status`,
+		plan_p.plan_amount AS schedule_principal_plan_amount,
+		plan_i.plan_amount AS schedule_interest_plan_amount,
+		c.repay_type,c.finish_time done_time,c.repay_principal_done_amount,
+		c.repay_interest_done_amount,c.repay_total
+		 from ln_loan a,ln_user b,(
+		<if test="repayType =='COMPENSATE_REPAY'">
+		 	<!-- 代偿start -->
+			(select rs.*,lc.total repay_total ,lc.principal repay_principal_done_amount, 
+			lc.interest repay_interest_done_amount, 'COMPENSATE_REPAY' repay_type
+			from 
+				(SELECT id, plan_date, partner_repay_id, `status`, plan_total, loan_id,finish_time
+					FROM ln_repay_schedule
+					WHERE substring(partner_repay_id, 1, 4) != 'RGCL' 
+					<if test="planDateStart != null and planDateStart != ''">
+						AND plan_date >= #{planDateStart}
+				    </if>
+				    <if test="planDateEnd != null and planDateEnd != ''">
+				        AND plan_date &lt;= #{planDateEnd}
+				    </if>				
+					<if test="partnerRepayId != null and partnerRepayId != '' ">
+				        AND partner_repay_id like concat(concat('%', #{partnerRepayId,jdbcType=VARCHAR}),'%')
+				    </if>
+					and (`status` ='LATE_NOT' OR `status` = 'LATE_REPAIED'))rs,ln_compensate_detail lc where
+			 rs.partner_repay_id = lc.partner_repay_id AND lc.`status`='SUCC') 
+			 <!-- 代偿end -->
+			
+		</if>
+		<if test="repayType =='NORMA_REPAY' or repayType =='OFFLINE_REPAY'">
+			<!-- 正常还款、线下还款 start -->
+			(select rs.*,lr.done_total repay_total ,lr_p.done_amount repay_principal_done_amount, 
+			lr_i.done_amount repay_interest_done_amount,
+			CASE WHEN  repay_type = 'OFFLINE_REPAY' THEN 'OFFLINE_REPAY' ELSE 'NORMA_REPAY' END AS repay_type from 
+				(SELECT id, plan_date, partner_repay_id, `status`, plan_total, loan_id,finish_time 
+					FROM ln_repay_schedule
+					WHERE substring(partner_repay_id, 1, 4) != 'RGCL' and SUBSTRING(partner_repay_id, 1,14) != 'partnerRepayId'
+					<if test="planDateStart != null and planDateStart != ''">
+						AND plan_date >= #{planDateStart}
+				    </if>
+				    <if test="planDateEnd != null and planDateEnd != ''">
+				        AND plan_date &lt;= #{planDateEnd}
+				    </if>
+				    <if test="partnerRepayId != null and partnerRepayId != '' ">
+				        AND partner_repay_id like concat(concat('%', #{partnerRepayId,jdbcType=VARCHAR}),'%')
+				    </if>
+					and `status` = 'REPAIED')rs,ln_repay lr,ln_repay_detail lr_p,ln_repay_detail lr_i
+			 where
+			 rs.id = lr.repay_plan_id and lr.`status` not in('REPAY_FAIL','CANCELLED')
+			AND lr_p.repay_id = lr.id and lr_p.subject_code='PRINCIPAL'
+			AND lr_i.repay_id = lr.id and lr_i.subject_code='INTEREST'
+			<if test="repayType != null and repayType != '' and repayType =='OFFLINE_REPAY'">
+				AND lr.repay_type = 'OFFLINE_REPAY'
+			</if>
+			<if test="repayType != null and repayType != '' and repayType !='OFFLINE_REPAY'">
+				AND (lr.repay_type IS NULL or lr.repay_type != 'OFFLINE_REPAY')
+			</if>
+			)
+			UNION ALL
+			(select rs.id, rs.plan_date, rs.partner_repay_id, rs.`status`, rs.plan_total, rs.loan_id,finish_time,
+			lr.done_total repay_total ,lr_p.done_amount repay_principal_done_amount, 
+			lr_i.done_amount repay_interest_done_amount,
+			CASE WHEN  repay_type = 'OFFLINE_REPAY' THEN 'OFFLINE_REPAY' ELSE 'NORMA_REPAY' END AS repay_type from 
+				(SELECT id, plan_date, partner_repay_id, `status`, plan_total, loan_id,finish_time,pay_order_no
+					FROM ln_repay_schedule
+					WHERE substring(partner_repay_id, 1, 4) != 'RGCL' and SUBSTRING(partner_repay_id, 1,14) != 'partnerRepayId'
+					<if test="planDateStart != null and planDateStart != ''">
+						AND plan_date >= #{planDateStart}
+				    </if>
+				    <if test="planDateEnd != null and planDateEnd != ''">
+				        AND plan_date &lt;= #{planDateEnd}
+				    </if>
+				    <if test="partnerRepayId != null and partnerRepayId != '' ">
+				        AND partner_repay_id like concat(concat('%', #{partnerRepayId,jdbcType=VARCHAR}),'%')
+				    </if>
+					and `status` = 'REPAIED' and serial_id = 0)rs,ln_repay lr,ln_repay_detail lr_p,ln_repay_detail lr_i
+			 where
+			 rs.pay_order_no = lr.bgw_order_no and lr.repay_plan_id IS NULL and lr.`status` not in('REPAY_FAIL','CANCELLED')
+			AND lr_p.repay_id = lr.id and lr_p.subject_code='PRINCIPAL'
+			AND lr_i.repay_id = lr.id and lr_i.subject_code='INTEREST'
+			<if test="repayType != null and repayType != '' and repayType =='OFFLINE_REPAY'">
+				AND lr.repay_type = 'OFFLINE_REPAY'
+			</if>
+			<if test="repayType != null and repayType != '' and repayType !='OFFLINE_REPAY'">
+				AND (lr.repay_type IS NULL or lr.repay_type != 'OFFLINE_REPAY')
+			</if>
+			)
+			<!-- 正常还款、线下还款end -->
+		</if>
+		<if test=" repayType == 'INIT'">
+			
+			<!-- 未还款，还款类型为未还款  且  账单状态为未还款时，未还的账单【需】查询 start -->
+			(
+				SELECT id, plan_date, partner_repay_id, `status`, plan_total, loan_id,finish_time,
+			NULL repay_total,NULL repay_principal_done_amount,NULL repay_interest_done_amount, 'INIT' repay_type
+					FROM ln_repay_schedule
+					WHERE substring(partner_repay_id, 1, 4) != 'RGCL' 
+					<if test="planDateStart != null and planDateStart != ''">
+						AND plan_date >= #{planDateStart}
+				    </if>
+				    <if test="planDateEnd != null and planDateEnd != ''">
+				        AND plan_date &lt;= #{planDateEnd}
+				    </if>
+				    <if test="partnerRepayId != null and partnerRepayId != '' ">
+				        AND partner_repay_id like concat(concat('%', #{partnerRepayId,jdbcType=VARCHAR}),'%')
+				    </if>
+					and `status` = 'INIT'
+			)
+			<!-- 未还款end -->
+		</if>
+		)c,ln_repay_schedule_detail plan_p,ln_repay_schedule_detail plan_i
+		where plan_p.plan_id = c.id and c.id = plan_i.plan_id
+		and c.loan_id = a.id and a.ln_user_id=b.id
+		and plan_p.subject_code='PRINCIPAL' and plan_i.subject_code='INTEREST'
+     	<if test="partnerCode == null or partnerCode == '' ">
+        	AND b.partner_code IN ('YUN_DAI_SELF', '7_DAI_SELF')
+		</if>
+		<if test="partnerCode != null and partnerCode != '' ">
+	        AND b.partner_code = #{partnerCode}
+		</if>
+		<if test="partnerLoanId != null and partnerLoanId != '' ">
+	        AND a.partner_loan_id like concat(concat('%', #{partnerLoanId,jdbcType=VARCHAR}),'%')
+		</if>
+      
+      <include refid="sql-global.pagination" />
+   </select>
+   
+   
+   <select id="selectLoanBillCount" parameterType="com.pinting.business.model.vo.LoanBillVO" resultType="java.lang.Integer" >
+   		select 
+		count(c.id)
+		
+		 from ln_loan a,ln_user b,(
+		 <if test="repayType == 'COMPENSATE_REPAY'">
+		 	<!-- 代偿start -->
+		(select rs.*,lc.total repay_total , 'COMPENSATE_REPAY' repay_type
+		from 
+			(SELECT id, plan_date, partner_repay_id, `status`, plan_total, loan_id,finish_time
+				FROM ln_repay_schedule
+				WHERE substring(partner_repay_id, 1, 4) != 'RGCL' 
+					<if test="planDateStart != null and planDateStart != ''">
+						AND plan_date >= #{planDateStart}
+				    </if>
+				    <if test="planDateEnd != null and planDateEnd != ''">
+				        AND plan_date &lt;= #{planDateEnd}
+				    </if>
+				    <if test="partnerRepayId != null and partnerRepayId != '' ">
+				        AND partner_repay_id like concat(concat('%', #{partnerRepayId,jdbcType=VARCHAR}),'%')
+				    </if>
+				and (`status` ='LATE_NOT' OR `status` = 'LATE_REPAIED'))rs,ln_compensate_detail lc where
+		 rs.partner_repay_id = lc.partner_repay_id AND lc.`status`='SUCC') 
+		 <!-- 代偿end -->
+		</if>
+		<if test="repayType =='NORMA_REPAY' or repayType =='OFFLINE_REPAY'">
+			<!-- 正常还款、线下还款start -->
+		(select rs.*,lr.done_total repay_total, 
+		CASE WHEN  repay_type = 'OFFLINE_REPAY' THEN 'OFFLINE_REPAY' ELSE 'NORMA_REPAY' END AS repay_type from 
+			(SELECT id, plan_date, partner_repay_id, `status`, plan_total, loan_id,finish_time 
+				FROM ln_repay_schedule
+				WHERE substring(partner_repay_id, 1, 4) != 'RGCL' and SUBSTRING(partner_repay_id, 1,14) != 'partnerRepayId'
+					<if test="planDateStart != null and planDateStart != ''">
+						AND plan_date >= #{planDateStart}
+				    </if>
+				    <if test="planDateEnd != null and planDateEnd != ''">
+				        AND plan_date &lt;= #{planDateEnd}
+				    </if>
+				    <if test="partnerRepayId != null and partnerRepayId != '' ">
+				        AND partner_repay_id like concat(concat('%', #{partnerRepayId,jdbcType=VARCHAR}),'%')
+				    </if>
+				and `status` = 'REPAIED')rs,ln_repay lr
+		 where rs.id = lr.repay_plan_id and lr.`status` not in('REPAY_FAIL','CANCELLED')
+		 	<if test="repayType != null and repayType != '' and repayType =='OFFLINE_REPAY'">
+				AND lr.repay_type = 'OFFLINE_REPAY'
+			</if>
+			<if test="repayType != null and repayType != '' and repayType !='OFFLINE_REPAY'">
+				AND (lr.repay_type IS NULL or lr.repay_type != 'OFFLINE_REPAY')
+			</if>
+		)
+		UNION ALL
+		(select rs.id, rs.plan_date, rs.partner_repay_id, rs.`status`, rs.plan_total, rs.loan_id,rs.finish_time,
+		lr.done_total repay_total,
+		CASE WHEN  repay_type = 'OFFLINE_REPAY' THEN 'OFFLINE_REPAY' ELSE 'NORMA_REPAY' END AS repay_type from 
+			(SELECT id, plan_date, partner_repay_id, `status`, plan_total, loan_id,finish_time,pay_order_no
+				FROM ln_repay_schedule
+				WHERE substring(partner_repay_id, 1, 4) != 'RGCL' and SUBSTRING(partner_repay_id, 1,14) != 'partnerRepayId'
+					<if test="planDateStart != null and planDateStart != ''">
+						AND plan_date >= #{planDateStart}
+				    </if>
+				    <if test="planDateEnd != null and planDateEnd != ''">
+				        AND plan_date &lt;= #{planDateEnd}
+				    </if>
+				    <if test="partnerRepayId != null and partnerRepayId != '' ">
+				        AND partner_repay_id like concat(concat('%', #{partnerRepayId,jdbcType=VARCHAR}),'%')
+				    </if>
+				and `status` = 'REPAIED' and serial_id = 0)rs,ln_repay lr
+		 where
+		 rs.pay_order_no = lr.bgw_order_no and lr.repay_plan_id IS NULL and lr.`status` not in('REPAY_FAIL','CANCELLED')
+		 	<if test="repayType != null and repayType != '' and repayType =='OFFLINE_REPAY'">
+				AND lr.repay_type = 'OFFLINE_REPAY'
+			</if>
+			<if test="repayType != null and repayType != '' and repayType !='OFFLINE_REPAY'">
+				AND (lr.repay_type IS NULL or lr.repay_type != 'OFFLINE_REPAY')
+			</if>
+		)
+		<!-- 正常还款、线下还款end -->
+		</if>
+		<if test="repayType =='INIT'">
+			<!-- 未还款，还款类型为全部  且  账单状态为未还款时，未还的账单【需】查询 start -->
+		(
+			SELECT id, plan_date, partner_repay_id, `status`, plan_total, loan_id,finish_time,
+				NULL repay_total, 'INIT' repay_type
+				FROM ln_repay_schedule
+				WHERE substring(partner_repay_id, 1, 4) != 'RGCL' 
+					<if test="planDateStart != null and planDateStart != ''">
+						AND plan_date >= #{planDateStart}
+				    </if>
+				    <if test="planDateEnd != null and planDateEnd != ''">
+				        AND plan_date &lt;= #{planDateEnd}
+				    </if>
+				    <if test="partnerRepayId != null and partnerRepayId != '' ">
+				        AND partner_repay_id like concat(concat('%', #{partnerRepayId,jdbcType=VARCHAR}),'%')
+				    </if>
+				and `status` = 'INIT'
+		)
+		</if>
+		)c
+		where c.loan_id = a.id and a.ln_user_id=b.id
+		<if test="partnerCode == null or partnerCode == '' ">
+        	AND b.partner_code IN ('YUN_DAI_SELF', '7_DAI_SELF')
+		</if>
+		<if test="partnerCode != null and partnerCode != '' ">
+	        AND b.partner_code = #{partnerCode}
+		</if>
+		<if test="partnerLoanId != null and partnerLoanId != '' ">
+	        AND a.partner_loan_id like concat(concat('%', #{partnerLoanId,jdbcType=VARCHAR}),'%')
+		</if>
+   </select>
+  
+    <!-- ==================日常业务-借款账单管理 end================================ -->
+</mapper>

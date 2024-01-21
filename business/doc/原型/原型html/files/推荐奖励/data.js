@@ -1,0 +1,71 @@
+﻿$axure.loadCurrentPage({
+  "url":"推荐奖励.html",
+  "generationDate":new Date(1423549441140.91),
+  "isCanvasEnabled":false,
+  "variables":["OnLoadVariable"],
+  "page":{
+    "packageId":"319f25558df84ff18d5d1724f6ac63fe",
+    "type":"Axure:Page",
+    "name":"推荐奖励",
+    "notes":{
+},
+    "style":{
+      "baseStyle":"627587b6038d43cca051c114ac41ad32",
+      "pageAlignment":"near",
+      "fill":{
+        "fillType":"solid",
+        "color":0xFFFFFFFF},
+      "image":null,
+      "imageHorizontalAlignment":"near",
+      "imageVerticalAlignment":"near",
+      "imageRepeat":"auto",
+      "favicon":null,
+      "sketchFactor":"0",
+      "colorStyle":"appliedColor",
+      "fontName":"应用字体",
+      "borderWidth":"0"},
+    "adaptiveStyles":{
+},
+    "interactionMap":{
+},
+    "diagram":{
+      "objects":[{
+          "id":"29f8cae6e44045d09d9cc2f71892203f",
+          "label":"",
+          "type":"imageBox",
+          "styleType":"imageBox",
+          "visible":true,
+          "style":{
+            "location":{
+              "x":4,
+              "y":10},
+            "size":{
+              "width":276,
+              "height":477}},
+          "adaptiveStyles":{
+},
+          "objects":[{
+              "id":"88883eb7150d4cc981fe0bac450a5b99",
+              "label":"",
+              "isContained":true,
+              "type":"richTextPanel",
+              "styleType":"paragraph",
+              "visible":true,
+              "style":{
+                "location":{
+                  "x":4,
+                  "y":10},
+                "size":{
+                  "width":276,
+                  "height":477}},
+              "adaptiveStyles":{
+}}],
+          "images":{
+            "normal~":"images/投资收益/u0.png"}}]}},
+  "masters":{
+},
+  "objectPaths":{
+    "29f8cae6e44045d09d9cc2f71892203f":{
+      "scriptId":"u0"},
+    "88883eb7150d4cc981fe0bac450a5b99":{
+      "scriptId":"u1"}}});

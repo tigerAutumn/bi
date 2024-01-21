@@ -1,0 +1,93 @@
+<div class="pageContent">
+    #Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+    #Hidden("serverToken",$!serverToken)
+    <form id="financeForm" method="post" action="$env.getWebURL('/financial/topUp2HFBankIndex.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+        <div class="pageFormContent nowrap" layoutH="97" >
+            <dl>
+                <dt >
+                    金额：
+                </dt>
+                <dd >
+                    <input type="text" id="amount" name="amount" maxlength="12" value="" style="width:245px; height:16px" />
+                </dd>
+            </dl>
+            <dl>
+                <dt >
+                    卡号：
+                </dt>
+                <dd >
+                    <input type="text" id="bankCard" name="bankCard" maxlength="15" style="width:245px; height:16px" disabled="disabled" value="$!topUpCard" />
+                </dd>
+            </dl>
+            <dl>
+                <dt >
+                    备注：
+                </dt>
+                <dd >
+                    <input type="text" id="note" name="note" maxlength="100" value="" style="width:245px; height:16px" />
+                </dd>
+            </dl>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_financeForm()">提交</button></div></div></li>
+                <li>
+                    <div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+<script>
+    function submit_financeForm(){
+        var amount = $.trim($("#amount").val());
+        var note = $.trim($("#note").val());
+        var regAmount = /^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$/;
+        var serverToken = $.trim($("#serverToken").val());
+
+        if((amount == null || amount == "")){
+            alertMsg.warn("充值金额不能为空！");
+            return false;
+        }
+        if(!regAmount.test(amount)) {
+            alertMsg.warn("提现金额必须是正整数或者小数点后保留两位！");
+            return false;
+        }
+
+        jQuery.ajax({
+            url: $('#APP_ROOT_PATH').val() + '/financial/topUp2HFBankIndex.htm',
+            data:{
+                amount: amount,
+                note: note,
+                token: serverToken
+            },
+            type:'post',
+            success: function(data){
+                if (data.statusCode == "300") {
+                    $("#serverToken").val(data.serverToken);
+                    alertMsg.warn('提交失败!');
+                }if (data.statusCode == "301") {
+                    $("#serverToken").val(data.serverToken);
+                    alertMsg.warn('通讯异常!');
+                } else if (data.statusCode == "302") {
+                    $("#serverToken").val(data.serverToken);
+                    console.log($("#serverToken").val())
+                    alertMsg.warn(data.message);
+                } else if (data.statusCode == "200") {
+                    alertMsg.correct('提交成功!');
+                    $.pdialog.closeCurrent();
+                    $("#serverToken").val(data.serverToken);
+                    navTab.reload("$env.getWebURL('/financial/topUp2HFBankOrderIndex.htm')");
+                } else if (data.statusCode == "305") {
+                    $("#serverToken").val(data.serverToken);
+                    alertMsg.warn('请勿重复提交!');
+                } else {
+                    $("#serverToken").val(data.serverToken);
+                    alertMsg.error('提交失败!');
+                }
+            }
+        });
+
+    }
+
+</script>

@@ -1,0 +1,236 @@
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+    <form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);"  action="$env.getWebURL('/statistics/getLoanBill/index.htm')" method="post">
+        <input type="hidden" name="numPerPage" value="$!numPerPage" />
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="pageNum" value="$!pageNum" />
+        <input type="hidden" name="totalRows" value="$!totalRows" />
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+					<td>
+                        资产方：
+                        <select name="partnerCode">
+                            <option value="" #if("$!partnerCode"=="") selected #end>全部</option>
+                            <option value="YUN_DAI_SELF" #if("$!partnerCode"=="YUN_DAI_SELF") selected #end>云贷</option>
+                            <option value="7_DAI_SELF" #if("$!partnerCode"=="7_DAI_SELF") selected  #end>七贷</option>
+                        </select>
+                    </td>
+                    <td>
+                        还款类型：
+                        <select id="repayType" name="repayType">
+                            <option value="INIT" #if("$!repayType"=="INIT") selected #end>未还款</option>
+                            <option value="NORMA_REPAY" #if("$!repayType"=="NORMA_REPAY") selected  #end>正常还款</option>
+                            <option value="COMPENSATE_REPAY" #if("$!repayType"=="COMPENSATE_REPAY") selected  #end>代偿还款</option>
+                            <option value="OFFLINE_REPAY" #if("$!repayType"=="OFFLINE_REPAY") selected  #end>线下还款</option>
+                        </select>
+                    </td>
+                    <td>
+                        借款编号：<input id="partnerLoanId" type="text" name="partnerLoanId" maxlength="100" value="$!partnerLoanId" class="clear num"/>
+                    </td>
+                    <td>
+                        账单编号：<input id="partnerRepayId" type="text" name="partnerRepayId" maxlength="100" value="$!partnerRepayId" class="clear num"/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        账单日：<input name="planDateStart"  maxdate="{%y}-%M-{%d}"  type="text" id="planDateStart" class="date textInput readonly" readonly="true" size="11"  value="$!planDateStart" />
+                        到 <input name="planDateEnd" maxdate="{%y}-%M-{%d}"  type="text" id="planDateEnd" class="date textInput readonly" readonly="true" size="11"  value="$!planDateEnd"  />
+                    </td>
+
+                    <td>
+                        <button onclick="func()" type="button">查询</button>&nbsp&nbsp&nbsp
+                        <button onclick="exp()" type="button">导出excel</button>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+        </ul>
+    </div>
+    <table class="table" width="1396" layoutH="145">
+        <thead>
+            <tr>
+                <th width="8%">资产方</th>
+                <th width="8.5%">借款产品</th>
+                <th width="5%">账单日</th>
+				<th width="8%">借款编号</th>
+                <th width="8%">账单编号</th>
+                <th width="7.5%">账单状态</th>
+                <th width="7.5%">账单本金</th>
+                <th width="7.5%">账单利息</th>
+                <th width="7.5%">还款时间</th>
+                <th width="7.5%">还款类型</th>
+                <th width="7.5%">还款总额</th>
+                <th width="7.5%">还款本金</th>
+                <th width="7.5%">还款利息</th>
+            </tr>
+        </thead>
+        <tbody>
+            #foreach($grid in $loanBillList)
+                <tr>
+                    <td>
+                        #if("$!grid.partnerCode"=="YUN_DAI_SELF")
+                            云贷
+                        #elseif("$!grid.partnerCode"=="7_DAI_SELF")
+                            7贷
+						#end
+						
+                    </td>
+                    <td>
+                        #if("$!grid.partnerCode"=="YUN_DAI_SELF")
+                            #if("$!grid.partnerBusinessFlag"=="REPAY_ANY_TIME")
+                                现金循环贷
+                            #elseif("$!grid.partnerBusinessFlag"=="FIXED_INSTALLMENT")
+                                等额本息
+                            #elseif("$!grid.partnerBusinessFlag"=="FIXED_PRINCIPAL_INTEREST")
+                                等本等息
+                            #else
+                                $!grid.partnerBusinessFlag
+                            #end
+                        #elseif("$!grid.partnerCode"=="7_DAI_SELF")
+                            #if("$!grid.partnerBusinessFlag"=="REPAY_ANY_TIME")
+                                随借随还
+                            #else
+                                $!grid.partnerBusinessFlag
+                            #end
+                        #end
+                    </td>
+                    <td>$!date.formatYYYYMMDD($!grid.planDate)</td>
+                    <td>$!grid.partnerLoanId</td>
+                    <td>$!grid.partnerRepayId</td>
+                    <td>
+                        #if("$!grid.status"=="INIT")
+                            未还款
+                        #elseif("$!grid.status"=="REPAIED")
+                            已还款
+                        #elseif("$!grid.status"=="LATE_NOT")
+                            已还款
+                        #end
+                    </td>
+                    <td>$!money.format($!grid.schedulePrincipalPlanAmount)</td>
+                    <td>$!money.format($!grid.scheduleInterestPlanAmount)</td>
+                    <td>$!date.format($!grid.doneTime)</td>
+                    <td>
+                        #if("$!grid.repayType"=="NORMA_REPAY")
+                            正常还款
+                        #elseif("$!grid.repayType"=="COMPENSATE_REPAY")
+                            代偿还款
+                        #elseif("$!grid.repayType"=="OFFLINE_REPAY")
+                            线下还款
+                        #end
+                    </td>
+                    <td>$!money.format($!grid.repayTotal)</td>
+                    <td>$!money.format($!grid.repayPrincipalDoneAmount)</td>
+                    <td>$!money.format($!grid.repayInterestDoneAmount)</td>
+                </tr>
+            #end
+        </tbody>
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+                <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!totalRows条</span>
+        </div>
+        <div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+    </div>
+</div>
+
+<script>
+    function func(){
+        var beginTime = $("#planDateStart").val();
+        var planDateEnd = $("#planDateEnd").val();
+        if(!beginTime && planDateEnd) {
+            alertMsg.warn("开始时间不能为空！");
+            return;
+        }
+        if(!planDateEnd && beginTime) {
+            alertMsg.warn("结束时间不能为空！");
+            return;
+        }
+        if(beginTime && planDateEnd){
+            var result = Date.parse(planDateEnd.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+            if(result < 0){
+                alertMsg.warn("开始时间不能在结束时间之后！");
+                return;
+            }
+
+            var date1Str = beginTime.split("-");//将日期字符串分隔为数组,数组元素分别为年.月.日
+            //根据年.月.日的值创建Date对象
+            var date1Obj = new Date(date1Str[0],(date1Str[1]-1),date1Str[2]);
+            var date2Str = planDateEnd.split("-");
+            var date2Obj = new Date(date2Str[0],(date2Str[1]-1),date2Str[2]);
+            var t1 = date1Obj.getTime();
+            var t2 = date2Obj.getTime();
+            var dateTime = 1000*60*60*24; //每一天的毫秒数
+            var minusDays = Math.floor(((t2-t1)/dateTime));//计算出两个日期的天数差
+            if(minusDays > 6){
+                alertMsg.warn("开始时间，结束时间之间的最大时间间隔不能超过7天！");
+                return;
+            }
+
+        }
+		
+        var url = $("#APP_ROOT_PATH").val() + "/statistics/getLoanBill/index.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+
+
+    function exp(){
+        var beginTime = $("#planDateStart").val();
+        var planDateEnd = $("#planDateEnd").val();
+        if(!beginTime && planDateEnd) {
+            alertMsg.warn("开始时间不能为空！");
+            return;
+        }
+        if(!planDateEnd && beginTime) {
+            alertMsg.warn("结束时间不能为空！");
+            return;
+        }
+        if(beginTime && planDateEnd){
+            var result = Date.parse(planDateEnd.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+            if(result < 0){
+                alertMsg.warn("开始时间不能在结束时间之后！");
+                return;
+            }
+
+            var date1Str = beginTime.split("-");//将日期字符串分隔为数组,数组元素分别为年.月.日
+            //根据年.月.日的值创建Date对象
+            var date1Obj = new Date(date1Str[0],(date1Str[1]-1),date1Str[2]);
+            var date2Str = planDateEnd.split("-");
+            var date2Obj = new Date(date2Str[0],(date2Str[1]-1),date2Str[2]);
+            var t1 = date1Obj.getTime();
+            var t2 = date2Obj.getTime();
+            var dateTime = 1000*60*60*24; //每一天的毫秒数
+            var minusDays = Math.floor(((t2-t1)/dateTime));//计算出两个日期的天数差
+            if(minusDays > 6){
+                alertMsg.warn("开始时间，结束时间之间的最大时间间隔不能超过7天！");
+                return;
+            }
+
+        }
+        var url = $("#APP_ROOT_PATH").val() + "/statistics/loanBill/export_xls.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","");
+        $("#myform").submit();
+    }
+
+</script>

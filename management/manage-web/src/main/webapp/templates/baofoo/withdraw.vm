@@ -1,0 +1,140 @@
+<div class="pageContent">
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <form method="post" name="detail_form" action="$env.getWebURL('')"
+          class="pageForm required-validate" >
+        <div class="pageFormContent" layoutH="56">
+            <input type="hidden" id="trans_id" value=""/>
+            <p>
+                <label>金额：</label>
+                <input id="amount" name="amount" type="text" size="10" maxlength="15" class="required number"/>
+            </p>
+            <p>
+                <label>用户名称：</label>
+                <input id="name" name="userName" type="text" size="10" maxlength="15" class="required textInput"/>
+            </p>
+
+            <p>
+                <label>银行卡号：</label>
+                <input id="accNo" type="text" name="accNo" size="18" class="required digits"  maxlength="20"/>
+            </p>
+            <p>
+                <label>预留手机号：</label>
+                <input id="phone" type="text" name="phone" class="required phone" size="11"/>
+            </p>
+            <p id="vaildDiv" hidden="hidden">
+                <label id="vaild" style="width: auto"></label>
+            </p>
+            <p id="code" hidden="hidden">
+                <label id="lab" hidden="hidden">验证码：</label>
+                <input id="smsCode" type="text" class="required" size="11" value="" hidden="hidden"/>
+                <button id="confirm" type="button" hidden>确定</button>
+            </p>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="buttonActive">
+                        <div class="buttonContent">
+                            <button id="sub" type="button">提现</button>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="button">
+                        <div class="buttonContent">
+                            <button type="button" class="close">取消</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </form>
+    #LoadJS("/resources/js/global_validate")
+    <script>
+        function navTabAjaxDone(json) {
+        }
+
+        $("#sub").click(function () {
+
+            var amount=$("#amount").val();
+            var name=$("#name").val();
+            var accNo=$("#accNo").val();
+            var phone=$("#phone").val();
+
+            if(!amount){
+                alertMsg.error("金额不能为空");
+                return;
+            }
+
+            if(isNaN(amount)){
+                alertMsg.error("金额无效");
+                return;
+            }
+
+            if(!name){
+                alertMsg.error("用户名称不能为空");
+                return;
+            }
+
+            if(!accNo){
+                alertMsg.error("银行卡号不能为空");
+                return;
+            }
+
+            if(!phone){
+                alertMsg.error("手机号不能为空");
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: $("#APP_ROOT_PATH").val() + "/baofoo/pre/withdraw.htm",
+                data: {
+                    "mobile":$("#phone").val(),"amount": $("#amount").val(),"accNo": $("#accNo").val()
+                },
+                success: function (data) {
+                    if (data!=null) {
+                        $("#trans_id").val(data);
+                        $("#vaild").html("已向您的手机号" + $("#phone").val() + "发送了短信验证码，请注意查收");
+                        $("#vaildDiv").show();
+                        $("#smsCode").show();
+                        $("#confirm").show();
+                        $("#code").show();
+                        $("#lab").show();
+                    }else {
+                        alertMsg.error("提现失败");
+                    }
+                },
+                dataType: "json"
+            });
+        });
+
+        $("#confirm").click(function () {
+            $.ajax({
+                type: 'POST',
+                url: $("#APP_ROOT_PATH").val() + "/baofoo/balance_withdraw.htm",
+                data: {
+                    "smsCode": $("#smsCode").val(), "transId":$("#trans_id").val(),
+                    "mobile": $("#phone").val()
+                },
+                success: function (data) {
+                    if (data == "0000") {
+                        alertMsg.info("订单处理中");
+
+                    }else if(data=="200"){
+                        alertMsg.success("提现成功")
+                    }
+                    else if(data!=null){
+                        alertMsg.error(data);
+                    }else {
+                        alertMsg.error("支付平台错误");
+                    }
+                    $.pdialog.closeCurrent();
+                    navTab.reload("$env.getWebURL('baofoo/order/index.htm')");
+                },
+                dataType: "json"
+            });
+        });
+    </script>
+</div>

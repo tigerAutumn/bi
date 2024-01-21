@@ -1,0 +1,153 @@
+#Html("begin")
+#GenHead("begin","币港湾活动，大礼包，币港湾，币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("新手壕礼升级-币港湾官网")
+#LoadGenCSS("/resources/gen2.0/styles/activity/lantern2017/style")
+#LoadGenJS("/resources/gen2.0/scripts/activity/lantern2017/lantern2017")
+#GenHead("end")
+<body id="body">
+    #Gen2Header("home")
+<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')"/>
+<input type="hidden" id="page" name="page" value="1" />
+<input type="hidden" id="totalPages" name="totalPages" value="$!res.totalPages" />
+<li class="template" style="display: none">
+    <span class="lantern-tan-span1">
+        <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/lantern2017/content3.png"/><br/>
+        <span class="lantern_num"></span>号
+    </span>
+    <span class="lantern-tan-span2">
+    </span>
+    <span class="lantern-tan-span3">
+    </span>
+</li>
+
+<div class="banner"></div>
+<div class="main-content">
+    <div class="lantern-Festival-one">
+        <div class="title">
+            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/lantern2017/title1.png" />
+        </div>
+        <div class="content">
+            <div class="content-num">累计已有
+                #if($!shakeIsStart == "not_start")
+                    <span class="content-numspan">  0  </span>
+                #else
+                    <span class="content-numspan">  $!{shakeNum}  </span>
+                #end
+                人摇过</div>
+            <div class="content-num">抢走
+                #if($!shakeIsStart == "not_start")
+                    <i class="content-numi">0</i>
+                #else
+                    #foreach($a in ${amount})
+                        <i class="content-numi">$!{a}</i>
+                    #end
+                #end
+                元
+            </div>
+            <div class="content-em"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/lantern2017/em.png" /></div>
+            <div class="content-txt">扫我！马上摇~</div>
+        </div>
+    </div>
+    <div class="lantern-Festival-two">
+        <div class="title">
+            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/lantern2017/title2.png" />
+        </div>
+        <div class="content">
+            <div class="content-num2">活动期间投资币港湾平台所有理财产品（赞分期系列、港湾系列），我们将根据您的投资时间先后进行灯笼排序，灯笼尾号逢<span class="content-num2span"> 8 </span>且投资金额≥<span class="content-num2span"> 5000 </span>元，即可获得<span class="content-num2span"> 5 </span>元奖励金。全民“挂灯笼”，幸运大比拼。</div>
+            <div class="content-bg">
+                <div class="content-top">
+                    <div class="content-topimg"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/lantern2017/content.png" /></div>
+                    <div class="content-topmoney">
+                        <div class="content-num1">当前“挂灯笼”总数
+                            #if($!shakeIsStart == "not_start")
+                                <i class="content-num1i">0</i>
+                            #else
+                                #foreach($num in ${investNum})
+                                    <i class="content-num1i">$!{num}</i>
+                                #end
+                            #end
+                        </div>
+                        <div class="content-num1">下一个中奖“灯笼”
+                            #if($!shakeIsStart == "not_start")
+                                <i class="content-num1i">0</i>
+                            #else
+                                #foreach($num in ${nextLuckInvestNum})
+                                    <i class="content-num1i">$!{num}</i>
+                                #end
+                            #end
+                        </div>
+                    </div>
+                </div>
+                <div class="content-btn">
+                    <a href="javascript:void(0);" onclick="go_buy()"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/lantern2017/content2.png" /></a>
+                    <p>
+                        <a href="javascript:void(0);" class="rule">获奖用户 / 活动规则</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="txt">本次活动的最终解释权归币港湾所有</div>
+<div class="bottom"></div>
+<!--弹窗遮罩-->
+<div class="tan-bg"></div>
+<!--提示弹窗-->
+<div id="alert_listthree_one" class="alert_listthree">
+    <h3 class="alert_listthree_h3">
+        <span class="">温馨提示</span>
+        <a class="alert_listthree_btn" href="javascript:;" title="" onclick="">
+            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/lantern2017/close_right.png">
+        </a>
+    </h3>
+    <!--活动未开始-->
+    <div class="alert_listthree_txt">您来晚了，活动已经结束了哟，谢谢您的关注~</div>
+    <div class="alert_listthree_btnd">
+        <a class="alert_listthree_btnl" href="javascript:;">知道了</a>
+    </div>
+</div>
+<!--获奖/规则弹窗-->
+<div class="lantern-tan">
+    <div class="close-btn"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/lantern2017/content5.png" class="close-btn-img" /></div>
+    <ul class="lantern-tan-nav">
+        <li class="nav-left">获奖用户</li>
+        <li class="nav-right nav-click">活动规则</li>
+    </ul>
+    <div class="lantern-tan-con">
+        <div class="lantern-tan-div2">
+            #if($!res.list.size() == 0)
+                <!--无获奖名单-->
+                <div class="no-lantern-tan-ul">
+                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/lantern2017/content4.png" />
+                </div>
+            #else
+                <!--有获奖名单-->
+                <ul class="lantern-tan-ul">
+                    #foreach($user in ${res.list})
+                        <li>
+                        <span class="lantern-tan-span1">
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/lantern2017/content3.png"/><br/>
+                            <span class="lantern_num">$!{user.lanternNum}</span>号
+                        </span>
+                        <span class="lantern-tan-span2">
+                            $!date.formatYYYYMMDD($!date.parseDateTime(${user.createTime}))<br/>$!date.formatDateTime($!date.parseDateTime(${user.createTime}), "HH:mm:ss")
+                        </span>
+                        <span class="lantern-tan-span3">
+                            $!{user.userName}<br/>$!{user.mobile}
+                        </span>
+                        </li>
+                    #end
+                    <span id="showmore" style="display: none;"></span>
+                </ul>
+            #end
+        </div>
+        <div class="lantern-tan-div">
+            <p>1.活动时间：2月9日-2月13日；</p>
+            <p>2.活动参与对象：币港湾理财所有用户；</p>
+            <p>3.若灯笼尾号逢8的用户投资金额小于5000元，则不具备奖励金领取资格；</p>
+            <p>4.获奖的用户，您可在【我的资产】-【我的奖励】中查看。</p>
+        </div>
+    </div>
+</div>
+</body>
+#Html("end")

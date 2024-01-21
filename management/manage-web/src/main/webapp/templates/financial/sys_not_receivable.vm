@@ -1,0 +1,93 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+</form>
+<div class="page unitBox">
+    <div class="pageHeader">
+        <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/financialAccount/sysNotReceivable.htm')" id="myform"  method="post">
+            <div class="searchBar">
+                <table class="searchContent">
+                    <tr>
+                        <td>
+                            <label>日期</label>
+                            <input name="dateTime" maxdate="{%y}-%M-{%d}" type="text" id="dateTime" class="date textInput readonly" readonly="true" value="$!dateTime"/>
+                        </td>
+                        <td>
+                            <div class="buttonActive">
+                                <div class="buttonContent">
+                                    <button onclick="searchFunction()" type="button">查询</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="pageContent">
+        <table class="table" width="100%" layoutH="100">
+            <thead>
+            <tr>
+                <th width="3%">资产合作方</th>
+                <th width="3%">购买批次号</th>
+                <th width="2%">购买金额</th>
+                <th width="3%">购买期限</th>
+                <th width="5%">预期最后一期回款时间</th>
+                <th width="5%">购买状态</th>
+
+                <th width="5%">回款类型</th>
+                <th width="5%">回款金额</th>
+                <th width="5%">回款期次序号</th>
+                <th width="5%">回款完成时间</th>
+            </tr>
+            </thead>
+            <tbody>
+                #foreach($grid in $list)
+                <tr target="sid_user" rel="1">
+                    <td>
+                        #if("$!grid.propertySymbol"=="YUN_DAI")云贷循环贷
+                        #elseif("$!grid.propertySymbol"=="7_DAI")7贷循环贷
+                        #end
+                    </td>
+                    <td>$!grid.sendBatchId</td>
+                    <td>$!grid.buyAmount</td>
+
+                    <td>$!grid.term</td>
+                    <td>$!date.formatYYYYMMDD($!grid.expectTime)</td>
+                    <td>
+                        #if("$!grid.status"=="BUY_DAFY_SUCCESS")购买成功
+                        #elseif("$!grid.status"=="DAFY_RETURN_SUCCESS")已回款
+                        #end
+                    </td>
+                    <td>
+                        #if("$!grid.type"=="")
+                            #if($!dateTime == $!date.formatYYYYMMDD($!grid.expectTime)) 最后一次回款
+                            #else 利息回款
+                            #end
+                        #else
+                            #if("$!grid.type"=="INTEREST_RETURN")利息回款
+                            #elseif("$!grid.type"=="LAST_RETURN")最后一次回款
+                            #else
+                            #end
+                        #end
+                    </td>
+                    <td>$!grid.receiveAmount</td>
+                    <td>$!grid.productReturnTerm</td>
+                    <td>$!date.format($!grid.payFinshTime)</td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+        <div class="panelBar">
+            <div class="pages">
+                <span>显示</span>
+                <span>条，共$!count条</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    function searchFunction(){
+        $("#myform").submit();
+    }
+</script>

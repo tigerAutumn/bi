@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsUserPoliceVerifyMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsUserPoliceVerify" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="business_type" property="businessType" jdbcType="VARCHAR" />
+    <result column="business_id" property="businessId" jdbcType="INTEGER" />
+    <result column="verify_result" property="verifyResult" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="serial_no" property="serialNo" jdbcType="VARCHAR" />
+    <result column="id_card_front_pic" property="idCardFrontPic" jdbcType="VARCHAR" />
+    <result column="id_card_back_pic" property="idCardBackPic" jdbcType="VARCHAR" />
+    <result column="liveness_pic_blink" property="livenessPicBlink" jdbcType="VARCHAR" />
+    <result column="liveness_pic_say" property="livenessPicSay" jdbcType="VARCHAR" />
+    <result column="liveness_pic_right_head" property="livenessPicRightHead" jdbcType="VARCHAR" />
+    <result column="liveness_pic_left_head" property="livenessPicLeftHead" jdbcType="VARCHAR" />
+    <result column="liveness_pic_raise_head" property="livenessPicRaiseHead" jdbcType="VARCHAR" />
+    <result column="liveness_pic_drop_head" property="livenessPicDropHead" jdbcType="VARCHAR" />
+    <result column="liveness_pic_shake_head" property="livenessPicShakeHead" jdbcType="VARCHAR" />
+    <result column="check_status" property="checkStatus" jdbcType="VARCHAR" />
+    <result column="checker" property="checker" jdbcType="INTEGER" />
+    <result column="check_time" property="checkTime" jdbcType="TIMESTAMP" />
+    <result column="check_desc" property="checkDesc" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, business_type, business_id, verify_result, score, serial_no, id_card_front_pic, 
+    id_card_back_pic, liveness_pic_blink, liveness_pic_say, liveness_pic_right_head, 
+    liveness_pic_left_head, liveness_pic_raise_head, liveness_pic_drop_head, liveness_pic_shake_head, 
+    check_status, checker, check_time, check_desc, note, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsUserPoliceVerifyExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_user_police_verify
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_user_police_verify
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_user_police_verify
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsUserPoliceVerifyExample" >
+    delete from bs_user_police_verify
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsUserPoliceVerify" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bs_user_police_verify (user_id, business_type, business_id, 
+      verify_result, score, serial_no, 
+      id_card_front_pic, id_card_back_pic, liveness_pic_blink, 
+      liveness_pic_say, liveness_pic_right_head, liveness_pic_left_head, 
+      liveness_pic_raise_head, liveness_pic_drop_head, 
+      liveness_pic_shake_head, check_status, checker, 
+      check_time, check_desc, note, 
+      create_time, update_time)
+    values (#{userId,jdbcType=INTEGER}, #{businessType,jdbcType=VARCHAR}, #{businessId,jdbcType=INTEGER}, 
+      #{verifyResult,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER}, #{serialNo,jdbcType=VARCHAR}, 
+      #{idCardFrontPic,jdbcType=VARCHAR}, #{idCardBackPic,jdbcType=VARCHAR}, #{livenessPicBlink,jdbcType=VARCHAR}, 
+      #{livenessPicSay,jdbcType=VARCHAR}, #{livenessPicRightHead,jdbcType=VARCHAR}, #{livenessPicLeftHead,jdbcType=VARCHAR}, 
+      #{livenessPicRaiseHead,jdbcType=VARCHAR}, #{livenessPicDropHead,jdbcType=VARCHAR}, 
+      #{livenessPicShakeHead,jdbcType=VARCHAR}, #{checkStatus,jdbcType=VARCHAR}, #{checker,jdbcType=INTEGER}, 
+      #{checkTime,jdbcType=TIMESTAMP}, #{checkDesc,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsUserPoliceVerify" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bs_user_police_verify
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="businessType != null" >
+        business_type,
+      </if>
+      <if test="businessId != null" >
+        business_id,
+      </if>
+      <if test="verifyResult != null" >
+        verify_result,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="serialNo != null" >
+        serial_no,
+      </if>
+      <if test="idCardFrontPic != null" >
+        id_card_front_pic,
+      </if>
+      <if test="idCardBackPic != null" >
+        id_card_back_pic,
+      </if>
+      <if test="livenessPicBlink != null" >
+        liveness_pic_blink,
+      </if>
+      <if test="livenessPicSay != null" >
+        liveness_pic_say,
+      </if>
+      <if test="livenessPicRightHead != null" >
+        liveness_pic_right_head,
+      </if>
+      <if test="livenessPicLeftHead != null" >
+        liveness_pic_left_head,
+      </if>
+      <if test="livenessPicRaiseHead != null" >
+        liveness_pic_raise_head,
+      </if>
+      <if test="livenessPicDropHead != null" >
+        liveness_pic_drop_head,
+      </if>
+      <if test="livenessPicShakeHead != null" >
+        liveness_pic_shake_head,
+      </if>
+      <if test="checkStatus != null" >
+        check_status,
+      </if>
+      <if test="checker != null" >
+        checker,
+      </if>
+      <if test="checkTime != null" >
+        check_time,
+      </if>
+      <if test="checkDesc != null" >
+        check_desc,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="businessType != null" >
+        #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="businessId != null" >
+        #{businessId,jdbcType=INTEGER},
+      </if>
+      <if test="verifyResult != null" >
+        #{verifyResult,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="serialNo != null" >
+        #{serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardFrontPic != null" >
+        #{idCardFrontPic,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardBackPic != null" >
+        #{idCardBackPic,jdbcType=VARCHAR},
+      </if>
+      <if test="livenessPicBlink != null" >
+        #{livenessPicBlink,jdbcType=VARCHAR},
+      </if>
+      <if test="livenessPicSay != null" >
+        #{livenessPicSay,jdbcType=VARCHAR},
+      </if>
+      <if test="livenessPicRightHead != null" >
+        #{livenessPicRightHead,jdbcType=VARCHAR},
+      </if>
+      <if test="livenessPicLeftHead != null" >
+        #{livenessPicLeftHead,jdbcType=VARCHAR},
+      </if>
+      <if test="livenessPicRaiseHead != null" >
+        #{livenessPicRaiseHead,jdbcType=VARCHAR},
+      </if>
+      <if test="livenessPicDropHead != null" >
+        #{livenessPicDropHead,jdbcType=VARCHAR},
+      </if>
+      <if test="livenessPicShakeHead != null" >
+        #{livenessPicShakeHead,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStatus != null" >
+        #{checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="checker != null" >
+        #{checker,jdbcType=INTEGER},
+      </if>
+      <if test="checkTime != null" >
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkDesc != null" >
+        #{checkDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsUserPoliceVerifyExample" resultType="java.lang.Integer" >
+    select count(*) from bs_user_police_verify
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_user_police_verify
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.businessType != null" >
+        business_type = #{record.businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessId != null" >
+        business_id = #{record.businessId,jdbcType=INTEGER},
+      </if>
+      <if test="record.verifyResult != null" >
+        verify_result = #{record.verifyResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.score != null" >
+        score = #{record.score,jdbcType=INTEGER},
+      </if>
+      <if test="record.serialNo != null" >
+        serial_no = #{record.serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCardFrontPic != null" >
+        id_card_front_pic = #{record.idCardFrontPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCardBackPic != null" >
+        id_card_back_pic = #{record.idCardBackPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.livenessPicBlink != null" >
+        liveness_pic_blink = #{record.livenessPicBlink,jdbcType=VARCHAR},
+      </if>
+      <if test="record.livenessPicSay != null" >
+        liveness_pic_say = #{record.livenessPicSay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.livenessPicRightHead != null" >
+        liveness_pic_right_head = #{record.livenessPicRightHead,jdbcType=VARCHAR},
+      </if>
+      <if test="record.livenessPicLeftHead != null" >
+        liveness_pic_left_head = #{record.livenessPicLeftHead,jdbcType=VARCHAR},
+      </if>
+      <if test="record.livenessPicRaiseHead != null" >
+        liveness_pic_raise_head = #{record.livenessPicRaiseHead,jdbcType=VARCHAR},
+      </if>
+      <if test="record.livenessPicDropHead != null" >
+        liveness_pic_drop_head = #{record.livenessPicDropHead,jdbcType=VARCHAR},
+      </if>
+      <if test="record.livenessPicShakeHead != null" >
+        liveness_pic_shake_head = #{record.livenessPicShakeHead,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkStatus != null" >
+        check_status = #{record.checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checker != null" >
+        checker = #{record.checker,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkTime != null" >
+        check_time = #{record.checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.checkDesc != null" >
+        check_desc = #{record.checkDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_user_police_verify
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      business_type = #{record.businessType,jdbcType=VARCHAR},
+      business_id = #{record.businessId,jdbcType=INTEGER},
+      verify_result = #{record.verifyResult,jdbcType=VARCHAR},
+      score = #{record.score,jdbcType=INTEGER},
+      serial_no = #{record.serialNo,jdbcType=VARCHAR},
+      id_card_front_pic = #{record.idCardFrontPic,jdbcType=VARCHAR},
+      id_card_back_pic = #{record.idCardBackPic,jdbcType=VARCHAR},
+      liveness_pic_blink = #{record.livenessPicBlink,jdbcType=VARCHAR},
+      liveness_pic_say = #{record.livenessPicSay,jdbcType=VARCHAR},
+      liveness_pic_right_head = #{record.livenessPicRightHead,jdbcType=VARCHAR},
+      liveness_pic_left_head = #{record.livenessPicLeftHead,jdbcType=VARCHAR},
+      liveness_pic_raise_head = #{record.livenessPicRaiseHead,jdbcType=VARCHAR},
+      liveness_pic_drop_head = #{record.livenessPicDropHead,jdbcType=VARCHAR},
+      liveness_pic_shake_head = #{record.livenessPicShakeHead,jdbcType=VARCHAR},
+      check_status = #{record.checkStatus,jdbcType=VARCHAR},
+      checker = #{record.checker,jdbcType=INTEGER},
+      check_time = #{record.checkTime,jdbcType=TIMESTAMP},
+      check_desc = #{record.checkDesc,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsUserPoliceVerify" >
+    update bs_user_police_verify
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="businessType != null" >
+        business_type = #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="businessId != null" >
+        business_id = #{businessId,jdbcType=INTEGER},
+      </if>
+      <if test="verifyResult != null" >
+        verify_result = #{verifyResult,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="serialNo != null" >
+        serial_no = #{serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardFrontPic != null" >
+        id_card_front_pic = #{idCardFrontPic,jdbcType=VARCHAR},
+      </if>
+      <if test="idCardBackPic != null" >
+        id_card_back_pic = #{idCardBackPic,jdbcType=VARCHAR},
+      </if>
+      <if test="livenessPicBlink != null" >
+        liveness_pic_blink = #{livenessPicBlink,jdbcType=VARCHAR},
+      </if>
+      <if test="livenessPicSay != null" >
+        liveness_pic_say = #{livenessPicSay,jdbcType=VARCHAR},
+      </if>
+      <if test="livenessPicRightHead != null" >
+        liveness_pic_right_head = #{livenessPicRightHead,jdbcType=VARCHAR},
+      </if>
+      <if test="livenessPicLeftHead != null" >
+        liveness_pic_left_head = #{livenessPicLeftHead,jdbcType=VARCHAR},
+      </if>
+      <if test="livenessPicRaiseHead != null" >
+        liveness_pic_raise_head = #{livenessPicRaiseHead,jdbcType=VARCHAR},
+      </if>
+      <if test="livenessPicDropHead != null" >
+        liveness_pic_drop_head = #{livenessPicDropHead,jdbcType=VARCHAR},
+      </if>
+      <if test="livenessPicShakeHead != null" >
+        liveness_pic_shake_head = #{livenessPicShakeHead,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStatus != null" >
+        check_status = #{checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="checker != null" >
+        checker = #{checker,jdbcType=INTEGER},
+      </if>
+      <if test="checkTime != null" >
+        check_time = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkDesc != null" >
+        check_desc = #{checkDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsUserPoliceVerify" >
+    update bs_user_police_verify
+    set user_id = #{userId,jdbcType=INTEGER},
+      business_type = #{businessType,jdbcType=VARCHAR},
+      business_id = #{businessId,jdbcType=INTEGER},
+      verify_result = #{verifyResult,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER},
+      serial_no = #{serialNo,jdbcType=VARCHAR},
+      id_card_front_pic = #{idCardFrontPic,jdbcType=VARCHAR},
+      id_card_back_pic = #{idCardBackPic,jdbcType=VARCHAR},
+      liveness_pic_blink = #{livenessPicBlink,jdbcType=VARCHAR},
+      liveness_pic_say = #{livenessPicSay,jdbcType=VARCHAR},
+      liveness_pic_right_head = #{livenessPicRightHead,jdbcType=VARCHAR},
+      liveness_pic_left_head = #{livenessPicLeftHead,jdbcType=VARCHAR},
+      liveness_pic_raise_head = #{livenessPicRaiseHead,jdbcType=VARCHAR},
+      liveness_pic_drop_head = #{livenessPicDropHead,jdbcType=VARCHAR},
+      liveness_pic_shake_head = #{livenessPicShakeHead,jdbcType=VARCHAR},
+      check_status = #{checkStatus,jdbcType=VARCHAR},
+      checker = #{checker,jdbcType=INTEGER},
+      check_time = #{checkTime,jdbcType=TIMESTAMP},
+      check_desc = #{checkDesc,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

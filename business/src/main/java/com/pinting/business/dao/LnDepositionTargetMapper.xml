@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinting.business.dao.LnDepositionTargetMapper">
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.LnDepositionTarget">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="prod_name" jdbcType="VARCHAR" property="prodName" />
+    <result column="prod_type" jdbcType="VARCHAR" property="prodType" />
+    <result column="total_limit" jdbcType="DOUBLE" property="totalLimit" />
+    <result column="interest_type" jdbcType="VARCHAR" property="interestType" />
+    <result column="setup_type" jdbcType="VARCHAR" property="setupType" />
+    <result column="sell_date" jdbcType="DATE" property="sellDate" />
+    <result column="begin_date" jdbcType="DATE" property="beginDate" />
+    <result column="expire_date" jdbcType="DATE" property="expireDate" />
+    <result column="cycle" jdbcType="INTEGER" property="cycle" />
+    <result column="cycle_unit" jdbcType="VARCHAR" property="cycleUnit" />
+    <result column="ist_year" jdbcType="DOUBLE" property="istYear" />
+    <result column="repay_type" jdbcType="VARCHAR" property="repayType" />
+    <result column="loan_id" jdbcType="INTEGER" property="loanId" />
+    <result column="charge_off_auto" jdbcType="VARCHAR" property="chargeOffAuto" />
+    <result column="over_limit" jdbcType="VARCHAR" property="overLimit" />
+    <result column="over_total_limit" jdbcType="DOUBLE" property="overTotalLimit" />
+    <result column="risk_lvl" jdbcType="VARCHAR" property="riskLvl" />
+    <result column="buyer_num_limit" jdbcType="INTEGER" property="buyerNumLimit" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, prod_name, prod_type, total_limit, interest_type, setup_type, sell_date, begin_date, 
+    expire_date, cycle, cycle_unit, ist_year, repay_type, loan_id, charge_off_auto, over_limit, 
+    over_total_limit, risk_lvl, buyer_num_limit, status, remark, create_time, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.pinting.business.model.LnDepositionTargetExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ln_deposition_target
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ln_deposition_target
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ln_deposition_target
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.LnDepositionTargetExample">
+    delete from ln_deposition_target
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.LnDepositionTarget">
+    insert into ln_deposition_target (id, prod_name, prod_type, 
+      total_limit, interest_type, setup_type, 
+      sell_date, begin_date, expire_date, 
+      cycle, cycle_unit, ist_year, 
+      repay_type, loan_id, charge_off_auto, 
+      over_limit, over_total_limit, risk_lvl, 
+      buyer_num_limit, status, remark, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{prodName,jdbcType=VARCHAR}, #{prodType,jdbcType=VARCHAR}, 
+      #{totalLimit,jdbcType=DOUBLE}, #{interestType,jdbcType=VARCHAR}, #{setupType,jdbcType=VARCHAR}, 
+      #{sellDate,jdbcType=DATE}, #{beginDate,jdbcType=DATE}, #{expireDate,jdbcType=DATE}, 
+      #{cycle,jdbcType=INTEGER}, #{cycleUnit,jdbcType=VARCHAR}, #{istYear,jdbcType=DOUBLE}, 
+      #{repayType,jdbcType=VARCHAR}, #{loanId,jdbcType=INTEGER}, #{chargeOffAuto,jdbcType=VARCHAR}, 
+      #{overLimit,jdbcType=VARCHAR}, #{overTotalLimit,jdbcType=DOUBLE}, #{riskLvl,jdbcType=VARCHAR}, 
+      #{buyerNumLimit,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.LnDepositionTarget">
+    insert into ln_deposition_target
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="prodName != null">
+        prod_name,
+      </if>
+      <if test="prodType != null">
+        prod_type,
+      </if>
+      <if test="totalLimit != null">
+        total_limit,
+      </if>
+      <if test="interestType != null">
+        interest_type,
+      </if>
+      <if test="setupType != null">
+        setup_type,
+      </if>
+      <if test="sellDate != null">
+        sell_date,
+      </if>
+      <if test="beginDate != null">
+        begin_date,
+      </if>
+      <if test="expireDate != null">
+        expire_date,
+      </if>
+      <if test="cycle != null">
+        cycle,
+      </if>
+      <if test="cycleUnit != null">
+        cycle_unit,
+      </if>
+      <if test="istYear != null">
+        ist_year,
+      </if>
+      <if test="repayType != null">
+        repay_type,
+      </if>
+      <if test="loanId != null">
+        loan_id,
+      </if>
+      <if test="chargeOffAuto != null">
+        charge_off_auto,
+      </if>
+      <if test="overLimit != null">
+        over_limit,
+      </if>
+      <if test="overTotalLimit != null">
+        over_total_limit,
+      </if>
+      <if test="riskLvl != null">
+        risk_lvl,
+      </if>
+      <if test="buyerNumLimit != null">
+        buyer_num_limit,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="prodName != null">
+        #{prodName,jdbcType=VARCHAR},
+      </if>
+      <if test="prodType != null">
+        #{prodType,jdbcType=VARCHAR},
+      </if>
+      <if test="totalLimit != null">
+        #{totalLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="interestType != null">
+        #{interestType,jdbcType=VARCHAR},
+      </if>
+      <if test="setupType != null">
+        #{setupType,jdbcType=VARCHAR},
+      </if>
+      <if test="sellDate != null">
+        #{sellDate,jdbcType=DATE},
+      </if>
+      <if test="beginDate != null">
+        #{beginDate,jdbcType=DATE},
+      </if>
+      <if test="expireDate != null">
+        #{expireDate,jdbcType=DATE},
+      </if>
+      <if test="cycle != null">
+        #{cycle,jdbcType=INTEGER},
+      </if>
+      <if test="cycleUnit != null">
+        #{cycleUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="istYear != null">
+        #{istYear,jdbcType=DOUBLE},
+      </if>
+      <if test="repayType != null">
+        #{repayType,jdbcType=VARCHAR},
+      </if>
+      <if test="loanId != null">
+        #{loanId,jdbcType=INTEGER},
+      </if>
+      <if test="chargeOffAuto != null">
+        #{chargeOffAuto,jdbcType=VARCHAR},
+      </if>
+      <if test="overLimit != null">
+        #{overLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="overTotalLimit != null">
+        #{overTotalLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="riskLvl != null">
+        #{riskLvl,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerNumLimit != null">
+        #{buyerNumLimit,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.LnDepositionTargetExample" resultType="java.lang.Long">
+    select count(*) from ln_deposition_target
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ln_deposition_target
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.prodName != null">
+        prod_name = #{record.prodName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prodType != null">
+        prod_type = #{record.prodType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalLimit != null">
+        total_limit = #{record.totalLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="record.interestType != null">
+        interest_type = #{record.interestType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.setupType != null">
+        setup_type = #{record.setupType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sellDate != null">
+        sell_date = #{record.sellDate,jdbcType=DATE},
+      </if>
+      <if test="record.beginDate != null">
+        begin_date = #{record.beginDate,jdbcType=DATE},
+      </if>
+      <if test="record.expireDate != null">
+        expire_date = #{record.expireDate,jdbcType=DATE},
+      </if>
+      <if test="record.cycle != null">
+        cycle = #{record.cycle,jdbcType=INTEGER},
+      </if>
+      <if test="record.cycleUnit != null">
+        cycle_unit = #{record.cycleUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.istYear != null">
+        ist_year = #{record.istYear,jdbcType=DOUBLE},
+      </if>
+      <if test="record.repayType != null">
+        repay_type = #{record.repayType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loanId != null">
+        loan_id = #{record.loanId,jdbcType=INTEGER},
+      </if>
+      <if test="record.chargeOffAuto != null">
+        charge_off_auto = #{record.chargeOffAuto,jdbcType=VARCHAR},
+      </if>
+      <if test="record.overLimit != null">
+        over_limit = #{record.overLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.overTotalLimit != null">
+        over_total_limit = #{record.overTotalLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="record.riskLvl != null">
+        risk_lvl = #{record.riskLvl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buyerNumLimit != null">
+        buyer_num_limit = #{record.buyerNumLimit,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ln_deposition_target
+    set id = #{record.id,jdbcType=INTEGER},
+      prod_name = #{record.prodName,jdbcType=VARCHAR},
+      prod_type = #{record.prodType,jdbcType=VARCHAR},
+      total_limit = #{record.totalLimit,jdbcType=DOUBLE},
+      interest_type = #{record.interestType,jdbcType=VARCHAR},
+      setup_type = #{record.setupType,jdbcType=VARCHAR},
+      sell_date = #{record.sellDate,jdbcType=DATE},
+      begin_date = #{record.beginDate,jdbcType=DATE},
+      expire_date = #{record.expireDate,jdbcType=DATE},
+      cycle = #{record.cycle,jdbcType=INTEGER},
+      cycle_unit = #{record.cycleUnit,jdbcType=VARCHAR},
+      ist_year = #{record.istYear,jdbcType=DOUBLE},
+      repay_type = #{record.repayType,jdbcType=VARCHAR},
+      loan_id = #{record.loanId,jdbcType=INTEGER},
+      charge_off_auto = #{record.chargeOffAuto,jdbcType=VARCHAR},
+      over_limit = #{record.overLimit,jdbcType=VARCHAR},
+      over_total_limit = #{record.overTotalLimit,jdbcType=DOUBLE},
+      risk_lvl = #{record.riskLvl,jdbcType=VARCHAR},
+      buyer_num_limit = #{record.buyerNumLimit,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.LnDepositionTarget">
+    update ln_deposition_target
+    <set>
+      <if test="prodName != null">
+        prod_name = #{prodName,jdbcType=VARCHAR},
+      </if>
+      <if test="prodType != null">
+        prod_type = #{prodType,jdbcType=VARCHAR},
+      </if>
+      <if test="totalLimit != null">
+        total_limit = #{totalLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="interestType != null">
+        interest_type = #{interestType,jdbcType=VARCHAR},
+      </if>
+      <if test="setupType != null">
+        setup_type = #{setupType,jdbcType=VARCHAR},
+      </if>
+      <if test="sellDate != null">
+        sell_date = #{sellDate,jdbcType=DATE},
+      </if>
+      <if test="beginDate != null">
+        begin_date = #{beginDate,jdbcType=DATE},
+      </if>
+      <if test="expireDate != null">
+        expire_date = #{expireDate,jdbcType=DATE},
+      </if>
+      <if test="cycle != null">
+        cycle = #{cycle,jdbcType=INTEGER},
+      </if>
+      <if test="cycleUnit != null">
+        cycle_unit = #{cycleUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="istYear != null">
+        ist_year = #{istYear,jdbcType=DOUBLE},
+      </if>
+      <if test="repayType != null">
+        repay_type = #{repayType,jdbcType=VARCHAR},
+      </if>
+      <if test="loanId != null">
+        loan_id = #{loanId,jdbcType=INTEGER},
+      </if>
+      <if test="chargeOffAuto != null">
+        charge_off_auto = #{chargeOffAuto,jdbcType=VARCHAR},
+      </if>
+      <if test="overLimit != null">
+        over_limit = #{overLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="overTotalLimit != null">
+        over_total_limit = #{overTotalLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="riskLvl != null">
+        risk_lvl = #{riskLvl,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerNumLimit != null">
+        buyer_num_limit = #{buyerNumLimit,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.LnDepositionTarget">
+    update ln_deposition_target
+    set prod_name = #{prodName,jdbcType=VARCHAR},
+      prod_type = #{prodType,jdbcType=VARCHAR},
+      total_limit = #{totalLimit,jdbcType=DOUBLE},
+      interest_type = #{interestType,jdbcType=VARCHAR},
+      setup_type = #{setupType,jdbcType=VARCHAR},
+      sell_date = #{sellDate,jdbcType=DATE},
+      begin_date = #{beginDate,jdbcType=DATE},
+      expire_date = #{expireDate,jdbcType=DATE},
+      cycle = #{cycle,jdbcType=INTEGER},
+      cycle_unit = #{cycleUnit,jdbcType=VARCHAR},
+      ist_year = #{istYear,jdbcType=DOUBLE},
+      repay_type = #{repayType,jdbcType=VARCHAR},
+      loan_id = #{loanId,jdbcType=INTEGER},
+      charge_off_auto = #{chargeOffAuto,jdbcType=VARCHAR},
+      over_limit = #{overLimit,jdbcType=VARCHAR},
+      over_total_limit = #{overTotalLimit,jdbcType=DOUBLE},
+      risk_lvl = #{riskLvl,jdbcType=VARCHAR},
+      buyer_num_limit = #{buyerNumLimit,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+	<select id="selectByLoanId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+	    select 
+	    <include refid="Base_Column_List" />
+	    from ln_deposition_target
+	    where loan_id = #{loanId,jdbcType=INTEGER}
+	  </select>
+	</mapper>

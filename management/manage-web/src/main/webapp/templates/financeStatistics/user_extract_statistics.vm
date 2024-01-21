@@ -1,0 +1,126 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" method="post" action="$env.getWebURL('/financeStatistics/queryExtract.htm')">
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						客户名称：<input id="customerName" type="text" name="customerName" maxlength="20" value="$!customerName" class="clear"/>
+					</td>
+					<td >支取时间：<input name="startTime" type="text" id="startTime" class=" date textInput readonly" readonly="true" value="$!startTime" dateFmt="yyyy-MM-dd" maxdate="{%y}-%M-{%d-1}"/></td >
+					<td>到  &nbsp;&nbsp;&nbsp;&nbsp;
+						<input name="endTime" type="text" id="endTime" class=" date textInput readonly" readonly="true" value="$!endTime" dateFmt="yyyy-MM-dd" maxdate="{%y}-%M-{%d-1}"/>
+					</td>
+					<td>
+						<button  onclick="func()" type="button">查询</button>
+						<button  onclick="exp()" type="button">导出excel</button>
+					</td>
+				</tr>
+			</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li>		
+				<span style="margin-left:10px;">
+    				<font color="red">支取总金额：#if(!$!totalAmount)0.00 #else $!money.format($!totalAmount) #end 元</font>
+                </span>
+			</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="120">
+		<thead>
+			<tr>
+				<th width="80">序号</th>
+				<th width="200">单据编号</th>
+				<th width="200">客户代码</th>
+				<th width="100">客户名称</th>
+				<th width="100">金额</th>
+				<th width="150">支取时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			#set($prefix="80")
+			#foreach($data in $dataGrid)
+			<tr>
+				<td>$!data.rowNo</td>
+				<td>$prefix$!data.orderNo</td>
+				<td>$!data.customerCode</td>
+				<td>$!data.customerName</td>
+				<td>$!money.format($!data.amount)</td>
+				<td>$!date.format($!data.updateTime)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+#LoadJS("/resources/js/global_validate")
+<script>
+
+function func(){
+	var beginTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	if(!beginTime) {
+		alertMsg.warn("开始时间不能为空！");
+		return;
+	}
+	if(!endTime) {
+		alertMsg.warn("结束时间不能为空！");
+		return;
+	}
+    var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+	if(result < 0){
+		alertMsg.warn("开始时间不能在结束时间之后！");
+		return;
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/financeStatistics/queryExtract.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+	var beginTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	if(!beginTime) {
+		alertMsg.warn("开始时间不能为空！");
+		return;
+	}
+	if(!endTime) {
+		alertMsg.warn("结束时间不能为空！");
+		return;
+	}
+    var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+	if(result < 0){
+		alertMsg.warn("开始时间不能在结束时间之后！");
+		return;
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/financeStatistics/exportUserExtract.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+</script>

@@ -1,0 +1,171 @@
+<style type="text/css" >
+	.dd{
+		width:134px;
+		height:30px;
+		display:inline-block;
+	}
+	.dd_select{
+		width:134px;
+		height:30px;
+		display:inline-block;
+	}
+</style>
+<div class="pageContent" id="dialog_tag_list">
+	<input type="hidden" id="tagTotalRows" name="tagTotalRows" value="$!tagTotalRows"/>
+	<form method="post" id="detail_form" action="">
+		<div class="pageFormContent" layoutH="56">
+			#foreach($tag in $!tags)
+				<div class="dd_select">
+					<input class="tag_class_select" type="checkbox" value="$tag.id" name="tag" />
+					<span class="content_class_select"  title="$tag.content" content="$tag.content">$tag.content
+                    </span>
+				</div>
+			#end
+			<div class="dd">
+				#if("$!noTagId" == "yes")
+					<input type="checkbox" value="-1" checked id="noTagIdDialog"/> 非标签用户
+				#else
+					<input type="checkbox" value="-1" id="noTagIdDialog"/> 非标签用户
+				#end
+			</div>
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li style="margin-top: 3px; margin-right: 423px"><input type="checkbox" id="tag_checked_all"/> 全选</li>
+                <li >
+					<div class="buttonActive">
+						<div class="buttonContent">
+							<button type="button" onclick="doTag()" >确定</button>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	$('.dd_select').each(function(){
+    	var content = $(this).children('.content_class_select').attr('content');
+    	var size = content.length;
+    	if(size > 8) {
+    		var contentStr = content.substr(0, 8);
+    		$(this).children('.content_class_select').html(contentStr + "...");
+    	}
+	});
+
+	function doTag() {
+		var tagIds = "",
+		userIds = $.trim($('#userIdDialog').val());
+		$("input[name=tag]:checkbox").each(function(){
+			if($(this).attr("checked")) {
+				tagIds += $(this).attr('value') + ",";
+			}
+		});
+		if($("#noTagIdDialog").attr('checked')) {
+			tagIds += "-1";
+		}
+		
+		$(".tagIdsForQuery").val(tagIds);
+		//关闭弹出框
+		$.pdialog.closeCurrent();
+	}
+	
+	$(function(){
+		var tagTotal = parseInt($.trim($('#tagTotalRows').val()))+1;
+		var tagIdsForQuery = $(".tagIdsForQuery").val();
+		var arr = tagIdsForQuery.split(",");
+		var arrLength = 0;
+		for(var i=0; i<arr.length; i++) {
+			if(arr[i] != null && arr[i] != '') {
+				$("input[name=tag]:checkbox").each(function(){
+					if($(this).attr('value') == arr[i]) {
+						$(this).prop('checked',true);
+        			}
+        		});
+				if($("#noTagIdDialog").attr('value') == arr[i]){
+					$("#noTagIdDialog").prop('checked',true);
+				}
+				arrLength = parseInt(arrLength) + 1;
+			}
+		}
+		arrLength = parseInt(arrLength) - 1;
+		if(arrLength == tagTotal) {
+			$('#tag_checked_all').prop('checked',true);
+		}
+		
+		var len = parseInt($(".tag_class_select").length) + 1;
+		var chekedLen = 0;
+		$(".tag_class_select").each(function(){
+			if($(this).attr('checked')) {
+				chekedLen++;
+			}
+		});
+		if($("#noTagIdDialog").attr('checked')){
+			chekedLen++;
+		}
+		if(chekedLen == len) {
+			$("#tag_checked_all").prop("checked",true);
+		}
+		
+		// 全选事件
+		$('#tag_checked_all').on('click',function(){
+			if($('#tag_checked_all').attr('checked')) {
+				$("input[name=tag]:checkbox").each(function(){
+        			$(this).prop('checked',true);
+        		});
+				$("#noTagIdDialog").prop('checked',true);
+    		}else {
+    			$("input[name=tag]:checkbox").each(function(){
+					$(this).prop('checked',false);
+        		});
+				$("#noTagIdDialog").prop('checked',false);
+    		}
+		})
+		
+		// 勾选事件
+		$("input[name=tag]:checkbox").on('click',function(){
+			if($(this).attr('checked')) {
+				var len = 0;
+    			$("input[name=tag]:checkbox").each(function(){
+    				if($(this).attr('checked')) {
+    					len = parseInt(len) + 1;
+    				}
+            	});
+				if($("#noTagIdDialog").attr('checked')) {
+					len = parseInt(len) + 1;
+				}
+    			if(len == tagTotal) {
+    				$('#tag_checked_all').prop('checked',true);
+    			}else {
+    				$('#tag_checked_all').prop('checked',false);
+    			}
+			}else {
+				$('#tag_checked_all').prop('checked',false);
+			}
+		});
+		
+		$("#noTagIdDialog").on('click',function(){
+			if($(this).attr('checked')) {
+				var len = 0;
+    			$("input[name=tag]:checkbox").each(function(){
+    				if($(this).attr('checked')) {
+    					len = parseInt(len) + 1;
+    				}
+            	});
+				if($("#noTagIdDialog").attr('checked')) {
+					len = parseInt(len) + 1;
+				}
+    			if(len == tagTotal) {
+    				$('#tag_checked_all').prop('checked',true);
+    			}else {
+    				$('#tag_checked_all').prop('checked',false);
+    			}
+			}else {
+				$('#tag_checked_all').prop('checked',false);
+			}
+		})
+	})
+</script>

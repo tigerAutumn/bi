@@ -1,0 +1,123 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+<div class="page unitBox">	
+	<div class="pageHeader">
+    	<form id="generalForm" method="post"  rel="pagerForm" action="$env.getWebURL('/financial/lnCreditTransfer2VIPIndex.htm')" onsubmit="return navTabSearch(this);">
+        	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+        	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+        	<div class="searchBar">
+        		<table class="searchContent">
+        			<tbody>
+        				<tr>
+            				<td >
+            					<label style="width: 100px;">资金支出客户姓名：</label><input type="text" name="inUserName" maxlength="20" value="$!req.inUserName" style="float:left;width:80px;" class="clear"/>
+                            </td>
+            				<td>
+            					<label style="width: 100px;">资金支出客户手机：</label><input type="text" name="inUserMobile" maxlength="20" value="$!req.inUserMobile" style="float:left;width:80px;" class="clear"/>
+            				</td>
+            				<td>
+            					支付日期：<input type="text" readonly="true" class="date textInput readonly" name="beginTime" id="beginTime" value="$!date.formatYYYYMMDD($!req.beginTime)" />
+            				</td>
+            				<td>
+            					到&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" readonly="true" class="date textInput readonly" name="overTime" id="overTime" value="$!date.formatYYYYMMDD($!req.overTime)" />
+            				</td>
+							<td>
+            					<div class="buttonActive">
+            						<div class="buttonContent">
+            							<button onclick="searchFunction()" type="button">查询</button>
+            						</div>
+            					</div>
+                            </td>
+							<td>
+								<div class="buttonActive">
+            						<div class="buttonContent">
+										<button  onclick="exportFun()" type="button">导出Excel</button>
+            						</div>
+            					</div>
+							</td>
+                       </tr>
+                       <tr>
+                            <td>应付本息总额：$!money.format($!amount) 元</td>
+    						<td></td>
+    						<td></td>
+    						<td></td>
+    						<td></td>
+					   </tr>
+					   
+        			</tbody>
+    			</table>
+    		</div>
+        </form>
+	</div>
+	<div class="pageContent">
+		<table class="table" width="97%" layoutH="120">
+    		<thead>
+    			<tr>
+					<th width="7%">序号</th>
+    				<th width="10%">单据编号</th>
+    				<th width="10%">资金支出客户姓名</th>
+    				<th width="10%">资金支出客户代码</th>
+					<th width="10%">资金收入客户代码</th>
+					<th width="10%">债转本金</th>
+					<th width="10%">债转前利息</th>
+    				<th width="10%">应付转让客户本息</th>
+					<th width="10%">支付日期</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			#foreach($grid in $list)
+    			<tr target="sid_user" rel="1">
+    				<td>$grid.rowno</td>
+					<td><lable>$grid.outLoanRelationId</lable>0000$grid.inLoanRelationId</td>
+					<td>$grid.inUserName</td>
+					<td>3.$grid.inUserId</td>
+					<td>3.$grid.outUserId</td>
+					<td>$!money.format($!grid.amount)</td>
+					<td>$!money.format($!money.subtract($!grid.inAmount,$!grid.amount))</td>
+					<td>$!money.format($!grid.inAmount)</td>
+					<td>$!date.formatYYYYMMDD($!grid.createTime)</td>
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+    			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!count条</span>
+    	</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+    </div>
+</div>
+	
+
+<script>  
+	function searchFunction(){
+    	var startTime = $("#beginTime").val();
+    	var endTime = $("#overTime").val();
+    	if(startTime && endTime && startTime>endTime){
+    		alertMsg.error("开始时间不能晚于结束时间！");
+    		return false;
+    	}
+		var url = $("#APP_ROOT_PATH").val() + "/financial/lnCreditTransfer2VIPIndex.htm";
+		$("#generalForm").attr("action",url);
+		$("#generalForm").attr("onsubmit","return navTabSearch(this);");
+    	$("#generalForm").submit();
+    }
+	
+	function exportFun(){
+    	var url = $("#APP_ROOT_PATH").val() + "/financial/lnCreditTransfer2VIPExport.htm";
+    	$("#generalForm").attr("action",url);
+    	$("#generalForm").attr("onsubmit","");
+    	$("#generalForm").submit();
+	}
+	
+</script> 

@@ -1,0 +1,295 @@
+## 持仓凭证、归集户代收代付等相关需求 ##
+
+- 代码开发分支 fr.20180731.scopeOptimize（涉及的服务business、manage、site）
+
+### 一、系统账户余额短信告警 ###
+
+<pre>
+1. 业务说明
+系统账户余额短信告警，每天在运行系统余额快照记录表定时（SysBalanceDailySnapTask），检查宝付系统结算户余额available_balance（JSH）是否小于系统配置表中的宝付系统结算户余额告警阈值，如果小于这个值给财务发送告警短信，更新验证信息表bs_auth；如果大于等于宝付系统结算户余额告警阈值不会发生告警短信；
+2. 业务设计
+（1）、配置表中新增宝付系统结算户余额告警阈值配置，默认配置500000；
+-- 宝付系统结算户余额告警阈值
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('JSH_BALANCE_ALARM_VALUE', '500000', '宝付系统结算户余额告警阈值', '宝付系统结算户余额告警阈值');
+（2）、系统余额快照记录表定时中（SysBalanceDailySnapTask）中查询系统子账户表“JSH”的余额<font color=#DC143C>available_balance</font>
+SELECT * FROM bs_sys_sub_account WHERE `code` = 'JSH;
+（3）、如果结算户的余额小于配置表中的值，则给财务发送告警短信；
+发送短信的号码沿用现在配置表中的财务告警通知手机号码；
+SELECT * FROM bs_sys_config WHERE conf_key = 'FINANCE_MOBILE';
+（4）、短信文案
+【币港湾】宝付系统结算户余额为XXX元小于500000.0（动态获取）元，请及时充值。
+调用告警服务specialJnlService.warnAppoint4Fail()；
+记录特殊交易流水表bs_special_jnl；
+<1>、金额amount 系统JSH的可用余额；（SELECT available_balance FROM bs_sys_sub_account WHERE `code` = 'JSH;）
+<2>、操作详细内容detail=【币港湾】宝付系统结算户余额为XXX元小于500000.0（动态获取）元，请及时充值。
+<3>、处理状态status=1创建；
+<4>、操作类型type=宝付系统结算户余额不足；
+<5>、操作时间op_time,更新时间update_time 为系统时间；
+
+</pre>
+
+### 二、计划管理>债权明细>借款详情 文案优化 ###
+
+<pre>借款人信息，公式乘法用*，而不是用X;
+需要验证:币港湾PC、钱报渠道PC、视听之友PC;
+原文案：借款金额为X，年利率为Y，借款期限为Z天，则应还总利息计算公式为：X×Y/365×Z天。应还本金为X。
+更改为：借款金额为X，年利率为Y，借款期限为Z天，则应还总利息计算公式为：X<font color=#DC143C>*</font>Y/365<font color=#DC143C>*</font>Z天。应还本金为X。
+
+gen2.0/regular/agreement_borrower.vm
+gen178/regular/agreement_borrower.vm
+
+</pre>
+[原型-借款详情，文案调整](https://tower.im/projects/3d05349e05b2474dbd3198d04ac77804/todos/2db11f4354f04f60a068e1b1cd27b7ab/)
+
+
+### 三、持仓凭证文案优化 ###
+
+<pre>
+1. 需求背景
+持仓凭证也无法证明使用加息券，要求持仓凭证上添加加息收益；
+2. 业务说明
+改动点：PC（币港湾+报业系列+秦皇岛视听之友）添加文案说明，包含下载PDF文件；
+加息计划是今年3月份需求，所以只需要验证云贷/七贷存管产品，自由计划产品购买生成的“持仓凭证”，老产品、存量产品的持仓凭证无影响；
+3. 业务设计
+（1）若使用加息券，在持仓凭证中加上下面文案；
+<font color=#DC143C>预期加息收益：xx.xx元</font>
+（2）历史使用过加息券的也需要加上；
+注：老的持仓凭证如果客户打印了文本，刚好这一笔投资又使用了加息券，页面上看到的会跟文本上不一致，这个产品那边会解释的；<font color=#DC143C>已跟产品确认</font>
+（3）根据子账户编号，查询产品购买成功后的加息收益金额;
+如果bs_interest_ticket_info.interest_amount有值则显示<font color=#DC143C>预期加息收益：xx.xx元</font>；
+否则不显示；
+
+sql查询逻辑：
+根据用户子账户信息表bs_sub_account的id关联加息券信息表bs_interest_ticket_info的auth_account_id 站岗户ID查询这一笔投资的加息收益bs_interest_ticket_info.interest_amount;
+
+SELECT
+	ifnull(ti.interest_amount,'0') AS interest_amount
+FROM bs_sub_account a 
+LEFT JOIN bs_interest_ticket_info ti ON a.id = ti.auth_account_id 
+WHERE a.product_type IN ('AUTH_YUN','AUTH_7','AUTH_FREE')
+AND a.status IN (2,5,7)
+AND a.id = 123;
+
+【计划管理查询sql：BsSubAccountMapper.bgwMyInvestByUserId】
+
+F:\document_bigangwan_new\项目设计\开发设计文档\2018\03\加息券需求
+
+</pre>
+[原型-持仓凭证文案，文案调整](https://tower.im/projects/3d05349e05b2474dbd3198d04ac77804/todos/0ca2312b44644d6294598338813f258b/)
+
+原型：svn\产品专用\项目需求\原型\2018年需求\7月份-加息券优化（持仓凭证+加息券说明优化）
+
+### 四、归集户出入金本地流水表下载功能 ###
+
+<pre>
+1. 业务说明
+财务统计-归集户代收代付中查询某天的数据，包含了处理中跟成功的订单数据（ln_pay_orders.status）,产品希望查询回来的数据的记录数不会发生变化，现在把“产生日期”(ln_pay_orders update_time)的查询条件更改为“创建日期”（ln_pay_orders create_time）；
+2. 业务设计
+(1) 现在sql查询较慢，打开菜单的时候默认不查询；
+(2) 代收总金额、代付总金额值很大时，金额的值会成科学计数法显示，页面显示添加的金额格式化（money.format）；
+(3)页面查询条件修改“产生日期”(ln_pay_orders update_time)更改为“创建日期”（ln_pay_orders create_time）;列表中数据依旧采用更新时间倒序(ln_pay_orders update_time)。
+需要改动sql中的查询条件；
+(4)列表中“产生日期”更改为“更新日期”； 新增“创建日期”ln_pay_orders.create_time；
+sql中的查询数据添加ln_pay_orders.create_time
+(5) 页面上添加“下载批次流水”的按钮，点击后弹出“创建日期”的选项，选择时间点击导出，时间为空不能导出；
+按原型中excel模板导出数据；
+发生日期：ln_pay_orders.create_time
+业务类型：ln_pay_orders.trans_type = 'CUT_REPAY_2_BORROWER' 代付
+         ln_pay_orders.trans_type = 'WITHDRAW_2_DEP_REPAY_CARD' 代收
+金额：ln_deposition_repay_schedule.plan_total
+状态：ln_pay_orders.status
+批次订单号： ln_pay_orders.order_no
+（6）
+a、管理台归集户代收代付列表总条数： lnDepositionRepayScheduleMapper.countRepayDSDF
+
+select count(*) from (
+	(
+		select c.user_name,c.mobile,'DS' type,plan_total,DATE(b.create_time) create_time
+			from ln_deposition_repay_schedule a,
+			(select order_no,create_time
+				from ln_pay_orders
+				where trans_type = 'WITHDRAW_2_DEP_REPAY_CARD' 
+				AND DATE(create_time) >= '2018-08-01'
+				AND DATE(create_time) <= '2018-08-01'
+			)b,ln_user c
+		where a.df_order_no = b.order_no and c.id = a.ln_user_id 
+	) 
+	UNION ALL 
+	(
+		select c.user_name,c.mobile,'DF' type,plan_total,b.create_time
+			from ln_deposition_repay_schedule a,
+			(select order_no,create_time
+				from ln_pay_orders
+				where trans_type = 'CUT_REPAY_2_BORROWER' 
+				AND DATE(create_time) >= '2018-08-01'
+				AND DATE(create_time) <= '2018-08-01'
+			)b,ln_user c
+		where a.dk_order_no = b.order_no and c.id = a.ln_user_id 
+	)
+)t;
+
+b、管理台归集户代收代付列表查询： lnDepositionRepayScheduleMapper.getRepayDSDFList
+
+SELECT
+	(@rowNO := @rowNo + 1) rowno,
+	t1.user_name,
+	t1.user_mobile,
+	type,
+	t1.amount,
+	DATE(t1.done_time) done_time,
+	t1. STATUS,
+	DATE(t1.create_time) create_time
+FROM
+	(SELECT @rowNO := 0) b,
+	(
+		SELECT
+			t.*
+		FROM
+			(
+				(
+					SELECT
+						c.user_name,
+						c.mobile user_mobile,
+						'DS' type,
+						a.plan_total amount,
+						b.update_time done_time,
+						b. STATUS,
+						b.create_time
+					FROM
+						ln_deposition_repay_schedule a,
+						(
+							SELECT
+								order_no,
+								update_time,
+								STATUS,
+								create_time
+							FROM
+								ln_pay_orders
+							WHERE
+								trans_type = 'WITHDRAW_2_DEP_REPAY_CARD'
+							AND DATE(create_time) >= '2018-08-01'
+							AND DATE(create_time) <= '2018-08-01'
+						) b,
+						ln_user c
+					WHERE
+						a.df_order_no = b.order_no
+					AND c.id = a.ln_user_id
+				)
+				UNION ALL
+					(
+						SELECT
+							c.user_name,
+							c.mobile user_mobile,
+							'DF' type,
+							a.plan_total amount,
+							b.update_time done_time,
+							b. STATUS,
+							b.create_time
+						FROM
+							ln_deposition_repay_schedule a,
+							(
+								SELECT
+									order_no,
+									update_time,
+									STATUS,
+									create_time
+								FROM
+									ln_pay_orders
+								WHERE
+									trans_type = 'CUT_REPAY_2_BORROWER'
+								AND DATE(create_time) >= '2018-08-01'
+								AND DATE(create_time) <= '2018-08-01'
+							) b,
+							ln_user c
+						WHERE
+							a.dk_order_no = b.order_no
+						AND c.id = a.ln_user_id
+					)
+			) t
+		ORDER BY
+			t.done_time DESC
+	) t1
+LIMIT 0, 20;
+
+
+
+c、管理台归集户代收代付，代收代付总金额： lnDepositionRepayScheduleMapper.sumRepayDSDF
+
+SELECT
+	t1.plan_total ds_amount,
+	t2.plan_total df_amount
+FROM
+	(
+		SELECT
+			sum(plan_total) plan_total
+		FROM
+			ln_deposition_repay_schedule a,
+			(
+				SELECT
+					order_no,
+					create_time
+				FROM
+					ln_pay_orders
+				WHERE
+					trans_type = 'WITHDRAW_2_DEP_REPAY_CARD'
+				AND DATE(create_time) >= '2018-08-01'
+				AND DATE(create_time) <= '2018-08-01'
+			) b,
+			ln_user c
+		WHERE
+			a.df_order_no = b.order_no
+		AND c.id = a.ln_user_id
+	) t1,
+	(
+		SELECT
+			sum(plan_total) plan_total
+		FROM
+			ln_deposition_repay_schedule a,
+			(
+				SELECT
+					order_no,
+					create_time
+				FROM
+					ln_pay_orders
+				WHERE
+					trans_type = 'CUT_REPAY_2_BORROWER'
+				AND DATE(create_time) >= '2018-08-01'
+				AND DATE(create_time) <= '2018-08-01'
+			) b,
+			ln_user c
+		WHERE
+			a.dk_order_no = b.order_no
+		AND c.id = a.ln_user_id
+	) t2;
+
+
+svn:///产品专用/项目需求/原型/2018年需求/7月份-归集户批次流水下载
+
+FinancialDSDFController repayActIndex
+
+</pre>
+
+
+### 五、营销活动>红包查询 ###
+
+<pre>
+查询时兼容手机端（苹果）；
+调整页面样式；
+</pre>
+
+
+### 六、运营管理>加息券发放管理 ###
+
+<pre>
+1. 需求背景
+运营管理-加息券发放管理，新增userid手动加息券，运营那边是直接excel中复制过来的，都是换行后的，点击申请手工加息券会直接报“用户编号格式错误”的错误；
+2. 业务设计
+excel中复制过来的的userId，带有换行，传到后台时，userIds字符串中userId的前面会带有“\n”'(\n100101');后台需要对传过来的userIds字符串做一个“\n”替换成“”处理（replaceAll("[\\r\\n]", "");），其余逻辑不变；
+
+TicketController checkUserIdCount()
+
+</pre>
+[原型-加息券发放——手动发放加息券优化](https://tower.im/projects/3d05349e05b2474dbd3198d04ac77804/todos/7db5205de7324b728dc57a4095814792/)
+
+
+

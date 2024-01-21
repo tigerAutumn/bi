@@ -1,0 +1,222 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/login_header")
+#LoadGenJS("/resources/gen2.0/scripts/echarts")
+#LoadGenJS("/resources/gen2.0/scripts/switchable")
+#LoadGenJS("/resources/gen2.0/scripts/textSlider")
+#LoadGenJS("/resources/gen2.0/scripts/index_style")
+#LoadGenJS("/resources/gen2.0/scripts/recharge/recharge_old_add_bankcard")
+#GenHead("end")
+<body>
+<!--header -s-->
+#GenHeaderLogin()
+<div class="naver_1">
+	<div class="nav_1">
+		<div class="nav">
+			<a href="$!env.get('gen.server.web')/gen2.0/index"><div class="nav_l"></div></a>
+			<p class="nav_r">
+				<a href="javascript:void(0)" style="color: #7D7D7D;">充值</a>
+			</p>
+		</div>
+	</div>
+</div>
+<div class="con_zf2">
+	<div class="con_z2">
+		<div class="z2con_top">
+			<span>
+				购买金额： <i class="spani">$!number.format("0.00", $!rechargeAmount)</i>
+				元
+			</span>
+		</div>
+		<div class="z2con_bottom">
+			<span class="z2con_bspanl" id="z2con_bspanl">快捷支付</span>
+			<span class="z2con_bspanm" id="z2con_bspanm">网银支付</span>
+			<span class="z2con_bspanr"></span>
+			<div class="z2con_bspanll">
+				<p class="z2con_main">
+					为了保障您的资金安全，您成功支付的银行卡将作为<i class="zcon_maini">安全卡</i>。后续仅可使用此卡进行买入和取出。
+				</p>
+				<form id="generalForm" action="$!env.get('gen.server.web')/gen2.0/recharge/add_bankcard" method="post"> 
+				<input type="hidden" value="$!rechargeAmount" id="rechargeAmount" name="rechargeAmount"/>
+				<div class="z2con_m">
+					<div class="z2con_mr">
+						<ul class="cul_1">
+							<li>姓名</li>
+							<li>身份证</li>
+							<li>银行卡号</li>
+							<li>银行类型</li>
+							<li style="margin-top:-31px;margin-bottom: 0px;"></li>
+							<li>预留手机号</li>
+						</ul>
+						<ul  class="cul_2">
+							<li>
+								<p style="border: none;">
+									<span>
+									</span>
+									$!string.left($!userName, 1)*
+								</p>
+							</li>
+							<li>
+								<p style="border: none;">
+									<span>
+									</span>
+									$!string.left($!idCard, 3)*************$!string.right($!idCard, 4)
+								</p>
+							</li>
+							<li>
+								<p>
+									<span></span>
+									<input type="text" name="cardNo" id="cardNo" maxLength="20" placeholder="请输入银行卡号(仅储蓄卡)" oninput="cardbin()">
+								</p>
+							</li>
+							<li>
+								<p>
+									<select id="bankName" name="bankName">
+									<option style="font-size:14px;padding:5px 0 5px 0" value="-1">请选择银行</option>
+    									#foreach($bank in $bankList)
+                							#if($bank.isAvailable == 1)
+        									<option style="font-size:14px;padding:5px 0 5px 0" value="$!bank.bankId" isAvailable="$!bank.isAvailable" oneTop="$!bank.oneTop" dayTop="$!bank.dayTop">$!{bank.bankName}</option>
+        									#else
+        									<option style="font-size:14px;padding:5px 0 5px 0" value="$!bank.bankId" isAvailable="$!bank.isAvailable" oneTop="$!bank.oneTop" dayTop="$!bank.dayTop">$!{bank.bankName}(暂不可用)</option>
+        									#end
+                						#end
+    								</select>
+								</p>
+							</li>
+							<li style="margin-top:-31px;margin-bottom: 0px;">
+								<p style="border:0;">
+									<span id="limit" style="display:none;">
+										<span id="span_1" style="width: 150px;">单笔限额<span id="onelimit" style="float: none;"></span>万元，</span>
+										<span id="span_2" style="position: absolute;width: 150px;">单日限额<span id="daylimit" style="float: none;"></span>万元</span>
+									</span>
+								</p>
+							</li>
+							<li>
+								<p>
+									<span></span>
+									<input type="text" name="mobile" id="mobile" maxLength="11" placeholder="请输入预留手机号" />
+								</p>
+							</li>
+							<button class="buut" type="button" id="pay_submit">确认支付</button>
+						</ul>
+					</div>
+				</div>
+				</form>
+			</div>
+			<div class="z2con_bspanlr">
+				<ul  class="cul_z2">
+					<li>
+						<span>
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/z1_1.png"></span>
+						<span>
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/z1_2.png"></span>
+						<span>
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/z1_3.png"></span>
+						<span>
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/z1_4.png"></span>
+					</li>
+					<li>
+						<span>
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/z2_1.png"></span>
+						<span>
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/z2_2.png"></span>
+						<span>
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/z2_3.png"></span>
+						<span>
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/z2_4.png"></span>
+					</li>
+					<li>
+						<span>
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/z3_1.png"></span>
+						<span>
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/z3_2.png"></span>
+						<span>
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/z3_3.png"></span>
+						<span>
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/z3_4.png"></span>
+					</li>
+					<li>
+						<span>
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/z4_1.png"></span>
+						<span>
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/z4_2.png"></span>
+						<span>
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/z4_3.png"></span>
+						<span>
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/z4_4.png"></span>
+					</li>
+					<li></li>
+					<button class="buut z2_buut">确定支付</button>
+					<h2 class="clas z2_h">
+						点击确认支付即表示您同意
+						<a href="#">《支付协议》</a><a href="#">《账户服务协议》</a>
+					</h2>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!--footer-->
+
+<!--footer-->
+<!--浮动 -s-->
+#GenShare()
+<!--浮动 -e-->
+<!--footer -s-->
+#GenFooter()
+<!--footer -e-->
+
+<!--弹窗-s-->
+<div class="box-mask"></div>
+<div class="box">
+	<p class="zftop">
+		<span class="result">安全验证</span>
+		<i class="tck"></i>
+	</p>
+	<ul class="zfbuttom">
+		<li class="zf4li1">账户余额（剩余￥ $!number.format("0.00", $!balance)）</li>
+		#foreach($!bank in $!bankList)
+		<li class="zf4li1" name="bank_name_li" card_id="$!bank.id" bank_name="$!bank.bankName" cardno="$!string.right($!bank.cardNo, 4)" mobile="$!bank.mobile">
+			#if($!bank.smallLogo)
+			<img src="$!env.get('gen.server.web')/$!bank.smallLogo" />
+			#elseif($!bank.largeLogo)
+			<img src="$!env.get('gen.server.web')/$!bank.largeLogo" />
+			#else
+				#end
+				$!bank.bankName ($!string.right($!bank.cardNo, 4))
+		</li>
+		#end
+		<li class="zf4li3" id="add_new_bank">+银行卡</li>
+	</ul>
+</div>
+
+<div class="cpm_warp" >
+	<div class="cpm">
+		<div class="cpm_title">
+			<span class="title_ft">支付验证</span>
+			<i class="off"></i>
+		</div>
+		<div class="cpm_phone">
+			<div class="phone_ft">
+				已向您的手机号
+				<span>$!mobile</span>
+			</div>
+			<div class="phone_ft2">发送验证码短信，请注意查收</div>
+		</div>
+		<div class="cpm_put">
+			<span class="put_left">验证码</span>
+			<div class="put_wrp">
+				<input class="put_text" type="text" name="mobileCode" id="mobileCode" maxLength="6" placeholder="请输入短信验证码">
+				<span id="sendCode" class="retransmission" count='60'>
+					重发(
+					<span class="retransmission_time">59</span>
+					)
+				</span>
+			</div>
+		</div>
+		<a class="cpm_btn" id="code_sub" href="javascript:void(0)">确定</a>
+	</div>
+</div>
+</body>
+#Html("end")

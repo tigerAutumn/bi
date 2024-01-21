@@ -1,0 +1,450 @@
+#Html("begin")
+#Head("begin","平台数据,平台实况,币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("平台数据_平台实况【币港湾官网】")
+#LoadGenCSS("/resources/gen178/styles/platform/info/platform_data")
+#Head("end")
+<body>
+<!-- header -->
+    #Gen178Header("info")
+<!-- main -->
+<input type="hidden" value="$!result.firstTime" id="currTime">
+<div class="main">
+    <div class="main_banner"></div>
+    <div class="main_center">
+    #**
+     * subnav
+     **#
+        #Gen178InfoSubNav()
+
+        <div class="main_cright">
+            <div class="main_cr_down">
+                <div class="main_cr_top_txt">
+                    <div class="data_center">
+                        <h3><span></span>平台运营概况<span></span></h3>
+                        <p style="font-size: 16px;color: #fff;margin-bottom: 20px;">截止</p>
+                        <div class="data_currtime">
+                            <span class="currtime_year">----</span>&nbsp;&nbsp;年&nbsp;&nbsp;<span class="currtime_month">--</span>&nbsp;&nbsp;月&nbsp;&nbsp;<span class="currtime_day">--</span>&nbsp;&nbsp;日
+                            &nbsp;&nbsp;-&nbsp;&nbsp;
+                            <span class="currtime_hour_left">-</span><span class="currtime_hour_right">-</span>&nbsp;:&nbsp;<span class="currtime_minute_left">-</span><span class="currtime_minute_right">-</span>&nbsp;:&nbsp;<span class="currtime_second_left">-</span><span class="currtime_second_right">-</span>
+                        </div>
+                    </div>
+                    <div class="data_small_wp">
+                        <div class="data_list">
+                            <div class="data_ico">
+                                <img src="$!env.get('gen.server.web')/resources/gen2.0/images/platform/data/1.png">
+                            </div>
+                            <div class="data_title">平台已合规运营（天）</div>
+                            <div class="data_title_number">
+                                #if($!result.operatingDays)
+                                    $!money.format($!result.operatingDays).substring(0,$!money.format($!result.operatingDays).indexOf("."))
+                                #else
+                                    --
+                                #end
+                            </div>
+                        </div>
+                        <div class="data_list">
+                            <div class="data_ico">
+                                <img src="$!env.get('gen.server.web')/resources/gen2.0/images/platform/data/2.png">
+                            </div>
+                            <div class="data_title">累计成交额（元）</div>
+                            <div class="data_title_number">
+                                #if($!totalInvestAmount)
+                                    $!money.format($!totalInvestAmount)
+                                #else
+                                    --
+                                #end
+                            </div>
+                        </div>
+                        <div class="data_list">
+                            <div class="data_ico">
+                                <img src="$!env.get('gen.server.web')/resources/gen2.0/images/platform/data/3.png">
+                            </div>
+                            <div class="data_title">
+                                累计出借额（元）
+                            </div>
+                            <div class="data_title_number">
+                                #if($!result.totalLoanAmount)
+                                    $!money.format($!result.totalLoanAmount)
+                                #else
+                                    --
+                                #end
+                            </div>
+                        </div>
+                        <div class="data_list">
+                            <div class="data_ico">
+                                <img src="$!env.get('gen.server.web')/resources/gen2.0/images/platform/data/4.png">
+                            </div>
+                            <div class="data_title">
+                                累计收益金额（元）
+                            </div>
+                            <div class="data_title_number">
+                                #if($!totalInterestAmount)
+                                    $!money.format($!totalInterestAmount)
+                                #else
+                                    --
+                                #end
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="main_cr_top_txt">
+                    <h5 class="data_name">
+                        <p>
+                            成交及出借数据统计
+                            <span></span>
+                        </p>
+                        截止&nbsp;
+                        #if($!result.secondTime)
+                            $!result.secondTime
+                        #else
+                            --
+                        #end
+                    </h5>
+                    <div class="main_cr_down">
+                        <div class="data_main">
+                            <div class="data_wrap">
+                                <div class="data_wrap1">
+                                    <div id="data_one" investMonthArray='$!investMonthArray' investAmountMonthArray='$!investAmountMonthArray'></div>
+                                </div>
+                                <div class="data_wrap2">
+                                    <div id="data_five" productNameArray='$!productNameArray' productAmountArray='$!productAmountArray'></div>
+                                </div>
+                                <div class="data_wrap3" style="border-bottom: none;height: 350px;">
+                                    <div style="width: 300px;height: 330px;margin: auto" id="data_six" totalInterestAmount='$!totalInterestAmount' investInterestWill='$!investInterestWill'></div>
+                                </div>
+                                <div class="data_wrap4" style="border-bottom: none;height: 350px;">
+                                    <div class="data_text_wrap">
+                                        <div class="data_text_left">
+                                            <p class="data_text_title">自成立以来累计借贷金额（元）</p>
+                                            <p class="data_text_content">
+                                                #if($!result.totalLoanAmount)
+                                                    $!money.format($!result.totalLoanAmount)
+                                                #else
+                                                    --
+                                                #end
+                                            </p>
+                                        </div>
+                                        <div class="data_text_right">
+                                            <p class="data_text_title">自成立以来累计借贷笔数</p>
+                                            <p class="data_text_content">
+                                                #if($!result.totalLoanNumber)
+                                                    $!money.format($!result.totalLoanNumber).substring(0,$!money.format($!result.totalLoanNumber).indexOf("."))
+                                                #else
+                                                    --
+                                                #end
+                                            </p>
+                                        </div>
+                                        <div class="data_text_left">
+                                            <p class="data_text_title">当前待还借贷金额（元）</p>
+                                            <p class="data_text_content">
+                                                #if($!result.currentWaitRepayAmount)
+                                                    $!money.format($!result.currentWaitRepayAmount)
+                                                #else
+                                                    --
+                                                #end
+                                            </p>
+                                        </div>
+                                        <div class="data_text_right">
+                                            <p class="data_text_title">当前待还借贷笔数</p>
+                                            <p class="data_text_content">
+                                                #if($!result.currentWaitRepayNumber)
+                                                    $!money.format($!result.currentWaitRepayNumber).substring(0,$!money.format($!result.currentWaitRepayNumber).indexOf("."))
+                                                #else
+                                                    --
+                                                #end
+                                            </p>
+                                        </div>
+                                        <div class="data_text_left">
+                                            <p class="data_text_title">关联关系借款余额（元）</p>
+                                            <p class="data_text_content">
+                                                #if($!result.relationBorrowerAmount)
+                                                    $!money.format($!result.relationBorrowerAmount)
+                                                #else
+                                                    --
+                                                #end
+                                            </p>
+                                        </div>
+                                        <div class="data_text_right">
+                                            <p class="data_text_title">关联关系借款余额笔数</p>
+                                            <p class="data_text_content">
+                                                #if($!result.relationBorrowerNumber)
+                                                    $!money.format($!result.relationBorrowerNumber).substring(0,$!money.format($!result.relationBorrowerNumber).indexOf("."))
+                                                #else
+                                                    --
+                                                #end
+                                            </p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="main_cr_top_txt">
+                    <h5 class="data_name">
+                        <p>
+                            用户数据统计
+                            <span></span>
+                        </p>
+                        截止&nbsp;
+                        #if($!result.thirdTime)
+                            $!result.thirdTime
+                        #else
+                            --
+                        #end
+                    </h5>
+                    <div class="main_cr_down">
+                        <div class="data_main">
+                            <div class="data_wrap1 send_wrap">
+                                <h5>出借人</h5>
+                                <div class="data_text_wrap">
+                                    <div class="data_text_col_3" style="width: 30%">
+                                        <p class="data_text_title">累计出借人数（人）</p>
+                                        <p class="data_text_content">
+                                            #if($!result.totalNumber)
+                                                $!money.format($!result.totalNumber).substring(0,$!money.format($!result.totalNumber).indexOf("."))
+                                            #else
+                                                --
+                                            #end
+                                        </p>
+                                    </div>
+                                    <div class="data_text_col_3" style="width: 30%">
+                                        <p class="data_text_title">当期出借人数（人）</p>
+                                        <p class="data_text_content">
+                                            #if($!result.currentNumber)
+                                                $!money.format($!result.currentNumber).substring(0,$!money.format($!result.currentNumber).indexOf("."))
+                                            #else
+                                                --
+                                            #end
+                                        </p>
+                                    </div>
+                                    <div class="data_text_col_3" style="width: 40%">
+                                        <p class="data_text_title">人均累计出借金额（元）</p>
+                                        <p class="data_text_content">
+                                            #if($!result.eachTotalAmount)
+                                                $!money.format($!result.eachTotalAmount)
+                                            #else
+                                                --
+                                            #end
+                                        </p>
+                                    </div>
+                                    <div class="data_text_col_2">
+                                        <input type="hidden" id="lend_tenth_total">
+                                        <p class="data_text_title">前十大出借人出借余额占比</p>
+                                        <p class="data_text_content">
+                                            #if($!result.topTenAmtProportion)
+                                                $!result.topTenAmtProportion %
+                                            #else
+                                                --
+                                            #end
+                                        </p>
+                                    </div>
+                                    <div class="data_text_col_2">
+                                        <input type="hidden" id="lend_largest_total">
+                                        <p class="data_text_title">最大单一出借人出借余额占比</p>
+                                        <p class="data_text_content">
+                                            #if($!result.topAmtProportion)
+                                                $!result.topAmtProportion %
+                                            #else
+                                                --
+                                            #end
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="data_wrap2 send_wrap">
+                                <h5>借款人</h5>
+                                <div class="data_text_wrap">
+                                    <div class="data_text_col_3" style="width: 30%">
+                                        <p class="data_text_title">累计借款人数（人）</p>
+                                        <p class="data_text_content">
+                                            #if($!result.totalBorrowerNumber)
+                                                $!money.format($!result.totalBorrowerNumber).substring(0,$!money.format($!result.totalBorrowerNumber).indexOf("."))
+                                            #else
+                                                --
+                                            #end
+                                        </p>
+                                    </div>
+                                    <div class="data_text_col_3" style="width: 30%">
+                                        <p class="data_text_title">当期借款人数（人）</p>
+                                        <p class="data_text_content">
+                                            #if($!result.currentBorrowerNumber)
+                                                $!money.format($!result.currentBorrowerNumber).substring(0,$!money.format($!result.currentBorrowerNumber).indexOf("."))
+                                            #else
+                                                --
+                                            #end
+                                        </p>
+                                    </div>
+                                    <div class="data_text_col_3" style="width: 40%">
+                                        <p class="data_text_title">人均累计借款金额（元）</p>
+                                        <p class="data_text_content">
+                                            #if($!result.eachBorrowerTotalAmount)
+                                                $!money.format($!result.eachBorrowerTotalAmount)
+                                            #else
+                                                --
+                                            #end
+                                        </p>
+                                    </div>
+                                    <div class="data_text_col_2">
+                                        <input type="hidden" id="loan_tenth_total">
+                                        <p class="data_text_title">前十大借款人待还金额占比</p>
+                                        <p class="data_text_content">
+                                            #if($!result.topTenBorrowerAmtProportion)
+                                                $!result.topTenBorrowerAmtProportion %
+                                            #else
+                                                --
+                                            #end
+                                        </p>
+                                    </div>
+                                    <div class="data_text_col_2">
+                                        <input type="hidden" id="loan_largest_total">
+                                        <p class="data_text_title">最大单一借款人待还金额占比</p>
+                                        <p class="data_text_content">
+                                            #if($!result.topBorrowerAmtProportion)
+                                                $!result.topBorrowerAmtProportion %
+                                            #else
+                                                --
+                                            #end
+                                        </p>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="data_wrap3 send_wrap" style="border-bottom: none;">
+                                <div id="data_age" investorTypeAgeArray='$!investorTypeAgeArray' investorTypeAgeValArray='$!investorTypeAgeValArray'></div>
+                            </div>
+                            <div class="data_wrap2 send_wrap" style="border-bottom: none;">
+                                <div id="data_sex" investorTypeSexArray='$!investorTypeSexArray' investorTypeSexValArray='$!investorTypeSexValArray'></div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="main_cr_top_txt">
+                    <h5 class="data_name">
+                        <p>
+                            逾期及代偿数据统计
+                            <span></span>
+                        </p>
+                        截止&nbsp;
+                        #if($!result.forthTime)
+                            $!result.forthTime
+                        #else
+                            --
+                        #end
+                    </h5>
+                    <div class="main_cr_down">
+                        <div class="data_main">
+                            <div class="data_row">
+                                <div class="data_col_4">
+                                    <p class="data_text_title">出借人项目逾期率</p>
+                                    <p class="data_text_content">
+                                        #if($!result.projectOverdueRate)
+                                            $!result.projectOverdueRate %
+                                        #else
+                                            --
+                                        #end
+                                    </p>
+                                </div>
+                                <div class="data_col_4">
+                                    <p class="data_text_title">出借人金额逾期率</p>
+                                    <p class="data_text_content">
+                                        #if($!result.amtOverdueRate)
+                                            $!result.amtOverdueRate %
+                                        #else
+                                            --
+                                        #end
+                                    </p>
+                                </div>
+                                <div class="data_col_4">
+                                    <p class="data_text_title">借款人逾期金额（元）</p>
+                                    <p class="data_text_content">
+                                        #if($!result.overdueAmount)
+                                            $!money.format($!result.overdueAmount)
+                                        #else
+                                            --
+                                        #end
+                                    </p>
+                                </div>
+                                <div class="data_col_4" style="border-right: none;">
+                                    <p class="data_text_title">借款人逾期笔数</p>
+                                    <p class="data_text_content">
+                                        #if($!result.overdueNumber)
+                                            $!money.format($!result.overdueNumber).substring(0,$!money.format($!result.overdueNumber).indexOf("."))
+                                        #else
+                                            --
+                                        #end
+                                    </p>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div style="border-bottom: solid 1px #e5e5e5;"></div>
+                            <div class="data_row">
+                                <div class="data_col_4">
+                                    <p class="data_text_title">借款人逾期90天以上金额（元）</p>
+                                    <p class="data_text_content">
+                                        #if($!result.overdueNinnetyDaysNumber)
+                                            $!money.format($!result.overdueNinnetyDaysAmount)
+                                        #else
+                                            --
+                                        #end
+                                    </p>
+                                </div>
+                                <div class="data_col_4">
+                                    <p class="data_text_title">借款人逾期90天以上笔数</p>
+                                    <p class="data_text_content">
+                                        #if($!result.overdueNinnetyDaysNumber)
+                                            $!money.format($!result.overdueNinnetyDaysNumber).substring(0,$!money.format($!result.overdueNinnetyDaysNumber).indexOf("."))
+                                        #else
+                                            --
+                                        #end
+                                    </p>
+                                </div>
+                                <div class="data_col_4">
+                                    <p class="data_text_title">累计代偿金额（元）</p>
+                                    <p class="data_text_content">
+                                        #if($!result.totalCompensatoryAmount)
+                                            $!money.format($!result.totalCompensatoryAmount)
+                                        #else
+                                            --
+                                        #end
+                                    </p>
+                                </div>
+                                <div class="data_col_4" style="border-right: none;">
+                                    <p class="data_text_title">累计代偿笔数</p>
+                                    <p class="data_text_content">
+                                        #if($!result.totalCompensatoryNumber)
+                                            $!money.format($!result.totalCompensatoryNumber).substring(0,$!money.format($!result.totalCompensatoryNumber).indexOf("."))
+                                        #else
+                                            --
+                                        #end
+                                    </p>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</div>
+<!-- footer -->
+    #Gen178Footer()
+<script>
+    $(document).ready(function () {
+        var subNav = $("#ifo_live").children("a");
+        var subTitle = $(".main_cleft").children(".main_cl_h31");
+        $("#ifo_live").show();
+        $(subNav[1]).addClass("main_clul_lione");
+        $(subTitle[2]).addClass("main_cl_hfo");
+    })
+</script>
+    #LoadGenJS("/resources/gen178/scripts/data/data_index")
+    #LoadGenJS("/resources/gen178/scripts/data/platform_data")
+    #LoadGenJS("/resources/gen178/scripts/data/highcharts")
+    #LoadGenJS("/resources/gen2.0/scripts/landing_page/tools")
+</body>
+#Html("end")

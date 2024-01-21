@@ -1,0 +1,206 @@
+## PC拦截器
+1. facade
+	HomeFacade.redPacketAmount
+2. service
+	redPacketService.autoRedPacketTotalAmount
+
+## 首页
+1. controller
+	IndexDispatchController.loginInit
+2. facade
+	HomeFacade.infoQuery	// 首页信息
+	BannerConfigFacade.getList	// 获取首页banner
+	NewsFacade.isRead	// 活动中心红点
+	UserFacade.agentQuery	// 渠道浏览量统计
+	NewsFacade.currentNews	// 公司动态、湾粉活动、媒体报道
+	ProductFacade.listQuery	// 产品列表
+3. service
+	1. HomeFacade.infoQuery
+		- bsActivityLuckyDrawService.activityStart	// 双十一活动
+		- productService.queryAccumulatedInvestment	// 查询累计投资额 不包含VIP产品
+		- productService.sumCurrTotalAmountAndInvestNum	// 统计所有产品的当前投资额和投资同次数
+		- productService.queryHomeProduct	// H5 推荐的产品列表1个
+		- productService.noviceRecommendedProduct	// PC 新手推荐产品（一个）
+		- productService.queryHomeProductPC(reqPro, resPro);	// PC 首页四个产品，非新手推荐产品
+		- investService.findDailyInterestByUserAndDay	// 钱报系。我的资产信息
+		- productService.listQuery(reqPro, resPro);	// 钱报系。首页所有未完成的产品
+		- bsOperationReportService.querySixOperationReport	// 查询六个运营报告信息
+		- productService.selectProductRateIndex	// 最小最大年化收益率
+	2. BannerConfigFacade.getList
+		- bsBannerConfigService.getList	// 根据显示端查询显示的banner信息
+	3. NewsFacade.isRead
+		- userMessageReadService.queryByPosition(req.getUserId(), Constants.POSITIONFacade.aCTIVITY);	// 根据位置查询阅读记录
+	4. UserFacade.agentQuery
+		- userService.findAgentByCode(req.getAgentId());
+		- userService.increaseAgentReadCount(agent.getId());	渠道浏览量增加+1
+	5. NewsFacade.currentNews
+		- newsService.currentNews(req, res);	// 查询最新的新闻|公告|动态
+	6. ProductFacade.listQuery
+		- productService.listQuery(req, res);	// 理财计划列表（H5|PC）
+
+## 产品列表
+1. controller
+	RegularController.regularInit	// {channel}/regular/list
+2. facade
+	ProductFacade.listQuery	// 产品列表
+	ProductFacade.bannerQuery	// 根据还款方式查询banner信息
+3. service
+	1. ProductFacade.listQuery
+		- productService.listQuery(req, res);	// 理财计划列表（H5|PC）
+	2. ProductFacade.bannerQuery
+		- bsBannerConfigService.selectBannerConfigByType
+
+## 产品详情
+1. controller
+RegularController.regularIndex	// micro2.0/regular/index（h5）
+RegularController.regularDetail	// 理财详情页面(pc,178,不包含h5)
+
+2. facade
+	1. RegularController.regularIndex
+		- ProductFacade.productDetailInfoQuery
+		- BankFacade.pay19BankList
+		- Ecup2016ActivityFacade.queryEcupProductGrid
+		- PayOrdersFacade.getSuccessPayOrders
+	2. RegularController.regularDetail
+		- ProductFacade.checkProductIsOff	// 判断产品是否已经下线
+		- ProductFacade.infoQuery
+		- ProductFacade.productDetailInfoQuery
+		- BankFacade.pay19BankList
+		- ProductFacade.infoQuery
+		- UserProductLimitFacade.userProductLimitQuery	// 是否显示产品可用总额度和用户使用额度
+		- UserFacade.userBalanceQuery	// 查询用户余额信息
+		- DepGuideFacade.findDepGuideInfo	// 存管引导信息
+		- UserFacade.isBindCard
+3. service
+	1. ProductFacade.productDetailInfoQuery
+		- productService.selectProductDetailById	// 根据产品ID查询产品详情信息
+		- sysConfigService.findConfigByKey(Constants.PRODUCTFacade.iNFORMFacade.mINUTE)
+		- sysConfigService.findConfigByKey(Constants.DAYFacade.4Facade.wAITFacade.lOAN)
+	2. BankFacade.pay19BankList
+		- holidayService.isHolidayTimeList	// 检查当前时间是否在hiliday表控制的假日时间之内
+		- bankCardService.selectMainBankList // 查询出 isFacade.main= 1的快捷支付银行列表
+		- bankCardService.selectFirstBankList // 先查出优先级为1的快捷银行列表
+		- userChannelService.queryUserChannel // 查询用户是否配置了优先支付通道
+		- bankCardService.selectFirstBank // 按19pay银行id查找对应的19pay银行
+	3. Ecup2016ActivityFacade.queryEcupProductGrid
+		- ecup2016ActivityService.queryEcupProductGrid
+	4. PayOrdersFacade.getSuccessPayOrders
+		- bsPayOdersService.selectBuySuccessPayOrders(req.getUserId());	//  根据用户查询成功或处理中的订单。
+	5. ProductFacade.checkProductIsOff	// 判断产品是否已经下线
+		- productService.checkProductIsOff(req.getProductId())判断产品是否已经下线 {  true：已下线 false：未下线 }
+	6. ProductFacade.infoQuery
+		- productService.findRegularById
+		- productService.findConfigValue("PRICEFacade.lIMIT");
+		- productService.findConfigValue("PRICEFacade.cEILING");
+		- productService.queryPropertyInfoById(product.getPropertyId());
+	7. UserProductLimitFacade.userProductLimitQuery	// 是否显示产品可用总额度和用户使用额度
+		- userProductLimitService.findUserProductLimit
+	8. UserFacade.userBalanceQuery	// 查询用户余额信息
+		- userService.userBalanceQuery(req.getUserId())
+		- subAccountService.findDEPJSHSubAccountByUserId(Integer.parseInt(req.getUserId()));
+	9. DepGuideFacade.findDepGuideInfo	// 存管引导信息
+		- hfBankDepSiteService.findDepGuideInfo(req.getUserId());
+		- assetsService.riskStatus(req.getUserId())
+	10. UserFacade.isBindCard
+		- userService.isBindBank(Integer.parseInt(req.getUserId()))
+
+## 购买详情
+1. controller
+	1. RegularController.bind 	// micro2.0/regular/bind
+	2. RegularController.genBind 	// gen2.0/regular/bind
+	3. RegularController.gen178Bind 	// gen178/regular/bind
+2. facade
+	1. RegularController.bind 	// micro2.0/regular/bind
+		- DepGuideFacade.findDepGuideInfo	// 存管引导信息（未存管绑卡或激活）
+		- ProductFacade.infoQuery	// 查询当前购买产品的信息
+		- UserFacade.userBalanceQuery	// 获得用户余额信息
+		- TicketFacade.ticketList	// 优惠券
+		- ProductFacade.infoQuery	// 是否显示产品可用总额度和用户使用额度（针对特定产品）
+		- UserProductLimitFacade.userProductLimitQuery	// productId = 49
+		- UserFacade.infoQuery	// 用户信息(是否绑卡等)
+	2. RegularController.genBind 	// gen2.0/regular/bind
+		- ProductFacade.checkProductIsOff	// 判断产品是否已经下线
+		- DepGuideFacade.findDepGuideInfo	// 存管引导信息（未存管绑卡或激活）
+		- ProductFacade.infoQuery	// 查询当前购买产品的信息
+		- TicketFacade.ticketList	// 优惠券
+		- UserFacade.userBalanceQuery	// 获得用户余额信息
+		- UserFacade.infoQuery	// 用户信息(是否绑卡等)
+	3. RegularController.gen178Bind 	// gen178/regular/bind
+		- ProductFacade.checkProductIsOff	// 判断产品是否已经下线
+		- DepGuideFacade.findDepGuideInfo	// 存管引导信息（未存管绑卡或激活）
+		- ProductFacade.infoQuery	// 查询当前购买产品的信息
+		- TicketFacade.ticketList	// 优惠券
+		- UserFacade.userBalanceQuery	// 获得用户余额信息
+		- UserFacade.infoQuery	// 用户信息(是否绑卡等)
+3. service
+	1. DepGuideFacade.findDepGuideInfo	// 存管引导信息
+		- hfBankDepSiteService.findDepGuideInfo(req.getUserId());
+		- assetsService.riskStatus(req.getUserId())
+	2. ProductFacade.infoQuery	// 查询当前购买产品的信息
+		- productService.findRegularById
+		- productService.findConfigValue("PRICEFacade.lIMIT");
+		- productService.findConfigValue("PRICEFacade.cEILING");
+		- productService.queryPropertyInfoById(product.getPropertyId());
+	3. UserFacade.userBalanceQuery	// 获得用户余额信息
+		- userService.userBalanceQuery(req.getUserId())
+		- subAccountService.findDEPJSHSubAccountByUserId(Integer.parseInt(req.getUserId()));
+	4. TicketFacade.ticketList	// 优惠券
+		- productService.selectById(req.getProductId())
+		- redPacketService.redPacketList(redReq, redRes);
+		- ticketInterestService.ticketInterestList(req, res);
+	5. UserProductLimitFacade.userProductLimitQuery	// productId = 49
+		- userProductLimitService.findUserProductLimit(example);
+	6. UserFacade.infoQuery	// 用户信息(是否绑卡等)
+		- userService.findUserById(req.getUserId());
+		- bankCardService.findFirstBankCardByUserId(req.getUserId());
+	7. ProductFacade.checkProductIsOff
+		- productService.checkProductIsOff(req.getProductId())判断产品是否已经下线 {  true：已下线 false：未下线 }
+
+## 购买预下单
+1. controller
+	IdentifyCodeController.mobileCodeSubmit	// {channel}/identity/mobilecode
+2. facade
+	UserFacade.infoValidation
+	SMSFacade.generate
+3. service
+	1. UserFacade.infoValidation
+		- userService.isValidMobile
+		- ucUserService.isValidMobile
+		- userService.isValidNick
+		- userService.findUserByEmail
+	2. SMSFacade.generate
+		- smsService.sendIdentify
+
+## 购买正式下单
+1. controller
+	RegularController.microBalanceBuy	// micro2.0/regular/balanceBuy （H5）
+	RegularController.balanceBuy	// gen2.0/regular/balance_buy
+	RegularController.balanceBuy178		// gen178/regular/balance_buy
+2. facade
+	1. RegularController.microBalanceBuy	// micro2.0/regular/balanceBuy （H5）
+		- UserFacade.infoQuery
+		- UserFacade.validUser		// 校验验证码是否正确
+		- RegularBuyFacade.balanceBuy
+	2. RegularController.balanceBuy			// gen2.0/regular/balance_buy
+		- UserFacade.validUser		// 校验验证码是否正确
+		- UserFacade.infoQuery
+		- RegularBuyFacade.balanceBuy
+	3. RegularController.balanceBuy178		// gen178/regular/balance_buy
+		- UserFacade.validUser		// 校验验证码是否正确
+		- UserFacade.infoQuery
+		- RegularBuyFacade.balanceBuy
+3. service
+	1. UserFacade.validUser		// 校验验证码是否正确
+		- userService.isValidMobile(req.getMobile());
+		- smsService.validateIdentity(req.getMobile(), req.getMobileCode())
+	2. UserFacade.infoQuery 	// 用户信息(是否绑卡等)
+		- userService.findUserById(req.getUserId());
+		- bankCardService.findFirstBankCardByUserId(req.getUserId());
+	3. RegularBuyFacade.balanceBuy
+		- productService.queryPropertyInfoByProductId(req.getProductId());
+		- depUserBalanceBuyService.buyStage(req, res);
+		- depUserBalanceBuyService.buyFixed(req, res);
+4. 切面
+	1. depUserBalanceBuyService.buyStage && depUserBalanceBuyService.buyFixed
+		- ProductBuyResultAspect
+		- ProductBuyForCustomerAspect

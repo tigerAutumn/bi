@@ -1,0 +1,95 @@
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	<form id="detailReviewForm" method="post" action="$env.getWebURL('/userAddressInfo/saveSingle.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("detailUserId", "$!detailUserId")
+		<div class="pageFormContent nowrap" layoutH="97">
+			<dl>
+				<dt style="width:250px; height:16px">
+                    姓名：$!detailUserName
+                </dt>
+			</dl>
+            <dl>
+                <dt style="width:250px; height:16px">
+                    手机号：$!detailMobile
+                </dt>
+            </dl>
+            <dl>
+                <dt style="width:100%; height:16px;margin-bottom: 20px">
+                    地址：
+                </dt>
+            </dl>
+
+            <table class="table" layoutH="" style="width: 100%;">
+                <tr>
+                    <th style="width: 15%;text-align: center;border: solid 1px #e5e5e5;line-height: 20px;">收货人</th>
+                    <th style="width: 20%;text-align: center;border: solid 1px #e5e5e5;line-height: 20px;">收货手机号</th>
+                    <th style="width: 25%;text-align: center;border: solid 1px #e5e5e5;line-height: 20px;">地址</th>
+                    <th style="width: 25%;text-align: center;border: solid 1px #e5e5e5;line-height: 20px;">默认地址</th>
+                    <th style="width: 15%;text-align: center;border: solid 1px #e5e5e5;line-height: 20px;">操作</th>
+                </tr>
+                #foreach($grid in $addressInfoDetailList)
+                    <tr>
+                        <td style="width: 15%;text-align: center;border: solid 1px #e5e5e5;">$!grid.consignee</td>
+                        <td style="width: 20%;text-align: center;border: solid 1px #e5e5e5;">$!grid.consigneeMobile</td>
+
+                        <td title="$!grid.consigneeAddress" class="hoverAddress" " style="width: 25%;text-align: center;border: solid 1px #e5e5e5;position: relative;overflow: visible;">
+                            <span style="display: inline-block;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;width:96%;line-height: 21px;">$!grid.consigneeAddress</span>
+                        </td>
+                        <td style="width: 25%;text-align: center;border: solid 1px #e5e5e5;">
+                            #if($!grid.isDefault == "YES")
+                                是
+                            #end
+                        </td>
+                        <td style="width: 15%;text-align: center;border: solid 1px #e5e5e5;">
+                            <a style="color:blue;" title="编辑" target="dialog" href="$env.getWebURL('/userAddressInfo/detailModifiPage.htm')?detailModifiUserId=$!detailUserId&addressInfoId=$!grid.addressInfoId&detailUserName=$!detailUserName&detailMobile=$!detailMobile" class="" mask="true" rel="createBack" height="460" width="720">编辑</a>&nbsp&nbsp&nbsp
+                            <a style="color:red;" href="#" onclick="deleteAddressInfo($!grid.addressInfoId, $!detailUserId, '$!grid.isDefault')" class="">删除</a>
+                        </td>
+                    </tr>
+                #end
+            </table>
+
+            <dl>
+                <dt style="width:100%; height:16px;margin-bottom: 20px">
+                    <a style="color:blue;" class="" href="$env.getWebURL('/userAddressInfo/detailModifiPage.htm')?detailModifiUserId=$!detailUserId&detailUserName=$!detailUserName&detailMobile=$!detailMobile" target="dialog" mask="true" rel="createBack" height="460" width="720"><span>新增</span></a>
+                </dt>
+            </dl>
+
+		</div>
+		<div class="formBar">
+			<ul>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+    function deleteAddressInfo(id, userId, isDefault){
+        var url = $("#APP_ROOT_PATH").val() + "/userAddressInfo/detailDelete.htm";
+        var content = "确定删除该地址信息，是否删除？";
+        alertMsg.confirm(content,{okCall:function(){
+            jQuery.ajax({
+                type : 'post',
+                url : url,
+                data : {
+                    addressInfoId: id,
+                    detailModifiUserId: userId,
+                    isDefault: isDefault
+                },
+                dataType: 'json',
+                success : function(json) {
+                    var isDelete = json.isDelete;
+                    if(isDelete == "ISDELETE") {
+                        alertMsg.warn('该数据已被删除，请刷新页面!');
+                    }else {
+                        alertMsg.correct('删除成功!');
+                        var userId = json.userId;
+                        navTab.reload("$env.getWebURL('/userAddressInfo/detail_review.htm?userId=')"+userId);
+                    }
+                }
+            });
+        }});
+
+    }
+</script>

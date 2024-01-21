@@ -1,0 +1,127 @@
+#Html("begin")
+#Head("begin","互联网金融产品,币港湾,币港湾官网","欢迎了解币港湾产品,币港湾官网为您提供多种互联网金融产品,是优质的互联网金融服务平台。")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+#LoadJS("resources/mall/scripts/common/rem_750")
+#LoadCSS("resources/mall/styles/common/default")
+#LoadCSS("resources/mall/styles/commodity/commodity_detail")
+#WeChatShare()
+#Head("end")
+<body>
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" value="$!commodityDetail.id" id="id"/>
+	<input type="hidden" name="userId" id="userId" value="$!userId"/>
+	<input type="hidden" name="client" id="client" value="$!client"/>
+    <div class="commodityImg">
+		<img src="$!commodityDetail.commPictureUrl" />
+		<div class="header">
+			<a class="header_arrow" href="javascript:history.go(-1)"></a>
+			<h1 class="heade_ft color_bg"></h1>
+		</div>
+	</div>
+	<div class="commodityBox">
+		<div class="commodityName">$!commodityDetail.commName</div>
+		<div class="commodityNeedNumber">所需积分：<span class="commodityNeedNumberColor">$!money.format($!commodityDetail.points).replace(".00","")积分</span></div>
+	</div>
+	<div class="commodityBox commodityMargin">
+		<div class="slide1_tt"><span class="pr_tline"></span>兑换需知</div>
+		<div class="ticket_txt">
+			$!commodityDetail.exchangeNote
+		</div>
+	</div>
+	<div class="commodityBox commodityMargin">
+		<div class="slide1_tt"><span class="pr_tline"></span>商品详情</div>
+	</div>
+	<div class="commodityImgTxtbg">
+    	<div class="commodityImgTxt">
+    		$!commodityDetail.commDetails
+    	</div>
+	</div>
+	<div class="btnHeight"></div>
+	#if($!commodityDetail.status == "FOR_SALE")
+    	#if($!commodityDetail.leftCount > 0)
+    	<div class="commodityBtn">
+    		<div class="commodityBtnMin">立即兑换</div>
+    	</div>
+    	#else
+    	<div class="commodityBtnNone">已售罄</div>
+		#end
+	#else
+		<div class="commodityBtnNone">已下架</div>
+	#end
+	<!--弹窗-->
+	<!--积分不足-->
+	<div id="explain1" class="dialog_flex alert_hide">
+		<div class="alert_info_new">
+			<div class="alert_title">提示</div>
+			<div class="alert_ul">
+				当前积分不足，可以加入产品获得积分哦！
+			</div>
+			<div class="open-card-btn">
+				<div class="alert_btn left_bor">取消</div>
+				<div class="alert_btn go_buy">立即加入</div>
+			</div>
+		</div>
+	</div>
+	<!--虚拟产品-->
+	<div id="explain2" class="dialog_flex alert_hide">
+		<div class="alert_info_new">
+			<div class="alert_title">兑换前确认信息</div>
+			<div class="alert_ul alert_align">
+				<div>兑换到：<span class="alert_color" id="alert_number"></span></div>
+				<div class="alert_p">注：虚拟商品平台将发放至注册手机号账号内。</div>
+			</div>
+			<div class="open-card-btn">
+				<div class="alert_btn left_bor">取消</div>
+				<div class="alert_btn go_exchange_none">确认兑换</div>
+			</div>
+		</div>
+	</div>
+	<!--实体产品-->
+	<div id="explain3" class="dialog_flex alert_hide">
+		<div class="alert_info_new">
+			<div class="alert_title">兑换前确认收货地址</div>
+			<div class="alert_box">
+				<div class="alert_name">
+					<input type="text" class="alertName" name="alertName" id="alertName" value="" placeholder="请输入姓名" maxlength="8"/>
+				</div>
+				<div class="alert_iphone">
+					<input type="tel" class="alertName" name="alertIphone" id="alertIphone" value="" placeholder="请输入手机号" maxlength="11"/>
+				</div>
+			</div>
+			<div class="expressBox">
+				<div class="">
+					<!--选择地区-->
+					<section class="">
+						<a id="expressArea" class="alert_box" href="javascript:void(0)">
+							<div class="alert_address">
+								<input type="text" readonly="readonly"  unselectable="on" onfocus="this.blur()" class="alert_big" name="alert_big" id="alert_big" value=""  placeholder="选择地区：" maxlength="50"/>
+							</div>
+							<img class="alert_right" src="$!env.getWebURL('')/resources/mall/images/commodity/landingPage03.png" />
+						</a>
+					</section>
+					<!--选择地区弹层-->
+					<section id="areaLayer" class="express-area-box">
+						<article id="areaBox">
+							<ul id="areaList" class="area-list"></ul>
+						</article>
+					</section>
+				</div>
+			</div>
+			<div class="alert_box alert_height addressHide">
+				<textarea cols="" rows="" class="alertAddress" name="alertAddress" id="alertAddress" value="" placeholder="详细地址（如街道、小区）" maxlength="50"></textarea>
+			</div>
+			<div class="open-card-btn">
+				<div class="alert_btn left_bor1">取消</div>
+				<div class="alert_btn go_exchange">确认兑换</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		$(".commodityImgTxt span").css("white-space","pre-wrap")
+	</script>
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/mall/scripts/commodity/commodity_detail")
+#LoadJS("resources/mall/scripts/commodity/commodity_app")
+</body>
+#Html("end")

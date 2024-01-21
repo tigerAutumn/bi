@@ -1,0 +1,23 @@
+<input type="hidden" id="count" name ="count" value="$!count"/>
+<input type="hidden" id="dataTime" name ="dataTime" value="$!dataTime"/>
+#foreach($payment in $!paymentDetaclsList.paymentPastList)
+<li class="list_years_title">
+    <div class="list_mp_dl_years_time">$!payment.planDate</div>
+    <div class="list_mp_dl_years">$!money.format($!payment.repayScheduleTotalAmount)</div>
+    <div class="list_mp_dl_years list_mp_dl_color">$!money.format($!payment.planTotalRepaied)</div>
+    #if($!payment.receivableAmount == 0)
+        <div class="list_mp_dl_years_time">已还完</div>
+    #elseif($!payment.receivableAmount > 0 && $!payment.planTotalRepaied > 0 )
+        <div class="list_mp_dl_years_time">部分回款</div>
+    #elseif($!payment.receivableAmount > 0 && $!payment.planTotalRepaied == 0)
+        <div class="list_mp_dl_years_time">待回款</div>
+    #end
+
+</li>
+#end
+<li class="list_years_title">
+    <div class="list_mp_dl_years_time">合计</div>
+    <div class="list_mp_dl_years">$!money.format($!totalRepayScheduleTotalAmount)</div>
+    <div class="list_mp_dl_years list_mp_dl_color">$!money.format($!totalPlanTotalRepaied)</div>
+    <div class="list_mp_dl_years_time list_mp_dl_color1"></div>
+</li>

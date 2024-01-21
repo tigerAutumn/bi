@@ -1,0 +1,45 @@
+<form id="pagerForm" method="post" action="$env.getWebURL('/bank/record/index.htm')">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="bankCardNo" value="$!bankCardNo" />
+	<input type="hidden" name="status" value="$!status" />
+</form>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li></li>
+			<li class="line">line</li>
+		</ul>
+	</div>
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+			<tr>
+				<th width="30%">购买时间</th>
+				<th width="30%">返回码</th>
+				<th width="40%">返回原因</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($payOrderss in $payOrdersList)
+			<tr>
+				<td>$!date.format($!payOrderss.createTime)</td>
+                <td>$!payOrderss.returnCode</td>
+				<td>$!payOrderss.returnMsg</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="dialogPageBreak({numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="dialog" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>

@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsUserCustomerManagerMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsUserCustomerManager" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="customer_manager_dafy_id" property="customerManagerDafyId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="grade" property="grade" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, customer_manager_dafy_id, user_id, grade, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsUserCustomerManagerExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_user_customer_manager
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_user_customer_manager
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_user_customer_manager
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsUserCustomerManagerExample" >
+    delete from bs_user_customer_manager
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsUserCustomerManager" >
+    insert into bs_user_customer_manager (id, customer_manager_dafy_id, user_id, 
+      grade, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{customerManagerDafyId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{grade,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsUserCustomerManager" >
+    insert into bs_user_customer_manager
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="customerManagerDafyId != null" >
+        customer_manager_dafy_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="grade != null" >
+        grade,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="customerManagerDafyId != null" >
+        #{customerManagerDafyId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsUserCustomerManagerExample" resultType="java.lang.Integer" >
+    select count(*) from bs_user_customer_manager
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_user_customer_manager
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.customerManagerDafyId != null" >
+        customer_manager_dafy_id = #{record.customerManagerDafyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.grade != null" >
+        grade = #{record.grade,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_user_customer_manager
+    set id = #{record.id,jdbcType=INTEGER},
+      customer_manager_dafy_id = #{record.customerManagerDafyId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      grade = #{record.grade,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsUserCustomerManager" >
+    update bs_user_customer_manager
+    <set >
+      <if test="customerManagerDafyId != null" >
+        customer_manager_dafy_id = #{customerManagerDafyId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="grade != null" >
+        grade = #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsUserCustomerManager" >
+    update bs_user_customer_manager
+    set customer_manager_dafy_id = #{customerManagerDafyId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      grade = #{grade,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <resultMap id="OwnershipVOResultMap" type="com.pinting.business.model.vo.OwnershipVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectOwnershipGrid" resultMap="OwnershipVOResultMap" parameterType="com.pinting.business.model.vo.OwnershipVO" >
+  	SELECT a.id, b.user_name, b.mobile, b.id_card 
+  	FROM bs_user_customer_manager a, bs_user b, tbemployee c, tbdepartment d
+	WHERE a.customer_manager_dafy_id = c.lUserId AND a.user_id = b.id AND d.strDeptCode = c.strDeptCode 
+	<if test="record.deptList != null and record.deptList !=''">
+		AND (
+		<if test="record.cookieUserId != null and record.cookieUserId != -1">
+			a.customer_manager_dafy_id = #{record.cookieUserId} OR 
+		</if>
+		d.lId IN 
+		<foreach collection="record.deptList" item="listItem" open="(" close=")" separator="," >
+	    	#{listItem}
+	    </foreach>
+	    )
+    </if>
+	<if test="record.userNameAccurate != null and record.userNameAccurate != ''">
+		AND b.user_name = #{record.userNameAccurate}
+	</if>
+	<if test="record.userName != null and record.userName != ''">
+		AND b.user_name LIKE CONCAT(CONCAT('%', #{record.userName}),'%')
+	</if>
+	<if test="record.mobile != null and record.mobile != ''">
+		AND b.mobile LIKE CONCAT(CONCAT('%', #{record.mobile}),'%')
+	</if>
+	<if test="record.idCard != null and record.idCard != ''">
+		AND b.id_card LIKE CONCAT(CONCAT('%', #{record.idCard}),'%')
+	</if>
+	<if test="record.dafyUserId != null and record.dafyUserId != -1">
+		AND a.customer_manager_dafy_id = #{record.dafyUserId}
+	</if>
+	LIMIT #{record.start}, #{record.numPerPage}
+  </select>
+  <select id="countOwnership" resultType="java.lang.Integer" parameterType="com.pinting.business.model.vo.OwnershipVO" >
+  	SELECT COUNT(a.id)
+  	FROM bs_user_customer_manager a, bs_user b, tbemployee c, tbdepartment d
+	WHERE a.customer_manager_dafy_id = c.lUserId AND a.user_id = b.id AND d.strDeptCode = c.strDeptCode 
+	<if test="record.deptList != null and record.deptList !=''">
+		AND (
+		<if test="record.cookieUserId != null and record.cookieUserId != -1">
+			a.customer_manager_dafy_id = #{record.cookieUserId} OR 
+		</if>
+		d.lId IN 
+		<foreach collection="record.deptList" item="listItem" open="(" close=")" separator="," >
+	    	#{listItem}
+	    </foreach>
+	    )
+    </if>
+	<if test="record.userNameAccurate != null and record.userNameAccurate != ''">
+		AND b.user_name = #{record.userNameAccurate}
+	</if>
+	<if test="record.userName != null and record.userName != ''">
+		AND b.user_name LIKE CONCAT(CONCAT('%', #{record.userName}),'%')
+	</if>
+	<if test="record.mobile != null and record.mobile != ''">
+		AND b.mobile LIKE CONCAT(CONCAT('%', #{record.mobile}),'%')
+	</if>
+	<if test="record.idCard != null and record.idCard != ''">
+		AND b.id_card LIKE CONCAT(CONCAT('%', #{record.idCard}),'%')
+	</if>
+	<if test="record.dafyUserId != null and record.dafyUserId != -1">
+		AND a.customer_manager_dafy_id = #{record.dafyUserId}
+	</if>
+  </select>
+  
+</mapper>

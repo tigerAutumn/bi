@@ -1,0 +1,588 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+	<input type="hidden" name="orderField" value="$!req.orderField" />
+	<input type="hidden" name="orderDirection" value="$!req.orderDirection" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/bsuser/tagManage.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!req.pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+		
+		<input type="hidden" name="tagIdsForQuery" value="$!tagIdsForQuery" class='tagIdsForQuery'/>
+		<input type="hidden" name="tagIdListTotal" value="$!tagIdListTotal" class='tagIdListTotal'/>
+		<input type="hidden" name="noTagId" value="$!noTagId" class='noTagId'/>
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						用户ID：<input id="userId" oninput="onlyInteger(this)" type="text" name="userId" maxlength="9" value="$!req.userId" class="number"/>
+					</td>
+					<td>
+						性别：
+						<select name="gender" class="valid" id="gender_sel">
+							<option value="">请选择</option>
+							<option value="男" #if("$!req.gender"=="男") selected  #end>男</option>
+        					<option value="女" #if("$!req.gender"=="女") selected  #end>女</option>
+        				</select>
+					</td>
+					<td>
+						年龄：<input id="sAge" oninput="onlyInteger(this)" style="width:100px;" type="text" name="sAge" value="$!req.sAge" class="number"/>
+						到<input id="eAge" oninput="onlyInteger(this)" style="width:100px;" type="text" name="eAge" value="$!req.eAge" class="number"/></td>
+                    </td>
+				</tr>
+				<tr>
+					<td>
+						银行名称：
+						<select name="buyBankType" >
+							<option value="" #if("$!req.buyBankType"=="") selected #end>全部</option>
+							#foreach($buyBankTypeList in $!buyBankTypeLists)
+							<option value="$!buyBankTypeList.bankId" #if("$!req.buyBankType"=="$!buyBankTypeList.bankId") selected  #end>$!buyBankTypeList.bankName</option>
+							#end
+							##<option value="-1" #if("$!req.buyBankType" == "-1") selected  #end>未绑定</option>
+						
+					</td>
+					<td>总资产：<input id="sSumBalance" style="width:100px;" type="text" name="sSumBalance" value="$!req.sSumBalance" oninput="onlyPositiveNum(this)"/>到<input id="eSumBalance" style="width:100px;" type="text" name="eSumBalance" value="$!req.eSumBalance" oninput="onlyPositiveNum(this)"/>元</td>
+					<td>
+						绑卡状态：
+						<select name="bankStatus" class="valid">
+							<option value="" >请选择</option>
+							<option value="0" #if("$!req.bankStatus"=="0") selected  #end>未绑定</option>
+							<option value="1" #if("$!req.bankStatus"=="1") selected  #end>正常</option>
+        					<option value="2" #if("$!req.bankStatus"=="2") selected  #end>禁用</option>
+        					<option value="3" #if("$!req.bankStatus"=="3") selected  #end>绑定中</option>
+							<option value="4" #if("$!req.bankStatus"=="4") selected  #end>绑定失败</option>
+							<option value="5" #if("$!req.bankStatus"=="5") selected  #end>已解绑</option>
+        				</select>
+					</td>
+                </tr>
+				<tr>
+					<td>投资次数：<input id="sInvestmentTimes" oninput="onlyInteger(this)" style="width:100px;" type="text" name="sInvestmentTimes" value="$!req.sInvestmentTimes" class="number" maxlength="9"/>
+						到<input id="eInvestmentTimes" style="width:100px;" oninput="onlyInteger(this)" type="text" name="eInvestmentTimes" value="$!req.eInvestmentTimes" class="number" maxlength="9"/></td>
+					
+					<td>当前投资本金：<input id="sCurrentBalance" oninput="onlyPositiveNum(this)" style="width:100px;" type="text" name="sCurrentBalance" value="$!req.sCurrentBalance" />
+						到<input id="eCurrentBalance" style="width:100px;" oninput="onlyPositiveNum(this)" type="text" name="eCurrentBalance" value="$!req.eCurrentBalance" />元</td>
+					<td>累计推荐奖励：<input id="sReward" style="width:100px;" oninput="onlyPositiveNum(this)" type="text" name="sReward" value="$!req.sReward" />
+						到<input id="eReward" style="width:100px;" oninput="onlyPositiveNum(this)" type="text" name="eReward" value="$!req.eReward" />元</td>
+                </tr>
+				<tr>
+					<td>
+					注册日期：<input style="width:70px;" name="SregistTime" maxdate="{%y}-%M-{%d}"   type="text"  id="SregistTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.SregistTime)" />
+						到  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input style="width:70px;" name="EregistTime" maxdate="{%y}-%M-{%d}"  type="text"id="EregistTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.EregistTime)" />
+					</td>
+					<td >首次购买日期：<input style="width:70px;" name="sFirstBuyTime" maxdate="{%y}-%M-{%d}"   type="text"  id="sFirstBuyTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.sFirstBuyTime)" />
+					   到  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input style="width:70px;" name="eFirstBuyTime" maxdate="{%y}-%M-{%d}"   type="text"  id="eFirstBuyTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.eFirstBuyTime)" />
+					</td >
+					<td>账户余额：<input id="sBalance" oninput="onlyPositiveNum(this)" style="width:100px;" type="text" name="sBalance" value="$!req.sBalance" />到<input id="eBalance" style="width:100px;" oninput="onlyPositiveNum(this)" type="text" name="eBalance" value="$!req.eBalance" />元</td>
+                </tr>
+				<tr>
+					<td>累计投资本金：<input id="sTotalPrincipal"  style="width:100px;" type="text" name="sTotalPrincipal" value="$!req.sTotalPrincipal" oninput="onlyPositiveNum(this)"/>
+						到<input id="eTotalPrincipal" style="width:100px;" type="text" name="eTotalPrincipal" value="$!req.eTotalPrincipal" oninput="onlyPositiveNum(this)"/>元</td>
+					<td>累计投资收益：<input id="sTotalInterest"  style="width:100px;" type="text" name="sTotalInterest" value="$!req.sTotalInterest" oninput="onlyPositiveNum(this)"/>
+						到<input id="eTotalInterest" style="width:100px;" type="text" name="eTotalInterest" value="$!req.eTotalInterest" oninput="onlyPositiveNum(this)"/>元</td>
+					
+					
+					<td>推荐人数：<input id="sRecommendNum" oninput="onlyInteger(this)"  style="width:100px;" type="text" name="sRecommendNum" value="$!req.sRecommendNum" class="number" oninput="onlyPositiveNum(this)" maxlength="9"/>
+						到<input id="eRecommendNum" oninput="onlyInteger(this)" style="width:100px;" type="text" name="eRecommendNum" value="$!req.eRecommendNum" class="number" oninput="onlyPositiveNum(this)" maxlength="9"/></td>
+                </tr>
+				<tr>
+				   <td>
+						##标签：<input id="content" type="text" name="content" value="$!req.content" class="clear"/>
+				   </td>
+				   <td>
+						<a class="add" href="$env.getWebURL('/agent/agent_list.htm')" target="dialog" mask="true" rel="createBack" height="390" width="600"><span><button type="button">选择渠道</button></span></a>
+						<input type="hidden" id="agentTotal" name="agentTotal" value="$!agentTotal"/>
+						<input type="hidden" id="agentIds" name="agentIds" value="$!req.agentIds"/>
+						<input type="hidden" id="nonAgentId" name="nonAgentId" value="$!req.nonAgentId"/>
+						
+						
+						&nbsp;&nbsp;&nbsp;
+						<button  onclick="chooseTag()" type="button">选择标签</button>
+					</td>
+					<td>
+						<button  onclick="func()" type="button">查询</button>
+						&nbsp;&nbsp;&nbsp;
+						<button  onclick="exp()" type="button">导出userId列表</button>
+						&nbsp;&nbsp;&nbsp;
+						<button  onclick="addTags()" type="button">批量添加标签</button>
+						&nbsp;&nbsp;&nbsp;
+						<button  onclick="addAllTags()" type="button">全量添加标签</button>
+					</td>
+				</tr>
+				
+			</table>
+	
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="$env.getWebURL('/bsuser/userIdTags.htm')" target="navTab" mask="true" rel="createBack" height="665" width="720"><span>按userid查询</span></a></li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="258">
+		<thead>
+			<tr>
+				<th width="4%">
+					<input type="checkbox" id="user_tag_checked" onclick="selectAllCheckBox()" />
+					<span style="position: relative;top: -2px;">全选</span>
+				</th>
+                <th width="5%">用户ID</th>
+				<th width="4%">性别</th>
+				<th orderfield="age"  class=#if("$!age" != "") $!age #else "asc" #end width="5%">年龄</th>
+				<th width="5%">银行名称</th>
+				<th width="5%">绑卡状态</th>
+				<th orderfield="sumBalance"  class=#if("$!sumBalance" != "") $!sumBalance #else "asc" #end width="5%">总资产</th>
+				<th width="5%">投资次数</th>
+				<th orderfield="currentBalance"  class=#if("$!currentBalance" != "") $!currentBalance #else "asc" #end  width="5%">当前投资本金</th>
+				<th orderfield="total_bonus"  class=#if("$!total_bonus" != "") $!total_bonus #else "asc" #end  width="5%">累计推荐奖励</th>
+				<th width="10%">注册日期</th>
+				<th width="10%">首次购买日期</th>
+				<th orderfield="account_balance"  class=#if("$!account_balance" != "") $!account_balance #else "asc" #end width="5%">账户余额</th>
+				<th  orderfield="totalPrincipal"  class=#if("$!totalPrincipal" != "") $!totalPrincipal #else "asc" #end  width="5%">累计投资本金</th>
+				<th  orderfield="total_interest"  class=#if("$!total_interest" != "") $!total_interest #else "asc" #end  width="5%">累计投资收益</th>
+				<th width="4%">推荐人数</th>
+				<th width="5%">渠道来源</th>
+				##<th width="80">标签</th>
+				<th width="5%">是否有标签</th>
+				<th width="3%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $users)
+			<tr target="sid_user" rel="1">
+				<td ><input class="tag_class" type="checkbox"  value="" name="tag_td" user_id='$grid.userId'/></td>
+				<td>$grid.userId</td>
+				<td>$!grid.gender</td>
+				<td>#if($!grid.age != '0') $!grid.age #end</td>
+				<td>#if("$!grid.bankName" != "") $!grid.bankName#end</td>
+				<td>
+				#if("$!grid.bankStatus" == 1)
+					 正常
+				#elseif("$!grid.bankStatus" == 2)
+					禁用
+				#elseif("$!grid.bankStatus" == 3)
+					绑定中
+				#elseif("$!grid.bankStatus" == 4) 
+					绑定失败
+				#elseif("$!grid.bankStatus" == 5)
+				          已解绑
+				#else
+					未绑定
+				#end
+				</td>
+				<td ><div class="gridCol">$!money.format($!grid.sumBalance)</div></td>
+				<td>$!grid.investmentTimes</td>
+				<td><div class="gridCol">$!money.format($!grid.currentBalance)</div></td>
+				<td><div class="gridCol">$!money.format($!grid.totalBonus)</div></td>
+				<td>$!date.format($!grid.registerTime)</td>
+				<td>$!date.format($!grid.firstBuyTime)</td>
+				<td ><div class="gridCol">$!money.format($!grid.accountBalance)</div></td>
+				<td><div class="gridCol">$!money.format($!grid.totalPrincipal)</div></td>
+				<td><div class="gridCol">$!money.format($!grid.totalInterest)</div></td>						
+				
+				<td>$!grid.recommendNum</td>
+				<td>$!grid.agentName</td>
+				
+                ##<td>标签 显示1-2个 鼠标移上去显示全部</td>
+				##<td>$!grid.content</td>
+				<td>#if($!string.isBlank($!grid.content)) 否 #else 是 #end</td>
+				<td>
+					<a title="修改标签" href="$env.getWebURL('/bsuser/user_tag_list.htm')?userId=$!grid.userId&source=user_tag" target="dialog" mask="true" rel="createBack" height="390" width="600" class="btnEdit">
+						<span>修改</span>
+					</a>
+				</td>
+				
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+
+	</div>
+</div>
+#LoadJS("/resources/js/global_validate")
+<script>
+function chooseTag(){
+	var tagIdsForQuery = $(".tagIdsForQuery").val();
+	// 打开选择标签的 dialog
+	var options = {"close":"function","mask":true};
+	$.pdialog.open($('#APP_ROOT_PATH').val()+"/bsuser/tag_list.htm?tagsForQuery="+tagIdsForQuery, "dialog_tag_list", "选择标签", options);
+}
+
+// 全量添加标签
+function addAllTags() {
+	// 打开选择标签的 dialog
+	var params = $("#myform").serialize();
+	
+	var options = {"close":"function","mask":true};
+	$.pdialog.open($('#APP_ROOT_PATH').val()+"/bsuser/user_tag_list.htm?isAll=yes&"+params, "dialog_tag_list", "选择标签", options);
+}
+
+// 批量添加标签
+function addTags() {
+	// 获得所有选中的USERID
+	var userIds = '';
+	$(".tag_class").each(function(){
+		if($(this).attr('checked')) {
+			userIds += $(this).attr('user_id')+',';
+		}
+	});
+	if(userIds == null || userIds == '') {
+		alertMsg.warn('请选择要添加标签的用户');
+		return;
+	}
+	// 打开选择标签的 dialog
+	var options = {"close":"function","mask":true};
+	$.pdialog.open($('#APP_ROOT_PATH').val()+"/bsuser/user_tag_list.htm?userIds="+userIds, "dialog_tag_list", "选择标签", options);
+}
+
+function func(){
+    // 首次购买时间
+	var sFirstBuyTime = $("#sFirstBuyTime").val();
+	var eFirstBuyTime = $("#eFirstBuyTime").val();
+	if(sFirstBuyTime != "" && eFirstBuyTime != ""){
+		var result = Date.parse(eFirstBuyTime.replace(/-/g,"/"))- Date.parse(sFirstBuyTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	// 注册时间
+	var SregistTime = $("#SregistTime").val();
+	var EregistTime = $("#EregistTime").val();
+	if(SregistTime != "" && EregistTime != ""){
+		var result = Date.parse(EregistTime.replace(/-/g,"/"))- Date.parse(SregistTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	// 投资次数
+	var sInvestmentTimes =  $("#sInvestmentTimes").val();
+	var eInvestmentTimes =  $("#eInvestmentTimes").val();
+	if(sInvestmentTimes < 0 || eInvestmentTimes < 0) {
+		alert("输入次数不能小于0！");
+		return false;
+	}
+	if(sInvestmentTimes != "" && eInvestmentTimes != ""){
+    	if(eval(sInvestmentTimes) > eval(eInvestmentTimes)){
+    		alert("开始次数不能大于结束次数！");
+    		return false;
+    	}
+	}
+	// 总投资
+	var sSumBalance =  $("#sSumBalance").val();
+	var eSumBalance =  $("#eSumBalance").val();
+	if(sSumBalance < 0 || eSumBalance < 0) {
+		alert("输入次数不能小于0！");
+		return false;
+	}
+	if(sSumBalance != "" && eSumBalance != ""){
+    	if(eval(sSumBalance) > eval(eSumBalance)){
+    		alert("总投资开始金额不能大于结束金额！");
+    		return false;
+    	}
+	}
+	// 年龄sAge eAge
+	var sAge =  $("#sAge").val();
+	var eAge =  $("#eAge").val();
+	var reg = /^[1-9]\d*$/;
+	if(sAge < 0 || eAge < 0) {
+		alert("输入年龄不能小于0！");
+		return false;
+	}
+	if(sAge != "" && eAge != ""){
+    	if(parseInt(sAge) > parseInt(eAge)){
+    		alert("开始年龄不能大于结束年龄！");
+    		return false;
+    	}
+	}
+	if((sAge != "" && !reg.test(sAge)) || (eAge != "" && !reg.test(eAge))) {
+		alert("年龄必须是正整数！");
+    	return false;
+	}
+	
+	//当前投资本金sCurrentBalance  eCurrentBalance
+	var sCurrentBalance =  $("#sCurrentBalance").val();
+	var eCurrentBalance =  $("#eCurrentBalance").val();
+	if(sCurrentBalance < 0 || eCurrentBalance < 0) {
+		alert("输入金额不能小于0！");
+		return false;
+	}
+	if(sCurrentBalance != "" && eCurrentBalance != ""){
+    	if(eval(sCurrentBalance) > eval(eCurrentBalance)){
+    		alert("当前投资本金开始金额不能大于结束金额！");
+    		return false;
+    	}
+	}
+	//累计推荐奖励sReward eReward
+	var sReward =  $("#sReward").val();
+	var eReward =  $("#eReward").val();
+	if(sReward < 0 || eReward < 0) {
+		alert("输入金额不能小于0！");
+		return false;
+	}
+	if(sReward != "" && eReward != ""){
+    	if(eval(sReward) > eval(eReward)){
+    		alert("累计推荐奖励开始金额不能大于结束金额！");
+    		return false;
+    	}
+	}
+	//账户余额 sBalance eBalance
+	var sBalance =  $("#sBalance").val();
+	var eBalance =  $("#eBalance").val();
+	if(sBalance < 0 || eBalance < 0) {
+		alert("输入金额不能小于0！");
+		return false;
+	}
+	if(sBalance != "" && eBalance != ""){
+    	if(eval(sBalance) > eval(eBalance)){
+    		alert("账户余额开始金额不能大于结束金额！");
+    		return false;
+    	}
+	}
+	//累计投资本金  sTotalPrincipal eTotalPrincipal
+	var sTotalPrincipal =  $("#sTotalPrincipal").val();
+	var eTotalPrincipal =  $("#eTotalPrincipal").val();
+	if(sTotalPrincipal < 0 || eTotalPrincipal < 0) {
+		alert("输入金额不能小于0！");
+		return false;
+	}
+	if(sTotalPrincipal != "" && eTotalPrincipal != ""){
+    	if(eval(sTotalPrincipal) > eval(eTotalPrincipal)){
+    		alert("累计投资本金开始金额不能大于结束金额！");
+    		return false;
+    	}
+	}
+	//累计投资收益 sTotalInterest   eTotalInterest
+	var sTotalInterest =  $("#sTotalInterest").val();
+	var eTotalInterest =  $("#eTotalInterest").val();
+	if(sTotalInterest < 0 || eTotalInterest < 0) {
+		alert("输入金额不能小于0！");
+		return false;
+	}
+	if(sTotalInterest != "" && eTotalInterest != ""){
+    	if(eval(sTotalInterest) > eval(eTotalInterest)){
+    		alert("累计投资收益开始金额不能大于结束金额！");
+    		return false;
+    	}
+	}
+	//推荐人数 sRecommendNum eRecommendNum
+	var sRecommendNum =  $("#sRecommendNum").val();
+	var eRecommendNum =  $("#eRecommendNum").val();
+	if(sRecommendNum < 0 || eRecommendNum < 0) {
+		alert("输入人数不能小于0！");
+		return false;
+	}
+	if(sRecommendNum != "" && eRecommendNum != ""){
+    	if(eval(sRecommendNum) > eval(eRecommendNum)){
+    		alert("开始人数不能大于结束人数！");
+    		return false;
+    	}
+	}
+	
+	
+	var url = $("#APP_ROOT_PATH").val() + "/bsuser/tagManage.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+
+	// 首次购买时间
+	var sFirstBuyTime = $("#sFirstBuyTime").val();
+	var eFirstBuyTime = $("#eFirstBuyTime").val();
+	if(sFirstBuyTime != "" && eFirstBuyTime != ""){
+		var result = Date.parse(eFirstBuyTime.replace(/-/g,"/"))- Date.parse(sFirstBuyTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	// 注册时间
+	var SregistTime = $("#SregistTime").val();
+	var EregistTime = $("#EregistTime").val();
+	if(SregistTime != "" && EregistTime != ""){
+		var result = Date.parse(EregistTime.replace(/-/g,"/"))- Date.parse(SregistTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	// 投资次数
+	var sInvestmentTimes =  $("#sInvestmentTimes").val();
+	var eInvestmentTimes =  $("#eInvestmentTimes").val();
+	if(sInvestmentTimes < 0 || eInvestmentTimes < 0) {
+		alert("输入次数不能小于0！");
+		return false;
+	}
+	if(sInvestmentTimes != "" && eInvestmentTimes != ""){
+    	if(eval(sInvestmentTimes) > eval(eInvestmentTimes)){
+    		alert("开始次数不能大于结束次数！");
+    		return false;
+    	}
+	}
+	// 总投资
+	var sSumBalance =  $("#sSumBalance").val();
+	var eSumBalance =  $("#eSumBalance").val();
+	if(sSumBalance < 0 || eSumBalance < 0) {
+		alert("输入次数不能小于0！");
+		return false;
+	}
+	if(sSumBalance != "" && eSumBalance != ""){
+    	if(eval(sSumBalance) > eval(eSumBalance)){
+    		alert("总投资开始金额不能大于结束金额！");
+    		return false;
+    	}
+	}
+	// 年龄sAge eAge
+	var sAge =  $("#sAge").val();
+	var eAge =  $("#eAge").val();
+	var reg = /^[1-9]\d*$/;
+	if(sAge < 0 || eAge < 0) {
+		alert("输入年龄不能小于0！");
+		return false;
+	}
+	if(sAge != "" && eAge != ""){
+    	if(parseInt(sAge) > parseInt(eAge)){
+    		alert("开始年龄不能大于结束年龄！");
+    		return false;
+    	}
+	}
+	//当前投资本金sCurrentBalance  eCurrentBalance
+	var sCurrentBalance =  $("#sCurrentBalance").val();
+	var eCurrentBalance =  $("#eCurrentBalance").val();
+	if(sCurrentBalance < 0 || eCurrentBalance < 0) {
+		alert("输入金额不能小于0！");
+		return false;
+	}
+	if(sCurrentBalance != "" && eCurrentBalance != ""){
+    	if(eval(sCurrentBalance) > eval(eCurrentBalance)){
+    		alert("当前投资本金开始金额不能大于结束金额！");
+    		return false;
+    	}
+	}
+	//累计推荐奖励sReward eReward
+	var sReward =  $("#sReward").val();
+	var eReward =  $("#eReward").val();
+	if(sReward < 0 || eReward < 0) {
+		alert("输入金额不能小于0！");
+		return false;
+	}
+	if(sReward != "" && eReward != ""){
+    	if(eval(sReward) > eval(eReward)){
+    		alert("累计推荐奖励开始金额不能大于结束金额！");
+    		return false;
+    	}
+	}
+	//账户余额 sBalance eBalance
+	var sBalance =  $("#sBalance").val();
+	var eBalance =  $("#eBalance").val();
+	if(sBalance < 0 || eBalance < 0) {
+		alert("输入金额不能小于0！");
+		return false;
+	}
+	if(sBalance != "" && eBalance != ""){
+    	if(eval(sBalance) > eval(eBalance)){
+    		alert("账户余额开始金额不能大于结束金额！");
+    		return false;
+    	}
+	}
+	//累计投资本金  sTotalPrincipal eTotalPrincipal
+	var sTotalPrincipal =  $("#sTotalPrincipal").val();
+	var eTotalPrincipal =  $("#eTotalPrincipal").val();
+	if(sTotalPrincipal < 0 || eTotalPrincipal < 0) {
+		alert("输入金额不能小于0！");
+		return false;
+	}
+	if(sTotalPrincipal != "" && eTotalPrincipal != ""){
+    	if(eval(sTotalPrincipal) > eval(eTotalPrincipal)){
+    		alert("累计投资本金开始金额不能大于结束金额！");
+    		return false;
+    	}
+	}
+	//累计投资收益 sTotalInterest   eTotalInterest
+	var sTotalInterest =  $("#sTotalInterest").val();
+	var eTotalInterest =  $("#eTotalInterest").val();
+	if(sTotalInterest < 0 || eTotalInterest < 0) {
+		alert("输入金额不能小于0！");
+		return false;
+	}
+	if(sTotalInterest != "" && eTotalInterest != ""){
+    	if(eval(sTotalInterest) > eval(eTotalInterest)){
+    		alert("累计投资收益开始金额不能大于结束金额！");
+    		return false;
+    	}
+	}
+	//推荐人数 sRecommendNum eRecommendNum
+	var sRecommendNum =  $("#sRecommendNum").val();
+	var eRecommendNum =  $("#eRecommendNum").val();
+	if(sRecommendNum < 0 || eRecommendNum < 0) {
+		alert("输入人数不能小于0！");
+		return false;
+	}
+	if(sRecommendNum != "" && eRecommendNum != ""){
+    	if(eval(sRecommendNum) > eval(eRecommendNum)){
+    		alert("开始人数不能大于结束人数！");
+    		return false;
+    	}
+	}
+	
+	var url = $("#APP_ROOT_PATH").val() + "/userIdOfTag/exportXls.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+function c(){
+
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+
+//全选/取消全选
+function selectAllCheckBox() {
+	var status = $("#user_tag_checked").prop("checked");
+	if(status) {
+		$(".tag_class").prop("checked",true);
+	}
+	else{
+		$(".tag_class").prop("checked",false);
+	}
+}
+  
+
+function trimLeftAndRightSpace(obj) {
+	var result = $(obj).attr("value").replace(/(^\s*)|(\s*$)/g, "");
+    $(obj).attr("value",result);
+}
+
+function onlyInteger(input_obj) {
+	input_obj.value = input_obj.value.replace(/\D/g,'');
+}
+
+function onlyPositiveNum(input_obj) {
+	input_obj.value=input_obj.value.replace(' ','');
+    input_obj.value = input_obj.value.match(/\d{1,}\.{0,1}\d{0,}/);
+}
+</script>

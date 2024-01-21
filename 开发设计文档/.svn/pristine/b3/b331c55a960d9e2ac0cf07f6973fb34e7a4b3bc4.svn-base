@@ -1,0 +1,107 @@
+## 理财人冻结账户黑名单
+1. 需求描述
+	+ 前端冻结提示：您的账户已冻结，请联系客服详询
+	+ 冻结状态下，限制充值、提现、购买、换卡操作
+	+ 发往恒丰的充值、提现、换卡订单筛除冻结账户订单，取消发送
+
+2. 需求背景
+	
+
+3. 业务逻辑
+### 原型地址: svn\产品专用\项目需求\原型\2018年需求\7月份-用户账户冻结状态新增
+			  绑卡业务：项目设计\存管\绑卡逻辑.xmind
+			  提现业务：项目设计\存管\理财人提现.xmind
+				
+### 管理台业务实现点
+### 1. 注册用户管理-用户管理/bsuser/index.htm，搜索条件新增账户状态，列表记录新增账户状态显示、导出新增新增账户状态列，见SVN原型 ###
+<pre>	
+状态：正常， 对应bs_user表status字段标识 1
+状态：注销， 对应bs_user表status字段标识 2
+状态：冻结， 对应bs_user表status字段标识 3
+</pre>
+
+### 2. 账户状态编辑，点击展示手机号和账户状态，确定修改更新用户表的用户状态，操作记录表m_user_op_record新增一条记录
+<pre>
+update bs_user set status='' where id=''
+
+INSERT INTO `m_user_op_record`( `op_user_id`, `function_name`, `function_url`, `op_content`, `ip`, `note`, `op_time`) VALUES 
+(xx, '用户管理', '/bsuser/updateUserStatus', '姓名：xx', '127.0.0.1', '', 'xx');
+</pre>
+
+### 切面业务实现点
+### 1. 以下切面进行判断，查询bs_user表对应status，如果账户已冻结提示您的账户已冻结，请联系客服详询
+<pre>
+	//币港湾绑卡预下单
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.UserCardOperateServiceImpl.preBindCard(..))")
+	public void preBindCardPointcut(){}
+	
+	//币港湾绑卡
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.UserCardOperateServiceImpl.bindCard(..))")
+	public void bindCardPointcut(){}
+	
+	//币港湾解绑卡（管理台申请更换安全卡也调用此方法）
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.UserCardOperateServiceImpl.unBindCard(..))")
+	public void unBindCardPointcut(){}
+	
+	//恒丰充值预下单
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.DepUserTopUpServiceImpl.hfPre(..))")
+	public void topUpHfPrePointcut(){}
+	
+	//恒丰充值确认下单
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.DepUserTopUpServiceImpl.hfConfirm(..))")
+	public void topUpHfConfirmPointcut(){}
+	
+	//恒丰网银充值
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.DepUserTopUpServiceImpl.hfEBank(..))")
+	public void topUpHfEBankPointcut(){}
+	
+	//恒丰提现-前端直接提现
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.DepUserBalanceWithdrawServiceImpl.apply(..)) " +
+			"|| execution(public * com.pinting.business.accounting.finance.service.impl.UserBalanceWithdrawServiceImpl.preWithdraw(..))")
+	public void withdrawSitePointcut(){}
+
+	//恒丰提现-审核通过提现
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.DepUserBalanceWithdrawServiceImpl.checkPass(..))")
+	public void withdrawCheckPassPointcut(){}
+	
+	//固定期限购买 
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.DepUserBalanceBuyServiceImpl.buyFixed(..))")
+	public void balanceBuyPointcut(){}
+	
+	//分期产品购买 
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.DepUserBalanceBuyServiceImpl.buyStage(..))")
+	public void balanceAuthPointcut(){}
+</pre>	
+
+
+## 生日红包发放
+1. 需求描述
+	+ 生日福利：根据用户生日为触发条件，身份证生日信息为准
+	+ 生日当天8点发放红包
+	+ 运营会提前设定好下月的生日。比如运营会在3月下旬配置好生日触发时间为4月1日-30日。4月过生日的用户会在生日当天8点收到生日红包
+
+2. 需求背景
+	
+3. 业务逻辑
+### 原型地址: svn\产品专用\项目需求\原型\2018年需求\6月份-生日用户自动发放红包
+
+### 管理台业务实现点
+### 1. 营销活动>红包发放管理：在发自动红包时，设置触发条件的选择下拉框中新增'生日福利'选项，新增并储存到bs_auto_red_packet_rule表的trigger_type字段
+
+### 2. 红包发放管理>列表记录发放方式新增'生日福利'判断，triggerType='BIRTHDAY_BENEFIT'
+
+### 3. 红包发放管理>红包预览，触发条件新增'生日福利'判断，triggerType='BIRTHDAY_BENEFIT'
+
+### 4. 红包发放审核>列表记录发放方式新增'生日福利'判断，triggerType='BIRTHDAY_BENEFIT'
+
+### schedule业务实现点
+### 1. 每天固定一个点跑定时，获取定时当日的月天，转化为4位数字，例如0521，筛选出身份证号为对应数字的用户，
+参照根据用户id和红包名称发放的方法（redPacketServiceImpl.double11ActivityAutoRedPacketSend）
+校验用户id，查询用户信息，查询自动红包规则表（bs_auto_red_packet_rule）触发条件（trigger_type）为生日福利（BIRTHDAY_BENEFIT）、用户生日时间满足触发时间区间的、状态为可用-AVAILABLE的红包规则列表，
+循环列表查询红包发放批次审核表（bs_red_packet_check），条件为审核状态（CheckStatus）为通过-PASS、发放方式（DistributeType）为自动-AUTO，且用户渠道满足红包规则中的渠道设置，若都满足则发放红包，
+同时发送红包短信：尊敬的用户，恭喜您获得合计￥%s元%s，请登录币港湾：官网/微信公众号/APP，我的资产-优惠券中查看使用详情。红包发放条件校验完成后，调用原来的发放方法，判断红包数量（BsRedPacketInfo已发数量 是否等于 BsRedPacketCheck.count）,未超额则BsRedPacketInfo插入对应数据
+调用公共的短信通知、微信通知、APP通知
+
+<pre>
+select * from bs_user where status=1 and id_card is not null and SUBSTR(id_card, 11,4)='xxxx'   
+</pre>

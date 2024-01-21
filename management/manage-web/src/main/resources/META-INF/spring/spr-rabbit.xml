@@ -1,0 +1,34 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/rabbit
+           http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--对象转换成json发给队列-->
+    <bean id="jackson2JsonMessageConverter"
+          class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter"/>
+
+    <!--注解支持-->
+    <rabbit:annotation-driven/>
+    <bean id="rabbitListenerContainerFactory"
+          class="org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory">
+        <property name="messageConverter" ref="jackson2JsonMessageConverter"/>
+        <property name="connectionFactory" ref="rabbitConnectionFactory"/>
+        <property name="concurrentConsumers" value="${rabbit.listener.concurrentConsumers}"/>
+        <property name="maxConcurrentConsumers" value="${rabbit.listener.maxConcurrentConsumers}"/>
+    </bean>
+
+    <rabbit:connection-factory id="rabbitConnectionFactory"
+                               username="${rabbit.username}" password="${rabbit.password}"
+                               host="${rabbit.host}" port="${rabbit.port}"
+                               channel-cache-size="${rabbit.channelCacheSize}"/>
+
+    <rabbit:admin connection-factory="rabbitConnectionFactory"/>
+
+    <!-- ==模板服务======start== -->
+    <rabbit:template id="rabbitTemplate" connection-factory="rabbitConnectionFactory" message-converter="jackson2JsonMessageConverter"/>
+    <!-- ==模板服务======end== -->
+
+</beans>

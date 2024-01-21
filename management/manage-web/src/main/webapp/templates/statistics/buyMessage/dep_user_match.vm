@@ -1,0 +1,64 @@
+<div class="pageContent">
+	<div class="pageFormContent" layoutH="80">
+<table class="table">
+	<tr heigth=30px;>
+		<td width="12%">借款人</td>
+		<td width="12%">借款金额</td>
+		<td width="12%">剩余本金</td>
+        <td width="15%">出借时间</td>
+		<td width="12%">还款金额</td>
+		<td width="15%">最近还款时间 </td>
+		<td width="12%">还款状态</td>
+		<td width="15%">备注</td>
+		<td width="12%">资产方</td>
+    </tr>
+	#foreach($data in $!list)
+		<tr>
+			<td>$data.loanName</td>
+			<td>$!money.format($!data.initAmount)</td>
+			<td>$!money.format($!data.leftAmount)</td>
+			<td>
+				$!date.formatDateTime($!data.createTime,'yyyy-MM-dd')
+			</td>
+			#set($initAmount=$!data.initAmount)
+			#set($leftAmount=$!data.leftAmount)
+			#set($repayAmount = $initAmount - $leftAmount)
+			<td>$!money.format($!repayAmount)</td>
+			<td>
+				#if($!initAmount == $!leftAmount)
+				#else
+					$!date.formatDateTime($!data.updateTime,'yyyy-MM-dd')
+				#end
+			</td>
+			<td>
+				#if($!data.status == "REPAID")
+                    已还完
+				#elseif($!data.status == "TRANSFERRED" && $!data.leftAmount == 0)
+                    已转让
+				#else
+                    还款中
+				#end
+			</td>
+				<td >
+				#if($!data.status == "REPAID" || ($!data.status == "TRANSFERRED" && $!data.leftAmount == 0))
+                    历史借款
+				#else
+                    借款中
+				#end
+			</td>
+			<td>
+					#if("$!data.partnerCode" == "ZAN")
+						赞分期
+					#elseif("$!data.partnerCode" == "YUN_DAI_SELF")
+							云贷
+					#elseif("$!data.partnerCode" == "ZSD")
+							赞时贷
+					#elseif("$!data.partnerCode" == "7_DAI_SELF")
+							7贷
+					#end
+			</td>
+    </tr>
+	#end
+</table>
+</div>
+</div>

@@ -1,0 +1,251 @@
+#Html("begin")
+#GenHead("begin","互联网金融平台，互联网金融，币港湾，币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen178/styles/recharge/trade_public")
+#LoadGenCSS("/resources/gen178/styles/assets/withdraw")
+#LoadGenJS("/resources/gen178/scripts/assets/withdraw_index")
+#GenHead("end")
+<body id="body">
+<!--header -s-->
+    #Gen178Header("assets")
+<!--header -e-->
+<input type="hidden" value="$!hfDepGuideInfo.riskStatus" id="riskStatus">
+<div class="trade_wrap">
+## 支付渠道替换成了宝付，无时间限制，在此提醒
+## <div class="rig2_3_Prompt">支付系统需每日定时维护，$!{begin} － $!{end} 无法进行提现操作。给您带来的不便，敬请见谅</div>
+    <div class="withdraw">
+        <div class="draw_bank_card">
+            <div class="trade_input">
+                <p>提现银行：</p>
+                <div class="withdraw_bank">
+                    <img src="$!env.get('gen.server.web')/$!bankLogo" alt="">
+                    <span>$!bankName</span>
+                    <span>（$!cardNo）</span>
+                </div>
+            </div>
+
+            #if($!hfDepGuideInfo.accountType == "DEP")
+                <!-- 存管户 -->
+                <div class="trade_input" id="show_text_other">
+                    <p>存管账户余额：</p>
+                    <div class="trade_data" dep_can_withdraw="$!money.format($!depCanWithdraw)">
+                        <p style="line-height: 40px;"><span class="color_font">$!money.format($!depCanWithdraw)</span>元</p>
+                    </div>
+                </div>
+            #elseif($!hfDepGuideInfo.accountType == "SIMPLE")
+                <!-- 普通账户 -->
+                <div class="trade_input" id="show_text_other">
+                    <p>普通账户余额：</p>
+                    <div class="trade_data" can_withdraw="$!money.format($!canWithdraw)">
+                        <p style="line-height: 40px;"><span class="color_font">$!money.format($!canWithdraw)</span>元</p>
+                    </div>
+                </div>
+            #elseif($!hfDepGuideInfo.accountType == "DOUBLE")
+                <!--双账户-->
+                <div class="trade_input" style="margin-bottom:0; ">
+                    <p style="margin-bottom:0; ">提现账户：</p>
+                    <div class="cad_mest">
+                        <label for="HF-withdaaw-right" class="label_focuse">
+                            <input id="HF-withdaaw-right" name="accountTypeRadio" type="radio" value="SIMPLE" class="HF-withdaaw-btn" checked="checked"/>
+                            <div class="cad_mest_dot"></div>
+                            普通账户
+                        </label>
+                        <label for="HF-withdaaw-left">
+                            <input id="HF-withdaaw-left" name="accountTypeRadio" type="radio" value="DEP" class="HF-withdaaw-btn"/>
+                            <div class="cad_mest_dot"></div>
+                            存管账户
+                        </label>
+                    </div>
+                </div>
+                <div class="trade_input" style="height: auto;line-height: 15px;height: 15px;">
+                    <p style="height: auto;line-height: 15px;"></p>
+                    <div class="trade_input_wrap" style="height: auto;line-height: 15px;font-size: 12px;color: #999;">
+                        *普通账户余额只能提现，您可将资金提现到银行卡后，再充值到恒丰存管账户，方可加入产品。
+                    </div>
+                </div>
+                <div class="trade_input" id="account_data">
+                    <p>普通账户余额：</p>
+                    <div class="trade_data" id="show_text_other" dep_can_withdraw="$!money.format($!depCanWithdraw)" can_withdraw="$!money.format($!canWithdraw)">
+                        <p><span class="color_font">$!money.format($!canWithdraw)</span>元</p>
+                    </div>
+                </div>
+
+            #end
+
+            <div class="trade_input" style="margin-bottom: 20px;">
+                <p>提现金额：</p>
+                <div class="trade_input_wrap">
+                    <input type="text" name="amount" maxlength="12" id="amount" placeholder="0.00" autocomplete="off" style="padding-right: 80px;" autocomplete="off">
+                    <span class="withdraw_all">全部提现</span>
+                </div>
+            </div>
+            <input type="hidden" value=""/>
+
+            #if("$!payPasswordExist" == "TRUE")
+                <div class="trade_input" style="height: 65px;">
+                    <p style="margin-bottom: 0;">交易密码：</p>
+                    <div class="trade_input_wrap">
+                        <input type="password" name="payPassword" id="payPassword" maxlength="16"
+                               placeholder="请输入6-16位交易密码" autocomplete="new-password">
+                    </div>
+                    <a href="javascript:go_password($('.forget_pwd_a'))" class="forget_pwd_a" url="$!env.get('gen.server.web')/gen178/assets/assets?securityCenter=securityCenter&agentViewFlag=$!agentViewFlag">忘记密码</a>
+                    <script>
+                        function go_password(obj) {
+                            localStorage.pay_password = 'pay_password';
+                            location.href = $(obj).attr('url');
+                        }
+                    </script>
+                </div>
+            #else
+                <div class="trade_input">
+                    <p>设置交易密码：</p>
+                    <div class="trade_input_wrap">
+                        <input type="password" name="payPassword" id="payPassword" maxlength="16"
+                               placeholder="请输入6-16位交易密码" autocomplete="new-password">
+                    </div>
+                </div>
+                <div class="trade_input">
+                    <p>确定交易密码：</p>
+                    <div class="trade_input_wrap">
+                        <input type="password" name="curPassword" id="curPassword" maxlength="16" placeholder="请确认交易密码"
+                               autocomplete="new-password">
+                    </div>
+                </div>
+            #end
+
+            <div class="trade_input">
+                <p></p>
+                <div class="trade_input_wrap"><a class="draw_btn sub_apply_withdraw" style="cursor:pointer;">申请提现</a>
+                </div>
+            </div>
+            <div class="trade_input" style="height: auto;line-height: 15px;height: 15px;">
+                <p style="height: auto;line-height: 15px;"></p>
+                <div class="trade_input_wrap" id="show_text" style="height: auto;line-height: 15px;">本月还可免费提现<span class="color_font">$!{withdrawTimes}</span>次，超出后手续费<span
+                        class="color_font">$!{withdrawCounterFee}</span>元/笔
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="trade_rule">
+        <h3>提现说明：</h3>
+    ##<li><span class="fontBold">•每月$!{eachMonthWithdrawTimes}次免费提现，超过$!{eachMonthWithdrawTimes}次将按$!{withdrawCounterFee}元/笔收取手续费；</span></div>
+    ##<li>•单笔5万以下（含5万），预计当天到账；单笔5万以上，预计下个工作日到账。实际到账时间依据提现银行而有所差异，如有疑问请联系客服 <span>400-806-1230</span>；</div>
+    ##<li>•根据《反洗钱法》规定，严禁洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用。</div>
+        <table>
+            <tr>
+                <td rowspan="2">手续费</td>
+                <td>每月3次以内</td>
+                <td>免费</td>
+            </tr>
+            <tr>
+                <td>每月超过3次</td>
+                <td>2.0元/笔</td>
+            </tr>
+        </table>
+        <p>提现到账说明：</p>
+        <table>
+            #set($tooMore = "false")
+            #if($!withdrawLimitAmount >= 10000)
+                #set($withdrawLimitAmountInteger = $!withdrawLimitAmount%10000)
+                #if($withdrawLimitAmountInteger == 0)
+                    #set($withdrawLimitAmount = $!withdrawLimitAmount/10000)
+                    #set($withdrawLimitAmount = $!number.format("0", $!withdrawLimitAmount))
+                #else
+                    #set($withdrawLimitAmount = $!withdrawLimitAmount/10000)
+                #end
+                #set($tooMore = "true")
+            #end
+            <tr>
+                <td colspan="4" style="color: #ff6633;">注：当日充值未加入产品的资金均需下一个工作日到账</td>
+            </tr>
+            <tr>
+                <td style="width: 150px">≤5万</td>
+                <td colspan="3">预计当日到账</td>
+            </tr>
+            <tr>
+                #if($!tooMore == "true")
+                    <td rowspan="3">>$!{withdrawLimitAmount}万</td>
+                #else
+                    <td rowspan="3">>$!{withdrawLimitAmount}</td>
+                #end
+                <td rowspan="2">工作日</td>
+                <td>8:00-16:30</td>
+                <td>预计当日到账</td>
+            </tr>
+            <tr>
+                <td>16:30-8:00</td>
+                <td>预计下个工作日到账</td>
+            </tr>
+            <tr>
+                <td>法定节假日</td>
+                <td>0:00-24:00</td>
+                <td>预计下个工作日到账</td>
+            </tr>
+        </table>
+        <ul>
+            <li>如遇银行通道维护等特殊情况将顺延1-2个工作日到账，实际到账时间依据提现银行而有所差异。</li>
+            <li>为了您的资金能及时到账，请合理安排当日充值未加入产品的资金。</li>
+            <li>根据《反洗钱法》规定，严禁洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用。</li>
+            <li>如有疑问请联系客服：400-806-1230。</li>
+        </ul>
+    </div>
+</div>
+
+<div class="overwrap">
+    <div class="overwrap_content withdraw_sure">
+        <h3>提现确认</h3>
+        <div class="overwrap_data">
+            <p class="overwrap_data_left">实际到账金额：</p>
+            <p class="overwrap_data_right withdrawNum"><span class="color_font"></span>元</p>
+        </div>
+        <div class="overwrap_data">
+            <p class="overwrap_data_left">到账时间：</p>
+            <p class="overwrap_data_right withdrawTime">预计<span class="color_font"></span>到账</p>
+        </div>
+        <div class="overwrap_button">
+            <div class="overwrap_button_left">
+                <a href="javascript:" class="overwrap_button_a" id="withdraw_sub">确定</a>
+            </div>
+            <div class="overwrap_button_right">
+                <a href="javascript:" class="overwrap_button_a overwrap_cancel">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')"/>
+<input type="hidden" id="canWithdraw" name="canWithdraw" value="$!{canWithdraw}" can_withdraw="$!money.format($!canWithdraw)">
+<input type="hidden" id="eachMonthWithdrawTimes" name="eachMonthWithdrawTimes" value="$!{eachMonthWithdrawTimes}">
+<input type="hidden" id="withdrawCounterFee" name="withdrawCounterFee" value="$!{withdrawCounterFee}">
+<input type="hidden" id="withdrawLimit" name="withdrawLimit" value="$!withdrawLimit" /> ## 提现最小金额
+<input type="hidden" id="withdrawTimes" name="withdrawTimes" value="$!withdrawTimes" />
+<input type="hidden" id="token" name="token" value="$!token" />
+<input type="hidden" id="beginTime" name="beginTime" value="$!beginTime" />
+<input type="hidden" id="endTime" name="endTime" value="$!endTime" />
+<input type="hidden" id="failTime" name="failTime" value="$!failTime" />
+<input type="hidden" id="payPasswordExist" name="payPasswordExist" value="$!payPasswordExist">
+<input type="hidden" id="singleWithdrawUpperLimit" name="singleWithdrawUpperLimit" value="$!singleWithdrawUpperLimit">
+<input type="hidden" id="dayWithdrawUpperLimit" name="dayWithdrawUpperLimit" value="$!dayWithdrawUpperLimit">
+
+<input type="hidden" id="accountType" name="accountType" value="$!hfDepGuideInfo.accountType">
+<input type="hidden" id="depCanWithdraw" name="depCanWithdraw" value="$!{depCanWithdraw}">
+
+
+<!--footer -s-->
+    #Gen178Footer()
+<!--footer -e-->
+<script>
+    $(document).ready(function () {
+        $(".cad_mest label").on("click",function () {
+            $(this).addClass("label_focuse").siblings().removeClass("label_focuse");
+            var accountNun = $(this).index();
+            console.log(accountNun);
+            if(accountNun == 0){
+                $("#account_data>p").html("普通账户余额：");
+            }else {
+                $("#account_data>p").html("存管账户余额：");
+            }
+        })
+    })
+</script>
+</body>

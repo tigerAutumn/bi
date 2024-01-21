@@ -1,0 +1,163 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾网站管理平台")
+
+#LoadCSS("resources/dwz/external/dwz-ria/themes/default/style", "screen")
+#LoadCSS("resources/dwz/external/dwz-ria/themes/css/core", "screen")
+##LoadCSS("resources/dwz/external/dwz-ria/themes/css/print", "print")
+#LoadCSS("resources/dwz/external/dwz-ria/uploadify/css/uploadify", "screen")
+
+#LoadJS("resources/dwz/external/dwz-ria/js/speedup")
+
+##LoadZUI("core")
+
+#LoadJS("resources/dwz/zui/jquery-1.7.2.min")
+#LoadJS("resources/dwz/zui/zui-core")
+
+#LoadJS("resources/dwz/external/dwz-ria/js/jquery.cookie")
+#LoadJS("resources/dwz/external/dwz-ria/js/jquery.validate")
+#LoadJS("resources/dwz/external/dwz-ria/js/jquery.bgiframe")
+#LoadJS("resources/dwz/external/dwz-ria/xheditor/xheditor-1.1.14-zh-cn.min")
+#LoadJS("resources/dwz/external/dwz-ria/uploadify/scripts/swfobject")
+#LoadJS("resources/dwz/external/dwz-ria/uploadify/scripts/jquery.uploadify.v2.1.0")
+
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.core")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.util.date")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.validate.method")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.barDrag")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.drag")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.tree")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.accordion")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.ui")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.theme")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.switchEnv")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.alertMsg")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.contextmenu")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.navTab")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.tab")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.resize")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.dialog")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.dialogDrag")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.sortDrag")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.cssTable")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.stable")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.taskBar")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.ajax")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.pagination")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.database")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.datepicker")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.effects")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.panel")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.checkbox")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.history")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.combox")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.print")
+#LoadJS("resources/dwz/external/highcharts/js/highcharts")
+#LoadJS("resources/dwz/external/highcharts/js/modules/exporting")
+#LoadJS("resources/dwz/external/dwz-ria/js/dwz.regional.zh")
+#LoadJS("resources/dwz/external/dwz-ria/xheditor/xheditor-1.1.14-zh-cn.min")
+
+#LoadCSS("resources/lib/webuploader/webuploader", "screen")
+#LoadJS("resources/lib/webuploader/webuploader")
+
+
+<script type="text/javascript">
+$(function() {
+	DWZ.init("$env.getWebURL('/templates/home/dwz.frag.xml')", {
+		callback:function(){
+			initEnv();
+		}
+	});
+});
+
+	function out() {
+		location.replace("$env.getWebURL('/login/out.htm')");
+	}
+</script>
+#Head("end")
+
+<input type="hidden" id="ROOT_PATH" value="$env.getWebURL('')">
+<input type="hidden" id="SITE_ROOT_PATH" value="$env.get('gen.web')">
+<body scroll="no">
+	<div id="layout">
+		<div id="header">
+			<div class="headerNav">
+				<a class="logo" href="javascript:void(0)" style="text-decoration:none;cursor:default;">标志</a>
+				<ul class="nav">
+					#if($!isDafyUser == "yes")
+					<li><a title="专属二维码" target="dialog" href="$env.getWebURL('financialIntention/matrixImage.htm?id=')$!customerManagerMobile" mask="true" height="590" width="590">专属二维码</a></li>
+					#end
+					<li><a href="javascript:void(0)" style="text-decoration:none;cursor:default;">您好，$!userName</a></li>
+					<li><a href="javascript:void(0)" style="text-decoration:none;cursor:default;">权限，$!roleName</a></li>
+					<li><a title="修改密码" target="dialog" href="$env.getWebURL('/home/updatePwd.htm')" mask="true" rel="changePwd">修改密码</a></li>
+					<li><a href="javascript:void(0)" onclick="out()">退出</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div id="leftside">
+			<div id="sidebar_s">
+				<div class="collapse">
+					<div class="toggleCollapse"><div></div></div>
+				</div>
+			</div>
+			<div id="sidebar">
+				<div class="toggleCollapse"><h2>主菜单</h2><div>收缩</div></div>
+
+				<div class="accordion" fillSpace="sidebar">
+					#foreach($!menu in $!menuList)
+					<div class="accordionHeader">
+						<h2><span>Folder</span>$!menu.name</h2>
+					</div>
+					<div class="accordionContent">
+						<ul class="tree treeFolder">
+							<li><a href="javascript">$!menu.name</a>
+								<ul>
+
+									#foreach($!child in $!menu.childMenus)
+									<li><a href="$!env.getWebURL('')$!{child.url}" target="navTab" rel="main">$!child.name</a></li>
+									#end
+
+								</ul>
+							</li>
+						</ul>
+					</div>
+					#end
+				</div>
+			</div>
+		</div>
+		<div id="container">
+			<div id="navTab" class="tabsPage">
+				<div class="tabsPageHeader">
+					<div class="tabsPageHeaderContent"><!-- 显示左右控制时添加 class="tabsPageHeaderMargin" -->
+						<ul class="navTab-tab">
+							<li tabid="main" class="main"><a href="javascript:;"><span><span class="home_icon">首页</span></span></a></li>
+						</ul>
+					</div>
+					<div class="tabsLeft">left</div><!-- 禁用只需要添加一个样式 class="tabsLeft tabsLeftDisabled" -->
+					<div class="tabsRight">right</div><!-- 禁用只需要添加一个样式 class="tabsRight tabsRightDisabled" -->
+					<div class="tabsMore">more</div>
+				</div>
+				<ul class="tabsMoreList">
+					<li><a href="$!env.getWebURL('/home/index.htm')">首页</a></li>
+				</ul>
+				<div class="navTab-panel tabsPageContent layoutBox">
+					<div class="page unitBox">
+						<div class="accountInfo">
+							
+						</div>
+						<div class="pageFormContent" layoutH="80" style="margin-right:230px">
+							
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div id="footer">Copyright &copy; 2014币港湾管理平台   联系电话： 400-806-1230 </div>
+</body>
+#LoadJS("resources/js/common/common")
+#Html("end")

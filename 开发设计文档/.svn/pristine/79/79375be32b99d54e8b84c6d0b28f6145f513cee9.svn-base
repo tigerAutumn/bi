@@ -1,0 +1,49 @@
+## 资金互通站岗户产生影响遗漏检查-前端 ##
+
+### 1、PC首页（已修改） ###
+<pre>
+平台累计成交额 productMapper.selectAccumulatedInvestment；
+用户累计收益 userMapper.countUserIncome；countUserIncome；查询bs_user total_interest+total_bonus 
+</pre>
+
+### 2、平台数据 PC/H5/APP ###
+<pre>
+查询当月累计投资总金额 bsSubAccountMapper.investMentOverDateMonth
+查询当月累计投资总金额 bsSubAccountMapper.selectInvestAmountEachMonth
+</pre>
+
+### 3. 好友邀请页面 （已修改） ###
+<pre>
+获取用户奖励金列表-我的奖励
+bsDailyBonusMapper.selectByExamplePage
+</pre>
+
+### 4. 账户总览页面 （已修改） ###
+<pre>
+AssetsController  totalAssets
+用户资产信息查询
+bsUserMapper.selectUserAssetByUserId
+根据用户ID查询投资中的项目总数（港湾计划+委托计划，港湾计划原先的统计规则不变，委托计划统计规则（委托结束与回款结束状态）不在统计范围内）
+subAccountMapper.countInTheInvestmentByUserId
+
+投资列表和七天内产品到期的数目
+bsSubAccountMapper.selectByExamplePage
+
+根据条件查询用户处理中订单数(无提现交易明细)
+bsUserTransDetailMapper.countProcessingNoWithdraw
+bsUserTransDetailMapper.countProcessingWithdraw
+</pre>
+
+
+### 5. 交易明细（无需修改） ###
+<pre>
+bsUserTransDetailMapper.selectByExamplePageNew
+bsUserTransDetailMapper.countByExamplePage
+</pre>
+
+
+### 资金互通站岗户产生影响遗漏检查-管理台 ###
+<pre>
+管理台功能除去wiki上罗列的需要修改的功能之外，暂未发现其它需要修改的功能
+</pre>
+

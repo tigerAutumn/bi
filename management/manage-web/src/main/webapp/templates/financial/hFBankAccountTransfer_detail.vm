@@ -1,0 +1,216 @@
+<div class="pageContent">
+    #Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+    #Hidden("serverToken",$!serverToken)
+    <form id="financeForm" method="post" action="$env.getWebURL('/financial/accountTransfer2HFBank.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+        <div class="pageFormContent nowrap" layoutH="97" >
+            <dl>
+                <dt >计划总额：</dt>
+                <dd style="width:0px;">
+                    <input type="text" id="amount" name="amount" maxlength="12" style="width:245px; height:16px" />元
+                </dd>
+            </dl>
+            <dl>
+                <dt >转出账户：</dt>
+                <dd style="width:100px;">
+                    <select id="sourceAccount" name="sourceAccount" >
+                        <option selected></option>
+                    </select>
+                </dd>
+            </dl>
+            <dl>
+                <dt >转入账户：</dt>
+                <dd style="width:100px;">
+                    <select id="destAccount" name="destAccount" >
+                        <option selected>请选择</option>
+                    </select>
+                </dd>
+
+            </dl>
+            <dl>
+                <dt >
+                    备注：
+                </dt>
+                <dd style="width:100px;">
+                    <input type="text" id="note" name="note" maxlength="100" style="width:245px; height:16px" />
+                </dd>
+            </dl>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_financeForm()">提交</button></div></div></li>
+                <li>
+                    <div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+<script>
+
+    function selectChange(array) {
+        //数组，联动的数据源
+        this.array=array;
+        this.indexName='';
+        this.obj='';
+        //设置子SELECT
+        // 参数：当前onchange的SELECT ID，要设置的SELECT ID
+        this.subSelectChange=function(selectName1,selectName2) {
+            //try
+            //{
+            var obj1=document.all[selectName1];
+            var obj2=document.all[selectName2];
+            var objName=this.toString();
+            var me=this;
+            obj1.onchange=function()
+            {
+                me.optionChange(this.options[this.selectedIndex].value,obj2.id)
+            }
+        }
+        //设置第一个SELECT
+        // 参数：indexName指选中项,selectName指select的ID
+        this.firstSelectChange=function(indexName,selectName) {
+            this.obj=document.all[selectName];
+            this.indexName=indexName;
+            this.optionChange(this.indexName,this.obj.id)
+        }
+        // indexName指选中项,selectName指select的ID
+        this.optionChange=function (indexName,selectName) {
+            var obj1=document.all[selectName];
+            var me=this;
+            obj1.length=0;
+            obj1.options[0]=new Option("请选择",'');
+            for(var i=0;i<this.array.length;i++)
+            {
+                if(this.array[i][1]==indexName)
+                {
+                    //alert(this.array[i][1]+" "+indexName);
+                    obj1.options[obj1.length]=new Option(this.array[i][2],this.array[i][0]);
+                }
+            }
+        }
+    }
+
+    //数据源
+    var array=new Array();
+
+    //数据格式 ID，父级ID，名称
+    array[0]=new Array("DEP_JSH","根目录","自有子账户");
+    array[1]=new Array("DEP_HEADFEE_YUN","根目录","砍头息子账户（云贷）");
+    array[2]=new Array("DEP_BGW_REVENUE_ZAN","根目录","币港湾营收子账户（赞分期）");
+    array[3]=new Array("DEP_BGW_REVENUE_YUN","根目录","币港湾营收子账户（云贷）");
+    array[4]=new Array("DEP_OTHER_FEE","根目录","其他费用子账户");
+    array[5]=new Array("DEP_REDPACKET","根目录","红包子账户");
+	array[6]=new Array("DEP_ADVANCE","根目录","垫付金子账户");
+    array[7]=new Array("DEP_HEADFEE_ZSD","根目录","砍头息子账户（赞时贷）");
+    array[8]=new Array("DEP_BGW_REVENUE_ZSD","根目录","币港湾营收子账户（赞时贷）");
+    array[9]=new Array("DEP_BGW_REVENUE_7","根目录","币港湾营收子账户（7贷）");
+
+    array[10]=new Array("DEP_HEADFEE_YUN","DEP_JSH","砍头息子账户（云贷）");
+    array[11]=new Array("DEP_BGW_REVENUE_ZAN","DEP_JSH","币港湾营收子账户（赞分期）");
+    array[12]=new Array("DEP_BGW_REVENUE_YUN","DEP_JSH","币港湾营收子账户（云贷）");
+    array[13]=new Array("DEP_OTHER_FEE","DEP_JSH","其他费用子账户");
+    array[14]=new Array("DEP_REDPACKET","DEP_JSH","红包子账户");
+	array[15]=new Array("DEP_ADVANCE","DEP_JSH","垫付金子账户");
+    array[16]=new Array("DEP_HEADFEE_ZSD","DEP_JSH","砍头息子账户（赞时贷）");
+    array[17]=new Array("DEP_BGW_REVENUE_ZSD","DEP_JSH","币港湾营收子账户（赞时贷）");
+    array[18]=new Array("DEP_BGW_REVENUE_7","DEP_JSH","币港湾营收子账户（7贷）");
+
+    array[19]=new Array("DEP_JSH","DEP_HEADFEE_YUN","自有子账户");
+
+    array[20]=new Array("DEP_JSH","DEP_BGW_REVENUE_ZAN","自有子账户");
+
+    array[21]=new Array("DEP_JSH","DEP_BGW_REVENUE_YUN","自有子账户");
+
+    array[22]=new Array("DEP_JSH","DEP_OTHER_FEE","自有子账户");
+
+    array[23]=new Array("DEP_JSH","DEP_REDPACKET","自有子账户");
+
+	array[24]=new Array("DEP_JSH","DEP_ADVANCE","自有子账户");
+
+    array[25]=new Array("DEP_JSH","DEP_HEADFEE_ZSD","自有子账户");
+
+    array[26]=new Array("DEP_JSH","DEP_BGW_REVENUE_ZSD","自有子账户");
+    
+    array[27]=new Array("DEP_JSH","DEP_BGW_REVENUE_7","自有子账户");
+
+    //调用代码
+    var liandong=new selectChange(array) //设置数据源
+    /*liandong.firstSelectChange("根目录","destAccount"); //设置第一个选择框
+    liandong.subSelectChange("destAccount","sourceAccount"); //设置子级选择框*/
+
+
+    liandong.firstSelectChange("根目录","sourceAccount"); //设置第一个选择框
+    liandong.subSelectChange("sourceAccount","destAccount"); //设置子级选择框
+
+    function submit_financeForm(){
+        var amount = $.trim($("#amount").val());
+        var note = $.trim($("#note").val());
+        var regAmount = /^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$/;
+
+        if((amount == null || amount == "")){
+            alertMsg.warn("转账金额不能为空！");
+            return false;
+        }
+        if(!regAmount.test(amount)) {
+            alertMsg.warn("转账金额必须是正整数或者小数点后保留两位！");
+            return false;
+        }
+
+        //转出账户
+        var sourceAccounts=$("#sourceAccount option:selected");
+        var sourceAccount_value = $.trim(sourceAccounts.val());//拿到选中项的值
+        if(sourceAccount_value == "" || sourceAccount_value == null) {
+            alertMsg.warn("请选择转出账户！");
+            return false;
+        }
+
+        //转入账户
+        var destAccounts=$("#destAccount option:selected");//获取选中的项
+        var destAccount_value = $.trim(destAccounts.val());//拿到选中项的值
+        if(destAccount_value == "" || destAccount_value == null) {
+            alertMsg.warn("请选择转入账户！");
+            return false;
+        }
+
+        var serverToken = $.trim($("#serverToken").val());
+
+        jQuery.ajax({
+            url: $('#APP_ROOT_PATH').val() + '/financial/accountTransfer2HFBank.htm',
+            data:{
+                sourceAccount: sourceAccount_value,
+                destAccount: destAccount_value,
+                amount: amount,
+                note: note,
+                token: serverToken
+            },
+            type:'post',
+            success: function(data){
+
+                if (data.statusCode == "300") {
+                    alertMsg.warn('划转失败!');
+                    $.pdialog.closeCurrent();
+                    $("#serverToken").val(data.serverToken);
+                    navTab.reload("$env.getWebURL('/financial/accountTransfer2HFBankIndex.htm')");
+                }else if (data.statusCode == "301") {
+                    $("#serverToken").val(data.serverToken);
+                    alertMsg.warn('划出账户余额不足!');
+                }else if (data.statusCode == "302") {
+                    $("#serverToken").val(data.serverToken);
+                    alertMsg.warn(data.message);
+                }else if (data.statusCode == "200") {
+                    alertMsg.correct('划转成功!');
+                    $.pdialog.closeCurrent();
+                    $("#serverToken").val(data.serverToken);
+                    navTab.reload("$env.getWebURL('/financial/accountTransfer2HFBankIndex.htm')");
+                } else if (data.statusCode == "305") {
+                    $("#serverToken").val(data.serverToken);
+                    alertMsg.warn('请勿重复提交!');
+                } else {
+                    $("#serverToken").val(data.serverToken);
+                    alertMsg.error('操作失败!');
+                }
+            }
+        });
+
+    }
+</script>

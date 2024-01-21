@@ -1,0 +1,208 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/index/default")
+#LoadGenJS("/resources/gen2.0/scripts/jquery-1.11.1.min")
+#LoadGenCSS("/resources/gen2.0/styles/activity/treble_gift_all")
+#LoadGenJS("/resources/gen2.0/scripts/activity/treble_gift_all")
+#Gen2Header()
+#GenHead("end")
+<body id="body">
+		<div class="banner"></div>
+		<div class="main_gift1">
+			<div class="main_gift_title"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/treble_gift/gift1.png" /></div>
+			<div class="main_gift_title1"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/treble_gift/gift5.png" /></div>
+			<div class="main_gift_time">1月25日-2月6日</div>
+			<div class="main_gift_txt">
+				<div class="main_gift_txtmoney">加息<i style="font-size: 72px">0.2</i>%</div>
+				<div class="main_gift_txtmoney">活动期间赞分期及港湾计划全场标的</div>
+			</div>
+		</div>
+		<div class="main_gift2">
+			<div class="main_gift2_bg">
+				<div class="main_gift_title"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/treble_gift/gift2.png" /></div>
+				<div class="main_gift_title1"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/treble_gift/gift8.png" /></div>
+				<div class="main_gift2_box">
+					<div class="main_gift2_box_left">
+						<div class="gift_Popup2_title">活动内容</div>
+						<div class="main_gift2_Company">活动期间（1月25日-2月6日），每日年化投资额达3000元的用户可按照满足条件获得奖励。</div>
+						<div class="gift_Popup2_title">条件与奖励见下</div>
+						<div class="gift_gift2_table">
+							<div class="gift_gift2_table_title">
+								<span class="gift_gift2_table_box">每日满足条件</span>
+								<span class="gift_gift2_table_box">现金奖励</span>
+							</div>
+							<ul class="gift_gift2_table_com">
+								<li class="gift_gift2_table_comli">
+									<span class="gift_gift2_table_combox">累计年化投资金额第1-3名</span>
+									<span class="gift_gift2_table_combox2">获得年化投资额的0.5%</span>
+								</li>
+								<li class="gift_gift2_table_comli" style="background: #f1dfc1;">
+									<span class="gift_gift2_table_combox">累计年化投资金额第4-10名</span>
+									<span class="gift_gift2_table_combox2">获得年化投资额的0.3%</span>
+								</li>
+								<li class="gift_gift2_table_comli">
+									<span class="gift_gift2_table_combox">达年化投资额3000元但不满足上述情况的</span>
+									<span class="gift_gift2_table_combox2">获得年化投资额的0.1%</span>
+								</li>
+							</ul>
+						</div>
+						<div class="main_gift2_Company">* 奖励将于活动结束后的1-5个工作日内返现至用户账户内。</div>
+						<div class="gift_gift2_btn">
+							<a class="gift_gift2_btna" href="javascript:;" id="btn1">获奖名单</a>
+						</div>
+					</div>
+					<div style="float: right;" class="main_gift2_box_left">
+						#if($!secondActivityIsStart == 'end' || $!secondActivityIsStart == 'noStart')
+						<!--活动未开始或已结束--->
+						<div class="main_gift2_nostart" >
+							#if($!secondActivityIsStart == 'end')
+								<div class="main_gift2_nostart_txt">活动已经结束了哟，谢谢您的关注~</div>
+							#else
+								<div class="main_gift2_nostart_txt">活动还没开始哟，请稍后再来~</div>
+							#end
+						</div>
+						#else
+						<div class="gift_Popup2_title">今日实时排行榜</div>
+						<div class="gift_gift2_table">
+							<div class="gift_gift2_table_title">
+								<span class="gift_gift2_table_box">排名</span>
+								<span class="gift_gift2_table_box">年化投资额</span>
+							</div>
+							<ul class="gift_gift2_box">
+								#foreach($today in $!todayRankingList)
+								<li class="gift_gift2_table_com1">
+									<span class="gift_gift2_table_box1">#if(10>$today.rowno)0#end$today.rowno. $today.userName</span>
+									<span class="gift_gift2_table_box2">$!money.format($today.buyAmount)元</span>
+								</li>
+								#end
+								#if(10> $!todayRankingSize )
+									#foreach($foo in [0..10])
+										#if($foo > $!todayRankingSize )
+        								<li class="gift_gift2_table_com1">
+        									<span class="gift_gift2_table_box1">#if(10>$foo)0#end$foo. ---</span>
+        									<span class="gift_gift2_table_box2">--------</span>
+        								</li>
+    									#end
+									#end
+								#end
+							</ul>
+						</div>
+						#if($userLogin == 'is_login')
+						<!--已登录状态-->
+						<div class="gift_Popup1">
+							<div class="gift_Popup1_money">$!money.format($!userInvest)</div>
+							<div class="gift_Popup1_Company">今日我的累计年化投资额（元）</div>
+							<div class="gift_Popup1_btn">
+								<a class="gift_Popup1_btna" href="$!env.get('gen.server.web')/gen2.0/regular/list">立即投资</a>
+							</div>
+						</div>
+						#else
+						<!--未登录状态-->
+						<div class="gift_Popup1" id="box2">
+							<div class="gift_Popup1_money">----</div>
+							<div class="gift_Popup1_Company">今日我的累计年化投资额（元）</div>
+							<div class="gift_Popup1_btn">
+								<a class="gift_Popup1_btna" href="$!env.get('gen.server.web')/gen2.0/user/login/index?burl=/gen2.0/activity/treble_gift">登录后可查看</a>
+							</div>
+						</div>
+						#end
+					#end
+					</div>
+				</div>
+				<div class="gift_gift2_combtn">
+					<a class="gift_gift2_combtna" href="javascript:;" id="btn3">活动规则</a>
+				</div>
+			</div>
+		</div>
+		<div class="main_gift3">
+			<div class="main_gift_title"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/treble_gift/gift3.png" /></div>
+			<div class="main_gift3_blur">
+				<div class="main_gift_title1"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/treble_gift/gift11.png" /></div>
+				<div class="main_gift_time">1月28日-2月6日</div>
+				<div class="main_gift_txt">
+					<div class="main_gift_txtmoney" style="line-height: 70px;"><i style="font-size:70px;">168</i>元红包</div>
+					<div class="main_gift_txtmoney">活动期间内，参与砸金蛋的用户，最高可获得168元（一路发）开年红包。</div>
+				</div>
+				<div class="gift_Popup1_btn">
+					<a class="gift_Popup1_btna" href="javascript:;" id="btn4">活动规则</a>
+				</div>
+			</div>
+			<div class="bottom">本次活动的最终解释权归币港湾所有</div>
+			<!--模糊遮盖层，活动开始时隐藏即可-->
+			<div class="main_gift3_bg" #if($!thirdActivityIsStart=='noStart')style="display: block;"#else style="display: none;"#end>
+				<div class="main_gift_title"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/treble_gift/gift3.png" /></div>
+				<div class="main_gift3_bbox">
+					<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/treble_gift/gift13.png" />
+					<p>活动时间：1月28日-2月6日</p>
+				</div>
+			</div>
+		</div>
+		<!--弹窗-->
+		<div class="body_bg"></div>
+		<!--获奖名单-->
+		<div class="gift_Popup2" id="box1">
+			<div class="gift_Popup2_btn">
+				<a class="gift_Popup1_btna" href="javascript:;"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/treble_gift/gift_Popup2.png" /></a>
+			</div>
+			<div class="gift_Popup2_title">获奖名单：</div>
+			#if($!hisRankingSize >0 && ($!secondActivityIsStart=='ing' || $!secondActivityIsStart=='end'))
+				<div style="display: block;">
+        			<div class="gift_Popup2_roll">
+				#foreach($hisList in $!hisRankingList)
+        			<!--有人投资-->
+        					<div class="gift_Popup2_time">$hisList.selectDate</div>
+        					<div class="gift_Popup2_table">
+        						<div class="gift_Popup2_table_title">
+        							<span class="gift_Popup2_table_box">排名</span>
+        							<span class="gift_Popup2_table_box">年化投资额<i class="gift_Popup2_table_boxi">（元）</i></span>
+        							<span class="gift_Popup2_table_box">奖励<i class="gift_Popup2_table_boxi">（元）</i></span>
+        						</div>
+        						<ul class="gift_Popup2_box">
+									#foreach($his in $hisList.list)
+            							<li class="gift_Popup2_table_com1">
+            								<span class="gift_Popup2_table_box1">#if(10>$his.rowno)0#end$his.rowno. $!his.userName</span>
+            								<span class="gift_Popup2_table_box2">$!money.format($his.buyAmount)元</span>
+            								<span class="gift_Popup2_table_box3">$!money.format($his.awardAmount)元</span>
+            							</li>
+									#end
+        						</ul>
+        					</div>
+				#end
+					</div>
+        		</div>
+			#else
+    			<!--无人投资-->
+    			<div class="gift_Popup2_hide">
+    				<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/treble_gift/gift14.png" />
+    			</div>
+			#end
+		</div>
+		<!--二重礼活动规则：-->
+		<div class="gift_Popup3" id="box3">
+			<div class="gift_Popup2_btn">
+				<a class="gift_Popup1_btna" href="javascript:;"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/treble_gift/gift_Popup2.png" /></a>
+			</div>
+			<div class="gift_Popup2_title">二重礼活动规则：</div>
+			<div class="gift_Popup3_table">
+				<P>1.活动时间：1月25日-2月6日</P>
+				<p>2.本次活动仅限港湾系列产品与赞分期系列产品参与，年化投资额计算公式如下：<br/> ＊港湾系列<br/> 年化投资额 = 投资金额 * 投资期限（天数）/ 365<br /> ＊赞分期系列<br /> 年化投资额 = 投资金额 * 投资期限（月）/ 12 / 2</p>
+				<p>3.若出现投资额相同的情况下，按投资时间先后排名。投资时间以平台显示时间为准；</p>
+				<p>4.用户获得的现金奖励以奖励金形式发放，将于活动结束后的5个工作日内发放至用户的币港湾账户内。</p>
+			</div>
+		</div>
+		<!--三重礼活动规则：-->
+		<div class="gift_Popup3" id="box4">
+			<div class="gift_Popup2_btn">
+				<a class="gift_Popup1_btna" href="javascript:;"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/treble_gift/gift_Popup2.png" /></a>
+			</div>
+			<div class="gift_Popup2_title">三重礼活动规则：</div>
+			<div class="gift_Popup4_table">
+				<P>1.活动时间：1月28日-2月6日；</P>
+				<p>2.红包将在用户完成砸金蛋后，发送至用户币港湾账户-【我的红包】内；</p>
+				<p>3.用户只可领取一次红包，获得红包由多个红包组成，在用户投资时可抵扣投资本金；</p>
+				<p>4.通过本次活动获得的红包需在2月10日前使用。</p>
+			</div>
+		</div>
+	</body>
+#Html("end")

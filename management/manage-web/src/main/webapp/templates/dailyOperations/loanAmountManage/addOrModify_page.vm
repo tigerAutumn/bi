@@ -1,0 +1,80 @@
+<div class="pageContent">
+	<form method="post" name="detail_form" action="$env.getWebURL('/dailyOperations/loanAmountManage/addOrModify.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+        <div class="pageFormContent" layoutH="56">
+            <p style="width: auto">
+                <label>云贷：</label>
+                <input name="freeRateYunDai" id="freeRateYunDai" size="9" type="text" onkeyup="value=value.replace(/((^\s*)[^\d]*)|([^\d]*(\s*$))/g,'').replace(/[/.]*/g,'')"
+                       class="required number" maxlength="5" value="$!{freeRateYunDai}" />
+                ##<div>包含随借随还</div>
+            </p>
+            <p style="height: auto">
+                <label>七贷：</label>
+                <input name="freeRateSevenDai" id="freeRateSevenDai" size="9" type="text" onkeyup="value=value.replace(/((^\s*)[^\d]*)|([^\d]*(\s*$))/g,'').replace(/[/.]*/g,'')"
+                       class="required number" maxlength="5" value="$!{freeRateSevenDai}" />
+                ##<div>包含随借随还、先息后本</div>
+            </p>
+            <div class="buttonActive"><div class="buttonContent"><button type="button" onclick="calculate()">计算</button></div></div>
+            <p>
+                <label style="color: red">云贷预计放款额：</label>
+                <input id="yunAuthMoney" name="yunAuthMoney" value="$!{yunAuthMoney}" readonly />
+            </p>
+            <p>
+                <label style="color: red">七贷预计放款额：</label>
+                <input id="sevenAuthMoney" name="sevenAuthMoney" value="$!{sevenAuthMoney}" readonly />
+            </p>
+            <p>
+                <label>生效时间：</label>
+                <input type="text" name="useDate" id="useDate" size="25" value="$!date.formatYYYYMMDD($!{useDate})" readonly />
+            </p>
+            <p>
+                <div style="float: left; margin-left: -247px;margin-top: 9px;color: red">注意：七贷的放款额必须 ≥ 七店站岗资金</div>
+            </p>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+                <li>
+                    <div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+                </li>
+            </ul>
+        </div>
+	</form>
+</div>
+<script>
+    function navTabAjaxDone(json) {
+        if (json.statusCode == "200") {
+            alertMsg.correct('操作成功!');
+            $.pdialog.closeCurrent();
+            navTab.reload("$env.getWebURL('/dailyOperations/loanAmountManage/index.htm')");
+        } else {
+            alertMsg.error('操作失败!');
+        }
+    }
+
+    function calculate() {
+        $.ajax({
+            type : 'post',
+            url : $('#APP_ROOT_PATH').val()+'/dailyOperations/loanAmountManage/calculate.htm',
+            data : {
+                freeRateYunDai :  $('#freeRateYunDai').val(),
+                freeRateSevenDai :  $('#freeRateSevenDai').val()
+            },
+            success : function(data) {
+                if (data.statusCode == "200") {
+                    $('#yunAuthMoney').val(data.yunAuthMoney);
+                    $('#sevenAuthMoney').val(data.sevenAuthMoney);
+                    console.log(data.yunAuthMoney);
+                    if (data.yunAuthMoneyInt < 0 || data.sevenAuthMoneyInt < 0) {
+                        alertMsg.warn("分配额度不足");
+                    }
+                } else {
+                    if (data.message) {
+                        alertMsg.error(data.message);
+                    } else {
+                        alertMsg.error("操作失败");
+                    }
+                }
+            }
+        });
+    }
+</script>

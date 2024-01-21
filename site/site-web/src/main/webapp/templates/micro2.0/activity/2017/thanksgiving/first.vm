@@ -1,0 +1,80 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/activity/six_new")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadCSS("resources/micro2.0/styles/share/recommend")
+#LoadCSS("resources/micro2.0/styles/activity/2017/thanksgiven/thanksgiven")
+#LoadJS("resources/micro2.0/scripts/activity/2017/thanksgiven/thanksgiven")
+<input type="hidden" value="1" id="pageNumber"/>
+<input type="hidden" value="$!thanksgivingConstant" id="thanksgivingConstant"/>
+#WeChatShare()
+#Head("end")
+<body>
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<input type="hidden" id="isLogin" value="$!isLogin"/>
+<input type="hidden" id="isStart" value="$!isStart"/>
+	<div class="T-first">
+		<div class="T-first-title">
+			<div class="T-first-title-txt">感恩第一步：够心意！</div>
+		</div>
+		<div class="T-index-title">
+			<img src="$!env.getWebURL('resources/micro2.0/images/activity/2017/thanksgiven/title.png')" alt="" />
+			<div class="T-index-title-txt">
+				<h3 class="T-index-mtitle">分享感恩的心，收获感恩红包！</h3>
+				<div class="T-index-stitle">每天一分享，每天一红包！</div>
+			</div>
+		</div>
+		<div class="T-first-red">
+			<div class="T-first-red-box">
+				<div class="T-first-red-top">
+
+					<img src="$!env.getWebURL('resources/micro2.0/images/activity/2017/thanksgiven/red4.png')" />
+					#if($!isStart == "not_start")
+                        <a href="javascript:void(0);" class="T-first-red-btn-stop">活动未开始</a>
+					#elseif($!isStart == "end")
+                        <a href="javascript:void(0);" class="T-first-red-btn-stop">活动已结束</a>
+					#else
+						#if($!isLogin == "yes")
+							#if($!isJoined == "YES")
+                                <a href="javascript:void(0);" class="T-first-red-btn-start" id="share">分享活动</a>
+							#else
+                                <a href="javascript:void(0);" class="T-first-red-btn-start" id="share">分享得红包</a>
+							#end
+						#else
+                            <a href="javascript:void(0);" class="T-first-red-btn-start go_login">立即登录</a>
+						#end
+					#end
+				</div>
+				<div class="T-first-red-bottom">
+					<img src="$!env.getWebURL('resources/micro2.0/images/activity/2017/thanksgiven/red5.png')" />
+					<div class="T-first-red-rule">
+						<div class="T-first-red-rule-title">活动规则：</div>
+						<div class="T-first-red-rule-content">
+							<i>①</i>活动期间，用户每天首次分享活动至微信（朋友圈/朋友），可随机获得一个感恩红包；
+						</div>
+						<div class="T-first-red-rule-content">
+							<i>②</i>感恩红包当天到账，您可在我的资产-我的红包处查看。
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--分享弹窗-->
+	<!-- 遮罩-分享朋友 -->
+	<div class="shae_dialgo share_one">
+		<div class="arrow"></div>
+		<div class="shar_off"></div>
+	</div>
+	<script >
+		$('#share').click(function(){
+			$(".share_one").show();
+		});
+		$('.shar_off').click(function(){
+			$(".share_one").hide();
+		});
+	</script>
+</body>
+#Html("end")

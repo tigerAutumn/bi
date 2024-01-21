@@ -1,0 +1,158 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/login_header")
+#LoadGenCSS("/resources/gen2.0/styles/info_img")
+#LoadGenJS("/resources/gen2.0/scripts/echarts")
+#LoadGenJS("/resources/gen2.0/scripts/switchable")
+#LoadGenJS("/resources/gen2.0/scripts/textSlider")
+#LoadGenJS("/resources/gen2.0/scripts/index_style")
+#LoadGenJS("/resources/gen2.0/scripts/regular/regular_index_old")
+#LoadGenJS("/resources/gen2.0/scripts/info_img")
+#parse("/financial_have_buy.vm")
+#GenHead("end")
+<style >
+	.b-popup-content{text-align:left;}
+</style>
+<body>
+	<!--header -s-->
+	#Gen2Header("product")
+	<!--header -e-->
+	<input type="hidden" id="dayNum" value="$!dayNum"/>
+	<input type="hidden" id="rate" value="$!rate"/>
+	<input type="hidden" id="id" value="$!id"/>
+	<input type="hidden" id="trem" value="$!trem"/>
+	<input type="hidden" id="priceLimit" value="$!priceLimit"/>
+	<input type="hidden" id="priceCeiling" value="$!priceCeiling"/>
+	<div class="p_content">
+		<div class="p_top">
+			<div class="p_top_left">
+				<h3>$!dayNum 天期限产品</h3>
+				<p><img src="$!env.get('gen.server.web')/resources/gen2.0/images/dagou.png">本息担保安全兑付</p>
+				<img src="$!env.get('gen.server.web')/resources/gen2.0/images/p.png" class="p">
+				<div>
+					<ul>
+                        <li><b style="color: #ff6633;">$!rate %</b><br>年化收益</li>
+						<li style="border-left: 1px solid #ede8e6;"><b style="color: #ff9928;">$!dayNum 天</b><br>固定产品期限</li>
+					</ul>
+				</div>
+				<p class="p_one_1"><b>起息时间： </b>    出借成功当日起息</p>
+				<p class="p_one_1"><b>到期时间：</b>     $!endTime</p>
+				<p class="p_one_1"><b>回款方式：</b>     到期一次性本息兑付</p>
+			</div>
+			<div class="p_top_right">
+				<h1>购买金额</h1>
+				<hr>
+				<input type="text" id="money"   maxLength="9"  style="padding-left:10px;" placeholder="请输入100的整数倍" autocomplete="off" >
+				<p id="buy_tip">起投金额：100元</p>
+				#if($!proLimitAmout)<p id="buy_tip">剩余额度：#if($!proLimitAmout < 100) 0.00 #else $!money.format($!proLimitAmout) #end 元</p> #end
+				#if($!userProLimitAmout)<p id="buy_tip">可买额度：#if($!userProLimitAmout < 100) 0.00 #else $!money.format($!userProLimitAmout) #end 元    <span style="color:blue;padding-left:8px;cursor:pointer;font-size:10px;" class="btn_dialog">提高额度秘笈</span></p> #end
+				<p class="p_once" style="background: #FFF;" ><a href="javascript:void(0);" id="buy_sub" style="margin:inherit;background: #cccccc;">已结束</a></p>
+				<p class="p_last">点击立即购买即代表您同意 <br><b name="financial_div" style="cursor:pointer;">《出借服务协议》</b></p>
+			</div>
+		</div>
+		<div class="p_bottom">
+			<ul>
+				<li>
+			      <h3>产品特点</h3>
+			      <hr/>
+			      <p> 
+					#if($!dayNum == 365)$!dayNum 天固定期限产品；本息担保安全兑付；期限最长，收益最高。
+                    #elseif($!dayNum == 180)$!dayNum 天固定期限产品；本息担保安全兑付；期限较长，收益高。
+                    #elseif($!dayNum == 90)$!dayNum 天固定期限产品；本息担保安全兑付；期限较短，收益较高。
+                    #else $!dayNum 天固定期限产品；本息担保安全兑付；期限最短，收益适中。
+                    #end
+				  
+				  </p>
+			    </li>
+			
+			    <li>
+			      <h3>收益计息</h3>
+			      <hr/>
+			      <p>出借成功当日起息；产品到期后，1~3天内自动本息回款；年化收益 $!{rate}%；到期一次性本息兑付。</p>
+			    </li>
+			    <li>
+			      <h3>资金去向</h3>
+			      <hr/>
+			      <p>每一笔债权都由币港湾平台根据5道风控体系进行筛选评分，最终匹配给借款人，币港湾对每一笔资金都分别分割到多笔小额贷款中，以保证资金本息安全。
+			      </p>
+			    </li>
+			    <li>
+			      <h3>本息保障</h3>
+			      <hr/>
+			      <p>规范的第3方资金托管：北京一九付支付科技有限公司为币港湾提供资金托管服务，通过控制资金的使用权限和调拨流程，使币港湾的信息流与资金流完全分离开，再由一九付独立的风控人员，通过定制的风控建模系统，对币港湾的资金调拨情况进行风险评级和风险告警，为广大用户的资金安全提供第一道防火墙。<br>
+					太平洋财险为您的资金保驾护航：太平洋财险直接为达飞集团（本批资金将用于达飞集团的小微贷款）的全部小微贷本身提供一个保险，该保险的最终受益人是用户。一旦借款人无法按期足额偿还所借贷的款项，财险公司会在规定范围内承担保险责任，向用户进行保险赔偿，从而为用户的资金及收益提供安全保障。</p>
+                </li>
+
+				<li>
+					 <h3>信用评级报告</h3>
+					 <hr class="info_line_two"/>
+					 <div class="info_wp">
+						<div class="info_img_wp">
+							<a href="javascript:;" class="direction img_left"></a>
+							<a href="javascript:;" class="direction img_right"></a>
+							<ul id="ul_two" class="img_ul">
+								#foreach($p in [1..5])
+                                #set($purl= "resources/gen2.0/images/pingji0"+$!p+".jpg")
+									<li class="img_item"><a href="javascript:;" class="item_a"><img class="img_fo" src="$!env.get('gen.server.web')/$purl"/></a></li>
+                                #end
+							</ul>
+						</div>
+					 </div>
+				</li>
+				<li>
+					 <h3>第三方资产保险</h3>
+					 <hr class="info_line_three"/>
+					 <div class="info_wp">
+						<div class="info_img_wp">
+							<a href="javascript:;" class="direction img_left"></a>
+							<a href="javascript:;" class="direction img_right"></a>
+							<ul id="ul_three" class="img_ul">
+								#foreach($b in [1..3])
+                                #set($burl= "resources/gen2.0/images/baoxian0"+$!b+".jpg")
+									<li class="img_item"><a href="javascript:;" class="item_a"><img class="img_fo" src="$!env.get('gen.server.web')/$burl"/></a></li>
+                                #end
+							</ul>
+						</div>
+					 </div>
+				</li>
+
+				 <li>
+			      <h3>快捷支付银行</h3>
+			      <hr style="width:809px;"/>
+			      <p>*具体金额以银行卡实际允许额度为准</p>
+                </li>
+		    </ul>
+				#foreach($bank in $bankList)
+						<div class="bank_list">
+                    		<div class="list_left">
+                    			<i class="ban_list ban_list_$!bank.bankId"></i>
+                    			<span class="list_sp">$!{bank.bankName}</span>
+                    		</div>
+                    		<div class="list_right">
+								#if($bank.isAvailable == 1)
+									单笔$!{bank.oneTop}万，日累计$!{bank.dayTop}万
+								#else
+									暂不可用
+								#end
+							</div>
+                    	</div>
+            	#end
+		</div>
+	</div>
+	<div class="dialog_warp">
+		<div id="nb_append" class="nb_wp">
+			<div class="img_title">
+				<span class="title_ft">信用评级报告</span>
+				<i class="img_off close"></i>
+			</div>
+			##<img class="img_fo fd_img" src="$!env.get('gen.server.web')/resources/gen2.0/images/cre_01.jpg"/>
+		</div>
+		
+	</div>
+	
+	<!--footer -s-->
+	#Gen2Footer()
+	<!--footer -e-->
+</body>
+#Html("end")

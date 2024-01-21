@@ -1,0 +1,101 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/financial/getFundListQuery.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						订单编号：<input id="orderNo" type="text" name="order_no" value="$!orderNo" maxlength="30" class="clear" />
+					</td>
+					<td>
+						平台客户号：<input id="platcust" type="text" name="platcust" value="$!platcust" maxlength="30" class="clear"/>
+					</td>
+					<td>
+						交易名称：<input id="transName" type="text" name="trans_name" value="$!transName" maxlength="20" class="clear"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						分页大小：<input id="pagesize" type="text" name="pagesize" value="$!pagesize" maxlength="10" class="clear"/>
+					</td>
+					<td>
+						页码：<input id="pagenum" type="text" name="pagenum" value="$!pagenum" class="clear"/>
+					</td>
+				
+					<td >查询起始时间：<input style="width:70px;" name="start_date" dateFmt="yyyy-MM-dd HH:mm:ss"   value="$!startTime" type="text"  id="startDate" class=" date textInput readonly" readonly="true" />
+					   到  
+						<input style="width:70px;" name="end_date" dateFmt="yyyy-MM-dd HH:mm:ss"   value="$!endTime" type="text"  id="endDate" class=" date textInput readonly" readonly="true"  />
+					</td >
+					<td>
+						<button  onclick="func()" type="button">调用查询接口</button>
+					</td>
+				</tr>
+			</table>
+	
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+
+	<table class="table" width="1086" layoutH="168">
+		<thead>
+			<tr>
+                <th width="80">平台编号</th>
+				<th width="80">平台客户编号</th>
+				<th width="82">交易时间</th>
+				<th width="82">交易日期</th>
+				<th width="100">交易名称</th>
+				<th width="80">交易金额</th>
+				<th width="100">资金变动类型</th>
+				##<th orderfield="account_balance"  class=#if("$!account_balance" != "") $!account_balance #else "asc" #end width="73">账户余额</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $funds)
+			<tr target="sid_user" rel="1">
+				<td>$grid.plat_no</td>
+				<td>#if("$!grid.platcust" != "") $!grid.platcust#end</td>
+				<td>#if("$!grid.trans_date" != "") $!grid.trans_date#end</td>
+				<td>#if("$!grid.trans_time" != "") $!grid.trans_time#end</td>
+				<td>#if("$!grid.trans_name" != "") $!grid.trans_name#end</td>
+				<td>$!grid.amt</td>
+				<td>#if("$!grid.amt_type" != "") $!grid.amt_type#end</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<!--<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+
+	</div>-->
+</div>
+#LoadJS("/resources/js/global_validate")
+<script>
+
+function func(){
+	
+	var url = $("#APP_ROOT_PATH").val() + "/financial/getFundListQuery.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+</script>

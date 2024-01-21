@@ -1,0 +1,128 @@
+<style >
+	.grid .gridTbody td div {
+    display: block;
+    overflow: hidden;
+    height: 30px;
+    white-space: nowrap;
+	line-height:30px;
+}
+</style>
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+<div class="page unitBox">
+	<div class="pageHeader">
+    	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/spreadChannel/spreadIndex.htm')" onsubmit="return navTabSearch(this);">
+        	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        	<div class="searchBar">
+        		<table class="searchContent">
+        				<tr>
+        					<td>
+        						名称：<input id="agentName" type="text" name="agentName" value="$!req.agentName" />
+        						状态：
+        						<select id= "status" name="status" > 
+        							<option value="" #if("$!status"=="") selected #end>全部</option>
+        							<option value="EXPANDED" #if("$!status"=="EXPANDED") selected #end>推广中</option>
+                					<option value="END" #if("$!status"=="END") selected  #end>已下线</option>
+                				</select>
+        						<span style="margin-left:20px;">
+        							<button onclick="func()" type="button">查询</button>
+                                </span>
+        						
+        					</td>
+        				</tr>
+        		</table>
+        	</div>
+    	</form>
+    </div>
+	
+    <div class="pageContent">
+    	<div class="panelBar">
+    		<ul class="toolBar">
+    			<li><a class="add" href="$env.getWebURL('/spreadChannel/spreadAdd.htm')" target="dialog" mask="true" rel="createBack" ><span>新增</span></a></li>
+    		</ul>
+        </div>
+    	<table class="table" width="1396" layoutH="150">
+    		<thead>
+    			<tr>
+					<th width="5%">序号</th>
+					<th width="15%">名称</th>
+					<th width="20%">状态</th>
+					<th width="30%">推广链接</th>
+    				<th width="20%">添加时间</th>
+					<th width="10%">操作</th>
+    			</tr>
+    		</thead>
+			
+    		<tbody>
+    			#foreach($grid in $spreadChannelList)
+    			<tr target="sid_user" rel="1" style="height:30px;">
+    				<td>$!grid.rowno</td>
+					<td>$!grid.agentName</td>
+					#if("$!grid.supportTerminal" == "pc,h5")
+					<td>推广中(pc,h5)</td>
+					#elseif("$!grid.supportTerminal" == "pc")
+					<td>推广中(pc)</td>
+					#elseif("$!grid.supportTerminal" == "h5")
+					<td>推广中(h5)</td>
+					#else
+					<td>已下线</td>
+					#end
+					<td>
+						#if("$!grid.supportTerminal" == "pc,h5")
+							<p style="padding-top:2px;">pc链接:$env.get('gen.web')/gen2.0/agent/$!grid.id</p>
+						    <p style="padding-top:2px;">h5链接:$env.get('micro.web')/micro2.0/agent/$!grid.id</p>
+    					#elseif("$!grid.supportTerminal" == "pc")
+							pc链接:$env.get('gen.web')/gen2.0/agent/$!grid.id
+    					#elseif("$!grid.supportTerminal" == "h5")
+							h5链接:$env.get('micro.web')/micro2.0/agent/$!grid.id
+    					#else
+							
+    					#end
+					</td>
+					<td>$!date.format($!grid.createTime)</td>
+					<td>
+						<a title="编辑" target="dialog" rel="createBack" href="$env.getWebURL('/spreadChannel/spreadAdd.htm?id=')$!grid.id" mask="true">编辑</a>&nbsp&nbsp&nbsp 
+					</td>
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+    			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!count条</span>
+    	</div>
+    	<div class="pagination" targetType="navTab"  totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+		</div>
+    </div>
+</div>
+
+<script>  
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "200") {
+				alertMsg.correct(json.message);
+        		navTab.closeCurrentTab();
+        		navTab.reload("$env.getWebURL('/operationReport/reportIndex.htm')");
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+	
+	function func(){
+    	$("#myform").submit();
+	}
+	
+</script> 

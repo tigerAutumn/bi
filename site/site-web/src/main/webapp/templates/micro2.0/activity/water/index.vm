@@ -1,0 +1,202 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadCSS("resources/micro2.0/styles/activity/water/water")
+#LoadJS("resources/micro2.0/scripts/assets/six")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/activity/water/water")
+#WeChatShare()
+#Head("end")
+<body id="body">
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')">
+<!--banner-->
+<div class="banner"><img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/banner.jpg" class="banner_img" /></div>
+<div class="main_content">
+    <!--introduce-->
+    <div class="introduce">
+        <div class="introduce_border">
+            <div class="introduce_txt"> 为倡导“惜水·爱水·节水，人人有责”的理念，在第25届“世界水日”和第30届“中国水周”来临之际，《钱江晚报》特联合币港湾推出“晒晒我家的水费单——寻找民间节水达人与节水妙招”活动，倡导节水、宣传节水小妙招。</div>
+			<img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/water2.png" class="introduce_img"/>
+		</div>
+    </div>
+    <!--Progress bar-->
+    <div class="progress_bar">
+        <div class="progress_bar_box">
+            <div class="progress_bar_txt1">报名</div>
+            <div class="progress_bar_txt2">投票</div>
+            <div class="progress_bar_txt3">评选</div>
+        </div>
+        <div class="progress_bar_color">
+            #if($!result.isStart == "end")
+                #*投票*#
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/bar2.png" class="progress_bar_img" />
+            #elseif($!result.isStart == "all_end")
+                #*报名投票活动都结束*#
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/bar3.png" class="progress_bar_img" />
+            #else
+                #*报名*#
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/bar1.png" class="progress_bar_img" />
+            #end
+        </div>
+        <div class="progress_bar_box">
+            <div class="progress_bar_txt1 progress_bar_size">3月28日</div>
+            <div class="progress_bar_txt2 progress_bar_size">4月10日</div>
+            <div class="progress_bar_txt3 progress_bar_size">4月16日</div>
+        </div>
+        <div class="progress_bar_btn">
+            #if($!result.isStart == "end")
+                #*投票*#
+                <a href="javascript:void(0);" class="progress_bar_btna go_vote">
+                    <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/waterbtn.png" />
+                    <i class="progress_bar_btntxt">立即投票</i>
+                </a>
+            #elseif($!result.isStart == "all_end")
+                #*报名投票活动都结束*#
+                <div class="introduce_examine">
+                    <div class="introduce_border_examine1">
+                        <div class="introduce_txt_examine">活动已结束，获奖名单即将公布，敬请关注~</div>
+                        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/water2.png" class="introduce_img"/>
+                    </div>
+                </div>
+            #else
+                #*报名*#
+                #if($!result.isLogin == "yes")
+                    #if($!result.isJoined == "no")
+                        <a href="javascript:void(0);" class="progress_bar_btna go_sign_up">
+                            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/waterbtn.png" />
+                            <i class="progress_bar_btntxt">立即报名</i>
+                        </a>
+                    #elseif($!result.isJoined == "REFUSE")
+                        <div class="introduce_examine">
+                            <div class="introduce_border_examine2">
+                                <div class="introduce_txt_examine">
+                                    <p class="introduce_txt_margin1">啊哦，报名未通过审核，请重新报名~</p>
+                                    <a href="javascript:;" class="progress_bar_btna go_sign_up"><img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/waterbtn1.png" /><i class="progress_examine_btntxt">立即报名</i></a>
+                                </div>
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/water2.png" class="introduce_img"/>
+                            </div>
+                        </div>
+                    #elseif($!result.isJoined == "INIT")
+                        <div class="introduce_examine">
+                            <div class="introduce_border_examine1">
+                                <div class="introduce_txt_examine">正在审核您的报名信息，请您耐心等待~</div>
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/water2.png" class="introduce_img"/>
+                            </div>
+                        </div>
+                    #elseif($!result.isJoined == "PASS")
+                        <div class="introduce_examine">
+                            <div class="introduce_border_examine2">
+                                <div class="introduce_txt_examine"><p class="introduce_txt_margin">恭喜亲已通过报名审核，自4月10号起可向</p><p class="introduce_txt_margin">好友分享您的专属投票链接哦~</p></div>
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/water2.png" class="introduce_img"/>
+                            </div>
+                        </div>
+                    #end
+                #else
+                    <a href="javascript:void(0);" class="progress_bar_btna go_sign_up">
+                        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/waterbtn.png" />
+                        <i class="progress_bar_btntxt">立即报名</i>
+                    </a>
+                #end
+            #end
+        </div>
+    </div>
+    <!--Prize-->
+    <div class="prize">
+        <div class="prize_title"><img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/water_title.png" /></div>
+        <ul class="prize_content">
+            <li class="prize_content_bg1">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/prize1.png" class="prize_content_img" />
+                <div class="prize_content_box">
+                    <div class="prize_content_name">一等奖1名</div>
+                    <div class="prize_content_money">价值4999元的海尔洗衣机</div>
+                </div>
+            </li>
+            <li class="prize_content_bg2">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/prize2.png" class="prize_content_img" />
+                <div class="prize_content_box">
+                    <div class="prize_content_name">二等奖5名</div>
+                    <div class="prize_content_money">价值2999元的海尔净水机</div>
+                </div>
+            </li>
+            <li class="prize_content_bg3">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/prize3.png" class="prize_content_img" />
+                <div class="prize_content_box">
+                    <div class="prize_content_name">三等奖10名</div>
+                    <div class="prize_content_money">价值999元的海尔扫地机器人</div>
+                </div>
+            </li>
+            <li class="prize_content_bg4">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/prize4.png" class="prize_content_img" />
+                <div class="prize_content_box">
+                    <div class="prize_content_name">参与奖100名</div>
+                    <div class="prize_content_money">价值129元的海尔电热水壶</div>
+                </div>
+            </li>
+        </ul>
+        <div class="prize_text">图片仅供参考，具体奖品以实物为准</div>
+        <div class="prize_title"><img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/water_title1.png" /></div>
+        <div class="introduce">
+            <div class="introduce_border1">
+                <div class="introduce_txt1">
+                    <p>1、3月28日-4月9日，按要求填写报名信息、上传照片后点击【提交】即可完成报名步骤；</p>
+                    <p>2、4月10日-4月16日，通过钱报178理财俱乐部微信后台发送关键词“节水达人”，获取专属投票链接，将专属投票链接分享给好友邀请好友为您投票；</p>
+                    <p>3、4月16日之后，活动评委组将根据投票结果、人均水费、节水小妙招、综合调研等，综合评选出活动一、二、三等奖以及参与奖，获奖名单将于活动结束后的5个工作日内公布。</p>
+                    <p>特别提醒：本活动严禁恶意刷票，如若发现直接取消参与资格</p>
+                    <p>咨询热线：0571-85312078、85311064、85310000 </p>
+                    <p>地址：体育场路182号钱报178理财俱乐部旗舰店（浙江日报社门口）</p>
+                </div>
+				<img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/water2.png" class="introduce_img"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--两个按钮的弹窗-->
+<div class="popup_bg two_toast" style="display: none;">
+    <div class="popup_box">
+        <div class="introduce">
+            <div class="introduce_border">
+                <div class="introduce_popup">
+                    <p class="introduce_popup_txt toast_content">注册或登录币港湾账户后才可报名本次活动~</p>
+                    <div class="introduce_popup_box">
+                        <a href="javascript:void(0);" class="progress_popup_btna toast_a_1">
+                            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/waterbtn2.png" />
+                            <i class="progress_popup_btntxt toast_btn_1">注册</i>
+                        </a>
+                        <a href="javascript:void(0);" class="progress_popup_btna toast_a_2">
+                            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/waterbtn2.png" />
+                            <i class="progress_popup_btntxt toast_btn_2">登录</i>
+                        </a>
+                    </div>
+                </div>
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/water2.png" class="introduce_img"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--一个按钮的弹窗-->
+<div class="popup_bg one_toast" style="display: none;">
+    <div class="popup_box">
+        <div class="introduce">
+            <div class="introduce_border">
+                <div class="introduce_popup">
+                    <p class="introduce_popup_txt toast_content">注册或登录币港湾账户后才可报名本次活动~</p>
+                    <div class="introduce_popup_box">
+                        <a href="javascript:void(0);" class="progress_popup_btna toast_a">
+                            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/waterbtn2.png" />
+                            <i class="progress_popup_btntxt toast_btn">注册</i>
+                        </a>
+                    </div>
+                </div>
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/water/water2.png" class="introduce_img"/>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+#Html("end")

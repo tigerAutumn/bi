@@ -1,0 +1,35 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/regular/six")
+#LoadCSS("resources/micro2.0/styles/regular/default")
+#LoadCSS("resources/micro2.0/styles/regular/payment_failed.min")
+#WeChatShare()
+#Head("end")
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="errorMsg" value="$!errorMsg" />
+    <div class="header">
+        <a class="header_arrow" href="javascript:history.go(-1)"></a>
+        <h1 class="heade_ft oran_color">提现结果</h1>
+    </div>
+    <h2 class="result-title">提现申请失败，原因：$!resMsg </h2>
+    <div class="pay_img"></div>
+        #if("$!qianbao"=="qianbao")
+        <a class="invite" href="$!env.getWebURL('micro2.0/bonus/withdraw/index')?qianbao=qianbao&agentViewFlag=$!agentViewFlag" title="">再试一次</a>
+        #else
+        <a class="invite" href="$!env.getWebURL('micro2.0/bonus/withdraw/index')" title="">再试一次</a>
+        #end
+    <div class="dep_service">
+        <p class="service_info">如您对此次交易有疑问</p>
+        <p class="service_info_number">请联系客服：<span><a class="ser_color" href="tel:4008061230">400-806-1230</a></span></p>
+    </div>
+#LoadJS("resources/micro2.0/scripts/regular/custom")
+</body>
+<script type="text/javascript">
+    var msg = $("#errorMsg").val();
+    if(msg) {
+        $(".ACC_null_title").text(msg);
+    }
+</script>
+#Html("end")

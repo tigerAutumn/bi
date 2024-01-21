@@ -1,0 +1,1877 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinting.business.dao.LnLoanMapper">
+    <resultMap id="BaseResultMap" type="com.pinting.business.model.LnLoan">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="ln_user_id" jdbcType="INTEGER" property="lnUserId" />
+      <result column="charge_rule_id" jdbcType="INTEGER" property="chargeRuleId" />
+      <result column="partner_loan_id" jdbcType="VARCHAR" property="partnerLoanId" />
+      <result column="apply_amount" jdbcType="DOUBLE" property="applyAmount" />
+      <result column="approve_amount" jdbcType="DOUBLE" property="approveAmount" />
+      <result column="head_fee" jdbcType="DOUBLE" property="headFee" />
+      <result column="agreement_rate" jdbcType="DOUBLE" property="agreementRate" />
+      <result column="loan_service_rate" jdbcType="DOUBLE" property="loanServiceRate" />
+      <result column="bgw_settle_rate" jdbcType="DOUBLE" property="bgwSettleRate" />
+      <result column="pay_order_no" jdbcType="VARCHAR" property="payOrderNo" />
+      <result column="period" jdbcType="INTEGER" property="period" />
+      <result column="period_unit" jdbcType="INTEGER" property="periodUnit" />
+      <result column="partner_order_no" jdbcType="VARCHAR" property="partnerOrderNo" />
+      <result column="partner_business_flag" jdbcType="VARCHAR" property="partnerBusinessFlag" />
+      <result column="bgw_bind_id" jdbcType="VARCHAR" property="bgwBindId" />
+      <result column="subject_name" jdbcType="VARCHAR" property="subjectName" />
+      <result column="purpose" jdbcType="VARCHAR" property="purpose" />
+      <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
+      <result column="credit_amount" jdbcType="DOUBLE" property="creditAmount" />
+      <result column="loaned_amount" jdbcType="DOUBLE" property="loanedAmount" />
+      <result column="credit_level" jdbcType="VARCHAR" property="creditLevel" />
+      <result column="credit_score" jdbcType="INTEGER" property="creditScore" />
+      <result column="loan_times" jdbcType="INTEGER" property="loanTimes" />
+      <result column="break_times" jdbcType="INTEGER" property="breakTimes" />
+      <result column="break_max_days" jdbcType="INTEGER" property="breakMaxDays" />
+      <result column="address" jdbcType="VARCHAR" property="address" />
+      <result column="email" jdbcType="VARCHAR" property="email" />
+      <result column="status" jdbcType="VARCHAR" property="status" />
+      <result column="is_repaying" jdbcType="VARCHAR" property="isRepaying" />
+      <result column="inform_status" jdbcType="VARCHAR" property="informStatus" />
+      <result column="loan_time" jdbcType="TIMESTAMP" property="loanTime" />
+      <result column="interest_time" jdbcType="TIMESTAMP" property="interestTime" />
+      <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+      <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    <sql id="Example_Where_Clause">
+      <where>
+        <foreach collection="oredCriteria" item="criteria" separator="or">
+          <if test="criteria.valid">
+            <trim prefix="(" prefixOverrides="and" suffix=")">
+              <foreach collection="criteria.criteria" item="criterion">
+                <choose>
+                  <when test="criterion.noValue">
+                    and ${criterion.condition}
+                  </when>
+                  <when test="criterion.singleValue">
+                    and ${criterion.condition} #{criterion.value}
+                  </when>
+                  <when test="criterion.betweenValue">
+                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                  </when>
+                  <when test="criterion.listValue">
+                    and ${criterion.condition}
+                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                      #{listItem}
+                    </foreach>
+                  </when>
+                </choose>
+              </foreach>
+            </trim>
+          </if>
+        </foreach>
+      </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+      <where>
+        <foreach collection="example.oredCriteria" item="criteria" separator="or">
+          <if test="criteria.valid">
+            <trim prefix="(" prefixOverrides="and" suffix=")">
+              <foreach collection="criteria.criteria" item="criterion">
+                <choose>
+                  <when test="criterion.noValue">
+                    and ${criterion.condition}
+                  </when>
+                  <when test="criterion.singleValue">
+                    and ${criterion.condition} #{criterion.value}
+                  </when>
+                  <when test="criterion.betweenValue">
+                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                  </when>
+                  <when test="criterion.listValue">
+                    and ${criterion.condition}
+                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                      #{listItem}
+                    </foreach>
+                  </when>
+                </choose>
+              </foreach>
+            </trim>
+          </if>
+        </foreach>
+      </where>
+    </sql>
+    <sql id="Base_Column_List">
+      id, ln_user_id, charge_rule_id, partner_loan_id, apply_amount, approve_amount, head_fee,
+      agreement_rate, loan_service_rate, bgw_settle_rate, pay_order_no, period, period_unit,
+      partner_order_no, partner_business_flag, bgw_bind_id, subject_name, purpose, apply_time,
+      credit_amount, loaned_amount, credit_level, credit_score, loan_times, break_times,
+      break_max_days, address, email, status, is_repaying, inform_status, loan_time, interest_time,
+      create_time, update_time
+    </sql>
+    <select id="selectByExample" parameterType="com.pinting.business.model.LnLoanExample" resultMap="BaseResultMap">
+      select
+      <if test="distinct">
+        distinct
+      </if>
+      <include refid="Base_Column_List" />
+      from ln_loan
+      <if test="_parameter != null">
+        <include refid="Example_Where_Clause" />
+      </if>
+      <if test="orderByClause != null">
+        order by ${orderByClause}
+      </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from ln_loan
+      where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+      delete from ln_loan
+      where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.pinting.business.model.LnLoanExample">
+      delete from ln_loan
+      <if test="_parameter != null">
+        <include refid="Example_Where_Clause" />
+      </if>
+    </delete>
+    <insert id="insert" parameterType="com.pinting.business.model.LnLoan">
+      <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+        SELECT LAST_INSERT_ID()
+      </selectKey>
+      insert into ln_loan (ln_user_id, charge_rule_id, partner_loan_id,
+      apply_amount, approve_amount, head_fee,
+      agreement_rate, loan_service_rate, bgw_settle_rate,
+      pay_order_no, period, period_unit,
+      partner_order_no, partner_business_flag, bgw_bind_id,
+      subject_name, purpose, apply_time,
+      credit_amount, loaned_amount, credit_level,
+      credit_score, loan_times, break_times,
+      break_max_days, address, email,
+      status, is_repaying, inform_status,
+      loan_time, interest_time, create_time,
+      update_time)
+      values (#{lnUserId,jdbcType=INTEGER}, #{chargeRuleId,jdbcType=INTEGER}, #{partnerLoanId,jdbcType=VARCHAR},
+      #{applyAmount,jdbcType=DOUBLE}, #{approveAmount,jdbcType=DOUBLE}, #{headFee,jdbcType=DOUBLE},
+      #{agreementRate,jdbcType=DOUBLE}, #{loanServiceRate,jdbcType=DOUBLE}, #{bgwSettleRate,jdbcType=DOUBLE},
+      #{payOrderNo,jdbcType=VARCHAR}, #{period,jdbcType=INTEGER}, #{periodUnit,jdbcType=INTEGER},
+      #{partnerOrderNo,jdbcType=VARCHAR}, #{partnerBusinessFlag,jdbcType=VARCHAR}, #{bgwBindId,jdbcType=VARCHAR},
+      #{subjectName,jdbcType=VARCHAR}, #{purpose,jdbcType=VARCHAR}, #{applyTime,jdbcType=TIMESTAMP},
+      #{creditAmount,jdbcType=DOUBLE}, #{loanedAmount,jdbcType=DOUBLE}, #{creditLevel,jdbcType=VARCHAR},
+      #{creditScore,jdbcType=INTEGER}, #{loanTimes,jdbcType=INTEGER}, #{breakTimes,jdbcType=INTEGER},
+      #{breakMaxDays,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+      #{status,jdbcType=VARCHAR}, #{isRepaying,jdbcType=VARCHAR}, #{informStatus,jdbcType=VARCHAR},
+      #{loanTime,jdbcType=TIMESTAMP}, #{interestTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.pinting.business.model.LnLoan" useGeneratedKeys="true" keyProperty="id" >
+      insert into ln_loan
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="lnUserId != null">
+          ln_user_id,
+        </if>
+        <if test="chargeRuleId != null">
+          charge_rule_id,
+        </if>
+        <if test="partnerLoanId != null">
+          partner_loan_id,
+        </if>
+        <if test="applyAmount != null">
+          apply_amount,
+        </if>
+        <if test="approveAmount != null">
+          approve_amount,
+        </if>
+        <if test="headFee != null">
+          head_fee,
+        </if>
+        <if test="agreementRate != null">
+          agreement_rate,
+        </if>
+        <if test="loanServiceRate != null">
+          loan_service_rate,
+        </if>
+        <if test="bgwSettleRate != null">
+          bgw_settle_rate,
+        </if>
+        <if test="payOrderNo != null">
+          pay_order_no,
+        </if>
+        <if test="period != null">
+          period,
+        </if>
+        <if test="periodUnit != null">
+          period_unit,
+        </if>
+        <if test="partnerOrderNo != null">
+          partner_order_no,
+        </if>
+        <if test="partnerBusinessFlag != null">
+          partner_business_flag,
+        </if>
+        <if test="bgwBindId != null">
+          bgw_bind_id,
+        </if>
+        <if test="subjectName != null">
+          subject_name,
+        </if>
+        <if test="purpose != null">
+          purpose,
+        </if>
+        <if test="applyTime != null">
+          apply_time,
+        </if>
+        <if test="creditAmount != null">
+          credit_amount,
+        </if>
+        <if test="loanedAmount != null">
+          loaned_amount,
+        </if>
+        <if test="creditLevel != null">
+          credit_level,
+        </if>
+        <if test="creditScore != null">
+          credit_score,
+        </if>
+        <if test="loanTimes != null">
+          loan_times,
+        </if>
+        <if test="breakTimes != null">
+          break_times,
+        </if>
+        <if test="breakMaxDays != null">
+          break_max_days,
+        </if>
+        <if test="address != null">
+          address,
+        </if>
+        <if test="email != null">
+          email,
+        </if>
+        <if test="status != null">
+          status,
+        </if>
+        <if test="isRepaying != null">
+          is_repaying,
+        </if>
+        <if test="informStatus != null">
+          inform_status,
+        </if>
+        <if test="loanTime != null">
+          loan_time,
+        </if>
+        <if test="interestTime != null">
+          interest_time,
+        </if>
+        <if test="createTime != null">
+          create_time,
+        </if>
+        <if test="updateTime != null">
+          update_time,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="lnUserId != null">
+          #{lnUserId,jdbcType=INTEGER},
+        </if>
+        <if test="chargeRuleId != null">
+          #{chargeRuleId,jdbcType=INTEGER},
+        </if>
+        <if test="partnerLoanId != null">
+          #{partnerLoanId,jdbcType=VARCHAR},
+        </if>
+        <if test="applyAmount != null">
+          #{applyAmount,jdbcType=DOUBLE},
+        </if>
+        <if test="approveAmount != null">
+          #{approveAmount,jdbcType=DOUBLE},
+        </if>
+        <if test="headFee != null">
+          #{headFee,jdbcType=DOUBLE},
+        </if>
+        <if test="agreementRate != null">
+          #{agreementRate,jdbcType=DOUBLE},
+        </if>
+        <if test="loanServiceRate != null">
+          #{loanServiceRate,jdbcType=DOUBLE},
+        </if>
+        <if test="bgwSettleRate != null">
+          #{bgwSettleRate,jdbcType=DOUBLE},
+        </if>
+        <if test="payOrderNo != null">
+          #{payOrderNo,jdbcType=VARCHAR},
+        </if>
+        <if test="period != null">
+          #{period,jdbcType=INTEGER},
+        </if>
+        <if test="periodUnit != null">
+          #{periodUnit,jdbcType=INTEGER},
+        </if>
+        <if test="partnerOrderNo != null">
+          #{partnerOrderNo,jdbcType=VARCHAR},
+        </if>
+        <if test="partnerBusinessFlag != null">
+          #{partnerBusinessFlag,jdbcType=VARCHAR},
+        </if>
+        <if test="bgwBindId != null">
+          #{bgwBindId,jdbcType=VARCHAR},
+        </if>
+        <if test="subjectName != null">
+          #{subjectName,jdbcType=VARCHAR},
+        </if>
+        <if test="purpose != null">
+          #{purpose,jdbcType=VARCHAR},
+        </if>
+        <if test="applyTime != null">
+          #{applyTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="creditAmount != null">
+          #{creditAmount,jdbcType=DOUBLE},
+        </if>
+        <if test="loanedAmount != null">
+          #{loanedAmount,jdbcType=DOUBLE},
+        </if>
+        <if test="creditLevel != null">
+          #{creditLevel,jdbcType=VARCHAR},
+        </if>
+        <if test="creditScore != null">
+          #{creditScore,jdbcType=INTEGER},
+        </if>
+        <if test="loanTimes != null">
+          #{loanTimes,jdbcType=INTEGER},
+        </if>
+        <if test="breakTimes != null">
+          #{breakTimes,jdbcType=INTEGER},
+        </if>
+        <if test="breakMaxDays != null">
+          #{breakMaxDays,jdbcType=INTEGER},
+        </if>
+        <if test="address != null">
+          #{address,jdbcType=VARCHAR},
+        </if>
+        <if test="email != null">
+          #{email,jdbcType=VARCHAR},
+        </if>
+        <if test="status != null">
+          #{status,jdbcType=VARCHAR},
+        </if>
+        <if test="isRepaying != null">
+          #{isRepaying,jdbcType=VARCHAR},
+        </if>
+        <if test="informStatus != null">
+          #{informStatus,jdbcType=VARCHAR},
+        </if>
+        <if test="loanTime != null">
+          #{loanTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="interestTime != null">
+          #{interestTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="createTime != null">
+          #{createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="updateTime != null">
+          #{updateTime,jdbcType=TIMESTAMP},
+        </if>
+      </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.pinting.business.model.LnLoanExample" resultType="java.lang.Integer">
+      select count(*) from ln_loan
+      <if test="_parameter != null">
+        <include refid="Example_Where_Clause" />
+      </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+      update ln_loan
+      <set>
+        <if test="record.id != null">
+          id = #{record.id,jdbcType=INTEGER},
+        </if>
+        <if test="record.lnUserId != null">
+          ln_user_id = #{record.lnUserId,jdbcType=INTEGER},
+        </if>
+        <if test="record.chargeRuleId != null">
+          charge_rule_id = #{record.chargeRuleId,jdbcType=INTEGER},
+        </if>
+        <if test="record.partnerLoanId != null">
+          partner_loan_id = #{record.partnerLoanId,jdbcType=VARCHAR},
+        </if>
+        <if test="record.applyAmount != null">
+          apply_amount = #{record.applyAmount,jdbcType=DOUBLE},
+        </if>
+        <if test="record.approveAmount != null">
+          approve_amount = #{record.approveAmount,jdbcType=DOUBLE},
+        </if>
+        <if test="record.headFee != null">
+          head_fee = #{record.headFee,jdbcType=DOUBLE},
+        </if>
+        <if test="record.agreementRate != null">
+          agreement_rate = #{record.agreementRate,jdbcType=DOUBLE},
+        </if>
+        <if test="record.loanServiceRate != null">
+          loan_service_rate = #{record.loanServiceRate,jdbcType=DOUBLE},
+        </if>
+        <if test="record.bgwSettleRate != null">
+          bgw_settle_rate = #{record.bgwSettleRate,jdbcType=DOUBLE},
+        </if>
+        <if test="record.payOrderNo != null">
+          pay_order_no = #{record.payOrderNo,jdbcType=VARCHAR},
+        </if>
+        <if test="record.period != null">
+          period = #{record.period,jdbcType=INTEGER},
+        </if>
+        <if test="record.periodUnit != null">
+          period_unit = #{record.periodUnit,jdbcType=INTEGER},
+        </if>
+        <if test="record.partnerOrderNo != null">
+          partner_order_no = #{record.partnerOrderNo,jdbcType=VARCHAR},
+        </if>
+        <if test="record.partnerBusinessFlag != null">
+          partner_business_flag = #{record.partnerBusinessFlag,jdbcType=VARCHAR},
+        </if>
+        <if test="record.bgwBindId != null">
+          bgw_bind_id = #{record.bgwBindId,jdbcType=VARCHAR},
+        </if>
+        <if test="record.subjectName != null">
+          subject_name = #{record.subjectName,jdbcType=VARCHAR},
+        </if>
+        <if test="record.purpose != null">
+          purpose = #{record.purpose,jdbcType=VARCHAR},
+        </if>
+        <if test="record.applyTime != null">
+          apply_time = #{record.applyTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.creditAmount != null">
+          credit_amount = #{record.creditAmount,jdbcType=DOUBLE},
+        </if>
+        <if test="record.loanedAmount != null">
+          loaned_amount = #{record.loanedAmount,jdbcType=DOUBLE},
+        </if>
+        <if test="record.creditLevel != null">
+          credit_level = #{record.creditLevel,jdbcType=VARCHAR},
+        </if>
+        <if test="record.creditScore != null">
+          credit_score = #{record.creditScore,jdbcType=INTEGER},
+        </if>
+        <if test="record.loanTimes != null">
+          loan_times = #{record.loanTimes,jdbcType=INTEGER},
+        </if>
+        <if test="record.breakTimes != null">
+          break_times = #{record.breakTimes,jdbcType=INTEGER},
+        </if>
+        <if test="record.breakMaxDays != null">
+          break_max_days = #{record.breakMaxDays,jdbcType=INTEGER},
+        </if>
+        <if test="record.address != null">
+          address = #{record.address,jdbcType=VARCHAR},
+        </if>
+        <if test="record.email != null">
+          email = #{record.email,jdbcType=VARCHAR},
+        </if>
+        <if test="record.status != null">
+          status = #{record.status,jdbcType=VARCHAR},
+        </if>
+        <if test="record.isRepaying != null">
+          is_repaying = #{record.isRepaying,jdbcType=VARCHAR},
+        </if>
+        <if test="record.informStatus != null">
+          inform_status = #{record.informStatus,jdbcType=VARCHAR},
+        </if>
+        <if test="record.loanTime != null">
+          loan_time = #{record.loanTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.interestTime != null">
+          interest_time = #{record.interestTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.createTime != null">
+          create_time = #{record.createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.updateTime != null">
+          update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+        </if>
+      </set>
+      <if test="_parameter != null">
+        <include refid="Update_By_Example_Where_Clause" />
+      </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+      update ln_loan
+      set id = #{record.id,jdbcType=INTEGER},
+      ln_user_id = #{record.lnUserId,jdbcType=INTEGER},
+      charge_rule_id = #{record.chargeRuleId,jdbcType=INTEGER},
+      partner_loan_id = #{record.partnerLoanId,jdbcType=VARCHAR},
+      apply_amount = #{record.applyAmount,jdbcType=DOUBLE},
+      approve_amount = #{record.approveAmount,jdbcType=DOUBLE},
+      head_fee = #{record.headFee,jdbcType=DOUBLE},
+      agreement_rate = #{record.agreementRate,jdbcType=DOUBLE},
+      loan_service_rate = #{record.loanServiceRate,jdbcType=DOUBLE},
+      bgw_settle_rate = #{record.bgwSettleRate,jdbcType=DOUBLE},
+      pay_order_no = #{record.payOrderNo,jdbcType=VARCHAR},
+      period = #{record.period,jdbcType=INTEGER},
+      period_unit = #{record.periodUnit,jdbcType=INTEGER},
+      partner_order_no = #{record.partnerOrderNo,jdbcType=VARCHAR},
+      partner_business_flag = #{record.partnerBusinessFlag,jdbcType=VARCHAR},
+      bgw_bind_id = #{record.bgwBindId,jdbcType=VARCHAR},
+      subject_name = #{record.subjectName,jdbcType=VARCHAR},
+      purpose = #{record.purpose,jdbcType=VARCHAR},
+      apply_time = #{record.applyTime,jdbcType=TIMESTAMP},
+      credit_amount = #{record.creditAmount,jdbcType=DOUBLE},
+      loaned_amount = #{record.loanedAmount,jdbcType=DOUBLE},
+      credit_level = #{record.creditLevel,jdbcType=VARCHAR},
+      credit_score = #{record.creditScore,jdbcType=INTEGER},
+      loan_times = #{record.loanTimes,jdbcType=INTEGER},
+      break_times = #{record.breakTimes,jdbcType=INTEGER},
+      break_max_days = #{record.breakMaxDays,jdbcType=INTEGER},
+      address = #{record.address,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      is_repaying = #{record.isRepaying,jdbcType=VARCHAR},
+      inform_status = #{record.informStatus,jdbcType=VARCHAR},
+      loan_time = #{record.loanTime,jdbcType=TIMESTAMP},
+      interest_time = #{record.interestTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+      <if test="_parameter != null">
+        <include refid="Update_By_Example_Where_Clause" />
+      </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.LnLoan">
+      update ln_loan
+      <set>
+        <if test="lnUserId != null">
+          ln_user_id = #{lnUserId,jdbcType=INTEGER},
+        </if>
+        <if test="chargeRuleId != null">
+          charge_rule_id = #{chargeRuleId,jdbcType=INTEGER},
+        </if>
+        <if test="partnerLoanId != null">
+          partner_loan_id = #{partnerLoanId,jdbcType=VARCHAR},
+        </if>
+        <if test="applyAmount != null">
+          apply_amount = #{applyAmount,jdbcType=DOUBLE},
+        </if>
+        <if test="approveAmount != null">
+          approve_amount = #{approveAmount,jdbcType=DOUBLE},
+        </if>
+        <if test="headFee != null">
+          head_fee = #{headFee,jdbcType=DOUBLE},
+        </if>
+        <if test="agreementRate != null">
+          agreement_rate = #{agreementRate,jdbcType=DOUBLE},
+        </if>
+        <if test="loanServiceRate != null">
+          loan_service_rate = #{loanServiceRate,jdbcType=DOUBLE},
+        </if>
+        <if test="bgwSettleRate != null">
+          bgw_settle_rate = #{bgwSettleRate,jdbcType=DOUBLE},
+        </if>
+        <if test="payOrderNo != null">
+          pay_order_no = #{payOrderNo,jdbcType=VARCHAR},
+        </if>
+        <if test="period != null">
+          period = #{period,jdbcType=INTEGER},
+        </if>
+        <if test="periodUnit != null">
+          period_unit = #{periodUnit,jdbcType=INTEGER},
+        </if>
+        <if test="partnerOrderNo != null">
+          partner_order_no = #{partnerOrderNo,jdbcType=VARCHAR},
+        </if>
+        <if test="partnerBusinessFlag != null">
+          partner_business_flag = #{partnerBusinessFlag,jdbcType=VARCHAR},
+        </if>
+        <if test="bgwBindId != null">
+          bgw_bind_id = #{bgwBindId,jdbcType=VARCHAR},
+        </if>
+        <if test="subjectName != null">
+          subject_name = #{subjectName,jdbcType=VARCHAR},
+        </if>
+        <if test="purpose != null">
+          purpose = #{purpose,jdbcType=VARCHAR},
+        </if>
+        <if test="applyTime != null">
+          apply_time = #{applyTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="creditAmount != null">
+          credit_amount = #{creditAmount,jdbcType=DOUBLE},
+        </if>
+        <if test="loanedAmount != null">
+          loaned_amount = #{loanedAmount,jdbcType=DOUBLE},
+        </if>
+        <if test="creditLevel != null">
+          credit_level = #{creditLevel,jdbcType=VARCHAR},
+        </if>
+        <if test="creditScore != null">
+          credit_score = #{creditScore,jdbcType=INTEGER},
+        </if>
+        <if test="loanTimes != null">
+          loan_times = #{loanTimes,jdbcType=INTEGER},
+        </if>
+        <if test="breakTimes != null">
+          break_times = #{breakTimes,jdbcType=INTEGER},
+        </if>
+        <if test="breakMaxDays != null">
+          break_max_days = #{breakMaxDays,jdbcType=INTEGER},
+        </if>
+        <if test="address != null">
+          address = #{address,jdbcType=VARCHAR},
+        </if>
+        <if test="email != null">
+          email = #{email,jdbcType=VARCHAR},
+        </if>
+        <if test="status != null">
+          status = #{status,jdbcType=VARCHAR},
+        </if>
+        <if test="isRepaying != null">
+          is_repaying = #{isRepaying,jdbcType=VARCHAR},
+        </if>
+        <if test="informStatus != null">
+          inform_status = #{informStatus,jdbcType=VARCHAR},
+        </if>
+        <if test="loanTime != null">
+          loan_time = #{loanTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="interestTime != null">
+          interest_time = #{interestTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="createTime != null">
+          create_time = #{createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="updateTime != null">
+          update_time = #{updateTime,jdbcType=TIMESTAMP},
+        </if>
+      </set>
+      where id = #{id,jdbcType=INTEGER}
+    </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.LnLoan">
+    update ln_loan
+    set ln_user_id = #{lnUserId,jdbcType=INTEGER},
+    charge_rule_id = #{chargeRuleId,jdbcType=INTEGER},
+    partner_loan_id = #{partnerLoanId,jdbcType=VARCHAR},
+    apply_amount = #{applyAmount,jdbcType=DOUBLE},
+    approve_amount = #{approveAmount,jdbcType=DOUBLE},
+    head_fee = #{headFee,jdbcType=DOUBLE},
+    agreement_rate = #{agreementRate,jdbcType=DOUBLE},
+    loan_service_rate = #{loanServiceRate,jdbcType=DOUBLE},
+    bgw_settle_rate = #{bgwSettleRate,jdbcType=DOUBLE},
+    pay_order_no = #{payOrderNo,jdbcType=VARCHAR},
+    period = #{period,jdbcType=INTEGER},
+    period_unit = #{periodUnit,jdbcType=INTEGER},
+    partner_order_no = #{partnerOrderNo,jdbcType=VARCHAR},
+    partner_business_flag = #{partnerBusinessFlag,jdbcType=VARCHAR},
+    bgw_bind_id = #{bgwBindId,jdbcType=VARCHAR},
+    subject_name = #{subjectName,jdbcType=VARCHAR},
+    purpose = #{purpose,jdbcType=VARCHAR},
+    apply_time = #{applyTime,jdbcType=TIMESTAMP},
+    credit_amount = #{creditAmount,jdbcType=DOUBLE},
+    loaned_amount = #{loanedAmount,jdbcType=DOUBLE},
+    credit_level = #{creditLevel,jdbcType=VARCHAR},
+    credit_score = #{creditScore,jdbcType=INTEGER},
+    loan_times = #{loanTimes,jdbcType=INTEGER},
+    break_times = #{breakTimes,jdbcType=INTEGER},
+    break_max_days = #{breakMaxDays,jdbcType=INTEGER},
+    address = #{address,jdbcType=VARCHAR},
+    email = #{email,jdbcType=VARCHAR},
+    status = #{status,jdbcType=VARCHAR},
+    is_repaying = #{isRepaying,jdbcType=VARCHAR},
+    inform_status = #{informStatus,jdbcType=VARCHAR},
+    loan_time = #{loanTime,jdbcType=TIMESTAMP},
+    interest_time = #{interestTime,jdbcType=TIMESTAMP},
+    create_time = #{createTime,jdbcType=TIMESTAMP},
+    update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <resultMap id="LoanDetailInfoMap" type="com.pinting.business.model.vo.LoanDetailInfoVO">
+    <id column="id" property="id" jdbcType="INTEGER"/>
+    <result column="partner_loan_id" property="partnerLoanId" jdbcType="VARCHAR"/>
+    <result column="loan_time" property="loanTime" jdbcType="TIMESTAMP"/>
+    <result column="purpose" property="purpose" jdbcType="VARCHAR"/>
+    <result column="approve_amount" property="approveAmount" jdbcType="DOUBLE"/>
+    <result column="period" property="period" jdbcType="INTEGER"/>
+    <result column="ln_user_id_card" property="lnUserIdCard" jdbcType="VARCHAR"/>
+    <result column="ln_user_ZANAccount" property="lnUserZANAccount" jdbcType="VARCHAR"/>
+    <result column="ln_userN_name" property="lnUserName" jdbcType="VARCHAR"/>
+    <result column="need_repayMoney_4Month" property="needRepayMoney4Month" jdbcType="DOUBLE"/>
+    <result column="agreement_rate" property="agreementRate" jdbcType="DOUBLE"/>
+    <result column="address" property="address" jdbcType="VARCHAR"/>
+    <result column="email" property="email" jdbcType="VARCHAR"/>
+    <result column="partner_business_flag" property="partnerBusinessFlag" jdbcType="VARCHAR"/>
+    <result column="loan_service_rate" property="loanServiceRate" jdbcType="DOUBLE"/>
+  </resultMap>
+  <resultMap id="StagingProductsLoanMap" type="com.pinting.business.model.vo.StagingProductsLoanVO">
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR"/>
+    <result column="user_id" property="userId" jdbcType="INTEGER"/>
+    <result column="period" property="period" jdbcType="INTEGER"/>
+    <result column="total_amount" property="totalAmount" jdbcType="DOUBLE"/>
+    <result column="loan_time" property="loanTime" jdbcType="TIMESTAMP"/>
+    <result column="agent_name" property="agentName" jdbcType="VARCHAR"/>
+    <result column="loanRelationId" property="loanRelationId" jdbcType="INTEGER"/>
+  </resultMap>
+
+  <select id="selectBillNotExist" resultMap="BaseResultMap">
+    SELECT l.id
+    FROM ln_loan l, ln_user u
+    WHERE l.`status` = 'PAIED'
+    AND l.ln_user_id = u.id
+    AND u.partner_code in ('7_DAI_SELF', 'YUN_DAI_SELF')
+    AND l.loan_time &lt; DATE_FORMAT(NOW(),'%y-%m-%d')
+    AND l.id not in(
+    select DISTINCT loan_id from ln_repay_schedule where `status`!='CANCELLED'
+    )
+  </select>
+    
+    <select id="selectLoanDetailInfo" resultMap="LoanDetailInfoMap">
+  	select d.id_card ln_user_id_card, d.mobile ln_user_ZANAccount,
+		d.user_name ln_userN_name, a.id,
+ 		a.loan_time, a.period,a.purpose, a.approve_amount, a.agreement_rate
+	from ln_loan a,ln_repay_schedule b, ln_user d
+	where a.ln_user_id = d.id  and a.id = b.loan_id
+		and b.serial_id =1 and a.partner_loan_id = #{partnerLoanId}
+		and d.partner_code = #{partnerCode}
+  </select>
+  
+  <select id="selectYunLoanDetailInfo" resultMap="LoanDetailInfoMap">
+  	select d.id_card ln_user_id_card, d.mobile ln_user_ZANAccount,
+		d.user_name ln_userN_name, a.id, a.partner_loan_Id partner_loan_id,
+ 		a.loan_time, a.period,a.purpose, a.approve_amount, a.agreement_rate,
+ 		a.address, a.email, a.partner_business_flag, a.loan_service_rate
+	from ln_loan a, ln_user d
+	where a.ln_user_id = d.id  and a.partner_loan_id = #{partnerLoanId}
+		and d.partner_code = #{partnerCode}
+  </select>
+  
+  <select id="selectSevenLoanDetailInfo" resultMap="LoanDetailInfoMap">
+  	select d.id_card ln_user_id_card, d.mobile ln_user_ZANAccount,
+		d.user_name ln_userN_name, a.id, a.partner_loan_Id partner_loan_id,
+ 		a.loan_time, a.period,a.purpose, a.approve_amount, a.agreement_rate
+	from ln_loan a, ln_user d
+	where a.ln_user_id = d.id  and a.partner_loan_id = #{partnerLoanId}
+		and d.partner_code = #{partnerCode}
+  </select>
+
+    <select id="selectPlanPIByLoanId" resultType="java.lang.Double">
+  	select sum(b.plan_amount)
+	from ln_repay_schedule a, ln_repay_schedule_detail b
+	where a.loan_id = #{loanId} and a.id = b.plan_id and a.serial_id = 1
+	and (b.subject_code = 'PRINCIPAL' or b.subject_code = 'INTEREST');
+  </select>
+
+    <resultMap extends="BaseResultMap" id="LnLoanForCheckVOMap" type="com.pinting.business.model.vo.LnLoanForCheckVO">
+        <result column="return_msg" jdbcType="VARCHAR" property="errorMsg" />
+    </resultMap>
+    <select id="selectLnLoanForCheck" resultMap="LnLoanForCheckVOMap">
+    SELECT a.ln_user_id, a.partner_loan_id, a.approve_amount, a.period,
+        a.apply_time, a.loan_time, b.return_msg, c.partner_user_id AS inform_status, a.`status`
+    FROM ln_loan a, ln_pay_orders b, ln_user c
+    WHERE
+    CASE WHEN a.`status` != 'PAIED' THEN DATE(DATE_ADD(a.apply_time,INTERVAL 1 day)) = DATE(NOW())
+    ELSE DATE(DATE_ADD(a.loan_time,INTERVAL 1 day)) = DATE(NOW()) END
+    AND a.pay_order_no = b.order_no AND c.id = a.ln_user_id AND c.partner_code = 'ZAN'
+  </select>
+
+    <select id="selectLoanInterestRate" parameterType="java.util.Map" resultType="java.lang.Double">
+    SELECT s.num_value
+    FROM ln_loan l,ln_subject s
+    WHERE l.charge_rule_id = s.charge_rule_id
+    AND s.rateType = 'RATE'
+    AND s.subject_code = 'INTEREST'
+    AND l.id = #{loanId};
+  </select>
+
+    <select id="selectLoanInfoByLoanId" parameterType="java.util.Map" resultMap="LoanDetailInfoMap">
+    SELECT SUM(b.plan_amount) AS need_repayMoney_4Month, c.loan_time, c.period, c.purpose
+    FROM ln_repay_schedule a,ln_repay_schedule_detail b,ln_loan c
+    WHERE a.id = b.plan_id AND a.loan_id = #{loanId} AND a.serial_id = 1
+    AND c.id = a.loan_id
+    AND (b.subject_code='PRINCIPAL' or b.subject_code='INTEREST')
+  </select>
+
+    <select id="selectLoanIdByPartnerLoanId" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT a.id FROM ln_loan a WHERE a.partner_loan_id = #{partnerLoanId}
+  </select>
+
+    <select id="selectPTStagingProductsLoan" parameterType="com.pinting.business.model.vo.StagingProductsLoanVO" resultMap="StagingProductsLoanMap">
+        SELECT a.id AS loanRelationId, b.pay_order_no AS order_no, c.id AS user_id, b.period, a.total_amount, b.loan_time, d.agent_name
+        FROM ln_loan_relation a
+        LEFT JOIN ln_loan b ON a.loan_id = b.id
+        LEFT JOIN bs_user c ON a.bs_user_id = c.id
+        LEFT JOIN bs_agent d ON c.agent_id = d.id
+        WHERE b.`status` = 'PAIED'
+        AND a.id not in(
+        select DISTINCT(in_loan_relation_id) from ln_credit_transfer
+        )
+        <if test="loanTimeStart != null">
+            AND b.loan_time &gt;= #{loanTimeStart}
+        </if>
+        <if test="loanTimeEnd != null">
+            AND b.loan_time &lt;= DATE_FORMAT(#{loanTimeEnd},'%Y-%m-%d 23:59:59')
+        </if>
+        ORDER BY
+        <if test="orderDirection!=null and orderDirection != ''  and orderField != ''  and orderField!=null ">
+            ${orderField} ${orderDirection},
+        </if>
+        b.loan_time DESC
+        <include refid="sql-global.pagination" />
+    </select>
+
+    <select id="selectPTStagingProductsLoanCount" parameterType="com.pinting.business.model.vo.StagingProductsLoanVO" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ln_loan_relation a
+        LEFT JOIN ln_loan b ON a.loan_id = b.id
+        LEFT JOIN bs_user c ON a.bs_user_id = c.id
+        LEFT JOIN bs_agent d ON c.agent_id = d.id
+        WHERE b.`status` = 'PAIED'
+        AND a.id not in(
+        select DISTINCT(in_loan_relation_id) from ln_credit_transfer
+        )
+        <if test="loanTimeStart != null">
+            AND b.loan_time &gt;= #{loanTimeStart}
+        </if>
+        <if test="loanTimeEnd != null">
+            AND b.loan_time &lt;= DATE_FORMAT(#{loanTimeEnd},'%Y-%m-%d 23:59:59')
+        </if>
+    </select>
+
+    <select id="selectQBStagingProductsLoan" parameterType="com.pinting.business.model.dto.StagingProductsLoanDTO" resultMap="StagingProductsLoanMap">
+        SELECT r.bs_user_id as user_id,l.pay_order_no as order_no,l.period,r.total_amount,l.loan_time,a.agent_name,r.id as loanRelationId
+        FROM ln_loan_relation r
+        LEFT JOIN bs_user u ON r.bs_user_id=u.id
+        LEFT JOIN bs_agent a ON a.id=u.agent_id
+        LEFT JOIN ln_loan l ON l.id=r.loan_id
+        WHERE a.id=15
+        AND l.`status`='PAIED'
+        AND r.id NOT IN
+        (select t.in_loan_relation_id FROM ln_credit_transfer t)
+        <if test="loanTimeStart != null">
+            AND l.loan_time &gt;= #{loanTimeStart}
+        </if>
+        <if test="loanTimeEnd != null">
+            AND l.loan_time &lt;= DATE_FORMAT(#{loanTimeEnd},'%Y-%m-%d 23:59:59')
+        </if>
+        ORDER BY
+        l.loan_time DESC
+        <include refid="sql-global.pagination" />
+    </select>
+
+    <select id="selectQBStagingProductsLoanCount" parameterType="com.pinting.business.model.dto.StagingProductsLoanDTO" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ln_loan_relation r
+        LEFT JOIN bs_user u ON r.bs_user_id=u.id
+        LEFT JOIN bs_agent a ON a.id=u.agent_id
+        LEFT JOIN ln_loan l ON l.id=r.loan_id
+        WHERE a.id=15
+        AND l.`status`='PAIED'
+        AND r.id NOT IN
+        (select t.in_loan_relation_id FROM ln_credit_transfer t)
+        <if test="loanTimeStart != null">
+            AND l.loan_time &gt;= #{loanTimeStart}
+        </if>
+        <if test="loanTimeEnd != null">
+            AND l.loan_time &lt;= DATE_FORMAT(#{loanTimeEnd},'%Y-%m-%d 23:59:59')
+        </if>
+    </select>
+
+    <select id="selectHSStagingProductsLoan" parameterType="com.pinting.business.model.vo.StagingProductsLoanVO" resultMap="StagingProductsLoanMap">
+        SELECT a.id AS loanRelationId, b.pay_order_no AS order_no, c.id AS user_id, b.period, a.total_amount, b.loan_time, d.agent_name
+        FROM ln_loan_relation a
+        LEFT JOIN ln_loan b ON a.loan_id = b.id
+        LEFT JOIN bs_user c ON a.bs_user_id = c.id
+        LEFT JOIN bs_agent d ON c.agent_id = d.id
+        WHERE b.`status` = 'PAIED' AND c.agent_id = 15
+        AND a.id not in(
+        select DISTINCT(in_loan_relation_id) from ln_credit_transfer
+        )
+        <if test="loanTimeStart != null">
+            AND b.loan_time &gt;= #{loanTimeStart}
+        </if>
+        <if test="loanTimeEnd != null">
+            AND b.loan_time &lt;= DATE_FORMAT(#{loanTimeEnd},'%Y-%m-%d 23:59:59')
+        </if>
+        ORDER BY
+        <if test="orderDirection!=null and orderDirection != ''  and orderField != ''  and orderField!=null ">
+            ${orderField} ${orderDirection},
+        </if>
+        b.loan_time DESC
+        <include refid="sql-global.pagination" />
+    </select>
+
+    <select id="selectHSStagingProductsLoanCount" parameterType="com.pinting.business.model.vo.StagingProductsLoanVO" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ln_loan_relation a
+        LEFT JOIN ln_loan b ON a.loan_id = b.id
+        LEFT JOIN bs_user c ON a.bs_user_id = c.id
+        LEFT JOIN bs_agent d ON c.agent_id = d.id
+        WHERE b.`status` = 'PAIED' AND c.agent_id = 15
+        AND a.id not in(
+        select DISTINCT(in_loan_relation_id) from ln_credit_transfer
+        )
+        <if test="loanTimeStart != null">
+            AND b.loan_time &gt;= #{loanTimeStart}
+        </if>
+        <if test="loanTimeEnd != null">
+            AND b.loan_time &lt;= DATE_FORMAT(#{loanTimeEnd},'%Y-%m-%d 23:59:59')
+        </if>
+    </select>
+
+    <select id="selectLoanByDTO" parameterType="com.pinting.business.model.dto.LoanDTO" resultType="com.pinting.business.model.vo.LoanVO">
+        SELECT
+        t.loanId,
+        t.lnUserId,
+        t.partner,
+        t.loanAmount,
+        n.noReturnAmount,
+        t.totalServiceFee,
+        n.noReturnServiceFee,
+        t.period,
+        n.noReturnPeriod,
+        l.latePeriod,
+        t.applyTime,
+        t.status
+        FROM
+        (
+        SELECT
+        l.id AS loanId,
+        u.id AS lnUserId,
+        u.partner_code as partner,
+        l.period,
+        l.create_time as applyTime,
+        l.approve_amount as loanAmount,
+        SUM(s.plan_total) - l.approve_amount AS totalServiceFee,
+        l.status
+        FROM
+        ln_loan l
+        LEFT JOIN ln_user u ON u.id = l.ln_user_id
+        LEFT JOIN ln_repay_schedule s ON l.id = s.loan_id
+
+        WHERE 1=1
+        <if test="status != null">
+            AND l.status=#{status}
+        </if>
+        <if test="sLoan!=null">
+            AND l.apply_amount &gt;= #{sLoan}
+        </if>
+        <if test="eLoan!=null">
+            AND l.apply_amount &lt;= #{eLoan}
+        </if>
+        <if test="lateStart != null and lateEnd!=null">
+            <if test="lateStart==0 and lateEnd!=0">
+                AND l.id NOT IN
+                (
+                    SELECT loan_id FROM
+                    (
+                    SELECT rs.loan_id,COUNT(rs.loan_id) as num FROM ln_repay_schedule rs
+                    WHERE rs.status in ('LATE_NOT','LATE_REPAIED')
+                    GROUP BY
+                    rs.loan_id
+                    ) te WHERE te.num &gt; #{lateEnd}
+                )
+            </if>
+
+            <if test="lateStart!=0">
+                AND l.id IN
+                (
+                    SELECT loan_id FROM
+                    (
+                    SELECT rs.loan_id,COUNT(rs.loan_id) as num FROM ln_repay_schedule rs
+                    WHERE rs.status in ('LATE_NOT','LATE_REPAIED')
+                    GROUP BY
+                    rs.loan_id
+                    ) te WHERE te.num &gt;= #{lateStart}
+                    <if test="lateEnd!=0">
+                        AND te.num &lt;= #{lateEnd}
+                    </if>
+                )
+            </if>
+
+
+        </if>
+        <if test="lateStart != null and lateEnd==null">
+            AND l.id IN
+            (
+                SELECT loan_id FROM
+                (
+                SELECT rs.loan_id,COUNT(rs.loan_id) as num FROM ln_repay_schedule rs
+                <if test="lateStart!=0">
+                    WHERE rs.status in ('LATE_NOT','LATE_REPAIED')
+                </if>
+                GROUP BY
+                rs.loan_id
+                ) te WHERE te.num &gt;= #{lateStart}
+            )
+        </if>
+        <if test="lateStart == null and lateEnd!=null">
+            AND l.id NOT IN
+            (
+                SELECT loan_id FROM
+                (
+                SELECT rs.loan_id,COUNT(rs.loan_id) as num FROM ln_repay_schedule rs
+                WHERE rs.status in ('LATE_NOT','LATE_REPAIED')
+
+                GROUP BY
+                rs.loan_id
+                ) te WHERE te.num &gt; #{lateEnd}
+            )
+        </if>
+        GROUP BY
+        s.loan_id
+        ) t
+        LEFT JOIN (
+        SELECT
+        l.id,
+        SUM(s.plan_total) - SUM(d.plan_amount) AS noReturnServiceFee,
+        SUM(d.plan_amount) AS noReturnAmount,
+        COUNT(s.id) AS noReturnPeriod
+        FROM
+        ln_loan l
+        LEFT JOIN ln_repay_schedule s ON l.id = s.loan_id
+        LEFT JOIN ln_repay_schedule_detail d ON d.plan_id = s.id
+        WHERE
+        s.`status` IN ('INIT', 'LATE_NOT')
+        AND d.subject_code = 'PRINCIPAL'
+        GROUP BY
+        l.id
+        ) n ON n.id = t.loanId
+        LEFT JOIN (
+        SELECT
+        l.id,
+        COUNT(s.id) AS latePeriod
+        FROM
+        ln_loan l
+        LEFT JOIN ln_repay_schedule s ON l.id = s.loan_id
+        WHERE
+        s.`status` IN ('LATE_NOT', 'LATE_REPAIED')
+        GROUP BY
+        l.id
+        ) l ON l.id = t.loanId
+
+        WHERE 1=1
+        <if test="loanId != null">
+            AND t.loanId=#{loanId}
+        </if>
+        <if test="lnUserId != null">
+            AND t.lnUserId = #{lnUserId}
+        </if>
+        <if test="loanTimeStart != null">
+            AND t.applyTime &gt;= #{loanTimeStart}
+        </if>
+        <if test="loanTimeEnd != null">
+            AND t.applyTime &lt;= DATE_FORMAT(#{loanTimeEnd},'%Y-%m-%d 23:59:59')
+        </if>
+        <if test="sNoReturn != null">
+
+            <if test="sNoReturn==0">
+                AND (n.noReturnAmount &gt;= #{sNoReturn} OR n.noReturnAmount IS NULL )
+            </if>
+            <if test="sNoReturn!=0">
+                AND n.noReturnAmount &gt;= #{sNoReturn}
+            </if>
+        </if>
+        <if test="eNoReturn != null">
+            <if test="eNoReturn==0">
+                AND n.noReturnAmount IS NULL
+            </if>
+            <if test="eNoReturn!=0">
+                AND ( n.noReturnAmount &lt;= #{eNoReturn} OR n.noReturnAmount IS NULL )
+            </if>
+
+        </if>
+        <if test="partner != null">
+            AND t.partner = #{partner}
+        </if>
+        ORDER BY
+        t.applyTime DESC
+        <include refid="sql-global.pagination" />
+    </select>
+
+
+    <select id="selectLoanByDTOCount" parameterType="com.pinting.business.model.dto.LoanDTO" resultType="java.lang.Integer">
+        SELECT
+        COUNT(t.loanId)
+        FROM
+        (
+        SELECT
+        l.id AS loanId,
+        u.id AS lnUserId,
+        u.partner_code as partner,
+        l.period,
+        l.create_time as applyTime,
+        l.approve_amount as loanAmount,
+        SUM(s.plan_total) - l.approve_amount AS totalServiceFee
+        FROM
+        ln_loan l
+        LEFT JOIN ln_user u ON u.id = l.ln_user_id
+        LEFT JOIN ln_repay_schedule s ON l.id = s.loan_id
+        WHERE 1=1
+        <if test="status != null">
+            AND l.status=#{status}
+        </if>
+        <if test="sLoan!=null">
+            AND l.apply_amount &gt;= #{sLoan}
+        </if>
+        <if test="eLoan!=null">
+            AND l.apply_amount &lt;= #{eLoan}
+        </if>
+        <if test="lateStart != null and lateEnd!=null">
+            <if test="lateStart==0 and lateEnd!=0">
+                AND l.id NOT IN
+                (
+                    SELECT loan_id FROM
+                    (
+                    SELECT rs.loan_id,COUNT(rs.loan_id) as num FROM ln_repay_schedule rs
+                    WHERE rs.status in ('LATE_NOT','LATE_REPAIED')
+                    GROUP BY
+                    rs.loan_id
+                    ) te WHERE te.num &gt; #{lateEnd}
+                )
+            </if>
+
+            <if test="lateStart!=0">
+                AND l.id IN
+                (
+                    SELECT loan_id FROM
+                    (
+                    SELECT rs.loan_id,COUNT(rs.loan_id) as num FROM ln_repay_schedule rs
+                    WHERE rs.status in ('LATE_NOT','LATE_REPAIED')
+                    GROUP BY
+                    rs.loan_id
+                    ) te WHERE te.num &gt;= #{lateStart}
+                    <if test="lateEnd!=0">
+                      AND te.num &lt;= #{lateEnd}
+                    </if>
+                )
+            </if>
+        </if>
+        <if test="lateStart != null and lateEnd==null">
+            AND l.id IN
+            (
+                SELECT loan_id FROM
+                (
+                SELECT rs.loan_id,COUNT(rs.loan_id) as num FROM ln_repay_schedule rs
+                <if test="lateStart!=0">
+                    WHERE rs.status in ('LATE_NOT','LATE_REPAIED')
+                </if>
+                GROUP BY
+                rs.loan_id
+                ) te WHERE te.num &gt;= #{lateStart}
+            )
+        </if>
+        <if test="lateStart == null and lateEnd!=null">
+            AND l.id NOT IN
+            (
+                SELECT loan_id FROM
+                (
+                SELECT rs.loan_id,COUNT(rs.loan_id) as num FROM ln_repay_schedule rs
+                WHERE rs.status in ('LATE_NOT','LATE_REPAIED')
+
+                GROUP BY
+                rs.loan_id
+                ) te WHERE te.num &gt; #{lateEnd}
+            )
+        </if>
+        GROUP BY
+        s.loan_id
+        ) t
+        LEFT JOIN (
+        SELECT
+        l.id,
+        SUM(s.plan_total) - SUM(d.plan_amount) AS noReturnServiceFee,
+        SUM(d.plan_amount) AS noReturnAmount,
+        COUNT(s.id) AS noReturnPeriod
+        FROM
+        ln_loan l
+        LEFT JOIN ln_repay_schedule s ON l.id = s.loan_id
+        LEFT JOIN ln_repay_schedule_detail d ON d.plan_id = s.id
+        WHERE
+        s.`status` IN ('INIT', 'LATE_NOT')
+        AND d.subject_code = 'PRINCIPAL'
+        GROUP BY
+        l.id
+        ) n ON n.id = t.loanId
+        LEFT JOIN (
+        SELECT
+        l.id,
+        COUNT(s.id) AS latePeriod
+        FROM
+        ln_loan l
+        LEFT JOIN ln_repay_schedule s ON l.id = s.loan_id
+        WHERE
+        s.`status` IN ('LATE_NOT', 'LATE_REPAIED')
+        GROUP BY
+        l.id
+        ) l ON l.id = t.loanId
+
+        WHERE 1=1
+        <if test="loanId != null">
+            AND t.loanId=#{loanId}
+        </if>
+        <if test="lnUserId != null">
+            AND t.lnUserId = #{lnUserId}
+        </if>
+        <if test="loanTimeStart != null">
+            AND t.applyTime &gt;= #{loanTimeStart}
+        </if>
+        <if test="loanTimeEnd != null">
+            AND t.applyTime &lt;= DATE_FORMAT(#{loanTimeEnd},'%Y-%m-%d 23:59:59')
+        </if>
+        <if test="partner != null">
+            AND t.partner = #{partner}
+        </if>
+        <if test="sNoReturn != null">
+
+            <if test="sNoReturn==0">
+                AND (n.noReturnAmount &gt;= #{sNoReturn} OR n.noReturnAmount IS NULL )
+            </if>
+            <if test="sNoReturn!=0">
+                AND n.noReturnAmount &gt;= #{sNoReturn}
+            </if>
+        </if>
+        <if test="eNoReturn != null">
+            <if test="eNoReturn==0">
+                AND n.noReturnAmount IS NULL
+            </if>
+            <if test="eNoReturn!=0">
+                AND ( n.noReturnAmount &lt;= #{eNoReturn} OR n.noReturnAmount IS NULL )
+            </if>
+
+        </if>
+        ORDER BY
+        t.applyTime DESC
+    </select>
+
+     <resultMap id="DailyAmount4LoanVOMap" type="com.pinting.business.model.vo.DailyAmount4LoanVO">
+	    <result column="term" jdbcType="INTEGER" property="term" />
+	    <result column="sum_amount" jdbcType="DOUBLE" property="sumAmount" />
+	 </resultMap>
+     <select id="getLoanSumAmount" resultMap="DailyAmount4LoanVOMap">
+     	select  sum(approve_amount)as sum_amount, period as term
+		from ln_loan
+		where 1=1
+		<if test="beginDate != null">
+			and loan_time &gt;=#{beginDate}
+		</if>
+		<if test="endDate != null">
+			and loan_time &lt;#{endDate}
+		</if>
+		GROUP BY period;
+     </select>
+
+    <select id="selectByOrderNoAndPartnerCode" resultType="java.lang.Integer">
+      select count(a.id) from ln_loan a left join ln_user b on a.ln_user_id = b.id
+      where b.partner_code = #{channel}
+      and a.partner_order_no = #{orderNo}
+    </select>
+
+  <select id="selectByParOrdNoAndParCode" resultMap="BaseResultMap">
+    select a.* from ln_loan a left join ln_user b on a.ln_user_id = b.id
+    where b.partner_code = #{partnerCode}
+    and a.partner_order_no = #{orderNo}
+  </select>
+
+    <select id="selectByLoadIdAndPartnerCode" resultMap="BaseResultMap">
+      select * from ln_loan a left join ln_user b on a.ln_user_id = b.id
+      where b.partner_code = #{channel}
+      and a.partner_loan_id = #{loanId}
+    </select>
+
+  <select id="selectLoanByPartnerLoanId" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT a.* FROM ln_loan a WHERE a.partner_loan_id = #{partnerLoanId}
+  </select>
+
+  <resultMap extends="BaseResultMap" id="RevenueSettleDetailMap" type="com.pinting.business.model.vo.RevenueSettleDetailVO">
+    <result column="partner_repay_id" jdbcType="VARCHAR" property="partnerRepayId" />
+    <result column="partner_user_id" jdbcType="VARCHAR" property="partnerUserId" />
+    <result column="finish_time" jdbcType="TIMESTAMP" property="finishTime" />
+    <result column="partner_business_flag" jdbcType="VARCHAR" property="partnerBusinessFlag" />
+  </resultMap>
+  <select id="selectRepeatRepayDetail" resultMap="RevenueSettleDetailMap">
+    SELECT c.partner_loan_id,b.partner_repay_id,d.partner_user_id,a.finish_time,c.partner_business_flag
+    from ln_repeat_repay_record a
+    LEFT JOIN ln_repay_schedule b on a.repay_plan_id = b.id
+    LEFT JOIN ln_loan c on b.loan_id = c.id
+    INNER JOIN ln_user d on c.ln_user_id = d.id
+    WHERE date(a.settle_date) = #{today}
+    AND a.status = 'SUCC'
+    AND a.partner_code = #{partner}
+  </select>
+
+  <select id="selectRepayRevenueDetail" resultMap="RevenueSettleDetailMap">
+    SELECT b.partner_loan_id,d.partner_repay_id,d.finish_time as finish_time, a.revenue_amount as apply_amount, b.partner_business_flag
+    FROM bs_revenue_trans_detail a
+    LEFT JOIN ln_loan b ON a.loan_id = b.id
+    LEFT JOIN ln_repay_schedule d ON a.repay_schedule_id = d.id
+    WHERE date(a.update_time) = #{today}
+    AND a.trans_type = 'REVENUE_INCOME'
+    AND a.partner_code = #{partner}
+    AND d.status in ('REPAIED', 'LATE_NOT')
+  </select>
+
+  <select id="selectSevenRepayRevenueDetail" resultMap="RevenueSettleDetailMap">
+    SELECT b.partner_loan_id,d.partner_repay_id,d.finish_time as finish_time, a.revenue_amount as apply_amount, b.partner_business_flag
+    FROM bs_revenue_trans_detail a
+    LEFT JOIN ln_loan b ON a.loan_id = b.id
+    LEFT JOIN ln_repay_schedule d ON a.repay_schedule_id = d.id
+    WHERE date(a.update_time) = #{today}
+    AND a.trans_type = 'REVENUE_INCOME'
+    AND a.partner_code = #{partner}
+    AND d.status in ('REPAIED', 'LATE_NOT')
+  </select>
+  
+  <select id="selectLoanFeeDetail" resultMap="RevenueSettleDetailMap">
+    SELECT a.partner_loan_id,a.loan_time as finish_time from ln_loan a
+    LEFT JOIN ln_user b on a.ln_user_id = b.id
+    WHERE date(a.loan_time) = #{today}
+    AND a.status = 'PAIED'
+    AND b.partner_code = #{partner}
+  </select>
+
+
+  <resultMap id="DafyLoanSelfForCheckVOMap" type="com.pinting.business.model.vo.DafyLoanSelfForCheckVO">
+    <result column="ln_user_id" jdbcType="VARCHAR" property="ln_user_id" />
+    <result column="partner_loan_id" jdbcType="VARCHAR" property="partner_loan_id" />
+    <result column="partner_code" jdbcType="VARCHAR" property="partner_code" />
+    <result column="trans_type" jdbcType="VARCHAR" property="trans_type" />
+    <result column="partner_business_flag" jdbcType="VARCHAR" property="partner_business_flag" />
+    <result column="apply_amount" jdbcType="DOUBLE" property="apply_amount" />
+    <result column="approve_amount" jdbcType="DOUBLE" property="approve_amount" />
+    <result column="head_fee" jdbcType="DOUBLE" property="head_fee" />
+    <result column="period" jdbcType="INTEGER" property="period" />
+    <result column="partner_order_no" jdbcType="VARCHAR" property="partner_order_no" />
+    <result column="pay_order_no" jdbcType="VARCHAR" property="pay_order_no" />
+    <result column="apply_time" jdbcType="TIMESTAMP" property="apply_time" />
+    <result column="loan_time" jdbcType="TIMESTAMP" property="loan_time" />
+    <result column="channel" jdbcType="VARCHAR" property="channel" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="return_msg" jdbcType="VARCHAR" property="return_msg" />
+    <result column="loan_launch_time" jdbcType="TIMESTAMP" property="loan_launch_time" />
+    <result column="service_fee" jdbcType="DOUBLE" property="service_fee" />
+  </resultMap>
+  
+  <select id="selectForCheck" parameterType="map" resultMap="DafyLoanSelfForCheckVOMap">
+    SELECT c.partner_user_id AS ln_user_id, a.partner_loan_id, '云贷' AS partner_code, '借款' AS trans_type, a.partner_business_flag,
+    a.apply_amount, a.period, a.head_fee, IFNULL(b.amount,0) as approve_amount, a.partner_order_no, a.pay_order_no, a.apply_time,
+    a.loan_time, b.channel, a.`status`,  b.return_msg
+    FROM ln_loan a, ln_pay_orders b, ln_user c
+    WHERE a.pay_order_no = b.order_no AND DATE(a.loan_time) = DATE(#{time})  AND b.partner_code = 'YUN_DAI_SELF' AND c.id = a.ln_user_id AND a.`status` = 'PAIED'
+    LIMIT #{start}, #{numPerPage}
+  </select>
+  	
+  <select id="selectForDepSevenCheck" parameterType="map" resultMap="DafyLoanSelfForCheckVOMap">
+    SELECT c.partner_user_id AS ln_user_id, a.partner_loan_id, '7贷' AS partner_code, '借款' AS trans_type, partner_business_flag,
+    a.apply_amount, a.period, a.head_fee, IFNULL(b.amount,0) as approve_amount, a.partner_order_no, a.pay_order_no, a.apply_time,
+    a.loan_time, b.channel, a.`status`,  b.return_msg
+    FROM ln_loan a, ln_pay_orders b, ln_user c
+    WHERE a.pay_order_no = b.order_no AND DATE(a.loan_time) = DATE(#{time}) AND b.partner_code = '7_DAI_SELF' AND c.id = a.ln_user_id AND a.`status` = 'PAIED'
+    ORDER BY a.apply_time ASC
+    LIMIT #{start}, #{numPerPage}
+  </select>
+  	
+  <select id="selectForZsdCheck" parameterType="map" resultMap="DafyLoanSelfForCheckVOMap">
+    SELECT c.partner_user_id AS ln_user_id, a.partner_loan_id, '赞时贷' AS partner_code, '借款' AS trans_type,
+    IFNULL(a.apply_amount,0) as apply_amount, a.period, IFNULL(a.head_fee,0) as head_fee, IFNULL(b.amount,0) as approve_amount, a.apply_time,
+    a.loan_time,  b.channel, a.`status`, 
+	'' AS service_fee,  b.return_msg
+    FROM ln_loan a, ln_pay_orders b, ln_user c
+    WHERE a.pay_order_no = b.order_no AND DATE(a.apply_time) = DATE(#{time})  AND b.partner_code = 'ZSD' AND c.id = a.ln_user_id
+    LIMIT #{start}, #{numPerPage}
+  </select>
+  	
+  	
+  <select id="selectZsdRepeatRepayCheck" parameterType="map" resultMap="DafyLoanSelfForCheckVOMap">
+    SELECT c.partner_user_id AS ln_user_id, c.partner_loan_id, c.partner_repay_id, '赞时贷' AS partner_code, '重复还款' AS trans_type,
+	IFNULL(a.repay_amount,0) as approve_amount, b.pay_order_no, a.create_time as apply_time, a.finish_time as loan_time
+	FROM ln_repeat_repay_record a, ln_compensate b, ln_compensate_detail c
+	WHERE a.repay_order_no=b.order_no and b.id=c.compensate_id 
+	AND DATE(a.settle_date) = DATE(#{time}) AND a.partner_code = 'ZSD' AND a.repay_type='COMPENSATE'
+    LIMIT #{start}, #{numPerPage}
+  </select>	
+  	
+  <select id="selectTodayNotFillAmount" resultType="java.lang.Double">
+  select IFNULL(SUM(approve_amount),0) from ln_loan 
+	where (`status` in ('CHECKED','PAYING') and DATE(create_time) = DATE(NOW()))
+	or (`status` = 'PAIED' and DATE(loan_time) = DATE(NOW()));
+  </select>
+
+  <resultMap id="LoanDailyMap" type="com.pinting.business.model.vo.LoanDailyVO">
+    <result column="partner_code" property="partnerCode" jdbcType="VARCHAR"/>
+    <result column="partner_loan_id" property="partnerLoanId" jdbcType="VARCHAR"/>
+    <result column="deposition_id" property="depositionId" jdbcType="INTEGER"/>
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    <result column="loan_time" property="loanTime" jdbcType="TIMESTAMP"/>
+    <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+    <result column="amount" property="amount" jdbcType="DOUBLE"/>
+    <result column="head_fee" property="headFee" jdbcType="DOUBLE"/>
+    <result column="approve_amount" property="approveAmount" jdbcType="DOUBLE"/>
+    <result column="period" property="period" jdbcType="INTEGER"/>
+    <result column="bank_name" property="bankName" jdbcType="VARCHAR"/>
+    <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
+    <result column="bank_card_no" property="bankCardNo" jdbcType="VARCHAR"/>
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR"/>
+    <result column="order_status" property="orderStatus" jdbcType="INTEGER"/>
+    <result column="return_code" property="returnCode" jdbcType="VARCHAR"/>
+    <result column="return_msg" property="returnMsg" jdbcType="VARCHAR"/>
+    <result column="ln_user_id" property="lnUserId" jdbcType="INTEGER"/>
+    <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+    <result column="loan_status" property="loanStatus" jdbcType="VARCHAR"/>
+    <result column="loan_id" property="loanId" jdbcType="INTEGER"/>
+    <result column="partner_repay_id" property="partnerRepayId" jdbcType="VARCHAR"/>
+    <result column="agreement_rate" property="agreementRate" jdbcType="DOUBLE"/>
+    <result column="depositionStatus" property="depositionStatus" jdbcType="VARCHAR"/>
+    <result column="depositionUpdateTime" property="depositionUpdateTime" jdbcType="TIMESTAMP"/>
+  </resultMap>
+
+  <select id="selectLoanDailyList" parameterType="com.pinting.business.model.vo.LoanDailyVO" resultMap="LoanDailyMap">
+    SELECT
+      d.partner_code, a.partner_loan_id, c.id AS deposition_id, a.create_time, a.loan_time,
+      b.user_name, b.amount, IFNULL(a.head_fee, 0) AS head_fee, a.approve_amount, a.period,
+      b.bank_name, b.id_card, b.bank_card_no, b.order_no, b.status AS order_status, b.return_code, b.return_msg,
+      a.ln_user_id, b.mobile, a.status AS loan_status, a.id AS loan_id, e.partner_repay_id, a.agreement_rate,
+      c.`status` AS depositionStatus, c.update_time AS depositionUpdateTime
+    FROM ln_loan a LEFT JOIN ln_pay_orders b ON a.pay_order_no=b.order_no
+    LEFT JOIN ln_deposition_target c ON a.id=c.loan_id
+    LEFT JOIN ln_user d ON a.ln_user_id = d.id
+    LEFT JOIN (SELECT loan_id, partner_repay_id FROM ln_repay_schedule WHERE partner_repay_id LIKE 'RGCL99900%' AND status = 'REPAIED') e ON a.id = e.loan_id
+    WHERE 1 = 1
+    <if test="mobile != null and mobile != '' ">
+      AND b.mobile LIKE concat(concat('%', #{mobile,jdbcType=VARCHAR}),'%')
+    </if>
+    <if test="userName != null and userName != '' ">
+      AND b.user_name LIKE concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+    </if>
+    <if test="idCard != null and idCard != '' ">
+      AND b.id_card LIKE concat(concat('%', #{idCard,jdbcType=VARCHAR}),'%')
+    </if>
+    <if test="orderNo != null and orderNo != '' ">
+      AND b.order_no LIKE concat(concat('%', #{orderNo,jdbcType=VARCHAR}),'%')
+    </if>
+    <if test="loanStatus != null and loanStatus != '' ">
+      AND a.status = #{loanStatus}
+    </if>
+    <if test="loanStatus == null or loanStatus == '' ">
+      AND a.status IN ('PAYING', 'PAIED', 'CHECKED')
+    </if>
+    <if test="lnUserId != null and lnUserId != 0 ">
+      AND a.ln_user_id = #{lnUserId}
+    </if>
+    <if test="bankCardNo != null and bankCardNo != '' ">
+      AND b.bank_card_no LIKE concat(concat('%', #{bankCardNo,jdbcType=VARCHAR}),'%')
+    </if>
+    <if test="depositionId != null and depositionId != 0 ">
+      AND c.id = #{depositionId}
+    </if>
+    <if test="partnerCode != null and partnerCode != '' ">
+      AND d.partner_code = #{partnerCode}
+    </if>
+    <if test="partnerLoanId != null and partnerLoanId != '' ">
+      AND a.partner_loan_id = #{partnerLoanId}
+    </if>
+    <if test="startTime != null">
+      AND a.create_time &gt;= #{startTime}
+    </if>
+    <if test="endTime != null">
+      AND a.create_time &lt;= DATE_FORMAT(#{endTime},'%Y-%m-%d 23:59:59')
+    </if>
+    ORDER BY a.loan_time DESC, a.create_time DESC
+
+    <include refid="sql-global.pagination" />
+  </select>
+
+  <select id="selectLoanDailyCount" parameterType="com.pinting.business.model.vo.LoanDailyVO" resultType="java.lang.Integer">
+    SELECT
+      COUNT(a.id)
+    FROM ln_loan a LEFT JOIN ln_pay_orders b ON a.pay_order_no=b.order_no
+    LEFT JOIN ln_deposition_target c ON a.id=c.loan_id
+    LEFT JOIN ln_user d ON a.ln_user_id = d.id
+    WHERE 1 = 1
+    <if test="mobile != null and mobile != '' ">
+      AND b.mobile LIKE concat(concat('%', #{mobile,jdbcType=VARCHAR}),'%')
+    </if>
+    <if test="userName != null and userName != '' ">
+      AND b.user_name LIKE concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+    </if>
+    <if test="idCard != null and idCard != '' ">
+      AND b.id_card LIKE concat(concat('%', #{idCard,jdbcType=VARCHAR}),'%')
+    </if>
+    <if test="orderNo != null and orderNo != '' ">
+      AND b.order_no LIKE concat(concat('%', #{orderNo,jdbcType=VARCHAR}),'%')
+    </if>
+    <if test="loanStatus != null and loanStatus != '' ">
+      AND a.status = #{loanStatus}
+    </if>
+    <if test="loanStatus == null or loanStatus == '' ">
+      AND a.status IN ('PAYING', 'PAIED', 'CHECKED')
+    </if>
+    <if test="lnUserId != null and lnUserId != 0 ">
+      AND a.ln_user_id = #{lnUserId}
+    </if>
+    <if test="bankCardNo != null and bankCardNo != '' ">
+      AND b.bank_card_no LIKE concat(concat('%', #{bankCardNo,jdbcType=VARCHAR}),'%')
+    </if>
+    <if test="depositionId != null and depositionId != 0 ">
+      AND c.id = #{depositionId}
+    </if>
+    <if test="partnerCode != null and partnerCode != '' ">
+      AND d.partner_code = #{partnerCode}
+    </if>
+    <if test="partnerLoanId != null and partnerLoanId != '' ">
+      AND a.partner_loan_id = #{partnerLoanId}
+    </if>
+    <if test="startTime != null">
+      AND a.create_time &gt;= #{startTime}
+    </if>
+    <if test="endTime != null">
+      AND a.create_time &lt;= DATE_FORMAT(#{endTime},'%Y-%m-%d 23:59:59')
+    </if>
+  </select>
+
+  <select id="selectZanDailyTotalAmount" parameterType="java.util.Map" resultType="java.lang.Double">
+    SELECT
+      (
+        IFNULL(SUM(term1_amount),0) +
+        IFNULL(SUM(term2_amount),0) +
+        IFNULL(SUM(term3_amount),0) +
+        IFNULL(SUM(term4_amount),0) +
+        IFNULL(SUM(term5_amount),0) +
+        IFNULL(SUM(term6_amount),0) +
+        IFNULL(SUM(term9_amount),0) +
+        IFNULL(SUM(term12_amount),0) +
+        IFNULL(SUM(termx_amount),0)
+	  )
+    FROM ln_daily_amount
+    WHERE partner_code = 'ZAN' AND use_date BETWEEN #{startTime} AND #{endTime}
+  </select>
+
+  <select id="selectYunDaiDailyTotalAmount" parameterType="java.util.Map" resultType="java.lang.Double">
+    SELECT IFNULL(SUM(free_amount),0) + IFNULL(SUM(partner_amount),0) FROM ln_daily_amount
+    WHERE partner_code = 'YUN_DAI_SELF' AND status = 'AVALIABLE'
+    AND use_date BETWEEN #{startTime} AND #{endTime}
+  </select>
+
+  <select id="selectZsdDailyTotalAmount" parameterType="java.util.Map" resultType="java.lang.Double">
+    SELECT IFNULL(SUM(termx_amount),0) FROM ln_daily_amount
+    WHERE partner_code = 'ZSD' AND use_date BETWEEN #{startTime} AND #{endTime}
+  </select>
+
+  <select id="selectSevenDailyTotalAmount" parameterType="java.util.Map" resultType="java.lang.Double">
+    SELECT IFNULL(SUM(free_amount),0) + IFNULL(SUM(partner_amount),0) FROM ln_daily_amount
+    WHERE partner_code = '7_DAI_SELF' AND status = 'AVALIABLE'
+    AND use_date BETWEEN #{startTime} AND #{endTime}
+  </select>
+
+  <resultMap id="LoanDailyStatisticsMap" type="com.pinting.business.model.vo.LoanDailyStatisticsVO">
+    <result column="paied_count" property="paiedCount" jdbcType="INTEGER"/>
+    <result column="paied_total_amount" property="paiedTotalAmount" jdbcType="DOUBLE"/>
+    <result column="paying_count" property="payingCount" jdbcType="INTEGER"/>
+    <result column="paying_total_amount" property="payingTotalAmount" jdbcType="DOUBLE"/>
+  </resultMap>
+
+  <select id="selectLoanDailyPaiedStatistics" parameterType="java.util.Map" resultMap="LoanDailyStatisticsMap">
+    SELECT
+      count(*) AS paied_count,
+      IFNULL(SUM(a.approve_amount), 0) AS paied_total_amount
+    FROM ln_loan a, ln_user b
+    WHERE a.ln_user_id=b.id AND b.partner_code= #{partnerCode}
+    AND a.status = 'PAIED' AND DATE(a.create_time) BETWEEN #{startTime} AND #{endTime}
+  </select>
+
+  <select id="selectLoanDailyPayingStatistics" parameterType="java.util.Map" resultMap="LoanDailyStatisticsMap">
+    SELECT
+      count(*) AS paying_count,
+      IFNULL(SUM(a.approve_amount), 0) AS paying_total_amount
+    FROM ln_loan a, ln_user b
+    WHERE a.ln_user_id=b.id AND b.partner_code= #{partnerCode}
+    AND a.status IN ('PAYING', 'CHECKED') AND DATE(a.create_time) BETWEEN #{startTime} AND #{endTime}
+  </select>
+
+  <select id="selectMatchTotalAmountForDay" parameterType="java.util.Map" resultType="java.lang.Double">
+    SELECT
+      IFNULL(SUM(a.approve_amount), 0)  AS match_total_amount_for_day
+    FROM ln_loan a, ln_user b
+    <if test="partnerCode == '7_DAI_SELF'">
+      , bs_sys_config s
+      WHERE a.ln_user_id=b.id
+      AND a.status = 'PAIED' 
+      AND b.partner_code = '7_DAI_SELF'
+      AND s.conf_key = '7_DAI_SELF_SUPER_LN_USER'
+      AND s.conf_value != b.id
+    </if>
+    <if test="partnerCode == 'YUN_DAI_SELF'">
+      , bs_sys_config s
+      WHERE a.ln_user_id=b.id
+      AND a.status = 'PAIED' 
+      AND b.partner_code = 'YUN_DAI_SELF'
+      AND s.conf_key = 'YUN_DAI_SELF_SUPER_LN_USER'
+      AND s.conf_value != b.id
+    </if>
+    <if test="partnerCode == 'ZAN' or partnerCode == 'ZSD'">
+      WHERE a.ln_user_id=b.id
+      AND a.status = 'PAIED' 
+      AND b.partner_code = #{partnerCode}
+    </if>
+  </select>
+
+  <select id="selectZsdPrincipalInterest" parameterType="java.util.Map" resultMap="LoanDetailInfoMap">
+    SELECT SUM(b.plan_amount) AS principal_interest_amount, c.loan_time, c.period, c.purpose
+    FROM ln_repay_schedule a,ln_repay_schedule_detail b,ln_loan c
+    WHERE a.id = b.plan_id AND a.loan_id = #{loanId}
+    AND c.id = a.loan_id
+    AND (b.subject_code='PRINCIPAL' or b.subject_code='INTEREST')
+  </select>
+
+  
+  <select id="selectHeadFeeSum" parameterType="java.util.Map" resultType="java.lang.Double">
+  	SELECT IFNULL(SUM(head_fee), 0) FROM ln_loan 
+  	<where>
+  		status= #{status}
+  		<if test="startTime != null and startTime != ''">
+  			AND DATE(apply_time) &gt;= DATE(#{startTime})
+  		</if>
+  		<if test="endTime != null and endTime != ''">
+  			AND DATE(apply_time) &lt;= DATE(#{endTime})
+  		</if>
+  	</where> 
+  </select>
+
+	
+  <!-- 	=========================（云贷、赞时贷）砍头息代收代付  S ===================================== -->
+
+  <resultMap id="HeadFeeCollectPayMap" type="com.pinting.business.model.vo.HeadFeeCollectPayVO">
+    <result column="rowno"  property="rowno" jdbcType="INTEGER" />
+    <result column="ln_user_name" property="lnUserName" jdbcType="VARCHAR"/>
+    <result column="ln_mobile" property="mobile" jdbcType="VARCHAR"/>
+    <result column="type" property="type" jdbcType="VARCHAR"/>
+    <result column="loan_amount" property="loanAmount" jdbcType="DOUBLE"/>
+    <result column="collect_amount" property="collectAmount" jdbcType="DOUBLE"/>
+    <result column="pay_amount" property="payAmount" jdbcType="DOUBLE"/>
+    <result column="gen_time" property="time" jdbcType="TIMESTAMP"/>
+
+    <result column="collect_total_amount" property="collectTotalAmount" jdbcType="DOUBLE"/>
+    <result column="pay_total_amount" property="payTotalAmount" jdbcType="DOUBLE"/>
+  </resultMap>
+
+  <select id="headFeeCollectPayList" resultMap="HeadFeeCollectPayMap">
+    SELECT
+    (@rowNO := @rowNo + 1) rowno, t.*
+    FROM
+    (SELECT @rowNO := #{position}) b,
+    (
+    SELECT
+    b.user_name ln_user_name,
+    b.mobile ln_mobile,
+    '代收' type,
+    a.approve_amount loan_amount,
+    a.head_fee collect_amount,
+    0.0 pay_amount,
+    a.loan_time gen_time
+    FROM ln_loan a LEFT JOIN ln_user b ON a.ln_user_id = b.id
+    WHERE a.`status`='PAIED'
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'yun' ">
+      AND b.partner_code = 'YUN_DAI_SELF'
+    </if>
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'zsd' ">
+      AND b.partner_code = 'ZSD'
+    </if>
+    <if test="partnerCode == null or partnerCode == '' ">
+      AND (b.partner_code = 'ZSD' OR b.partner_code = 'YUN_DAI_SELF')
+    </if>
+    UNION ALL
+    SELECT
+    '' ln_user_name,
+    '' ln_mobile,
+    '代付' type,
+    0.0 loan_amount,
+    0.0 collect_amount,
+    a.amount pay_amount,
+    a.update_time gen_time
+    FROM bs_pay_orders a
+    WHERE a.channel_trans_type = 'TRANSFER' AND a.status='6'
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'yun' ">
+      AND a.trans_type = 'HFBANK_YUN_HEAD_FEE_TRANSFER'
+    </if>
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'zsd' ">
+      AND a.trans_type = 'TRANS_HFBANK_ZSD_HEAD_FEE_TRANSFER'
+    </if>
+    <if test="partnerCode == null or partnerCode == '' ">
+      AND (a.trans_type = 'HFBANK_YUN_HEAD_FEE_TRANSFER' OR a.trans_type = 'TRANS_HFBANK_ZSD_HEAD_FEE_TRANSFER')
+    </if>
+    ) t WHERE 1=1
+    <if test="userName != null and userName != ''">
+      AND t.ln_user_name like concat(concat('%', #{userName}),'%')
+    </if>
+    <if test="mobile != null and mobile != ''">
+      AND t.ln_mobile  like concat(concat('%', #{mobile}),'%')
+    </if>
+    <if test="type != null and type != ''">
+      AND t.type  = #{type}
+    </if>
+    <if test="startTime != null and startTime != ''">
+      <![CDATA[
+				AND t.gen_time >= #{startTime}
+			]]>
+    </if>
+    <if test="endTime != null and endTime != ''">
+      <![CDATA[
+				AND t.gen_time <= #{endTime}
+			]]>
+    </if>
+    LIMIT #{position}, #{offset}
+  </select>
+
+  <select id="headFeeCollectPayCount" resultType="java.lang.Integer">
+    SELECT
+    COUNT(*)
+    FROM
+    (
+    SELECT
+    b.user_name ln_user_name,
+    b.mobile ln_mobile,
+    '代收' type,
+    a.approve_amount loan_amount,
+    a.head_fee collect_amount,
+    0.0 pay_amount,
+    a.loan_time gen_time
+    FROM ln_loan a LEFT JOIN ln_user b ON a.ln_user_id = b.id
+    WHERE a.`status`='PAIED'
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'yun' ">
+      AND b.partner_code = 'YUN_DAI_SELF'
+    </if>
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'zsd' ">
+      AND b.partner_code = 'ZSD'
+    </if>
+    <if test="partnerCode == null or partnerCode == '' ">
+      AND (b.partner_code = 'ZSD' OR b.partner_code = 'YUN_DAI_SELF')
+    </if>
+    UNION ALL
+    SELECT
+    '' ln_user_name,
+    '' ln_mobile,
+    '代付' type,
+    0.0 loan_amount,
+    0.0 collect_amount,
+    a.amount pay_amount,
+    a.update_time gen_time
+    FROM bs_pay_orders a
+    WHERE a.channel_trans_type = 'TRANSFER' AND a.status='6'
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'yun' ">
+      AND a.trans_type = 'HFBANK_YUN_HEAD_FEE_TRANSFER'
+    </if>
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'zsd' ">
+      AND a.trans_type = 'TRANS_HFBANK_ZSD_HEAD_FEE_TRANSFER'
+    </if>
+    <if test="partnerCode == null or partnerCode == '' ">
+      AND (a.trans_type = 'HFBANK_YUN_HEAD_FEE_TRANSFER' OR a.trans_type = 'TRANS_HFBANK_ZSD_HEAD_FEE_TRANSFER')
+    </if>
+    ) t WHERE 1=1
+    <if test="userName != null and userName != ''">
+      AND t.ln_user_name like concat(concat('%', #{userName}),'%')
+    </if>
+    <if test="mobile != null and mobile != ''">
+      AND t.ln_mobile  like concat(concat('%', #{mobile}),'%')
+    </if>
+    <if test="type != null and type != ''">
+      AND t.type  = #{type}
+    </if>
+    <if test="startTime != null and startTime != ''">
+      <![CDATA[
+				AND t.gen_time >= #{startTime}
+			]]>
+    </if>
+    <if test="endTime != null and endTime != ''">
+      <![CDATA[
+				AND t.gen_time <= #{endTime}
+			]]>
+    </if>
+  </select>
+
+  <select id="headFeeCollectPayTotalAmount" resultMap="HeadFeeCollectPayMap">
+    SELECT
+    IFNULL(SUM(collect_amount),0) AS collect_total_amount, IFNULL(SUM(pay_amount),0) AS pay_total_amount
+    FROM
+    (
+    SELECT
+    b.user_name ln_user_name,
+    b.mobile ln_mobile,
+    '代收' type,
+    a.head_fee collect_amount,
+    0.0 pay_amount,
+    a.loan_time gen_time
+    FROM ln_loan a LEFT JOIN ln_user b ON a.ln_user_id = b.id
+    WHERE a.`status`='PAIED'
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'yun' ">
+      AND b.partner_code = 'YUN_DAI_SELF'
+    </if>
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'zsd' ">
+      AND b.partner_code = 'ZSD'
+    </if>
+    <if test="partnerCode == null or partnerCode == '' ">
+      AND (b.partner_code = 'ZSD' OR b.partner_code = 'YUN_DAI_SELF')
+    </if>
+    UNION ALL
+    SELECT
+    '' ln_user_name,
+    '' ln_mobile,
+    '代付' type,
+    0.0 collect_amount,
+    a.amount pay_amount,
+    a.update_time gen_time
+    FROM bs_pay_orders a
+    WHERE a.channel_trans_type = 'TRANSFER' AND a.status='6'
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'yun' ">
+      AND a.trans_type = 'HFBANK_YUN_HEAD_FEE_TRANSFER'
+    </if>
+    <if test="partnerCode != null and partnerCode != '' and partnerCode == 'zsd' ">
+      AND a.trans_type = 'TRANS_HFBANK_ZSD_HEAD_FEE_TRANSFER'
+    </if>
+    <if test="partnerCode == null or partnerCode == '' ">
+      AND (a.trans_type = 'HFBANK_YUN_HEAD_FEE_TRANSFER' OR a.trans_type = 'TRANS_HFBANK_ZSD_HEAD_FEE_TRANSFER')
+    </if>
+    ) t WHERE 1=1
+    <if test="userName != null and userName != ''">
+      AND t.ln_user_name like concat(concat('%', #{userName}),'%')
+    </if>
+    <if test="mobile != null and mobile != ''">
+      AND t.ln_mobile  like concat(concat('%', #{mobile}),'%')
+    </if>
+    <if test="type != null and type != ''">
+      AND t.type  = #{type}
+    </if>
+    <if test="startTime != null and startTime != ''">
+      <![CDATA[
+				AND t.gen_time >= #{startTime}
+			]]>
+    </if>
+    <if test="endTime != null and endTime != ''">
+      <![CDATA[
+				AND t.gen_time <= #{endTime}
+			]]>
+    </if>
+  </select>
+
+  <!-- 	=========================（云贷、赞时贷）砍头息代收代付  E ===================================== -->
+
+ <resultMap id="LnLoanRepayScheduleVOMap" type="com.pinting.business.model.vo.LnLoanRepayScheduleVO">
+    <id column="id" property="id" jdbcType="INTEGER"/>
+    <result column="ln_user_id" jdbcType="INTEGER" property="lnUserId" />
+    <result column="charge_rule_id" jdbcType="INTEGER" property="chargeRuleId" />
+    <result column="partner_loan_id" property="partnerLoanId" jdbcType="VARCHAR"/>
+    <result column="loan_time" property="loanTime" jdbcType="TIMESTAMP"/>
+    <result column="approve_amount" property="approveAmount" jdbcType="DOUBLE"/>
+    <result column="period" property="period" jdbcType="INTEGER"/>
+    
+    <result column="repay_schedule_id" jdbcType="INTEGER" property="repayScheduleId" />
+    <result column="partner_repay_id" jdbcType="INTEGER" property="partnerRepayId" />
+    <result column="plan_date" jdbcType="DATE" property="planDate" />
+    <result column="serial_id" jdbcType="INTEGER" property="serialId" />
+  </resultMap>
+  
+  <select id="selectZanNotRepayReturn" resultMap="LnLoanRepayScheduleVOMap">
+  select b.id,b.ln_user_id,b.period,b.charge_rule_id,b.loan_time,b.approve_amount,b.partner_loan_id,
+	c.id repay_schedule_id ,c.partner_repay_id,c.plan_date,c.serial_id
+  from ln_user a,ln_loan b,ln_repay_schedule c LEFT JOIN ln_deposition_repay_schedule d 
+	on c.partner_repay_id = d.partner_repay_id and c.loan_id = d.loan_id
+  where a.partner_code = 'ZAN' AND a.id = b.ln_user_id and b.id = c.loan_id
+	and c.`status`='INIT' AND c.plan_date>#{planDate}
+	and d.id is null order by b.id,c.serial_id ;
+  </select>
+  	
+</mapper>

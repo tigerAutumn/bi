@@ -1,0 +1,362 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!record.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!record.numPerPage" />
+    <input type="hidden" name="orderField" value="$!{record.orderField}" />
+    <input type="hidden" name="orderDirection" value="$!{record.orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('bgwLaboratory/getLoanRepayList.htm')" method="post">
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="numPerPage" value="$!record.numPerPage" />
+		<input type="hidden" name="pageNum" value="$!record.pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+        <input type="hidden" id="queryDataFlag" name="queryDataFlag" value="QUERYDATAFLAG" />
+		
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+                        资产方：
+						<select name="partnerCode" >
+        					<option value="YUN_DAI_SELF" #if("$!record.partnerCode"=="YUN_DAI_SELF") selected  #end>云贷存管</option>
+        					<option value="7_DAI_SELF" #if("$!record.partnerCode"=="7_DAI_SELF") selected  #end>七贷存管</option>
+                        </select>
+					</td>
+                    <td>
+						借款次数：
+						<input id="loanCountStart"  style="width:100px;" type="text" name="loanCountStart" value="$!record.loanCountStart" class="number"/>到
+						<input id="loanCountEnd" style="width:100px;" type="text" name="loanCountEnd" value="$!record.loanCountEnd" class="number"/>
+					</td>
+                    <td>
+						提前还款次数：
+                        <input id="advancedRepayCountStart"  style="width:100px;" type="text" name="advancedRepayCountStart" value="$!record.advancedRepayCountStart" class="number"/>到
+                        <input id="advancedRepayCountEnd" style="width:100px;" type="text" name="advancedRepayCountEnd" value="$!record.advancedRepayCountEnd" class="number"/>
+                    </td>
+				</tr>
+
+				<tr>
+                    <td>
+                        按期还款次数：
+                        <input id="repayCountStart"  style="width:100px;" type="text" name="repayCountStart" value="$!record.repayCountStart" class="number"/>到
+                        <input id="repayCountEnd" style="width:100px;" type="text" name="repayCountEnd" value="$!record.repayCountEnd" class="number"/>
+                    </td>
+                    <td>
+                        本金逾期次数：
+                        <input id="overduePrincipalCompensateStart"  style="width:100px;" type="text" name="overduePrincipalCompensateStart" value="$!record.overduePrincipalCompensateStart" class="number"/>到
+                        <input id="overduePrincipalCompensateEnd" style="width:100px;" type="text" name="overduePrincipalCompensateEnd" value="$!record.overduePrincipalCompensateEnd" class="number"/>
+                    </td>
+                    <td>
+                        利息逾期次数：
+                        <input id="overdueInterestCompensateStart"  style="width:100px;" type="text" name="overdueInterestCompensateStart" value="$!record.overdueInterestCompensateStart" class="number"/>到
+                        <input id="overdueInterestCompensateEnd" style="width:100px;" type="text" name="overdueInterestCompensateEnd" value="$!record.overdueInterestCompensateEnd" class="number"/>
+                    </td>
+                    <td>
+                        <div class="buttonContent">
+                            <button onclick="fun()" type="button">查询</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="buttonContent">
+                            <button onclick="createExpFile()" type="button">导出excel</button>
+                        </div>
+                    </td>
+					#if($!{excelDownloadHelperVO})
+                        <td>
+                            <div class="buttonContent">
+								#if($!{excelDownloadHelperVO.desc})
+									<button onclick="exp()" type="button" disabled="disabled">最近下载excel</button>
+									<span>$!{excelDownloadHelperVO.desc}</span>
+								#else
+                                    <button onclick="exp()" type="button">最近下载excel</button>
+                                    <span>$!{excelDownloadHelperVO.fileName}</span>
+								#end
+                            </div>
+                        </td>
+					#end
+				</tr>
+			</table>
+		</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+	</div>
+	<table class="table" width="1396" layoutH="146">
+		<thead>
+			<tr>
+                <th width="15%">资产方</th>
+				<th width="10%">用户编号</th>
+				<th width="15%">用户姓名</th>
+                <th orderfield="loan_count" class=#if("$!loan_count" != "") $!loan_count #else "asc" #end width="12%">借款次数</th>
+                <th orderfield="advanced_repay_count" class=#if("$!advanced_repay_count" != "") $!advanced_repay_count #else "asc" #end width="12%">提前还款次数</th>
+                <th orderfield="repay_count" class=#if("$!repay_count" != "") $!repay_count #else "asc" #end width="12%">按期还款次数</th>
+                <th orderfield="overdue_principal_compensate" class=#if("$!overdue_principal_compensate" != "") $!overdue_principal_compensate #else "asc" #end width="12%">本金逾期次数</th>
+                <th orderfield="overdue_interest_compensate" class=#if("$!overdue_interest_compensate" != "") $!overdue_interest_compensate #else "asc" #end width="12%">利息逾期次数</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $loanRepayList)
+			<tr target="sid_user" rel="1">
+				<td>
+					#if("$!grid.partnerCode" == "YUN_DAI_SELF")
+                        云贷存管
+					#elseif("$!grid.partnerCode" == "7_DAI_SELF")
+                        七贷存管
+					#else
+					#end
+				</td>
+				<td>$!grid.loanUserId</td>
+				<td>$!grid.loanUserName</td>
+                <td>$!grid.loanCount</td>
+                <td>$!grid.advancedRepayCount</td>
+                <td>$!grid.repayCount</td>
+                <td>$!grid.overduePrincipalCompensate</td>
+                <td>$!grid.overdueInterestCompensate</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!record.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!record.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!record.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!record.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!record.numPerPage" currentPage="$!record.pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+
+    // 查询
+    function fun(){
+		// 借款次数
+		var loanCountStart = $.trim($('#loanCountStart').val());
+		var loanCountEnd = $.trim($('#loanCountEnd').val());
+		// 提前还款次数
+		var advancedRepayCountStart = $.trim($('#advancedRepayCountStart').val());
+		var advancedRepayCountEnd = $.trim($('#advancedRepayCountEnd').val());
+		// 按期还款次数
+		var repayCountStart = $.trim($('#repayCountStart').val());
+		var repayCountEnd = $.trim($('#repayCountEnd').val());
+		// 本金逾期次数
+		var overduePrincipalCompensateStart = $.trim($('#overduePrincipalCompensateStart').val());
+		var overduePrincipalCompensateEnd = $.trim($('#overduePrincipalCompensateEnd').val());
+		// 利息逾期次数
+		var overdueInterestCompensateStart = $.trim($('#overdueInterestCompensateStart').val());
+		var overdueInterestCompensateEnd = $.trim($('#overdueInterestCompensateEnd').val());
+
+		var reg = /^[1-9]\d*|0$/;
+
+		if((loanCountStart != "" && !reg.test(loanCountStart)) || (loanCountEnd != "" && !reg.test(loanCountEnd))) {
+			alertMsg.warn("输入的借款次数格式错误！");
+			return false;
+		}
+		if(loanCountStart<0 || loanCountEnd<0) {
+			alertMsg.warn("输入的借款次数不能小于0！");
+			return false;
+		}
+		if(loanCountStart != "" && loanCountEnd != ""){
+			if(eval(loanCountStart) > eval(loanCountEnd)){
+				alertMsg.warn("开始借款次数不能大于结束借款次数！");
+				return false;
+			}
+		}
+
+		if((advancedRepayCountStart != "" && !reg.test(advancedRepayCountStart)) || (advancedRepayCountEnd != "" && !reg.test(advancedRepayCountEnd))) {
+			alertMsg.warn("输入的提前还款次数格式错误！");
+			return false;
+		}
+		if(advancedRepayCountStart<0 || advancedRepayCountEnd<0) {
+			alertMsg.warn("输入的提前还款次数不能小于0！");
+			return false;
+		}
+		if(advancedRepayCountStart != "" && advancedRepayCountEnd != ""){
+			if(eval(advancedRepayCountStart) > eval(advancedRepayCountEnd)){
+				alertMsg.warn("开始提前还款次数不能大于结束提前还款次数！");
+				return false;
+			}
+		}
+
+		if((repayCountStart != "" && !reg.test(repayCountStart)) || (repayCountEnd != "" && !reg.test(repayCountEnd))) {
+			alertMsg.warn("输入的按期还款次数格式错误！");
+			return false;
+		}
+		if(repayCountStart<0 || repayCountEnd<0) {
+			alertMsg.warn("输入的按期还款次数不能小于0！");
+			return false;
+		}
+		if(repayCountStart != "" && repayCountEnd != ""){
+			if(eval(repayCountStart) > eval(repayCountEnd)){
+				alertMsg.warn("开始按期还款次数不能大于结束按期还款次数！");
+				return false;
+			}
+		}
+
+		if((overduePrincipalCompensateStart != "" && !reg.test(overduePrincipalCompensateStart)) || (overduePrincipalCompensateEnd != "" && !reg.test(overduePrincipalCompensateEnd))) {
+			alertMsg.warn("输入的本金逾期次数格式错误！");
+			return false;
+		}
+		if(overduePrincipalCompensateStart<0 || overduePrincipalCompensateEnd<0) {
+			alertMsg.warn("输入的本金逾期次数不能小于0！");
+			return false;
+		}
+		if(overduePrincipalCompensateStart != "" && overduePrincipalCompensateEnd != ""){
+			if(eval(overduePrincipalCompensateStart) > eval(overduePrincipalCompensateEnd)){
+				alertMsg.warn("本金逾期次数不能大于结束本金逾期次数！");
+				return false;
+			}
+		}
+
+		if((overdueInterestCompensateStart != "" && !reg.test(overdueInterestCompensateStart)) || (overdueInterestCompensateEnd != "" && !reg.test(overdueInterestCompensateEnd))) {
+			alertMsg.warn("输入的利息逾期次数格式错误！");
+			return false;
+		}
+		if(overdueInterestCompensateStart<0 || overdueInterestCompensateEnd<0) {
+			alertMsg.warn("输入的利息逾期次数不能小于0！");
+			return false;
+		}
+		if(overdueInterestCompensateStart != "" && overdueInterestCompensateEnd != ""){
+			if(eval(overdueInterestCompensateStart) > eval(overdueInterestCompensateEnd)){
+				alertMsg.warn("开始利息逾期次数不能大于利息逾期次数！");
+				return false;
+			}
+		}
+
+		var url = $("#APP_ROOT_PATH").val() + "/bgwLaboratory/getLoanRepayList.htm";
+		$("#myform").attr("action",url);
+		$("#myform").attr("onsubmit","return navTabSearch(this);");
+		$("#myform").submit();
+    }
+
+    // 导出
+    function createExpFile() {
+        // 借款次数
+        var loanCountStart = $.trim($('#loanCountStart').val());
+        var loanCountEnd = $.trim($('#loanCountEnd').val());
+        // 提前还款次数
+        var advancedRepayCountStart = $.trim($('#advancedRepayCountStart').val());
+        var advancedRepayCountEnd = $.trim($('#advancedRepayCountEnd').val());
+        // 按期还款次数
+        var repayCountStart = $.trim($('#repayCountStart').val());
+        var repayCountEnd = $.trim($('#repayCountEnd').val());
+        // 本金逾期次数
+        var overduePrincipalCompensateStart = $.trim($('#overduePrincipalCompensateStart').val());
+        var overduePrincipalCompensateEnd = $.trim($('#overduePrincipalCompensateEnd').val());
+        // 利息逾期次数
+        var overdueInterestCompensateStart = $.trim($('#overdueInterestCompensateStart').val());
+        var overdueInterestCompensateEnd = $.trim($('#overdueInterestCompensateEnd').val());
+
+        var reg = /^[1-9]\d*|0$/;
+
+        if((loanCountStart != "" && !reg.test(loanCountStart)) || (loanCountEnd != "" && !reg.test(loanCountEnd))) {
+            alertMsg.warn("输入的借款次数格式错误！");
+            return false;
+        }
+        if(loanCountStart<0 || loanCountEnd<0) {
+            alertMsg.warn("输入的借款次数不能小于0！");
+            return false;
+        }
+        if(loanCountStart != "" && loanCountEnd != ""){
+            if(eval(loanCountStart) > eval(loanCountEnd)){
+                alertMsg.warn("开始借款次数不能大于结束借款次数！");
+                return false;
+            }
+        }
+
+        if((advancedRepayCountStart != "" && !reg.test(advancedRepayCountStart)) || (advancedRepayCountEnd != "" && !reg.test(advancedRepayCountEnd))) {
+            alertMsg.warn("输入的提前还款次数格式错误！");
+            return false;
+        }
+        if(advancedRepayCountStart<0 || advancedRepayCountEnd<0) {
+            alertMsg.warn("输入的提前还款次数不能小于0！");
+            return false;
+        }
+        if(advancedRepayCountStart != "" && advancedRepayCountEnd != ""){
+            if(eval(advancedRepayCountStart) > eval(advancedRepayCountEnd)){
+                alertMsg.warn("开始提前还款次数不能大于结束提前还款次数！");
+                return false;
+            }
+        }
+
+        if((repayCountStart != "" && !reg.test(repayCountStart)) || (repayCountEnd != "" && !reg.test(repayCountEnd))) {
+            alertMsg.warn("输入的按期还款次数格式错误！");
+            return false;
+        }
+        if(repayCountStart<0 || repayCountEnd<0) {
+            alertMsg.warn("输入的按期还款次数不能小于0！");
+            return false;
+        }
+        if(repayCountStart != "" && repayCountEnd != ""){
+            if(eval(repayCountStart) > eval(repayCountEnd)){
+                alertMsg.warn("开始按期还款次数不能大于结束按期还款次数！");
+                return false;
+            }
+        }
+
+        if((overduePrincipalCompensateStart != "" && !reg.test(overduePrincipalCompensateStart)) || (overduePrincipalCompensateEnd != "" && !reg.test(overduePrincipalCompensateEnd))) {
+            alertMsg.warn("输入的本金逾期格式错误！");
+            return false;
+        }
+        if(overduePrincipalCompensateStart<0 || overduePrincipalCompensateEnd<0) {
+            alertMsg.warn("输入的本金逾期次数不能小于0！");
+            return false;
+        }
+        if(overduePrincipalCompensateStart != "" && overduePrincipalCompensateEnd != ""){
+            if(eval(overduePrincipalCompensateStart) > eval(overduePrincipalCompensateEnd)){
+                alertMsg.warn("本金逾期次数不能大于结束本金逾期次数！");
+                return false;
+            }
+        }
+
+        if((overdueInterestCompensateStart != "" && !reg.test(overdueInterestCompensateStart)) || (overdueInterestCompensateEnd != "" && !reg.test(overdueInterestCompensateEnd))) {
+            alertMsg.warn("输入的利息逾期次数格式错误！");
+            return false;
+        }
+        if(overdueInterestCompensateStart<0 || overdueInterestCompensateEnd<0) {
+            alertMsg.warn("输入的利息逾期次数不能小于0！");
+            return false;
+        }
+        if(overdueInterestCompensateStart != "" && overdueInterestCompensateEnd != ""){
+            if(eval(overdueInterestCompensateStart) > eval(overdueInterestCompensateEnd)){
+                alertMsg.warn("开始利息逾期次数不能大于利息逾期次数！");
+                return false;
+            }
+        }
+
+        var url = $("#APP_ROOT_PATH").val() + "/bgwLaboratory/getLoanRepayList/createExportXls.htm";
+
+        jQuery.ajax({
+            url: url,
+            data:$("#myform").serializeArray(),
+            type:'post',
+            success: function(data) {
+                if(data.statusCode == '200') {
+                    if (data.excelDownloadHelperVO.fileUrl == null && data.excelDownloadHelperVO.desc != null && data.excelDownloadHelperVO.desc != '') {
+                        alertMsg.correct(data.excelDownloadHelperVO.desc);
+                        navTab.reload("$env.getWebURL('bgwLaboratory/getLoanRepayList.htm')");
+					} else {
+                        exp();
+					}
+                }else{
+                    alertMsg.error(data.msg);
+                }
+            }
+        });
+    }
+
+    function exp() {
+        var url = $("#APP_ROOT_PATH").val() + "/bgwLaboratory/getLoanRepayList/exportXls.htm";
+        location.href = url;
+    }
+
+</script>

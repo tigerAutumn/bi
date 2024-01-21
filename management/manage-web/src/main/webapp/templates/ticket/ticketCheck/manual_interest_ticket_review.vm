@@ -1,0 +1,164 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!req.pageNum" />
+    <input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+<div class="page unitBox">
+    <div class="pageHeader">
+        <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('ticket/manualInterestTicket/review.htm')" id="myform" method="post">
+            <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+            <input type="hidden" name="checkId" value="$!interestTicket.checkId" />
+            <div class="searchBar">
+                <!-- -->
+                <div class="pageFormContent nowrap" layoutH="350">
+                    <dl>
+                        <dt>
+                            申请人：
+                        </dt>
+                        <dd>
+							$!interestTicket.applicantName
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            加息券名称：
+                        </dt>
+                        <dd>
+							$!interestTicket.serialName
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            使用条件：
+                        </dt>
+                        <dd >
+                            单笔投资满$!number.format("0", $!interestTicket.investLimit)元启用
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            加息幅度：
+                        </dt>
+                        <dd >
+							$!interestTicket.ticketApr%
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            发放数量：
+                        </dt>
+                        <dd >
+							$!interestTicket.grantTotal
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            产品限制：
+                        </dt>
+                        <dd >
+							#foreach ($element in $!interestTicket.productLimit.split(","))
+								#if($element == 'BIGANGWAN_SERIAL')
+                                    港湾系列
+								#elseif($element == 'YONGJIN_SERIAL')
+                                    涌金系列
+								#elseif($element == 'KUAHONG_SERIAL')
+                                    跨虹系列
+								#elseif($element == 'BAOXIN_SERIAL')
+                                    保信系列
+								#else
+                                    &nbsp
+								#end
+								#if($velocityCount != $!interestTicket.productLimit.split(",").size())
+                                    ,
+								#end
+							#end
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            期限限制：
+                        </dt>
+                        <dd >
+							$!interestTicket.termLimit（天）
+                        </dd>
+                    </dl>
+                    <dl>
+						#if($!interestTicket.validTermType == 'AFTER_RECEIVE')
+                            <dt >
+                                加息券有效期：
+                            </dt>
+                            <dd >
+                                发放后 $!interestTicket.availabledays 日
+                            </dd>
+
+						#elseif($!interestTicket.validTermType == 'FIXED')
+                            <dt >
+                                加息券有效期：
+                            </dt>
+                            <dd >
+								$!interestTicket.useTimeStart.substring(0,19) 至   $!interestTicket.useTimeEnd.substring(0,19)
+                            </dd>
+						#end
+                    </dl>
+
+                    <dl>
+                        <dt >
+                            通知渠道：
+                        </dt>
+                        <dd >
+							#foreach ($element in $!interestTicket.notifyChannel.split(","))
+								#if($element == 'WECHAT')
+                                    微信
+								#elseif($element == 'SMS')
+                                    短信
+								#elseif($element == 'APP')
+                                    app通知
+								#else
+                                    &nbsp
+								#end
+								#if($velocityCount != $!interestTicket.notifyChannel.split(",").size())
+                                    ,
+								#end
+							#end
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="pageContent">
+
+        <table class="table" width="1396" layoutH="500">
+            <thead>
+            <tr>
+                <th width="10%">用户编号</th>
+                <th width="10%">手机号</th>
+                <th width="10%">注册时间</th>
+            </tr>
+            </thead>
+            <tbody>
+				#foreach($grid in $dataGrid)
+                <tr target="sid_user" rel="1">
+                    <td>$!grid.userId</td>
+                    <td>$!grid.mobile</td>
+                    <td>$!date.format($!grid.registerTime) </td>
+                </tr>
+				#end
+            </tbody>
+        </table>
+        <div class="panelBar">
+            <div class="pages">
+                <span>显示</span>
+                <select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+                    <option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+                    <option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+                    <option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+                    <option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+                </select>
+                <span>条，共$!count条</span>
+            </div>
+            <div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+        </div>
+    </div>
+
+</div>

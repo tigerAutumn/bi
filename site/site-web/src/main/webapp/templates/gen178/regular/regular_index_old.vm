@@ -1,0 +1,220 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen178/styles/login_header")
+#LoadGenCSS("/resources/gen178/styles/info_img")
+#LoadGenJS("/resources/gen178/scripts/echarts")
+#LoadGenJS("/resources/gen178/scripts/switchable")
+#LoadGenJS("/resources/gen178/scripts/textSlider")
+#LoadGenJS("/resources/gen178/scripts/index_style")
+#LoadGenJS("/resources/gen178/scripts/regular/regular_index")
+#LoadGenJS("/resources/gen178/scripts/info_img")
+#parse("/financial_have_buy.vm")
+#GenHead("end")
+<body>
+	<!--header -s-->
+	#Gen178Header()
+	<!--header -e-->
+	<input type="hidden" id="dayNum" value="$!dayNum"/>
+	<input type="hidden" id="rate" value="$!rate"/>
+	<input type="hidden" id="id" value="$!id"/>
+	<input type="hidden" id="trem" value="$!trem"/>
+	<input type="hidden" id="minInvestAmount" value="$!minInvestAmount"/>
+	<input type="hidden" id="productName" value="$!productName"/>
+	<input type="hidden" id="priceLimit" value="$!priceLimit"/>
+	<input type="hidden" id="priceCeiling" value="$!priceCeiling"/>
+	<div class="p_content">
+		<div class="p_top">
+			<div class="p_top_left">
+				<h3>$!productName</h3>
+				<p><img src="$!env.get('gen.server.web')/resources/gen178/images/dagou.png">本息担保安全兑付</p>
+				<img src="$!env.get('gen.server.web')/resources/gen178/images/p.png" class="p">
+				<div>
+					<ul>
+                        <li><b style="color: #ff6633;"> $!rate %</b><br>年化收益</li>
+						<li style="border-left: 1px solid #ede8e6;"><b style="color: #ff9928;">$!dayNum 天</b><br>固定产品期限</li>
+					</ul>
+				</div>#set($amount = $!minInvestAmount/10000)
+				<p class="p_one_1"><b>起投金额： </b>    <span class="p_color">$!number.format('0', $!amount)万</span></p>
+				<p class="p_one_1"><b>起息时间： </b>    出借成功当日起息</p>
+				<p class="p_one_1"><b>到期时间：</b>     $!endTime</p>
+				<p class="p_one_1"><b>回款方式：</b>     到期一次性本息兑付</p>
+			</div>
+			<div class="p_top_right">
+				<h1>购买金额</h1>
+				<hr>
+				<input type="text" id="money"   maxLength="9"  style="padding-left:10px;" placeholder="请输入100的整数倍" autocomplete="off" >
+				<p id="buy_tip">金额须为100倍数</p>
+				<p class="p_once" style="background: #FFF;" ><a href="javascript:void(0);" id="buy_sub" style="margin:inherit;">立即购买</a></p>
+				<p class="p_last">点击立即购买即代表您同意 <br><b name="financial_div" style="cursor:pointer;">《出借服务协议》</b></p>
+			</div>
+		</div>
+		<div class="p_bottom">
+			<ul>
+				<li>
+			      <h3>产品特点</h3>
+			      <hr/>
+					<div style="line-height: 24px;font-size: 14px;color: #666;margin-top: 30px;margin-bottom: 15px;font-family: '微软雅黑';">
+						<div>
+        					<div>(1)金额小</div>
+                			<div style="margin-left: 24px;">• 只收购金额小于5000元的债权，分散资金大幅降低风险</div>
+    					</div>
+    					<div>
+                            <div>(2)资信高</div>
+        					<div style="margin-left: 24px;">• 国内知名的消费金融优质债权</div>
+        					<div style="margin-left: 24px;">• 经毕马威审计、国内四大评级公司之首的中诚信评级</div>
+        					<div style="margin-left: 24px;">• 不良率仅有2.3%</div>
+    					</div>
+    					<div>
+    						<div>(3)风控好</div>
+                			<div style="margin-left: 24px;">• 国际顶尖的风控系统</div>
+                			<div style="margin-left: 24px;">• 完善的风险备付金制度</div>
+                			<div style="margin-left: 24px;">• 国内首家的针对借款人的“保险”理赔保障</div>
+    					</div>
+					</div>
+			    </li>
+			
+			    <li>
+			      <h3>收益计息</h3>
+			      <hr/>
+			      <p>
+                      出借成功当日起息；产品到期后，1-3天内自动本息回款；年化收益$!{rate}%；到期一次性本息兑付。
+				  </p>
+			    </li>
+			    <li>
+			      <h3>资金去向</h3>
+			      <hr/>
+			      <p>币港湾的理财资金用于受让国内知名的达飞金融优质债权，具有金额小、借款人分散、资信状况良好、产品不良率极低四大特点。
+			      </p>
+			    </li>
+			    <li>
+			      <h3>本息保障</h3>
+			      <hr/>
+			      <p>1. 由太平洋财险对借款人履约能力进行承保，利息和本金都托管于国资系三方支付平台，任何第三方包括币港湾均无权挪用用户资金；<br />
+					 2. 用户在币港湾的加入债权均为优质的小微借款，此项债权由太平洋财险对债权对应的借款人进行人身意外险和履约险的承保；<br />
+					 3. 币港湾受让的小微借款不良率只有2.3%，平台将会根据加入额提取3%（不良率的150%）的风险备付金用于不良兑付。
+				  </p>
+                </li>
+				<!--<li>
+					 <h3>信息服务合作协议</h3>
+					 <hr class="info_line"/>
+					 <div class="info_wp">
+						<div class="info_img_wp">
+							<a href="javascript:;" class="direction img_left"></a>
+							<a href="javascript:;" class="direction img_right"></a>
+							<ul id="ul_one" class="img_ul">
+								<li class="img_item"><a href="javascript:;" class="item_a"><img class="img_fo" src="$!env.get('gen.server.web')/resources/gen178/images/cre_01.jpg"/></a></li>
+								<li class="img_item"><a href="javascript:;" class="item_a"><img class="img_fo" src="$!env.get('gen.server.web')/resources/gen178/images/cre_01.jpg"/></a></li>
+								<li class="img_item"><a href="javascript:;" class="item_a"><img class="img_fo" src="$!env.get('gen.server.web')/resources/gen178/images/cre_01.jpg"/></a></li>
+								<li class="img_item"><a href="javascript:;" class="item_a"><img class="img_fo" src="$!env.get('gen.server.web')/resources/gen178/images/cre_01.jpg"/></a></li>
+								<li class="img_item"><a href="javascript:;" class="item_a"><img class="img_fo" src="$!env.get('gen.server.web')/resources/gen178/images/cre_01.jpg"/></a></li>
+								<li class="img_item"><a href="javascript:;" class="item_a"><img class="img_fo" src="$!env.get('gen.server.web')/resources/gen178/images/cre_01.jpg"/></a></li>
+								<li class="img_item"><a href="javascript:;" class="item_a"><img class="img_fo" src="$!env.get('gen.server.web')/resources/gen178/images/cre_01.jpg"/></a></li>
+								<li class="img_item"><a href="javascript:;" class="item_a"><img class="img_fo" src="$!env.get('gen.server.web')/resources/gen178/images/cre_01.jpg"/></a></li>
+								<li class="img_item"><a href="javascript:;" class="item_a"><img class="img_fo" src="$!env.get('gen.server.web')/resources/gen178/images/cre_01.jpg"/></a></li>
+							</ul>
+						</div>
+					 </div>
+				</li>-->
+				<li>
+					 <h3>信用评级报告</h3>
+					 <hr class="info_line_two"/>
+					 <div class="info_wp">
+						<div class="info_img_wp">
+							<a href="javascript:;" class="direction img_left"></a>
+							<a href="javascript:;" class="direction img_right"></a>
+							<ul id="ul_two" class="img_ul">
+								#foreach($p in [1..5])
+                                #set($purl= "resources/gen178/images/pingji0"+$!p+".jpg")
+									<li class="img_item"><a href="javascript:;" class="item_a"><img class="img_fo" src="$!env.get('gen.server.web')/$purl"/></a></li>
+                                #end
+							</ul>
+						</div>
+					 </div>
+				</li>
+				<li>
+					 <h3>第三方资产保险</h3>
+					 <hr class="info_line_three"/>
+					 <div class="info_wp">
+						<div class="info_img_wp">
+							<a href="javascript:;" class="direction img_left"></a>
+							<a href="javascript:;" class="direction img_right"></a>
+							<ul id="ul_three" class="img_ul">
+								#foreach($b in [1..3])
+                                #set($burl= "resources/gen178/images/baoxian0"+$!b+".jpg")
+									<li class="img_item"><a href="javascript:;" class="item_a"><img class="img_fo" src="$!env.get('gen.server.web')/$burl"/></a></li>
+                                #end
+							</ul>
+						</div>
+					 </div>
+				</li>
+				<!--<li>
+					<h3>债权明细</h3>
+					<hr class="creditor_line"/>
+					<div class="creditor_wp">
+						<div class="table">
+    						<ul class="creditor_header">
+    							<li class="ble_item">债务人姓名</li><li class="ble_item item_smllwidth">转让金额</li><li class="ble_item">债务人姓名</li><li class="ble_item item_smllwidth bor_none">转让金额</li>
+    						</ul>
+    						<ul class="creditor_ul">
+    							<li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth">2300元</li><li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth bor_none">2300元</li>
+								<li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth">2300元</li><li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth bor_none">2300元</li>
+								<li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth">2300元</li><li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth bor_none">2300元</li>
+								<li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth">2300元</li><li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth bor_none">2300元</li>
+								<li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth">2300元</li><li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth bor_none">2300元</li>
+								<li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth">2300元</li><li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth bor_none">2300元</li>
+								<li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth">2300元</li><li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth bor_none">2300元</li>
+								<li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth">2300元</li><li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth bor_none">2300元</li>
+								<li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth">2300元</li><li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth bor_none">2300元</li>
+								<li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth">2300元</li><li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth bor_none">2300元</li>
+								<li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth">2300元</li><li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth bor_none">2300元</li>
+								<li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth">2300元</li><li class="ble_item">张Q3(42050xxxxxxxxx2353)</li><li class="ble_item item_smllwidth bor_none">2300元</li>
+							</ul>
+							<div class="table_footer">以上为部分债权展示</div>
+    					</div>
+						
+					</div>
+				</li>-->
+				 <li>
+			      <h3>快捷支付银行</h3>
+			      <hr/>
+			      <p>*具体金额以银行卡实际允许额度为准</p>
+                </li>
+		    </ul>
+				#foreach($bank in $bankList)
+						<div class="bank_list">
+                    		<div class="list_left">
+                    			<i class="ban_list ban_list_$!bank.bankId"></i>
+                    			<span class="list_sp">$!{bank.bankName}</span>
+                    		</div>
+                    		<div class="list_right">
+								#if($bank.isAvailable == 1)
+									单笔$!{bank.oneTop}万，日累计$!{bank.dayTop}万
+								#else
+									暂不可用
+								#end
+							</div>
+                    	</div>
+            	#end
+
+		</div>
+	</div>
+	<div class="dialog_warp">
+		<div id="nb_append" class="nb_wp">
+			<div class="img_title">
+				<span class="title_ft">信用评级报告</span>
+				<i class="img_off close"></i>
+			</div>
+			##<img class="img_fo fd_img" src="$!env.get('gen.server.web')/resources/gen178/images/cre_01.jpg"/>
+		</div>
+		
+	</div>
+	<!--浮动 -s-->
+	#Gen178Share()
+	<!--浮动 -e-->
+	
+	<!--footer -s-->
+	#Gen178Footer()
+	<!--footer -e-->
+</body>
+#Html("end")

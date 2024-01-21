@@ -1,0 +1,60 @@
+#Html("begin")
+#Head("begin", "币港湾平台活动,币港湾,币港湾官网", "关注币港湾,活动不停歇!币港湾官网为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("财运大转盘")
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+#LoadJS("resources/micro2.0/scripts/activity/rem_750")
+#LoadCSS("resources/weixin/style/default")
+#LoadCSS("resources/weixin/style/activity/lucky_rotate/get_award_list")
+#WeChatShare()
+#Head("end")
+<body>
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>		
+	<div class="header">
+        <a class="header_arrow" href="javascript:history.go(-1)"></a>
+        <h1 class="heade_ft color_bg">我的奖品</h1>
+    </div>
+	#if($!awardListResult.awardList.size()>0)
+    	<div class="awardList">
+			#foreach($!pro in $!awardListResult.awardList)
+    		<div class="awardBox">
+    			<div class="awardTop">
+    				<span class="awardNumber">$!pro.award</span>##<span>元财运红包</span>
+    				<div class="awardTime">$!pro.date<br />$!pro.time</div>
+    			</div>
+    			<div class="awardBottom">可登录币港湾官网、公众号、APP中查看使用</div>
+    		</div>
+			#end
+    	</div>
+	#else
+	<div class="money_play_txt">
+		<img class="rotateBannerImg" src="$!env.getWebURL('')/resources/weixin/images/activity/lucky_rotate/award_none.png" />
+		<div class="money_play_txt_position">您最近<span class="timeColor">10天</span>暂未获得任何奖品</div>
+	</div>
+	#end
+	<div class="question_prompt alert_hide">
+        <div class="question_box">
+            <div class="question_title">手机app</div>
+            <div class="emBGWBox">
+				<img class="emBGW" src="$!env.getWebURL('')/resources/weixin/images/activity/emAPP.png" alt=""/>
+            </div>
+			<div class="listTitle">可通过</div>
+			<div class="listText">*长按保存图中二维码，扫描下载币港湾app</div>
+			<div class="listText">*微信搜索币港湾进入币港湾公众号</div>
+			<div class="listPrompt">两种方式均可使用您获取的优惠券</div>
+            <div class="question_btn">
+				确定
+            </div>
+        </div>
+    </div>
+<script>
+$(function(){
+	$(".awardBox").click(function(){
+		$(".question_prompt").addClass("alert_show").removeClass("alert_hide");
+	});
+	$(".question_btn").click(function(){
+		$(".question_prompt").addClass("alert_hide").removeClass("alert_show");
+	})
+})
+</script>
+</body>
+#Html("end")

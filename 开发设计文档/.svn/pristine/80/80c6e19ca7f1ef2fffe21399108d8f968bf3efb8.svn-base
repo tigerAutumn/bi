@@ -1,0 +1,47 @@
+# 加薪活动
+## 需求背景
+> 新增加薪计划活动，在每月的15号举行，单笔年化出借额达标的用户平台将以出借时间顺序，确定在榜单内的用户可以获得奖励金。
+## 项目细节
+> [tower](https://tower.im/projects/3d05349e05b2474dbd3198d04ac77804/todos/51a5493772bf4d5195d453645cc7e67d/)
+## 设计思路
+### 初始化
+> 加薪计划活动信息初始化sql
+
+```
+    -- 新增加薪计划活动
+    INSERT INTO `bs_activity` (`id`, `name`, `start_time`, `end_time`, `note`, `create_time`, `update_time`) VALUES (38, '加薪计划', '2018-7-16 00:00:00', '2018-8-16 00:00:00', '加薪计划', Now(), Now());
+
+    -- 新增加薪计划对应的奖励
+    INSERT INTO `bs_activity_award` (`id`, `content`, `activity_id`, `note`, `create_time`, `update_time`) VALUES (134, '0.1%奖励金', 38, '0.1%奖励金', Now(), Now());
+    INSERT INTO `bs_activity_award` (`id`, `content`, `activity_id`, `note`, `create_time`, `update_time`) VALUES (135, '0.2%奖励金', 38, '0.2%奖励金', Now(), Now());
+    INSERT INTO `bs_activity_award` (`id`, `content`, `activity_id`, `note`, `create_time`, `update_time`) VALUES (136, '0.3%奖励金', 38, '0.3%奖励金', Now(), Now());
+    INSERT INTO `bs_activity_award` (`id`, `content`, `activity_id`, `note`, `create_time`, `update_time`) VALUES (137, '0.4%奖励金', 38, '0.4%奖励金', Now(), Now());
+```
+### 购买
+> 购买时，活动仅限统计用户在币港湾（pc+app+h5）端的投资，港湾计划系列（标的以“港湾计划”这一字段去匹配，除去港湾新手计划，即非计划系列的有【港湾计划】四字的产品也纳入范围。），这里注意区分，七店h5发的标和币港湾官网的标 标题是一样的，都是港湾计划系列。活动期间（每月15号）当单笔年化出借额达到榜单金额后，查询缓存中榜单是否已满，未满的话将购买信息录入中奖表并更新缓存
+### 查询
+> + 接口中新增【加薪计划活动】，对应的链接为`activity/salary_increase_plan`
+> + 查询活动是否开始，根据活动状态设置不同的活动状态值，当活动为开始时，设置isStart 为`not_start`；当活动正在进行时，设置isStart 为`start`；当活动结束后，设置isStart 为`end`。
+> + 查询活动的开始时间和结束时间，分别设置为`startTime` 和 `endTime`
+> + 查询缓存中的四个榜单信息列表，变量如下：
+
+```
+    -- 排行榜 ArrayList<HashMap<String, Object>>
+    moreThan10000List：单笔年化出借额10000-50000 排行榜
+    moreThan50000List：单笔年化出借额50001-100000 排行榜
+    moreThan100000List：单笔年化出借额100001-500000 排行榜
+    moreThan500000List：单笔年化出借额500001以上  排行榜
+
+    -- 排行榜中包含
+    buyTime：榜单用户购买时间
+    mobile：榜单用户手机号
+
+    -- 剩余名额 Integer
+    moreThan10000Quota：单笔年化出借额10000-50000 剩余名额
+    moreThan50000Quota：单笔年化出借额50001-100000 剩余名额
+    moreThan100000Quota：单笔年化出借额100001-500000 剩余名额
+    moreThan500000Quota：单笔年化出借额500001以上 剩余名额
+
+```
+
+

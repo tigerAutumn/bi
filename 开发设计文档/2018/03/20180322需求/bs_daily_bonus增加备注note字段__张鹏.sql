@@ -1,0 +1,1 @@
+ALTER TABLE `bs_daily_bonus` ADD COLUMN `note`  varchar(128)  DEFAULT NULL COMMENT '备注' AFTER `type`;

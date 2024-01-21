@@ -1,0 +1,85 @@
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	<form id="financeForm" method="post" action="$env.getWebURL('/bsErrorCode/save.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("id", "$!bsErrorCode.id")
+		<div class="pageFormContent nowrap" layoutH="97">
+			<dl>
+				<dt>
+					渠道类型：
+				</dt>
+				<dd>
+					<select name="errorCodeChannel" > 
+						<option value="BAOFOO" #if("$!bsErrorCode.channel"=="BAOFOO") selected  #end>宝付渠道</option>
+						<option value="PAY19" #if("$!bsErrorCode.channel"=="PAY19") selected #end>19支付渠道</option>
+						<option value="REAPAL" #if("$!bsErrorCode.channel"=="REAPAL") selected #end>融宝渠道</option>
+    					<option value="DAFY" #if("$!bsErrorCode.channel"=="DAFY") selected  #end>达飞渠道</option>
+    				</select>
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					接口类型：
+                </dt>
+				<dd >
+					<select name="interfaceTypeOther" > 
+						<option value="QUICK_PAY" #if("$!bsErrorCode.interfaceType"=="QUICK_PAY") selected #end>快捷</option>
+    					<option value="DF" #if("$!bsErrorCode.interfaceType"=="DF") selected  #end>代付</option>
+					    <option value="NETBANK" #if("$!bsErrorCode.interfaceType"=="NETBANK") selected #end>网银</option>
+    					<option value="TRANSFER" #if("$!bsErrorCode.interfaceType"=="TRANSFER") selected  #end>钱包转账</option>
+    					<option value="DK" #if("$!bsErrorCode.interfaceType"=="DK") selected  #end>代扣</option>
+						<option value="REAL_NAME" #if("$!bsErrorCode.interfaceType"=="REAL_NAME") selected  #end>实名认证</option>
+    				</select>
+                </dd>
+			</dl>
+			<dl>
+				<dt >
+					错误码：
+                </dt>
+				<dd >
+					<input type="text" id="errorCode" name="errorCode" class="required" maxlength="30" value="$!bsErrorCode.errorCode" />
+                </dd>
+			</dl>
+			<dl>
+				<dt >
+					错误码内部描述：
+                </dt>
+				<dd >
+					<input type="text" id="errorInMsg" name="errorInMsg" class="required" maxlength="30" value="$!bsErrorCode.errorInMsg" />
+                </dd>
+			</dl>
+			<dl>
+				<dt >
+					错误码外部描述：
+                </dt>
+				<dd >
+					<input type="text" id="errorOutMsg" name="errorOutMsg" class="required" maxlength="30" value="$!bsErrorCode.errorOutMsg" />
+                </dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+	
+</div>
+<script>
+
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "301") {
+			alertMsg.warn('错误码已存在!');
+		} else if (json.statusCode == "200") {
+			alertMsg.correct('操作成功!');
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('/bsErrorCode/index.htm')");
+		} else {
+			alertMsg.error('操作失败!');
+		}
+	}
+	
+	
+</script>

@@ -1,0 +1,67 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/dailyBonus/index.htm')" method="post">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						推荐人姓名：<input  id="name" type="text" name="name" value="$!name" size="15"/>
+						推荐人手机号：<input  id="mobile" type="text" name="mobile" value="$!mobile" size="15"/>
+						投资人姓名：<input  id="byName" type="text" name="byName" value="$!byName" size="15"/>
+						投资人手机号：<input  id="byMobile" type="text" name="byMobile" value="$!byMobile" size="15"/>
+							  <spen style="padding-left:10px"><button type="submit">查询</button></spen>
+							  <spen style="padding-left:10px"><font color="red">总金额：$!money.format($!allBonus) 元</font></spen>
+					</td>
+				</tr>
+			</table>
+		</div> 
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="174">推荐人手机号</th>
+				<th width="174">推荐人姓名</th>
+				<th width="174">投资人手机号</th>
+				<th width="174">投资人姓名</th>
+				<th width="174">奖励金额</th>
+				<th width="178">投资金额</th>
+			    <th width="174">奖励期限</th>
+				<th width="174">投资期限</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($bsDailyBonus in $bsDailyBonusList)
+			<tr>
+				<td>$!bsDailyBonus.mobile</td>
+				<td>$!bsDailyBonus.name</td>
+				<td>$!bsDailyBonus.byMobile</td>
+				<td>$!bsDailyBonus.byName</td>
+				<td>$!bsDailyBonus.bonus</td>
+				<td>$!bsDailyBonus.balance</td>
+				<td>$!date.format($!bsDailyBonus.time)</td>
+				<td>$!date.format($!bsDailyBonus.subEndTime)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>

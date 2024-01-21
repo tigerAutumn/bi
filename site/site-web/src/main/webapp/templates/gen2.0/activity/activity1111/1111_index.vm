@@ -1,0 +1,218 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/activity/double11/11_activity")
+#LoadGenJS("/resources/gen2.0/scripts/common/common")
+#LoadGenJS("/resources/gen2.0/scripts/activity/double11/lottery")
+#LoadGenJS("/resources/gen2.0/scripts/activity/double11/scroll")
+#LoadGenJS("/resources/gen2.0/scripts/activity/double11/11_activity")
+#LoadGenJS("/resources/gen2.0/scripts/Custom")
+#GenHead("end")
+<body class="body">
+#Gen2Header("home")
+
+<!--banner-->
+<div class="banner"></div>
+<!--main-->
+<div class="main_activity">
+    <div class="main_left">
+        <div class="main_Ltop">获奖名单</div>
+        <div class="main_Ltxt">
+            <ul>
+                #foreach($lucky in $res.luckyList)
+                    <li>恭喜$!{lucky.mobile}获得$!{lucky.awardContent}</li>
+                #end
+            </ul>
+
+        </div>
+    </div>
+    <div class="main_right">
+        <div class="main_rtop">
+            <div class="main_rnum">当前<span class="rspan">$!{res.luckyNum}</span>人参与了抽奖</div>
+            <div class="main_rbtn"><i class="ri">还剩<span class="rspan" id="afterTimes">$!{res.userLuckyNum}</span>次抽奖机会</i>
+                <a class="rbtn">我的奖品</a>
+            </div>
+        </div>
+        <div class="main_rcenter">
+            <div id="lottery">
+                <table border="0" cellpadding="0" cellspacing="0">
+                    <tr class="lottery-group">
+                        <td lottery-unit-index="2" class="lottery-unit" style="background:url($!env.get('gen.server.web')/resources/gen2.0/images/double11/rbg1.png) no-repeat;">
+                            <h6 class="lottery-h6">5元奖励金</h6>
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/j1.png" />
+                            <div></div>
+                        </td>
+                        <td lottery-unit-index="12" class="lottery-unit" style="background:url($!env.get('gen.server.web')/resources/gen2.0/images/double11/rbg2.png) no-repeat;">
+                            <h6>iphone 7p 128G</h6>
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/iphone7.png" />
+                            <div></div>
+                        </td>
+                        <td lottery-unit-index="11" class="lottery-unit" style="background:url($!env.get('gen.server.web')/resources/gen2.0/images/double11/rbg1.png) no-repeat;">
+                            <h6 class="lottery-h6">ipad air2 128G</h6><img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/ipad.png" />
+                            <div></div>
+                        </td>
+                        <td lottery-unit-index="10" class="lottery-unit" style="background:url($!env.get('gen.server.web')/resources/gen2.0/images/double11/rbg2.png) no-repeat;">
+                            <h6 style="padding-bottom: 5px;line-height: normal;">Apple watch<br />series2</h6><img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/iw.png" />
+                            <div></div>
+                        </td>
+                        <td lottery-unit-index="6" class="lottery-unit" style="background:url($!env.get('gen.server.web')/resources/gen2.0/images/double11/rbg1.png) no-repeat;">
+                            <h6 class="lottery-h6">50元奖励金</h6><img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/j50.png" />
+                            <div></div>
+                        </td>
+                    </tr>
+                    <tr class="lottery-group">
+                        <td lottery-unit-index="9" class="lottery-unit" style="background:url($!env.get('gen.server.web')/resources/gen2.0/images/double11/rbg2.png) no-repeat;">
+                            <h6 style="padding-bottom: 19px;">京东礼品卡300</h6>
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/JD300.png" />
+                            <div></div>
+                        </td>
+                        <td colspan="3">
+                            <a id="jiangbtn" style="cursor:pointer;"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/jbtn.png" /></a>
+                        </td>
+                        <td lottery-unit-index="1" class="lottery-unit" style="background:url($!env.get('gen.server.web')/resources/gen2.0/images/double11/rbg2.png) no-repeat;">
+                            <h6>投资红包</h6>
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/red-five.png" />
+                            <div></div>
+                        </td>
+                    </tr>
+
+                    <tr class="lottery-group">
+                        <td lottery-unit-index="3" class="lottery-unit" style="background:url($!env.get('gen.server.web')/resources/gen2.0/images/double11/rbg1.png) no-repeat;">
+                            <h6 class="lottery-h6">10元奖励金</h6>
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/j10.png" />
+                            <div></div>
+                        </td>
+                        <td lottery-unit-index="8" class="lottery-unit" style="background:url($!env.get('gen.server.web')/resources/gen2.0/images/double11/rbg2.png) no-repeat;">
+                            <h6 style="padding-bottom: 19px;">京东礼品卡200</h6>
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/JD200.png" />
+                            <div></div>
+                        </td>
+                        <td lottery-unit-index="4" class="lottery-unit" style="background:url($!env.get('gen.server.web')/resources/gen2.0/images/double11/rbg1.png) no-repeat;">
+                            <h6 class="lottery-h6">20元奖励金</h6>
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/j20.png" />
+                            <div></div>
+                        </td>
+                        <td lottery-unit-index="7" class="lottery-unit" style="background:url($!env.get('gen.server.web')/resources/gen2.0/images/double11/rbg2.png) no-repeat;">
+                            <h6 style="padding-bottom: 19px;">京东礼品卡100</h6>
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/JD100.png" />
+                            <div></div>
+                        </td>
+                        <td lottery-unit-index="5" class="lottery-unit" style="background:url($!env.get('gen.server.web')/resources/gen2.0/images/double11/rbg1.png) no-repeat;">
+                            <h6 class="lottery-h6">30元奖励金</h6>
+                            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/j30.png" />
+                            <div></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="main_rdown">
+            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/mdbg.png" class="mdimg" />
+            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/md_my.png" class="md_my" />
+            <div class="mdtxt">
+                <p>每使用双11活动红包投资一笔，得到一次抽奖机会，投资金额</p>
+                <p>越高，中大奖概率越大。</p>
+                <a href="$!env.get('gen.server.web')/gen2.0/regular/list" class="md_btn">点我去投资</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="rule">
+    <div class="rule_txt">
+        <h3 class="rule_h3">
+            <div class="ruh3txt">活动规则<img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/rule_h3.png" style="position:absolute;right:0;"/></div>
+        </h3>
+        <div class="ru_txt" style="margin-top:8px;"><em>1</em>
+            <p>活动时间为11月7日-11月11日；</p>
+        </div>
+        <div class="ru_txt"><em>2</em>
+            <p>活动红包一次只能使用一个，即不能叠加使用；</p>
+        </div>
+        <div class="ru_txt"><em>3</em>
+            <p>活动结束后剩余抽奖次数和活动红包失效；</p>
+
+        </div>
+        <div class="ru_txt"><em>4</em>
+            <p>获得实物奖励的用户，客服将在活动结束后5个工作日内与您取得联系，请保持手机畅通。如因您自身原因错过通知，则视为放弃奖励；</p>
+        </div>
+        <div class="ru_txt"><em>5</em>
+            <p>本次活动的实物奖励不能折现。我们将在核实用户信息后的5个工作日内安排奖品寄送等事宜；</p>
+        </div>
+        <div class="ru_txt"><em>6</em>
+            <p>奖励金将在活动结束后五个工作日内发放至用户账户，移动端可在【我的资产】-【我的奖励】中查看，pc端在【我的账户】-【邀请好友】-【我的奖励】中查看；</p>
+        </div>
+        <div class="ru_txt"><em>7</em>
+            <p>奖励金可转出到余额直接提现；</p>
+        </div>
+        <div class="ru_txt"><em>8</em>
+            <p>本次活动不与平台其他活动叠加；</p>
+        </div>
+    </div>
+</div>
+<div class="foot">
+    <div class="f_top">本次活动的最终解释权归币港湾所有</div>
+    <div class="foot_down">如有疑问可致电币港湾客服： 400-806-1230
+        <!--<a href="">400-806-1230</a>-->
+    </div>
+</div>
+<!--弹窗-->
+#if($!isDrawed161Packet)
+<div class="win_bg"></div>
+#else
+<div class="win_bg" style="display:block;"></div>
+#end
+<!--红包1-->
+<div class="red-tan1">
+    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/close.png" class="closeimg"/>
+    <h3 class="red-tan1-h3">恭喜获得</h3>
+    <div class="red-tan1-txt">161元红包+1次抽奖机会</div>
+    <div class="red-tan1-btn"><a href="$!env.get('gen.server.web')/gen2.0/activity/1111" class="red-tan1-btna">去抽奖</a></div>
+</div>
+<!--红包2-->
+#if($!isDrawed161Packet)
+#else
+<div class="red-tan2" style="display: block;">
+    <div class="red-tan2-btn"><a href="javascript:void(0)" class="red-tan2-btna open_redpacket_a" url="$!env.get('gen.server.web')/gen2.0/activity/1111/openRedPacket">拆红包</a></div>
+    <h3 class="red-tan2-h3">双11 双份礼</h3>
+</div>
+#end
+
+<!--我的奖品空-->
+<div class="prize_nothing">
+    <h3 class="prize_nh3">我的奖品<a style="cursor:pointer;"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/close1.png" class="closeimg"/></a></h3>
+</div>
+<!--我的奖品有-->
+<div class="prize_have">
+    <h3 class="prize_nh3">我的奖品<a style="cursor:pointer;"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/close1.png" class="closeimg"/></a></h3>
+    <ul class="prize_title">
+        <li>时间</li>
+        <li>中奖情况</li>
+    </ul>
+    <div class="prize_txt">
+        <ul class="prize_txtlong my_lucky_draw" url="$!env.get('gen.server.web')/gen2.0/activity/1111/myAwardList">
+            #foreach($userLucky in $userLuckyList)
+                <li><span>$!date.formatDateTime($!userLucky.userDrawTime,'yyyy-MM-dd HH:mm:ss')</span><i>获得$!userLucky.awardContent</i></li>
+            #end
+        </ul>
+    </div>
+</div>
+<!--获奖-->
+<div class="Winning">
+    <h3 class="Winning_h3">恭喜您<a style="cursor:pointer;" href="$!env.get('gen.server.web')/gen2.0/activity/1111"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/close1.png" class="closeimg"/></a>
+        <img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/hou.png" class="Winning_hou"/>
+    </h3>
+    <div class="Winning_title" id="showAwardContent"></div>
+    <a class="Winning_btn" href="$!env.get('gen.server.web')/gen2.0/activity/1111"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/cjbtn.png" /></a>
+</div>
+<!--抽奖次数-->
+<div class="prize_num">
+    <h3 class="prize_numh3">温馨提示<a style="cursor:pointer;"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/double11/close1.png" class="closeimg"/></a></h3>
+    <div class="prize_numtxt1">很抱歉，暂无抽奖机会</div>
+    <div class="prize_numtxt2">每使用双11活动红包投资一笔，得到一次抽奖机会。</div>
+    <a class="prize_numbtn" href="$!env.get('gen.server.web')/gen2.0/regular/list">去投资</a>
+</div>
+</body>
+
+#Html("end")

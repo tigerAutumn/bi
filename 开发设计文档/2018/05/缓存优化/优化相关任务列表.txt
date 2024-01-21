@@ -1,0 +1,65 @@
+﻿## PC、H5
+### 修改为读取缓存
+  1. 【PC、钱报系PC所有页面】获取注册可得红包金额，修改为获取缓存信息。
+  2. 【首页】HomeFacade.infoQuery中以下服务， 查询出的数据， 获取缓存
+      a. productService.queryAccumulatedInvestment	// 查询累计投资额 不包含VIP产品
+      b. productService.noviceRecommendedProduct	// PC 新手推荐产品（一个）
+      c. productService.queryHomeProductPC		// PC 首页四个产品，非新手推荐产品
+      d. productService.listQuery					// 钱报系。首页所有未完成的产品
+      e. bsOperationReportService.querySixOperationReport		// 查询六个运营报告信息
+  3. 【首页】【banner】banner获取缓存
+      a. BannerConfigFacade.getList中的bsBannerConfigService.getList
+  4. 【首页】【新闻、公告、动态】获取缓存
+      a. NewsFacade.currentNews中的newsService.currentNews
+  5. 【首页】【产品列表】理财计划列表（H5PC），获取缓存
+      a. ProductFacade.listQuery中的productService.listQuery
+
+
+  6. 【产品列表】理财计划列表（H5|PC），获取缓存
+      a. ProductFacade.listQuery中的productService.listQuery
+  7. 【产品列表】产品列表的banner 获取缓存
+      a. ProductFacade.bannerQuery中的bsBannerConfigService.selectBannerConfigByType
+  8. 【产品详情】产品投资列表，获取缓存
+      a. PayOrdersFacade.getSuccessPayOrders中的bsPayOdersService.selectBuySuccessPayOrders
+  9. 【购买】刷新缓存
+
+### 需要删除的代码
+  1. 【首页】HomeFacade.infoQuery中的以下服务
+      a. 【活动】bsActivityLuckyDrawService.activityStart	// 双十一活动                                         ok
+      b. 【投资额和次数】productService.sumCurrTotalAmountAndInvestNum	// 统计所有产品的当前投资额和投资次数   ok
+
+      c. 【新闻、公告、动态】查询湾粉活动、港湾资讯，媒体报道，代码优化，非公告的不查询最新的1条公告。BsSysNewsMapper.selectLatestNews  ok
+
+      d. 【最小最大利率】productService.selectProductRateIndex删除             ok
+      e. 【H5可删除】无运营报告信息，可判断H5时不进行运营报告相关查询          ok
+      f. 【H5可删除】查询最新的3条公司动态                                     ok
+      g. 【H5可删除】查询最新的3条港湾资讯                                     ok
+      h. 【H5可删除】查询最新的3条湾粉活动                                     ok
+  2. 【产品列表】
+      a. ProductFacade.listQuery中查询列表之后循环查询产品状态以及是否推荐的sql可以删除，合并到列表sql中。
+
+## 管理台
+  1. 【新增菜单】网站优化相关redis缓存管理
+      a. 刷新
+      b. 启用
+      c. 非启用
+  2. 【网站公告管理】发布、撤下需要刷新缓存。推荐需要判断是否已经发布，若已经发布则刷新缓存。
+  3. 【媒体报告管理】发布、撤下需要刷新缓存。推荐需要判断是否已经发布，若已经发布则刷新缓存。
+  4. 【公司动态活动管理】发布、撤下需要刷新缓存。推荐需要判断是否已经发布，若已经发布则刷新缓存。
+  5. 【banner管理】新增、编辑、删除刷新缓存
+  6. 【运营报告管理】新增、编辑、推荐、取消推荐、删除刷新缓存
+  7. 【网站图片管理】【我要投资】新增、编辑、删除刷新缓存
+  8. 【红包发放管理】新用户注册红包的审核通过、停用刷新缓存
+  9. 【理财计划发布管理】发布、推荐刷新缓存
+
+## APP
+### 修改为读取缓存
+【首页公告】NewsFacade.currentNews
+【APP启动页面banner】BannerConfigFacade.appStart
+【首页banner】BannerConfigFacade.getList
+【首页新手推荐标的】ProductFacade.findSuggest
+【一级产品列表】ProductFacade.listIndexQuery
+【二级产品列表】ProductFacade.productListReturnType
+
+### 删除的代码
+【首页最小最大利率】ProductFacade.findRate

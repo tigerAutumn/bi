@@ -1,0 +1,74 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	 <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/sys/sensitiveJnl/index.htm')" method="post">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<div class="searchBar">
+		<ul class="searchContent">
+            <table class="searchContent">
+				<tr>
+					<td>
+						姓名：<input id="userName" type="text" name="userName" value="$!userName" />
+					</td>
+					<td>
+						ip地址：<input id="ip" type="text" name="ip" value="$!ip" />
+					</td>
+					<td><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></td>
+				</tr>
+			</table>
+		</ul>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="5%">用户编号</th>
+				<th width="11%">用户名称（点击查看详情）</th>
+				<th width="16%">操作类型</th>
+				<th width="8%">ip地址</th>
+				<th width="25%">客户端</th>
+				<th width="25%">相关操作内容</th>
+				<th width="10%">时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $sensitiveList)
+			<tr target="sid_user" rel="1">
+				<td>$!grid.userId</td>
+				<td><a title="用户详情" height="320"  width="420" target="dialog" href="$!env.getWebURL('/bsuser/detail.htm')?op=none&userId=$!grid.userId" target="ajax" rel="jbsxBox">$!grid.userName </a></td>
+				<td>$!grid.opType</td>
+				<td>$!grid.ip</td>
+				<td>$!grid.terminal</td>
+				<td>$!grid.info</td>
+				<td>$!date.format($!grid.time)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+    	
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+	

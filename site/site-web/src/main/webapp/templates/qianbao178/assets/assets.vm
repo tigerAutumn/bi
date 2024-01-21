@@ -1,0 +1,393 @@
+#Html("begin")
+#Head("begin")
+#Title("我的资产【币港湾官网】")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/swiper.min")
+#LoadCSS("resources/micro2.0/styles/assets/assets_public.min")
+#LoadCSS("resources/micro2.0/styles/footer-qianbao.min")
+#WeChatShare()
+#Head("end")
+<body id="body">
+	<script>
+		$(function(){
+			var swiper = new Swiper('.swiper-container', {
+    			speed : 500,
+    			autoplayDisableOnInteraction : false,
+    			pagination : '.swiper-pagination',
+			});
+		})
+	</script>
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="qianbao" value="$!qianbao" />
+    <div class="asstes">
+		<div class="swiper-container">
+			<div class="swiper-wrapper">
+				<!--当日收益-->
+				<div class="swiper-slide">
+					<div class="phone">
+						<i class="mobile_img"></i>
+						<span class="mobile_number">$!resMsg.mobile</span>
+					</div>
+					<div class="ass_today">当日收益（元）</div>
+					<a class="day_money" href="$!env.getWebURL('')/micro2.0/assets/day_income?interest=$!resMsg.investEarnings&qianbao=qianbao">
+						<div class="ass_money">
+							#if("$!resMsg.dayInvestEarnings" == "" || $!resMsg.dayInvestEarnings == 0)
+								<span class="money_font">暂无收益</span>
+							#else
+								<span> $!money.format($!resMsg.dayInvestEarnings) </span>
+                    		#end
+						</div>
+					</a>
+					#if($!hfDepGuideInfo.isOpened == "NO_BIND_CARD")
+                        <div class="ass_today go_bind_card">立即开通银行存管<span class="assets_arrow"></span></div>
+					#elseif($!hfDepGuideInfo.isOpened == "FAILED_BIND_HF")
+                        <!-- 恒丰批量开户失败 -->
+                        <div class="ass_today go_bind_card">立即开通银行存管<span class="assets_arrow"></span></div>
+					#elseif($!hfDepGuideInfo.isOpened == "WAIT_ACTIVATE")
+                        <!-- 待激活 -->
+                        <div class="ass_today">您的资金由恒丰银行存管</div>
+					#elseif($!hfDepGuideInfo.isOpened == "OPEN")
+                        <!-- 已激活 -->
+                        <div class="ass_today">您的资金由恒丰银行存管</div>
+					#end
+				</div>
+				<!--单账户时累计投资收益-->
+				#if($!hfDepGuideInfo.accountType == "DOUBLE")
+				#else
+    				<div class="swiper-slide">
+    					<div class="phone">
+    						<i class="mobile_img"></i>
+    						<span class="mobile_number">$!resMsg.mobile</span>
+    					</div>
+    					<div class="ass_today">累计产品收益（元）</div>
+    						<a href="javascript:void(0)">
+    							<div class="ass_money">
+    								<span class="money_font">$!money.format($!resMsg.totalInvestEarnings)</span>
+    							</div>
+    						</a>
+						#if($!hfDepGuideInfo.isOpened == "NO_BIND_CARD")
+                            <div class="ass_today go_bind_card">立即开通银行存管<span class="assets_arrow"></span></div>
+						#elseif($!hfDepGuideInfo.isOpened == "FAILED_BIND_HF")
+                            <!-- 恒丰批量开户失败 -->
+                            <div class="ass_today go_bind_card">立即开通银行存管<span class="assets_arrow"></span></div>
+						#elseif($!hfDepGuideInfo.isOpened == "WAIT_ACTIVATE")
+                            <!-- 待激活 -->
+                            <div class="ass_today">您的资金由恒丰银行存管</div>
+						#elseif($!hfDepGuideInfo.isOpened == "OPEN")
+                            <!-- 已激活 -->
+                            <div class="ass_today">您的资金由恒丰银行存管</div>
+						#end
+    				</div>
+				#end
+			</div>
+			#if($!hfDepGuideInfo.accountType == "DOUBLE")
+			#else
+				<div class="swiper-pagination"></div>
+			#end
+		</div>
+		<div class="ass-withdraw-btn">
+			<div class="assets-content" >
+				<div class="assets-btn assets-border" id="to_user_withdraw">提现</div>
+			</div>
+			<div class="assets-content" id="to_user_top_up">
+				<div class="assets-btn" href="javascript:void(0)">充值</div>
+			</div>
+		</div>	
+    </div>
+	#if($!hfDepGuideInfo.accountType == "DEP")
+    <div class="accumulative_two">
+        <a class="assets-content accumulative_border" href="$!env.getWebURL('')/micro2.0/assets/total_assets?qianbao=qianbao">
+            <div class="acc_left">
+				<i class="item_arrrow_top1"></i>
+                <i class="item_arrrow"></i>
+                <div class="acc_font">
+                    <span class="acc_fig">$!money.format($!resMsg.assetAmount)</span>
+                </div>
+				<div class="acc_font">
+                     <i class="acc_right_arr">资产总计（元）</i>
+                </div>
+            </div>
+        </a>
+        <a class="assets-content">
+            <div class="acc_right">
+				<i class="item_arrrow_top5"></i>
+                <div class="acc_font">
+                    <span class="acc_fig">$!money.format($!resMsg.depAvailableBalance)</span>
+                </div>
+				<div class="acc_font">
+                    <i class="acc_right_arr">存管账户余额（元）</i>
+                </div>
+            </div>
+        </a>
+    </div>
+	#elseif($!hfDepGuideInfo.accountType == "SIMPLE")
+    <div class="accumulative_two">
+        <a class="assets-content accumulative_border" href="$!env.getWebURL('')/micro2.0/assets/total_assets?qianbao=qianbao">
+            <div class="acc_left">
+				<i class="item_arrrow_top1"></i>
+				<i class="item_arrrow"></i>
+                <div class="acc_font">
+                    <span class="acc_fig">$!money.format($!resMsg.assetAmount)</span>
+                </div>
+				<div class="acc_font">
+                    <i class="acc_right_arr">资产总计（元）</i>
+                </div>
+            </div>
+        </a>
+        <a class="assets-content" href="$!env.getWebURL('')/micro2.0/assets/account_balance?qianbao=qianbao">
+            <div class="acc_right">
+                <i class="item_arrrow_top2"></i>
+                <i class="item_arrrow"></i>
+                <div class="acc_font">
+                    <span class="acc_fig">$!money.format($!resMsg.availableBalance)</span>
+                </div>
+				<div class="acc_font">
+                    <i class="acc_right_arr">普通账户余额（元）</i>
+                </div>
+            </div>
+        </a>
+    </div>
+	#elseif($!hfDepGuideInfo.accountType == "DOUBLE")
+		<!-- 双帐户 -->
+		<div class="accumulative_two">
+            <a class="assets-content accumulative_border" href="$!env.getWebURL('')/micro2.0/assets/total_assets?qianbao=qianbao">
+                <div class="acc_left">
+                    <i class="item_arrrow_top1"></i>
+					<i class="item_arrrow"></i>
+                    <div class="acc_font">
+                        <span class="acc_fig">$!money.format($!resMsg.assetAmount)</span>
+                    </div>
+					<div class="acc_font">
+                        <i class="acc_right_arr">资产总计（元）</i>
+                    </div>
+                </div>
+            </a>
+			<a class="assets-content bg_right" href="$!env.getWebURL('')/micro2.0/assets/account_balance?qianbao=qianbao">
+                <div class="acc_left">
+                    <i class="item_arrrow_top2"></i>
+					<i class="item_arrrow"></i>
+                    <div class="acc_font">
+                        <span class="acc_fig">$!money.format($!resMsg.availableBalance)</span>
+                    </div>
+					 <div class="acc_font">
+                        <i class="acc_right_arr">普通账户余额（元）</i>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="accumulative accumulative_two">        
+            <a class="assets-content accumulative_border">
+                <div class="acc_left">
+					<i class="item_arrrow_top5"></i>
+                    <div class="acc_font">
+                        <span class="acc_fig">$!money.format($!resMsg.depAvailableBalance)</span>
+                    </div>
+					<div class="acc_font">
+                        <i class="acc_right_arr">存管账户余额（元）</i>
+                    </div>
+                </div>
+            </a>
+			<a class="assets-content" href="javascript:void(0)">
+    			<div class="acc_left">
+					<i class="item_arrrow_top3"></i>
+    				<div class="acc_font">
+    					<span class="acc_fig" style="margin-right:0;">$!money.format($!resMsg.totalInvestEarnings)</span>
+    				</div>
+					<div class="acc_font">
+    					<i class="acc_right_arr">累计产品收益（元）</i>
+    				</div>
+    			</div>
+			</a>
+        </div>        
+	#end
+    ##<div class="accumulative ont_cen">
+		##<a class="accumulative_bg" href="javascript:void(0)" style="width:100%">
+			##<div class="acc_left">
+				##<i class="acc_right_arr">累计投资收益（元）</i>
+				##<div class="acc_font">
+					##<span class="acc_fig" style="margin-right:0;">$!money.format($!resMsg.totalInvestEarnings)</span>
+				##</div>
+			##</div>
+		##</a>
+		##<a class="accumulative_bg bg_right" href="javascript:void(0)">
+			##<div class="acc_right">
+				##<i class="acc_right_arr">累计奖励金额（元）</i>
+				##<div class="acc_font">
+					##<span class="acc_fig">$!money.format($!resMsg.totalBonus)</span>
+				##</div>
+			##</div>
+		##</a>
+    ##</div>
+    <div class="main">
+    	<ul>
+    		<li class="item">
+				<i class="item_icon icon_pack"></i>
+    			<a class="item_href item_href_none" href="$!env.getWebURL('')/micro2.0/redPacket/myRedPacket?qianbao=qianbao">
+    				<span class="item_ft">优惠券</span>
+    				<span class="item_numer">
+    					<span class="num_color">$!resMsg.redPacketNum</span> 个
+    				</span>
+    				<i class="item_arrrow"></i>
+    			</a>
+    		</li>
+			<li class="item">
+				<i class="item_icon icon_two"></i>
+    			<a class="item_href go_my_invest" href="javascript:void(0)" url="$!env.getWebURL('')/micro2.0/assets/my_investment?qianbao=qianbao">
+    				<span class="item_ft">计划管理</span>
+    				<span class="item_numer">
+    					#if($!resMsg.less7Days > 0)
+    						七日内<span class="num_color">$!resMsg.less7Days</span>个产品即将到期
+    					#else
+							#set($invests_num = $!gwInvestRes.investNum + $!zanInvestRes.investNum)
+                            当前在持<span class="num_color">$!invests_num</span>个产品
+    					#end
+    				</span>
+    				<i class="item_arrrow"></i>
+    			</a>
+                <script>
+    				$('.go_my_invest').click(function() {
+    					window.localStorage.clear();
+    					location.href = $(this).attr('url');
+    				});
+    			</script>
+    		</li>
+            <li class="item">
+				<i class="item_icon icon_award1"></i>
+                <a class="item_href" href="$!env.getWebURL('')/micro2.0/assets/payment_plant">
+                    <span class="item_ft">回款计划</span>
+                    <i class="item_arrrow"></i>
+                </a>
+            </li>
+    		<li class="item">
+				<i class="item_icon icon_three"></i>
+    			<a class="item_href" href="$!env.getWebURL('')/micro2.0/assets/trading_detail?qianbao=qianbao">
+    				<span class="item_ft">交易明细</span>
+    				<span class="item_numer">#if($!resMsg.processingNum > 0)您有<span class="num_color">$!resMsg.processingNum</span>笔交易正在努力确认中#end</span>
+    				<i class="item_arrrow"></i>
+    			</a>
+    		</li>
+    	</ul>
+    </div>
+    <div class="main">
+    	<ul>
+    		<li class="item">
+				<i class="item_icon icon_four"></i>
+    			<a class="item_href item_href_none" href="$!env.getWebURL('')/micro2.0/wealth/bankcard_index?qianbao=qianbao">
+    				<span class="item_ft">银行卡</span>
+    				#if($!hfDepGuideInfo.isOpened == "NO_BIND_CARD")
+                        <span class="item_numer">您尚未开通存管</span>
+    				#elseif($!hfDepGuideInfo.isOpened == "FAILED_BIND_HF")
+                        <!-- 恒丰批量开户失败 -->
+                        <span class="item_numer">您尚未开通存管</span>
+    				#elseif($!hfDepGuideInfo.isOpened == "WAIT_ACTIVATE")
+                        <!-- 待激活 -->
+                        <span class="item_numer">您已开通存管</span>
+    				#elseif($!hfDepGuideInfo.isOpened == "OPEN")
+                        <!-- 已激活 -->
+                        <span class="item_numer">您已开通存管</span>
+    				#end
+    				<i class="item_arrrow"></i>
+    			</a>
+    		</li>
+    		<li class="item">
+				<i class="item_icon icon_five"></i>
+    			<a class="item_href" href="$!env.getWebURL('')/micro2.0/profile/index?qianbao=qianbao">
+    				<span class="item_ft">安全中心</span>
+    				<span class="item_numer">密码、<span>退出</span></span>
+    				<i class="item_arrrow"></i>
+    			</a>
+    		</li>
+    	</ul>
+    </div>
+	<!--prompt-->
+	<div class="prompt">
+		<span class="prompt_line"></span><span class="prompt_img"></span>您的资金由恒丰银行资金存管系统全程监管<span class="prompt_line prompt_line_right"></span>
+	</div>
+	<div class="foot_placehold"></div>
+	#if($!hfDepGuideInfo.isOpened == "NO_BIND_CARD")
+    <!-- 未绑卡 -->
+    <div class="HF-bank alert_open">
+        <div class="HF-bank_info">
+            <div class="HF-bank_ul">
+				开通恒丰银行资金存管，为您的资金保驾护航。
+            </div>
+            <div class="HF-bank_group">
+				<div class="HF-bank-close">取消</div>
+                <div class="HF-bank_line go_bind_card">立即开通</div>
+            </div>
+        </div>
+    </div>
+	#elseif($!hfDepGuideInfo.isOpened == "FAILED_BIND_HF")
+    <!-- 恒丰批量开户失败 -->
+    <div class="HF-bank alert_open">
+        <div class="HF-bank_info">
+            <div class="HF-bank_ul">
+				开通恒丰银行资金存管，为您的资金保驾护航。
+            </div>
+            <div class="HF-bank_group">
+                <div class="HF-bank-close">取消</div>
+                <div class="HF-bank_line go_bind_card">立即开通</div>
+            </div>
+        </div>
+    </div>
+	#elseif($!hfDepGuideInfo.isOpened == "WAIT_ACTIVATE")
+    <!-- 待激活 -->
+    <div class="HF-bank alert_open">
+        <div class="HF-bank_info">
+            <div class="HF-bank_ul">
+				激活恒丰银行资金存管，为您的资金保驾护航。
+            </div>
+            <div class="HF-bank_group">
+                <div class="HF-bank-close">取消</div>
+                <div class="HF-bank_line go_activate">立即激活</div>
+            </div>
+        </div>
+    </div>
+	#elseif($!hfDepGuideInfo.isOpened == "OPEN")
+    <!-- 已激活 -->
+		##风险测评提示框
+		#if($!hfDepGuideInfo.riskStatus=="no")
+		##未测评	
+    	<div class="HF-bank alert_open">
+            <div class="HF-bank_info">
+                <div class="HF-bank_ul">
+    				您尚未进行风险承受能力测评
+                </div>
+                <div class="HF-bank_group">
+                    <div class="HF-bank-close">取消</div>
+                    <div class="HF-bank_line go_question">立即测评</div>
+                </div>
+            </div>
+        </div>	
+		#elseif($!hfDepGuideInfo.riskStatus=="expire")
+		##已过期
+		<div class="HF-bank alert_open">
+            <div class="HF-bank_info">
+                <div class="HF-bank_ul">
+    				您的风险承受能力测评已过期，请重新测评
+                </div>
+                <div class="HF-bank_group">
+                    <div class="HF-bank-close">取消</div>
+                    <div class="HF-bank_line go_question">立即测评</div>
+                </div>
+            </div>
+        </div>		
+		#else
+		##已测评	
+		#end
+	#end
+    <script type="text/javascript">
+    	function qianbao(url) {
+            var root = $("#APP_ROOT_PATH").val();
+            location.href = root + url + '?qianbao=qianbao';
+    	}
+    </script>
+    #FooterQianBao("2")
+#LoadJS("resources/micro2.0/scripts/zepto.min")
+#LoadJS("resources/micro2.0/scripts/swiper.jquery.min")
+#LoadJS("resources/micro2.0/scripts/assets/custom")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/assets/account_balance")
+</body>
+</html>

@@ -1,0 +1,87 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('statistics/register/index.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!req.pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+		
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						起始日期：<input name="startTime" maxdate="{%y}-%M-{%d}"   type="text"  id="startTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.startTime)" size="10"/>
+					</td>
+					<td>
+						结束日期：<input name="endTime" maxdate="{%y}-%M-{%d}"   type="text"  id="endTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.endTime)" size="10"/>
+					</td>
+					<td>
+						<button  type="button" onclick="dataSearch()">查询</button>
+					</td>
+				</tr>
+			</table>
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<table class="table" width="1082" layoutH="138">
+		<thead>
+			<tr>
+				<th width="10%">日期</th>
+				<th width="15%">新增注册用户数</th>
+				<th width="10%">新增绑卡用户数</th>
+				<th width="10%">邀请链接注册数</th>
+				<th width="10%">Android注册数</th>
+				<th width="10%">iOS注册数</th>
+				<th width="10%">微信公众号注册数</th>
+				<th width="10%">PC注册数</th>
+				<th width="15%">其他终端注册数</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($register in $userRegustList)
+			<tr target="sid_user" rel="1">
+				<td>$!date.formatYYYYMMDD($!register.registDate)</td>	
+				<td>$!register.dayRegistIncrease</td>	
+				<td>$!register.dayCardbindIncrease</td>	
+				<td>$!register.recommendRegistNum</td>	
+				<td>$!register.androidRegistNum</td>
+				<td>$!register.iosRegistNum</td>	
+				<td>$!register.h5RegistNum</td>	
+				<td>$!register.pcRegistNum</td>	
+				<td>$!register.otherRegistNum</td>	
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+
+	</div>
+</div>
+
+	<script>
+
+	function dataSearch() {
+		var url = $("#APP_ROOT_PATH").val().trim() + "/statistics/register/index.htm";
+		$("#myform").attr("action",url);
+		$("#myform").attr("onsubmit","return navTabSearch(this);");
+		$("#myform").submit();
+	}
+	</script>

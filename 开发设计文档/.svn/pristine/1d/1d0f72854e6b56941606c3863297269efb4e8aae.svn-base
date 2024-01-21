@@ -1,0 +1,53 @@
+## 恒丰对账结果查询
+1. 需求描述
+	+ 提供导入恒丰线下提供的对账文件（txt文件）的功能
+	+ 对账流程：①将恒丰的对账文件与本地对账文件进行双向比对；（其中恒丰文件只包含成功状态的订单，本地文件需要包含所有状态的订单）②根据出入金类型分别比对，显示有差异的订单信息
+	+ 提供导出异常订单功能
+
+2. 需求背景
+	+ 解决币港湾和恒丰账务核对
+	+ 解决差异账务查询和处理
+
+3. 业务逻辑
+### 原型地址: svn\产品专用\项目需求\原型\2018年需求\7月份-恒丰对账结果查询
+
+### 业务实现点
+1. 改造原先的恒丰出入金对账定时，理财端新增交易类型: 平台提现、平台充值，修改check_error表info字段为原型上对账结果说明，
+   更新check_error表新增的字段值。 
+
+2. 改造bs_19pay_check_error表新增channel字段，标记恒丰、宝付等渠道  
+3. 新增定时从monogodb中获取bs_pay_orders和ln_pay_orders表前一天数据，按恒丰对账结果表模板统计插入bs_sys_daily_check_gacha，
+	导出对账结果表模板查询bs_sys_daily_check_gacha前一天数据
+4. 初始化进来默认查询对账日期是当天的记录，恒丰对账结果查询对应字段(对应bs_19pay_check_error表)
+	账户类型channel、业务对象partner_code、业务类型
+	本地订单编号order_no、恒丰订单编号bf_order_no、本地订单状态sys_status、 恒丰订单状态host_sys_status
+	本地金额sys_amount、恒丰金额done_amount、对账结果info、对账日期create_time
+5. 导出异常订单根据查询结果对应记录导出，字段和查询功能一致
+6. 修改之前的对账可疑记录查询和导出异常订单（新增channel='BAOFOO' or channel is null条件），宝付对账结果表因为有merchant_no条件不做修改。
+7. 业务类型字典
+<pre>
+	HFBANK_FINANCIAL_WITHDRAW("HFBANK_FINANCIAL_WITHDRAW", "出金(投资人提现)")
+	HFBANK_PLATFORM_WITHDRAW("HFBANK_PLATFORM_WITHDRAW", "出金(平台提现)")
+	HFBANK_YUN_LOAN("HFBANK_YUN_LOAN", "出金(云贷放款)")
+	HFBANK_SEVEN_LOAN("HFBANK_SEVEN_LOAN", "出金(7贷放款)")
+	HFBANK_FINANCIAL_TOP_UP("HFBANK_FINANCIAL_TOP_UP", "入金(投资人充值)")
+	HFBANK_PLATFORM_TOP_UP("HFBANK_PLATFORM_TOP_UP", "入金(平台充值)")
+	HFBANK_REPAY_CARD_2_DEPOSITOR("HFBANK_REPAY_CARD_2_DEPOSITOR", "入金(归集户到存管户)")
+<pre>	
+	
+## 注册用户管理
+1. 需求描述
+每月1日1时（系统无其余工作的时间点）以excel格式批量导出获取的用户数据，通过邮件发送至运营人员邮箱，格式按原型上来。
+
+2. 需求背景
+	
+3. 业务逻辑
+### 原型地址: svn\产品专用\项目需求\原型\2018年需求\7月份-新增用户信息获取
+
+### 业务实现点
+1. 新增定时从monogodb中获取用户数据
+2. 导出excel格式的用户数据到服务器指定目录
+3. 发送附件到运营人员邮箱，运营人员邮箱配置表可以配置
+4. 邮件主题：XX月份用户信息报表，邮件正文：Dear all: 上月用户数据报表已统计完毕,详情请查看附件。
+
+

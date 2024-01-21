@@ -1,0 +1,138 @@
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	
+	<form id="operationReportForm" method="post" action="$env.getWebURL('/operationReport/reportSave.htm')" class="pageForm" onsubmit="return validateCallback(this, navTabAjaxDone)">
+
+		<div class="pageFormContent nowrap" layoutH="97">
+
+			<dl>
+				<dt>
+					是否推荐：
+				</dt>
+				<dd>
+					<label style="margin-left: -8px;">
+						<input type="checkBox" name="isSugguest" value="TRUE"> 推荐
+                    </label>
+				</dd>
+			</dl>
+			
+			<dl>
+				<dt >
+					标题：
+                </dt>
+				<dd >
+					<input type="text" id="reportName" name="reportName" class="required"  style="width:500px;"  maxlength="18" />
+                </dd>
+			</dl>
+			
+			<dl>
+				<dt >
+					首页显示时间：
+                </dt>
+				<dd >
+					<input type="text" id="displayTime" name="displayTime" class="required"  style="width:500px;"  maxlength="8" />
+                </dd>
+			</dl>
+			
+			<dl id = "report_img_dl">
+				<dt>封面图：</dt>
+				<dd>
+                    <input id="imgUrl" name="imgUrl" type="hidden"/>
+                    <div id="uploader-demo">
+                        <!--用来存放item-->
+                        <div id="fileThumb" class="uploader-list">
+							<div class="file-item thumbnail" style="display: none;">
+								<img/><div class="info"></div>
+							</div>
+                        </div>
+                        <div id="filePicker">选择图片</div>
+                    </div>
+                    只支持310x337大小图片
+				</dd>
+			</dl>
+			
+			
+			<dl id = "report_file_dl">
+				<dt>上传PDF：</dt>
+				<dd>
+                    <input type="text" name="storageAddress" id="storageAddress" readonly/>
+                    <div id="uploader" class="wu-example">
+                        <!--用来存放文件信息-->
+                        <div id="fileList" class="uploader-list">
+                            <div class="item">
+                                <h4 class="info"></h4>
+                                <p class="state">等待上传...</p>
+							</div>
+						</div>
+                        <div class="btns">
+                            <div id="chooseFile" style="float: left; margin-right: 30px;">选择文件</div>
+                            <div id="submitFile" class="webuploader-pick">开始上传</div>
+                        </div>
+                    </div>
+				</dd>
+			</dl>
+  
+		</div>
+		<div class="formBar">
+			<ul>
+				<li ><div class="buttonActive"><div class="buttonContent"><button type="button" id="save_btn_publish">直接发布</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+	
+</div>
+<script>
+
+	function navTabAjaxDone(json) {
+		 if (json.statusCode == "200") {
+		 	navTab.closeCurrentTab();
+			alertMsg.correct(json.message);
+			navTab.reload("$env.getWebURL('/operationReport/reportIndex.htm')");
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+	
+	
+	//运营报告直接发布
+	$("#save_btn_publish").click(function(){
+			$("#operationReportForm").submit();
+	});
+
+
+	// 运营报告图片上传310x337
+    _global.uploadSingleImg("/upload/operationReportImg.htm", '#filePicker', 310, 337, 310, 337, '#fileThumb', function (file, data) {
+        if(data.err == "1"){
+            alertMsg.error(data.msg);
+            return;
+        }
+		$('#imgUrl').val(data.msg.pathUrl);
+    }, function(file, data) {
+        $('#filePicker').children('div').children('img').attr('src', '');
+        $('#imgUrl').val('');
+    });
+
+	 
+	 //运营报告PDF文件上传
+    _global.uploadSingleFile('/upload/operationReportFile.htm', '#chooseFile', '#submitFile', '#fileList', function(file, data) {
+        console.log(file);
+        console.log(data);
+        if("1" == data.err){
+            alertMsg.error(data.msg);
+            $("#storageAddress").val('');
+            return false;
+        }
+        $('#' + file.id).find('p.state').text('已上传');
+        $("#storageAddress").val(data.msg.pathUrl);
+    }, function (file, data) {
+        $("#storageAddress").val('');
+        $('#' + file.id).find('p.state').text('上传出错');
+    });
+</script>

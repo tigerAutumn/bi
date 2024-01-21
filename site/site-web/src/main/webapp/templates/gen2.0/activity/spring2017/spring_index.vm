@@ -1,0 +1,476 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/index/default")
+#LoadGenJS("/resources/gen2.0/scripts/jquery-1.11.1.min")
+#LoadGenCSS("/resources/gen2.0/styles/activity/spring/spring")
+#LoadGenJS("/resources/gen2.0/scripts/activity/spring/spring")
+<!--[if lte IE 8]> 
+	<script src="../../resources/gen2.0/scripts/activity/spring/PIE.js" type="text/javascript" charset="utf-8"></script>
+<![endif]-->
+<script>
+	$(function(){
+		if(window.PIE) {
+		$('.rounded').each(function() {
+			PIE.attach(this);
+		})
+	}
+	})
+</script>
+#Gen2Header("home")
+<body id="body" class="body">
+	<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')"/>
+	<input type="hidden" id="rankingNo" value="$!rankingNo" />
+	<input type="hidden" id="invitedAmount" value="$!invitedAmount" />
+	<input type="hidden" id="userInvitedAmount" value="$!userInvitedAmount" />
+	<input type="hidden" id="springIsStart" value="$!springIsStart" />
+<!--banner-->
+		<div class="banner"></div>
+		<!--introduce-->
+		<div class="spring_introduce">
+			<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_title1.png" class="spring_introduce_img1" />
+			<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_titletxt4.png" class="spring_introduce_img2" />
+			<div class="spring_introduce_content">
+				<div class="spring_introduce_txt">
+					<p>人间四月春暖花开，带上家人，约上好友，咱们踏春去！</p>
+					<p>完成特殊“踏青”任务，夺惊喜好礼哦~</p>
+				</div>
+				<ul class="spring_introduce_list">
+					<li class="spring_introduce_list1">
+						<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring1.png" class="spring_introduce_listimg" />
+						<div class="spring_introduce_listtitle">集合打卡</div>
+						<div class="spring_introduce_listtxt">购买加息标，夺加息好礼</div>
+					</li>
+					<li class="spring_introduce_list1">
+						<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring2.png" class="spring_introduce_listimg" />
+						<div class="spring_introduce_listtitle">登顶夺宝</div>
+						<div class="spring_introduce_listtxt">登顶排行榜，奖励金翻倍</div>
+					</li>
+					<li class="spring_introduce_list1">
+						<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring3.png" class="spring_introduce_listimg" />
+						<div class="spring_introduce_listtitle">邀友同行</div>
+						<div class="spring_introduce_listtxt">邀好友投资，夺现金红包</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!--one-->
+		<div class="spring_One">
+			<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_title2.png" />
+			<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_titletxt1.png" class="spring_One_img" />
+			<div class="spring_One_title">购买“今日推荐”标的最划算！</div>
+			<div class="spring_One_bg">
+				<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/flower2.png" class="spring_One_bgimg1" />
+				<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/flower1.png" class="spring_One_bgimg2" />
+				<ul class="spring_One_content rounded">
+					#foreach($product in $!productList)
+					<li>
+						#if($!product.status == 6 || $!product.status == 5)
+						<!--进行中/未开始-->
+						<div class="spring_One_contbox1" onclick="clickMe($!{product.id})">
+							<div class="spring_One_divone">$!product.name</div>
+							<div class="spring_One_divtwo">预期年化收益</div>
+							<div class="spring_One_divthr">
+								#if($!product.propertySymbol == "ZAN")
+									#if($!product.term == 3)
+										7.50<span class="spring_One_thrspan">%</span>+$!money.format($!money.subtract($!product.baseRate,7.5))<span class="spring_One_thrspan">%</span>
+									#elseif($!product.term == 6)
+										8.50<span class="spring_One_thrspan">%</span>+$!money.format($!money.subtract($!product.baseRate,8.5))<span class="spring_One_thrspan">%</span>
+									#elseif($!product.term == 9)
+										9.30<span class="spring_One_thrspan">%</span>+$!money.format($!money.subtract($!product.baseRate,9.3))<span class="spring_One_thrspan">%</span>
+									#elseif($!product.term == 12)
+										10.00<span class="spring_One_thrspan">%</span>+$!money.format($!money.subtract($!product.baseRate,10))<span class="spring_One_thrspan">%</span>
+									#end
+								#else
+									#if($!product.term ==1)
+										5.50<span class="spring_One_thrspan">%</span>+$!money.format($!money.subtract($!product.baseRate,5.5))<span class="spring_One_thrspan">%</span>
+									#elseif($!product.term == 3)
+										7.00<span class="spring_One_thrspan">%</span>+$!money.format($!money.subtract($!product.baseRate,7))<span class="spring_One_thrspan">%</span>
+									#elseif($!product.term == 6)
+										8.00<span class="spring_One_thrspan">%</span>+$!money.format($!money.subtract($!product.baseRate,8))<span class="spring_One_thrspan">%</span>
+									#elseif($!product.term == 12)
+										9.50<span class="spring_One_thrspan">%</span>+$!money.format($!money.subtract($!product.baseRate,9.5))<span class="spring_One_thrspan">%</span>
+									#end
+								#end
+							</div>
+							<div class="spring_One_divfou">
+								#if($!product.propertySymbol == "ZAN")
+									<span class="spring_One_fouspan">委托意向</span>
+								#else
+									<span class="spring_One_fouspan">投资期限</span>
+								#end
+								<i class="spring_One_fouspani">起投金额</i>
+							</div>
+							<div class="spring_One_divfiv">
+								#if($!{product.propertySymbol} == "ZAN")
+									<span class="spring_One_fivspan">$!{product.term}个月内</span>
+								#else
+									<span class="spring_One_fivspan">$!{product.term4Day}天</span>
+								#end
+								
+								<span class="spring_One_fivi">$string.replace($!money.format($!{product.minInvestAmount}),".00","")元</span>
+							</div>
+							#if($!product.status == 6)
+							<!--进行中-->
+							<div class="spring_One_divsix">
+							<div class="spring_One_six"><span class="spring_One_sixspan" style="width:$!number.format('0',$!{product.progress})%"></span></div><i>$!number.format('0',$!{product.progress})%</i></div>
+							<div class="spring_One_sev">剩余金额$string.replace($!money.format($!money.subtract($!{product.maxTotalAmount},$!{product.currTotalAmount})),".00","")元</div>
+							#else
+							<!--未开始-->
+								#if($!product.isSameDay == 'no')
+									<div class="spring_One_notstart">$!date.formatDateTime($!product.startTime, "MM月dd日HH时mm分")开卖！</div>
+								#else
+									<div class="spring_One_notstart">今日$!date.formatDateTime($!product.startTime, "HH时mm分")开卖！</div>
+								#end
+							#end
+						</div>
+						#else
+						<!--已抢光-->
+						<div class="spring_One_contbox2" onclick="clickMe($!{product.id})">
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring7.png" class="not_haveimg"/>
+							<div class="spring_One_divone">$!product.name</div>
+							<div class="spring_One_divtwo">预期年化收益</div>
+							<div class="spring_One_divthr1">
+								#if($!product.propertySymbol == "ZAN")
+									#if($!product.term == 3)
+										7.50<span class="spring_One_thrspan">%</span>+$!money.format($!money.subtract($!product.baseRate,7.5))<span class="spring_One_thrspan">%</span>
+									#elseif($!product.term == 6)
+										8.50<span class="spring_One_thrspan">%</span>+$!money.format($!money.subtract($!product.baseRate,8.5))<span class="spring_One_thrspan">%</span>
+									#elseif($!product.term == 9)
+										9.30<span class="spring_One_thrspan">%</span>+$!money.format($!money.subtract($!product.baseRate,9.3))<span class="spring_One_thrspan">%</span>
+									#elseif($!product.term == 12)
+										10.00<span class="spring_One_thrspan">%</span>+$!money.format($!money.subtract($!product.baseRate,10))<span class="spring_One_thrspan">%</span>
+									#end
+								#else
+									#if($!product.term ==1)
+										5.50<span class="spring_One_thrspan">%</span>+$!money.format($!money.subtract($!product.baseRate,5.5))<span class="spring_One_thrspan">%</span>
+									#elseif($!product.term == 3)
+										7.00<span class="spring_One_thrspan">%</span>+$!money.format($!money.subtract($!product.baseRate,7))<span class="spring_One_thrspan">%</span>
+									#elseif($!product.term == 6)
+										8.00<span class="spring_One_thrspan">%</span>+$!money.format($!money.subtract($!product.baseRate,8))<span class="spring_One_thrspan">%</span>
+									#elseif($!product.term == 12)
+										9.50<span class="spring_One_thrspan">%</span>+$!money.format($!money.subtract($!product.baseRate,9.5))<span class="spring_One_thrspan">%</span>
+									#end
+								#end
+							</div>
+							<div class="spring_One_divfou">
+								#if($!product.propertySymbol == "ZAN")
+									<span class="spring_One_fouspan">委托意向</span>
+								#else
+									<span class="spring_One_fouspan">投资期限</span>
+								#end
+								<i class="spring_One_fouspani">起投金额</i>
+							</div>
+							<div class="spring_One_divfiv1">
+								#if($!{product.propertySymbol} == "ZAN")
+									<span class="spring_One_fivspan">$!{product.term}个月内</span>
+								#else
+									<span class="spring_One_fivspan">$!{product.term4Day}天</span>
+								#end
+								<span class="spring_One_fivi">$string.replace($!money.format($!{product.minInvestAmount}),".00","")元</span>
+							</div>
+							<div class="spring_One_divsix">
+							<div class="spring_One_six"><span class="spring_One_sixspan1" style="width:100%"></span></div><i>100%</i></div>
+							<div class="spring_One_sev">已完成</div>
+						</div>
+						#end
+						
+					</li>
+					#end
+				</ul>
+				<div class="spring_One_btn">
+					<a href="$!env.get('gen.server.web')/gen2.0/regular/list" class="spring_One_btna">查看更多</a>
+				</div>
+			</div>
+		</div>
+		<!--two-->
+		<div class="spring_Two">
+			<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_title2.png" class="spring_title_zIndex"/>
+			<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_titletxt2.png" class="spring_Two_img" />
+			<div class="spring_Two_title">活动期间累计投资额达到一定数额，即可解锁相应成就并获得相应奖励金
+				<a href="javascript:;" class="spring_Two_title_btn rounded">奖励金详情</a>
+				<i class="money_propup">奖励金翻倍！</i>
+			</div>
+			<ul class="spring_two_icon">
+				<li>财绿满地</li>
+				<li>生财有道</li>
+				<li>财源滚滚</li>
+				<li>腰缠万贯</li>
+			</ul>
+			<div class="spring_Two_bar rounded">
+				<div class="spring_Two_bar_color rounded"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring12.png" class="spring_Two_windmill" /></div>
+			</div>
+			<div class="spring_Two_bar_txt">
+				#if($!springIsStart != 'noStart' && $!userLogin == 'no_login')
+				<a href="$!env.get('gen.server.web')/gen2.0/user/login/index" class="spring_Two_bar_txta">登录</a>
+				<span class="spring_Two_bar_txtspan">后查看投资进度</span>
+				#else
+					<!--未登录样式-->
+					<i style="margin-right:197px;"></i>
+				#end
+				<i class="spring_Two_bar_txti">1万元</i>
+				<i class="spring_Two_bar_txti">5万元</i>
+				<i class="spring_Two_bar_txti1">10万元</i>
+				<i class="spring_Two_bar_txti2">进入投资排行榜</i>
+			</div>
+			<div class="spring_Two_ranking">
+				<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/flower2.png" class="spring_Two_bgimg1" />
+				<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/flower1.png" class="spring_Two_bgimg2" />
+				<div class="spring_Two_ranking_bg rounded">
+					<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring13.png" class="spring_Two_ranking_img" />
+					<div class="spring_Two_ranking_title">投资排行榜
+						<a hrel="javascript:;" class="spring_Two_ranking_titlea">说明</a>
+					</div>
+					<div class="spring_Two_ranking_content rounded">
+						<ul class="spring_Two_ranking_conul">
+							#if($!springIsStart == 'noStart')
+								<!--活动未开始 -->
+								<li class="spring_ranking_none">
+									<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_none.png">
+                                    <p>活动尚未开始，敬请期待~</p>
+								</li>
+							#else
+								
+							#if($!investRankingListSize >0)
+    							#foreach($rank in $!investRankingList)
+    							<li class="">
+    								<div class="spring_Two_ranking_content-ranking">
+    									<span class="spring_Two_ranking_content-rankingimg">
+    										#if(3 >= $rank.rowno)
+    											<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_ranking${rank.rowno}.png">
+    										#else
+    											$rank.rowno
+    										#end
+    										</span>
+    									<i class="spring_Two_ranking_content-rankingname winner_list_user_name">$rank.userName</i>
+    								</div>
+    								<div class="spring_Two_ranking_content-money">$rank.mobile</div>
+    								<div class="spring_Two_ranking_content-pank">$string.replace($!money.format($rank.buyAmount),".00","")元</div>
+    							</li>
+    								#if($rank.rowno==5 && $!investRankingListSize>=5 )
+    									</ul>
+    									<ul class="spring_Two_ranking_conul">
+    								#end
+    							#end
+    							#if(10> $!investRankingListSize )
+    								#foreach($foo in [0..10])
+    									#if($foo > $!investRankingListSize )
+											<li class="">
+                								<div class="spring_Two_ranking_content-ranking">
+                									<span class="spring_Two_ranking_content-rankingimg">
+                										#if(3 >= $foo)
+                											<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_ranking${foo}.png">
+                										#else
+                											$foo
+                										#end
+                										</span>
+                									<i class="spring_Two_ranking_content-rankingname winner_list_user_name">---</i>
+                								</div>
+                								<div class="spring_Two_ranking_content-money">-------------</div>
+                								<div class="spring_Two_ranking_content-pank">--------</div>
+                							</li>
+											#if($foo == 5 && 5>$!investRankingListSize )
+            									</ul>
+            									<ul class="spring_Two_ranking_conul">
+            								#end
+    									#end
+    								#end
+								#end
+							#else
+								<!--投资排行榜空 加图 -->
+								<li class="spring_ranking_none">
+									<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_none.png">
+                                    <p>啊哦，目前还无人上榜哦~</p>
+								</li>
+							#end
+							#end
+						</ul>
+					</div>
+				</div>
+				<div class="spring_One_btn">
+					<a href="javascript:go_buy()" class="spring_One_btna">立即投资</a>
+				</div>
+			</div>
+		</div>
+		<!--three-->
+		<div class="spring_One">
+			<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_title2.png" />
+			<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_titletxt3.png" class="spring_One_img" />
+			<div class="spring_Three_content">
+				<div class="spring_Three_em">
+					<div class="spring_Three_embg">
+						<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/flower2.png" class="spring_Three_emimg1" />
+						<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/flower1.png" class="spring_Three_emimg2" />
+						<div class="spring_Three_emcontent rounded">
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring14.png" class="spring_Three_ranking_img" />
+							<div class="spring_Three_ranking_title">邀请好友</div>
+							<div class="spring_Three_embox rounded">
+								#if($!springIsStart == 'noStart')
+									<!--活动未开始 加图 -->
+									<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_none.png" class="spring_Three_emboximg1" />
+                                    <p class="spring_Three_emboxtxt">活动开始后登录</p>
+									<p class="spring_Three_emboxtxt">即可扫描专属二维码</p>
+								#elseif($!springIsStart == 'ing')
+									#if($!userLogin == 'is_login')
+										<!--活动开始且已登录 -->
+										<img src="$!matrix" class="spring_Three_emboximg" />
+									#else
+										<!--活动开始未登录 加图 -->
+										<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_none.png" class="spring_Three_emboximg1" />
+										<p class="spring_Three_emboxtxt"><a href="$!env.get('gen.server.web')/gen2.0/user/login/index" class="spring_Three_emboxtxtbtn">登录</a>后获取专属</p>
+										<p class="spring_Three_emboxtxt">二维码</p>
+									#end
+								#else
+									<!--活动已结束 加图 -->
+									<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_none.png" class="spring_Three_emboximg1" />
+                                    <p class="spring_Three_emboxtxt">活动已结束</p>
+									
+								#end
+							
+							</div>
+						</div>
+						<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring15.png" />
+						<ul class="spring_Three_txt">
+							<li class="spring_Three_txt1">
+								<p>活动期间</p>
+								<P>邀请好友</P>
+							</li>
+							<li class="spring_Three_txt2">
+								<p>好友注册且在活动</p>
+								<P>期间首投5000元及以上</P>
+							</li>
+							<li class="spring_Three_txt3">
+								<p>获得10元</p>
+								<P>无门槛红包</P>
+							</li>
+						</ul>
+						<div class="spring_rule_title"><a href="javascript:;" class="spring_rule_title_btn rounded">红包</a></div>
+					</div>
+				</div>
+				<div class="spring_Three_Invitation">
+					<div class="spring_Three_Inbg">
+						<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/flower2.png" class="spring_Three_Inimg1" />
+						<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/flower1.png" class="spring_Three_Inimg2" />
+						<div class="spring_Three_Incontent rounded">
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring16.png" class="spring_Three_Inimg" />
+							<div class="spring_Three_Intitle">我的邀请</div>
+							<div class="spring_Three_Inbox rounded">
+								#if($!springIsStart == 'noStart')
+									<!--活动未开始 -->
+									<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_none.png" class="spring_Inbox_Inboximg1" />
+                                    <p class="spring_Three_emboxtxt">活动尚未开始~</p>
+								#else
+									<!--活动已开始或已结束 -->
+									#if($!userLogin == 'is_login')
+										<!--活动开始且已登录 -->
+										#if($!invitedListSize == 0)
+        									<!--邀请数为0 加图 -->
+        									<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_none.png" class="spring_Inbox_Inboximg1" />
+                                            <p class="spring_Three_emboxtxt">尚无好友注册~</p>
+        								#else
+        								<ul class="spring_Three_me rounded">
+        									<li class="spring_Three_In"><span class="spring_Three_metel">被邀请人</span><span class="spring_Three_memoney">是否首投5000以上</span><span class="spring_Three_mered">我的红包</span></li>
+        									#foreach($invited in $!invitedList)
+        										<li>
+        											#if($!invited.awardAmount >0)
+        												<span class="spring_Three_metel">$!invited.mobile</span><span class="spring_Three_memoney">是</span><span class="spring_Three_mered">10元</span>
+        											#else
+        												<span class="spring_Three_metel">$!invited.mobile</span><span class="spring_Three_memoney">否</span><span class="spring_Three_mered">0元</span>
+        											#end
+        										</li>
+        									#end
+        								</ul>
+        								#end
+									#else
+										<!--活动开始未登录 加图 -->
+										<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_none.png" class="spring_Inbox_Inboximg1" />
+                                        <p class="spring_Three_emboxtxt">登录查看好友受邀情况</p>
+									#end
+								#end
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--rule-->
+		<div class="spring_rule">
+			<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_title1.png" class="spring_rule_img1" />
+			<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/spring_titletxt5.png" class="spring_rule_img2" />
+			<div class="spring_rule_bg">
+				<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/flower2.png" class="spring_rule_bgimg1" />
+				<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/flower1.png" class="spring_rule_bgimg2" />
+				<div class="spring_rule_content rounded">
+					<div class="spring_rule_txt rounded">
+						<p><span class="spring_rule_number">1.</span><span class="spring_rule_text">活动时间：2017年4月21日至2017年5月2日；</span></p>
+						<p><span class="spring_rule_number">2.</span><span class="spring_rule_text">活动对象：仅限在币港湾有过成功投资的用户；</span></p>
+						<p><span class="spring_rule_number">3.</span><span class="spring_rule_text">活动期间累计投资额与投资排行榜仅计算【赞分期系列】和【港湾计划系列】产品，【新手标】和其他产品暂不支持参与本次活动；</span></p>
+						<p><span class="spring_rule_number">4.</span><span class="spring_rule_text">本活动的邀请好友奖励与平台日常的邀请好友奖励同享。</span></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--footer-->
+		<div class="spring_footer">——————本次活动最终解释权归币港湾所有——————</div>
+		<!--bg-->
+		<div class="window_bg"></div>
+		<!--奖励金说明-->
+		<div class="rule_window1 rounded">
+			<div class="rule_window_close"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/prpup5.png" /></div>
+			<h3 class="rule_window_title"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/prpup2.png" class="rule_window_img1"/></h3>
+			<div class="rule_window_txt">
+				<p><span class="rule_window_number">1.</span><span class="rule_window_text">奖励金计算方式：</span></p>
+				<ul class="rule_window_content">
+					<li>财禄满地=<span class="rule_window_color">0.1%</span>*累计年化投资额</li>
+					<li>生财有道=<span class="rule_window_color">0.2%</span>*累计年化投资额</li>
+					<li>财源滚滚=<span class="rule_window_color">0.3%</span>*累计年化投资额</li>
+					<li>腰缠万贯=<span class="rule_window_color">0.3%</span>*累计年化投资额x2</li>
+				</ul>
+				<p><span class="rule_window_number">2.</span><span class="rule_window_text">奖励金不可叠加获得，以可获得的最高成就计算发放对应奖励；</span></p>
+				<p><span class="rule_window_number">3.</span><span class="rule_window_text">港湾计划年化投资额=投资金额*投资期限（天）/365<br/>赞分期系列年化投资额=投资金额*投资期限（月）/12/2；</span></p>
+				<p><span class="rule_window_number">4.</span><span class="rule_window_text">奖励金将在活动结束后的10个工作日内发放，（最终计算奖励金金额以实际匹配成功金额为准）届时用户可在【我的资产】-【我的奖励】中查看（奖励金精确到整数位，不足一元不返）。</span></p>
+                <p><span class="rule_window_number">5.</span><span class="rule_window_text">新用户首笔投资金额不计算奖励金。</span></p>
+			</div>
+		</div>
+		<!--投资排行榜说明-->
+		<div class="rule_window2 rounded">
+			<div class="rule_window_close"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/prpup5.png" /></div>
+			<h3 class="rule_window_title"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/prpup3.png" class="rule_window_img2"/></h3>
+			<div class="rule_window_txt">
+				<p><span class="rule_window_number">1.</span><span class="rule_window_text">新用户首笔投资金额不计入排行榜；</span></p>
+				<p><span class="rule_window_number">2.</span><span class="rule_window_text">排行榜上榜人数为10人，最终入榜名单以5月2日24时整的排行情况为准；</span></p>
+				<p><span class="rule_window_number">3.</span><span class="rule_window_text">投资金额必须达到10万元及以上才可进入排行榜，排行榜排名根据用户在活动期间的累计投资额大小进行排序，若用户投资金额相同则以时间先后排序，时间以成功购买时间为准。</span></p>
+			</div>
+		</div>
+		<!--红包说明-->
+		<div class="rule_window3 rounded">
+			<div class="rule_window_close"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/prpup5.png" /></div>
+			<h3 class="rule_window_title"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/prpup4.png" class="rule_window_img3"/></h3>
+			<div class="rule_window_txt">
+				<p><span class="rule_window_number">1.</span><span class="rule_window_text">邀请红包将在活动结束后的10个工作日内发放，届时用户可在【我的资产】-【我的红包】中查看；</span></p>
+				<p><span class="rule_window_number">2.</span><span class="rule_window_text">本次活动获得的邀请红包为10元无门槛红包；</span></p>
+				<p><span class="rule_window_number">3.</span><span class="rule_window_text">红包可获得个数上不封顶，每次购买仅限使用一个红包。</span></p>
+			</div>
+		</div>
+		<!--活动未开始-->
+		<div class="rule_window5 rounded">
+			<div class="rule_window_close1"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/prpup5.png" /></div>
+			<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/prpup6.png" />
+			<div class="prompt_txt">活动尚未开始，敬请期待~</div>
+			<div class="prompt_btn">
+				<a href="javascript:closeWindow();" class="prompt_btnlogin">确定</a>
+			</div>
+		</div>
+		
+		<!--活动已结束-->
+		<div class="rule_window4 rounded">
+			<div class="rule_window_close1"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/prpup5.png" /></div>
+			<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/spring/prpup6.png" />
+			<div class="prompt_txt">活动已结束，感谢您的关注~</div>
+			<div class="prompt_btn">
+				<a href="javascript:closeWindow1();" class="prompt_btnlogin">确定</a>
+			</div>
+		</div>
+</body>
+#Html("end")

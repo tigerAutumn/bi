@@ -1,0 +1,392 @@
+#LoadGenCSS("/resources/gen178/styles/safe/public")
+#LoadGenCSS("/resources/gen178/styles/assets/invest_manage")
+
+<!--开始-->
+<div class="Investment">
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.get('gen.server.web')"/>
+    <input type="hidden" id="bgwPgeNum" name="bgwPageNum" value="$!bgwPageNum">
+    <input type="hidden" id="bgwTotalPages" name="bgwTotalPages" value="$!bgwTotalPages">
+    <input type="hidden" id="bgwHoldTotalPages" name="bgwHoldTotalPages" value="$!bgwHoldTotalPages">
+    <input type="hidden" id="bgwFinishTotalPages" name="bgwFinishTotalPages" value="$!bgwFinishTotalPages">
+    <input type="hidden" id="zanPgeNum" name="zanPageNum" value="$!zanPageNum">
+    <input type="hidden" id="zanTotalPages" name="zanTotalPages" value="$!zanTotalPages">
+    <input type="hidden" id="zanHoldTotalPages" name="zanHoldTotalPages" value="$!zanHoldTotalPages">
+    <input type="hidden" id="zanFinishTotalPages" name="zanFinishTotalPages" value="$!zanFinishTotalPages">
+    <input type="hidden" id="zanEntrustTotalPages" name="zanEntrustTotalPages" value="$!zanEntrustTotalPages">
+    <input type="hidden" id="targetPage" name="targetPage" value="$!targetPage"> ## 目标页面
+    <input type="hidden" id="investStatus" name="investStatus" value="$!req.investStatus">
+    <input type="hidden" id="returnType" name="returnType" value="$!req.returnType">
+
+    <div class="invest_manage clearfix">
+        <div class="invest_data">
+            <div class="data_label">
+                <ul class="clearfix">
+                    <li class="data_label_focuse" id="regular_plan">定期类计划(<span>${resBgw.countTotalInvestBgw}</span>)</li>
+                    <li id="stages_plan">分期类计划(<span>${resZan.countTotalInvestBgw}</span>)</li>
+                </ul>
+            </div>
+        ## 定期计划列表
+            <div class="regular_plan">
+                <div class="data_content clearfix">
+                    <div class="data_wrap"><p>当前持有金额（元）</p><p class="data_wrap_number">$!money.format(${resBgw.holdAmount})</p></div>
+                    <div class="data_wrap"><p>累计已获收益（元）</p><p class="data_wrap_number">$!money.format(${resBgw.cumulativeInvestEarnings})</p></div>
+                </div>
+                <div class="regular_product">
+                    <div class="product_filter">
+                        <ul class="clearfix">
+                            <li class="product_filter_focuse regular_hold">
+                                <div class="product_filter_ico"><i></i></div>持有中(<span>${resBgw.countHoldInvestBgw}</span>)
+                            </li>
+                            <li class="regular_finish">
+                                <div class="product_filter_ico"><i></i></div>已完成(<span>${resBgw.countFinishInvestBgw}</span>)
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="product_list regular_plan_list">
+                        <div class="product_list_title">
+                            <ul class="clearfix">
+                                <li class="fenqi_col_li04">产品名称</li>
+                                <li>预期年化收益率</li>
+                                <li>加入本金</li>
+                                #if($!req.investStatus == 'HOLDING')
+                                    <li style="width: 165px;">预期收益</li>
+                                #else
+                                    <li style="width: 165px;">已获收益</li>
+                                #end
+                                <li>加入时间</li>
+                                <li style="width: 90px;">产品状态</li>
+                                <li class="fenqi_col_li04" style="width: 100px;"><img src="$!env.get('gen.server.web')/resources/gen178/images/assets/investManage/text.png"></li>
+                            </ul>
+                        </div>
+
+                        #if($!resBgw.investList.size() > 0)
+                            <div class="regular_content">
+                                #foreach($invest in $!resBgw.investList)
+                                    <div class="product_card">
+                                        <ul class="clearfix">
+                                            <li class="fenqi_col_li04">
+                                                <div style="padding: 0 15px;" class="double_row">$!string.substringBefore($!invest.productName, "-")</div>
+                                            </li>
+                                            <li>
+                                                #if($!invest.ticketApr != 0)
+                                                    <div style="padding: 0 15px;" class="color_font double_row">
+                                                        $!{money.format($!invest.productRate)}%<br>+$!{money.format($!invest.ticketApr)}%
+                                                    </div>
+                                                #else
+                                                    <div>
+                                                        $!{money.format($!invest.productRate)}%
+                                                    </div>
+                                                #end
+                                            </li>
+                                            <li>
+                                                <div>$!money.format($!invest.balance)</div>
+                                            </li>
+                                            <li style="width: 165px;">
+                                                #if($!invest.interestAmount != 0)
+                                                    <div class="double_row">
+                                                        #if(0>$!invest.term)
+                                                            #set($termShow = $!invest.balance * $!invest.productRate * $!invest.term *-1/36500)
+                                                            ¥$!money.format($termShow)
+                                                        #elseif($!invest.term == 12)
+                                                            #set($termShow = $!invest.balance * $!invest.productRate / 100)
+                                                            ¥$!money.format($termShow)
+                                                        #else
+                                                            #set($termShow = $!invest.balance * $!invest.productRate * $!invest.term *30/36500)
+                                                            ¥$!money.format($termShow)
+                                                        #end
+                                                        <br>加息收益$!money.format($!invest.interestAmount)
+                                                        <div class="Increase_mark">
+                                                            ?
+                                                            <div class="Increase_help">
+                                                                本产品您已使用$!money.format($!invest.ticketApr)%加息券，预期加息收益会以奖励金形式于$!date.formatDateTime($!invest.investEndTime,'yyyy-MM-dd')发放。
+                                                                <img src="$!env.get('gen.server.web')/resources/gen178/images/red_pack/help_triangle.png" class="help_triangle">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                #else
+                                                    <div>
+                                                        #if(0>$!invest.term)
+                                                            #set($termShow = $!invest.balance * $!invest.productRate * $!invest.term *-1/36500)
+                                                            ¥$!money.format($termShow)
+                                                        #elseif($!invest.term == 12)
+                                                            #set($termShow = $!invest.balance * $!invest.productRate / 100)
+                                                            ¥$!money.format($termShow)
+                                                        #else
+                                                            #set($termShow = $!invest.balance * $!invest.productRate * $!invest.term *30/36500)
+                                                            ¥$!money.format($termShow)
+                                                        #end
+                                                    </div>
+                                                #end
+                                            </li>
+                                            <li>
+                                                <div class="double_row">
+                                                    $!date.formatDateTime($!invest.interestBeginDate,'yyyy-MM-dd')<br>$!date.formatDateTime($!invest.investEndTime,'yyyy-MM-dd')
+                                                </div>
+                                            </li>
+                                            <li style="width: 90px;">
+                                                <div>
+                                                    #if($!invest.status == 2)
+                                                        #if($!invest.investDay > 7)
+                                                            出借中
+                                                        #else
+                                                            即将到期
+                                                        #end
+                                                    #elseif($!invest.status == 7)
+                                                        结算中
+                                                    #elseif($!invest.status == 5)
+                                                        已结算
+                                                    #end
+                                                </div>
+                                            </li>
+                                            <li class="fenqi_col_li04" style="width: 100px;">
+                                                <div class="trible_row">
+                                                    <a data-datas="investId=$!invest.id&propertyType=$!invest.propertyType" onclick="tzXyiPrint(this);">
+                                                        #if($!invest.powerAttorneyFlag == 'no')
+                                                            《出借服务协议》
+                                                        #elseif($!invest.powerAttorneyFlag == 'yes')
+                                                            《授权委托书》
+                                                        #else
+                                                            《出借服务协议》
+                                                        #end
+                                                    </a>
+                                                    <a data-datas="investId=$!invest.id&propertyType=$!invest.propertyType&productType=$!invest.productType" onclick="ccPzPrint(this);">《持仓凭证》</a>
+                                                    #if( 0 >= $!date.parseDate('2016-05-12').compareTo($!invest.interestBeginDate))
+                                                        <a data-datas="productId=$!invest.productId&subAccountId=$!invest.id" onclick="matchPrint(this);">《债权明细》</a>
+                                                    #end
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                #end
+                            </div>
+                            <!--fenye-->
+                            <div class="fenye">
+                                <div class="fenye_wrap">
+                                    #set($page = $!bgwPageNum)
+                                    #set($nextPage = $!bgwPageNum + 1)
+                                    #set($nextSecondPage = $bgwPageNum + 2)
+                                    #set($prePage = $bgwPageNum - 1)
+                                    #set($preSecondPage = $bgwPageNum - 2)
+                                    #set($totalPage = $bgwTotalPages)
+                                    #if($!totalPage > 1)
+                                        <a href="javascript:void(0)" onclick="homePage('FINISH_RETURN_ALL', 'HOLDING')" class="fy_l">首页</a>
+                                        <a href="javascript:void(0)" onclick="prePage('FINISH_RETURN_ALL', 'HOLDING', -1)" class="fy_ll"></a>
+                                        #if($!prePage > 0)
+                                            #if($!preSecondPage > 0 && $!nextPage > $totalPage)
+                                                <a href="javascript:void(0)" onclick="prePage('FINISH_RETURN_ALL', 'HOLDING', -2)" class="fy_c">$!preSecondPage</a>
+                                            #end
+                                            <a href="javascript:void(0)" onclick="prePage('FINISH_RETURN_ALL', 'HOLDING', -1)" class="fy_c">$!prePage</a>
+                                            <a href="javascript:void(0)" class="fy_c fy_atpage">$!page</a>
+                                            #if($!nextPage <= $totalPage)
+                                                <a href="javascript:void(0)" onclick="nextPage('FINISH_RETURN_ALL', 'HOLDING', 1)" class="fy_c">$!nextPage</a>
+                                            #end
+                                        #else
+                                            <a href="javascript:void(0)" class="fy_c fy_atpage">$!page</a>
+                                            #if($!nextPage <= $totalPage)
+                                                <a href="javascript:void(0)" onclick="nextPage('FINISH_RETURN_ALL', 'HOLDING', 1)" class="fy_c">$!nextPage</a>
+                                            #end
+                                            #if($!nextSecondPage <= $totalPage)
+                                                <a href="javascript:void(0)" onclick="nextPage('FINISH_RETURN_ALL', 'HOLDING', 2)" class="fy_c">$!nextSecondPage</a>
+                                            #end
+                                        #end
+                                        <a href="javascript:void(0)" onclick="nextPage('FINISH_RETURN_ALL', 'HOLDING', 1)" class="fy_rr"></a>
+                                        <a href="javascript:void(0)" onclick="endPage('FINISH_RETURN_ALL', 'HOLDING')" class="fy_r">尾页</a>
+                                    #end
+                                </div>
+                            </div>
+                        #else
+                            <!--无记录-->
+                            <div class="Investment_tr_title_null_div">
+                                <div class="Investment_tr_title_null" >
+                                    <img src="$!env.get('gen.server.web')/resources/gen178/images/assets/investManage/null_bg.png" />
+                                    <p>暂无记录</p>
+                                </div>
+                            </div>
+                        #end
+                    </div>
+                </div>
+            </div>
+
+        ## 分期计划列表
+            <div class="stages_plan invest_hide">
+                <div class="data_content clearfix">
+                    <div class="data_wrap"><p>当前持有债权（元）</p><p class="data_wrap_number">$!money.format(${resZan.holdAmount})</p></div>
+                    <div class="data_wrap"><p>累计已获收益（元）</p><p class="data_wrap_number">$!money.format(${resZan.cumulativeInvestEarnings})</p></div>
+                </div>
+                <div class="regular_product">
+                    <div class="product_filter">
+                        <ul class="clearfix">
+                            <li class="product_filter_focuse stages_hold"><div class="product_filter_ico"><i></i></div>持有中(<span>${resZan.countHoldInvestBgw}</span>)</li>
+                            <li class="stages_entrusting"><div class="product_filter_ico"><i></i></div>委托中(<span>${resZan.countEntrustInvestBgw}</span>)</li>
+                            <li class="stages_finish"><div class="product_filter_ico"><i></i></div>已完成(<span>${resZan.countFinishInvestBgw}</span>)</li>
+                        </ul>
+                    </div>
+                    <div class="product_list stages_plan_list">
+                        <div class="product_list_title">
+                            <ul class="clearfix fenqi_col">
+                                <li class="fenqi_col_li02">产品名称</li>
+                                <li class="fenqi_col_li01">预期年化收益率</li>
+                                <li class="fenqi_col_li01">委托金额</li>
+                                <li>委托意向</li>
+                                <li class="fenqi_col_li01">待收本息</li>
+                                <li class="fenqi_col_li01">已回款</li>
+                                <li>产品状态</li>
+                                <li class="fenqi_col_li02"><img src="$!env.get('gen.server.web')/resources/gen178/images/assets/investManage/text.png"></li>
+                            </ul>
+                        </div>
+                        #if($!resZan.investList.size() > 0)
+                            <div class="stages_content">
+                                #foreach($invest in $!resZan.investList)
+                                    <div class="product_card">
+                                        <ul class="clearfix fenqi_col">
+                                            <li class="fenqi_col_li02">
+                                                <div style="padding: 0 15px;">$!invest.productName</div>
+                                            </li>
+                                            <li class="fenqi_col_li03">
+                                                <div>$!{money.format($!invest.productRate)}%</div>
+                                            </li>
+                                            <li class="fenqi_col_li03">
+                                                <div>￥$!money.format($!invest.openBalance)</div>
+                                            </li>
+                                            <li>
+                                                <div>
+                                                    #if(0 > $!invest.term)
+                                                        #set($termShow = $!invest.term *-1)
+                                                        $!{termShow}天内
+                                                    #else
+                                                        $!{invest.term}个月内
+                                                    #end
+                                                </div>
+                                            </li>
+                                            <li class="fenqi_col_li03">
+                                                <div>
+                                                    #if($!invest.entrustStatus == "ENTRUSTING")
+                                                    ## 委托中
+                                                        $!date.formatDateTime($!invest.openTime,'yyyy-MM-dd')
+                                                    #elseif($!invest.entrustStatus == "RETURNING")
+                                                    ## 回款中
+                                                        #if($!invest.receiveAmount)
+                                                            ￥$!money.format($!invest.receiveAmount)
+                                                        #else
+                                                            ￥0.00
+                                                        #end
+                                                    #elseif($!invest.entrustStatus == "RETURN_OVER")
+                                                    ## 回款结束
+                                                        $!date.formatDateTime($!invest.openTime,'yyyy-MM-dd')
+                                                    #elseif($!invest.entrustStatus == "ENTRUST_OVER")
+                                                    ## 委托结束
+                                                        $!date.formatDateTime($!invest.openTime,'yyyy-MM-dd')
+                                                    #end
+                                                </div>
+                                            </li>
+                                            <li class="fenqi_col_li03">
+                                                <div>
+                                                    #if($!invest.entrustStatus == "ENTRUSTING")
+                                                    ## 委托中
+                                                        #if($!invest.balance)
+                                                            ￥$!money.format($!invest.balance)
+                                                        #else
+                                                            ￥0.00
+                                                        #end
+                                                    #elseif($!invest.entrustStatus == "RETURNING")
+                                                    ## 回款中
+                                                        #if($!invest.returnAmount)
+                                                            ￥$!money.format($!invest.returnAmount)
+                                                        #else
+                                                            ￥0.00
+                                                        #end
+                                                    #elseif($!invest.entrustStatus == "RETURN_OVER")
+                                                    ## 回款结束
+                                                        #if($!invest.returnAmount)
+                                                            ￥$!money.format($!invest.returnAmount)
+                                                        #else
+                                                            ￥0.00
+                                                        #end
+                                                    #elseif($!invest.entrustStatus == "ENTRUST_OVER")
+                                                    ## 委托结束
+                                                        #if($!invest.returnAmount)
+                                                            ￥$!money.format($!invest.returnAmount)
+                                                        #else
+                                                            ￥0.00
+                                                        #end
+                                                    #end
+                                                </div>
+                                            </li>
+
+                                            #if($!invest.entrustStatus == "ENTRUSTING")
+                                            ## 委托中
+                                                <li><div><span class="Investment_tr_title_spanbtn bnt_orange" data-datas="productId=$!invest.productId&subAccountId=$!invest.id" onclick="matchPrint(this);">委托中</span></div></li>
+                                                <li class="fenqi_col_li02"><div><a onclick="autoLoanPrint(this);" data-datas="productId=$!invest.productId&subAccountId=$!invest.id">《自动出借计划协议》</a></div></li>
+                                            #elseif($!invest.entrustStatus == "RETURNING")
+                                            ## 回款中
+                                                <li><div><span class="Investment_tr_title_spanbtn bnt_orange" data-datas="productId=$!invest.productId&subAccountId=$!invest.id" onclick="matchPrint(this);">回款中</span></div></li>
+                                                <li class="fenqi_col_li02"><div><a onclick="autoLoanPrint(this);" data-datas="productId=$!invest.productId&subAccountId=$!invest.id">《自动出借计划协议》</a></div></li>
+                                            #elseif($!invest.entrustStatus == "RETURN_OVER")
+                                            ## 回款结束
+                                                <li><div><span class="Investment_tr_title_spanbtn bnt_orange Investment_btn_after" data-datas="productId=$!invest.productId&subAccountId=$!invest.id" onclick="matchPrint(this);">回款结束</span></div></li>
+                                                <li class="fenqi_col_li02"><div><a onclick="autoLoanPrint(this);" data-datas="productId=$!invest.productId&subAccountId=$!invest.id">《自动出借计划协议》</a></div></li>
+                                            #elseif($!invest.entrustStatus == "ENTRUST_OVER")
+                                            ## 委托结束
+                                                <li><div><span class="Investment_tr_title_spanbtn bnt_orange Investment_btn_after" data-datas="productId=$!invest.productId&subAccountId=$!invest.id" onclick="matchPrint(this);">委托结束</span></div></li>
+                                                <li class="fenqi_col_li02"><div><a onclick="autoLoanPrint(this);" data-datas="productId=$!invest.productId&subAccountId=$!invest.id">《自动出借计划协议》</a></div></li>
+                                            #end
+                                        </ul>
+                                    </div>
+                                #end
+                            </div>
+
+                            <!--fenye-->
+                            <div class="fenye">
+                                <div class="fenye_wrap">
+                                    #set($page = $!zanPageNum)
+                                    #set($nextPage = $!zanPageNum + 1)
+                                    #set($nextSecondPage = $zanPageNum + 2)
+                                    #set($prePage = $zanPageNum - 1)
+                                    #set($preSecondPage = $zanPageNum - 2)
+                                    #set($totalPage = $zanTotalPages)
+                                    #if($!totalPage > 1)
+                                        <a href="javascript:void(0)" onclick="homePage('AVERAGE_CAPITAL_PLUS_INTEREST', 'HOLDING')" class="fy_l">首页</a>
+                                        <a href="javascript:void(0)" onclick="prePage('AVERAGE_CAPITAL_PLUS_INTEREST', 'HOLDING', -1)" class="fy_ll"></a>
+                                        #if($!prePage > 0)
+                                            #if($!preSecondPage > 0 && $!nextPage > $totalPage)
+                                                <a href="javascript:void(0)" onclick="prePage('AVERAGE_CAPITAL_PLUS_INTEREST', 'HOLDING', -2)" class="fy_c">$!preSecondPage</a>
+                                            #end
+                                            <a href="javascript:void(0)" onclick="prePage('AVERAGE_CAPITAL_PLUS_INTEREST', 'HOLDING', -1)" class="fy_c">$!prePage</a>
+                                            <a href="javascript:void(0)" class="fy_c fy_atpage">$!page</a>
+                                            #if($!nextPage <= $totalPage)
+                                                <a href="javascript:void(0)" onclick="nextPage('AVERAGE_CAPITAL_PLUS_INTEREST', 'HOLDING', 1)" class="fy_c">$!nextPage</a>
+                                            #end
+                                        #else
+                                            <a href="javascript:void(0)" class="fy_c fy_atpage">$!page</a>
+                                            #if($!nextPage <= $totalPage)
+                                                <a href="javascript:void(0)" onclick="nextPage('AVERAGE_CAPITAL_PLUS_INTEREST', 'HOLDING', 1)" class="fy_c">$!nextPage</a>
+                                            #end
+                                            #if($!nextSecondPage <= $totalPage)
+                                                <a href="javascript:void(0)" onclick="nextPage('AVERAGE_CAPITAL_PLUS_INTEREST', 'HOLDING', 2)" class="fy_c">$!nextSecondPage</a>
+                                            #end
+                                        #end
+                                        <a href="javascript:void(0)" onclick="nextPage('AVERAGE_CAPITAL_PLUS_INTEREST', 'HOLDING', 1)" class="fy_rr"></a>
+                                        <a href="javascript:void(0)" onclick="endPage('AVERAGE_CAPITAL_PLUS_INTEREST', 'HOLDING')" class="fy_r">尾页</a>
+                                    #end
+                                </div>
+                            </div>
+                        #else
+                            <!--无记录-->
+                            <div class="Investment_tr_title_null_zan_div">
+                                <div class="Investment_tr_title_null" >
+                                    <img src="$!env.get('gen.server.web')/resources/gen178/images/assets/investManage/null_bg.png" />
+                                    <p>暂无记录</p>
+                                </div>
+                            </div>
+                        #end
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+#LoadGenJS("/resources/gen178/scripts/assets/invest_manage_pagination")
+
+
+

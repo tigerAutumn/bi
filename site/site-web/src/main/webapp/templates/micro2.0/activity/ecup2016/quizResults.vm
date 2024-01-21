@@ -1,0 +1,155 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/scale")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadCSS("resources/micro2.0/styles/assets/default")
+#LoadCSS("resources/micro2.0/styles/activity/football")
+#LoadJS("resources/micro2.0/scripts/activity/ecup_2016_share")
+#WeChatShare()
+#Head("end")
+<body>
+<input type="hidden" id="app_root_path" name="app_root_path" value="$!env.getWebURL('')"/>
+<input type="hidden" id="champion" name="champion" value="$!champion"/>
+<input type="hidden" id="silver" name="silver" value="$!silver"/>
+<input type="hidden" id="userId" name="userId" value="$!userId" />
+<input type="hidden" id="page" name="page" value="0" />
+<input type="hidden" id="totalCount" name="totalCount" value="$!totalCount" />
+
+<!-- 头部 -->
+<div class="header">
+	<img class="header_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/banner.jpg" alt="">
+</div>
+<div class="main_padding share_padding">
+	<div class="Championship prize">
+		<i class="title_img"></i>
+		<div class="cham_wrap">
+			<div class="prize_ft">专业球迷奖排名规则：同时猜对冠亚军优先，同等条件下时间优先</div>
+			<table cellpadding="2" cellspacing="0" border="1" bordercolor="#000000">
+				<tbody>
+					<tr> <td class="table_title"> 奖项 </td> <td class="table_title"> 排名 </td> <td class="table_title"> 奖品 </td> </tr> <tr> <td rowspan="5"> 专业球迷奖 </td> <td> 前三名 </td> <td> Apple Watch </td> </tr> <tr> <td> 4～7 </td> <td> 红米note3 </td> </tr> <tr> <td> 8～15 </td> <td> 300元话费 </td> </tr> <tr> <td> 16～40 </td> <td> 80元奖励金 </td> </tr> <tr> <td> 41～100 </td> <td> 30元奖励金 </td> </tr> <tr> <td> 疯狂球迷奖 </td> <td> 助力值前<br>500名 </td> <td> 30元奖励金 </td> </tr> <tr> <td> 幸运球迷奖 </td> <td> 随机500名 </td> <td> 5元奖励金 </td> </tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- 第二状态 -->
+	<div class="Championship share_cham">
+		<i class="title_img"></i>
+		<div class="my_champion">
+			猜冠军是：$!{champion}
+		</div>
+		<div class="champion_support">
+			<div class="national_cirle">
+				<img class="national_img champion_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/icon5.png" alt="">
+			</div>
+			<div class="touch_support">
+				<img class="support_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/icon13.png" alt="">
+				<span class="support">$!{championRate}%用户支持</span>
+			</div>
+		</div>
+		<div class="my_champion">
+			猜亚军是：$!{silver}
+		</div>
+		<div class="champion_support">
+			<div class="national_cirle">
+				<img class="national_img silver_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/icon14.png" alt="">
+			</div>
+			<div class="touch_support">
+				<img class="support_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/icon13.png" alt="">
+				<span class="support">$!{silverRate}%用户支持</span>
+			</div>
+		</div>
+		<div class="ranking share_ft1">
+			猜欧洲杯冠亚军赢大奖
+		</div>
+		#if("$!activity_is_end" == "yes")
+			<div class="cham_btn end_activity">
+    			去币港湾首页逛逛
+    		</div>
+		#else
+			<div class="cham_btn go_join">
+    			我也要参加
+    		</div>
+		#end
+		<div class="ranking share_ft1 share_ft2">
+			#if("$!activity_is_end" == "yes")
+				活动已结束，还没等到你~
+    		#else
+				#if(!$!errCode)
+    				已为好友完成助力
+    			#elseif("$!errCode" == "971009")
+    				抱歉，最多只能为3位好友助力
+    			#end
+			#end
+		</div>
+		<div class="share_bg">
+			<span class="share_bg_ft">助力值：$!count</span>
+		</div>
+		<ul class="share_jia_ul main">
+			#foreach($grid in $!dataGrid)
+				<li class="share_jia_li">
+    				<span class="share_left" style="display: inline-block;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">$!grid.wxNick</span>
+    				<span class="share_right">助力+1</span>
+    			</li>
+			#end
+		</ul>
+		<div id="showmore"></div>
+	</div>
+</div>
+<!-- 弹窗 -->
+
+<div class="dialog_flex">
+	<!-- 排行榜 -->
+	<div class="ranking_alert">
+		<img class="ranking_top" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/list_title_six.png"></img>
+		<div class="ranking_main">
+			<ul class="ranking_name_ul">
+				<li class="ranking_name_li">
+					<span class="ranking_left">1.186****0001</span>
+					<span class="ranking_right">助力值330</span>            
+				</li>
+				<li class="ranking_name_li">
+					<span class="ranking_left">1.186****0001</span>
+					<span class="ranking_right">助力值330</span>            
+				</li>
+				<li class="ranking_name_li">
+					<span class="ranking_left">1.186****0001</span>
+					<span class="ranking_right">助力值330</span>            
+				</li>
+				<li class="ranking_name_li">
+					<span class="ranking_left">1.186****0001</span>
+					<span class="ranking_right">助力值330</span>            
+				</li>
+				<li class="ranking_name_li">
+					<span class="ranking_left">1.186****0001</span>
+					<span class="ranking_right">助力值330</span>            
+				</li>
+				<li class="ranking_name_li">
+					<span class="ranking_left">1.186****0001</span>
+					<span class="ranking_right">助力值330</span>            
+				</li>
+				<li class="ranking_name_li">
+					<span class="ranking_left">1.186****0001</span>
+					<span class="ranking_right">助力值330</span>            
+				</li>
+				<li class="ranking_name_li">
+					<span class="ranking_left">1.186****0001</span>
+					<span class="ranking_right">助力值330</span>            
+				</li>
+				<li class="ranking_name_li">
+					<span class="ranking_left">1.186****0001</span>
+					<span class="ranking_right">助力值330</span>            
+				</li>
+				<li class="ranking_name_li">
+					<span class="ranking_left">1.186****0001</span>
+					<span class="ranking_right">助力值330</span>            
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+
+
+</body>
+#Html("end")

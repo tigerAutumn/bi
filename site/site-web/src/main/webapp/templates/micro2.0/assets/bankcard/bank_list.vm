@@ -1,0 +1,56 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/assets/bankcard/bank_list.min")
+#WeChatShare()
+#Head("end")
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <form id="go_bind_card" action="" method="get">
+        <input type="hidden" id="qianbao" name="qianbao" value="$!qianbao" />
+        <input type="hidden" id="userName" name="userName" value="$!userName" />
+        <input type="hidden" id="idCard" name="idCard" value="$!idCard" />
+        <input type="hidden" id="cardNo" name="cardNo" value="$!cardNo" />
+        <input type="hidden" id="bankId" name="bankId" value="$!bankId" />
+        <input type="hidden" id="mobile" name="mobile" value="$!mobile" />
+        <input type="hidden" id="smsCode" name="smsCode" value="$!smsCode" />
+        <input type="hidden" id="orderNo" name="orderNo" value="$!orderNo" />
+        <input type="hidden" id="bankName" name="bankName" value="$!bankName" />
+        <input type="hidden" id="oneTop" name="oneTop" value="$!oneTop" />
+        <input type="hidden" id="dayTop" name="dayTop" value="$!dayTop" />
+        <input type="hidden" id="notice" name="notice" value="$!notice" />
+        <input type="hidden" id="entry" name="entry" value="$!entry" />
+        <input type="hidden" id="productId" name="productId" value="$!productId" />
+        <input type="hidden" id="from" name="from" value="$!from" />
+    </form>
+    <input type="hidden" id="backUrl" name="backUrl" value="$!backUrl" />
+    <div class="header">
+        <a class="header_arrow" href="javascript:history.go(-1)"></a>
+        <h1 class="heade_ft">支持银行及限额</h1>
+    </div>
+    <div class="deta_container contan_animation">
+        <div class="deta_title1">
+            <div class="t1_ft oran_color">快捷支付银行(仅支持储蓄卡、暂不支持信用卡)</div>
+            <div class="ft_conu">*具体金额以银行卡实际允许额度为准</div>
+        </div>
+        #foreach($bank in $bankList)
+            <div class="bank_list" bank_id="$!{bank.bankId}" bank_name="$!{bank.bankName}" oneTop="$!{bank.oneTop}" dayTop="$!{bank.dayTop}" notice="$!{bank.notice}">
+                <div class="list_left">
+                    <i class="ban_list ban_list_$!bank.bankId"></i>
+                    <span class="list_sp">$!{bank.bankName}</span>
+                </div>
+                <div class="list_right">
+                    #if($bank.isAvailable == 1)
+						单笔<span class="oneTop" oneTop="$!{bank.oneTop}" >$!{bank.oneTop}</span>万，单日<span class="dayTop" dayTop="$!{bank.dayTop}" >$!{bank.dayTop}</span>万
+                    #else
+						暂不可用
+                    #end
+                </div>
+            </div>
+        #end
+    </div>
+#LoadJS("resources/micro2.0/scripts/assets/bankcard/bank_list")
+</body>
+#Html("end")

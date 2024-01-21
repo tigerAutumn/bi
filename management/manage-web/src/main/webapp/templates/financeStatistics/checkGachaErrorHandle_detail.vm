@@ -1,0 +1,114 @@
+<div class="pageContent">
+    #Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+    #Hidden("serverToken",$!serverToken)
+    <form id="checkGachaForm" method="post" action="$env.getWebURL('/financeStatistics/checkGachaErrorHandle.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+        <div class="pageFormContent nowrap" layoutH="97" >
+            <dl>
+                <dt >处理类型：</dt>
+                <select id="handleType" name="handleType" >
+                    <option value="DK_REFUND" #if("$!destAccount"=="DK_REFUND") selected  #end>代扣异常(退款用户)</option>
+                    <option value="MULTI_COMPENSATE" #if("$!destAccount"=="MULTI_COMPENSATE") selected  #end>代偿异常(代偿多账)</option>
+                </select>
+            </dl>
+            <dl>
+                <dt >本地订单：</dt>
+                <dd style="width:0px;">
+                    <input type="text" id="localOrderNo" name="localOrderNo" maxlength="64" style="width:245px; height:16px" />
+                </dd>
+                <dd id="showMsg" style="padding: 0 5px;font-size:15px;">
+                	
+                </dd>
+            </dl>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_gachaErrorHandleForm()">提交</button></div></div></li>
+                <li>
+                    <div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+<script>
+	$("#localOrderNo").blur(function(){
+		var handleType = $.trim($("#handleType").val());
+  		var localOrderNo = $.trim($("#localOrderNo").val());
+  		if (localOrderNo == null || localOrderNo == "") {
+        	alertMsg.info("订单号不能为空！");
+            return false;
+        }
+		jQuery.ajax({
+	            url: $('#APP_ROOT_PATH').val() + '/financeStatistics/checkGachaErrorHandleInfo.htm',
+	            data:{
+	                localOrderNo: localOrderNo,
+	                handleType: handleType
+	            },
+	            type:'post',
+	            success: function(data) {
+						
+	                if (data.statusCode == "300") {
+	                   	alertMsg.info('无此订单或订单状态不正确!');
+	                   	$("#showMsg").html("");
+	                } else if (data.statusCode == "200") {
+	                	var	message = "订单金额：" + data.orderAmount + "，资产方：" + data.partnerCode
+	                	+ "，订单笔数：" + data.orderCount;
+	                  	$("#showMsg").html(message);
+	                } else {
+	                  	alertMsg.info('无此订单或订单状态不正确!');  
+	                  	$("#showMsg").html("");
+	                }
+	            }
+	        });
+	});
+	
+    function submit_gachaErrorHandleForm() {
+        var serverToken = $.trim($("#serverToken").val());
+  		var handleType = $.trim($("#handleType").val());
+  		var orderNo = $.trim($("#localOrderNo").val());
+  		var showMsg = $.trim($("#showMsg").text());
+        if (orderNo == null || orderNo == "") {
+        	alertMsg.warn("订单号不能为空！");
+            return false;
+        }
+        if (showMsg == null || showMsg == "") {
+        	alertMsg.warn("无此订单或订单状态不正确！");
+            return false;
+        }
+        content = "确认处理？";
+        alertMsg.confirm(content,{okCall:function(){
+		        jQuery.ajax({
+		            url: $('#APP_ROOT_PATH').val() + '/financeStatistics/checkGachaErrorHandle.htm',
+		            data:{
+		                orderNo: orderNo,
+		                handleType: handleType,
+		                token: serverToken
+		            },
+		            type:'post',
+		            success: function(data) {
+		
+		                if (data.statusCode == "300") {
+		                    $("#serverToken").val(data.serverToken);
+		                    alertMsg.warn('处理失败!订单不存在或业务不满足');
+		                } else if (data.statusCode == "302") {
+		                    $("#serverToken").val(data.serverToken);
+		                    alertMsg.warn('订单状态校验失败!');
+		                }else if (data.statusCode == "200") {
+		                    $("#serverToken").val(data.serverToken);
+		                    alertMsg.correct('处理成功!');
+		                    $.pdialog.closeCurrent();
+		                    navTab.reload("$env.getWebURL('/financeStatistics/queryPayCheckError.htm')");
+		                } else if (data.statusCode == "305") {
+		                    $("#serverToken").val(data.serverToken);
+		                    alertMsg.warn('请勿重复提交!');
+		                } else {
+		                    $("#serverToken").val(data.serverToken);
+		                    alertMsg.error('处理失败!订单不存在或业务不满足');
+		                }
+		            }
+		        });
+		   	}
+        });
+    }
+    
+</script>

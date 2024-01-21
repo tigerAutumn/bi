@@ -1,0 +1,42 @@
+﻿## 整理的改动点：
+
+# 预下单
+RepayFacade.preRepay        	       RepayPaymentService接口      	preRepay方法           -- 赞分期还款预下单
+DafyLoanFacade.activeRepayPre      DepFixedRepayPaymentService接口	doPreRepay方法       -- 云贷还款预下单
+ZsdRepayFacade.preRepay	       DepFixedRepayPaymentService接口   doZsdPreRepay方法  -- 赞时贷还款预下单   
+
+# 代扣还款 	
+DafyLoanFacade.cutRepayConfirm   DepFixedRepayPaymentService接口	repayApply方法  -- 云贷代扣还款 
+DepLoan7Facade.cutRepayConfirm  DepFixedRepayPaymentService接口   depSevenRepayApply方法 -- 七贷代扣还款 
+ZsdRepayFacade.cutpaymentRepay  DepFixedRepayPaymentService接口   repayApplyZsd方法 -- 赞时贷代扣还款
+RepayFacade.withholdingRepay       RepayPaymentService接口 withholdingRepay方法  -- 赞分期代扣还款 
+
+# 线下还款
+DepLoan7Facade.cutRepayConfirm  DepFixedRepayPaymentService接口   repayOfflineDepSeven方法  (七贷线下还款)
+RepayFacade.withholdingRepay       RepayPaymentService接口 withholdingRepayOffLine方法      -- 赞分期线下还款 
+RepayFacade.withholdingRepay       RepayPaymentService接口 withholdingRepayOffLineNew方法  -- 赞分期线下还款 
+ZsdRepayFacade.cutpaymentRepay  DepFixedRepayPaymentService接口   repayOfflineZsd方法 -- 赞时贷线下还款
+
+
+## 实际改动的点：
+
+# 主动还款预下单
+RepayFacade.preRepay        	       RepayPaymentService接口      	preRepay方法           -- 赞分期还款预下单
+DafyLoanFacade.activeRepayPre      DepFixedRepayPaymentService接口	doPreRepay方法       -- 云贷还款预下单
+ZsdRepayFacade.preRepay	       DepFixedRepayPaymentService接口   doZsdPreRepay方法  -- 赞时贷还款预下单
+
+# 资产方线下还款现在走的主通道，设置为默认值 lnPayOrders.setPaymentChannelId(1);
+DepLoan7Facade.cutRepayConfirm  DepFixedRepayPaymentService接口   repayOfflineDepSeven方法  (七贷线下还款)
+RepayFacade.withholdingRepay       RepayPaymentService接口 withholdingRepayOffLine方法      -- 赞分期线下还款 
+RepayFacade.withholdingRepay       RepayPaymentService接口 withholdingRepayOffLineNew方法  -- 赞分期线下还款 
+ZsdRepayFacade.cutpaymentRepay  DepFixedRepayPaymentService接口   repayOfflineZsd方法 -- 赞时贷线下还款
+
+# 赞分期线下还款note字段设置为Constants.OFFLINE_ZAN_ORDER_NOTE ，7贷和赞时贷已经设值。
+
+注意： 资产方确认还款和代扣还款已经处理ln_pay_orders payment_channel_id问题，所以主动还款预下单和代扣还款不需要处理
+
+
+
+
+
+

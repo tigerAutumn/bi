@@ -1,0 +1,92 @@
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="pageHeader">
+    <form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/wxAgent/getList.htm.htm')" onsubmit="return navTabSearch(this);">
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="pageNum" value="$!pageNum" />
+        <input type="hidden" name="numPerPage" value="$!numPerPage" />
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        渠道名称：
+                        <input id="agentName_search" type="text" name="agentName" #*maxlength="18"*# value="$!agentName" class="clear num" />
+                        <span style="margin-left:20px;">
+                            <button onclick="searchFunction()" type="button">查询</button>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+        </ul>
+    </div>
+    <table class="table" width="1396" layoutH="123">
+        <thead>
+        <tr>
+            <th width="20%">渠道名称</th>
+            <th width="16%">关注人数</th>
+            <th width="16%">净关注人数</th>
+            <th width="16%">浏览人数</th>
+            <th width="16%">粉丝明细</th>
+            <th width="16%">渠道二维码</th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach($grid in $resultList)
+            <tr target="sid_user" rel="1" >
+                <td>$!grid.agentName</td>
+                <td>
+                    #if("$!grid.netFollowersCount" == "") 0
+                    #else $!grid.netFollowersCount
+                    #end
+                </td>
+                <td>
+                    #if("$!grid.followersCount" == "") 0
+                    #else $!grid.followersCount
+                    #end
+                </td>
+                <td>$!grid.pageViewTimes</td>
+                <td>
+                    <a title="" target="navTab" mask="true" href="$env.getWebURL('wxAgent/details_review.htm?wxAgentId=')$!grid.wxAgentId">
+                        <span style="color:#0000CC ">查看</span>
+                    </a>
+                </td>
+                <td>
+                    <a title="二维码" target="dialog" href="$env.getWebURL('/wxAgent/matrixImage.htm?wxAgentId=')$!grid.wxAgentId" class="" mask="true" rel="createBack" height="645" width="645">
+                        <span style="color:#0000CC ">获取二维码</span>
+                    </a>
+                </td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!count条</span>
+        </div>
+        <div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+    </div>
+</div>
+<script>
+    // 查询
+    function searchFunction(){
+        var url = $("#APP_ROOT_PATH").val() + "/wxAgent/getList.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+</script>

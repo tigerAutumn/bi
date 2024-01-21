@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsAgentMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsAgent" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="agent_name" property="agentName" jdbcType="VARCHAR" />
+    <result column="serial_id" property="serialId" jdbcType="INTEGER" />
+    <result column="agent_code" property="agentCode" jdbcType="VARCHAR" />
+    <result column="agent_pic" property="agentPic" jdbcType="VARCHAR" />
+    <result column="page_view_times" property="pageViewTimes" jdbcType="INTEGER" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="dept" property="dept" jdbcType="VARCHAR" />
+    <result column="agent_type" property="agentType" jdbcType="VARCHAR" />
+    <result column="support_terminal" property="supportTerminal" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, agent_name, serial_id, agent_code, agent_pic, page_view_times, note, dept, agent_type, 
+    support_terminal, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsAgentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_agent
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_agent
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_agent
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsAgentExample" >
+    delete from bs_agent
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsAgent" >
+    insert into bs_agent (id, agent_name, serial_id, 
+      agent_code, agent_pic, page_view_times, 
+      note, dept, agent_type, 
+      support_terminal, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{agentName,jdbcType=VARCHAR}, #{serialId,jdbcType=INTEGER}, 
+      #{agentCode,jdbcType=VARCHAR}, #{agentPic,jdbcType=VARCHAR}, #{pageViewTimes,jdbcType=INTEGER}, 
+      #{note,jdbcType=VARCHAR}, #{dept,jdbcType=VARCHAR}, #{agentType,jdbcType=VARCHAR}, 
+      #{supportTerminal,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsAgent" >
+    insert into bs_agent
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="agentName != null" >
+        agent_name,
+      </if>
+      <if test="serialId != null" >
+        serial_id,
+      </if>
+      <if test="agentCode != null" >
+        agent_code,
+      </if>
+      <if test="agentPic != null" >
+        agent_pic,
+      </if>
+      <if test="pageViewTimes != null" >
+        page_view_times,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="dept != null" >
+        dept,
+      </if>
+      <if test="agentType != null" >
+        agent_type,
+      </if>
+      <if test="supportTerminal != null" >
+        support_terminal,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="agentName != null" >
+        #{agentName,jdbcType=VARCHAR},
+      </if>
+      <if test="serialId != null" >
+        #{serialId,jdbcType=INTEGER},
+      </if>
+      <if test="agentCode != null" >
+        #{agentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="agentPic != null" >
+        #{agentPic,jdbcType=VARCHAR},
+      </if>
+      <if test="pageViewTimes != null" >
+        #{pageViewTimes,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="dept != null" >
+        #{dept,jdbcType=VARCHAR},
+      </if>
+      <if test="agentType != null" >
+        #{agentType,jdbcType=VARCHAR},
+      </if>
+      <if test="supportTerminal != null" >
+        #{supportTerminal,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+	</selectKey>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsAgentExample" resultType="java.lang.Integer" >
+    select count(*) from bs_agent
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_agent
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.agentName != null" >
+        agent_name = #{record.agentName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serialId != null" >
+        serial_id = #{record.serialId,jdbcType=INTEGER},
+      </if>
+      <if test="record.agentCode != null" >
+        agent_code = #{record.agentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agentPic != null" >
+        agent_pic = #{record.agentPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pageViewTimes != null" >
+        page_view_times = #{record.pageViewTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dept != null" >
+        dept = #{record.dept,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agentType != null" >
+        agent_type = #{record.agentType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supportTerminal != null" >
+        support_terminal = #{record.supportTerminal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_agent
+    set id = #{record.id,jdbcType=INTEGER},
+      agent_name = #{record.agentName,jdbcType=VARCHAR},
+      serial_id = #{record.serialId,jdbcType=INTEGER},
+      agent_code = #{record.agentCode,jdbcType=VARCHAR},
+      agent_pic = #{record.agentPic,jdbcType=VARCHAR},
+      page_view_times = #{record.pageViewTimes,jdbcType=INTEGER},
+      note = #{record.note,jdbcType=VARCHAR},
+      dept = #{record.dept,jdbcType=VARCHAR},
+      agent_type = #{record.agentType,jdbcType=VARCHAR},
+      support_terminal = #{record.supportTerminal,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsAgent" >
+    update bs_agent
+    <set >
+      <if test="agentName != null" >
+        agent_name = #{agentName,jdbcType=VARCHAR},
+      </if>
+      <if test="serialId != null" >
+        serial_id = #{serialId,jdbcType=INTEGER},
+      </if>
+      <if test="agentCode != null" >
+        agent_code = #{agentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="agentPic != null" >
+        agent_pic = #{agentPic,jdbcType=VARCHAR},
+      </if>
+      <if test="pageViewTimes != null" >
+        page_view_times = #{pageViewTimes,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="dept != null" >
+        dept = #{dept,jdbcType=VARCHAR},
+      </if>
+      <if test="agentType != null" >
+        agent_type = #{agentType,jdbcType=VARCHAR},
+      </if>
+      <if test="supportTerminal != null" >
+        support_terminal = #{supportTerminal,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsAgent" >
+    update bs_agent
+    set agent_name = #{agentName,jdbcType=VARCHAR},
+      serial_id = #{serialId,jdbcType=INTEGER},
+      agent_code = #{agentCode,jdbcType=VARCHAR},
+      agent_pic = #{agentPic,jdbcType=VARCHAR},
+      page_view_times = #{pageViewTimes,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR},
+      dept = #{dept,jdbcType=VARCHAR},
+      agent_type = #{agentType,jdbcType=VARCHAR},
+      support_terminal = #{supportTerminal,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 渠道投资统计 -->
+  <resultMap id="AgentStatInfoResultMap" type="com.pinting.business.model.vo.AgentStatInfoVO" extends="BaseResultMap">
+    <result column="registUserCount" property="registUserCount" jdbcType="INTEGER" />
+    <result column="investUserCount" property="investUserCount" jdbcType="INTEGER" />
+    <result column="transItemCount" property="transItemCount" jdbcType="INTEGER" />
+    <result column="transAmountCount" property="transAmountCount" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="selectAgentStatList" parameterType="com.pinting.business.model.BsAgent"  resultMap="AgentStatInfoResultMap" >
+    SELECT h.id,h.agent_code,h.agent_name,h.page_view_times, g.registUserCount, IFNULL(aa.agentInvestmentUserCount, 0) AS investUserCount, IFNULL(bb.agentInvestmentCount, 0)  AS transItemCount, i.transAmountCount
+	from bs_agent h LEFT JOIN
+	(
+	select f.agent_id, count(*) as investUserCount, sum(f.transItemCount) as transItemCount,
+	IFNULL(f.balance1,0) AS transAmountCount, f.cooo from (
+	SELECT c.agent_id, c.id,c.user_name, c.mobile,c.register_time, (count(*))as transItemCount,
+	SUM(e.open_balance) AS balance1,
+	(SELECT COUNT(bsa.id) as aount FROM bs_sub_account bsa WHERE bsa.product_type IN ('REG','AUTH_YUN', 'AUTH_ZSD', 'AUTH_7', 'AUTH_FREE') AND bsa.`status` NOT IN (1,6) AND bsa.account_id = d.id) AS cooo
+	from bs_user c, bs_account d, bs_sub_account e
+	where c.id=d.user_id and d.id=e.account_id and
+	(
+        e.product_type in ('REG','AUTH_YUN', 'AUTH_ZSD', 'AUTH_7', 'RED_ZSD', 'RED_7', 'RED', 'AUTH_FREE', 'RED_FREE')
+    ) AND (e.`status`=2 or e.`status`=5 or e.`status`=7 or e.`status`=3 or e.`status`=4)
+	GROUP BY c.agent_id) f  GROUP BY f.agent_id
+	) i on h.id=i.agent_id
+	LEFT JOIN 
+	(select a.id, count(*) as registUserCount
+		 from bs_agent a, bs_user b where a.id=b.agent_id group by a.id) g
+	on h.id=g.id
+	LEFT JOIN
+	(
+        SELECT
+          COUNT(tab.agent_id) AS agentInvestmentUserCount, tab.agent_id
+        FROM (
+        SELECT
+            a.agent_id
+        FROM
+        bs_user a, bs_account b, bs_sub_account c
+        WHERE a.id = b.user_id AND b.id = c.account_id
+        AND c.product_type IN ('REG','AUTH_YUN', 'AUTH_ZSD', 'AUTH_7', 'AUTH_FREE')
+        AND c.`status` IN (2, 5, 7) AND a.agent_id IS NOT NULL
+        GROUP BY a.id
+        ) tab GROUP BY tab.agent_id
+    ) aa ON h.id=aa.agent_id
+    LEFT JOIN
+    (
+      SELECT
+          COUNT(tab.agent_id) AS agentInvestmentCount, tab.agent_id
+        FROM (
+        SELECT
+            a.agent_id
+        FROM
+        bs_user a, bs_account b, bs_sub_account c
+        WHERE a.id = b.user_id AND b.id = c.account_id
+        AND c.product_type IN ('REG','AUTH_YUN', 'AUTH_ZSD', 'AUTH_7', 'AUTH_FREE')
+        AND c.`status` IN (2, 5, 7) AND a.agent_id IS NOT NULL
+        ) tab GROUP BY tab.agent_id
+    ) bb ON h.id=bb.agent_id
+
+	limit #{start , jdbcType=INTEGER}, #{numPerPage , jdbcType=INTEGER}
+  </select>
+   <update id="increaseViewTimesById" parameterType="java.lang.Integer" >
+    update bs_agent
+    set 
+      page_view_times = page_view_times+1
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="nameGroupByList" parameterType="com.pinting.business.model.BsAgent"  resultMap="BaseResultMap" >
+     select 
+     <include refid="Base_Column_List" />
+     from bs_agent group by agent_name
+  </select>
+  
+  <!-- 渠道部门列表 -->
+  <select id="selectAgentDept" parameterType="com.pinting.business.model.BsAgent" resultMap="BaseResultMap" >
+  	 select * from bs_agent group by dept 
+  </select>
+  
+  <!-- 渠道业绩统计 -->
+  <select id="selectPerformanceList" parameterType="com.pinting.business.model.vo.AgentStatInfoVO" resultMap="AgentStatInfoResultMap" >
+	(SELECT h.id, h.agent_name, h.page_view_times, h.create_time, h.dept, g.registUserCount, aaa.investUserCount, i.transItemCount, i.transAmountCount,i.term,i.open_time 
+    from bs_agent h LEFT JOIN 
+	(select f.agent_id, sum(f.transItemCount) as transItemCount, sum(f.transAmountCount) as transAmountCount,f.term,f.open_time from 
+		(SELECT c.agent_id, c.id,c.user_name, c.mobile,c.register_time, count(*) as transItemCount, sum(e.open_balance)+IFNULL(sum(sa.open_balance),0) as transAmountCount,p.term,e.open_time  
+		from bs_user c, bs_account d, bs_product p, bs_sub_account e LEFT JOIN bs_sub_account_pair sp on e.id = sp.auth_account_id
+ 		LEFT JOIN bs_sub_account sa on sa.id = sp.red_account_id and sa.product_type in ('RED','RED_ZSD', 'RED_7', 'RED_FREE')
+ 		<if test="beginTime != null and overTime != null and beginTime != '' and overTime!= '' ">
+		    and sa.open_time &gt;= #{beginTime} and sa.open_time &lt;= #{overTime}
+	     </if>
+		and sa.`status` not in (1,6) 
+		where c.id=d.user_id and d.id=e.account_id and p.id = e.product_id and e.product_type in ('REG','AUTH_YUN','AUTH_ZSD', 'AUTH_7', 'AUTH_FREE')
+		<if test="beginTime != null and overTime != null and beginTime != '' and overTime!= '' ">
+			and e.open_time &gt;= #{beginTime} and e.open_time &lt;= #{overTime}
+	    </if>
+	    <if test="terminal != null and terminal != '' and terminal == 'BGW' ">
+	    	and (FIND_IN_SET('PC', p.show_terminal) or FIND_IN_SET('APP', p.show_terminal) or FIND_IN_SET('H5', p.show_terminal))
+	    </if>
+	    <if test="terminal != null and terminal != '' and terminal == 'QB' ">
+	    	and (FIND_IN_SET('PC_178', p.show_terminal) or FIND_IN_SET('H5_178', p.show_terminal) or
+	    		FIND_IN_SET('PC_KQ', p.show_terminal) or FIND_IN_SET('H5_KQ', p.show_terminal) or
+	    		FIND_IN_SET('PC_HN', p.show_terminal) or FIND_IN_SET('H5_HN', p.show_terminal) or
+	    		FIND_IN_SET('PC_RUIAN', p.show_terminal) or FIND_IN_SET('H5_RUIAN', p.show_terminal)
+	    		)
+	    </if>
+	    <if test="terminal != null and terminal != '' and terminal == 'QD' ">
+	    	and FIND_IN_SET('H5_QD', p.show_terminal)
+	    </if>
+        <if test="terminal != null and terminal != '' and terminal == 'QHD' ">
+            and ( FIND_IN_SET('H5_QHD_JT', p.show_terminal) or
+            FIND_IN_SET('H5_QHD_XW', p.show_terminal) or
+            FIND_IN_SET('H5_QHD_TV', p.show_terminal) or
+            FIND_IN_SET('PC_QHD_ST', p.show_terminal) or FIND_IN_SET('H5_QHD_ST', p.show_terminal)
+            or FIND_IN_SET('H5_QHD_SJC', p.show_terminal)
+            )
+        </if>
+		and (e.`status`=2 or e.`status`=5 or e.`status`=7 or e.`status`=3 or e.`status`=4)
+		GROUP BY c.id,p.term) f  GROUP BY f.agent_id,f.term
+	) i on h.id=i.agent_id
+	LEFT JOIN 
+	(select a.id,b.register_time, count(*) as registUserCount
+		 from bs_agent a, bs_user b 
+		 where a.id=b.agent_id
+	     group by a.id 
+	  ) g on h.id=g.id
+      <!-- 投资用户数 -->
+	  LEFT JOIN
+		(select count(*) as investUserCount, abc.agent_id 
+		  from 
+			(
+			select count(*) as userCount,u.agent_id,s.open_time
+				from bs_user  u
+				left join bs_account a on u.id = a.user_id
+				left join bs_sub_account s on a.id = s.account_id
+				LEFT JOIN bs_product p ON s.product_id = p.id
+				where s.product_type in ('REG','AUTH_YUN','AUTH_ZSD', 'AUTH_7', 'AUTH_FREE') and s.status not in (1,6)
+				 <if test="beginTime != null and overTime != null and beginTime != '' and overTime!= '' ">
+				    and s.open_time &gt;= #{beginTime} and s.open_time &lt;= #{overTime}
+			     </if>
+			     <if test="terminal != null and terminal != '' and terminal == 'BGW' ">
+			    	and (FIND_IN_SET('PC', p.show_terminal) or FIND_IN_SET('APP', p.show_terminal) or FIND_IN_SET('H5', p.show_terminal))
+			    </if>
+			    <if test="terminal != null and terminal != '' and terminal == 'QB' ">
+			    	and (FIND_IN_SET('PC_178', p.show_terminal) or FIND_IN_SET('H5_178', p.show_terminal) or
+			    		FIND_IN_SET('PC_KQ', p.show_terminal) or FIND_IN_SET('H5_KQ', p.show_terminal) or
+			    		FIND_IN_SET('PC_HN', p.show_terminal) or FIND_IN_SET('H5_HN', p.show_terminal) or
+			    		FIND_IN_SET('PC_RUIAN', p.show_terminal) or FIND_IN_SET('H5_RUIAN', p.show_terminal)
+			    		)
+			    </if>
+			    <if test="terminal != null and terminal != '' and terminal == 'QD' ">
+			    	and FIND_IN_SET('H5_QD', p.show_terminal)
+			    </if>
+                <if test="terminal != null and terminal != '' and terminal == 'QHD' ">
+                    and ( FIND_IN_SET('H5_QHD_JT', p.show_terminal) or
+                    FIND_IN_SET('H5_QHD_XW', p.show_terminal) or
+                    FIND_IN_SET('H5_QHD_TV', p.show_terminal) or
+                    FIND_IN_SET('PC_QHD_ST', p.show_terminal) or FIND_IN_SET('H5_QHD_ST', p.show_terminal)
+                    or FIND_IN_SET('H5_QHD_SJC', p.show_terminal)
+                    )
+                </if>
+				group by s.account_id
+				) abc
+			  group by abc.agent_id
+			) as aaa ON h.id = aaa.agent_id 
+	where 1 = 1 
+	<if test="dept != null and dept != '' ">
+		 and dept = #{dept}
+	</if> 
+	) 
+	<if test="dept == null or dept == '' "> <!-- 部门为空时查询非渠道用户的数据  否则不做查询 -->
+		UNION
+			(SELECT null id, null agent_name, null page_view_times, null create_time, null dept, g.registUserCount, aaa.investUserCount, i.transItemCount, i.transAmountCount,
+		   i.term,i.open_time
+			from 
+			(select f.agent_id, sum(f.transItemCount) as transItemCount, sum(f.transAmountCount) as transAmountCount,
+			f.term,f.open_time from 
+				(SELECT c.agent_id, c.id,c.user_name, c.mobile,c.register_time, count(*) as transItemCount, sum(e.open_balance)+IFNULL(sum(sa.open_balance),0) as transAmountCount,p.term,e.open_time  
+			from bs_user c, bs_account d, bs_product p, bs_sub_account e LEFT JOIN bs_sub_account_pair sp on e.id = sp.auth_account_id
+	 			LEFT JOIN bs_sub_account sa on sa.id = sp.red_account_id and sa.product_type in ('RED','RED_ZSD', 'RED_7', 'RED_FREE')
+	 			<if test="beginTime != null and overTime != null and beginTime != '' and overTime!= '' ">
+			   	 and sa.open_time &gt;= #{beginTime} and sa.open_time &lt;= #{overTime}
+		    	 </if>
+				and sa.`status` not in (1,6)   
+				where c.id=d.user_id and d.id=e.account_id and p.id = e.product_id and e.product_type in ('REG','AUTH_YUN','AUTH_ZSD', 'AUTH_7', 'AUTH_FREE')
+				<if test="beginTime != null and overTime != null and beginTime != '' and overTime!= '' ">
+			       and e.open_time &gt;= #{beginTime} and e.open_time &lt;= #{overTime}
+		        </if>
+		        <if test="terminal != null and terminal != '' and terminal == 'BGW' ">
+			    	and (FIND_IN_SET('PC', p.show_terminal) or FIND_IN_SET('APP', p.show_terminal) or FIND_IN_SET('H5', p.show_terminal))
+			    </if>
+			    <if test="terminal != null and terminal != '' and terminal == 'QB' ">
+			    	and (FIND_IN_SET('PC_178', p.show_terminal) or FIND_IN_SET('H5_178', p.show_terminal) or
+		    		FIND_IN_SET('PC_KQ', p.show_terminal) or FIND_IN_SET('H5_KQ', p.show_terminal) or
+		    		FIND_IN_SET('PC_HN', p.show_terminal) or FIND_IN_SET('H5_HN', p.show_terminal) or
+		    		FIND_IN_SET('PC_RUIAN', p.show_terminal) or FIND_IN_SET('H5_RUIAN', p.show_terminal)
+		    		)
+			    </if>
+			    <if test="terminal != null and terminal != '' and terminal == 'QD' ">
+			    	and FIND_IN_SET('H5_QD', p.show_terminal)
+			    </if>
+                <if test="terminal != null and terminal != '' and terminal == 'QHD' ">
+                    and ( FIND_IN_SET('H5_QHD_JT', p.show_terminal) or
+                    FIND_IN_SET('H5_QHD_XW', p.show_terminal) or
+                    FIND_IN_SET('H5_QHD_TV', p.show_terminal) or
+                    FIND_IN_SET('PC_QHD_ST', p.show_terminal) or FIND_IN_SET('H5_QHD_ST', p.show_terminal)
+                    or FIND_IN_SET('H5_QHD_SJC', p.show_terminal)
+                    )
+                </if>
+				and (e.`status`=2 or e.`status`=5 or e.`status`=7 or e.`status`=3 or e.`status`=4)
+				GROUP BY c.id,p.term) f  GROUP BY f.agent_id,f.term HAVING f.agent_id is null
+			) i 
+			LEFT JOIN 
+			(select null AS id, b.register_time, count(*) as registUserCount
+				 from bs_user b where b.agent_id is null
+			) g ON g.id is null 
+			<!-- 投资用户数 -->
+			LEFT JOIN
+			(select count(*) as investUserCount, abc.agent_id 
+			  from 
+			  (
+			   select count(*) as userCount,u.agent_id,s.open_time
+					from bs_user  u
+					left join bs_account a on u.id = a.user_id 
+					left join bs_sub_account s on a.id = s.account_id
+					where s.product_type in ('REG','AUTH_YUN','AUTH_ZSD', 'AUTH_7', 'AUTH_FREE') and s.status not in (1,6) and u.agent_id is null
+					 <if test="beginTime != null and overTime != null and beginTime != '' and overTime!= '' ">
+					    and s.open_time &gt;= #{beginTime} and s.open_time &lt;= #{overTime}
+				     </if>
+					group by s.account_id
+				) abc
+			) as aaa ON aaa.agent_id is null
+	    ) 
+	</if> 
+      order by dept desc
+  	<include refid="sql-global.pagination" />
+  </select>
+  
+  <select id="selectAllAgentList" parameterType="com.pinting.business.model.BsAgent" resultMap="BaseResultMap" >
+  	 select * from bs_agent order by serial_id
+  </select>
+  
+  <resultMap id="SpreadChannelVOMap" type="com.pinting.business.model.vo.SpreadChannelVO" extends = "BaseResultMap" >
+	 <result column="rowno" property="rowno" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <!-- 渠道统计分页 -->
+  <select id="querySpreadChannelList"  resultMap="SpreadChannelVOMap" >
+   	SELECT
+    (@rowNO := @rowNo + 1) rowno,
+    t.*
+    FROM
+    (SELECT @rowNO := #{start}) b,
+    (
+	    select a.* from 
+	    bs_agent a
+	    where a.agent_type = 'FLEXIBLE'
+    	<if test="status == 'EXPANDED' ">
+	      AND support_terminal is not null AND support_terminal != ''
+	    </if>
+	    <if test="status == 'END' ">
+	      AND (support_terminal is null  OR support_terminal = '')
+	    </if>
+    	<if test="agentName != null and agentName != '' ">
+		   and agent_name like CONCAT(CONCAT('%', #{agentName}),'%')
+		</if> 
+	    ORDER BY a.create_time DESC
+	    LIMIT  #{start},#{numPerPage}
+    ) t 
+
+  </select>
+  
+  <!-- 渠道统计count -->
+  <select id="getTotalCount"  resultType="Integer" >
+	    select count(*) from 
+	    bs_agent
+	    where agent_type = 'FLEXIBLE'
+    	<if test="status == 'EXPANDED' ">
+	      AND support_terminal is not null AND support_terminal != ''
+	    </if>
+	    <if test="status == 'END' ">
+	      AND (support_terminal is null  OR support_terminal = '')
+	    </if>
+    	<if test="agentName != null and agentName != '' ">
+		   and agent_name like CONCAT(CONCAT('%', #{agentName}),'%')
+		</if> 
+  </select>
+
+  <resultMap id="WxAgentVOMap" type="com.pinting.business.model.vo.WxAgentVO" >
+      <result column="wx_agent_Id" property="wxAgentId" jdbcType="INTEGER" />
+      <result column="agent_name" property="agentName" jdbcType="VARCHAR" />
+      <result column="followers_count" property="followersCount" jdbcType="INTEGER" />
+      <result column="unFollowers_count" property="unFollowersCount" jdbcType="INTEGER" />
+      <result column="net_followers_count" property="netFollowersCount" jdbcType="INTEGER" />
+      <result column="page_view_times" property="pageViewTimes" jdbcType="INTEGER" />
+  </resultMap>
+
+  <select id="selectWxAgentList" parameterType="java.util.Map" resultMap="WxAgentVOMap" >
+      SELECT
+        a.wx_agent_Id, a.agent_name, b.followers_count, IFNULL(c.unFollowers_count, 0) AS net_followers_count, a.page_view_times
+      FROM
+      (
+      SELECT
+        id AS wx_agent_Id, agent_name, page_view_times
+      FROM bs_agent
+      <where>
+          <if test="agentName != null and agentName != '' ">
+              agent_name like concat(concat('%', #{agentName,jdbcType=VARCHAR}),'%')
+          </if>
+      </where>
+      ORDER BY update_time DESC
+      LIMIT #{start}, #{numPerPage}
+      ) a
+      LEFT JOIN
+      (SELECT COUNT(id) AS followers_count, wx_agent_id FROM bs_wx_info WHERE wx_agent_id IS NOT NULL AND is_follow = 'FOLLOW' GROUP BY wx_agent_id) b ON a.wx_agent_Id = b.wx_agent_id
+      LEFT JOIN
+      (SELECT COUNT(id) AS unFollowers_count, wx_agent_id FROM bs_wx_info WHERE wx_agent_id IS NOT NULL AND (is_follow = 'FOLLOW' OR is_follow = 'UNFOLLOW') GROUP BY wx_agent_id) c ON a.wx_agent_Id = c.wx_agent_id
+  </select>
+
+  <select id="selectWxAgentCount" parameterType="java.util.Map" resultType="java.lang.Integer" >
+      SELECT
+        COUNT(a.id)
+      FROM bs_agent a
+      <where>
+          <if test="agentName != null and agentName != '' ">
+              a.agent_name like concat(concat('%', #{agentName,jdbcType=VARCHAR}),'%')
+          </if>
+      </where>
+  </select>
+
+</mapper>

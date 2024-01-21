@@ -1,0 +1,235 @@
+#Html("begin")
+#Head("begin","风险评测,币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("风险评测【币港湾官网】")
+#LoadGenJS("/resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadGenCSS("/resources/micro2.0/styles/assets/jquery.fullpage.min")
+#LoadGenCSS("/resources/micro2.0/styles/assets/questionnaire.min")
+#LoadGenJS("/resources/micro2.0/scripts/assets/jquery-1.11.1.min")
+#LoadGenJS("/resources/micro2.0/scripts/assets/jquery.fullpage.min")
+<script>
+	$(function(){
+		//全屏显示
+    	var fullPages = $('#dowebok').fullpage({
+    		verticalCentered: false,
+    		scrollOverflow: false,
+    		continuousVertical: false,
+    	});
+	})
+</script>
+#WeChatShare()
+#Head("end")
+	<body id="body">
+		<form name="question" method="post" id="dowebok" onsubmit="return totalScore()" action="$!env.getWebURL('')/micro2.0/assets/questionnaireResult">
+			<input type="hidden" name="assessType" value="risk_assess">
+            <input type="hidden" name="score" value="1">
+            <input type="hidden" name="userId" value="$!userId">
+            <input type="hidden" name="client" value="$!client">
+            <input type="hidden" name="qianbao" value="$!qianbao">
+            
+			<div class="Question">
+				#if($!userId == "")
+				<div class="header">
+					<a class="header_arrow" href="javascript:history.go(-1)"></a>
+					<h1 class="heade_ft color_bg">风险测评</h1>
+				</div>
+				#end
+				<div class="Question_title">1、您的年龄是？</div>
+				<div class="Q_option">
+					<label class="Q_child"><input name="ages" type="radio" value="-2" class="radio"><span class="Q_spot"><i></i></span>18-30岁</label>
+					<label class="Q_child"><input name="ages" type="radio" value="0" class="radio"><span class="Q_spot"><i></i></span>31-50岁</label>
+					<label class="Q_child"><input name="ages" type="radio" value="-4" class="radio"><span class="Q_spot"><i></i></span>51-60岁</label>
+					<label class="Q_child"><input name="ages" type="radio" value="-10" class="radio"><span class="Q_spot"><i></i></span>高于60岁</label>
+				</div>
+				<div class="Q_number"><span class="Q_color">1</span>/10</div>
+				<div class="Q_bar"><span class="Q_bar_line" style="width: 10%;"></span></div>
+			</div>
+			<div class="Question">
+				#if($!userId == "")
+				<div class="header">
+					<a class="header_arrow" href="javascript:history.go(-1)"></a>
+					<h1 class="heade_ft color_bg">风险测评</h1>
+				</div>
+				#end
+				<div class="Question_title">2、您的家庭年收入为（折合人民币）？</div>
+				<div class="Q_option">
+					<label class="Q_child"><input name="income" type="radio" value="0" class="radio"><span class="Q_spot"><i></i></span>5万元以下</label>
+					<label class="Q_child"><input name="income" type="radio" value="2" class="radio"><span class="Q_spot"><i></i></span>5-20万元</label>
+					<label class="Q_child"><input name="income" type="radio" value="6" class="radio"><span class="Q_spot"><i></i></span>20-50万元</label>
+					<label class="Q_child"><input name="income" type="radio" value="8" class="radio"><span class="Q_spot"><i></i></span>50-100万元</label>
+					<label class="Q_child"><input name="income" type="radio" value="10" class="radio"><span class="Q_spot"><i></i></span>100万元以上</label>
+				</div>
+				<div class="Q_up">
+					<a class="Q_color">上一题</a>
+				</div>
+				<div class="Q_number"><span class="Q_color">2</span>/10</div>
+				<div class="Q_bar"><span class="Q_bar_line" style="width: 20%;"></span></div>
+			</div>
+			<div class="Question">
+				#if($!userId == "")
+				<div class="header">
+					<a class="header_arrow" href="javascript:history.go(-1)"></a>
+					<h1 class="heade_ft color_bg">风险测评</h1>
+				</div>
+				#end
+				<div class="Question_title">3、在您每年的家庭收入中，可用于参与金融产品（储蓄存款除外）的比例为？</div>
+				<div class="Q_option">
+					<label class="Q_child"><input name="investment" type="radio" value="2" class="radio"><span class="Q_spot"><i></i></span>小于10%</label>
+					<label class="Q_child"><input name="investment" type="radio" value="4" class="radio"><span class="Q_spot"><i></i></span>10%至25%</label>
+					<label class="Q_child"><input name="investment" type="radio" value="8" class="radio"><span class="Q_spot"><i></i></span>25%至50% </label>
+					<label class="Q_child"><input name="investment" type="radio" value="10" class="radio"><span class="Q_spot"><i></i></span>大于50%</label>
+				</div>
+				<div class="Q_up">
+					<a class="Q_color">上一题</a>
+				</div>
+				<div class="Q_number"><span class="Q_color">3</span>/10</div>
+				<div class="Q_bar"><span class="Q_bar_line" style="width: 30%;"></span></div>
+			</div>
+			<div class="Question">
+				#if($!userId == "")
+				<div class="header">
+					<a class="header_arrow" href="javascript:history.go(-1)"></a>
+					<h1 class="heade_ft color_bg">风险测评</h1>
+				</div>
+				#end
+				<div class="Question_title">4、以下哪项最能说明您参与金融产品的经验？</div>
+				<div class="Q_option">
+					<label class="Q_child"><input name="exprience" type="radio" value="0" class="radio"><span class="Q_spot"><i></i></span>除存款、国债外，我几乎不参与其他金融产品</label>
+					<label class="Q_child"><input name="exprience" type="radio" value="2" class="radio"><span class="Q_spot"><i></i></span>大部分参与存款、国债等，较少参与于股票、基金等风险产品</label>
+					<label class="Q_child"><input name="exprience" type="radio" value="6" class="radio"><span class="Q_spot"><i></i></span>资产均衡地分布于存款、国债、银行产品、信托产品、股票、基金等</label>
+					<label class="Q_child"><input name="exprience" type="radio" value="10" class="radio"><span class="Q_spot"><i></i></span>大部分参与股票、基金、外汇等高风险产品，较少参与于存款、国债</label>
+				</div>
+				<div class="Q_up">
+					<a class="Q_color">上一题</a>
+				</div>
+				<div class="Q_number"><span class="Q_color">4</span>/10</div>
+				<div class="Q_bar"><span class="Q_bar_line" style="width: 40%;"></span></div>
+			</div>
+			<div class="Question">
+				#if($!userId == "")
+				<div class="header">
+					<a class="header_arrow" href="javascript:history.go(-1)"></a>
+					<h1 class="heade_ft color_bg">风险测评</h1>
+				</div>
+				#end
+				<div class="Question_title">5、您有多少年参与股票、基金、外汇、金融衍生产品等风险产品的经验？</div>
+				<div class="Q_option">
+					<label class="Q_child"><input name="times" type="radio" value="0" class="radio"><span class="Q_spot"><i></i></span>没有经验</label>
+					<label class="Q_child"><input name="times" type="radio" value="2" class="radio"><span class="Q_spot"><i></i></span>少于2年</label>
+					<label class="Q_child"><input name="times" type="radio" value="6" class="radio"><span class="Q_spot"><i></i></span>2至5年</label>
+					<label class="Q_child"><input name="times" type="radio" value="8" class="radio"><span class="Q_spot"><i></i></span>5至8年</label>
+					<label class="Q_child"><input name="times" type="radio" value="10" class="radio"><span class="Q_spot"><i></i></span>8年以上</label>
+				</div>
+				<div class="Q_up">
+					<a class="Q_color">上一题</a>
+				</div>
+				<div class="Q_number"><span class="Q_color">5</span>/10</div>
+				<div class="Q_bar"><span class="Q_bar_line" style="width: 50%;"></span></div>
+			</div>
+			<div class="Question">
+				#if($!userId == "")
+				<div class="header">
+					<a class="header_arrow" href="javascript:history.go(-1)"></a>
+					<h1 class="heade_ft color_bg">风险测评</h1>
+				</div>
+				#end
+				<div class="Question_title">6、以下哪项描述最符合您的本金收益态度？</div>
+				<div class="Q_option">
+					<label class="Q_child"><input name="attitude" type="radio" value="0" class="radio"><span class="Q_spot"><i></i></span>厌恶风险，不希望本金损失，希望获得稳定回报</label>
+					<label class="Q_child"><input name="attitude" type="radio" value="4" class="radio"><span class="Q_spot"><i></i></span>保守参与，不希望本金损失，愿意承担一定幅度的收益波动</label>
+					<label class="Q_child"><input name="attitude" type="radio" value="8" class="radio"><span class="Q_spot"><i></i></span>寻求资金的较高收益和成长性，愿意为此承担有限本金损失</label>
+					<label class="Q_child"><input name="attitude" type="radio" value="10" class="radio"><span class="Q_spot"><i></i></span>希望赚取高回报，愿意为此承担较大本金损失</label>
+				</div>
+				<div class="Q_up">
+					<a class="Q_color">上一题</a>
+				</div>
+				<div class="Q_number"><span class="Q_color">6</span>/10</div>
+				<div class="Q_bar"><span class="Q_bar_line" style="width: 60%;"></span></div>
+			</div>
+			<div class="Question">
+				#if($!userId == "")
+				<div class="header">
+					<a class="header_arrow" href="javascript:history.go(-1)"></a>
+					<h1 class="heade_ft color_bg">风险测评</h1>
+				</div>
+				#end
+				<div class="Question_title">7、假如您有100万元，现在有一个项目，有80%的可能性盈利高达200%，但也有80%的可能性出现血本无归。您会加入多少本金？</div>
+				<div class="Q_option">
+					<label class="Q_child"><input name="newprjt" type="radio" value="0" class="radio"><span class="Q_spot"><i></i></span>0-20万元</label>
+					<label class="Q_child"><input name="newprjt" type="radio" value="4" class="radio"><span class="Q_spot"><i></i></span>20-50万元</label>
+					<label class="Q_child"><input name="newprjt" type="radio" value="6" class="radio"><span class="Q_spot"><i></i></span>50-80万元</label>
+					<label class="Q_child"><input name="newprjt" type="radio" value="10" class="radio"><span class="Q_spot"><i></i></span>100万元</label>
+				</div>
+				<div class="Q_up">
+					<a class="Q_color">上一题</a>
+				</div>
+				<div class="Q_number"><span class="Q_color">7</span>/10</div>
+				<div class="Q_bar"><span class="Q_bar_line" style="width: 70%;"></span></div>
+			</div>
+			<div class="Question">
+				#if($!userId == "")
+				<div class="header">
+					<a class="header_arrow" href="javascript:history.go(-1)"></a>
+					<h1 class="heade_ft color_bg">风险测评</h1>
+				</div>
+				#end
+				<div class="Question_title">8、您计划参与的产品期限是多久？</div>
+				<div class="Q_option">
+					<label class="Q_child"><input name="term" type="radio" value="4" class="radio"><span class="Q_spot"><i></i></span>1年以下</label>
+					<label class="Q_child"><input name="term" type="radio" value="6" class="radio"><span class="Q_spot"><i></i></span>1－3年</label>
+					<label class="Q_child"><input name="term" type="radio" value="8" class="radio"><span class="Q_spot"><i></i></span>3－5年</label>
+					<label class="Q_child"><input name="term" type="radio" value="10" class="radio"><span class="Q_spot"><i></i></span>5年以上</label>
+				</div>
+				<div class="Q_up">
+					<a class="Q_color">上一题</a>
+				</div>
+				<div class="Q_number"><span class="Q_color">8</span>/10</div>
+				<div class="Q_bar"><span class="Q_bar_line" style="width: 80%;"></span></div>
+			</div>
+			<div class="Question">
+				#if($!userId == "")
+				<div class="header">
+					<a class="header_arrow" href="javascript:history.go(-1)"></a>
+					<h1 class="heade_ft color_bg">风险测评</h1>
+				</div>
+				#end
+				<div class="Question_title">9、您选择产品加入的是为了让资产怎样一个状态？</div>
+				<div class="Q_option">
+					<label class="Q_child"><input name="objective" type="radio" value="2" class="radio"><span class="Q_spot"><i></i></span>资产保值</label>
+					<label class="Q_child"><input name="objective" type="radio" value="6" class="radio"><span class="Q_spot"><i></i></span>资产稳健增长</label>
+					<label class="Q_child"><input name="objective" type="radio" value="10" class="radio"><span class="Q_spot"><i></i></span>资产迅速增长</label>
+				</div>
+				<div class="Q_up">
+					<a class="Q_color">上一题</a>
+				</div>
+				<div class="Q_number"><span class="Q_color">9</span>/10</div>
+				<div class="Q_bar"><span class="Q_bar_line" style="width: 90%;"></span></div>
+			</div>
+			<div class="Question">
+				#if($!userId == "")
+				<div class="header">
+					<a class="header_arrow" href="javascript:history.go(-1)"></a>
+					<h1 class="heade_ft color_bg">风险测评</h1>
+				</div>
+				#end 
+				<div class="Question_title">10、您的本金出现何种程度的波动时，您会呈现明显的焦虑？</div>
+				<div class="Q_option">
+					<label class="Q_child_end"><input name="anxious" type="radio" value="-5" class="radio"><span class="Q_spot"><i></i></span>本金无损失，但收益未达预期</label>
+					<label class="Q_child_end"><input name="anxious" type="radio" value="5" class="radio"><span class="Q_spot"><i></i></span>出现轻微本金损失</label>
+					<label class="Q_child_end"><input name="anxious" type="radio" value="10" class="radio"><span class="Q_spot"><i></i></span>本金10％以内的损失</label>
+					<label class="Q_child_end"><input name="anxious" type="radio" value="15" class="radio"><span class="Q_spot"><i></i></span>本金20-50％的损失</label>
+					<label class="Q_child_end"><input name="anxious" type="radio" value="20" class="radio"><span class="Q_spot"><i></i></span>本金50％以上损失</label>
+				</div>
+				<div class="Q_up">
+					<a class="Q_color">上一题</a>
+				</div>
+				<div class="Q_number"><span class="Q_color">10</span>/10</div>
+				<div class="Q_bar"><span class="Q_bar_line" style="width: 100%;"></span></div>
+				<div class="Q_btn">
+					<button type="submit" class="Q_btna">立即提交</button>
+				</div>
+			</div>
+		</form>		
+		#LoadGenJS("/resources/micro2.0/scripts/assets/questionnaire")
+	</body>
+#Html("end")

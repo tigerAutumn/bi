@@ -1,0 +1,103 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadCSS("/resources/micro2.0/styles/activity/default")
+#LoadJS("/resources/micro2.0/scripts/common/common")
+#LoadJS("/resources/micro2.0/scripts/activity/six")
+#LoadCSS("/resources/micro2.0/styles/activity/weekhay")
+#LoadJS("/resources/micro2.0/scripts/activity/weekhay_app")
+#WeChatShare()
+#Head("end")
+
+	<body id="body">
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" id="button_1_status" value="$!button_1"/>
+		<input type="hidden" id="button_2_status" value="$!button_2"/>
+		<input type="hidden" id="button_3_status" value="$!button_3"/>
+		<input type="hidden" id="countdown" value="$!countdown"/>
+		<input type="hidden" id="userId" value="$!userId"/>
+		<input type="hidden" id="client" value="$!client"/>
+		<input type="hidden" id="reminde_status" value="$!button_remind"/>
+		<input type="hidden" id="reminde_countdown" value="$!reminde_countdown"/>
+		<div class="banner">
+			<img src="$!env.getWebURL('')/resources/micro2.0/images/activity/weekhay/banner.jpg" class="banner_img" />
+			<div class="banner_title"><i class="banner_topacity">限时加息标上线，疯狂秒杀尽在</i><span class="banner_titleCorlor">本周四！</span></div>
+		</div>
+		
+		<div class="main">
+			<div class="main_bg">
+    			<div class="main_center">
+    				<div class="main_title">本周四</div>
+    				<div class="main_box">
+    					<div class="main_child">
+    						<img src="$!env.getWebURL('')/resources/micro2.0/images/activity/weekhay/time1.png" class="main_time"/>
+    						
+    						#if($!button_1 == 'notBegin')
+    							<div id="button_1" class="main_btn main_btn_Notbegin" onclick="go_regular_list(this)">未开始</div>
+    						#elseif($!button_1 == 'buying')
+    							<div id="button_1" class="main_btn main_btn_start" onclick="go_regular_list(this)">查看秒杀标的</div>
+    						#else
+    							<div id="button_1" class="main_btn main_btn_Isover" onclick="go_regular_list(this)">已结束</div>
+    						#end  
+    					</div>
+    					<div class="main_child">
+    						<img src="$!env.getWebURL('')/resources/micro2.0/images/activity/weekhay/time2.png" class="main_time"/>
+    						#if($!button_2 == 'notBegin')
+    							<div id="button_2" class="main_btn main_btn_Notbegin" onclick="go_regular_list(this)">未开始</a></div>
+    						#elseif($!button_2 == 'buying')
+    							<div id="button_2" class="main_btn main_btn_start" onclick="go_regular_list(this)">查看秒杀标的</a></div>
+    						#else
+    							<div id="button_2" class="main_btn main_btn_Isover" onclick="go_regular_list(this)">已结束</a></div>
+    						#end  
+    					</div>
+    					<div class="main_child">
+    						<img src="$!env.getWebURL('')/resources/micro2.0/images/activity/weekhay/time3.png" class="main_time"/>
+    						#if($!button_3 == 'notBegin')
+    							<div id="button_3" class="main_btn main_btn_Notbegin" onclick="go_regular_list(this)">未开始</div>
+    						#elseif($!button_3 == 'buying')
+    							<div id="button_3" class="main_btn main_btn_start" onclick="go_regular_list(this)">查看秒杀标的</div>
+    						#else
+    							<div id="button_3" class="main_btn main_btn_Isover" onclick="go_regular_list(this)">已结束</div>
+    						#end  					
+    					</div>
+    				</div>
+    				<div class="main_img"><img src="$!env.getWebURL('')/resources/micro2.0/images/activity/weekhay/main11.png"/></div>
+    			</div>
+    			<div class="message" id="remind_me_button" onclick="add_remind();">
+    				<input type="hidden" id="remind_me_text" value="$!button_remind"/>
+    				<a class="send_message_btn" id="remind_me">
+    					#if($!button_remind == 'hasRemind')
+    						已设置短信提醒
+    					#elseif($!button_remind == 'last')
+    						最后一轮进行中
+    					#elseif($!button_remind == 'end')
+    						本期已结束
+    					#else
+    						短信提醒我
+    					#end
+    				</a>	
+    			</div>
+    			<div class="rule_box">
+    				<div class="rule">
+    					<div class="rule_title">活动规则：</div>
+    					<div class="rule_txt">1、活动时间：本周四上午10:00，下午14:00，晚上20:00开始；</div>
+    					<div class="rule_txt">2、活动对象：币港湾注册用户；</div>
+    					<div class="rule_txt">3、活动期间，每个时间段加息标的售完即止，先购先得。</div>
+    					<div class="rule_title">温馨提醒：</div>
+    					<div class="rule_txt">为确保您成功争标，请先将资金充值到账户余额，做好争标准备。</div>
+    				</div>
+    			</div>
+			</div>
+		</div>
+		<!--弹窗-->
+		<div id="stateInfo" class="dialog_notice alert_hide">
+			<div class="defaInfo">
+				<img src="$!env.getWebURL('')/resources/micro2.0/images/activity/weekhay/main12.png" alt="" class="eggtop">
+				<div class="info_one" id="remind_note">本时段活动即将开始，请您锁定页面，下一段活动开始前5分钟您将收到提醒！</div>				
+				<div class="state-btn">
+					我知道了
+				</div>
+			</div>
+		</div>
+	</body>
+#Html("end")

@@ -1,0 +1,148 @@
+## 理财人冻结账户黑名单
+1. 需求描述
+	+ 前端冻结提示：您的账户已冻结，请联系客服详询
+	+ 冻结状态下，限制登录、充值、提现、购买、换卡操作
+	+ 发往恒丰的充值、提现、换卡订单筛除冻结账户订单，取消发送
+
+2. 需求背景
+
+3. 业务逻辑
+### 原型地址: svn\产品专用\项目需求\原型\2018年需求\7月份-用户账户冻结状态新增
+			  绑卡业务：项目设计\存管\绑卡逻辑.xmind
+			  提现业务：项目设计\存管\理财人提现.xmind
+				
+### 管理台业务实现点
+### 1. 注册用户管理-用户管理/bsuser/index.htm，搜索条件新增账户状态，列表记录新增账户状态显示、导出新增新增账户状态列，见SVN原型 ###
+<pre>	
+状态：正常， 对应bs_user表status字段标识 1
+状态：注销， 对应bs_user表status字段标识 2
+状态：冻结， 对应bs_user表status字段标识 4
+</pre>
+
+### 2. 账户状态编辑，点击展示手机号和账户状态，确定修改更新用户表的用户状态，操作记录表m_user_op_record新增一条记录。（uc_user表状态不操作）
+<pre>
+update bs_user set status='' where id=''
+
+INSERT INTO `m_user_op_record`( `op_user_id`, `function_name`, `function_url`, `op_content`, `ip`, `note`, `op_time`) VALUES 
+(xx, '用户管理', '/bsuser/updateUserStatus', '姓名：xx', '127.0.0.1', '', 'xx');
+</pre>
+
+### 切面业务实现点
+### 1. 以下切面进行判断，查询bs_user表对应status，如果账户已冻结提示您的账户已冻结，请联系客服详询
+<pre>
+	
+	//币港湾登录  登录端口(PC APP H5 微信小程序)
+	@Pointcut("execution(public * com.pinting.business.service.site.impl.UserServiceImpl.isValidMobileOrNick(..))")
+	public void userLoginPointcut(){}
+		
+	//币港湾绑卡预下单
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.UserCardOperateServiceImpl.preBindCard(..))")
+	public void preBindCardPointcut(){}
+	
+	//币港湾绑卡
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.UserCardOperateServiceImpl.bindCard(..))")
+	public void bindCardPointcut(){}
+	
+	//币港湾解绑卡
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.UserCardOperateServiceImpl.unBindCard(..))")
+	public void unBindCardPointcut(){}
+	
+	//恒丰充值预下单
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.DepUserTopUpServiceImpl.hfPre(..))")
+	public void topUpHfPrePointcut(){}
+	
+	//恒丰充值确认下单
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.DepUserTopUpServiceImpl.hfConfirm(..))")
+	public void topUpHfConfirmPointcut(){}
+		
+	//恒丰提现-前端直接提现
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.DepUserBalanceWithdrawServiceImpl.apply(..)) " +
+			"|| execution(public * com.pinting.business.accounting.finance.service.impl.UserBalanceWithdrawServiceImpl.preWithdraw(..))")
+	public void withdrawSitePointcut(){}
+
+	// 奖励金提现
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.DepUserBonusWithdrawServiceImpl.userBonusWithdraw(..))")
+	public void userBonusWithdrawPointcut(){}
+	
+	//恒丰提现-审核通过提现
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.DepUserBalanceWithdrawServiceImpl.checkPass(..))")
+	public void withdrawCheckPassPointcut(){}
+
+	//固定期限购买
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.DepUserBalanceBuyServiceImpl.buyFixed(..))")
+	public void balanceBuyPointcut(){}
+	
+	//分期产品购买 
+	@Pointcut("execution(public * com.pinting.business.accounting.finance.service.impl.DepUserBalanceBuyServiceImpl.buyStage(..))")
+	public void balanceBuyAUTHPointcut(){}
+	
+	//充值拦截
+	UserServiceImpl.isBindBank方法修改
+	BsBankCardMapper.selectBindBankList方法修改
+	
+	//购买拦截
+	site和mobile路径下userFacade validUser方法修改
+	
+</pre>	
+
+
+## 生日红包发放
+1. 需求描述
+	+ 生日福利：根据用户生日为触发条件，身份证生日信息为准
+	+ 生日当天8点发放红包
+	+ 运营会提前设定好下月的生日。比如运营会在3月下旬配置好生日触发时间为4月1日-30日。4月过生日的用户会在生日当天8点收到生日红包
+
+2. 需求背景
+	
+3. 业务逻辑
+### 原型地址: svn\产品专用\项目需求\原型\2018年需求\6月份-生日用户自动发放红包
+
+### 管理台业务实现点
+### 1. 营销活动>红包发放管理（/autoPacket/index）：在发自动红包时，设置触发条件的选择下拉框中新增'生日福利'选项，
+	新增并储存到bs_auto_red_packet_rule表的trigger_type字段
+
+### 2. 红包发放管理>列表记录（/redPacket/redPacketGrantManagementIndex）：列表记录和搜索条件的发放方式新增'生日福利'判断，triggerType='BIRTHDAY_BENEFIT'
+
+### 3. 红包发放管理>红包预览（/redPacket/autoRedPocketReview）：触发条件新增'生日福利'判断，triggerType='BIRTHDAY_BENEFIT'
+
+### 4. 红包发放审核>列表记录（/redPacket/redPacketCheckIndex）：发放方式新增'生日福利'判断，triggerType='BIRTHDAY_BENEFIT'
+
+### schedule业务实现点（定时BirthdayBenefitSendTask）
+### 1. 获取定时当日的月天，转化为4位数字，例如5月21号转化为0521
+
+### 2. 查询自动红包规则表（bs_auto_red_packet_rule）触发条件（trigger_type）为生日福利（BIRTHDAY_BENEFIT）、定时当前时间满足触发时间区间的、状态为可用-AVAILABLE的红包规则
+关联红包发放批次审核表（bs_red_packet_check），条件为审核状态（CheckStatus）为通过-PASS、发放方式（DistributeType）为自动-AUTO，（根据serial_no字段关联），
+关联bs_red_packet_info（根据serial_no字段关联）
+
+<pre>
+	select * from (
+		select a.*,b.total,b.notify_channel,IFNULL(COUNT(c.id),0) send_count,b.total-IFNULL(COUNT(c.id),0) as left_count
+			from
+			(select agent_ids,id,distribute_time_end,distribute_time_start,trigger_type,serial_no 
+				from bs_auto_red_packet_rule 
+				where trigger_type='BIRTHDAY_BENEFIT'
+				and `status`='AVAILABLE' and (date(NOW()) between distribute_time_start and distribute_time_end)
+			)a,bs_red_packet_check b
+		LEFT JOIN bs_red_packet_info c on c.serial_no = b.serial_no
+			where b.serial_no = a.serial_no and b.distribute_type='AUTO' and b.check_status='PASS'
+		GROUP BY a.id)t
+	ORDER BY t.left_count asc
+</pre>
+
+### 3.1 判断2中列表是否为空且列表首条数据的left_count是否小于0，是则不继续操作
+### 3.2 若2中列表不为空，则查询未发放红包且当日为生日的用户，sql如下：
+<pre>
+select a.* from (
+			SELECT id, nick, user_name, mobile, email, id_card, status, recommend_id, register_time from bs_user 
+			WHERE status=1 and id_card is not null and SUBSTR(id_card, 11, 4) = 'xx'
+		) a left join (select a.user_id, a.serial_no, a.id from bs_red_packet_info a where a.serial_no = 'XX') b on a.id = b.user_id
+		where b.id is null 
+</pre>
+### 3.3 用户为空，则不继续操作，若不为空，则判断2中列表首条数据的剩余红包数量，若剩余红包数据< 应发红包的用户数量，则发送告警短信，文案大致：今日生日红包数量不足，用户未发放生日红包，请管理台配置后重新执行发送生日红包定时。
+### 3.4 若剩余红包数量>=应发红包的用户数量，则循环用户列表，再循环红包列表对用户进行红包发放操作，库表改动见4。红包通知的金额为红包列表中的金额总和。
+
+### 4. 用户渠道满足红包规则中的渠道设置则BsRedPa`	ketInfo插入对应数据。
+BsRedPacketInfo数据：status为INIT，use_time_start和use_time_end字段判断bs_auto_red_packet_rule的valid_term_type = FIXED 为固定时间段生效：获取管理台页面use_time_start 和 use_time_end 作为有效时间，valid_term_type = AFTER_RECEIVE 发放后有效天数：获取 available_days 计算有效时间
+apply_no和serial_no为bs_red_packet_check对应apply_no和serial_no
+	   
+### 5. 调用原来的方法进行短信通知、微信通知、APP通知

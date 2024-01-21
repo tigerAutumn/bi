@@ -1,0 +1,275 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageList.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!pageList.numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm"  action="$env.getWebURL('/mallExchangeOrders/findList.htm')" method="post" id="myform" class="pageForm required-validate">
+    	<input type="hidden" name="numPerPage" value="$!pageList.numPerPage" />
+    	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    	<input type="hidden" name="pageNum" value="$!pageList.pageNum" />
+    	<input type="hidden" name="queryFlag" value="queryFlag" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						兑换时间： <input name="exchangeStartTime"  type="text" dateFmt="yyyy-MM-dd HH:mm:ss" id="exchangeStartTime" class="date dateInitStart textInput readonly" readonly="true" size="20"  value="$!req.exchangeStartTime" /> 至
+					   	<input name="exchangeEndTime"  type="text" dateFmt="yyyy-MM-dd HH:mm:ss" id="exchangeEndTime" class="date dateInitEnd textInput readonly" readonly="true" size="20"  value="$!req.exchangeEndTime" />
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						商品名称：<input id="commName" type="text" name="commName" value="$!req.commName" size="25"/>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+					</td>
+					<td>
+					   	属性：
+					   	<select name="commProperty" >
+							<option value="" #if("$!req.commProperty"=="") selected #end>全部</option>
+							<option value="REAL" #if("$!req.commProperty"=="REAL") selected  #end>实体</option>
+							<option value="EMPTY" #if("$!req.commProperty"=="EMPTY") selected  #end>虚拟</option>
+						</select>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						手机号：<input id="mobile" type="text" name="mobile" value="$!req.mobile" size="15"/>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td>
+						收货信息：<input id="deliveryInfo" type="text" name="deliveryInfo" value="$!req.deliveryInfo" size="35"/>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						状态：
+						<select name="status" >
+							<option value="" #if("$!req.status"=="") selected #end>全部</option>
+							<option value="FINISHED" #if("$!req.status"=="FINISHED") selected  #end>已发货</option>
+							<option value="STAY_SEND" #if("$!req.status"=="STAY_SEND") selected  #end>未发货</option>
+						</select>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+					    <span style="margin-left:20px;">
+							<button  onclick="func()" type="button">查询</button>
+							<button  onclick="exp()" type="button">导出excel</button>
+                        </span>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+        <ul class="toolBar">
+            <li>
+            	<a class="add" title="批量发货" id="batchDelivery"><span>批量发货</span></a>
+            </li>
+        </ul>
+    </div>
+	<table class="table" width="1396" layoutH="158">
+		<thead>
+			<tr>
+				<th width="5%"><input id="checkedAll" type="checkbox" onclick="checkedAll()"/>全选</th>
+				<th width="6%">序号</th>
+                <th width="10%">兑换时间</th>
+				<th width="10%">商品名称</th>
+				<th width="6%">商品类别</th>
+				<th width="6%">属性</th>
+				<th width="6%">支出积分</th>
+				<th width="6%">手机号</th>
+				<th width="22%">收货信息</th>
+				<th width="6%">状态</th>
+				<th width="10%">发货时间</th>
+				<th width="6%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#set($index = $!pageList.offset)
+            #foreach($grid in $!pageList.list)
+			<tr target="sid_user" rel="1">
+				#set($index = $index + 1)
+				<td>
+					#if("$!grid.status" != "" && $!grid.status == "STAY_SEND")
+						#if("$!grid.commProperty" != "" && $!grid.commProperty == "EMPTY")
+							#if($!grid.commTypeCode != "RED_PACKET" && $!grid.commTypeCode != "INTEREST_TACKET")						
+                   			 	<input type="checkbox" name="checkId" value="$!grid.orderId" data-name="$!grid.orderId"
+                             		onclick="checkedId(this)"/>
+							#end
+						#end
+					#end	
+                </td>
+				<td>$!index</td>
+				<td>
+					$!date.format($!grid.exchangeTime)
+				</td>
+				<td>#if("$!grid.commName" != "") $!grid.commName#end</td>
+				<td>$!grid.commTypeName</td>	
+				<td>
+					#if("$!grid.commProperty" != "")
+						#if($!grid.commProperty == "EMPTY")
+							虚拟
+						#elseif($!grid.commProperty == "REAL")
+							实体
+						#end
+					#end
+				</td>
+				<td>$!grid.payPoints</td>	
+				<td>
+					#if("$!grid.mobile" != "" && $!grid.mobile.length() == 11) 
+						$!grid.mobile
+					#else 
+					 	$!grid.mobile
+					#end
+				</td>	
+				<td>
+					#if($!grid.commTypeCode != "RED_PACKET" && $!grid.commTypeCode != "INTEREST_TACKET")				
+						$!grid.deliveryInfo
+					#end					
+				</td>				
+				<td>
+					#if($!grid.commTypeCode == "RED_PACKET" || $!grid.commTypeCode == "INTEREST_TACKET")
+						#if("$!grid.orderStatus" != "" && $!grid.orderStatus == "FINISHED")	
+							已发货
+						#else
+							未发货
+						#end
+					#else
+						#if("$!grid.status" != "")
+							#if($!grid.status == "STAY_SEND")
+								未发货
+							#elseif($!grid.status == "FINISHED")
+								已发货
+							#end
+						#end
+					#end					
+				</td>
+				<td>
+					#if("$!grid.status" != "" && $!grid.status == "STAY_SEND")
+						
+					#else
+						$!date.format($!grid.deliveryTime)
+					#end
+				</td>
+				<td>
+					#if($!grid.commTypeCode == "RED_PACKET" || $!grid.commTypeCode == "INTEREST_TACKET")
+							#if("$!grid.orderStatus" != "" && $!grid.orderStatus == "FINISHED")												
+								<a title="查看" target="dialog" href="$env.getWebURL('/mallExchangeOrders/viewDeliveryPage.htm?orderId=')$!grid.orderId" mask="true" rel="createBack">查看</a>&nbsp;&nbsp;
+							#elseif("$!grid.orderStatus" != "" && $!grid.orderStatus == "SEND_FAIL")
+								<a title="发货" target="dialog" href="$env.getWebURL('/mallExchangeOrders/deliveryInfoPage.htm?orderId=')$!grid.orderId" mask="true" rel="createBack">发货</a>&nbsp;&nbsp;
+							#end
+					#else
+						#if("$!grid.status" != "" && $!grid.status == "STAY_SEND")
+							<a title="发货" target="dialog" href="$env.getWebURL('/mallExchangeOrders/deliveryInfoPage.htm?orderId=')$!grid.orderId" mask="true" rel="createBack">发货</a>&nbsp;&nbsp;
+		                #elseif("$!grid.status" != "" && $!grid.status == "FINISHED")
+		                	<a title="查看" target="dialog" href="$env.getWebURL('/mallExchangeOrders/viewDeliveryPage.htm?orderId=')$!grid.orderId" mask="true" rel="createBack">查看</a>&nbsp;&nbsp;
+		                #end
+		            #end    
+                </td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!pageList.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!pageList.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!pageList.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!pageList.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!pageList.totalRow条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!pageList.totalRow" numPerPage="$!pageList.numPerPage" currentPage="$!pageList.pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+	
+	//全选
+    function checkedAll() {
+        if ($('#checkedAll').attr('checked')) {
+            $("input[name=checkId]:checkbox").each(function () {
+                $(this).prop('checked', true);
+            })
+        } else {
+            $("input[name=checkId]:checkbox").each(function () {
+                $(this).prop('checked', false);
+            })
+        }
+    }
+
+    //单选
+    function checkedId(obj) {
+        var checkCount = $.trim($('#checkCount').val());
+        if ($(obj).attr('checked')) {
+            var len = 0;
+            $("input[name=checkId]:checkbox").each(function () {
+                if ($(this).attr('checked')) {
+                    len = parseInt(len) + 1;
+                }
+            })
+
+            if (len == checkCount) {
+                $('#checkedAll').prop('checked', true);
+            } else {
+                $('#checkedAll').prop('checked', false);
+            }
+        } else {
+            $('#checkedAll').prop('checked', false);
+        }
+    }
+    
+		$('#batchDelivery').on('click', function () {
+            var ids = "";
+            var count = 0;
+            var orderIds = [];
+            $("input[name=checkId]:checkbox").each(function () {
+                if ($(this).attr("checked")) {
+                    ids += $(this).attr('value') + ",";
+                    orderIds[count] = $(this).attr('value');
+                    count++;
+                }
+            })
+            if (ids == null || ids == '') {
+                alertMsg.warn('请选择要发货的订单');
+                return;
+            }
+            
+            var options = '{width:500px,height:680px,mask:true, mixable:true,minable:true,resizable:true,drawable:true,fresh:true}';
+            var urlStr = $("#APP_ROOT_PATH").val() + "/mallExchangeOrders/batchDeliveryInfoPage.htm?orderIds="+orderIds.toString();
+	        $.pdialog.open(urlStr, orderIds.toString(), "批量发货", options);
+			 
+        })
+        
+	function func(){
+		var exchangeStartTime = $("#exchangeStartTime").val();
+		var exchangeEndTime = $("#exchangeEndTime").val();
+	
+		if(exchangeStartTime != "" && exchangeEndTime != ""){
+			var result = Date.parse(exchangeEndTime.replace(/-/g,"/"))- Date.parse(exchangeStartTime.replace(/-/g,"/"));
+			if(result < 0){
+				alertMsg.info("兑换开始时间不能在结束时间之后！！");
+				return false;
+			}
+		}
+	
+		var url = $("#APP_ROOT_PATH").val() + "/mallExchangeOrders/findList.htm";
+		$("#myform").attr("action",url);
+		$("#myform").attr("onsubmit","return navTabSearch(this);");
+		$("#myform").submit();
+	}
+	
+	function exp(){
+		
+		var exchangeStartTime = $("#exchangeStartTime").val();
+		var exchangeEndTime = $("#exchangeEndTime").val();
+	
+		if(exchangeStartTime != "" && exchangeEndTime != ""){
+			var result = Date.parse(exchangeEndTime.replace(/-/g,"/"))- Date.parse(exchangeStartTime.replace(/-/g,"/"));
+			if(result < 0){
+				alertMsg.info("兑换开始时间不能在结束时间之后！！");
+				return false;
+			}
+		}
+		var url = $("#APP_ROOT_PATH").val() + "/mallExchangeOrders/exportXls.htm";
+		$("#myform").attr("action",url);
+		$("#myform").attr("onsubmit","");
+		$("#myform").submit();
+	}
+</script>

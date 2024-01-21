@@ -1,0 +1,534 @@
+#LoadGenCSS("/resources/gen2.0/styles/safe/public")
+#LoadGenCSS("/resources/gen2.0/styles/assets/invite_friends_02")
+##新版开始
+<div class="invite_friends">
+    <input type="hidden" id="zan_rate" value="$!rate.zan_rate">
+    <div class="invite_step clearfix">
+        <h4 class="invite_step_title"><span>邀请好友，共赢现金</span></h4>
+        <p class="text_center invite_name">具体步骤</p>
+        <div class="col-4 clearfix">
+            <div class="invite_step_wrap text_center" style="float: left;">
+                <div class="col-6 invite_step_ico">
+                    <div class="invite_step_img" style="background-image: url($!env.get(
+                        'gen.server.web')/resources/gen2.0/images/assets/invite/wechat.png)">
+                        <div class="invite_step_mask">
+                            <i></i>
+                            <img src="$!matrix" alt="" width="80" height="80">
+                        </div>
+                    </div>
+                    <p>微信</p>
+                </div>
+                <div class="col-6 invite_step_ico">
+                    <div class="invite_step_img link_btn btn_one" style="background-image: url($!env.get(
+                        'gen.server.web')/resources/gen2.0/images/assets/invite/blog.png)"></div>
+                    <p>微博</p>
+                </div>
+                <div class="col-6 invite_step_ico">
+                    <input type="text" value="$!recommend" class="invite_num"
+                           style="position: absolute;width: 1px;height: 1px;display: block;z-index: -1;overflow: hidden">
+                    <div class="invite_step_img" id="invite_num" style="background-image: url($!env.get(
+                        'gen.server.web')/resources/gen2.0/images/assets/invite/invitation.png)"
+                         data-clipboard-action="copy" data-clipboard-target=".invite_num">
+                        <div class="invite_step_mask" style="top: -10px;">
+                            <i></i>
+                            <p>专属邀请码：<span>$!recommend</span></p>
+                        </div>
+                    </div>
+                    <p>邀请码</p>
+                </div>
+                <div class="col-6 invite_step_ico" data-clipboard-action="copy" data-clipboard-target=".invite_link">
+                    <input type="text" class="invite_link" value="$!shareLink"
+                           style="position: absolute;width: 1px;height: 1px;display: block;z-index: -1;overflow: hidden">
+                    <div class="invite_step_img" id="invite_link" style="background-image: url($!env.get(
+                        'gen.server.web')/resources/gen2.0/images/assets/invite/link.png)"
+                         data-clipboard-action="copy" data-clipboard-target=".invite_link"></div>
+                    <p>复制链接</p>
+                </div>
+            </div>
+            <p class="invite_step_des" style="float: left">1.点击以上按钮分享</p>
+        </div>
+        <div class="col-4 invite_step_center">
+            <div class="invite_step_wrap text_center" style="margin: auto;padding-top: 16px">
+                <img src="$!env.get('gen.server.web')/resources/gen2.0/images/assets/invite/flow.png">
+            </div>
+            <p class="invite_step_des">2.让好友注册并加入</p>
+        </div>
+
+        <div class="col-4 clearfix">
+            <div class="invite_step_wrap text_center" style="float: right">
+                <img src="$!env.get('gen.server.web')/resources/gen2.0/images/assets/invite/reward.png">
+            </div>
+            <p class="invite_step_des" style="float: right">3.获得奖励</p>
+        </div>
+    </div>
+
+    <div class="invite_ifo">
+        <input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')"/>
+        <input type="hidden" id="bonus" value="$!bonus"/>
+        <input type="hidden" id="token" name="token" value="$!token"/>
+        <input type="hidden" id="bounsPageIndex" name="pageIndex" value="$!pageIndex"/>
+        <input type="hidden" id="bounsTotalCount" name="totalCount" value="$!totalCount"/>
+        <input type="hidden" id="recommendPageIndex" value="$!recommendPageIndex" class="pageRecommendation"/>
+        <input type="hidden" id="recommendTotalCount" value="$!recommendTotalCount" class="totalPagesRecommendation"/>
+
+        <div class="main_content main_one" id="bouns_content">
+
+            <form id="inviteFriendsForm" method="post"
+                  action="$!env.get('gen.server.web')/gen2.0/assets/inviteFriends/myBonus/loadDatas">
+                <input type="hidden" id="pageIndex" name="pageIndex" value="$!pageIndex" class="page"/>
+                <input type="hidden" id="totalPages" name="totalPages" value="$!totalPages" class="totalPages"/>
+            </form>
+
+            <input type="hidden" id="invite_friends_detail" value="/gen2.0/assets/inviteFriends/myBonus/loadDatas">
+
+            <div class="invite_ifo_label">
+                <ul class="clearfix">
+                    <li class="ifo_label_focuse">我的奖励</li>
+                    <li>我的推荐</li>
+                    <li>活动规则</li>
+                </ul>
+            </div>
+            <div class="invite_ifo_content list_show">
+                <div class="invite_bonus text_left">
+                    奖励金：<span>$!money.format($!bonus)元</span>
+                    #if($!bonus > 0)
+                        <input type="button" value="转出到银行卡" onclick="goBonusWithdraw()"/>
+                    #else
+                        <input type="button" value="转出到银行卡" class="btn_disabled"/>
+                    #end
+                </div>
+                <div class="invite_ifo_list invite_ifo_list_myReward">
+                    <div class="invite_ifo_list_title">
+                        <ul class="clearfix">
+                            <li>时间</li>
+                            <li class="invite_amount">金额</li>
+                            <li>摘要</li>
+                        </ul>
+                    </div>
+
+                    #if($!bonusList)
+                        #foreach($!grid in $!bonusList)
+                            #if($!grid.bonusType == 'ACTIVITY' && (!$!grid.note || $!grid.note == ''))
+                                <div class="invite_ifo_card">
+                                    <ul class="clearfix">
+                                        <li>$!date.formatDateTime($!grid.earningsDate,'yyyy-MM-dd')</li>
+                                        <li class="invite_amount income">＋$!money.format($!grid.amount)</li>
+                                        <li>活动奖励</li>
+                                    </ul>
+                                </div>
+                            #elseif($!grid.bonusType == 'ACTIVITY' && $!grid.note && $!grid.note != '')
+                                <div class="invite_ifo_card">
+                                    <ul class="clearfix">
+                                        <li>$!date.formatDateTime($!grid.earningsDate,'yyyy-MM-dd')</li>
+                                        <li class="invite_amount income">＋$!money.format($!grid.amount)</li>
+                                        <li>$!grid.note</li>
+                                    </ul>
+                                </div>
+                            #elseif($!grid.bonusType == 'BONUS_WITHDRAW')
+                                <div class="invite_ifo_card">
+                                    <ul class="clearfix">
+                                        <li>$!date.formatDateTime($!grid.earningsDate,'yyyy-MM-dd')</li>
+                                        <li class="invite_amount output">$!money.format($!grid.amount)</li>
+                                        <li>提现到银行卡</li>
+                                    </ul>
+                                </div>
+                            #elseif($!grid.bonusType == 'RECOMMEND')
+                                <div class="invite_ifo_card">
+                                    <ul class="clearfix">
+                                        <li>$!date.formatDateTime($!grid.earningsDate,'yyyy-MM-dd')</li>
+                                        <li class="invite_amount income">+$!money.format($!grid.amount)</li>
+                                        <li>推荐奖励</li>
+                                    </ul>
+                                </div>
+                            #elseif($!grid.bonusType == 'DEP_FILL_INTEREST')
+                                <div class="invite_ifo_card">
+                                    <ul class="clearfix">
+                                        <li>$!date.formatDateTime($!grid.earningsDate,'yyyy-MM-dd')</li>
+                                        <li class="invite_amount income">+$!money.format($!grid.amount)</li>
+                                        <li>奖励金返还</li>
+                                    </ul>
+                                </div>
+                            #elseif("$!grid.bonusType" =="" && $!grid.amount < 0)
+                                <div class="invite_ifo_card">
+                                    <ul class="clearfix">
+                                        <li>$!date.formatDateTime($!grid.earningsDate,'yyyy-MM-dd')</li>
+                                        <li class="invite_amount output">$!money.format($!grid.amount)</li>
+                                        <li>转出</li>
+                                    </ul>
+                                </div>
+                            #elseif($!grid.bonusType == 'INTEREST_TICKET')
+                                <div class="invite_ifo_card">
+                                    <ul class="clearfix">
+                                        <li>$!date.formatDateTime($!grid.earningsDate,'yyyy-MM-dd')</li>
+                                        <li class="invite_amount income">
+                                            +$!money.format($!grid.amount)
+                                            <div class="Increase_mark">
+                                                ?
+                                                <div class="Increase_help">
+                                                    $!grid.detail
+                                                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/red_pack/help_triangle.png" class="help_triangle">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>加息收益</li>
+                                    </ul>
+                                </div>
+                            #end
+                        #end
+
+                    ##分页开始
+                        #if($!totalPages > 1)
+                            <div class="fenye">
+                                <div class="fenye_wrap">
+                                    #set($nextPage = $pageIndex + 1)
+                                    #set($nextSecondPage = $pageIndex + 2)
+                                    #set($prePage = $pageIndex - 1)
+                                    #set($preSecondPage = $pageIndex - 2)
+                                    #set($totalPage = $totalPages)
+
+                                    <a href="javascript:void(0)" onclick="prePage(1, 'BOUNS')" class="fy_l">首页</a>
+                                    <a href="javascript:void(0)" onclick="prePage($prePage, 'BOUNS')" class="fy_ll"></a>
+                                    #if($!prePage > 0)
+                                        #if($!preSecondPage > 0 && $!nextPage > $totalPage)
+                                            <a href="javascript:void(0)" onclick="prePage($preSecondPage, 'BOUNS')"
+                                               class="fy_c">$!preSecondPage</a>
+                                        #end
+                                        <a href="javascript:void(0)" onclick="prePage($prePage, 'BOUNS')"
+                                           class="fy_c">$!prePage</a>
+                                        <a href="javascript:void(0)" class="fy_c fy_atpage">$!pageIndex</a>
+                                        #if($!nextPage <= $totalPage)
+                                            <a href="javascript:void(0)" onclick="nextPage($nextPage, 'BOUNS')"
+                                               class="fy_c">$!nextPage</a>
+                                        #end
+                                    #else
+                                        <a href="javascript:void(0)" class="fy_c fy_atpage">$!pageIndex</a>
+                                        #if($!nextPage <= $totalPage)
+                                            <a href="javascript:void(0)" onclick="nextPage($nextPage, 'BOUNS')"
+                                               class="fy_c">$!nextPage</a>
+                                        #end
+                                        #if($!nextSecondPage <= $totalPage)
+                                            <a href="javascript:void(0)" onclick="nextPage($nextSecondPage, 'BOUNS')"
+                                               class="fy_c">$!nextSecondPage</a>
+                                        #end
+                                    #end
+                                    <a href="javascript:void(0)" onclick="nextPage($nextPage, 'BOUNS')"
+                                       class="fy_rr"></a>
+                                    <a href="javascript:void(0)" onclick="nextPage($totalPage, 'BOUNS')"
+                                       class="fy_r">尾页</a>
+                                </div>
+                            </div>
+                        #end
+
+                    #else
+                        <div class="Investment_tr_title_null_zan_div">
+                            <div class="Investment_tr_title_null">
+                                <img src="$!env.get(
+                                    'gen.server.web')/resources/gen2.0/images/assets/investManage/null_bg.png"/>
+                                <p>暂无记录</p>
+                            </div>
+                        </div>
+                    #end
+                </div>
+
+            </div>
+
+            <div class="invite_ifo_content">
+                <input type="hidden" id="my_recommendation" value="/gen2.0/assets/inviteFriends/myRecommend/loadDatas">
+                <div class="invite_ifo_list invite_ifo_list_myRecommendation" style="margin-top: 30px">
+                    <div class="invite_ifo_list_title">
+                        <ul class="clearfix">
+                            <li>好友</li>
+                            <li>注册时间</li>
+                            <li>加入项目状态</li>
+                        </ul>
+                    </div>
+
+                    #if($!bsUserList)
+                        #foreach($!grid in $!bsUserList)
+                            <div class="invite_ifo_card">
+                                <ul class="clearfix">
+                                    <li>
+                                        #if($!grid.mobile.length() >=11)
+                                            $!string.left($!grid.mobile,3)****$!string.right($!grid.mobile, 4)
+                                        #else
+                                            $!string.left($!grid.mobile,3)****$!string.right($!grid.mobile, 3)
+                                        #end
+                                    </li>
+                                    <li>$!date.format($!grid.registerTime)</li>
+                                    <li class="income">#if($!grid.firstBuyTime)已加入  #else 暂未加入 #end</li>
+                                </ul>
+                            </div>
+                        #end
+
+                    ##分页开始
+                        #if($!recommendTotalPages > 1)
+                            <div class="fenye">
+                                <div class="fenye_wrap">
+                                    #set($nextPage = $recommendPageIndex + 1)
+                                    #set($nextSecondPage = $recommendPageIndex + 2)
+                                    #set($prePage = $recommendPageIndex - 1)
+                                    #set($preSecondPage = $recommendPageIndex - 2)
+                                    #set($totalPage = $recommendTotalCount)
+
+                                    <a href="javascript:void(0)" onclick="prePage(1, 'RECOMMEND')" class="fy_l">首页</a>
+                                    <a href="javascript:void(0)" onclick="prePage($prePage, 'RECOMMEND')"
+                                       class="fy_ll"></a>
+                                    #if($!prePage > 0)
+                                        #if($!preSecondPage > 0 && $!nextPage > $totalPage)
+                                            <a href="javascript:void(0)" onclick="prePage($preSecondPage, 'RECOMMEND')"
+                                               class="fy_c">$!preSecondPage</a>
+                                        #end
+                                        <a href="javascript:void(0)" onclick="prePage($prePage, 'RECOMMEND')"
+                                           class="fy_c">$!prePage</a>
+                                        <a href="javascript:void(0)" class="fy_c fy_atpage">$!recommendPageIndex</a>
+                                        #if($!nextPage <= $totalPage)
+                                            <a href="javascript:void(0)" onclick="nextPage($nextPage, 'RECOMMEND')"
+                                               class="fy_c">$!nextPage</a>
+                                        #end
+                                    #else
+                                        <a href="javascript:void(0)" class="fy_c fy_atpage">$!recommendPageIndex</a>
+                                        #if($!nextPage <= $totalPage)
+                                            <a href="javascript:void(0)" onclick="nextPage($nextPage, 'RECOMMEND')"
+                                               class="fy_c">$!nextPage</a>
+                                        #end
+                                        #if($!nextSecondPage <= $totalPage)
+                                            <a href="javascript:void(0)"
+                                               onclick="nextPage($nextSecondPage, 'RECOMMEND')"
+                                               class="fy_c">$!nextSecondPage</a>
+                                        #end
+                                    #end
+                                    <a href="javascript:void(0)" onclick="nextPage($nextPage, 'RECOMMEND')"
+                                       class="fy_rr"></a>
+                                    <a href="javascript:void(0)" onclick="nextPage($totalPage, 'RECOMMEND')"
+                                       class="fy_r">尾页</a>
+                                </div>
+                            </div>
+                        #end
+
+                    #else
+                        <div class="Investment_tr_title_null_zan_div">
+                            <div class="Investment_tr_title_null">
+                                <img src="$!env.get(
+                                    'gen.server.web')/resources/gen2.0/images/assets/investManage/null_bg.png"/>
+                                <p>暂无记录</p>
+                            </div>
+                        </div>
+                    #end
+
+
+                </div>
+            </div>
+
+            <div class="invite_ifo_content">
+#if($!newRules == "yes")
+                    <ul class="invite_ifo_rule">
+                        <li style="height: 35px">
+                            <h3>活动时间及邀请<span></span></h3>
+                        </li>
+                        <li>1、活动时间：2018年1月1日—2018年12月31日；</li>
+                        <li>2、活动期间，发送邀请链接或您的专属邀请码 <span style="color:#ff6633;">$!recommend</span> 邀请您的好友完成新会员注册。</li>
+
+                        <li style="height: 35px">
+                            <h3>邀请的用户注册时间<span></span></h3>
+                        </li>
+                        <li>1、2018年1月1日之前受邀注册的好友，在2018年1月1日起365天内加入的每个产品，您和好友都可以分别获得相应奖励金，365天之后再加入，则不再享有相应奖励；</li>
+                        <li>2、活动期间受邀注册的好友在注册之日起365天内加入的每个产品，您和好友都可以分别获得相应奖励金，365天之后再加入，则不再享有相应奖励。</li>
+                        <li style="height: 35px">
+                            <h3>奖励金计算公式<span></span></h3>
+                        </li>
+                        <li>
+                            1、港湾系列产品奖励金计算：
+                            <ul class="invite_ifo_subrule">
+                                <li>a) 您的好友加入30天产品，您和好友分别获得奖励金：<span>加入金额*$!{rate.one_month}%</span></li>
+                                <li>b) 您的好友加入90天产品，您和好友分别获得奖励金：<span>加入金额*$!{rate.three_month}%</span></li>
+                                <li>c) 您的好友加入180天产品，您和好友分别获得奖励金：<span>加入金额*$!{rate.six_month}%</span></li>
+                                <li>d) 您的好友加入365天产品，您和好友分别获得奖励金：<span>加入金额*$!{rate.one_year}%</span></li>
+                            </ul>
+                        </li>
+                        <li style="line-height: 30px;">
+                            <div class="zan_calculator">
+                                <span class="calculator_ico"></span>赞分期奖励金计算器
+                            </div>
+                            2、赞分期系列产品奖励金计算：以年化利率为$!{rate.zan_rate}%的等额本息标的收益来计算。
+                        </li>
+                        <li style="height: 35px">
+                            <h3>奖励金发放<span></span></h3>
+                        </li>
+                        <li>1、推荐人与被推荐人的奖励金均按月返还，约30天发放一次，具体可在<span>【我的账户】-【邀请好友】-【我的奖励】</span>查看。</li>
+                        <li>2、赞分期奖励金以匹配成功的金额，根据站岗到期时间计算发放奖励金；</li>
+                        <li>3、如有疑问可致电币港湾客服：400-806-1230 。</li>
+                    </ul>
+                #elseif($!newRules == "no")
+                    <ul class="invite_ifo_rule">
+                        <li>活动期间，通过分享邀请您的好友完成新会员注册；</li>
+                        <li>使用您的邀请码注册的好友，一旦这些好友在币港湾进行投资，您可以获得对应现金奖励；</li>
+                        <li>
+                            奖励金额和好友加入的产品类型、加入金额相关，每笔投资都有奖励：
+                            <ul class="invite_ifo_subrule">
+                                <li>a) 您的好友加入7天产品，您和好友分别获得奖励金：<span>加入金额*0.025%</span></li>
+                                <li>b) 您的好友加入30天产品，您和好友分别获得奖励金：<span>加入金额*0.1%</span></li>
+                                <li>c) 您的好友加入90天产品，您和好友分别获得奖励金：<span>加入金额*0.25%</span></li>
+                                <li>d) 您的好友加入180天产品，您和好友分别获得奖励金：<span>加入金额*0.5%</span></li>
+                                <li>e) 您的好友加入365天产品，您和好友分别获得奖励金：<span>加入金额*1%</span></li>
+                            </ul>
+                        </li>
+                        <li>在2015年12月30日前推荐且注册成功的用户，若产生投资行为，推荐人仍独享年化2%的奖励；</li>
+                        <li>2015年12月30日起，新老用户推荐好友注册投资，推荐人与被推荐人的奖励金均按月返还；</li>
+                        <li>本次活动的最终解释权归币港湾所有。</li>
+                    </ul>
+                    <p class="invite_ifo_rule_des">如有疑问可致电币港湾客服：<span>400-806-1230</span></p>
+                #end            </div>
+        </div>
+    </div>
+</div>
+    <script>
+        $(document).ready(function () {
+            var inviteLabel = $(".invite_ifo_label>ul>li");
+            inviteLabel.click(function () {
+                var labelNum = $(this).index();
+                $(this).siblings().removeClass("ifo_label_focuse");
+                $(this).addClass("ifo_label_focuse");
+                $(".invite_ifo_content").removeClass("list_show");
+                $($(".invite_ifo_content")[labelNum]).addClass("list_show");
+            })
+        })
+    </script>
+    ##新版结束
+
+    ##申请提现弹窗
+    <div class="popup_bg"></div>
+    ##提示开通恒丰银行
+    <div class="popup-bank">
+        <span class="popup-bank-close"><img
+                src="$!env.get('gen.server.web')/resources/gen2.0/images/regular/HF-close.png"/></span>
+        <ul class="popup-bank_ul">
+            <li class="popup-bank_li">
+                <div class="popup-bank_left">提现银行：</div>
+                <div class="HF-draw_select">
+                    <div class="HF-selec_img">
+                        <img src="$!env.get('gen.server.web')/$!bankLogo" class="HF-sec_img"/>
+                        <span class="bank_name">$!bankName</span>
+                        <span class="ban_number">（$!cardNo）</span>
+                    </div>
+                </div>
+            </li>
+            <li class="popup-bank_li popup-bank_li_margin">
+                <div class="popup-bank_left">提现金额：</div>
+                <div class="popup-bank_right">
+                    <input type="text" maxlength="20" name="amount" id="amount" placeholder="0.00" value=""
+                           class="popup-bank_rightinput" autocomplete="off"/>
+                </div>
+            </li>
+            <li class="popup-bank_li popup-bank_li_margin">
+                <div class="popup-bank_left"></div>
+                <div class="popup-bank_right">
+                    <span class="popup-bank_balancespan">奖励金余额 <i
+                            style="color: #ff6633;">$!money.format($!canWithdraw)</i>元</span>
+                    <a class="popup-bank_balancea withdraw_all" href="javascript:void(0);">全部提现</a>
+                </div>
+            </li>
+            #if("$!payPasswordExist" == "TRUE")
+                <li class="popup-bank_li popup-bank_li_margin">
+                    <div class="popup-bank_left">交易密码：</div>
+                    <div class="popup-bank_right">
+                        <input type="password" maxlength="20" name="payPassword" id="payPassword"
+                               placeholder="请输入6-16位交易密码" value="" class="popup-bank_rightinput"/>
+                    </div>
+                </li>
+                <li class="popup-bank_li popup-bank_li_margin">
+                    <div class="popup-bank_left"></div>
+                    <div class="popup-bank_right">
+                        <a href="javascript:go_password($('.forget_pwd_a'))" class="forget_pwd_a"
+                           url="$!env.get('gen.server.web')/gen2.0/assets/assets?securityCenter=securityCenter">忘记密码</a>
+                        <script>
+                            function go_password(obj) {
+                                localStorage.pay_password = 'pay_password';
+                                location.href = $(obj).attr('url');
+                            }
+                        </script>
+                    </div>
+                </li>
+            #else
+                <li class="popup-bank_li">
+                    <div class="popup-bank_left">设置交易密码：</div>
+                    <div class="popup-bank_right"><input type="password" maxlength="15" name="payPassword"
+                                                         id="payPassword" placeholder="请输入6-16位交易密码" value=""
+                                                         class="popup-bank_rightinput"/></div>
+                </li>
+                <li class="popup-bank_li">
+                    <div class="popup-bank_left">确定交易密码：</div>
+                    <div class="popup-bank_right"><input type="password" maxlength="15" name="curPassword"
+                                                         id="curPassword" placeholder="请确认交易密码" value=""
+                                                         class="popup-bank_rightinput"/></div>
+                </li>
+            #end
+
+        </ul>
+        <div class="popup-bank-btnbox"><a href="javascript:void(0);" class="popup-bank-btn sub_apply_withdraw">申请提现</a>
+        </div>
+        <div class="popup-bank-bottomtxt">$!number.format("#", $!{withdrawLimit})元以上起提，免收手续费。</div>
+    </div>
+    ##赞分期计算器
+    <div class="zan_calculator_bg">
+        <div class="zan_calculator_wrap">
+            <h4>赞分期奖励金计算器</h4>
+        <span class="zan_calculator_close"><img
+                src="$!env.get('gen.server.web')/resources/gen2.0/images/regular/HF-close.png"></span>
+            <div class="zan_data">
+                <div class="zan_data_left">
+                    好友匹配金额：
+                </div>
+                <div class="zan_data_input">
+                    <input type="text" placeholder="请输入金额" id="total_money">元
+                </div>
+            </div>
+            <div class="zan_data" style="height: 65px;">
+                <div class="zan_data_left">
+                    好友委托意向：
+                </div>
+                <div class="zan_data_input" style="height: 65px;">
+                    <p class="zan_data_chosen" data-term=""></p>
+                    <ul class="zan_data_times">
+                        <li>1个月</li>
+                        <li>2个月</li>
+                        <li>3个月</li>
+                        <li>4个月</li>
+                        <li>5个月</li>
+                        <li>6个月</li>
+                        <li>7个月</li>
+                        <li>8个月</li>
+                        <li>9个月</li>
+                        <li>10个月</li>
+                        <li>11个月</li>
+                        <li>12个月</li>
+                    </ul>
+                    <p>*奖励金利率：<span class="color_font">$!{rate.zan_rate}%</span></p>
+                </div>
+            </div>
+            <div class="zan_btn">
+                <a href="javascript:;">开始计算</a>
+                <p>奖励金预期收益不代表实际收益，<span class="color_font">请以实际匹配为准</span></p>
+            </div>
+            <div class="zan_calculate_result">
+                <h5>奖励金计划表</h5>
+                <div class="result_tips">
+                    <p style="text-align: right;border-right: solid 1px #e5e5e5;">您和好友都将获得<span class="color_font">获得奖励金</span></p>
+                    <p style="text-align: left">预期总收益：<span class="color_font" id="total_reward"></span></p>
+                </div>
+                <div class="result_list">
+                    <div class='result_list_title'>
+                        <p>期次</p>
+                        <p>奖励金</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="canWithdraw" name="canWithdraw" value="$!canWithdraw"/>
+    <input type="hidden" id="withdrawLimit" name="withdrawLimit" value="$!withdrawLimit"/> ## 提现最小金额
+    <input type="hidden" id="failTime" name="failTime" value="$!failTime"/>
+    <input type="hidden" id="from" name="from" value="$!from"/>
+    <input type="hidden" id="payPasswordExist" name="payPasswordExist" value="$!payPasswordExist">
+    ##LoadGenJS("/resources/gen2.0/scripts/assets/clipboard.min")//该插件不支持ie8，改为动态加载
+    #LoadGenJS("/resources/gen2.0/scripts/assets/invite_friends")
+    #LoadGenJS("/resources/gen2.0/scripts/assets/bonus2JSH")

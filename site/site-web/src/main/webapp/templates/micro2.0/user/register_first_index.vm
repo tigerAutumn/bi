@@ -1,0 +1,87 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#WeChatShare()
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+#LoadJS("resources/micro2.0/scripts/rem")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/user/activity_user")
+#LoadJS("/resources/micro2.0/scripts/common/common")
+#Head("end")
+<body>
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" id="mobileReg" value="$!reg.get('mobile')" />
+	<input class="former_btn" type="hidden" name="qianbao" id="qianbao" value="$!qianbao" >
+	<input class="former_btn" type="hidden" name="recommendId" id="recommendId" value="$!recommendId" >
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+	<input type="hidden" value="$!env.getWebURL('')/micro2.0/common/captcha/code?ts=" id="VALIDATE_PATH" />
+	<input type="hidden" id="type" name="type" value="not_exist">
+    <div class="top">
+		<img class="top" src="$!env.getWebURL('/resources/micro2.0/images/login/activity_banner.png')" alt="">
+		<div class="name_phone">
+			<div class="name_wrap"></div>
+			<div class="name_mobile">您的邀请人：$!{recommendId}</div>
+		</div>
+	</div>	
+	<div id="fake-search">
+		<form action="$!env.getWebURL('/micro2.0/user/reg/mobile')" method="post" class="generalForm" id="generalForm">
+            <input type="hidden" id="agentId" value="$!agent.agentId"/>
+            <input type="hidden" id="mobileToken" name="mobileToken" value="$!mobileToken">
+            <div class="input-group formFieldWrapper">
+				<span class="input-icon1"></span>
+                <input type="tel" id="mobile" name="mobile" value="" maxlength="11" class="form-control userNameField requiredField regExpField" x-webkit-speech="" placeholder="请输入手机号">                
+            </div>
+			<div class="input-group formFieldWrapper">
+				<span class="input-icon2"></span>
+                <input class="form-control" type="text" name="verCode" id="verCode" maxlength="4" placeholder="图片验证码">
+				<img id="validateImg" src="$!env.getWebURL('')/micro2.0/common/captcha/code?ts=" alt="点击切换验证码" onclick="change()">
+            </div>
+			<div class="hint_txt2">点击立即注册即代表您同意<a href="$!env.getWebURL('micro2.0/agreement/registAccountServiceAgreement')" style='color: #f63;'>《注册账户服务协议》</a></div>
+			<span class="input-group-btn">
+				<button type="button" class="btn btn-danger" id="MobileSubmitButton"><span class="glyphicon glyphicon-search">立即注册</span></button>
+			</span>
+			<div class="login_txt">已有账号？<span id="agent_login">立即登录</span></div>
+		</form>
+     </div>
+	<div class="clear"></div>		
+	<div class="clear"></div>
+	<div class="lodin_box">
+		<div class="time" >
+        	<span class="tubiao1"></span>
+			<span class="biao_ft">注册即送<i class="time_color">318</i>红包</span>
+        </div>
+        <div class="time">
+        	<span class="tubiao2"></span>
+            <span class="biao_ft">预期年化收益高达<i class="time_color">9.5%</i></span>
+        </div>
+        <div class="time">
+        	<span class="tubiao3"></span>
+              <span class="biao_ft">国资背景，实力雄厚</span>
+        </div>
+
+        <div class="time">
+        	<span class="tubiao4"></span>
+              <span class="biao_ft">恒丰银行资金存管</span>
+        </div>
+
+		<div class="time">
+        	<span class="tubiao5"></span>
+			<span class="biao_ft">客服电话：<a href="tel:400-806-1230" style="color: #f63;">400-806-1230</a></span>
+        </div>
+	</div>
+	#LoadJS("resources/micro2.0/scripts/user/register_first_index")
+	<script type="text/javascript">
+		$(".name_wrap").on("click",function(){
+			if($(this).hasClass("clath")){
+				$(this).removeClass("clath");
+				$(".name_mobile").hide();
+				$(".name_wrap").attr("style","");
+			}else{
+				$(".name_mobile").show();
+				$(this).css({"top":0});
+				$(this).addClass("clath");
+			}
+		})
+	</script>
+</body>
+</html>

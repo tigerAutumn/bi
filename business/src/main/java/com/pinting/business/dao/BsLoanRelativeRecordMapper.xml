@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsLoanRelativeRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsLoanRelativeRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="property_symbol" property="propertySymbol" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="buy_time" property="buyTime" jdbcType="TIMESTAMP" />
+    <result column="lender_customer_id" property="lenderCustomerId" jdbcType="VARCHAR" />
+    <result column="lender_id_card" property="lenderIdCard" jdbcType="VARCHAR" />
+    <result column="lender_name" property="lenderName" jdbcType="VARCHAR" />
+    <result column="borrower_customer_id" property="borrowerCustomerId" jdbcType="VARCHAR" />
+    <result column="borrower_id_card" property="borrowerIdCard" jdbcType="VARCHAR" />
+    <result column="borrower_name" property="borrowerName" jdbcType="VARCHAR" />
+    <result column="borrower_bankcard" property="borrowerBankcard" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="borrow_product_name" property="borrowProductName" jdbcType="VARCHAR" />
+    <result column="borrow_amount" property="borrowAmount" jdbcType="DOUBLE" />
+    <result column="init_amount" property="initAmount" jdbcType="DOUBLE" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="left_amount" property="leftAmount" jdbcType="DOUBLE" />
+    <result column="borrow_id" property="borrowId" jdbcType="VARCHAR" />
+    <result column="borrow_trans_no" property="borrowTransNo" jdbcType="VARCHAR" />
+    <result column="borrow_apply_time" property="borrowApplyTime" jdbcType="TIMESTAMP" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="channel" property="channel" jdbcType="VARCHAR" />
+    <result column="is_repay" property="isRepay" jdbcType="VARCHAR" />
+    <result column="repay_time" property="repayTime" jdbcType="TIMESTAMP" />
+    <result column="borrower_credit_amount" property="borrowerCreditAmount" jdbcType="DOUBLE" />
+    <result column="borrower_borrow_num" property="borrowerBorrowNum" jdbcType="INTEGER" />
+    <result column="borrower_total_amount" property="borrowerTotalAmount" jdbcType="DOUBLE" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, property_symbol, customer_id, order_no, buy_time, lender_customer_id, lender_id_card, 
+    lender_name, borrower_customer_id, borrower_id_card, borrower_name, borrower_bankcard, 
+    product_name, borrow_product_name, borrow_amount, init_amount, amount, left_amount, 
+    borrow_id, borrow_trans_no, borrow_apply_time, time, remark, channel, is_repay, repay_time, 
+    borrower_credit_amount, borrower_borrow_num, borrower_total_amount, create_time, 
+    update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsLoanRelativeRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_loan_relative_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_loan_relative_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_loan_relative_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsLoanRelativeRecordExample" >
+    delete from bs_loan_relative_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsLoanRelativeRecord" >
+    insert into bs_loan_relative_record (id, property_symbol, customer_id, 
+      order_no, buy_time, lender_customer_id, 
+      lender_id_card, lender_name, borrower_customer_id, 
+      borrower_id_card, borrower_name, borrower_bankcard, 
+      product_name, borrow_product_name, borrow_amount, 
+      init_amount, amount, left_amount, 
+      borrow_id, borrow_trans_no, borrow_apply_time, 
+      time, remark, channel, 
+      is_repay, repay_time, borrower_credit_amount, 
+      borrower_borrow_num, borrower_total_amount, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{propertySymbol,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, 
+      #{orderNo,jdbcType=VARCHAR}, #{buyTime,jdbcType=TIMESTAMP}, #{lenderCustomerId,jdbcType=VARCHAR}, 
+      #{lenderIdCard,jdbcType=VARCHAR}, #{lenderName,jdbcType=VARCHAR}, #{borrowerCustomerId,jdbcType=VARCHAR}, 
+      #{borrowerIdCard,jdbcType=VARCHAR}, #{borrowerName,jdbcType=VARCHAR}, #{borrowerBankcard,jdbcType=VARCHAR}, 
+      #{productName,jdbcType=VARCHAR}, #{borrowProductName,jdbcType=VARCHAR}, #{borrowAmount,jdbcType=DOUBLE}, 
+      #{initAmount,jdbcType=DOUBLE}, #{amount,jdbcType=DOUBLE}, #{leftAmount,jdbcType=DOUBLE}, 
+      #{borrowId,jdbcType=VARCHAR}, #{borrowTransNo,jdbcType=VARCHAR}, #{borrowApplyTime,jdbcType=TIMESTAMP}, 
+      #{time,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{channel,jdbcType=VARCHAR}, 
+      #{isRepay,jdbcType=VARCHAR}, #{repayTime,jdbcType=TIMESTAMP}, #{borrowerCreditAmount,jdbcType=DOUBLE}, 
+      #{borrowerBorrowNum,jdbcType=INTEGER}, #{borrowerTotalAmount,jdbcType=DOUBLE}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsLoanRelativeRecord" >
+    insert into bs_loan_relative_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="propertySymbol != null" >
+        property_symbol,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="buyTime != null" >
+        buy_time,
+      </if>
+      <if test="lenderCustomerId != null" >
+        lender_customer_id,
+      </if>
+      <if test="lenderIdCard != null" >
+        lender_id_card,
+      </if>
+      <if test="lenderName != null" >
+        lender_name,
+      </if>
+      <if test="borrowerCustomerId != null" >
+        borrower_customer_id,
+      </if>
+      <if test="borrowerIdCard != null" >
+        borrower_id_card,
+      </if>
+      <if test="borrowerName != null" >
+        borrower_name,
+      </if>
+      <if test="borrowerBankcard != null" >
+        borrower_bankcard,
+      </if>
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="borrowProductName != null" >
+        borrow_product_name,
+      </if>
+      <if test="borrowAmount != null" >
+        borrow_amount,
+      </if>
+      <if test="initAmount != null" >
+        init_amount,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="leftAmount != null" >
+        left_amount,
+      </if>
+      <if test="borrowId != null" >
+        borrow_id,
+      </if>
+      <if test="borrowTransNo != null" >
+        borrow_trans_no,
+      </if>
+      <if test="borrowApplyTime != null" >
+        borrow_apply_time,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="channel != null" >
+        channel,
+      </if>
+      <if test="isRepay != null" >
+        is_repay,
+      </if>
+      <if test="repayTime != null" >
+        repay_time,
+      </if>
+      <if test="borrowerCreditAmount != null" >
+        borrower_credit_amount,
+      </if>
+      <if test="borrowerBorrowNum != null" >
+        borrower_borrow_num,
+      </if>
+      <if test="borrowerTotalAmount != null" >
+        borrower_total_amount,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="propertySymbol != null" >
+        #{propertySymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="buyTime != null" >
+        #{buyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lenderCustomerId != null" >
+        #{lenderCustomerId,jdbcType=VARCHAR},
+      </if>
+      <if test="lenderIdCard != null" >
+        #{lenderIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="lenderName != null" >
+        #{lenderName,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowerCustomerId != null" >
+        #{borrowerCustomerId,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowerIdCard != null" >
+        #{borrowerIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowerName != null" >
+        #{borrowerName,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowerBankcard != null" >
+        #{borrowerBankcard,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowProductName != null" >
+        #{borrowProductName,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowAmount != null" >
+        #{borrowAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="initAmount != null" >
+        #{initAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="leftAmount != null" >
+        #{leftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="borrowId != null" >
+        #{borrowId,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowTransNo != null" >
+        #{borrowTransNo,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowApplyTime != null" >
+        #{borrowApplyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="channel != null" >
+        #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="isRepay != null" >
+        #{isRepay,jdbcType=VARCHAR},
+      </if>
+      <if test="repayTime != null" >
+        #{repayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="borrowerCreditAmount != null" >
+        #{borrowerCreditAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="borrowerBorrowNum != null" >
+        #{borrowerBorrowNum,jdbcType=INTEGER},
+      </if>
+      <if test="borrowerTotalAmount != null" >
+        #{borrowerTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsLoanRelativeRecordExample" resultType="java.lang.Integer" >
+    select count(*) from bs_loan_relative_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_loan_relative_record
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.propertySymbol != null" >
+        property_symbol = #{record.propertySymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="record.customerId != null" >
+        customer_id = #{record.customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderNo != null" >
+        order_no = #{record.orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buyTime != null" >
+        buy_time = #{record.buyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lenderCustomerId != null" >
+        lender_customer_id = #{record.lenderCustomerId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lenderIdCard != null" >
+        lender_id_card = #{record.lenderIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lenderName != null" >
+        lender_name = #{record.lenderName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.borrowerCustomerId != null" >
+        borrower_customer_id = #{record.borrowerCustomerId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.borrowerIdCard != null" >
+        borrower_id_card = #{record.borrowerIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.borrowerName != null" >
+        borrower_name = #{record.borrowerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.borrowerBankcard != null" >
+        borrower_bankcard = #{record.borrowerBankcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productName != null" >
+        product_name = #{record.productName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.borrowProductName != null" >
+        borrow_product_name = #{record.borrowProductName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.borrowAmount != null" >
+        borrow_amount = #{record.borrowAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.initAmount != null" >
+        init_amount = #{record.initAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.leftAmount != null" >
+        left_amount = #{record.leftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.borrowId != null" >
+        borrow_id = #{record.borrowId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.borrowTransNo != null" >
+        borrow_trans_no = #{record.borrowTransNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.borrowApplyTime != null" >
+        borrow_apply_time = #{record.borrowApplyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channel != null" >
+        channel = #{record.channel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isRepay != null" >
+        is_repay = #{record.isRepay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.repayTime != null" >
+        repay_time = #{record.repayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.borrowerCreditAmount != null" >
+        borrower_credit_amount = #{record.borrowerCreditAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.borrowerBorrowNum != null" >
+        borrower_borrow_num = #{record.borrowerBorrowNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.borrowerTotalAmount != null" >
+        borrower_total_amount = #{record.borrowerTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_loan_relative_record
+    set id = #{record.id,jdbcType=INTEGER},
+      property_symbol = #{record.propertySymbol,jdbcType=VARCHAR},
+      customer_id = #{record.customerId,jdbcType=VARCHAR},
+      order_no = #{record.orderNo,jdbcType=VARCHAR},
+      buy_time = #{record.buyTime,jdbcType=TIMESTAMP},
+      lender_customer_id = #{record.lenderCustomerId,jdbcType=VARCHAR},
+      lender_id_card = #{record.lenderIdCard,jdbcType=VARCHAR},
+      lender_name = #{record.lenderName,jdbcType=VARCHAR},
+      borrower_customer_id = #{record.borrowerCustomerId,jdbcType=VARCHAR},
+      borrower_id_card = #{record.borrowerIdCard,jdbcType=VARCHAR},
+      borrower_name = #{record.borrowerName,jdbcType=VARCHAR},
+      borrower_bankcard = #{record.borrowerBankcard,jdbcType=VARCHAR},
+      product_name = #{record.productName,jdbcType=VARCHAR},
+      borrow_product_name = #{record.borrowProductName,jdbcType=VARCHAR},
+      borrow_amount = #{record.borrowAmount,jdbcType=DOUBLE},
+      init_amount = #{record.initAmount,jdbcType=DOUBLE},
+      amount = #{record.amount,jdbcType=DOUBLE},
+      left_amount = #{record.leftAmount,jdbcType=DOUBLE},
+      borrow_id = #{record.borrowId,jdbcType=VARCHAR},
+      borrow_trans_no = #{record.borrowTransNo,jdbcType=VARCHAR},
+      borrow_apply_time = #{record.borrowApplyTime,jdbcType=TIMESTAMP},
+      time = #{record.time,jdbcType=TIMESTAMP},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      channel = #{record.channel,jdbcType=VARCHAR},
+      is_repay = #{record.isRepay,jdbcType=VARCHAR},
+      repay_time = #{record.repayTime,jdbcType=TIMESTAMP},
+      borrower_credit_amount = #{record.borrowerCreditAmount,jdbcType=DOUBLE},
+      borrower_borrow_num = #{record.borrowerBorrowNum,jdbcType=INTEGER},
+      borrower_total_amount = #{record.borrowerTotalAmount,jdbcType=DOUBLE},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsLoanRelativeRecord" >
+    update bs_loan_relative_record
+    <set >
+      <if test="propertySymbol != null" >
+        property_symbol = #{propertySymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="buyTime != null" >
+        buy_time = #{buyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lenderCustomerId != null" >
+        lender_customer_id = #{lenderCustomerId,jdbcType=VARCHAR},
+      </if>
+      <if test="lenderIdCard != null" >
+        lender_id_card = #{lenderIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="lenderName != null" >
+        lender_name = #{lenderName,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowerCustomerId != null" >
+        borrower_customer_id = #{borrowerCustomerId,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowerIdCard != null" >
+        borrower_id_card = #{borrowerIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowerName != null" >
+        borrower_name = #{borrowerName,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowerBankcard != null" >
+        borrower_bankcard = #{borrowerBankcard,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowProductName != null" >
+        borrow_product_name = #{borrowProductName,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowAmount != null" >
+        borrow_amount = #{borrowAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="initAmount != null" >
+        init_amount = #{initAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="leftAmount != null" >
+        left_amount = #{leftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="borrowId != null" >
+        borrow_id = #{borrowId,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowTransNo != null" >
+        borrow_trans_no = #{borrowTransNo,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowApplyTime != null" >
+        borrow_apply_time = #{borrowApplyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="channel != null" >
+        channel = #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="isRepay != null" >
+        is_repay = #{isRepay,jdbcType=VARCHAR},
+      </if>
+      <if test="repayTime != null" >
+        repay_time = #{repayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="borrowerCreditAmount != null" >
+        borrower_credit_amount = #{borrowerCreditAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="borrowerBorrowNum != null" >
+        borrower_borrow_num = #{borrowerBorrowNum,jdbcType=INTEGER},
+      </if>
+      <if test="borrowerTotalAmount != null" >
+        borrower_total_amount = #{borrowerTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsLoanRelativeRecord" >
+    update bs_loan_relative_record
+    set property_symbol = #{propertySymbol,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      buy_time = #{buyTime,jdbcType=TIMESTAMP},
+      lender_customer_id = #{lenderCustomerId,jdbcType=VARCHAR},
+      lender_id_card = #{lenderIdCard,jdbcType=VARCHAR},
+      lender_name = #{lenderName,jdbcType=VARCHAR},
+      borrower_customer_id = #{borrowerCustomerId,jdbcType=VARCHAR},
+      borrower_id_card = #{borrowerIdCard,jdbcType=VARCHAR},
+      borrower_name = #{borrowerName,jdbcType=VARCHAR},
+      borrower_bankcard = #{borrowerBankcard,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      borrow_product_name = #{borrowProductName,jdbcType=VARCHAR},
+      borrow_amount = #{borrowAmount,jdbcType=DOUBLE},
+      init_amount = #{initAmount,jdbcType=DOUBLE},
+      amount = #{amount,jdbcType=DOUBLE},
+      left_amount = #{leftAmount,jdbcType=DOUBLE},
+      borrow_id = #{borrowId,jdbcType=VARCHAR},
+      borrow_trans_no = #{borrowTransNo,jdbcType=VARCHAR},
+      borrow_apply_time = #{borrowApplyTime,jdbcType=TIMESTAMP},
+      time = #{time,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      channel = #{channel,jdbcType=VARCHAR},
+      is_repay = #{isRepay,jdbcType=VARCHAR},
+      repay_time = #{repayTime,jdbcType=TIMESTAMP},
+      borrower_credit_amount = #{borrowerCreditAmount,jdbcType=DOUBLE},
+      borrower_borrow_num = #{borrowerBorrowNum,jdbcType=INTEGER},
+      borrower_total_amount = #{borrowerTotalAmount,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+   <select id="selectByAccountIdProName" parameterType="java.util.Map" resultMap="BaseResultMap" >
+	select a.* from bs_loan_relative_record a,dafy_user_ext b, bs_account c
+	where a.lender_customer_id = b.dafy_user_id and b.user_id = c.user_id 
+	and c.id = #{accountId} and a.left_amount > 0 
+	and a.product_name = #{productName} and is_repay='N' 
+	ORDER BY a.left_amount asc;
+  </select>
+  
+  <select id="selectBySubAccountId" parameterType="java.util.Map" resultMap="BaseResultMap" >
+	select a.* from bs_loan_relative_record a,bs_batch_buy b,bs_batch_buy_detail c
+	where c.sub_account_id=#{subAccountId} and c.batch_id = b.id 
+	and b.send_batch_id = a.order_no
+	<if test="isRepay != null">
+	and a.is_repay =#{isRepay}
+	</if>   
+	and a.left_amount>0 
+	ORDER BY a.left_amount asc;
+  </select>
+  
+  <select id="selectByBuyTime" parameterType="java.util.Map" resultMap="BaseResultMap" >
+  	select id,left_amount,buy_time from bs_loan_relative_record 
+	where buy_time between #{buyTimeStart} and #{buyTimeEnd} 
+	and is_repay = 'N' and left_amount >0 
+	and property_symbol = #{propertySymbol}
+	order by left_amount desc
+  </select>
+  
+  
+  <resultMap id="BsLoanRelativeAmountChangeResultMapVO" type="com.pinting.business.model.vo.BsLoanRelativeAmountChangeVO" >
+  	<id column="id" property="id" jdbcType="INTEGER" />
+    <result column="loan_relative_id" property="loanRelativeId" jdbcType="INTEGER" />
+    <result column="before_amount" property="beforeAmount" jdbcType="DOUBLE" />
+    <result column="after_amount" property="afterAmount" jdbcType="DOUBLE" />
+    <result column="repay_amount" property="repayAmount" jdbcType="DOUBLE" />
+    <result column="deal_status" property="dealStatus" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  
+    <result column="borrower_customer_id" property="borrowerCustomerId" jdbcType="VARCHAR" />
+    <result column="borrower_id_card" property="borrowerIdCard" jdbcType="VARCHAR" />
+    <result column="borrower_name" property="borrowerName" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="borrow_amount" property="borrowAmount" jdbcType="DOUBLE" />
+    <result column="init_amount" property="initAmount" jdbcType="DOUBLE" />
+    <result column="borrow_id" property="borrowId" jdbcType="VARCHAR" />
+    <result column="borrow_trans_no" property="borrowTransNo" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="is_repay" property="isRepay" jdbcType="VARCHAR" />
+    <result column="repay_time" property="repayTime" jdbcType="TIMESTAMP" />
+    <result column="property_symbol" property="propertySymbol" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectByExamplePage" resultMap="BsLoanRelativeAmountChangeResultMapVO" parameterType="map" >
+    SELECT 
+		a.*, b.borrower_customer_id, b.borrower_id_card, b.borrower_name, 
+		b.product_name, b.borrow_amount, b.init_amount, b.borrow_id, b.borrow_trans_no, 
+		b.time, b.is_repay, b.repay_time
+	FROM 
+		bs_loan_relative_amount_change AS a 
+		LEFT JOIN bs_loan_relative_record b ON a.loan_relative_id = b.id
+	ORDER BY a.id DESC
+    LIMIT #{start}, #{numPerPage}
+  </select>
+  
+  <!-- 未拉取的数据 -->
+  <select id="selectNoPull" resultMap="BsLoanRelativeAmountChangeResultMapVO" parameterType="map" >
+    SELECT 
+		a.id, b.borrower_customer_id, b.borrow_id
+	FROM 
+		bs_loan_relative_amount_change AS a 
+		LEFT JOIN bs_loan_relative_record b ON a.loan_relative_id = b.id 
+		where a.is_pull_detail='NO' limit 1, 1000
+  </select>
+  
+  
+   <select id="selectByChannelSymbolPage" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+		id, property_symbol, customer_id, order_no, buy_time, lender_customer_id, lender_id_card, 
+    lender_name, borrower_customer_id, borrower_id_card, 
+    product_name, borrow_amount, init_amount, amount, left_amount, 
+    borrow_id, borrow_trans_no, borrow_apply_time, time, channel, is_repay
+	FROM 
+		bs_loan_relative_record b 
+	where property_symbol = #{propertySymbol}
+	and channel=#{channel}
+	and is_repay =#{isRepay}
+    LIMIT #{start}, #{numPerPage}
+  </select>
+  
+  
+  <select id="countByChannelSymbol" resultType="java.lang.Integer" parameterType="map" >
+    SELECT 
+		COUNT(id)
+	FROM 
+		bs_loan_relative_record b 
+	where property_symbol = #{propertySymbol}
+	and channel=#{channel}
+	and is_repay =#{isRepay}
+  </select>
+</mapper>

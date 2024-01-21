@@ -1,0 +1,238 @@
+## 已绑卡
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/regular/balance_buy.min")
+#WeChatShare()
+#Head("end")
+<body>
+<!-- 头部 -->
+<div class="header">
+    <a class="header_arrow" onclick="historyGoBankClick()"></a>
+    <h1 class="heade_ft color_bg">$!name</h1>
+</div>
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<form id="submitForm" method="get">
+    <input type="hidden" id="id" name="id" value="$!id" />
+    <input type="hidden" id="name" name="name" value="$!name" />
+    <input type="hidden" id="rate" name="rate" value="$!rate" />
+    <input type="hidden" id="term" name="term" value="$!term" />
+    <input type="hidden" id="minInvestAmount" name="minInvestAmount" value="$!minInvestAmount" />
+    <input type="hidden" id="balance" name="balance" value="$!balance" />
+    <input type="hidden" id="regMobile" name="regMobile" value="$!regMobile" />
+    <input type="hidden" id="alreadyUse" name="alreadyUse" value="$!alreadyUse" />
+    <input type="hidden" id="qianbao" name="qianbao" value="$!qianbao" />
+    <input type="hidden" id="micro_token" name="" value="$!token" />
+    <input type="hidden" id="redPacketId" name="redPacketId" value="$!redPacketId" />
+    <!-- 是否选择红包 -->
+    <input type="hidden" id="useFlag" name="useFlag" value="$!useFlag" />
+    <input type='hidden' name='amount' value="$!amount" id="amount_pre"/>
+    <input type="hidden" id="productId" name="productId" value="$!id" />
+    <input type="hidden" id="proLimitAmout" name="proLimitAmout" value="$!proLimitAmout" />
+    <input type="hidden" id="maxSingleInvestAmount" name="maxSingleInvestAmount" value="$!maxSingleInvestAmount" />
+    <input type="hidden" id="isSupportRedPacket" name="isSupportRedPacket" value="$!isSupportRedPacket">
+	<input type="hidden" id="isSupportInterestTicket" name="isSupportInterestTicket" value="$!isSupportInterestTicket">
+    <input type="hidden" id="isBindCard" name="isBindCard" value="$!isBindCard">
+    <input type="hidden" id="propertySymbol" name="propertySymbol" value="$!propertySymbol">
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+    <input type="hidden" id="propertyType" name="propertyType" value="$!propertyType">
+	<input type="hidden" id="type" name="type" value="$!type" />
+</form>
+<input type="hidden" id="ticketList" name="ticketList" value='$!ticketList' />
+<input type="hidden" id="monthTerm" name="monthTerm" value="$!term">
+
+<!-- main -->
+<div class="main">
+	<div class="card_wp">
+		<div class="card_money">
+			<div class="card_ti">				
+				<span class="leftmo leftmo_line">
+					剩余可投：
+					<i class="leftmo_color">
+					#if($!proLimitAmout >= 10000)
+						#if($!proLimitAmout %10000 >0 && $!proLimitAmout %1000>0)
+							#set($surplusAmount = $!proLimitAmout/10000)
+							$!number.format("0.00",$surplusAmount)万
+						#elseif($!proLimitAmout %10000 >0 && $!proLimitAmout %1000==0)
+							#set($surplusAmount = $!proLimitAmout/10000)
+							$!number.format("0.0",$surplusAmount)万
+						#else
+							#set($surplusAmount = $!proLimitAmout/10000)
+							$!number.format("0",$surplusAmount)万
+						#end
+					#elseif($!proLimitAmout >=100 && $!proLimitAmout <10000)
+						$!number.format("0",$!proLimitAmout)元
+					#else
+						0 元
+					#end
+					</i>
+				</span>
+                <span class="leftmo">
+					起投金额：
+					<i class="leftmo_color">
+					#if($!minInvestAmount >= 10000)
+						#if($!minInvestAmount %10000 >0 && $!minInvestAmount %1000>0)
+							#set($mAmount = $!minInvestAmount/10000)
+							$!number.format("0.00",$mAmount)万
+						#elseif($!minInvestAmount %10000 >0 && $!minInvestAmount %1000==0)
+							#set($mAmount = $!minInvestAmount/10000)
+							$!number.format("0.0",$mAmount)万
+						#else
+							#set($mAmount = $!minInvestAmount/10000)
+							$!number.format("0",$mAmount)万
+						#end
+					#elseif($!minInvestAmount >=100 && $!minInvestAmount <10000)
+						$!number.format("0",$!minInvestAmount)元
+					#else
+						0 元
+					#end
+					</i>
+				</span>
+            </div>
+        </div>
+        <div class="balance">
+            <div class="card_ba">
+				存管账户余额
+                <span class="cor_orange">
+                    #if($!balance)
+                        $!money.format($!balance)元
+                    #else
+                        0元
+                    #end
+                </span>
+                <div class="sect_two go_top_up">
+                    <span class="right_buy">充值</span>
+					<span class="pr_timg"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="buy_money">
+        <div class="title_money">加入金额</div>
+        <input class="money_ipt" maxlength="9" type="tel" name="amount" id="amount" value="$!number.format('0',$!amount)" placeholder="请输入100元整数倍">
+		<div class="money_info">
+            <div class="info_left">
+                <span class="ft_gray" id="show_text">预期收益</span><span class="ft_orange" id="lixi"></span><span id="money_type" class="money_type">元</span>
+            </div>
+            <!--<div class="info_right">
+                <span class="ft_gray"></span> <span class="ft_orange"></span>
+            </div>-->
+		</div>
+	</div>
+    <div class="pack" id="red_packet_span">
+        <span class="pack_1">使用优惠券</span>
+        <span class="pack_2" id="red_packet_name">
+            #if($!isSupportRedPacket == "TRUE"||$!isSupportInterestTicket == "TRUE")
+                <span id="text_red_packet">无可用优惠券</span>
+				<span class="text_red_packet"></span>
+            #else
+                <span id="text_red_packet">无可用优惠券</span>
+            #end
+			<div class="pack_3"><span id="full"></span><span id="text_red_packet2"></span><span id="subtract"></span></div>
+			<div class="pack_number"><span class="right_buy"></span><span class="pr_timg"></span></div>
+		</span>
+        
+    </div>
+	<div class="pack_min_txt"><i class="pack_min_txt1"></i><span class="pack_min_txt_color"></span><i class="pack_min_txt2"></i></div>
+    <div class="Exit_login btn_bgNO confirm_buy_btn">确认加入</div>
+    <div class="rech_yes">
+        <p>点击确认加入即代表您同意</p>
+		<p class="rech_ok_p">
+		#if("$!qianbao" == "qianbao")
+			#if($!propertySymbol == "ZAN")
+                <a class="rech_ok" onclick="clickEntrustBuyAgreement()">《自动出借计划协议》</a>
+            #elseif($!propertySymbol == "ZSD")
+                <a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/financial')?propertyType=$!propertyType&qianbao=qianbao&propertySymbol=$!propertySymbol&agentViewFlag=$!agentViewFlag&id=$!id">《出借咨询与服务协议》</a>
+			#else
+                <a class="rech_ok" onclick="clickAgreementFinancial()">《授权委托书》</a>
+			#end
+			##风险提示
+            <a class="rech_ok" onclick="clickriskWarningInfo()">《风险提示》</a>
+            ##<a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/pay')?qianbao=qianbao">《支付协议》、</a>
+            ##<a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/account')?qianbao=qianbao">《账户服务协议》</a>
+		#else
+			#if($!propertySymbol == "ZAN")
+                <a class="rech_ok" onclick="clickEntrustBuyAgreement()">《自动出借计划协议》</a>
+            #elseif($!propertySymbol == "ZSD")
+                <a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/financial')?propertyType=$!propertyType&qianbao=qianbao&propertySymbol=$!propertySymbol&agentViewFlag=$!agentViewFlag&id=$!id">《出借咨询与服务协议》</a>
+            #else
+                <a class="rech_ok" onclick="clickAgreementFinancial()">《授权委托书》</a>
+			#end
+			##风险提示
+            <a class="rech_ok" onclick="clickriskWarningInfo()">《风险提示》</a>
+
+            ##<a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/pay')">《支付协议》、</a>
+            ##<a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/account')">《账户服务协议》</a>
+		#end			
+		</p>
+    </div>
+</div>
+
+<!-- 弹窗 -->
+<div id="explain" class="dialog_flex alert_hide">
+    <div class="alert_info_new">
+        <div class="alert_title">可用余额不足</div>
+        <ul class="alert_ul">
+            <li class="alert_list">
+                计划加入金额：<span id="promot_amount"></span> 元
+            </li>
+            <li class="alert_list" id="red_li">
+                红包抵扣：<span id="promot_red_amount"></span> 元
+            </li>
+            <li class="alert_list">
+                账户余额：<span id="promot_balance"></span> 元
+            </li>
+            <li class="alert_list weight_dark">
+                需充值金额：<span id="promot_top_up"></span> 元
+            </li>
+        </ul>
+        <div class="open-card-btn">
+			<div class="alert_btn right_btn left_bor">关闭</div>
+            <div class="alert_btn left_btn cor_orange go_top_up">充值</div>            
+        </div>
+    </div>
+</div>
+<div id="paylog" class="dialog_flex alert_hide">
+    <div class="deposit_dialog">
+        <h3 class="deposit_info_title">验证信息</h3>
+        <div class="yz_info"><br></div>
+        <div class="yz_warp">
+            <input class="pass_input" type="text" name="verifyCode" maxlength="4" id="verifyCode" value="" placeholder="请输入短信验证码">
+            <div class="phone_time">重发(<span>60</span>)</div>
+        </div>
+		<div class="open-card-btn">
+			<i class="close">取消</i>
+			<a class="down_ok" href="javascript:void(0)" title=""><div>确定</div></a>
+		</div>
+    </div>
+</div>
+<input type="hidden" id="redPacketList" name="redPacketList" value='$!redPacketList' />
+#LoadJS("resources/micro2.0/scripts/regular/regular_product_bind")
+#LoadJS("resources/micro2.0/scripts/common/common")
+<script>
+    var propertySymbol = $("#propertySymbol").val();
+    if(propertySymbol == "ZAN") {
+        function historyGoBankClick(){
+			var qianbao = $('#qianbao').val();
+            if(qianbao) {
+				location.href = $("#APP_ROOT_PATH").val() + "/micro2.0/regular/list?qianbao=qianbao&zanProductFlag=ZANPRODUCTFLAG";
+            } else {
+				location.href = $("#APP_ROOT_PATH").val() + "/micro2.0/regular/list?zanProductFlag=ZANPRODUCTFLAG";
+            }
+        }
+    }else {
+        function historyGoBankClick(){
+            var qianbao = $('#qianbao').val();
+            if(qianbao) {
+                location.href = $("#APP_ROOT_PATH").val() + "/micro2.0/regular/list?qianbao=qianbao";
+            } else {
+                location.href = $("#APP_ROOT_PATH").val() + "/micro2.0/regular/list";
+            }
+        }
+    }
+
+</script>
+</body>
+#Html("end")

@@ -1,0 +1,43 @@
+<div class="pageContent">
+	<form method="post" name="detail_form" action="$env.getWebURL('/sys/redisCache/refreshCachekeyExpire.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+        <div class="pageFormContent" layoutH="56">
+            <input name="cacheKey" id="cacheKey" type="hidden" value="$!{cacheKeyVO.cacheKey}" readonly/>
+            <p style="width: auto">
+                <label>缓存key值：</label>
+                <input name="cache" id="cache" size="40" type="text" value="$!{cacheKeyVO.cache}" readonly/>
+            </p>
+            <p style="height: auto">
+                <label>缓存描述：</label>
+                <textarea name="desc" id="desc" rows="3" cols="30"  type="text" readonly>$!{cacheKeyVO.desc}</textarea>
+            </p>
+
+            <p>
+                <label>缓存失效时间(秒)：</label>
+                <input type="text" name="expire" id="expire" value="$!{cacheKeyVO.expire}" onkeyup="value=value.replace(/((^\s*)[^\d]*)|([^\d]*(\s*$))/g,'')" class="required number" maxlength="9" />
+            </p>
+            <p>
+                <label>缓存状态：</label>
+                <input name="status" id="status" type="text" value="#if($!cacheKeyVO.status) 已启用 #else 已关闭 #end" readonly/>
+            </p>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+                <li>
+                    <div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+                </li>
+            </ul>
+        </div>
+	</form>
+</div>
+<script>
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "200") {
+			alertMsg.correct('设置失效时间成功!');
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('sys/redisCache/index.htm')");
+		} else {
+			alertMsg.error('设置失效时间失败!');
+		}
+	}
+</script>

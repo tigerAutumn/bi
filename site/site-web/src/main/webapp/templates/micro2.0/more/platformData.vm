@@ -1,0 +1,401 @@
+#Html("begin")
+#Head("begin","平台数据,币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("平台数据【币港湾官网】")
+#WeChatShare()
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/more/data_index.min")
+#LoadGenJS("/resources/micro2.0/scripts/more/tools")
+#Head("end")
+<body>
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')">
+    <div class="header">
+    	<a class="header_arrow" href="javascript:history.go(-1)"></a>
+    	<h1 class="heade_ft oran_color">平台数据</h1>
+    </div>   
+    <div class="data_small_wp">
+		<div class="slide1_tt"><span class="pr_tline"></span>平台运营概况</div>
+		<div class="data_center">截止  
+			#if($!result.firstTime)
+				$!result.firstTime
+			#else
+				--
+			#end			
+		</div>
+		##<div class="data_clock"></div>
+		<div class="flex_div flex_copy">
+    		<div class="list_win list_copy1">
+                <div class="data_title">平台已安全运营（天）</div>
+                <div class="data_title_number data" id="operate_days">
+					#if($!money.format($!result.operatingDays).substring(0,$!money.format($!result.operatingDays).indexOf(".")))
+						$!money.format($!result.operatingDays).substring(0,$!money.format($!result.operatingDays).indexOf("."))						
+					#else
+						--
+					#end
+				</div>
+            </div>  
+			<div class="list_win list_copy2">
+                <div class="data_title">累计成交额（元）</div>
+                <div class="data_title_number data">
+					#if($!money.format($!totalInvestAmount))
+						$!money.format($!totalInvestAmount)
+					#else
+						--
+					#end
+				</div>
+            </div>
+		</div>
+        <div class="flex_div flex_copy border_none">			
+			<div class="list_win list_copy1">
+                <div class="data_title">累计出借额（元）</div>
+                <div class="data_title_number data" id="url_1">
+					#if($!money.format($!result.totalLoanAmount))
+						$!money.format($!result.totalLoanAmount)
+					#else
+						--
+					#end
+				</div>
+			</div>
+            <div class="list_win list_copy2">
+                <div class="data_title">累计收益额（元）</div>
+                <div class="data_title_number data">
+					#if($!money.format($!totalInterestAmount))
+						$!money.format($!totalInterestAmount)
+					#else
+						--
+					#end
+				</div>
+            </div>
+        </div>
+    </div>
+    <div class="data_main">
+		<div class="slide1_tt"><span class="pr_tline"></span>成交及出借数据统计</div>
+		<div class="data_center data_center_copy">截止 
+			#if($!result.secondTime)
+				$!result.secondTime
+			#else
+				--
+			#end
+		</div>
+    	<div class="data_wrap">
+    		<div id="data_one" investMonthArray='$!investMonthArray' investAmountMonthArray='$!investAmountMonthArray'></div>
+    		<div id="data_five" productNameArray='$!productNameArray' productAmountArray='$!productAmountArray'></div>
+    		<div id="data_six" totalInterestAmount='$!totalInterestAmount' investInterestWill='$!investInterestWill'></div>
+    		##if("$!qianbao"=="qianbao")
+    			##<div id="data_seven" averageInvestRate="$!averageInvestRate178"></div>
+    		##else
+    			##<div id="data_seven" averageInvestRate="$!averageInvestRateNormal"></div>
+    		##end           
+    	</div>
+		<div class="flex_div flex_copy">
+			<div class="list_win list_copy1">
+				<div class="data_title">自成立以来累计借贷金额（元）</div>
+				<div class="data_title_number data" id="url_2">
+					#if($!money.format($!result.totalLoanAmount))
+						$!money.format($!result.totalLoanAmount)
+					#else
+						--
+					#end
+				</div>
+			</div>
+			<div class="list_win list_copy2">
+				<div class="data_title">自成立以来累计借贷笔数</div>
+				<div class="data_title_number data" id="url_3">
+					#if($!money.format($!result.totalLoanNumber).substring(0,$!money.format($!result.totalLoanNumber).indexOf(".")))
+						$!money.format($!result.totalLoanNumber).substring(0,$!money.format($!result.totalLoanNumber).indexOf("."))
+					#else
+						--
+					#end
+				</div>
+			</div>
+		</div>
+		<div class="flex_div flex_copy">
+			<div class="list_win list_copy1">
+				<div class="data_title">当前待还借贷金额（元）</div>
+				<div class="data_title_number data" id="url_4">
+					#if($!money.format($!result.currentWaitRepayAmount))
+						$!money.format($!result.currentWaitRepayAmount)
+					#else
+						--
+					#end
+				</div>
+			</div>
+			<div class="list_win list_copy2">
+				<div class="data_title">当前待还借贷笔数</div>
+				<div class="data_title_number data" id="url_5">
+					#if($!money.format($!result.currentWaitRepayNumber).substring(0,$!money.format($!result.currentWaitRepayNumber).indexOf(".")))
+						$!money.format($!result.currentWaitRepayNumber).substring(0,$!money.format($!result.currentWaitRepayNumber).indexOf("."))
+					#else
+						--
+					#end					
+				</div>
+			</div>
+		</div>
+		<div class="flex_div flex_copy border_none">
+			<div class="list_win list_copy1">
+				<div class="data_title">关联关系借款余额（元）</div>
+				<div class="data_title_number data">
+					#if($!money.format($!result.relationBorrowerAmount))
+						$!money.format($!result.relationBorrowerAmount)
+					#else
+						--
+					#end
+				</div>
+			</div>
+			<div class="list_win list_copy2">
+				<div class="data_title">关联关系借款余额笔数</div>
+				<div class="data_title_number data">
+					#if($!money.format($!result.relationBorrowerNumber).substring(0,$!money.format($!result.relationBorrowerNumber).indexOf(".")))
+						$!money.format($!result.relationBorrowerNumber).substring(0,$!money.format($!result.relationBorrowerNumber).indexOf("."))
+					#else
+						--
+					#end
+				</div>
+			</div>
+		</div>
+    </div>
+	<div class="data_main">
+		<div class="slide1_tt"><span class="pr_tline"></span>用户数据统计</div>
+		<div class="data_center data_center_copy">截止   
+			#if($!result.thirdTime)
+				$!result.thirdTime		
+			#else
+				--
+			#end
+		</div>
+		<div class="data_title_txt">出借人</div>
+		<div class="flex_div flex_copy">
+			<div class="list_win list_copy1">
+				<div class="data_title">累计出借人数（人）</div>
+				<div class="data_title_number data" id="url_6">
+					#if($!money.format($!result.totalNumber).substring(0,$!money.format($!result.totalNumber).indexOf(".")))
+						$!money.format($!result.totalNumber).substring(0,$!money.format($!result.totalNumber).indexOf("."))
+					#else
+						--
+					#end
+				</div>
+			</div>
+			<div class="list_win list_copy2">
+				<div class="data_title">当期出借人数（人）</div>
+				<div class="data_title_number data" id="url_7">
+					#if($!money.format($!result.currentNumber).substring(0,$!money.format($!result.currentNumber).indexOf(".")))
+						$!money.format($!result.currentNumber).substring(0,$!money.format($!result.currentNumber).indexOf("."))
+					#else
+						--
+					#end
+				</div>
+			</div>
+		</div>
+		<div class="flex_div flex_copy">
+			<div class="list_win list_copy1">
+				<div class="data_title">人均累计出借金额（元）</div>
+				<div class="data_title_number data" id="url_num1">
+					#if($!money.format($!result.eachTotalAmount))
+						$!money.format($!result.eachTotalAmount)
+					#else
+						--
+					#end
+				</div>
+			</div>
+			<input type="hidden" id="url_8" value="">
+			<div class="list_win list_copy2">
+				<div class="data_title">前十大出借人出借余额占比：</div>
+				<div class="data_title_number data" id="url_num2">
+					#if($!money.format($!result.topTenAmtProportion))
+						$!money.format($!result.topTenAmtProportion)%
+					#else
+						--
+					#end
+				</div>
+			</div>			
+		</div>
+		<div class="flex_div flex_copy border_none">
+			<input type="hidden" id="url_9" value="">
+			<div class="list_win list_copy1">
+				<div class="data_title">最大单一出借人出借余额占比：</div>
+				<div class="data_title_number data" id="url_num3">
+					#if($!money.format($!result.topAmtProportion))
+						$!money.format($!result.topAmtProportion)%
+					#else
+						--
+					#end
+				</div>
+			</div>
+			<div class="list_win list_copy2">
+				<div class="data_title"></div>
+				<div class="data_title_number"></div>
+			</div>			
+		</div>
+		<div class="data_title_txt">借款人</div>
+		<div class="flex_div flex_copy">
+			<div class="list_win list_copy1">
+				<div class="data_title">累计借款人数（人）</div>
+				<div class="data_title_number data" id="url_10">
+					#if($!money.format($!result.totalBorrowerNumber).substring(0,$!money.format($!result.totalBorrowerNumber).indexOf(".")))
+						$!money.format($!result.totalBorrowerNumber).substring(0,$!money.format($!result.totalBorrowerNumber).indexOf("."))
+					#else
+						--
+					#end
+				</div>
+			</div>
+			<div class="list_win list_copy2">
+				<div class="data_title">当期借款人数（人）</div>
+				<div class="data_title_number data" id="url_11">
+					#if($!money.format($!result.currentBorrowerNumber).substring(0,$!money.format($!result.currentBorrowerNumber).indexOf(".")))
+						$!money.format($!result.currentBorrowerNumber).substring(0,$!money.format($!result.currentBorrowerNumber).indexOf("."))
+					#else
+						--
+					#end
+				</div>
+			</div>
+		</div>
+		<div class="flex_div flex_copy">
+			<div class="list_win list_copy1">
+				<div class="data_title">人均累计借款金额（元）</div>
+				<div class="data_title_number data" id="url_num4">
+					#if($!money.format($!result.eachBorrowerTotalAmount))
+						$!money.format($!result.eachBorrowerTotalAmount)
+					#else
+						--
+					#end
+				</div>
+			</div>
+			<input type="hidden" id="url_12" value="">
+			<div class="list_win list_copy2">
+				<div class="data_title">前十大借款人待还金额占比：</div>
+				<div class="data_title_number data" id="url_num5">
+					#if($!money.format($!result.topTenBorrowerAmtProportion))
+						$!money.format($!result.topTenBorrowerAmtProportion)%
+					#else
+						--
+					#end
+				</div>
+			</div>			
+		</div>
+		<div class="flex_div flex_copy border_none">
+			<input type="hidden" id="url_13" value="">
+			<div class="list_win list_copy1">
+				<div class="data_title">最大单一借款人待还金额占比：</div>
+				<div class="data_title_number data" id="url_num6">
+					#if($!money.format($!result.topBorrowerAmtProportion))
+						$!money.format($!result.topBorrowerAmtProportion)%
+					#else
+						--
+					#end
+				</div>
+			</div>
+			<div class="list_win list_copy2">
+				<div class="data_title"></div>
+				<div class="data_title_number"></div>
+			</div>			
+		</div>
+    	<div class="data_wrap">
+			<div id="data_age" investorTypeAgeArray='$!investorTypeAgeArray' investorTypeAgeValArray='$!investorTypeAgeValArray'></div>
+			<div id="data_sex" investorTypeSexArray='$!investorTypeSexArray' investorTypeSexValArray='$!investorTypeSexValArray'></div>
+		</div>
+	</div>
+	<div class="data_main">
+		<div class="slide1_tt"><span class="pr_tline"></span>逾期及代偿数据统计</div>
+		<div class="data_center">截止 
+			#if($!result.forthTime)
+				$!result.forthTime		
+			#else
+				--
+			#end
+		</div>
+		<div class="flex_div flex_copy">
+			<div class="list_win list_copy1">
+				<div class="data_title">出借人项目逾期率</div>
+				<div class="data_title_number data">
+					#if($!money.format($!result.projectOverdueRate))
+						$!money.format($!result.projectOverdueRate)%
+					#else
+						--
+					#end
+				</div>
+			</div>
+			<div class="list_win list_copy2">
+				<div class="data_title">出借人金额逾期率</div>
+				<div class="data_title_number data">
+					#if($!money.format($!result.amtOverdueRate))
+						$!money.format($!result.amtOverdueRate)%
+					#else
+						--
+					#end
+				</div>
+			</div>
+		</div>
+		<div class="flex_div flex_copy">
+			<div class="list_win list_copy1">
+				<div class="data_title">借款人逾期金额（元）</div>
+				<div class="data_title_number data" id="url_14">
+					#if($!money.format($!result.overdueAmount))
+						$!money.format($!result.overdueAmount)
+					#else
+						--
+					#end
+				</div>
+			</div>
+			<div class="list_win list_copy2">
+				<div class="data_title">借款人逾期笔数</div>
+				<div class="data_title_number data" id="url_15">
+					#if($!money.format($!result.overdueNumber).substring(0,$!money.format($!result.overdueNumber).indexOf(".")))
+						$!money.format($!result.overdueNumber).substring(0,$!money.format($!result.overdueNumber).indexOf("."))
+					#else
+						--
+					#end
+				</div>
+			</div>
+		</div>
+		<div class="flex_div flex_copy">
+			<div class="list_win list_copy1">
+				<div class="data_title">借款人逾期90天以上金额（元）</div>
+				<div class="data_title_number data" id="url_16">
+					#if($!money.format($!result.overdueNinnetyDaysAmount))
+						$!money.format($!result.overdueNinnetyDaysAmount)
+					#else
+						--
+					#end
+				</div>
+			</div>
+			<div class="list_win list_copy2">
+				<div class="data_title">借款人逾期90天以上笔数</div>
+				<div class="data_title_number data" id="url_17">
+					#if($!money.format($!result.overdueNinnetyDaysNumber).substring(0,$!money.format($!result.overdueNinnetyDaysNumber).indexOf(".")))
+						$!money.format($!result.overdueNinnetyDaysNumber).substring(0,$!money.format($!result.overdueNinnetyDaysNumber).indexOf("."))
+					#else
+						--
+					#end
+				</div>
+			</div>
+		</div>
+		<div class="flex_div flex_copy border_none">
+			<div class="list_win list_copy1">
+				<div class="data_title">累计代偿金额（元）</div>
+				<div class="data_title_number data" id="url_18">
+					#if($!money.format($!result.totalCompensatoryAmount))
+						$!money.format($!result.totalCompensatoryAmount)
+					#else
+						--
+					#end
+				</div>
+			</div>
+			<div class="list_win list_copy2">
+				<div class="data_title">累计代偿笔数</div>
+				<div class="data_title_number data" id="url_19">
+					#if($!money.format($!result.totalCompensatoryNumber).substring(0,$!money.format($!result.totalCompensatoryNumber).indexOf(".")))
+						$!money.format($!result.totalCompensatoryNumber).substring(0,$!money.format($!result.totalCompensatoryNumber).indexOf("."))
+					#else
+						--
+					#end
+				</div>
+			</div>
+		</div>
+	</div>
+#LoadJS("resources/micro2.0/scripts/assets/zepto.min")
+#LoadJS("resources/micro2.0/scripts/assets/custom")
+#LoadJS("resources/micro2.0/scripts/more/highcharts")
+#LoadJS("resources/micro2.0/scripts/more/data_index")
+</body>
+#Html("end")
+

@@ -1,0 +1,60 @@
+<div class="pageContent">
+    #Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+    <input id="applyId" type="hidden" value="$!applyId">
+    <input id="mUserId" type="hidden" value="$!mUserId">
+    <form id="confirmForm" method="post" action="$env.getWebURL('/bsuser/confirmChangeMobile.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+        <div class="pageFormContent nowrap" layoutH="97" >
+            <dl>
+                <dt >用户姓名：</dt>
+                <dd style="width:0px;">
+                    <input type="text" id="userName" name="userName" value="$!userName" disabled="disabled" style="width:245px; height:16px" />
+                </dd>
+            </dl>
+            <dl>
+                <dt >当前手机号：</dt>
+                <dd style="width:0px;">
+                    <input type="text" id="mobile" name="mobile" value="$!mobile" disabled="disabled" style="width:245px; height:16px" />
+                </dd>
+            </dl>
+            <dl>
+                <dt >申请更改为：</dt>
+                <dd style="width:0px;">
+                    <input type="text" id="newMobile" name="newMobile" value="$!newMobile" disabled="disabled" style="width:245px; height:16px" />
+                </dd>
+            </dl>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_confirmForm()">确认</button></div></div></li>
+            </ul>
+        </div>
+    </form>
+</div>
+<script>
+    function submit_confirmForm(){
+        var mUserId = $("#mUserId").val();
+        var applyId = $("#applyId").val();
+
+        jQuery.ajax({
+            url: $('#APP_ROOT_PATH').val() + '/bsuser/confirmChangeMobile.htm',
+            data:{
+                mUserId: mUserId,
+                applyId: applyId
+            },
+            type:'post',
+            success: function(data){
+                if(data.statusCode == "200") {
+                    alertMsg.correct('更改成功!');
+                    $.pdialog.closeCurrent();
+                    navTab.reload("$env.getWebURL('/bsuser/confirmChangeUserMobileIndex.htm')");
+                }else if(data.statusCode == "300") {
+                    alertMsg.warn(data.message);
+                    $.pdialog.closeCurrent();
+                }else {
+                    alertMsg.error('确认失败，请重试!');
+                }
+            }
+        });
+    }
+
+</script>

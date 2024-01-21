@@ -1,0 +1,74 @@
+<div class="pageContent">
+    #Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+
+    <div class="pageFormContent nowrap" layoutH="97">
+        <dl>
+            <dt>
+                借贷关系表id：
+            </dt>
+            <dd>
+                <input type="text" id="loan_relation_id" name="loan_relation_id" oninput="onlyInteger(this)" class="required"  style="width:200px;"  maxlength="12" />
+            </dd>
+        </dl>
+
+        <ul>
+            <li>
+                <div class="buttonActive">
+                    <div class="buttonContent"><button type="button" id="signature_btn">执行签章</button></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<script>
+
+    function onlyInteger(input_obj) {
+        input_obj.value = input_obj.value.replace(/\D/g,'');
+    }
+
+    $("#signature_btn").click(function(){
+        executionSignature();
+    });
+
+    function executionSignature() {
+        var loanRelationId = $("#loan_relation_id").val();
+
+        if(loanRelationId == '') {
+            alertMsg.error("借贷关系编号不能为空！");
+            return false;
+        }
+
+        $.ajax({
+            url : $('#APP_ROOT_PATH').val()+'/sys/zanExecutionSignature.htm',
+            type: 'post',
+            data: {
+                loanRelationId : loanRelationId
+            },
+            success: function(data) {
+                if (data.statusCode == '200') {
+                    alertMsg.info("赞分期债转协议签章成功");
+                } else {
+                    if(data.statusCode == '300'){
+                        if(data.message){
+                            alertMsg.error(data.message);
+                        } else {
+                            alertMsg.error("港湾航道堵塞，稍后再试吧~");
+                        }
+                    }else{
+                        if(data.message){
+                            alertMsg.error(data.message);
+                        } else {
+                            alertMsg.error("港湾航道堵塞，稍后再试吧~");
+                        }
+                    }
+                }
+            },
+            error: function(data) {
+                alertMsg.error("币港湾航道堵塞，稍后再试吧~");
+            }
+        });
+    }
+
+</script>

@@ -1,0 +1,135 @@
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+    <form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/bsuser/confirmChangeUserMobileIndex.htm')" method="post">
+        <input type="hidden" name="numPerPage" value="$!numPerPage" />
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="pageNum" value="$!pageNum" />
+        <input type="hidden" name="totalRows" value="$!totalRows" />
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        姓名：<input id="userName" type="text" name="userName" maxlength="20" value="$!userName" class="clear"/>
+                    </td>
+                    <td>
+                        注册手机号：<input id="mobile" type="text" name="mobile" maxlength="11" value="$!mobile" class="clear num" />
+                    </td>
+                    <td>
+                        绑卡手机号：<input id="cardMobile" type="text" name="cardMobile" maxlength="11" value="$!cardMobile" class="clear num" />
+                    </td>
+                    <td>
+                        最近操作日期：<input style="width:70px;" name="startTime" maxdate="{%y}-%M-{%d}"   type="text"  id="startTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!startTime)" />
+                        到
+                        <input style="width:70px;" name="endTime" maxdate="{%y}-%M-{%d}"  type="text"id="endTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!endTime)" />
+                    </td>
+                    <td>
+                        操作客服：<input id="mUser" type="text" name="mUser" maxlength="20" value="$!mUser" class="clear"/>
+                    </td>
+                    <td>
+                        <button  onclick="func()" type="button">查询</button>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <table class="table" width="1396" layoutH="95">
+        <thead>
+        <tr>
+            <th width="14%">姓名</th>
+            <th width="14%">注册手机号</th>
+            <th width="14%">绑卡手机号</th>
+            <th width="16%">最近操作时间</th>
+            <th width="14%">状态</th>
+            <th width="14%">操作</th>
+            <th width="14%">操作客服</th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach($grid in $confirmUserList)
+            <tr target="sid_user" rel="1">
+                <td>$!grid.userName</td>
+                <td>$!grid.mobile</td>
+                <td>$!grid.cardMobile</td>
+                <td>$!date.format($!grid.updateTime)</td>
+                <td>
+                    #if("$!grid.status"=="INIT")
+                        申请中
+                    #elseif("$!grid.status"=="SUCCESS")
+                        更改成功
+                    #elseif("$!grid.status"=="FAIL")
+                        新号码可用，恒丰未同步
+                    #end
+                </td>
+                <td>
+                    #if("$!grid.status"=="INIT" || "$!grid.status"=="FAIL")
+                        <a style="color:red;" onclick="confirmClick($!grid.applyId, $!grid.mobile, $!grid.newMobile, '$!grid.userName')">确认更改</a>
+                    #end
+                </td>
+                <td>$!grid.mUser</td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+                <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!totalRows条</span>
+        </div>
+
+        <div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+    </div>
+</div>
+#LoadJS("/resources/js/global_validate")
+<script>
+    //进入确认更改用户手机号页面
+    function confirmClick(applyId, mobile, newMobile, userName) {
+        var options = {mask:true,
+            width:510, height:300,
+            maxable: eval("true"),
+            resizable:eval("true")
+        };
+        $.pdialog.open("$env.getWebURL('/bsuser/confirmChangeUserMobileDetail.htm?applyId="+applyId+"&mobile="+mobile+"&newMobile="+newMobile+"&userName="+userName+"')",
+                "apply", "确认更改", options);
+    }
+
+    function func(){
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+
+        if(startTime != "" && endTime == ""){
+            alert("请输入结束时间！");
+            return false;
+        }
+        if(startTime == "" && endTime != ""){
+            alert("请输入开始时间！");
+            return false;
+        }
+        if(startTime != "" && endTime != ""){
+            var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(startTime.replace(/-/g,"/"));
+            if(result < 0){
+                alert("开始时间不能在结束时间之后！！");
+                return false;
+            }
+        }
+
+        var url = $("#APP_ROOT_PATH").val() + "/bsuser/confirmChangeUserMobileIndex.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+
+</script>

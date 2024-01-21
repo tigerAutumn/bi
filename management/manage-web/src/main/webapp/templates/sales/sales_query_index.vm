@@ -1,0 +1,136 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/sales/query/index.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+		<input type="hidden" id="queryFlag" name="queryFlag" value="DEFAULTPAGE" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						姓名：<input id="salesName" type="text" name="salesName" maxlength="20" value="$!salesName" class="clear"/>
+					</td>
+					<td >成交日期：<input name="startTime"   type="text"  id="startTime" class=" date textInput readonly" readonly="true" value="$!startTime" dateFmt="yyyy-MM-dd HH:mm:ss"/></td >
+					<td>到  &nbsp;&nbsp;&nbsp;&nbsp;
+						<input name="endTime" type="text" id="endTime" class=" date textInput readonly" readonly="true" value="$!endTime" dateFmt="yyyy-MM-dd HH:mm:ss"/>
+					</td>
+					<td>
+						<button  onclick="func()" type="button">查询</button>
+						<button  onclick="exp()" type="button">导出excel</button>
+					</td>
+				</tr>
+			</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="118">
+		<thead>
+			<tr>
+				<th width="80">序号</th>
+				<th width="120">姓名</th>
+				<th width="100">手机号码</th>
+				<th width="80">邀请码</th>
+				<th width="80">直接邀请客户</th>
+				<th orderfield="investment_user" class=#if("$!investment_user" != "") $!investment_user #else "asc" #end width="100">已投资客户</th>
+				<th orderfield="direct_money" class=#if("$!direct_money" != "") $!direct_money #else "asc" #end width="100">直接邀请金额</th>
+				<th orderfield="direct_annual_amount" class=#if("$!direct_annual_amount" != "") $!direct_annual_amount #else "asc" #end width="196">直接邀请年化金额</th>
+				<th width="80">间接邀请客户</th>
+				<th orderfield="indirect_money" class=#if("$!indirect_money" != "") $!indirect_money #else "asc" #end width="100">间接邀请金额</th>
+				<th orderfield="entry_time" class=#if("$!entry_time" != "") $!entry_time #else "asc" #end width="100">入职时间</th>
+				<th width="80">状态</th>
+				<th width="80">部门</th>
+				<th width="100">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($sales in $salesList)
+			<tr>
+				<td>$!sales.id</td>
+				<td>$!sales.salesName</td>
+				<td>$!sales.mobile</td>
+				<td>$!sales.inviteCode </td>
+				<td>
+					<a title="$!sales.salesName直接邀请客户" target="navTab" mask="true" href="$env.getWebURL('sales/directInviteUsers.htm?salesId=')$!sales.id" ><span style="color:#0000CC ">$!sales.directPeople</span></a>
+				</td>
+                <td>#if($!sales.investmentUser)$!sales.investmentUser
+    				#else 0
+    				#end
+				</td>
+				<td>
+					<a title="$!sales.salesName直接邀请投资" target="navTab" mask="true" href="$env.getWebURL('sales/user/index.htm?grade=1&id=')$!sales.id&salesName=$!sales.salesName" ><span style="color:#0000CC ">$!money.format($!sales.directMoney)</span></a>
+				</td>
+				<td>#if($!sales.directAnnualAmount) $!money.format($!sales.directAnnualAmount)
+    				#else 0.00
+    				#end
+				</td>
+				<td>$!sales.indirectPeople</td>
+				<td>
+					<a title="$!sales.salesName间接邀请客户" target="navTab" mask="true" href="$env.getWebURL('sales/user/index.htm?grade=2&id=')$!sales.id&salesName=$!sales.salesName" ><span style="color:#0000CC ">$!money.format($!sales.indirectMoney)</span></a>
+				</td>
+				<td>$!date.formatYYYYMMDD($!sales.entryTime) </td>
+				<td>
+					#if("$!sales.status" == 1)
+						 在职
+					#else
+						离职
+					#end
+				</td>
+				<td>$!sales.deptName</td>
+				<td>
+					#if($!sales.status == 1)
+						<a title="二维码" target="dialog" href="$env.getWebURL('/sales/sales/matrixImage.htm?id=')$!sales.id" class="btnLook" mask="true" rel="createBack" height="590" width="590">二维码</a>
+					#end
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+<script>
+
+function func(){
+	var beginTime = $("#startTime").val();
+	var overTime = $("#endTime").val();
+    if(beginTime != "" && overTime != ""){
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alertMsg.warn("开始时间不能在结束时间之后！");
+			return false;
+		}
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/sales/query/index.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+	var url = $("#APP_ROOT_PATH").val() + "/sales/xls.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+</script>

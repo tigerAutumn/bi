@@ -1,0 +1,118 @@
+<div class="pageContent">
+    #Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+    #Hidden("serverToken",$!serverToken)
+    <form id="financeHeadFeeForm" method="post" action="$env.getWebURL('/financial/yunHeadFeeTransfer.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+        <div class="pageFormContent nowrap" layoutH="97" >
+            <dl>
+                <dt >转账金额：</dt>
+                <dd style="width:0px;">
+                    <input type="text" id="amount" name="amount" maxlength="12" style="width:245px; height:16px" />元
+                </dd>
+
+            </dl>
+            <dl>
+                <dt >转出账户：</dt>
+                <dd style="width:0px;">
+                    <input type="text" id="sourceAccount" name="sourceAccount" value="自有子账户" disabled="disabled" style="width:245px; height:16px" />
+                </dd>
+            </dl>
+            <dl>
+                <dt >转入账户：</dt>
+                <select id="destAccount" name="destAccount" >
+                    <option value="YUN_HEAD_FEE_2_USER" #if("$!destAccount"=="YUN_HEAD_FEE_2_USER") selected  #end>$!yunHeadFee2User</option>
+                    <option value="ZSD_HEAD_FEE_2_USER" #if("$!destAccount"=="ZSD_HEAD_FEE_2_USER") selected  #end>$!zsdHeadFee2User</option>
+                </select>
+
+            </dl>
+            <dl>
+                <dt >
+                    备注信息：
+                </dt>
+                <dd style="width:100px;">
+                    <input type="text" id="note" name="note" maxlength="100" style="width:245px; height:16px" />
+                </dd>
+            </dl>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_financeHeadFeeForm()">提交</button></div></div></li>
+                <li>
+                    <div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+<script>
+
+    function submit_financeHeadFeeForm(){
+        var amount = $.trim($("#amount").val());
+        var note = $.trim($("#note").val());
+        var regAmount = /^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$/;
+
+        //转出账户
+        var destAccount = $("#destAccount option:selected");
+        var sourceAccount_value = $.trim(destAccount.val());//拿到选中项的值
+
+        if((amount == null || amount == "")){
+            alertMsg.warn("转账金额不能为空！");
+            return false;
+        }
+        if(!regAmount.test(amount)) {
+            alertMsg.warn("转账金额必须是正整数或者小数点后保留两位！");
+            return false;
+        }
+
+        var serverToken = $.trim($("#serverToken").val());
+
+        // 校验验证码发送次数
+        var root = $('#APP_ROOT_PATH').val();
+        $.post(root+"/financial/checkYunHeadFeeCodeCount.htm",{"amount":amount, "note":note},function(data){
+            if(data.statusCode == "200") {//手机发送次数 <= 5次
+                // 1、校验余额是否充足
+                var amount = $.trim($("#amount").val());
+                var note = $.trim($("#note").val());
+                var isEnoughAmount = "notEnoughAmount";
+
+                jQuery.ajax({
+                    url: $('#APP_ROOT_PATH').val() + '/financial/yunHeadFeeTransfer.htm',
+                    data:{
+                        amount: amount,
+                        token: serverToken,
+                        note: note,
+                        isEnoughAmount: isEnoughAmount,
+                        destAccount: sourceAccount_value
+                    },
+                    type:'post',
+                    success: function(data){
+                        if (data.statusCode == 302) {
+                            $("#serverToken").val(data.serverToken);
+                            alertMsg.warn("划出账户余额不足！");
+                            $.pdialog.closeCurrent();
+                        } else {
+                            // 2、金额充足发送验证码
+                            $.pdialog.closeCurrent();
+                            $("#serverToken").val(data.serverToken);
+                            $.pdialog.open("$env.getWebURL('/financial/yunHeadFeeCode.htm?note="+note+"&amount="+amount+"&destAccount="+sourceAccount_value+"')",
+                                    "topUp", "输入验证码","width:100px,height:100px,max:true,mask:true,mixable:true,minable:true,resizable:true,drawable:true,fresh:true,close:”function”, param:”{msg:’message’}");
+                        }
+                    }
+                });
+
+            }else if(data.statusCode == "301") {
+                $.pdialog.closeCurrent();
+                $("#serverToken").val(data.serverToken);
+                alertMsg.warn("该手机号验证码发送超过5次，请明天再进行提现操作！");
+            }else if(data.statusCode == "302") {
+                $.pdialog.closeCurrent();
+                $("#serverToken").val(data.serverToken);
+                alertMsg.warn("划账审核验证手机号初始数据不存在！");
+            }else {
+                $.pdialog.closeCurrent();
+                $("#serverToken").val(data.serverToken);
+                alertMsg.warn("操作失败！");
+            }
+        },"json");
+
+    }
+</script>

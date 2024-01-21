@@ -1,0 +1,315 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="page unitBox">
+    <div class="pageHeader">
+        <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/loan/customer/settle_index.htm')" id="myform"  method="post">
+            <input type="hidden" name="pageNum" value="$!pageNum" />
+            <input type="hidden" name="numPerPage" value="$!numPerPage" />
+            <input type="hidden" id="partnerBusinessFlag_id" name="queryPartnerBusinessFlag" value="$!queryPartnerBusinessFlag" />
+            <div class="searchBar">
+                <table class="searchContent">
+                    <tr>
+                        <td>
+                            投资客户名称：<input style="width: 120px;" name="fnUserName" id="fnUserName" maxlength="4" value="$!fnUserName" />
+                        </td>
+                        <td>
+                            手机号：<input style="width: 120px;" name="mobile" id="mobile" maxlength="11" size="11" value="$!mobile" />
+                        </td>
+                        <td>
+                            <label>备注：</label>
+                            <select id="repayType" name="repayType">
+                                <option value="">全部</option>
+                                <option value="DC" #if("$!repayType"=="DC") selected  #end>逾期</option>
+                            </select>
+                        </td>
+                        <td>
+                            <label>结算日期：</label>
+                            <input name="startDate" maxdate="{%y}-%M-{%d-1}" type="text" id="startDate" class="date textInput readonly" readonly="true" value="$!startDate"/>
+                            到
+                            <input name="endDate" maxdate="{%y}-%M-{%d-1}" type="text" id="endDate" class="date textInput readonly" readonly="true" value="$!endDate"/>
+                        </td>
+				    </tr>
+                    <tr>
+                        <td>
+                            <label>资产方：</label>
+                            <select id="partnerCode_id" name="partnerCode">
+                                <option value="">全部</option>
+                                <option value="YUN_DAI_SELF" #if("$!partnerCode"=="YUN_DAI_SELF") selected  #end>云贷</option>
+                                <option value="7_DAI_SELF" #if("$!partnerCode"=="7_DAI_SELF") selected  #end>七贷</option>
+                                <option value="ZSD" #if("$!partnerCode"=="ZSD") selected  #end>赞时贷</option>
+                            </select>
+                        </td>
+                        <td>
+                            <label >借款产品：</label>
+                            <select id="partnerBusinessFlag_all" name="partnerBusinessFlag" class="valid" style="display: block;">
+                                <option value="666" #if("$!queryPartnerBusinessFlag"=="666") selected  #end>全部</option>
+                            </select>
+                            <select id="partnerBusinessFlag_yundai" name="partnerBusinessFlag" class="valid" style="display: none;">
+                                <option value="777" #if("$!queryPartnerBusinessFlag"=="777") selected  #end>全部</option>
+                                <option value="REPAY_ANY_TIME" #if("$!queryPartnerBusinessFlag"=="REPAY_ANY_TIME") selected  #end>随借随还</option>
+                                <option value="FIXED_INSTALLMENT" #if("$!queryPartnerBusinessFlag"=="FIXED_INSTALLMENT") selected  #end>等额本息</option>
+                                <option value="FIXED_PRINCIPAL_INTEREST" #if("$!queryPartnerBusinessFlag"=="FIXED_PRINCIPAL_INTEREST") selected  #end>等本等息</option>
+                            </select>
+                            <select id="partnerBusinessFlag_7dai" name="partnerBusinessFlag" class="valid" style="display: none;">
+                                <option value="888" #if("$!queryPartnerBusinessFlag"=="888") selected  #end>全部</option>
+                                <option value="REPAY_ANY_TIME" #if("$!queryPartnerBusinessFlag"=="REPAY_ANY_TIME") selected  #end>随借随还</option>
+                                <option value="现金循环贷" #if("$!queryPartnerBusinessFlag"=="现金循环贷") selected  #end>先息后本</option>
+                            </select>
+                            <select id="partnerBusinessFlag_zsd" name="partnerBusinessFlag" class="valid" style="display: none;">
+                                <option value="999" #if("$!queryPartnerBusinessFlag"=="999") selected  #end>全部</option>
+                            </select>
+
+                        </td>
+
+                        <td>
+                            <button onclick="searchSettleFunction()" type="button">查询</button>
+							<button onclick="expSettle()" type="button">导出</button>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="pageContent">
+    	<div class="panelBar">
+    		<ul class="toolBar">
+    			<li>		
+    				<span style="margin-left:10px;">
+        				<font color="red">融资客户应付利息： $!money.format($!sum) 元</font>
+                    </span>
+    			</li>
+				<li>		
+    				<span style="margin-left:10px;">
+        				<font color="red">手续费（宝付）： $!money.format($!sum) 元</font>
+                    </span>
+    			</li>
+    		</ul>
+    	</div>
+        <table class="table" width="1396" layoutH="140">
+            <thead>
+            <tr>
+                <th width="2%">序号</th>
+                <th width="3%">单据编号</th>
+                <th width="3%">投资客户代码</th>
+                <th width="5%">投资人</th>
+                <th width="2%">投资人手机号</th>
+                <th width="3%">融资客户名称</th>
+                <th width="3%">融资客户代码</th>
+                <th width="3%">资产方</th>
+                <th width="5%">结算本金</th>
+                <th width="5%">融资客户应付利息</th>
+                <th width="5%">应付投资客户利息</th>
+                <th width="5%">手续费（宝付）</th>
+                <th width="5%">结算日期</th>
+                <th width="5%">备注</th>
+                <th width="5%">借款产品</th>
+            </tr>
+            </thead>
+            <tbody>
+                #foreach($grid in $list)
+                <tr target="sid_user" rel="1">
+                    <td>$!grid.rowNo</td>
+                    <td>$!grid.billNo</td>
+                    <td>$!grid.fnCustomerId</td>
+                    <td>$!grid.fnUserName</td>
+                    <td>$!grid.mobile</td>
+                    <td>$!grid.lnUserName</td>
+                    <td>$!grid.lnCustomerId</td>
+                    <td>$!grid.partnerCodeDesc</td>
+                    <td>$!money.format($!grid.planPrincipal)</td>
+                    <td>$!money.format($!grid.lnPlanInterest)</td>
+                    <td>$!money.format($!grid.fnPlanInterest)</td>
+                    <td>$!money.format($!grid.fee)</td>
+                    <td>$!date.format($!grid.transTime)</td>
+                    <td>
+                        #if("$!grid.repayType"=="DC")逾期
+						#elseif("$!grid.repayType"=="ZC")正常
+                        #end
+                    </td>
+                    <td>
+                        #if("$!grid.partnerBusinessFlag" == "FIXED_INSTALLMENT")
+                            等额本息
+                        #elseif("$!grid.partnerBusinessFlag" == "FIXED_PRINCIPAL_INTEREST")
+                            等本等息
+                        #elseif("$!grid.partnerBusinessFlag" == "REPAY_ANY_TIME")
+                            随借随还
+                        #elseif("$!grid.partnerBusinessFlag" == "现金循环贷")
+                            先息后本
+                        #elseif("$!grid.partnerBusinessFlag" == "INSTALMENT")
+                            分期产品
+                        #else
+                            $!grid.partnerBusinessFlag
+                        #end
+                    </td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+        <div class="panelBar">
+            <div class="pages">
+                <span>显示</span>
+                <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                    <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                    <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                    <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                    <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+                </select>
+                <span>条，共$!count条</span>
+            </div>
+            <div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+        </div>
+    </div>
+
+</div>
+<script>
+    function showLoanPoroduct(obj) {
+        var propertySimbol = $('#partnerCode_id option:selected').val();//选中的值
+        if(propertySimbol == 'YUN_DAI_SELF') {
+            $("#partnerBusinessFlag_yundai").css({"display":"block"});
+            $("#partnerBusinessFlag_7dai").css({"display":"none"});
+            $("#partnerBusinessFlag_zsd").css({"display":"none"});
+            $("#partnerBusinessFlag_all").css({"display":"none"});
+        } else if(propertySimbol == '7_DAI_SELF'){
+            $("#partnerBusinessFlag_yundai").css({"display":"none"});
+            $("#partnerBusinessFlag_7dai").css({"display":"block"});
+            $("#partnerBusinessFlag_zsd").css({"display":"none"});
+            $("#partnerBusinessFlag_all").css({"display":"none"});
+        } else if(propertySimbol == 'ZSD'){
+            $("#partnerBusinessFlag_yundai").css({"display":"none"});
+            $("#partnerBusinessFlag_7dai").css({"display":"none"});
+            $("#partnerBusinessFlag_zsd").css({"display":"block"});
+            $("#partnerBusinessFlag_all").css({"display":"none"});
+        } else {
+            $("#partnerBusinessFlag_yundai").css({"display":"none"});
+            $("#partnerBusinessFlag_7dai").css({"display":"none"});
+            $("#partnerBusinessFlag_zsd").css({"display":"none"});
+            $("#partnerBusinessFlag_all").css({"display":"block"});
+        }
+    }
+    // 资产方下拉框改变事件
+    $('#partnerCode_id').on('change', function() {
+        showLoanPoroduct(this);
+    });
+
+    // 页面加载完，下拉框显示
+    $(document).ready(function(){
+        var propertySimbol = $('#partnerCode_id option:selected').val();//选中的值
+        if(propertySimbol == 'YUN_DAI_SELF') {
+            $("#partnerBusinessFlag_yundai").css({"display":"block"});
+            $("#partnerBusinessFlag_7dai").css({"display":"none"});
+            $("#partnerBusinessFlag_zsd").css({"display":"none"});
+            $("#partnerBusinessFlag_all").css({"display":"none"});
+        } else if(propertySimbol == '7_DAI_SELF'){
+            $("#partnerBusinessFlag_yundai").css({"display":"none"});
+            $("#partnerBusinessFlag_7dai").css({"display":"block"});
+            $("#partnerBusinessFlag_zsd").css({"display":"none"});
+            $("#partnerBusinessFlag_all").css({"display":"none"});
+        } else if(propertySimbol == 'ZSD'){
+            $("#partnerBusinessFlag_yundai").css({"display":"none"});
+            $("#partnerBusinessFlag_7dai").css({"display":"none"});
+            $("#partnerBusinessFlag_zsd").css({"display":"block"});
+            $("#partnerBusinessFlag_all").css({"display":"none"});
+        }else {
+            $("#partnerBusinessFlag_yundai").css({"display":"none"});
+            $("#partnerBusinessFlag_7dai").css({"display":"none"});
+            $("#partnerBusinessFlag_zsd").css({"display":"none"});
+            $("#partnerBusinessFlag_all").css({"display":"block"});
+        }
+    });
+
+    function searchSettleFunction(){
+        var propertySimbol = $('#partnerCode_id option:selected').val();//选中的值
+        if(propertySimbol == 'YUN_DAI_SELF') {
+            var partnerBusinessFlag = $('#partnerBusinessFlag_yundai option:selected') .val();
+            $('#partnerBusinessFlag_id').val(partnerBusinessFlag);
+        } else if(propertySimbol == '7_DAI_SELF'){
+            var partnerBusinessFlag = $('#partnerBusinessFlag_7dai option:selected') .val();
+            $('#partnerBusinessFlag_id').val(partnerBusinessFlag);
+        } else if(propertySimbol == 'ZSD'){
+            var partnerBusinessFlag = $('#partnerBusinessFlag_zsd option:selected') .val();
+            $('#partnerBusinessFlag_id').val(partnerBusinessFlag);
+        } else {
+            var partnerBusinessFlag = $('#partnerBusinessFlag_all option:selected') .val();
+            $('#partnerBusinessFlag_id').val(partnerBusinessFlag);
+        }
+
+        var mobile = $("#mobile").val().trim();
+        if(mobile != ""){
+            var reg = /^1[34587]\d{9}$/;
+            if(!reg.test(mobile)) {
+                alertMsg.warn("手机号不正确，请重新输入！");
+                return;
+            }
+        }
+
+        var beginTime = $("#startDate").val();
+        var overTime = $("#endDate").val();
+		
+		if(!beginTime) {
+    		alertMsg.warn("开始时间不能为空！");
+    		return;
+    	}
+    	if(!overTime) {
+    		alertMsg.warn("结束时间不能为空！");
+    		return;
+    	}
+		
+        var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+        if(result < 0){
+            alert("开始时间不能在结束时间之后！");
+            return false;
+        }
+
+        var url = $("#APP_ROOT_PATH").val() + "/loan/customer/settle_index.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+
+    //导出excel
+    function expSettle(){
+
+        var propertySimbol = $('#partnerCode_id option:selected').val();//选中的值
+        if(propertySimbol == 'YUN_DAI_SELF') {
+            var partnerBusinessFlag = $('#partnerBusinessFlag_yundai option:selected') .val();
+            $('#partnerBusinessFlag_id').val(partnerBusinessFlag);
+        } else if(propertySimbol == '7_DAI_SELF'){
+            var partnerBusinessFlag = $('#partnerBusinessFlag_7dai option:selected') .val();
+            $('#partnerBusinessFlag_id').val(partnerBusinessFlag);
+        } else if(propertySimbol == 'ZSD'){
+            var partnerBusinessFlag = $('#partnerBusinessFlag_zsd option:selected') .val();
+            $('#partnerBusinessFlag_id').val(partnerBusinessFlag);
+        } else {
+            var partnerBusinessFlag = $('#partnerBusinessFlag_all option:selected') .val();
+            $('#partnerBusinessFlag_id').val(partnerBusinessFlag);
+        }
+
+        var mobile = $("#mobile").val().trim();
+        if(mobile != ""){
+            var reg = /^1[34587]\d{9}$/;
+            if(!reg.test(mobile)) {
+                alertMsg.warn("手机号不正确，请重新输入！");
+                return;
+            }
+        }
+
+        var beginTime = $("#startDate").val();
+        var overTime = $("#endDate").val();
+        if(beginTime != "" && overTime != ""){
+            var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+            if(result < 0){
+                alert("开始时间不能在结束时间之后！");
+                return false;
+            }
+        }
+
+        var url = $("#APP_ROOT_PATH").val() + "/loan/customer/exportXls.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","");
+        $("#myform").submit();
+    }
+</script>

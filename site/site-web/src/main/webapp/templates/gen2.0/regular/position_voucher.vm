@@ -1,0 +1,113 @@
+#Html("begin")
+#GenHead("begin")
+###Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/agree/agree-print")
+#GenHead("end")
+	
+<body>
+	<input type="hidden" value="$!investId" id="investId" />
+	<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')"/>
+	 <div class="">
+  		<div class="agess" id="agree_content">
+			<!--startprint1-->
+  			<div class="agess_title">
+  				<span class="agess_ft">持仓凭证</span>
+  				<i class="agess_off close"></i>
+  			</div>
+  			<div  class="agess_main">
+  				<h1 class="main_title">持仓凭证</h1>
+				<table id="border" border="0" cellspacing="0">
+                  <tr>
+                    <td colspan="2">投资者：<span style="font-weight:bold;">$!userName</span></td>
+                  </tr>
+                  <tr>
+                    <td>产品名称：<span style="font-weight:bold;">$!name</span></td>
+                    <td>产品代码：<span style="font-weight:bold;">BGW$!code</span></td>
+                  </tr>
+				  <tr>
+                    <td>产品起息日：<span style="font-weight:bold;">$!times</span></td>
+                    <td>产品到期日：<span style="font-weight:bold;">$!endTime</span></td>
+                  </tr>
+				  <tr>
+                    <td>持仓金额：<span style="font-weight:bold;">$!money.digitUppercase($!amount)</span>    <br>    
+						小写：<span style="font-weight:bold;">$!money.format($!amount)</span>元
+					</td>
+					<td>预期收益：<span style="font-weight:bold;">$!interest</span>元</td>
+                  </tr>
+				  <tr>
+                    <td colspan="2">发行机构：浙江品听资产管理有限公司</td>
+                  </tr>
+				  <tr>
+					  #if($!date.getDiffeSeconds($!date.parse($!nowTime, "yyyy年MM月dd日 HH:mm:ss"), $!date.parse("2017年03月09日 00:00:00", "yyyy年MM月dd日 HH:mm:ss")) >= 0)
+                          <td colspan="2">托管机构：宝付网络科技（上海）有限公司</td>
+					  #else
+                          <td colspan="2">托管机构：北京一九付支付科技有限公司</td>
+					  #end
+                  </tr>
+				  <tr>
+					  #if($!date.getDiffeSeconds($!date.parse($!nowTime, "yyyy年MM月dd日 HH:mm:ss"), $!date.parse("2017年03月09日 00:00:00", "yyyy年MM月dd日 HH:mm:ss")) >= 0)
+                          <td colspan="2">资金监管机构：中信银行</td>
+					  #else
+                          <td colspan="2">资金监管机构：上海银行杭州分行</td>
+					  #end
+                  </tr>
+				  <tr rowspan="6">
+                    <td colspan="2">声明：
+							<br>
+							&nbsp;&nbsp;1、本凭证仅作为投资者在查询时点时认购或持有产品的情况说明，若后续发生“投资行为”或“投资回款”，则以浙江品听资产管理有限公司所运营的“币港湾（www.bigangwan.com）”平台账户实际资产情况为准。
+							<br>
+							&nbsp;&nbsp;2、该产品的信息披露通过币港湾网站或其他指定渠道进行，也可致电客户服务热线 400-806-1230。
+							<br>
+							&nbsp;&nbsp;3、投资有风险，理财须谨慎。
+					</td>
+                  </tr>
+				   <tr rowspan="2">
+                    <td colspan="2">查询时点：<span style="font-weight:bold;">$!nowTime</span><br>
+						查询人：<span style="font-weight:bold;">$!userName</span>
+					</td>
+                  </tr>
+                </table>
+  				<div class="serial ser_posi">
+  					<p class="serial_main"></p>
+					##<div class="ser_img"></div>
+					<img class="ser_img" src="$!env.get('gen.server.web')/resources/gen2.0/images/ptzc_gz_two.png">
+  				</div>
+				
+			</div>
+			<!--endprint1-->
+  			<div class="agess_foot">
+				<div class="agess_btn" onclick="oprin()">打印凭证</div>
+  				<div class="agess_btn close">关闭窗口</div>
+				<div class="agess_btn" onclick="downLoad()">下载PDF</div>
+  			</div>
+  		</div>
+  </div>  
+#LoadGenJS("/resources/gen2.0/scripts/common/jquery")
+<script>
+$(function(){
+	var close=$(".close");
+	
+	close.on("click",off);
+	function off(){
+		window.close();
+		if(window){
+           window.location.href="about:blank";
+        }
+	}
+});
+
+function oprin(){
+	$(".agess_foot").hide();
+	setTimeout(function(){$(".agess_foot").show();},600);
+	window.print();
+}
+
+function downLoad(){
+	var app_root_path = $("#APP_ROOT_PATH_GEN").val();
+	location.href= app_root_path + "/gen2.0/regular/positionVoucherPDFDownload?investId="+$("#investId").val();
+}
+
+
+</script>
+</body>
+#Html("end")

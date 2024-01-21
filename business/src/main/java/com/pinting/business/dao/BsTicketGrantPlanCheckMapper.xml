@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsTicketGrantPlanCheckMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsTicketGrantPlanCheck" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="serial_no" property="serialNo" jdbcType="VARCHAR" />
+    <result column="serial_name" property="serialName" jdbcType="VARCHAR" />
+    <result column="ticket_type" property="ticketType" jdbcType="VARCHAR" />
+    <result column="distribute_type" property="distributeType" jdbcType="VARCHAR" />
+    <result column="applicant" property="applicant" jdbcType="INTEGER" />
+    <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
+    <result column="check_status" property="checkStatus" jdbcType="VARCHAR" />
+    <result column="grant_status" property="grantStatus" jdbcType="VARCHAR" />
+    <result column="checker" property="checker" jdbcType="INTEGER" />
+    <result column="check_time" property="checkTime" jdbcType="TIMESTAMP" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, serial_no, serial_name, ticket_type, distribute_type, applicant, apply_time, 
+    check_status, grant_status, checker, check_time, note, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsTicketGrantPlanCheckExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_ticket_grant_plan_check
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_ticket_grant_plan_check
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_ticket_grant_plan_check
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsTicketGrantPlanCheckExample" >
+    delete from bs_ticket_grant_plan_check
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsTicketGrantPlanCheck" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bs_ticket_grant_plan_check (serial_no, serial_name, ticket_type, 
+      distribute_type, applicant, apply_time, 
+      check_status, grant_status, checker, 
+      check_time, note, create_time, 
+      update_time)
+    values (#{serialNo,jdbcType=VARCHAR}, #{serialName,jdbcType=VARCHAR}, #{ticketType,jdbcType=VARCHAR}, 
+      #{distributeType,jdbcType=VARCHAR}, #{applicant,jdbcType=INTEGER}, #{applyTime,jdbcType=TIMESTAMP}, 
+      #{checkStatus,jdbcType=VARCHAR}, #{grantStatus,jdbcType=VARCHAR}, #{checker,jdbcType=INTEGER}, 
+      #{checkTime,jdbcType=TIMESTAMP}, #{note,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsTicketGrantPlanCheck" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bs_ticket_grant_plan_check
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="serialNo != null" >
+        serial_no,
+      </if>
+      <if test="serialName != null" >
+        serial_name,
+      </if>
+      <if test="ticketType != null" >
+        ticket_type,
+      </if>
+      <if test="distributeType != null" >
+        distribute_type,
+      </if>
+      <if test="applicant != null" >
+        applicant,
+      </if>
+      <if test="applyTime != null" >
+        apply_time,
+      </if>
+      <if test="checkStatus != null" >
+        check_status,
+      </if>
+      <if test="grantStatus != null" >
+        grant_status,
+      </if>
+      <if test="checker != null" >
+        checker,
+      </if>
+      <if test="checkTime != null" >
+        check_time,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="serialNo != null" >
+        #{serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="serialName != null" >
+        #{serialName,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketType != null" >
+        #{ticketType,jdbcType=VARCHAR},
+      </if>
+      <if test="distributeType != null" >
+        #{distributeType,jdbcType=VARCHAR},
+      </if>
+      <if test="applicant != null" >
+        #{applicant,jdbcType=INTEGER},
+      </if>
+      <if test="applyTime != null" >
+        #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkStatus != null" >
+        #{checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="grantStatus != null" >
+        #{grantStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="checker != null" >
+        #{checker,jdbcType=INTEGER},
+      </if>
+      <if test="checkTime != null" >
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsTicketGrantPlanCheckExample" resultType="java.lang.Integer" >
+    select count(*) from bs_ticket_grant_plan_check
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_ticket_grant_plan_check
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.serialNo != null" >
+        serial_no = #{record.serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serialName != null" >
+        serial_name = #{record.serialName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ticketType != null" >
+        ticket_type = #{record.ticketType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.distributeType != null" >
+        distribute_type = #{record.distributeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applicant != null" >
+        applicant = #{record.applicant,jdbcType=INTEGER},
+      </if>
+      <if test="record.applyTime != null" >
+        apply_time = #{record.applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.checkStatus != null" >
+        check_status = #{record.checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grantStatus != null" >
+        grant_status = #{record.grantStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checker != null" >
+        checker = #{record.checker,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkTime != null" >
+        check_time = #{record.checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_ticket_grant_plan_check
+    set id = #{record.id,jdbcType=INTEGER},
+      serial_no = #{record.serialNo,jdbcType=VARCHAR},
+      serial_name = #{record.serialName,jdbcType=VARCHAR},
+      ticket_type = #{record.ticketType,jdbcType=VARCHAR},
+      distribute_type = #{record.distributeType,jdbcType=VARCHAR},
+      applicant = #{record.applicant,jdbcType=INTEGER},
+      apply_time = #{record.applyTime,jdbcType=TIMESTAMP},
+      check_status = #{record.checkStatus,jdbcType=VARCHAR},
+      grant_status = #{record.grantStatus,jdbcType=VARCHAR},
+      checker = #{record.checker,jdbcType=INTEGER},
+      check_time = #{record.checkTime,jdbcType=TIMESTAMP},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsTicketGrantPlanCheck" >
+    update bs_ticket_grant_plan_check
+    <set >
+      <if test="serialNo != null" >
+        serial_no = #{serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="serialName != null" >
+        serial_name = #{serialName,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketType != null" >
+        ticket_type = #{ticketType,jdbcType=VARCHAR},
+      </if>
+      <if test="distributeType != null" >
+        distribute_type = #{distributeType,jdbcType=VARCHAR},
+      </if>
+      <if test="applicant != null" >
+        applicant = #{applicant,jdbcType=INTEGER},
+      </if>
+      <if test="applyTime != null" >
+        apply_time = #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkStatus != null" >
+        check_status = #{checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="grantStatus != null" >
+        grant_status = #{grantStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="checker != null" >
+        checker = #{checker,jdbcType=INTEGER},
+      </if>
+      <if test="checkTime != null" >
+        check_time = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsTicketGrantPlanCheck" >
+    update bs_ticket_grant_plan_check
+    set serial_no = #{serialNo,jdbcType=VARCHAR},
+      serial_name = #{serialName,jdbcType=VARCHAR},
+      ticket_type = #{ticketType,jdbcType=VARCHAR},
+      distribute_type = #{distributeType,jdbcType=VARCHAR},
+      applicant = #{applicant,jdbcType=INTEGER},
+      apply_time = #{applyTime,jdbcType=TIMESTAMP},
+      check_status = #{checkStatus,jdbcType=VARCHAR},
+      grant_status = #{grantStatus,jdbcType=VARCHAR},
+      checker = #{checker,jdbcType=INTEGER},
+      check_time = #{checkTime,jdbcType=TIMESTAMP},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <resultMap id="TicketCheckVOMap" type="com.pinting.business.model.vo.TicketCheckVO" extends="BaseResultMap">
+    <result column="invest_limit" property="investLimit" jdbcType="DOUBLE" />
+    <result column="ticket_apr" property="ticketApr" jdbcType="DOUBLE" />
+    <result column="product_limit" property="productLimit" jdbcType="VARCHAR" />
+    <result column="term_limit" property="termLimit" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectCheckInfo" resultMap="TicketCheckVOMap" parameterType="Map">
+    select a.*, b.invest_limit, b.ticket_apr, b.product_limit, b.term_limit from (
+        select a.* from bs_ticket_grant_plan_check a where a.serial_no = #{serialNo} and a.check_status = 'PASS'
+    ) as a, (
+        select b.invest_limit, b.ticket_apr, b.product_limit, b.term_limit, b.serial_no from bs_interest_ticket_grant_attribute b where b.serial_no = #{serialNo}
+    ) as b
+    where a.serial_no = b.serial_no and b.invest_limit &lt;= #{amount}
+  </select>
+
+  <resultMap id="TicketGrantPlanCheckVOMap" type="com.pinting.business.model.vo.TicketGrantPlanCheckVO" extends="BaseResultMap">
+    <result column="check_id" property="checkId" jdbcType="INTEGER"/>
+    <result column="serial_no" property="serialNo" jdbcType="VARCHAR"/>
+    <result column="check_status" property="checkStatus" jdbcType="VARCHAR"/>
+    <result column="grant_status" property="grantStatus" jdbcType="VARCHAR"/>
+    <result column="rule_id" property="ruleId" jdbcType="INTEGER"/>
+    <result column="trigger_type" property="triggerType" jdbcType="VARCHAR"/>
+    <result column="trigger_time_start" property="triggerTimeStart" jdbcType="TIMESTAMP"/>
+    <result column="trigger_time_end" property="triggerTimeEnd" jdbcType="TIMESTAMP"/>
+    <result column="agent_ids" property="agentIds" jdbcType="VARCHAR"/>
+    <result column="attr_id" property="attrId" jdbcType="INTEGER"/>
+    <result column="ticket_name" property="ticketName" jdbcType="VARCHAR"/>
+    <result column="ticket_apr" property="ticketApr" jdbcType="DOUBLE"/>
+    <result column="grant_total" property="grantTotal" jdbcType="INTEGER"/>
+    <result column="grant_num" property="grantNum" jdbcType="INTEGER"/>
+    <result column="valid_term_type" property="validTermType" jdbcType="VARCHAR"/>
+    <result column="use_time_start" property="useTimeStart" jdbcType="TIMESTAMP"/>
+    <result column="use_time_end" property="useTimeEnd" jdbcType="TIMESTAMP"/>
+    <result column="available_days" property="availableDays" jdbcType="INTEGER"/>
+    <result column="notify_channel" property="notifyChannel" jdbcType="VARCHAR"/>
+    <result column="invest_limit" property="investLimit" jdbcType="DOUBLE"/>
+    <result column="product_limit" property="productLimit" jdbcType="VARCHAR"/>
+    <result column="term_limit" property="termLimit" jdbcType="VARCHAR"/>
+    <result column="note" property="note" jdbcType="VARCHAR"/>
+  </resultMap>
+  <select id="selectPassAndProcessCheck" resultMap="TicketGrantPlanCheckVOMap" parameterType="Map">
+    select a.check_id, a.serial_no, a.check_status, a.grant_status,
+      b.agent_ids, b.id as rule_id, b.trigger_time_end, b.trigger_time_start, b.trigger_type,
+      c.id as attr_id, c.grant_num, c.grant_total, c.invest_limit, c.notify_channel, c.note,
+      c.product_limit, c.term_limit, c.available_days, c.ticket_apr, c.ticket_name, c.use_time_start, c.use_time_end, c.valid_term_type
+    from (
+      select a.id as check_id, a.serial_no, a.check_status, a.grant_status from bs_ticket_grant_plan_check a
+      where a.distribute_type = 'AUTO' and a.ticket_type = 'INTEREST_TICKET' and a.check_status = 'PASS' and a.grant_status = 'PROCESS'
+      <if test="checkId != null">
+        and a.id = #{checkId}
+      </if>
+    ) as a, bs_auto_interest_ticket_rule b, bs_interest_ticket_grant_attribute c
+    where a.serial_no = b.serial_no and a.serial_no = c.serial_no
+    and b.trigger_type = 'HAPPY_BIRTHDAY' and (NOW() between b.trigger_time_start and b.trigger_time_end)
+  </select>
+  <select id="selectPassAndProcessCheckEnd" resultType="java.lang.Integer" parameterType="Map">
+    select a.check_id
+    from (
+      select a.id as check_id, a.serial_no from bs_ticket_grant_plan_check a
+      where a.distribute_type = 'AUTO' and a.ticket_type = 'INTEREST_TICKET' and a.check_status = 'PASS' and a.grant_status = 'PROCESS'
+    ) as a, bs_auto_interest_ticket_rule b
+    where a.serial_no = b.serial_no
+    and b.trigger_type = 'HAPPY_BIRTHDAY' and NOW() > b.trigger_time_end
+  </select>
+  <select id="selectTicketInterestGrantManagerment" resultType="com.pinting.business.model.vo.BsTicketGrantPlanCheckVO" parameterType="java.util.Map">
+    SELECT
+        a.id,
+        a.serial_no AS serialNo,
+        a.distribute_type AS distributeType,
+        a.serial_name AS serialName,
+        b.grant_total AS grantTotal,
+        b.valid_term_type AS validTermType,
+        b.use_time_start AS useTimeStart,
+        b.use_time_end AS useTimeEnd,
+        b.available_days AS availableDays,
+        b.product_limit AS productLimit,
+        b.term_limit AS termLimit,
+        b.invest_limit AS investLimit,
+        b.ticket_apr AS ticketApr,
+        b.notify_channel AS notifyChannel,
+        a.applicant AS applicant,
+        d.`name` AS applicantName,
+        a.apply_time AS applyTime,
+        a.check_status AS checkStatus,
+        a.checker AS checker,
+        e.`name` AS checkerName,
+        a.check_time AS checkTime,
+        a.grant_status AS grantStatus
+    FROM
+        bs_ticket_grant_plan_check a
+    LEFT JOIN bs_interest_ticket_grant_attribute b ON a.serial_no = b.serial_no
+    LEFT JOIN m_user d ON a.applicant = d.id
+    LEFT JOIN m_user e ON a.checker = e.id
+    where 1 = 1
+    <if test="record.distributeTypeSearch != null and record.distributeTypeSearch != ''" >
+      AND a.distribute_type = #{record.distributeTypeSearch}
+    </if>
+    <if test="record.serialNameSearch != null and record.serialNameSearch != ''" >
+      AND a.serial_name like concat('%', #{record.serialNameSearch},'%')
+    </if>
+    <if test="record.checkStatusSearch != null and record.checkStatusSearch != ''" >
+      AND a.check_status = #{record.checkStatusSearch}
+    </if>
+    <if test="record.grantStatusSearch != null and record.grantStatusSearch != ''" >
+      AND a.grant_status = #{record.grantStatusSearch}
+    </if>
+    <if test="record.orderByClause != null and record.orderByClause !=''">
+      order by ${record.orderByClause}
+    </if>
+    limit #{record.start}, #{record.numPerPage}
+  </select>
+
+  <select id="getTicketInterestGrantManagermentCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+    SELECT
+      count(1)
+    FROM
+    bs_ticket_grant_plan_check a
+    LEFT JOIN bs_interest_ticket_grant_attribute b ON a.serial_no = b.serial_no
+    LEFT JOIN m_user d ON a.applicant = d.id
+    LEFT JOIN m_user e ON a.checker = e.id
+    where 1 = 1
+    <if test="record.distributeTypeSearch != null and record.distributeTypeSearch != ''" >
+      AND a.distribute_type = #{record.distributeTypeSearch}
+    </if>
+    <if test="record.serialNameSearch != null and record.serialNameSearch != ''" >
+      AND a.serial_name like concat('%', #{record.serialNameSearch},'%')
+    </if>
+    <if test="record.checkStatusSearch != null and record.checkStatusSearch != ''" >
+      AND a.check_status = #{record.checkStatusSearch}
+    </if>
+    <if test="record.grantStatusSearch != null and record.grantStatusSearch != ''" >
+      AND a.grant_status = #{record.grantStatusSearch}
+    </if>
+  </select>
+
+  <select id="selectAutoTicketInterestGrantDetail" resultType="com.pinting.business.model.vo.BsInterestTicketGrantAttrVO" parameterType="java.util.Map">
+    SELECT
+        a.id AS checkId,
+        a.serial_no AS serialNo,
+        a.distribute_type AS distributeType,
+        a.serial_name AS serialName,
+        b.id AS attrId,
+        b.grant_total AS grantTotal,
+        b.grant_num AS grantNum,
+        b.valid_term_type AS validTermType,
+        b.use_time_start AS useTimeStart,
+        b.use_time_end AS useTimeEnd,
+        b.available_days AS availableDays,
+        b.product_limit AS productLimit,
+        b.term_limit AS termLimit,
+        b.invest_limit AS investLimit,
+        b.ticket_apr AS ticketApr,
+        b.notify_channel AS notifyChannel,
+        a.applicant AS applicant,
+        d.`name` AS applicantName,
+        a.apply_time AS applyTime,
+        a.check_status AS checkStatus,
+        a.checker AS checker,
+        e.`name` AS checkerName,
+        a.check_time AS checkTime,
+        a.grant_status AS grantStatus,
+        c.id AS ruleId,
+        c.agent_ids AS agentIds,
+        c.trigger_type AS triggerType,
+        c.trigger_time_start AS triggerTimeStart,
+        c.trigger_time_end AS triggerTimeEnd
+    FROM
+        bs_ticket_grant_plan_check a
+    INNER JOIN bs_interest_ticket_grant_attribute b ON b.serial_no = a.serial_no
+    INNER JOIN bs_auto_interest_ticket_rule c ON c.serial_no = a.serial_no
+    INNER JOIN m_user d ON a.applicant = d.id
+    LEFT JOIN m_user e ON a.checker = e.id
+    WHERE
+        a.id = #{id}
+  </select>
+
+  <select id="selectManualTicketInterestGrantDetail" resultType="com.pinting.business.model.vo.BsInterestTicketGrantAttrVO" parameterType="java.util.Map">
+    SELECT
+        a.id AS checkId,
+        a.serial_no AS serialNo,
+        a.distribute_type AS distributeType,
+        a.serial_name AS serialName,
+        b.id AS attrId,
+        b.grant_total AS grantTotal,
+        b.grant_num AS grantNum,
+        b.valid_term_type AS validTermType,
+        b.use_time_start AS useTimeStart,
+        b.use_time_end AS useTimeEnd,
+        b.available_days AS availableDays,
+        b.product_limit AS productLimit,
+        b.term_limit AS termLimit,
+        b.invest_limit AS investLimit,
+        b.ticket_apr AS ticketApr,
+        b.notify_channel AS notifyChannel,
+        a.applicant AS applicant,
+        d.`name` AS applicantName,
+        a.apply_time AS applyTime,
+        a.check_status AS checkStatus,
+        a.checker AS checker,
+        e.`name` AS checkerName,
+        a.check_time AS checkTime,
+        a.grant_status AS grantStatus,
+		GROUP_CONCAT(DISTINCT(c.user_id)) AS userIds
+    FROM
+        bs_ticket_grant_plan_check a
+    INNER JOIN bs_interest_ticket_grant_attribute b ON b.serial_no = a.serial_no
+    INNER JOIN bs_ticket_pre_detail c ON c.serial_no = a.serial_no
+    INNER JOIN m_user d ON a.applicant = d.id
+    LEFT JOIN m_user e ON a.checker = e.id
+    WHERE
+        a.id = #{id}
+    GROUP BY a.id
+  </select>
+
+  <insert id="insertInterestTicketInfo" parameterType="java.util.Map" >
+    INSERT INTO bs_interest_ticket_info (
+        serial_no,
+        user_id,
+        `status`,
+        ticket_apr,
+        use_time,
+        use_time_start,
+        use_time_end,
+        msg_status,
+        create_time,
+        update_time
+    )(
+        SELECT
+            a.serial_no,
+            a.user_id,
+            "INIT" AS `status`,
+            b.ticket_apr,
+            null AS use_time,
+            IF (
+                b.use_time_start > NOW(),
+                b.use_time_start,
+                now()
+            ) AS use_time_start,
+            b.use_time_end,
+            "NOT" AS msg_status,
+            NOW() AS create_time,
+            NOW() AS update_time
+        FROM
+            bs_ticket_pre_detail a
+        INNER JOIN bs_interest_ticket_grant_attribute b ON b.serial_no = a.serial_no
+        INNER JOIN bs_ticket_grant_plan_check c ON c.serial_no = a.serial_no
+        WHERE
+            c.id = #{id}
+        AND c.distribute_type = 'MANUAL'
+    )
+  </insert>
+  
+  
+  <select id="selectMallTickets" resultMap="TicketGrantPlanCheckVOMap" parameterType="Map">
+    select a.check_id, a.serial_no, a.check_status, a.grant_status,
+      b.agent_ids, b.id as rule_id, b.trigger_time_end, b.trigger_time_start, b.trigger_type,
+      c.id as attr_id, c.grant_num, c.grant_total, c.invest_limit, c.notify_channel, c.note,
+      c.product_limit, c.term_limit, c.available_days, c.ticket_apr, c.ticket_name, c.use_time_start, c.use_time_end, c.valid_term_type
+    from (
+      select a.id as check_id, a.serial_no, a.check_status, a.grant_status from bs_ticket_grant_plan_check a
+      where a.distribute_type = 'AUTO' and a.ticket_type = 'INTEREST_TICKET' and a.check_status = 'PASS' and a.grant_status = 'PROCESS'
+		<if test="checkId != null">
+        	and a.id = #{checkId}
+     	 </if>
+    ) as a, bs_auto_interest_ticket_rule b, bs_interest_ticket_grant_attribute c
+    where a.serial_no = b.serial_no and a.serial_no = c.serial_no
+    and b.trigger_type = #{triggerType} and c.ticket_name = #{ticketName}
+    and (#{orderSuccTime} between b.trigger_time_start and b.trigger_time_end)
+  </select>
+</mapper>

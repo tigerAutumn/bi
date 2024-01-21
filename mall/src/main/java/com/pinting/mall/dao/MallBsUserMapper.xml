@@ -1,0 +1,772 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinting.mall.dao.MallBsUserMapper">
+  <resultMap id="BaseResultMap" type="com.pinting.mall.model.MallBsUser">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="nick" jdbcType="VARCHAR" property="nick" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="urgent_name" jdbcType="VARCHAR" property="urgentName" />
+    <result column="urgent_mobile" jdbcType="VARCHAR" property="urgentMobile" />
+    <result column="relation" jdbcType="INTEGER" property="relation" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="pay_password" jdbcType="VARCHAR" property="payPassword" />
+    <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="logout_time" jdbcType="TIMESTAMP" property="logoutTime" />
+    <result column="login_fail_times" jdbcType="INTEGER" property="loginFailTimes" />
+    <result column="login_fail_time" jdbcType="TIMESTAMP" property="loginFailTime" />
+    <result column="login_always_fail_times" jdbcType="INTEGER" property="loginAlwaysFailTimes" />
+    <result column="login_lock_time" jdbcType="TIMESTAMP" property="loginLockTime" />
+    <result column="pay_fail_times" jdbcType="INTEGER" property="payFailTimes" />
+    <result column="pay_fail_time" jdbcType="TIMESTAMP" property="payFailTime" />
+    <result column="id_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="is_bind_name" jdbcType="INTEGER" property="isBindName" />
+    <result column="is_bind_bank" jdbcType="INTEGER" property="isBindBank" />
+    <result column="current_interest" jdbcType="DOUBLE" property="currentInterest" />
+    <result column="current_bonus" jdbcType="DOUBLE" property="currentBonus" />
+    <result column="total_interest" jdbcType="DOUBLE" property="totalInterest" />
+    <result column="total_bonus" jdbcType="DOUBLE" property="totalBonus" />
+    <result column="can_withdraw" jdbcType="DOUBLE" property="canWithdraw" />
+    <result column="total_trans" jdbcType="INTEGER" property="totalTrans" />
+    <result column="recommend_id" jdbcType="INTEGER" property="recommendId" />
+    <result column="create_channel" jdbcType="INTEGER" property="createChannel" />
+    <result column="user_type" jdbcType="VARCHAR" property="userType" />
+    <result column="agent_id" jdbcType="INTEGER" property="agentId" />
+    <result column="register_time" jdbcType="TIMESTAMP" property="registerTime" />
+    <result column="reg_terminal" jdbcType="INTEGER" property="regTerminal" />
+    <result column="first_buy_time" jdbcType="TIMESTAMP" property="firstBuyTime" />
+    <result column="return_path" jdbcType="INTEGER" property="returnPath" />
+    <result column="recent_bank_card_id" jdbcType="INTEGER" property="recentBankCardId" />
+    <result column="last_app_version" jdbcType="VARCHAR" property="lastAppVersion" />
+    <result column="last_app_time" jdbcType="TIMESTAMP" property="lastAppTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, nick, user_name, mobile, urgent_name, urgent_mobile, relation, email, password, 
+    pay_password, login_time, logout_time, login_fail_times, login_fail_time, login_always_fail_times, 
+    login_lock_time, pay_fail_times, pay_fail_time, id_card, status, is_bind_name, is_bind_bank, 
+    current_interest, current_bonus, total_interest, total_bonus, can_withdraw, total_trans, 
+    recommend_id, create_channel, user_type, agent_id, register_time, reg_terminal, first_buy_time, 
+    return_path, recent_bank_card_id, last_app_version, last_app_time
+  </sql>
+  <select id="selectByExample" parameterType="com.pinting.mall.model.MallBsUserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bs_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bs_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.mall.model.MallBsUserExample">
+    delete from bs_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.mall.model.MallBsUser">
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bs_user (id, nick, user_name, 
+      mobile, urgent_name, urgent_mobile, 
+      relation, email, password, 
+      pay_password, login_time, logout_time, 
+      login_fail_times, login_fail_time, login_always_fail_times, 
+      login_lock_time, pay_fail_times, pay_fail_time, 
+      id_card, status, is_bind_name, 
+      is_bind_bank, current_interest, current_bonus, 
+      total_interest, total_bonus, can_withdraw, 
+      total_trans, recommend_id, create_channel, 
+      user_type, agent_id, register_time, 
+      reg_terminal, first_buy_time, return_path, 
+      recent_bank_card_id, last_app_version, last_app_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{nick,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{urgentName,jdbcType=VARCHAR}, #{urgentMobile,jdbcType=VARCHAR}, 
+      #{relation,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{payPassword,jdbcType=VARCHAR}, #{loginTime,jdbcType=TIMESTAMP}, #{logoutTime,jdbcType=TIMESTAMP}, 
+      #{loginFailTimes,jdbcType=INTEGER}, #{loginFailTime,jdbcType=TIMESTAMP}, #{loginAlwaysFailTimes,jdbcType=INTEGER}, 
+      #{loginLockTime,jdbcType=TIMESTAMP}, #{payFailTimes,jdbcType=INTEGER}, #{payFailTime,jdbcType=TIMESTAMP}, 
+      #{idCard,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{isBindName,jdbcType=INTEGER}, 
+      #{isBindBank,jdbcType=INTEGER}, #{currentInterest,jdbcType=DOUBLE}, #{currentBonus,jdbcType=DOUBLE}, 
+      #{totalInterest,jdbcType=DOUBLE}, #{totalBonus,jdbcType=DOUBLE}, #{canWithdraw,jdbcType=DOUBLE}, 
+      #{totalTrans,jdbcType=INTEGER}, #{recommendId,jdbcType=INTEGER}, #{createChannel,jdbcType=INTEGER}, 
+      #{userType,jdbcType=VARCHAR}, #{agentId,jdbcType=INTEGER}, #{registerTime,jdbcType=TIMESTAMP}, 
+      #{regTerminal,jdbcType=INTEGER}, #{firstBuyTime,jdbcType=TIMESTAMP}, #{returnPath,jdbcType=INTEGER}, 
+      #{recentBankCardId,jdbcType=INTEGER}, #{lastAppVersion,jdbcType=VARCHAR}, #{lastAppTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.mall.model.MallBsUser">
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bs_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="nick != null">
+        nick,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="urgentName != null">
+        urgent_name,
+      </if>
+      <if test="urgentMobile != null">
+        urgent_mobile,
+      </if>
+      <if test="relation != null">
+        relation,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="payPassword != null">
+        pay_password,
+      </if>
+      <if test="loginTime != null">
+        login_time,
+      </if>
+      <if test="logoutTime != null">
+        logout_time,
+      </if>
+      <if test="loginFailTimes != null">
+        login_fail_times,
+      </if>
+      <if test="loginFailTime != null">
+        login_fail_time,
+      </if>
+      <if test="loginAlwaysFailTimes != null">
+        login_always_fail_times,
+      </if>
+      <if test="loginLockTime != null">
+        login_lock_time,
+      </if>
+      <if test="payFailTimes != null">
+        pay_fail_times,
+      </if>
+      <if test="payFailTime != null">
+        pay_fail_time,
+      </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="isBindName != null">
+        is_bind_name,
+      </if>
+      <if test="isBindBank != null">
+        is_bind_bank,
+      </if>
+      <if test="currentInterest != null">
+        current_interest,
+      </if>
+      <if test="currentBonus != null">
+        current_bonus,
+      </if>
+      <if test="totalInterest != null">
+        total_interest,
+      </if>
+      <if test="totalBonus != null">
+        total_bonus,
+      </if>
+      <if test="canWithdraw != null">
+        can_withdraw,
+      </if>
+      <if test="totalTrans != null">
+        total_trans,
+      </if>
+      <if test="recommendId != null">
+        recommend_id,
+      </if>
+      <if test="createChannel != null">
+        create_channel,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+      <if test="agentId != null">
+        agent_id,
+      </if>
+      <if test="registerTime != null">
+        register_time,
+      </if>
+      <if test="regTerminal != null">
+        reg_terminal,
+      </if>
+      <if test="firstBuyTime != null">
+        first_buy_time,
+      </if>
+      <if test="returnPath != null">
+        return_path,
+      </if>
+      <if test="recentBankCardId != null">
+        recent_bank_card_id,
+      </if>
+      <if test="lastAppVersion != null">
+        last_app_version,
+      </if>
+      <if test="lastAppTime != null">
+        last_app_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="nick != null">
+        #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="urgentName != null">
+        #{urgentName,jdbcType=VARCHAR},
+      </if>
+      <if test="urgentMobile != null">
+        #{urgentMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="relation != null">
+        #{relation,jdbcType=INTEGER},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="payPassword != null">
+        #{payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null">
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logoutTime != null">
+        #{logoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginFailTimes != null">
+        #{loginFailTimes,jdbcType=INTEGER},
+      </if>
+      <if test="loginFailTime != null">
+        #{loginFailTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginAlwaysFailTimes != null">
+        #{loginAlwaysFailTimes,jdbcType=INTEGER},
+      </if>
+      <if test="loginLockTime != null">
+        #{loginLockTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payFailTimes != null">
+        #{payFailTimes,jdbcType=INTEGER},
+      </if>
+      <if test="payFailTime != null">
+        #{payFailTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isBindName != null">
+        #{isBindName,jdbcType=INTEGER},
+      </if>
+      <if test="isBindBank != null">
+        #{isBindBank,jdbcType=INTEGER},
+      </if>
+      <if test="currentInterest != null">
+        #{currentInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="currentBonus != null">
+        #{currentBonus,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInterest != null">
+        #{totalInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="totalBonus != null">
+        #{totalBonus,jdbcType=DOUBLE},
+      </if>
+      <if test="canWithdraw != null">
+        #{canWithdraw,jdbcType=DOUBLE},
+      </if>
+      <if test="totalTrans != null">
+        #{totalTrans,jdbcType=INTEGER},
+      </if>
+      <if test="recommendId != null">
+        #{recommendId,jdbcType=INTEGER},
+      </if>
+      <if test="createChannel != null">
+        #{createChannel,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="agentId != null">
+        #{agentId,jdbcType=INTEGER},
+      </if>
+      <if test="registerTime != null">
+        #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regTerminal != null">
+        #{regTerminal,jdbcType=INTEGER},
+      </if>
+      <if test="firstBuyTime != null">
+        #{firstBuyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnPath != null">
+        #{returnPath,jdbcType=INTEGER},
+      </if>
+      <if test="recentBankCardId != null">
+        #{recentBankCardId,jdbcType=INTEGER},
+      </if>
+      <if test="lastAppVersion != null">
+        #{lastAppVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="lastAppTime != null">
+        #{lastAppTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.mall.model.MallBsUserExample" resultType="java.lang.Long">
+    select count(*) from bs_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update bs_user
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.nick != null">
+        nick = #{record.nick,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null">
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null">
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.urgentName != null">
+        urgent_name = #{record.urgentName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.urgentMobile != null">
+        urgent_mobile = #{record.urgentMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relation != null">
+        relation = #{record.relation,jdbcType=INTEGER},
+      </if>
+      <if test="record.email != null">
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null">
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payPassword != null">
+        pay_password = #{record.payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginTime != null">
+        login_time = #{record.loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.logoutTime != null">
+        logout_time = #{record.logoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.loginFailTimes != null">
+        login_fail_times = #{record.loginFailTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.loginFailTime != null">
+        login_fail_time = #{record.loginFailTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.loginAlwaysFailTimes != null">
+        login_always_fail_times = #{record.loginAlwaysFailTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.loginLockTime != null">
+        login_lock_time = #{record.loginLockTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.payFailTimes != null">
+        pay_fail_times = #{record.payFailTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.payFailTime != null">
+        pay_fail_time = #{record.payFailTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.idCard != null">
+        id_card = #{record.idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.isBindName != null">
+        is_bind_name = #{record.isBindName,jdbcType=INTEGER},
+      </if>
+      <if test="record.isBindBank != null">
+        is_bind_bank = #{record.isBindBank,jdbcType=INTEGER},
+      </if>
+      <if test="record.currentInterest != null">
+        current_interest = #{record.currentInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="record.currentBonus != null">
+        current_bonus = #{record.currentBonus,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalInterest != null">
+        total_interest = #{record.totalInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalBonus != null">
+        total_bonus = #{record.totalBonus,jdbcType=DOUBLE},
+      </if>
+      <if test="record.canWithdraw != null">
+        can_withdraw = #{record.canWithdraw,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalTrans != null">
+        total_trans = #{record.totalTrans,jdbcType=INTEGER},
+      </if>
+      <if test="record.recommendId != null">
+        recommend_id = #{record.recommendId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createChannel != null">
+        create_channel = #{record.createChannel,jdbcType=INTEGER},
+      </if>
+      <if test="record.userType != null">
+        user_type = #{record.userType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agentId != null">
+        agent_id = #{record.agentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.registerTime != null">
+        register_time = #{record.registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.regTerminal != null">
+        reg_terminal = #{record.regTerminal,jdbcType=INTEGER},
+      </if>
+      <if test="record.firstBuyTime != null">
+        first_buy_time = #{record.firstBuyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.returnPath != null">
+        return_path = #{record.returnPath,jdbcType=INTEGER},
+      </if>
+      <if test="record.recentBankCardId != null">
+        recent_bank_card_id = #{record.recentBankCardId,jdbcType=INTEGER},
+      </if>
+      <if test="record.lastAppVersion != null">
+        last_app_version = #{record.lastAppVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastAppTime != null">
+        last_app_time = #{record.lastAppTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update bs_user
+    set id = #{record.id,jdbcType=INTEGER},
+      nick = #{record.nick,jdbcType=VARCHAR},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      urgent_name = #{record.urgentName,jdbcType=VARCHAR},
+      urgent_mobile = #{record.urgentMobile,jdbcType=VARCHAR},
+      relation = #{record.relation,jdbcType=INTEGER},
+      email = #{record.email,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      pay_password = #{record.payPassword,jdbcType=VARCHAR},
+      login_time = #{record.loginTime,jdbcType=TIMESTAMP},
+      logout_time = #{record.logoutTime,jdbcType=TIMESTAMP},
+      login_fail_times = #{record.loginFailTimes,jdbcType=INTEGER},
+      login_fail_time = #{record.loginFailTime,jdbcType=TIMESTAMP},
+      login_always_fail_times = #{record.loginAlwaysFailTimes,jdbcType=INTEGER},
+      login_lock_time = #{record.loginLockTime,jdbcType=TIMESTAMP},
+      pay_fail_times = #{record.payFailTimes,jdbcType=INTEGER},
+      pay_fail_time = #{record.payFailTime,jdbcType=TIMESTAMP},
+      id_card = #{record.idCard,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      is_bind_name = #{record.isBindName,jdbcType=INTEGER},
+      is_bind_bank = #{record.isBindBank,jdbcType=INTEGER},
+      current_interest = #{record.currentInterest,jdbcType=DOUBLE},
+      current_bonus = #{record.currentBonus,jdbcType=DOUBLE},
+      total_interest = #{record.totalInterest,jdbcType=DOUBLE},
+      total_bonus = #{record.totalBonus,jdbcType=DOUBLE},
+      can_withdraw = #{record.canWithdraw,jdbcType=DOUBLE},
+      total_trans = #{record.totalTrans,jdbcType=INTEGER},
+      recommend_id = #{record.recommendId,jdbcType=INTEGER},
+      create_channel = #{record.createChannel,jdbcType=INTEGER},
+      user_type = #{record.userType,jdbcType=VARCHAR},
+      agent_id = #{record.agentId,jdbcType=INTEGER},
+      register_time = #{record.registerTime,jdbcType=TIMESTAMP},
+      reg_terminal = #{record.regTerminal,jdbcType=INTEGER},
+      first_buy_time = #{record.firstBuyTime,jdbcType=TIMESTAMP},
+      return_path = #{record.returnPath,jdbcType=INTEGER},
+      recent_bank_card_id = #{record.recentBankCardId,jdbcType=INTEGER},
+      last_app_version = #{record.lastAppVersion,jdbcType=VARCHAR},
+      last_app_time = #{record.lastAppTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.mall.model.MallBsUser">
+    update bs_user
+    <set>
+      <if test="nick != null">
+        nick = #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="urgentName != null">
+        urgent_name = #{urgentName,jdbcType=VARCHAR},
+      </if>
+      <if test="urgentMobile != null">
+        urgent_mobile = #{urgentMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="relation != null">
+        relation = #{relation,jdbcType=INTEGER},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="payPassword != null">
+        pay_password = #{payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null">
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logoutTime != null">
+        logout_time = #{logoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginFailTimes != null">
+        login_fail_times = #{loginFailTimes,jdbcType=INTEGER},
+      </if>
+      <if test="loginFailTime != null">
+        login_fail_time = #{loginFailTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginAlwaysFailTimes != null">
+        login_always_fail_times = #{loginAlwaysFailTimes,jdbcType=INTEGER},
+      </if>
+      <if test="loginLockTime != null">
+        login_lock_time = #{loginLockTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payFailTimes != null">
+        pay_fail_times = #{payFailTimes,jdbcType=INTEGER},
+      </if>
+      <if test="payFailTime != null">
+        pay_fail_time = #{payFailTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="idCard != null">
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="isBindName != null">
+        is_bind_name = #{isBindName,jdbcType=INTEGER},
+      </if>
+      <if test="isBindBank != null">
+        is_bind_bank = #{isBindBank,jdbcType=INTEGER},
+      </if>
+      <if test="currentInterest != null">
+        current_interest = #{currentInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="currentBonus != null">
+        current_bonus = #{currentBonus,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInterest != null">
+        total_interest = #{totalInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="totalBonus != null">
+        total_bonus = #{totalBonus,jdbcType=DOUBLE},
+      </if>
+      <if test="canWithdraw != null">
+        can_withdraw = #{canWithdraw,jdbcType=DOUBLE},
+      </if>
+      <if test="totalTrans != null">
+        total_trans = #{totalTrans,jdbcType=INTEGER},
+      </if>
+      <if test="recommendId != null">
+        recommend_id = #{recommendId,jdbcType=INTEGER},
+      </if>
+      <if test="createChannel != null">
+        create_channel = #{createChannel,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="agentId != null">
+        agent_id = #{agentId,jdbcType=INTEGER},
+      </if>
+      <if test="registerTime != null">
+        register_time = #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regTerminal != null">
+        reg_terminal = #{regTerminal,jdbcType=INTEGER},
+      </if>
+      <if test="firstBuyTime != null">
+        first_buy_time = #{firstBuyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnPath != null">
+        return_path = #{returnPath,jdbcType=INTEGER},
+      </if>
+      <if test="recentBankCardId != null">
+        recent_bank_card_id = #{recentBankCardId,jdbcType=INTEGER},
+      </if>
+      <if test="lastAppVersion != null">
+        last_app_version = #{lastAppVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="lastAppTime != null">
+        last_app_time = #{lastAppTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.mall.model.MallBsUser">
+    update bs_user
+    set nick = #{nick,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      urgent_name = #{urgentName,jdbcType=VARCHAR},
+      urgent_mobile = #{urgentMobile,jdbcType=VARCHAR},
+      relation = #{relation,jdbcType=INTEGER},
+      email = #{email,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      pay_password = #{payPassword,jdbcType=VARCHAR},
+      login_time = #{loginTime,jdbcType=TIMESTAMP},
+      logout_time = #{logoutTime,jdbcType=TIMESTAMP},
+      login_fail_times = #{loginFailTimes,jdbcType=INTEGER},
+      login_fail_time = #{loginFailTime,jdbcType=TIMESTAMP},
+      login_always_fail_times = #{loginAlwaysFailTimes,jdbcType=INTEGER},
+      login_lock_time = #{loginLockTime,jdbcType=TIMESTAMP},
+      pay_fail_times = #{payFailTimes,jdbcType=INTEGER},
+      pay_fail_time = #{payFailTime,jdbcType=TIMESTAMP},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      is_bind_name = #{isBindName,jdbcType=INTEGER},
+      is_bind_bank = #{isBindBank,jdbcType=INTEGER},
+      current_interest = #{currentInterest,jdbcType=DOUBLE},
+      current_bonus = #{currentBonus,jdbcType=DOUBLE},
+      total_interest = #{totalInterest,jdbcType=DOUBLE},
+      total_bonus = #{totalBonus,jdbcType=DOUBLE},
+      can_withdraw = #{canWithdraw,jdbcType=DOUBLE},
+      total_trans = #{totalTrans,jdbcType=INTEGER},
+      recommend_id = #{recommendId,jdbcType=INTEGER},
+      create_channel = #{createChannel,jdbcType=INTEGER},
+      user_type = #{userType,jdbcType=VARCHAR},
+      agent_id = #{agentId,jdbcType=INTEGER},
+      register_time = #{registerTime,jdbcType=TIMESTAMP},
+      reg_terminal = #{regTerminal,jdbcType=INTEGER},
+      first_buy_time = #{firstBuyTime,jdbcType=TIMESTAMP},
+      return_path = #{returnPath,jdbcType=INTEGER},
+      recent_bank_card_id = #{recentBankCardId,jdbcType=INTEGER},
+      last_app_version = #{lastAppVersion,jdbcType=VARCHAR},
+      last_app_time = #{lastAppTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getBirthdayUserList" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select a.id
+	from (
+		SELECT id from bs_user 
+		WHERE status=1 and id_card is not null 
+		and SUBSTR(id_card, 11, 4) = #{birthday}
+		and id not in 
+			<foreach collection="vipCompUserList" item="userId" index="index"
+	            open="(" close=")" separator=",">
+	            #{userId}
+	        </foreach>
+	)a LEFT JOIN mall_account_jnl b on b.user_id = a.id 
+	and b.trans_type='BIRTHDAY' and date(b.trans_time)=DATE(NOW())
+	where b.id is null 
+  </select>
+</mapper>

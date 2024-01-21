@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsWxAutoReplyMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsWxAutoReply" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="reply_type" property="replyType" jdbcType="VARCHAR" />
+    <result column="keywords" property="keywords" jdbcType="VARCHAR" />
+    <result column="from_user_uame" property="fromUserUame" jdbcType="VARCHAR" />
+    <result column="msg_type" property="msgType" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, reply_type, keywords, from_user_uame, msg_type, title, content, pic_url, 
+    url, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsWxAutoReplyExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_wx_auto_reply
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    id, name, reply_type, keywords, from_user_uame, msg_type, title, REPLACE(content,char(10),'&lt;br /&gt;') as content, pic_url, 
+    url, create_time, update_time 
+    from bs_wx_auto_reply
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_wx_auto_reply
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsWxAutoReplyExample" >
+    delete from bs_wx_auto_reply
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsWxAutoReply" >
+    insert into bs_wx_auto_reply (id, name, reply_type, 
+      keywords, from_user_uame, msg_type, 
+      title, content, pic_url, 
+      url, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{replyType,jdbcType=VARCHAR}, 
+      #{keywords,jdbcType=VARCHAR}, #{fromUserUame,jdbcType=VARCHAR}, #{msgType,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsWxAutoReply" >
+    insert into bs_wx_auto_reply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="replyType != null" >
+        reply_type,
+      </if>
+      <if test="keywords != null" >
+        keywords,
+      </if>
+      <if test="fromUserUame != null" >
+        from_user_uame,
+      </if>
+      <if test="msgType != null" >
+        msg_type,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="picUrl != null" >
+        pic_url,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="replyType != null" >
+        #{replyType,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        REPLACE(#{keywords,jdbcType=VARCHAR},'[br]',''),
+      </if>
+      <if test="fromUserUame != null" >
+        #{fromUserUame,jdbcType=VARCHAR},
+      </if>
+      <if test="msgType != null" >
+        #{msgType,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        REPLACE(#{content,jdbcType=VARCHAR},'[br]',char(10)),
+      </if>
+      <if test="picUrl != null" >
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsWxAutoReplyExample" resultType="java.lang.Integer" >
+    select count(*) from bs_wx_auto_reply
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_wx_auto_reply
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.replyType != null" >
+        reply_type = #{record.replyType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.keywords != null" >
+        keywords = #{record.keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromUserUame != null" >
+        from_user_uame = #{record.fromUserUame,jdbcType=VARCHAR},
+      </if>
+      <if test="record.msgType != null" >
+        msg_type = #{record.msgType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picUrl != null" >
+        pic_url = #{record.picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.url != null" >
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_wx_auto_reply
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      reply_type = #{record.replyType,jdbcType=VARCHAR},
+      keywords = #{record.keywords,jdbcType=VARCHAR},
+      from_user_uame = #{record.fromUserUame,jdbcType=VARCHAR},
+      msg_type = #{record.msgType,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      pic_url = #{record.picUrl,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsWxAutoReply" >
+    update bs_wx_auto_reply
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="replyType != null" >
+        reply_type = #{replyType,jdbcType=VARCHAR},
+      </if>
+      <if test="keywords != null" >
+        keywords = REPLACE(#{keywords,jdbcType=VARCHAR},'[br]',''),
+      </if>
+      <if test="fromUserUame != null" >
+        from_user_uame = #{fromUserUame,jdbcType=VARCHAR},
+      </if>
+      <if test="msgType != null" >
+        msg_type = #{msgType,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = REPLACE(#{content,jdbcType=VARCHAR},'[br]',char(10)),
+      </if>
+      <if test="picUrl != null" >
+        pic_url = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsWxAutoReply" >
+    update bs_wx_auto_reply
+    set name = #{name,jdbcType=VARCHAR},
+      reply_type = #{replyType,jdbcType=VARCHAR},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      from_user_uame = #{fromUserUame,jdbcType=VARCHAR},
+      msg_type = #{msgType,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+   <select id="getListByReplyVO" parameterType="com.pinting.business.model.vo.BsWxAutoReplyVO" resultMap="BaseResultMap" >
+   	select 
+	id, name, reply_type, keywords, from_user_uame, msg_type, title, content, pic_url, 
+    url, create_time, update_time
+   	from bs_wx_auto_reply where 1=1 
+   	<if test="name != null and name != ''">
+   		and name like concat(concat('%', #{name,jdbcType=VARCHAR}),'%')
+   	</if>
+   	<if test="keywords != null and keywords != ''">
+   		and keywords like concat(concat('%', #{keywords,jdbcType=VARCHAR}),'%')
+   	</if>
+   	<if test="title != null and title != ''">
+   		and title like concat(concat('%', #{title,jdbcType=VARCHAR}),'%')
+   	</if>
+   	<if test="content != null and content != ''">
+   		and content like concat(concat('%', #{content,jdbcType=VARCHAR}),'%')
+   	</if>
+   	<if test="replyType != null and replyType != ''">
+   		and reply_type = #{replyType,jdbcType=VARCHAR}
+   	</if>
+   	<if test="msgType != null and msgType != ''">
+   		and msg_type = #{msgType,jdbcType=VARCHAR}
+   	</if>
+    <if test="startTime != null and startTime != ''">
+    	and update_time &gt;= DATE_FORMAT(#{startTime},'%Y-%m-%d 00:00:00')
+    </if>
+    <if test="endTime != null and endTime != ''">
+    	and update_time &lt;= DATE_FORMAT(#{endTime},'%Y-%m-%d 23:59:59')
+    </if>
+   	order by update_time desc,keywords desc
+    <include refid="sql-global.pagination"/>
+   </select>
+   
+   <select id="getCountByReplyVO" parameterType="com.pinting.business.model.vo.BsWxAutoReplyVO" resultType="java.lang.Integer" >
+   	select count(*)  
+   	from bs_wx_auto_reply where 1=1 
+   	<if test="name != null and name != ''">
+   		and name like concat(concat('%', #{name,jdbcType=VARCHAR}),'%')
+   	</if>
+   	<if test="keywords != null and keywords != ''">
+   		and keywords like concat(concat('%', #{keywords,jdbcType=VARCHAR}),'%')
+   	</if>
+   	<if test="title != null and title != ''">
+   		and title like concat(concat('%', #{title,jdbcType=VARCHAR}),'%')
+   	</if>
+   	<if test="content != null and content != ''">
+   		and content like concat(concat('%', #{content,jdbcType=VARCHAR}),'%')
+   	</if>
+   	<if test="replyType != null and replyType != ''">
+   		and reply_type = #{replyType,jdbcType=VARCHAR}
+   	</if>
+   	<if test="msgType != null and msgType != ''">
+   		and msg_type = #{msgType,jdbcType=VARCHAR}
+   	</if>
+   	<if test="startTime != null and startTime != ''">
+    	and update_time &gt;= DATE_FORMAT(#{startTime},'%Y-%m-%d 00:00:00')
+    </if>
+    <if test="endTime != null and endTime != ''">
+    	and update_time &lt;= DATE_FORMAT(#{endTime},'%Y-%m-%d 23:59:59')
+    </if>
+   </select>
+   
+   
+   
+   <select id="selectAutoReplyMessage" parameterType="java.util.Map" resultMap="BaseResultMap" >
+		SELECT 
+			a.id, a.name, a.reply_type, a.keywords,b.keywords_con,
+			a.from_user_uame, a.msg_type, a.title, 
+			a.content, a.pic_url, a.url, a.create_time, a.update_time	
+		FROM bs_wx_auto_reply a
+		LEFT JOIN (SELECT c.id,CONCAT('，',c.keywords,'，') keywords_con  FROM bs_wx_auto_reply c) b ON a.id = b.id
+		WHERE 
+		b.keywords_con like concat(concat('%，', #{autoReplyMessage,jdbcType=VARCHAR}),'，%') and a.reply_type = #{replyType,jdbcType=VARCHAR}
+		order by update_time desc
+   </select>
+</mapper>

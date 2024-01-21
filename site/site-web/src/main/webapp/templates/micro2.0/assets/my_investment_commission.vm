@@ -1,0 +1,73 @@
+#foreach($!invest in $!commissionList)
+<section class="invest_main" commissionId="$!invest.id">
+    <div class="invest_title">$!invest.productName</div>
+    <div class="invest_wp">
+        <ul class="invest_ul_one">
+			<li class="invest_li">
+				<span class="invest_ft">预期年化收益：</span>
+				<span class="invest_number">$!number.format("0.00", $!{invest.productRate})%</span>
+			</li>
+            <li class="invest_li ticketBox">
+				<div class="ticketChild">
+					<span class="invest_ft">委托金额：</span>
+					<span class="invest_number">¥$!money.format($!invest.openBalance)</span>
+				</div>
+				<div class="ticketChild">
+                    <span class="invest_ft">委托意向：</span>
+    				<span class="invest_number">
+    					#if(0 > $!invest.term)
+    						#set($termShow = $!invest.term *-1)
+    						$!{termShow}天内
+    					#else
+    						$!{invest.term}个月内
+    					#end
+    				</span>
+				</div>
+            </li>
+            <li class="invest_li ticketBox">				
+				<div class="ticketChild">
+					<span class="invest_ft">回款方式：</span>
+					<span class="invest_number">等额本息</span>
+				</div>
+				<div class="ticketChild">
+                    <span class="invest_ft">委托时间：</span>
+                    <span class="invest_number">$!date.formatDateTime($!invest.openTime,'yyyy-MM-dd')</span>
+                </div>
+            </li>           
+        </ul>
+        <ul class="invest_ul_one inve_two">
+			<li class="invest_li ticketBox">
+				<div class="ticketChild">
+    				<span class="invest_ft">待收本金：</span>
+    				<span class="invest_number">¥$!money.format($!invest.receivePrincipalAmount)</span>
+				</div>
+				<div class="ticketChild">
+					<span class="invest_ft">待收利息：</span>
+					<span class="invest_number">¥$!money.format($!invest.receiveInterestAmount)</span>
+				</div>
+			</li>		
+			<li class="invest_li">
+				<span class="invest_ft">已回款：</span>
+				<span class="invest_number">¥$!money.format($!invest.returnAmount)</span>
+			</li>
+        </ul>        
+    </div>
+	#if($!invest.entrustStatus == "ENTRUSTING")
+        ## 委托中
+            <img class="status_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/horn3.png" alt="">
+        #elseif($!invest.entrustStatus == "RETURNING")
+        ## 回款中
+            <img class="status_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/horn7.png" alt=""> ##结算中
+        #elseif($!invest.entrustStatus == "RETURN_OVER")
+        ## 回款结束
+            <img class="status_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/horn4.png" alt=""> ##回款中
+        #elseif($!invest.entrustStatus == "ENTRUST_OVER")
+        ## 委托结束
+            <img class="status_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/horn8.png" alt=""> ##委托结束
+        #end
+    <div class="invest_footer">
+        <div class="footer_btn bnt_right_border" onclick="investment_agreement($!invest.id,'$!invest.propertyType')">自动出借计划协议</div>
+        <div class="footer_btn" onclick="creditor_rights($!invest.productId,$!invest.id,'$!invest.entrustStatus')">债权明细</div>
+    </div>
+</section>
+#end

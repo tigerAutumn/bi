@@ -1,0 +1,262 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/depFinanceStatistics/queryLoanServiceFeeList/index.htm')" method="post" id="myform" class="pageForm required-validate">
+    	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+    	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    	<input type="hidden" name="pageNum" value="$!pageNum" />
+        <input type="hidden" id="partnerBusinessFlag" name="partnerBusinessFlag" value="$!partnerBusinessFlag" />
+	<div class="searchBar">
+
+        <table class="searchContent">
+            <tr>
+                <td >
+                    融资人名称：<input id="userName" type="text" name="userName" value="$!userName" size="16"/>&nbsp;&nbsp;
+                </td>
+				<td>
+                    手机号：<input id="mobile" type="text" name="mobile" value="$!mobile" size="16"/>&nbsp;&nbsp;
+				</td>
+				<td>
+                    结算日期：
+                    <input name="startTime"  type="text" id="startTime" class="date textInput readonly" readonly="true" size="15"  value="$!startTime" /> 到
+                    <input name="endTime"  type="text" id="endTime" class="date textInput readonly" readonly="true" size="15"  value="$!endTime" />
+				</td>
+            </tr>
+            <tr>
+                <td>
+                    <label>资产方：</label>
+                    <select id="partnerCode_id" name="partnerCode" >
+                        <option value="" #if("$!partnerCode"=="") selected #end>全部</option>
+                        <option value="YUN_DAI_SELF" #if("$!partnerCode"=="YUN_DAI_SELF") selected  #end>云贷存管</option>
+                        <option value="7_DAI_SELF" #if("$!partnerCode"=="7_DAI_SELF") selected  #end>7贷存管</option>
+                    </select>
+				</td>
+				<td>
+                    <label>借款产品：</label>
+                    <select id="partnerBusinessFlag_yundai" name="partnerBusinessFlag" class="valid" style="display: block;">
+                        <option value="777" #if("$!partnerBusinessFlag"=="777") selected  #end>全部</option>
+                        <option value="REPAY_ANY_TIME" #if("$!partnerBusinessFlag"=="REPAY_ANY_TIME") selected  #end>随借随还</option>
+                        <option value="FIXED_INSTALLMENT" #if("$!partnerBusinessFlag"=="FIXED_INSTALLMENT") selected  #end>等额本息</option>
+                        <option value="FIXED_PRINCIPAL_INTEREST" #if("$!partnerBusinessFlag"=="FIXED_PRINCIPAL_INTEREST") selected  #end>等本等息</option>
+                    </select>
+                    <select id="partnerBusinessFlag_7dai" name="partnerBusinessFlag" class="valid" style="display: none;">
+                        <option value="888" #if("$!partnerBusinessFlag"=="888") selected  #end>全部</option>
+                        <option value="REPAY_ANY_TIME" #if("$!partnerBusinessFlag"=="REPAY_ANY_TIME") selected  #end>随借随还</option>
+                        <option value="现金循环贷" #if("$!partnerBusinessFlag"=="现金循环贷") selected  #end>先息后本</option>
+                    </select>
+                    <select id="partnerBusinessFlag_zsd" name="partnerBusinessFlag" class="valid" style="display: none;">
+                        <option value="999" #if("$!partnerBusinessFlag"=="999") selected  #end>全部</option>
+                    </select>
+				</td>
+
+                <td>
+					<span style="margin-left:20px;">
+                    	<button  onclick="func()" type="button">查询</button>
+                    	<button  onclick="exp()" type="button">导出excel</button>
+                	</span>
+				</td>
+            </tr>
+        </table>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li>		
+				<span style="margin-left:10px;">
+    				<font color="red">融资客户应付利息总计：#if(!$!loanInterestTotal)0.00 #else $!money.format($!loanInterestTotal) #end 元</font>
+                </span>
+                <span style="margin-left:10px;">
+    				<font color="red">借款服务费总计：#if(!$!loanServiceFeeTotal)0.00 #else $!money.format($!loanServiceFeeTotal) #end 元</font>
+                </span>
+			</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="146">
+		<thead>
+			<tr>
+                <th width="8%">序号</th>
+                <th width="12%">单据编号</th>
+				<th width="8%">融资客户名称</th>
+				<th width="8%">融资客户代码</th>
+				<th width="8%">手机号</th>
+				<th width="8%">资产方</th>
+				<th width="8%">结算本金</th>
+				<th width="10%">融资客户应付利息</th>
+				<th width="8%">借款服务费</th>
+				<th width="10%">结算日期</th>
+				<th width="5%">备注</th>
+                <th width="7%">借款产品</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $loanServiceFeeList)
+			<tr target="sid_user" rel="1">
+				<td>$!grid.serialNo</td>
+				<td>$!grid.billNo</td>
+				<td>$!grid.userName</td>
+				<td>$!grid.lnCustomerCode</td>				
+				<td>#if("$!grid.mobile" != "" && $!grid.mobile.length() == 11) 
+					$!grid.mobile.substring(0,3)****$!grid.mobile.substring(7,11)
+					#else 
+					 $!grid.mobile
+					#end
+				</td>
+				<td>
+					$!grid.partnerCode
+				</td>	
+				<td>$!money.format($!grid.principal)</td>
+				<td>$!money.format($!grid.interest)</td>	
+				<td>$!money.format($!grid.loanServiceFee)</td>
+				<td>$!date.format($!grid.finishTime)</td>
+				<td></td>
+                <td>
+					#if("$!grid.partnerBusinessFlag" == "FIXED_INSTALLMENT")
+                        等额本息
+					#elseif("$!grid.partnerBusinessFlag" == "FIXED_PRINCIPAL_INTEREST")
+                        等本等息
+					#elseif("$!grid.partnerBusinessFlag" == "REPAY_ANY_TIME")
+                        随借随还
+					#elseif("$!grid.partnerBusinessFlag" == "现金循环贷")
+                        先息后本
+					#elseif("$!grid.partnerBusinessFlag" == "INSTALMENT")
+                        分期产品
+					#else
+						$!grid.partnerBusinessFlag
+					#end
+                </td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+function showLoanPoroduct(obj) {
+	var propertySimbol = $('#partnerCode_id option:selected').val();//选中的值
+	if(propertySimbol == 'YUN_DAI_SELF') {
+		$("#partnerBusinessFlag_yundai").css({"display":"block"});
+		$("#partnerBusinessFlag_7dai").css({"display":"none"});
+		$("#partnerBusinessFlag_zsd").css({"display":"none"});
+	} else if(propertySimbol == '7_DAI_SELF'){
+		$("#partnerBusinessFlag_yundai").css({"display":"none"});
+		$("#partnerBusinessFlag_7dai").css({"display":"block"});
+		$("#partnerBusinessFlag_zsd").css({"display":"none"});
+	} else {
+		$("#partnerBusinessFlag_yundai").css({"display":"none"});
+		$("#partnerBusinessFlag_7dai").css({"display":"none"});
+		$("#partnerBusinessFlag_zsd").css({"display":"block"});
+	}
+}
+// 资产方下拉框改变事件
+$('#partnerCode_id').on('change', function() {
+	showLoanPoroduct(this);
+});
+
+// 页面加载完，下拉框显示
+$(document).ready(function(){
+	var propertySimbol = $('#partnerCode_id option:selected').val();//选中的值
+	if(propertySimbol == 'YUN_DAI_SELF') {
+		$("#partnerBusinessFlag_yundai").css({"display":"block"});
+		$("#partnerBusinessFlag_7dai").css({"display":"none"});
+		$("#partnerBusinessFlag_zsd").css({"display":"none"});
+	} else if(propertySimbol == '7_DAI_SELF'){
+		$("#partnerBusinessFlag_yundai").css({"display":"none"});
+		$("#partnerBusinessFlag_7dai").css({"display":"block"});
+		$("#partnerBusinessFlag_zsd").css({"display":"none"});
+	} else {
+		$("#partnerBusinessFlag_yundai").css({"display":"none"});
+		$("#partnerBusinessFlag_7dai").css({"display":"none"});
+		$("#partnerBusinessFlag_zsd").css({"display":"block"});
+	}
+});
+
+function func(){
+    var propertySimbol = $('#partnerCode_id option:selected').val();//选中的值
+    if(propertySimbol == 'YUN_DAI_SELF') {
+        var partnerBusinessFlag = $('#partnerBusinessFlag_yundai option:selected') .val();
+        $('#partnerBusinessFlag').val(partnerBusinessFlag);
+    } else if(propertySimbol == '7_DAI_SELF'){
+        var partnerBusinessFlag = $('#partnerBusinessFlag_7dai option:selected') .val();
+        $('#partnerBusinessFlag').val(partnerBusinessFlag);
+    } else {
+        var partnerBusinessFlag = $('#partnerBusinessFlag_zsd option:selected') .val();
+        $('#partnerBusinessFlag').val(partnerBusinessFlag);
+    }
+
+	var startTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	var orderNo = $("#orderNo").val();
+	var thdOrderNo = $("#thdOrderNo").val();
+	if ((startTime == "" || endTime == "" || startTime == null || endTime == null ) && (orderNo
+			== "" && thdOrderNo== "")) {
+		alert("请求开始时间或请求结束时间不能为空！！");
+		return false;
+	}
+	if(startTime != "" && endTime != ""){
+		var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(startTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("请求开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/depFinanceStatistics/queryLoanServiceFeeList/index.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+    var propertySimbol = $('#partnerCode_id option:selected').val();//选中的值
+    if(propertySimbol == 'YUN_DAI_SELF') {
+        var partnerBusinessFlag = $('#partnerBusinessFlag_yundai option:selected') .val();
+        $('#partnerBusinessFlag').val(partnerBusinessFlag);
+    } else if(propertySimbol == '7_DAI_SELF'){
+        var partnerBusinessFlag = $('#partnerBusinessFlag_7dai option:selected') .val();
+        $('#partnerBusinessFlag').val(partnerBusinessFlag);
+    } else {
+        var partnerBusinessFlag = $('#partnerBusinessFlag_zsd option:selected') .val();
+        $('#partnerBusinessFlag').val(partnerBusinessFlag);
+    }
+
+	var startTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	var orderNo = $("#orderNo").val();
+	var thdOrderNo = $("#thdOrderNo").val();
+	if ((startTime == "" || endTime == "" || startTime == null || endTime == null ) && (orderNo
+			== "" && thdOrderNo== "")) {
+		alert("请求开始时间或请求结束时间不能为空！！");
+		return false;
+	}
+	if(startTime != "" && endTime != ""){
+		var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(startTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("请求开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	var url = $("#APP_ROOT_PATH").val() + "/depFinanceStatistics/exportLoanServiceFee.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+</script>

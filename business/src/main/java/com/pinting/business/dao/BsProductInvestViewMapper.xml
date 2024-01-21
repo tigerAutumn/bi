@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsProductInvestViewMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsProductInvestView" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="today_invest_7" property="todayInvest7" jdbcType="DOUBLE" />
+    <result column="total_invest_7" property="totalInvest7" jdbcType="DOUBLE" />
+    <result column="today_invest_30" property="todayInvest30" jdbcType="DOUBLE" />
+    <result column="total_invest_30" property="totalInvest30" jdbcType="DOUBLE" />
+    <result column="today_invest_90" property="todayInvest90" jdbcType="DOUBLE" />
+    <result column="total_invest_90" property="totalInvest90" jdbcType="DOUBLE" />
+    <result column="today_invest_180" property="todayInvest180" jdbcType="DOUBLE" />
+    <result column="total_invest_180" property="totalInvest180" jdbcType="DOUBLE" />
+    <result column="today_invest_270" property="todayInvest270" jdbcType="DOUBLE" />
+    <result column="total_invest_270" property="totalInvest270" jdbcType="DOUBLE" />
+    <result column="today_invest_365" property="todayInvest365" jdbcType="DOUBLE" />
+    <result column="total_invest_365" property="totalInvest365" jdbcType="DOUBLE" />
+    <result column="date" property="date" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, today_invest_7, total_invest_7, today_invest_30, total_invest_30, today_invest_90, 
+    total_invest_90, today_invest_180, total_invest_180, today_invest_270, total_invest_270, 
+    today_invest_365, total_invest_365, date
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsProductInvestViewExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_product_invest_view
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_product_invest_view
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_product_invest_view
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsProductInvestViewExample" >
+    delete from bs_product_invest_view
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsProductInvestView" >
+    insert into bs_product_invest_view (id, today_invest_7, total_invest_7, 
+      today_invest_30, total_invest_30, today_invest_90, 
+      total_invest_90, today_invest_180, total_invest_180, 
+      today_invest_270, total_invest_270, today_invest_365, 
+      total_invest_365, date)
+    values (#{id,jdbcType=INTEGER}, #{todayInvest7,jdbcType=DOUBLE}, #{totalInvest7,jdbcType=DOUBLE}, 
+      #{todayInvest30,jdbcType=DOUBLE}, #{totalInvest30,jdbcType=DOUBLE}, #{todayInvest90,jdbcType=DOUBLE}, 
+      #{totalInvest90,jdbcType=DOUBLE}, #{todayInvest180,jdbcType=DOUBLE}, #{totalInvest180,jdbcType=DOUBLE}, 
+      #{todayInvest270,jdbcType=DOUBLE}, #{totalInvest270,jdbcType=DOUBLE}, #{todayInvest365,jdbcType=DOUBLE}, 
+      #{totalInvest365,jdbcType=DOUBLE}, #{date,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsProductInvestView" >
+    insert into bs_product_invest_view
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="todayInvest7 != null" >
+        today_invest_7,
+      </if>
+      <if test="totalInvest7 != null" >
+        total_invest_7,
+      </if>
+      <if test="todayInvest30 != null" >
+        today_invest_30,
+      </if>
+      <if test="totalInvest30 != null" >
+        total_invest_30,
+      </if>
+      <if test="todayInvest90 != null" >
+        today_invest_90,
+      </if>
+      <if test="totalInvest90 != null" >
+        total_invest_90,
+      </if>
+      <if test="todayInvest180 != null" >
+        today_invest_180,
+      </if>
+      <if test="totalInvest180 != null" >
+        total_invest_180,
+      </if>
+      <if test="todayInvest270 != null" >
+        today_invest_270,
+      </if>
+      <if test="totalInvest270 != null" >
+        total_invest_270,
+      </if>
+      <if test="todayInvest365 != null" >
+        today_invest_365,
+      </if>
+      <if test="totalInvest365 != null" >
+        total_invest_365,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="todayInvest7 != null" >
+        #{todayInvest7,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInvest7 != null" >
+        #{totalInvest7,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest30 != null" >
+        #{todayInvest30,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInvest30 != null" >
+        #{totalInvest30,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest90 != null" >
+        #{todayInvest90,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInvest90 != null" >
+        #{totalInvest90,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest180 != null" >
+        #{todayInvest180,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInvest180 != null" >
+        #{totalInvest180,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest270 != null" >
+        #{todayInvest270,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInvest270 != null" >
+        #{totalInvest270,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest365 != null" >
+        #{todayInvest365,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInvest365 != null" >
+        #{totalInvest365,jdbcType=DOUBLE},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsProductInvestViewExample" resultType="java.lang.Integer" >
+    select count(*) from bs_product_invest_view
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_product_invest_view
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.todayInvest7 != null" >
+        today_invest_7 = #{record.todayInvest7,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalInvest7 != null" >
+        total_invest_7 = #{record.totalInvest7,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayInvest30 != null" >
+        today_invest_30 = #{record.todayInvest30,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalInvest30 != null" >
+        total_invest_30 = #{record.totalInvest30,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayInvest90 != null" >
+        today_invest_90 = #{record.todayInvest90,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalInvest90 != null" >
+        total_invest_90 = #{record.totalInvest90,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayInvest180 != null" >
+        today_invest_180 = #{record.todayInvest180,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalInvest180 != null" >
+        total_invest_180 = #{record.totalInvest180,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayInvest270 != null" >
+        today_invest_270 = #{record.todayInvest270,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalInvest270 != null" >
+        total_invest_270 = #{record.totalInvest270,jdbcType=DOUBLE},
+      </if>
+      <if test="record.todayInvest365 != null" >
+        today_invest_365 = #{record.todayInvest365,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalInvest365 != null" >
+        total_invest_365 = #{record.totalInvest365,jdbcType=DOUBLE},
+      </if>
+      <if test="record.date != null" >
+        date = #{record.date,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_product_invest_view
+    set id = #{record.id,jdbcType=INTEGER},
+      today_invest_7 = #{record.todayInvest7,jdbcType=DOUBLE},
+      total_invest_7 = #{record.totalInvest7,jdbcType=DOUBLE},
+      today_invest_30 = #{record.todayInvest30,jdbcType=DOUBLE},
+      total_invest_30 = #{record.totalInvest30,jdbcType=DOUBLE},
+      today_invest_90 = #{record.todayInvest90,jdbcType=DOUBLE},
+      total_invest_90 = #{record.totalInvest90,jdbcType=DOUBLE},
+      today_invest_180 = #{record.todayInvest180,jdbcType=DOUBLE},
+      total_invest_180 = #{record.totalInvest180,jdbcType=DOUBLE},
+      today_invest_270 = #{record.todayInvest270,jdbcType=DOUBLE},
+      total_invest_270 = #{record.totalInvest270,jdbcType=DOUBLE},
+      today_invest_365 = #{record.todayInvest365,jdbcType=DOUBLE},
+      total_invest_365 = #{record.totalInvest365,jdbcType=DOUBLE},
+      date = #{record.date,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsProductInvestView" >
+    update bs_product_invest_view
+    <set >
+      <if test="todayInvest7 != null" >
+        today_invest_7 = #{todayInvest7,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInvest7 != null" >
+        total_invest_7 = #{totalInvest7,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest30 != null" >
+        today_invest_30 = #{todayInvest30,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInvest30 != null" >
+        total_invest_30 = #{totalInvest30,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest90 != null" >
+        today_invest_90 = #{todayInvest90,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInvest90 != null" >
+        total_invest_90 = #{totalInvest90,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest180 != null" >
+        today_invest_180 = #{todayInvest180,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInvest180 != null" >
+        total_invest_180 = #{totalInvest180,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest270 != null" >
+        today_invest_270 = #{todayInvest270,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInvest270 != null" >
+        total_invest_270 = #{totalInvest270,jdbcType=DOUBLE},
+      </if>
+      <if test="todayInvest365 != null" >
+        today_invest_365 = #{todayInvest365,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInvest365 != null" >
+        total_invest_365 = #{totalInvest365,jdbcType=DOUBLE},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsProductInvestView" >
+    update bs_product_invest_view
+    set today_invest_7 = #{todayInvest7,jdbcType=DOUBLE},
+      total_invest_7 = #{totalInvest7,jdbcType=DOUBLE},
+      today_invest_30 = #{todayInvest30,jdbcType=DOUBLE},
+      total_invest_30 = #{totalInvest30,jdbcType=DOUBLE},
+      today_invest_90 = #{todayInvest90,jdbcType=DOUBLE},
+      total_invest_90 = #{totalInvest90,jdbcType=DOUBLE},
+      today_invest_180 = #{todayInvest180,jdbcType=DOUBLE},
+      total_invest_180 = #{totalInvest180,jdbcType=DOUBLE},
+      today_invest_270 = #{todayInvest270,jdbcType=DOUBLE},
+      total_invest_270 = #{totalInvest270,jdbcType=DOUBLE},
+      today_invest_365 = #{todayInvest365,jdbcType=DOUBLE},
+      total_invest_365 = #{totalInvest365,jdbcType=DOUBLE},
+      date = #{date,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectTodayProductInvest" resultMap="BaseResultMap">
+  	<![CDATA[
+	  	SELECT
+	  	(
+			SELECT
+				sum(s.open_balance)
+			FROM
+				bs_sub_account s,
+				bs_product p,
+				bs_account a,
+				bs_user u
+			WHERE
+				s.product_type in('REG','AUTH_YUN','RED', 'AUTH_7', 'RED_7', 'AUTH_FREE', 'RED_FREE')
+			AND s. STATUS NOT IN (1, 6)
+			AND s.product_id = p.id
+			AND s.interest_begin_date = #{interestBeginDate}
+			AND p.term = -7
+			AND s.account_id = a.id
+			AND u.id = a.user_id
+			AND u.first_buy_time >= #{startTime}
+			AND u.first_buy_time <= #{endTime}
+		) today_invest_7,
+		(
+			SELECT
+				sum(s.open_balance)
+			FROM
+				bs_sub_account s,
+				bs_product p,
+				bs_account a,
+				bs_user u
+			WHERE
+				s.product_type in('REG','AUTH_YUN','RED', 'AUTH_7', 'RED_7', 'AUTH_FREE', 'RED_FREE')
+			AND s. STATUS NOT IN (1, 6)
+			AND s.product_id = p.id
+			AND s.interest_begin_date = #{interestBeginDate}
+			AND p.term = 1
+			AND s.account_id = a.id
+			AND u.id = a.user_id
+			AND u.first_buy_time >= #{startTime}
+			AND u.first_buy_time <= #{endTime}
+		) today_invest_30,
+		(
+			SELECT
+				sum(s.open_balance)
+			FROM
+				bs_sub_account s,
+				bs_product p,
+				bs_account a,
+				bs_user u
+			WHERE
+				s.product_type in('REG','AUTH_YUN','RED', 'AUTH_7', 'RED_7', 'AUTH_FREE', 'RED_FREE')
+			AND s. STATUS NOT IN (1, 6)
+			AND s.product_id = p.id
+			AND s.interest_begin_date = #{interestBeginDate}
+			AND p.term = 3
+			AND s.account_id = a.id
+			AND u.id = a.user_id
+			AND u.first_buy_time >= #{startTime}
+			AND u.first_buy_time <= #{endTime}
+		) today_invest_90,
+		(
+			SELECT
+				sum(s.open_balance)
+			FROM
+				bs_sub_account s,
+				bs_product p,
+				bs_account a,
+				bs_user u
+			WHERE
+				s.product_type in('REG','AUTH_YUN','RED', 'AUTH_7', 'RED_7', 'AUTH_FREE', 'RED_FREE')
+			AND s. STATUS NOT IN (1, 6)
+			AND s.product_id = p.id
+			AND s.interest_begin_date = #{interestBeginDate}
+			AND p.term = 6
+			AND s.account_id = a.id
+			AND u.id = a.user_id
+			AND u.first_buy_time >= #{startTime}
+			AND u.first_buy_time <= #{endTime}
+		) today_invest_180,
+		(
+			SELECT
+				sum(s.open_balance)
+			FROM
+				bs_sub_account s,
+				bs_product p,
+				bs_account a,
+				bs_user u
+			WHERE
+				s.product_type in('REG','AUTH_YUN','RED', 'AUTH_7', 'RED_7', 'AUTH_FREE', 'RED_FREE')
+			AND s. STATUS NOT IN (1, 6)
+			AND s.product_id = p.id
+			AND s.interest_begin_date = #{interestBeginDate}
+			AND p.term = 9
+			AND s.account_id = a.id
+			AND u.id = a.user_id
+			AND u.first_buy_time >= #{startTime}
+			AND u.first_buy_time <= #{endTime}
+		) today_invest_270,
+		(
+			SELECT
+				sum(s.open_balance)
+			FROM
+				bs_sub_account s,
+				bs_product p,
+				bs_account a,
+				bs_user u
+			WHERE
+				s.product_type in('REG','AUTH_YUN','RED', 'AUTH_7', 'RED_7', 'AUTH_FREE', 'RED_FREE')
+			AND s. STATUS NOT IN (1, 6)
+			AND s.product_id = p.id
+			AND s.interest_begin_date = #{interestBeginDate}
+			AND p.term = 12
+			AND s.account_id = a.id
+			AND u.id = a.user_id
+			AND u.first_buy_time >= #{startTime}
+			AND u.first_buy_time <= #{endTime}
+		) today_invest_365
+	]]>
+  </select>
+  
+  <select id="selectTotalProductInvest" resultMap="BaseResultMap">
+  	<![CDATA[
+	  	SELECT
+	  	(
+			SELECT
+				sum(s.open_balance)
+			FROM
+				bs_sub_account s,
+				bs_product p
+			WHERE
+				s.interest_begin_date = #{interestBeginDate}
+			AND s.product_type in('REG','AUTH_YUN','RED', 'AUTH_7', 'RED_7', 'AUTH_FREE', 'RED_FREE')
+			AND s.status NOT IN (1, 6)
+			AND s.product_id = p.id
+			AND p.term = -7
+		) total_invest_7,
+		(
+			SELECT
+				sum(s.open_balance)
+			FROM
+				bs_sub_account s,
+				bs_product p
+			WHERE
+				s.interest_begin_date = #{interestBeginDate}
+			AND s.product_type in('REG','AUTH_YUN','RED', 'AUTH_7', 'RED_7', 'AUTH_FREE', 'RED_FREE')
+			AND s.status NOT IN (1, 6)
+			AND s.product_id = p.id
+			AND p.term = 1
+		) total_invest_30,
+		(
+			SELECT
+				sum(s.open_balance)
+			FROM
+				bs_sub_account s,
+				bs_product p
+			WHERE
+				s.interest_begin_date = #{interestBeginDate}
+			AND s.product_type in('REG','AUTH_YUN','RED', 'AUTH_7', 'RED_7', 'AUTH_FREE', 'RED_FREE')
+			AND s.status NOT IN (1, 6)
+			AND s.product_id = p.id
+			AND p.term = 3
+		) total_invest_90,
+		(
+			SELECT
+				sum(s.open_balance)
+			FROM
+				bs_sub_account s,
+				bs_product p
+			WHERE
+				s.interest_begin_date = #{interestBeginDate}
+			AND s.product_type in('REG','AUTH_YUN','RED', 'AUTH_7', 'RED_7', 'AUTH_FREE', 'RED_FREE')
+			AND s.status NOT IN (1, 6)
+			AND s.product_id = p.id
+			AND p.term = 6
+		) total_invest_180,
+		(
+			SELECT
+				sum(s.open_balance)
+			FROM
+				bs_sub_account s,
+				bs_product p
+			WHERE
+				s.interest_begin_date = #{interestBeginDate}
+			AND s.product_type in('REG','AUTH_YUN','RED', 'AUTH_7', 'RED_7', 'AUTH_FREE', 'RED_FREE')
+			AND s.status NOT IN (1, 6)
+			AND s.product_id = p.id
+			AND p.term = 9
+		) total_invest_270,
+		(
+			SELECT
+				sum(s.open_balance)
+			FROM
+				bs_sub_account s,
+				bs_product p
+			WHERE
+				s.interest_begin_date = #{interestBeginDate}
+			AND s.product_type in('REG','AUTH_YUN','RED', 'AUTH_7', 'RED_7', 'AUTH_FREE', 'RED_FREE')
+			AND s.status NOT IN (1, 6)
+			AND s.product_id = p.id
+			AND p.term = 12
+		) total_invest_365
+	]]>
+  </select>
+</mapper>

@@ -1,0 +1,73 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾理财官网_安心可靠互联网金融投资理财平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#Head("end")
+	
+<body>
+	
+    <!-- website wrapper starts -->
+    <div class="websiteWrapper"> 
+      
+      #Header("推荐奖励明细","","","micro/wealth/asset_index")
+      
+      <!-- notification starts -->
+      
+      <!-- notification ends --> 
+      
+      <!--tab-s-->
+      
+      <div class="pageWrapper contactPageWrapper"> 
+        <div class="sy2" style="background-color:#eee;">
+        <span style="color:#666;">
+			推荐奖励（元）
+        <strong style=" font-size:20px;"> $!bonus</strong>
+        </span>
+	
+        </div>
+			
+		
+		   #if("$!withdrawFlag"=="2")
+		     <!--<a style="color:#fff;" href="$!env.getWebURL('')/micro/wealth/withdraw_index" class="btn_tixian">提现</a>-->
+		   #end
+		
+	
+           <div class="txj">
+           <ul>
+           <li>时间</li>
+            <li>收益金额（元）</li>
+             <li>摘要</li>
+           </ul>
+           
+           </div>
+		   <input type="hidden" id="pageIndex" name="pageIndex" value="$!pageIndex" />
+		   <input type="hidden" id="totalCount" name="totalCount" value="$!totalCount" />
+           <div id="mainContent" url='/micro/wealth/bonus_detail_content?withdrawFlag=$!withdrawFlag'>
+    			#foreach($!grid in $!bonusList)
+                	<div class="txj3">
+                		<ul>
+                			<li>
+                				<span>$!date.formatDateTime($!grid.earningsDate,'yyyy-MM-dd')</span></li>
+                			<li><span style=" font-size:14px;color:#F60;">$!money.format($!grid.amount)</span></li>
+                			<li>推荐收益</li>
+                		</ul>
+                	</div>
+                #end
+        	</div>
+          <div class="wz" style="color:#666;margin-bottom:77px;" id="showmore">查看更多</div>
+    	  </div>
+          
+          
+        </div>
+
+
+	  <!--tab-e-->
+
+      
+      #Footer("4")
+      
+    </div>
+	<!-- website wrapper ends -->
+	#LoadJS("resources/micro/scripts/common/detail_pagination")
+</body>
+
+#Html("end")

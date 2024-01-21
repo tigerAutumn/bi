@@ -1,0 +1,807 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾官网_安心可靠互联网金融投资理财服务平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadCSS("resources/micro2.0/styles/activity/answer_team/answer_team")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/app/scripts/activity/answer_team/answer_team")
+#LoadJS("/resources/micro2.0/scripts/activity/six")
+#WeChatShare()
+#Head("end")
+<body>
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<input type="hidden" id="isLogin" value="$!result.isLogin"/>
+<input type="hidden" id="userId" value="$!userId"/>
+<input type="hidden" id="client" value="$!client"/>
+
+<form id="user_score">
+    <input type="hidden" id="fraction" value="0">
+</form>
+<div class="actcunguan">
+    <div class="actcunguan_banner">
+        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/bgw_logo_white.png" class="bgw_logo">
+        <p class="actcunguan_banner_date">活动时间：
+            $!date.formatDateTime($!date.parse($!{result.answer.startTime}, "yyyy-MM-dd HH:mm:ss"),'yyyy年MM月dd日')-$!date.formatDateTime($!date.parse($!{result.answer.endTime}, "yyyy-MM-dd HH:mm:ss"),'MM月dd日')
+        </p>
+        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_banner_bg_transparent.png">
+    </div>
+    <div class="screen">
+        <h5>
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/acticunguan_title_01.jpg" alt="" class="hidden_sm">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_acticunguan_title_01.jpg" class="hidden_lg">
+        </h5>
+        <div class="scratch">
+            <span class="scratch_left"></span>
+            <span class="scratch_right"></span>
+        </div>
+        <div class="screen_main">
+            <p>共4道题，全部答对可获得<span>8元红包</span></p>
+
+            #if($!result.answer.isJoined == "NO")
+                <div class="main_question question01">
+                    <div class="main_wrap main_wrap_ready">
+                        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_asr_bg_transparent.png" class="hidden_lg" style="width: 100%;">
+                        <div class="main_wrap_content">
+                            <div class="content_top">
+                                <h5>第一题</h5>
+                                <p>币港湾最近有什么大事？</p>
+                                <label><span></span><input type="radio" name="event" value="1">对接了银行存管，使用户的钱更加安全</label>
+                                <label><span></span><input type="radio" name="event" value="0">获得了杭商资产的入股，背景雄厚</label>
+                                <label><span></span><input type="radio" name="event" value="0">以上都对</label>
+                            </div>
+                            <div class="content_bottom">
+                                <p class="chose_right">恭喜你，答对了！我们已经成功对接了银行存管</p>
+                                <p class="chose_wrong">不是啦，我们最近的大事只有对接了银行存管</p>
+                                <p class="chose_disabled">请选择答案！</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="main_btn">
+                        #if($!result.answer.isStart == "start")
+                            <a class="begin_asr show">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_btn_bg_transparent.png" style="width: 100%;" class="hidden_lg">
+                                <span>开始答题</span>
+                            </a>
+                            <a class="sure_asr">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_btn_bg_transparent.png" style="width: 100%;" class="hidden_lg">
+                                <span>确定</span>
+                            </a>
+                            <a class="next_asr">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_btn_bg_transparent.png" style="width: 100%;" class="hidden_lg">
+                                <span>下一题</span>
+                            </a>
+                            <a class="begin_asr">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_btn_bg_transparent.png" style="width: 100%;" class="hidden_lg">
+                                <span>提交获取红包</span>
+                            </a>
+                        #elseif($!result.answer.isStart == "not_start")
+                            <a class="btn_disabled show">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_btn_bg_transparent.png" style="width: 100%;" class="hidden_lg">
+                                <span>活动未开始</span>
+                            </a>
+                        #else
+                            <a class="btn_disabled show">
+                                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_btn_bg_transparent.png" style="width: 100%;" class="hidden_lg">
+                                <span>活动已结束</span>
+                            </a>
+                        #end
+                    </div>
+                </div>
+
+                <div class="main_question question02">
+                    <div class="main_wrap">
+                        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_asr_bg_transparent.png" class="hidden_lg" style="width: 100%;">
+                        <div class="main_wrap_content">
+                            <div class="content_top">
+                                <h5>第二题</h5>
+                                <p>币港湾对接存管的是哪个银行？</p>
+                                <label><span></span><input type="radio" name="event" value="0">网商银行</label>
+                                <label><span></span><input type="radio" name="event" value="0">中国银行</label>
+                                <label><span></span><input type="radio" name="event" value="1">恒丰银行</label>
+                            </div>
+                            <div class="content_bottom">
+                                <p class="chose_right">恒丰银行-12家全国性股份制商业银行之一，实力雄厚</p>
+                                <p class="chose_wrong">错啦！我们对接了12家全国性股份制商业银行之一的恒丰银行</p>
+                                <p class="chose_disabled">请选择答案！</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main_btn">
+                        <a class="sure_asr show">
+                            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_btn_bg_transparent.png" style="width: 100%;" class="hidden_lg">
+                            <span>确定</span>
+                        </a>
+                        <a class="next_asr">
+                            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_btn_bg_transparent.png" style="width: 100%;" class="hidden_lg">
+                            <span>下一题</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="main_question question03">
+                    <div class="main_wrap">
+                        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_asr_bg_transparent.png" class="hidden_lg" style="width: 100%;">
+                        <div class="main_wrap_content">
+                            <div class="content_top">
+                                <h5>第三题</h5>
+                                <p>小明在工作日的17:00点发起了80000元的提现请求，请问金额预期到账时间为：</p>
+                                <label><span></span><input type="radio" name="event" value="0">即时到账</label>
+                                <label><span></span><input type="radio" name="event" value="0">操作当天到账</label>
+                                <label><span></span><input type="radio" name="event" value="1">操作后一天到账</label>
+                            </div>
+                            <div class="content_bottom">
+                                <p class="chose_right">恩，湾仔一直努力的为大家提供最好的优质体验感</p>
+                                <p class="chose_wrong">为了营造更好的体验感，在上述情况下提现时间为操作后一天到账哦，详情可进入帮助中心进行查看</p>
+                                <p class="chose_disabled">请选择答案！</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main_btn">
+                        <a class="sure_asr show">
+                            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_btn_bg_transparent.png" style="width: 100%;" class="hidden_lg">
+                            <span>确定</span>
+                        </a>
+                        <a class="next_asr">
+                            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_btn_bg_transparent.png" style="width: 100%;" class="hidden_lg">
+                            <span>下一题</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="main_question question04">
+                    <div class="main_wrap">
+                        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_asr_bg_transparent.png" class="hidden_lg" style="width: 100%;">
+                        <div class="main_wrap_content">
+                            <div class="content_top">
+                                <h5>第四题</h5>
+                                <p>对接存管后，用户充值的资金是到哪里去了呢？</p>
+                                <label><span></span><input type="radio" name="event" value="0">用户口袋里</label>
+                                <label><span></span><input type="radio" name="event" value="1">用户所对应的恒丰银行存管账户内</label>
+                                <label><span></span><input type="radio" name="event" value="0">币港湾账户内</label>
+                            </div>
+                            <div class="content_bottom">
+                                <p class="chose_right">当然是恒丰存管账户了，你好棒</p>
+                                <p class="chose_wrong">肯定是恒丰存管账户嘛，多了解没坏处</p>
+                                <p class="chose_disabled">请选择答案！</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main_btn">
+                        <a class="sure_asr show">
+                            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_btn_bg_transparent.png" style="width: 100%;" class="hidden_lg">
+                            <span>确定</span>
+                        </a>
+                        <a class="submit_asr">
+                            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_btn_bg_transparent.png" style="width: 100%;" class="hidden_lg">
+                            <span>提交获取红包</span>
+                        </a>
+                    </div>
+                </div>
+            #else
+                <div class="main_question question_result screen_show">
+                    #if($!result.answer.isStart == "not_start")
+                        <div class="main_wrap main_wrap_ready">
+                            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_asr_bg_transparent.png" style="width: 100%;" class="hidden_lg">
+                        </div>
+                    #else
+                        <div class="main_wrap">
+                            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_asr_bg_transparent.png" class="hidden_lg" style="width: 100%;">
+                            <div class="main_wrap_content">
+                                <div class="asr_result text_center">
+                                    #if($!result.answer.note == "no_red_packet")
+                                        <p>您未获得红包！</p>
+                                    #else
+                                        <p>您成功答对<span id="result_right">$!{result.answer.correctAnswer}</span>道题，奖励<span id="result_bonus">$number.format("0",$!{result.answer.redAmount})</span>元红包</p>
+                                        <p>请在【账户中心】 - 【我的红包】查看</p>
+                                    #end
+                                </div>
+                            </div>
+                        </div>
+                    #end
+                    <div class="main_btn">
+                        <a class="btn_disabled show">
+                            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_btn_bg_transparent.png" style="width: 100%;" class="hidden_lg">
+                            #if($!result.answer.isStart == "start")
+                                <span>您已参加答题</span>
+                            #elseif($!result.answer.isStart == "not_start")
+                                <span>活动未开始</span>
+                            #else
+                                <span>活动已结束</span>
+                            #end
+                        </a>
+                    </div>
+                </div>
+            #end
+
+            <div class="scratch"></div>
+            <div class="main_rule">
+                <p class="rule_title">用户答对题目数以及可获得的奖励：</p>
+                <div class="rule_table">
+                    <table cellspacing="0">
+                        <tr>
+                            <td>答对数</td>
+                            <td>0-1</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>4</td>
+                        </tr>
+                        <tr>
+                            <td>存管答题奖励红包</td>
+                            <td>2元</td>
+                            <td>4元</td>
+                            <td>6元</td>
+                            <td>8元</td>
+                        </tr>
+                        <tr>
+                            <td>投资满可用</td>
+                            <td>5千元</td>
+                            <td>1万元</td>
+                            <td>1万元</td>
+                            <td>1万元</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="screen">
+        <h5>
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/acticunguan_title_02.jpg" alt="" class="hidden_sm">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_acticunguan_title_02.jpg" class="hidden_lg">
+        </h5>
+        <div class="scratch">
+            <span class="scratch_left"></span>
+            <span class="scratch_right"></span>
+        </div>
+        <div class="screen_main">
+            <p>活动期间您可参与<span>3个团队</span></p>
+            <div class="team_list team_list_01">
+                #if($!{result.teamList.get(0).isStart} == "start")
+                    #if($!{result.isLogin} == "yes")
+                        #if($!{result.teamList.get(0).status} != "FULL")
+                            #if($!{result.teamList.get(0).isJoined} != "YES")
+                            <div class="team_card allowed">
+                            #else
+                            <div class="team_card">
+                            #end
+                        #else
+                        <div class="team_card">
+                        #end
+                    #else
+                    <div class="team_card allowed">
+                    #end
+                #else
+                <div class="team_card">
+                #end
+                    <div class="team_card_top">
+                        <div class="team_card_title">团队号：$!{result.teamList.get(0).teamName}</div>
+                        <div class="team_card_yaoqiu hidden_lg">满<span>$!{result.teamList.get(0).fullNumber}人</span>奖励&nbsp;&nbsp;当前团员<span>（$!{result.teamList.get(0).currentNumber}/$!{result.teamList.get(0).fullNumber}）</span></div>
+                    </div>
+                    <div class="team_card_bottom hidden_sm">
+                        <h4>团队满<span>$!{result.teamList.get(0).fullNumber}人</span>奖励</h4>
+                        <p>当前团员 （$!{result.teamList.get(0).currentNumber}/$!{result.teamList.get(0).fullNumber}）</p>
+                        <div class="team_card_ticket">
+                            <div class="card_ticket_left ticket_left_color">
+                                <span>3</span>元
+                            </div>
+                            <div class="card_ticket_right">
+                                <p>投资金额5千元及以上</p>
+                                <p>期限30天及以上</p>
+                            </div>
+                            <span class="card_ticket_dot dot_top"></span>
+                            <span class="card_ticket_dot dot_bottom"></span>
+                        </div>
+                        <div class="team_card_btn">
+                            #if($!{result.teamList.get(0).isStart} == "not_start")
+                                <a>活动未开始</a>
+                            #elseif($!{result.teamList.get(0).isStart} == "end")
+                                <a>活动已结束</a>
+                            #else
+                                #if($!{result.isLogin} == "yes")
+                                    #if($!{result.teamList.get(0).status} == "FULL")
+                                        <a>抱团次数已满</a>
+                                    #else
+                                        #if($!{result.teamList.get(0).isJoined} == "YES")
+                                            <a>已加入该团</a>
+                                        #else
+                                            <a class="gradient join_team" team_id="$!result.teamList.get(0).teamId" serial="$!result.teamList.get(0).serial">加入抱团</a>
+                                        #end
+                                    #end
+                                #else
+                                    <a class="gradient join_team" team_id="$!result.teamList.get(0).teamId" serial="$!result.teamList.get(0).serial">加入抱团</a>
+                                #end
+                            #end
+                        </div>
+                    </div>
+                    <div class="team_card_bottom_sm hidden_lg">
+                        <div class="sm_card_ticket">
+                            <div class="sm_ticket_left">
+                                <p><span>￥</span>3</p>
+                            </div>
+                            <div class="sm_ticket_middle">
+                                <p>
+                                    投资金额5千元及以上<br>
+                                    期限30天及以上
+                                </p>
+                            </div>
+                            <div class="sm_ticket_right">
+                                #if($!{result.teamList.get(0).isStart} == "not_start")
+                                    <a class="sm_ticket_btn">未<br>开<br>始</a>
+                                #elseif($!{result.teamList.get(0).isStart} == "end")
+                                    <a class="sm_ticket_btn">已<br>结<br>束</a>
+                                #else
+                                    #if($!{result.isLogin} == "yes")
+                                        #if($!{result.teamList.get(0).status} == "FULL")
+                                            <a class="sm_ticket_btn">次<br>数<br>已<br>满</a>
+                                        #else
+                                            #if($!{result.teamList.get(0).isJoined} == "YES")
+                                                <a class="sm_ticket_btn">已<br>加<br>入<br>该<br>团</a>
+                                            #else
+                                                <a class="sm_ticket_btn join_team" team_id="$!result.teamList.get(0).teamId" serial="$!result.teamList.get(0).serial">加<br>入<br>抱<br>团</a>
+                                            #end
+                                        #end
+                                    #else
+                                        <a class="sm_ticket_btn join_team" team_id="$!result.teamList.get(0).teamId" serial="$!result.teamList.get(0).serial">加<br>入<br>抱<br>团</a>
+                                    #end
+                                #end
+                            </div>
+                            <span class="card_ticket_dot dot_top"></span>
+                            <span class="card_ticket_dot dot_bottom"></span>
+                        </div>
+                    </div>
+                </div>
+
+                #if($!{result.teamList.get(1).isStart} == "start")
+                    #if($!{result.isLogin} == "yes")
+                        #if($!{result.teamList.get(1).status} != "FULL")
+                            #if($!{result.teamList.get(1).isJoined} != "YES")
+                            <div class="team_card allowed" team_id="$!result.teamList.get(1).teamId" serial="$!result.teamList.get(1).serial">
+                            #else
+                            <div class="team_card">
+                            #end
+                        #else
+                        <div class="team_card">
+                        #end
+                    #else
+                    <div class="team_card allowed" team_id="$!result.teamList.get(1).teamId" serial="$!result.teamList.get(1).serial">
+                    #end
+                #else
+                <div class="team_card">
+                #end
+                    <div class="team_card_top">
+                        <div class="team_card_title">团队号：$!{result.teamList.get(1).teamName}</div>
+                        <div class="team_card_yaoqiu hidden_lg">满<span>$!{result.teamList.get(1).fullNumber}人</span>奖励&nbsp;&nbsp;当前团员<span>（$!{result.teamList.get(1).currentNumber}/$!{result.teamList.get(1).fullNumber}）</span></div>
+                    </div>
+                    <div class="team_card_bottom hidden_sm">
+                        <h4>团队满<span>$!{result.teamList.get(1).fullNumber}人</span>奖励</h4>
+                        <p>当前团员 （$!{result.teamList.get(1).currentNumber}/$!{result.teamList.get(1).fullNumber}）</p>
+                        <div class="team_card_ticket">
+                            <div class="card_ticket_left">
+                                <span>8</span>元
+                            </div>
+                            <div class="card_ticket_right">
+                                <p>投资金额1万元及以上</p>
+                                <p>期限30天及以上</p>
+                            </div>
+                            <span class="card_ticket_dot dot_top"></span>
+                            <span class="card_ticket_dot dot_bottom"></span>
+                        </div>
+                        <div class="team_card_btn">
+                            #if($!{result.teamList.get(1).isStart} == "not_start")
+                                <a>活动未开始</a>
+                            #elseif($!{result.teamList.get(1).isStart} == "end")
+                                <a>活动已结束</a>
+                            #else
+                                #if($!{result.isLogin} == "yes")
+                                    #if($!{result.teamList.get(1).status} == "FULL")
+                                        <a>抱团次数已满</a>
+                                    #else
+                                        #if($!{result.teamList.get(1).isJoined} == "YES")
+                                            <a>已加入该团</a>
+                                        #else
+                                            <a class="gradient join_team" team_id="$!result.teamList.get(1).teamId" serial="$!result.teamList.get(1).serial">加入抱团</a>
+                                        #end
+                                    #end
+                                #else
+                                    <a class="gradient join_team" team_id="$!result.teamList.get(1).teamId" serial="$!result.teamList.get(1).serial">加入抱团</a>
+                                #end
+                            #end
+                        </div>
+                    </div>
+
+                    <div class="team_card_bottom_sm hidden_lg">
+                        <div class="sm_card_ticket">
+                            <div class="sm_ticket_left">
+                                <p><span>￥</span>8</p>
+                            </div>
+                            <div class="sm_ticket_middle">
+                                <p>
+                                    投资金额1万元及以上<br>
+                                    期限30天及以上
+                                </p>
+                            </div>
+                            <div class="sm_ticket_right">
+                                #if($!{result.teamList.get(1).isStart} == "not_start")
+                                    <a class="sm_ticket_btn">未<br>开<br>始</a>
+                                #elseif($!{result.teamList.get(1).isStart} == "end")
+                                    <a class="sm_ticket_btn">已<br>结<br>束</a>
+                                #else
+                                    #if($!{result.isLogin} == "yes")
+                                        #if($!{result.teamList.get(1).status} == "FULL")
+                                            <a class="sm_ticket_btn">次<br>数<br>已<br>满</a>
+                                        #else
+                                            #if($!{result.teamList.get(1).isJoined} == "YES")
+                                                <a class="sm_ticket_btn">已<br>加<br>入<br>该<br>团</a>
+                                            #else
+                                                <a class="sm_ticket_btn join_team" team_id="$!result.teamList.get(1).teamId" serial="$!result.teamList.get(1).serial">加<br>入<br>抱<br>团</a>
+                                            #end
+                                        #end
+                                    #else
+                                        <a class="sm_ticket_btn join_team" team_id="$!result.teamList.get(1).teamId" serial="$!result.teamList.get(1).serial">加<br>入<br>抱<br>团</a>
+                                    #end
+                                #end
+                            </div>
+                            <span class="card_ticket_dot dot_top"></span>
+                            <span class="card_ticket_dot dot_bottom"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team_list team_list_02">
+                #if($!{result.teamList.get(2).isStart} == "start")
+                    #if($!{result.isLogin} == "yes")
+                        #if($!{result.teamList.get(2).status} != "FULL")
+                            #if($!{result.teamList.get(2).isJoined} != "YES")
+                            <div class="team_card allowed" team_id="$!result.teamList.get(2).teamId" serial="$!result.teamList.get(2).serial">
+                            #else
+                            <div class="team_card">
+                            #end
+                        #else
+                        <div class="team_card">
+                        #end
+                    #else
+                    <div class="team_card allowed" team_id="$!result.teamList.get(2).teamId" serial="$!result.teamList.get(2).serial">
+                    #end
+                #else
+                <div class="team_card">
+                #end
+                    <div class="team_card_top">
+                        <div class="team_card_title">团队号：$!{result.teamList.get(2).teamName}</div>
+                        <div class="team_card_yaoqiu hidden_lg">满<span>$!{result.teamList.get(2).fullNumber}人</span>奖励&nbsp;&nbsp;当前团员<span>（$!{result.teamList.get(2).currentNumber}/$!{result.teamList.get(2).fullNumber}）</span></div>
+                    </div>
+                    <div class="team_card_bottom hidden_sm">
+                        <h4>团队满<span>$!{result.teamList.get(2).fullNumber}人</span>奖励</h4>
+                        <p>当前团员 （$!{result.teamList.get(2).currentNumber}/$!{result.teamList.get(2).fullNumber}）</p>
+                        <div class="team_card_ticket">
+                            <div class="card_ticket_left">
+                                <span>45</span>元
+                            </div>
+                            <div class="card_ticket_right">
+                                <p>投资金额5万元及以上</p>
+                                <p>期限30天及以上</p>
+                            </div>
+                            <span class="card_ticket_dot dot_top"></span>
+                            <span class="card_ticket_dot dot_bottom"></span>
+                        </div>
+                        <div class="team_card_btn">
+                            #if($!{result.teamList.get(2).isStart} == "not_start")
+                                <a>活动未开始</a>
+                            #elseif($!{result.teamList.get(2).isStart} == "end")
+                                <a>活动已结束</a>
+                            #else
+                                #if($!{result.isLogin} == "yes")
+                                    #if($!{result.teamList.get(2).status} == "FULL")
+                                        <a>抱团次数已满</a>
+                                    #else
+                                        #if($!{result.teamList.get(2).isJoined} == "YES")
+                                            <a>已加入该团</a>
+                                        #else
+                                            <a class="gradient join_team" team_id="$!result.teamList.get(2).teamId" serial="$!result.teamList.get(2).serial">加入抱团</a>
+                                        #end
+                                    #end
+                                #else
+                                    <a class="gradient join_team" team_id="$!result.teamList.get(2).teamId" serial="$!result.teamList.get(2).serial">加入抱团</a>
+                                #end
+                            #end
+                        </div>
+                    </div>
+                    <div class="team_card_bottom_sm hidden_lg">
+                        <div class="sm_card_ticket">
+                            <div class="sm_ticket_left">
+                                <p><span>￥</span>45</p>
+                            </div>
+                            <div class="sm_ticket_middle">
+                                <p>
+                                    投资金额5万元及以上<br>
+                                    期限30天及以上
+                                </p>
+                            </div>
+                            <div class="sm_ticket_right">
+                                #if($!{result.teamList.get(2).isStart} == "not_start")
+                                    <a class="sm_ticket_btn">未<br>开<br>始</a>
+                                #elseif($!{result.teamList.get(2).isStart} == "end")
+                                    <a class="sm_ticket_btn">已<br>结<br>束</a>
+                                #else
+                                    #if($!{result.isLogin} == "yes")
+                                        #if($!{result.teamList.get(2).status} == "FULL")
+                                            <a class="sm_ticket_btn">次<br>数<br>已<br>满</a>
+                                        #else
+                                            #if($!{result.teamList.get(2).isJoined} == "YES")
+                                                <a class="sm_ticket_btn">已<br>加<br>入<br>该<br>团</a>
+                                            #else
+                                                <a class="sm_ticket_btn join_team" team_id="$!result.teamList.get(2).teamId" serial="$!result.teamList.get(2).serial">加<br>入<br>抱<br>团</a>
+                                            #end
+                                        #end
+                                    #else
+                                        <a class="sm_ticket_btn join_team" team_id="$!result.teamList.get(2).teamId" serial="$!result.teamList.get(2).serial">加<br>入<br>抱<br>团</a>
+                                    #end
+                                #end
+                            </div>
+                            <span class="card_ticket_dot dot_top"></span>
+                            <span class="card_ticket_dot dot_bottom"></span>
+                        </div>
+                    </div>
+                </div>
+
+                #if($!{result.teamList.get(3).isStart} == "start")
+                    #if($!{result.isLogin} == "yes")
+                        #if($!{result.teamList.get(3).status} != "FULL")
+                            #if($!{result.teamList.get(3).isJoined} != "YES")
+                            <div class="team_card allowed" team_id="$!result.teamList.get(3).teamId" serial="$!result.teamList.get(3).serial">
+                            #else
+                            <div class="team_card">
+                            #end
+                        #else
+                        <div class="team_card">
+                        #end
+                    #else
+                    <div class="team_card allowed" team_id="$!result.teamList.get(3).teamId" serial="$!result.teamList.get(3).serial">
+                    #end
+                #else
+                <div class="team_card">
+                #end
+                    <div class="team_card_top">
+                        <div class="team_card_title">团队号：$!{result.teamList.get(3).teamName}</div>
+                        <div class="team_card_yaoqiu hidden_lg">满<span>$!{result.teamList.get(3).fullNumber}人</span>奖励&nbsp;&nbsp;当前团员<span>（$!{result.teamList.get(3).currentNumber}/$!{result.teamList.get(3).fullNumber}）</span></div>
+                    </div>
+                    <div class="team_card_bottom hidden_sm">
+                        <h4>团队满<span>$!{result.teamList.get(3).fullNumber}人</span>奖励</h4>
+                        <p>当前团员 （$!{result.teamList.get(3).currentNumber}/$!{result.teamList.get(3).fullNumber}）</p>
+                        <div class="team_card_ticket">
+                            <div class="card_ticket_left">
+                                <span>200</span>元
+                            </div>
+                            <div class="card_ticket_right">
+                                <p>投资金额10万元及以上</p>
+                                <p>期限90天及以上</p>
+                            </div>
+                            <span class="card_ticket_dot dot_top"></span>
+                            <span class="card_ticket_dot dot_bottom"></span>
+                        </div>
+                        <div class="team_card_btn">
+                            #if($!{result.teamList.get(3).isStart} == "not_start")
+                                <a>活动未开始</a>
+                            #elseif($!{result.teamList.get(3).isStart} == "end")
+                                <a>活动已结束</a>
+                            #else
+                                #if($!{result.isLogin} == "yes")
+                                    #if($!{result.teamList.get(3).status} == "FULL")
+                                        <a>抱团次数已满</a>
+                                    #else
+                                        #if($!{result.teamList.get(3).isJoined} == "YES")
+                                            <a>已加入该团</a>
+                                        #else
+                                            <a class="gradient join_team" team_id="$!result.teamList.get(3).teamId" serial="$!result.teamList.get(3).serial">加入抱团</a>
+                                        #end
+                                    #end
+                                #else
+                                    <a class="gradient join_team" team_id="$!result.teamList.get(3).teamId" serial="$!result.teamList.get(3).serial">加入抱团</a>
+                                #end
+                            #end
+                        </div>
+                    </div>
+                    <div class="team_card_bottom_sm hidden_lg">
+                        <div class="sm_card_ticket">
+                            <div class="sm_ticket_left">
+                                <p><span>￥</span>200</p>
+                            </div>
+                            <div class="sm_ticket_middle">
+                                <p>
+                                    投资金额10万元及以上<br>
+                                    期限90天及以上
+                                </p>
+                            </div>
+                            <div class="sm_ticket_right">
+                                #if($!{result.teamList.get(3).isStart} == "not_start")
+                                    <a class="sm_ticket_btn">未<br>开<br>始</a>
+                                #elseif($!{result.teamList.get(3).isStart} == "end")
+                                    <a class="sm_ticket_btn">已<br>结<br>束</a>
+                                #else
+                                    #if($!{result.isLogin} == "yes")
+                                        #if($!{result.teamList.get(3).status} == "FULL")
+                                            <a class="sm_ticket_btn">次<br>数<br>已<br>满</a>
+                                        #else
+                                            #if($!{result.teamList.get(3).isJoined} == "YES")
+                                                <a class="sm_ticket_btn">已<br>加<br>入<br>该<br>团</a>
+                                            #else
+                                                <a class="sm_ticket_btn join_team" team_id="$!result.teamList.get(3).teamId" serial="$!result.teamList.get(3).serial">加<br>入<br>抱<br>团</a>
+                                            #end
+                                        #end
+                                    #else
+                                        <a class="sm_ticket_btn join_team" team_id="$!result.teamList.get(3).teamId" serial="$!result.teamList.get(3).serial">加<br>入<br>抱<br>团</a>
+                                    #end
+                                #end
+                            </div>
+                            <span class="card_ticket_dot dot_top"></span>
+                            <span class="card_ticket_dot dot_bottom"></span>
+                        </div>
+                    </div>
+                </div>
+
+                #if($!{result.teamList.get(4).isStart} == "start")
+                    #if($!{result.isLogin} == "yes")
+                        #if($!{result.teamList.get(4).status} != "FULL")
+                            #if($!{result.teamList.get(4).isJoined} != "YES")
+                                <div class="team_card allowed" team_id="$!result.teamList.get(4).teamId" serial="$!result.teamList.get(4).serial">
+                            #else
+                                <div class="team_card">
+                            #end
+                        #else
+                            <div class="team_card">
+                        #end
+                    #else
+                        <div class="team_card allowed" team_id="$!result.teamList.get(4).teamId" serial="$!result.teamList.get(4).serial">
+                    #end
+                #else
+                    <div class="team_card">
+                #end
+                    <div class="team_card_top">
+                        <div class="team_card_title">团队号：$!{result.teamList.get(4).teamName}</div>
+                        <div class="team_card_yaoqiu hidden_lg">满<span>$!{result.teamList.get(4).fullNumber}人</span>奖励&nbsp;&nbsp;当前团员<span>（$!{result.teamList.get(4).currentNumber}/$!{result.teamList.get(4).fullNumber}）</span></div>
+                    </div>
+                    <div class="team_card_bottom hidden_sm">
+                        <h4>团队满<span>$!{result.teamList.get(4).fullNumber}人</span>奖励</h4>
+                        <p>当前团员 （$!{result.teamList.get(4).currentNumber}/$!{result.teamList.get(4).fullNumber}）</p>
+                        <div class="team_card_ticket">
+                            <div class="card_ticket_left ticket_left_color">
+                                <span>500</span>元
+                            </div>
+                            <div class="card_ticket_right">
+                                <p>投资金额20万元及以上</p>
+                                <p>期限90天及以上</p>
+                            </div>
+                            <span class="card_ticket_dot dot_top"></span>
+                            <span class="card_ticket_dot dot_bottom"></span>
+                        </div>
+                        <div class="team_card_btn">
+                            #if($!{result.teamList.get(4).isStart} == "not_start")
+                                <a>活动未开始</a>
+                            #elseif($!{result.teamList.get(4).isStart} == "end")
+                                <a>活动已结束</a>
+                            #else
+                                #if($!{result.isLogin} == "yes")
+                                    #if($!{result.teamList.get(4).status} == "FULL")
+                                        <a>抱团次数已满</a>
+                                    #else
+                                        #if($!{result.teamList.get(4).isJoined} == "YES")
+                                            <a>已加入该团</a>
+                                        #else
+                                            <a class="gradient join_team" team_id="$!result.teamList.get(4).teamId" serial="$!result.teamList.get(4).serial">加入抱团</a>
+                                        #end
+                                    #end
+                                #else
+                                    <a class="gradient join_team" team_id="$!result.teamList.get(4).teamId" serial="$!result.teamList.get(4).serial">加入抱团</a>
+                                #end
+                            #end
+                        </div>
+                    </div>
+                    <div class="team_card_bottom_sm hidden_lg">
+                        <div class="sm_card_ticket">
+                            <div class="sm_ticket_left">
+                                <p><span>￥</span>500</p>
+                            </div>
+                            <div class="sm_ticket_middle">
+                                <p>
+                                    投资金额20万元及以上<br>
+                                    期限90天及以上
+                                </p>
+                            </div>
+                            <div class="sm_ticket_right">
+                                #if($!{result.teamList.get(4).isStart} == "not_start")
+                                    <a class="sm_ticket_btn">未<br>开<br>始</a>
+                                #elseif($!{result.teamList.get(4).isStart} == "end")
+                                    <a class="sm_ticket_btn">已<br>结<br>束</a>
+                                #else
+                                    #if($!{result.isLogin} == "yes")
+                                        #if($!{result.teamList.get(4).status} == "FULL")
+                                            <a class="sm_ticket_btn">次<br>数<br>已<br>满</a>
+                                        #else
+                                            #if($!{result.teamList.get(4).isJoined} == "YES")
+                                                <a class="sm_ticket_btn">已<br>加<br>入<br>该<br>团</a>
+                                            #else
+                                                <a class="sm_ticket_btn join_team" team_id="$!result.teamList.get(4).teamId" serial="$!result.teamList.get(4).serial">加<br>入<br>抱<br>团</a>
+                                            #end
+                                        #end
+                                    #else
+                                        <a class="sm_ticket_btn join_team" team_id="$!result.teamList.get(4).teamId" serial="$!result.teamList.get(4).serial">加<br>入<br>抱<br>团</a>
+                                    #end
+                                #end
+                            </div>
+                            <span class="card_ticket_dot dot_top"></span>
+                            <span class="card_ticket_dot dot_bottom"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="scratch"></div>
+            <div class="act_tips">
+                <div class="tips_wrap tips_wrap_01">
+                    <h5>温馨提示</h5>
+                    <p>1、用户加入团队即不可退出，请谨慎选择团队；</p>
+                    <p>2、红包在团队满员后即时发放至用户账户内；</p>
+                    <p>3、若您加入的团队最后满员失败，您也可获得该团队的失败奖励。</p>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="screen">
+        <h5>
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/acticunguan_title_03.jpg" alt="" class="hidden_sm">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_acticunguan_title_03.jpg" class="hidden_lg">
+        </h5>
+        <div class="scratch">
+            <span class="scratch_left"></span>
+            <span class="scratch_right"></span>
+        </div>
+        <div class="screen_main text_center">
+            <p>用户活动期间参与活动，即有机会瓜分百万红包！</p>
+            <div class="act_share">
+                <h4>一键点亮+分享=瓜分百万红包！</h4>
+                <div class="share_qr">
+                    <img src="$!lightQR" alt="分享二维码" style="width: 100%;">
+                </div>
+                <p>搜索微信公众号</p>
+                <p>《币港湾精选》</p>
+                <p>立即参与活动</p>
+            </div>
+        </div>
+    </div>
+    <div class="act_rule">
+        <h5>活动规则</h5>
+        <ul>
+            <li>活动时间：$!date.formatDateTime($!date.parse($!{result.answer.startTime}, "yyyy-MM-dd HH:mm:ss"),'yyyy年MM月dd日')-$!date.formatDateTime($!date.parse($!{result.answer.endTime}, "yyyy-MM-dd HH:mm:ss"),'MM月dd日')；</li>
+            <li>每位用户活动期间每题仅有一次回答机会；答题奖励将根据用户的答对题目数进行发放，奖励将于用户完成答题得出成绩时，发放至用户账户内；</li>
+            <li>用户参与抱团大作战活动时，加入团队即不可退出，请谨慎选择加入团队；</li>
+            <li>每位用户活动期间最多可加入三次团队，团队奖励将于用户加入团队成功满员时，即刻发放至用户账户内；</li>
+            <li>若用户参与的团队未在活动期间成功满员，则该用户可获得该团对应的补偿奖励红包，活动结束后3个工作日内发放至用户账户内；</li>
+            <li>用户获得的活动奖励，可登录币港湾账户，进入【我的账户】-【我的红包】中查看；</li>
+            <li>本次活动最终解释权归杭州币港湾科技有限公司所有。</li>
+        </ul>
+    </div>
+</div>
+<div class="popup_join">
+    <div class="popup_wrap join_success">
+        <span class="popup_close"></span>
+        <p class="success_title">恭喜您已成功加入</p>
+        <p class="success_content">满员后红包将发放至您的账户内。请注意查收！</p>
+        <a class="popup_btn success_btn">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_btn_bg_transparent.png" style="width: 100%;" class="hidden_lg">
+            <span class="success_btn_txt">知道了</span>
+        </a>
+    </div>
+    <div class="popup_wrap join_failed">
+        <span class="popup_close"></span>
+        <p class="fail_title">您加入的团已满</p>
+        <p class="fail_content">请刷新页面重新参与抱团。</p>
+        <a class="popup_btn fail_btn">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/answer_team/h5_btn_bg_transparent.png" style="width: 100%;" class="hidden_lg">
+            <span class="fail_btn_txt">知道了</span>
+        </a>
+    </div>
+</div>
+</body>
+#Html("end")

@@ -1,0 +1,77 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!userVO.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!userVO.numPerPage" />
+</form>
+
+<div class="pageHeader">
+	 
+</div>
+<div class="pageContent">
+
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="8%">平台名称</th>
+				<th width="8%">平台编码</th>
+				<th width="5%">优先级</th>
+				<th width="8%">短信类型</th>
+				<th width="8%">账号</th>
+				<th width="10%">密码</th>
+				<th width="10%">60分钟内成功率</th>
+				<th width="8%">备注</th>
+				<th width="10%">创建时间</th>
+				<th width="10%">更改时间</th>
+				<th width="10%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $list)
+			<tr target="sid_user" rel="1">
+				<td>$!grid.platformsName
+				</td>
+				<td>
+					$!grid.platformsCode
+				</td>
+				<td>
+					$!grid.priority
+				</td>
+				<td>#if($!grid.platformsType == 'NOTICE') 通知类短信
+					#elseif($!grid.platformsType == 'MARKETING')营销类短信
+					#end
+				</td>
+				<td>$!grid.platformsAct</td>	
+				<td>$!grid.platformsPass</td>	
+				<td>#if($!grid.rate == -1)
+						不满20条有状态的数据
+					#else
+						$!grid.rate %
+					#end
+				</td>
+				<td>$!grid.note</td>
+				<td>$!date.format($!grid.createTime)</td>	
+				<td>$!date.format($!grid.updateTime)</td>	
+				<td>
+					<a class="" href="$env.getWebURL('/smsPlatforms/toUpadtePage.htm?platformsId=')$!grid.id" target="dialog" mask="true" height="520" width="520" rel="createBack" style="color:blue;margin-left:20px;margin-right:20px;"><span>修改</span></a>
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+    	
+
+</div>
+	<script>
+
+	function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			alertMsg.correct('修改成功');
+			navTab.closeCurrentTab();
+			navTab.reload("$env.getWebURL('/smsPlatforms/configIndex.htm')");
+		} else {
+			alertMsg.error('保存失败！');
+		}
+	}
+	$(function(){
+	
+	});
+	</script>

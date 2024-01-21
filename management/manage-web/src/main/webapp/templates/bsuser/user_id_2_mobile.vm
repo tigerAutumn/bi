@@ -1,0 +1,83 @@
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	<form id="id2MobileForm" method="post" class="pageForm required-validate" onsubmit="" action="$env.getWebURL('/bsuser/id2Mobile/exportXls.htm')">
+		<div class="pageFormContent nowrap">
+			<dl style="height: 40px;">
+				<dt>互换方式：</dt>
+				<dd>
+                    <select name="changeType" id="changeType" class="valid">
+                        <option value="mobile">用户编号换手机号</option>
+                        <option value="userId">手机号换用户编号</option>
+                    </select>
+				</dd>
+			</dl>
+			<dl>
+				<dt>用户编号或者手机号码：</dt>
+				<dd>
+					 <textarea name="content" id="content" cols="80" rows="20" placeholder="请输入用户编号或者手机号码，多个用逗号隔开。"></textarea>
+				</dd>
+			</dl>
+			<dl >
+				<ul>
+                  <li ><div class="buttonActive" style="margin-left: 129px;"><div class="buttonContent"><button type="button" onclick="data_export()">导出excel</button></div></div></li>
+			    </ul>
+			</dl>
+		</div>
+	</form>
+	
+</div>
+<script>
+    $(function(){
+    	$('#changeType').on('change',function(){
+    		var content = $.trim($("#content").val());
+    		if(content != '') {
+    			$('#content').val('');
+    		}
+    	})
+    })
+
+   function data_export(){
+		var content = $.trim($("#content").val()),
+			changeType = $.trim($("#changeType").val());
+		if(content == null || content == ''){
+			if(changeType == 'mobile') {
+				alertMsg.warn("用户编号不能为空！");
+			}else {
+				alertMsg.warn("手机号不能为空！");
+			}
+			return false;
+		} else {
+            var arrayObj = content.replaceAll("，", ",").split(",");
+			if(arrayObj.length < 5) {
+                if(changeType == 'mobile') {
+                    alertMsg.warn("用户编号至少输入5个，请重新输入！");
+                }else {
+                    alertMsg.warn("手机号至少输入5个，请重新输入！");
+                }
+                return false;
+			}
+
+		}
+
+		
+		$.ajax({
+    		type : 'post',
+    		url : $('#APP_ROOT_PATH').val()+'/bsuser/id2Mobile/checkIdOrMobileCount.htm',
+    		data : {
+    			changeType :  changeType,
+				content : content
+    		},
+    		success : function(data) {
+    			var str = '用户编号';
+				if(changeType == 'userId') {
+    				str = "手机号";
+    			}
+				alertMsg.confirm("输入了<span class='red_color'>"+data.receiveNum+"</span>个"+str+"，其中有效用户<span class='red_color'>"+data.realityNum+"</span>个，是否继续？", {     
+        			okCall: function(){      
+            			$('#id2MobileForm').submit();
+            		}    
+    			}); 
+    		}
+		});
+    }
+</script>

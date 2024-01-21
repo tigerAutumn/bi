@@ -1,0 +1,277 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+	<input type="hidden" name="orderField" value="$!req.orderField" />
+	<input type="hidden" name="orderDirection" value="$!req.orderDirection" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="proIndexForm" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/product/manage/index.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!req.pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						计划名称：<input id="sName" type="text" name="sName" maxlength="20" value="$!req.sName" class="clear" />
+					</td>
+					<td>
+						计划系列：
+						<select name="sSerialId" >
+                        	<option value="">全部</option>
+                        	#foreach($serial in $!serials)
+								<option value="$!serial.id" #if("$!req.sSerialId"=="$!serial.id") selected  #end>$!serial.serialName</option>
+							#end
+							<option value="-1" #if("$!req.sSerialId"=="-1") selected  #end>非系列计划(自定义计划名称)</option>
+                        </select>
+					</td>
+					<td>
+						期限：
+						<select name="sTerm" class="valid">
+							<option value="" >全部</option>
+							#set($Integer = 0)
+							#foreach($term in $!terms)
+								<option value="$!term.term" #if("$!req.sTerm"=="$!term.term") selected  #end>
+										    #if(0 > $Integer.parseInt("$!term.term"))
+												 #set($termNum = $Integer.parseInt("$!term.term")*-1 ) $!termNum 天
+                                            #else
+												 $!term.term个月
+                                            #end
+								</option>
+							#end
+        				</select>
+					
+						利率：
+						<select name="sBaseRate" class="valid">
+							<option value="" >全部</option>
+							#foreach($rate in $!rates)
+								<option value="$!rate.baseRate" #if("$!req.sBaseRate"=="$!rate.baseRate") selected  #end>$!rate.baseRate%</option>
+							#end
+        				</select>
+					
+						计划状态：
+						<select name="sStatus" class="valid">
+							<option value="" >全部</option>
+							<option value="1" #if("$!req.sStatus"=="1") selected  #end>未提审</option>
+        					<option value="2" #if("$!req.sStatus"=="2") selected  #end>审核中</option>
+        					<option value="3" #if("$!req.sStatus"=="3") selected  #end>未通过</option>
+							<option value="4" #if("$!req.sStatus"=="4") selected  #end>待发布</option>
+							<option value="5" #if("$!req.sStatus"=="5") selected  #end>未开放</option>
+							<option value="6" #if("$!req.sStatus"=="6") selected  #end>进行中</option>
+							<option value="7" #if("$!req.sStatus"=="7") selected  #end>已完成</option>
+        				</select>
+					
+						是否推荐：
+						<select name="sIsSuggest" class="valid">
+							<option value="">全部</option>
+							<option value="YES" #if("$!req.sIsSuggest"=="YES") selected  #end>推荐</option>
+        					<option value="NO" #if("$!req.sIsSuggest"=="NO") selected  #end>非推荐</option>
+        				</select>
+					</td>
+					
+				</tr>
+				<tr>
+					<td >发布时间：<input style="width:70px;" name="sDistributeTime" type="text"  id="sDistributeTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.sDistributeTime)" />
+					   至 
+						<input style="width:70px;" name="eDistributeTime" type="text"  id="eDistributeTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.eDistributeTime)" />
+					</td >
+					<td >开始时间：<input style="width:70px;" name="sStartTime" type="text"  id="sStartTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.sStartTime)" />
+					   至  
+						<input style="width:70px;" name="eStartTime" type="text"  id="eStartTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.eStartTime)" />
+					</td >
+					<td >结束时间：<input style="width:70px;" name="sEndTime" type="text"  id="sEndTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.sEndTime)" />
+					   至  
+						<input style="width:70px;" name="eEndTime" type="text"  id="eEndTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!req.eEndTime)" />
+					
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="add" href="$env.getWebURL('/terminal/terminal_list.htm')" target="dialog" mask="true" rel="createBack" height="270" width="370"><span><button type="button">选择展示终端</button></span></a>
+					<input type="hidden" id="sShowTerminal" name="sShowTerminal" value="$!req.sShowTerminal"/>
+					
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" onclick="search()">查询</button>
+					</td>
+				</tr>
+			</table>
+	
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a title="新增理财计划" target="navTab" rel="createBack" href="$env.getWebURL('/product/manage/productDetail.htm')" class="add"><span>新增</span></a></li>
+		</ul>
+	</div>
+	<table class="table" width="1643" layoutH="170">
+		<thead>
+			<tr>
+                <th width="100">计划名称</th>
+				<th width="73">计划系列</th>
+				<th width="53">计划总额</th>
+				<th width="73">当前投资额</th>
+				<th width="30">利率</th>
+				<th width="30">期限</th>
+				<th width="75">计划活动类型</th>
+				<th width="30">展示终端</th>
+				<th width="72">还款方式</th>
+				<th orderfield="start_time" class=#if("$!start_time" != "") $!start_time #else "asc" #end width="109">开始时间</th>
+				<th orderfield="end_time"  class=#if("$!end_time" != "") $!end_time #else "asc" #end width="109">结束时间</th>
+				<th width="58">计划状态</th>
+				<th width="52">审核人</th>
+				<th width="52">发布人</th>
+				<th orderfield="distribute_time"  class=#if("$!distribute_time" != "") $!distribute_time #else "asc" #end width="109">发布时间</th>
+				<th width="52">是否推荐</th>
+				<th width="145">操作</th>
+				<th width="109">更新时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($product in $products)
+			<tr target="sid_user" rel="1">
+				<td>$!product.name</td>
+				<td>
+					#if($!product.serialName) $!product.serialName #else 非系列计划  #end
+				</td>
+				<td>
+					#set($maxTotalAmountWan = $!product.maxTotalAmount / 10000)
+					$!money.format($maxTotalAmountWan)万
+				</td>
+				<td>$!money.format($!product.currTotalAmount)</td>
+				<td>$!product.baseRate%</td>
+				<td>$!product.termStr</td>
+				<td>
+					#if($!product.activityType == "NORMAL")普通产品
+					#elseif($!product.activityType == "NEW_BUYER")新手标
+					#elseif($!product.activityType == "ACTIVITY")限时活动标
+					#end
+				</td>
+				<td>$!product.showTerminal</td>
+				<td>
+					#if("$!product.returnType" == "FINISH_RETURN_ALL") 到期还本付息
+					#elseif("$!product.returnType" == "AVERAGE_CAPITAL_PLUS_INTEREST") 等额本息
+					#end
+				</td>
+				<td>$!date.format($!product.startTime)</td>
+				<td>$!date.format($!product.endTime)</td>
+				<td><span #if($!product.status == 4) style="color:blue;" #elseif($!product.status == 3) style="color:red;" #else #end> $!message.get("PRODUCT_STATUS_$!product.status")</span></td>
+				<td>$!product.checkerName</td>
+				<td>$!product.distributorName</td>
+				<td>$!date.format($!product.distributeTime)</td>
+				<td>
+					#if("$!product.isSuggest" == "YES")
+						 推荐
+					#elseif("$!product.isSuggest" == "NO")
+						非推荐
+					#else	
+					#end
+				</td>
+				<td>
+					#if($!product.status == 1 || $!product.status == 3)
+						<a style="color:blue;" title="编辑" target="navtab" rel="createBack" href="$env.getWebURL('/product/manage/productDetail.htm?pId=')$!product.id"">编辑</a>
+						<a style="color:blue;" title="确认要提审此记录" target="ajaxTodo" href="$env.getWebURL('/product/manage/reviewProduct.htm?pId=')$!product.id"">提审</a>
+						<a style="color:red;" title="确认删除此记录" target="ajaxTodo" href="$env.getWebURL('/product/manage/deleteProduct.htm?pId=')$!product.id"">删除</a>
+					#else
+						编辑   提审   删除
+					#end
+					<a style="color:blue;" title="查看详情" target="navtab" rel="createBack" href="$env.getWebURL('/product/manage/productDetailPage.htm?productId=')$!product.id"">详情</a>
+					
+					<a style="color:blue;" title="克隆" target="navtab" rel="createBack" href="$env.getWebURL('/product/manage/productClone.htm?pCloneId=')$!product.id"">克隆</a>
+				</td>
+				<td>$!date.format($!product.updateTime)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+
+	</div>
+</div>
+#LoadJS("/resources/js/global_validate")
+<script>
+function navTabAjaxDone(json) {
+	if (json.statusCode == 200) {
+		alertMsg.correct(json.message);
+		navTab.closeCurrentTab();
+		navTab.reload("$env.getWebURL('/product/manage/index.htm')");
+	} else {
+		alertMsg.error(json.message);
+	}
+}
+
+function search(){
+	var sDistributeTime = $("#sDistributeTime").val(),
+		eDistributeTime = $("#eDistributeTime").val(),
+		sStartTime = $("#sStartTime").val(),
+		eStartTime = $("#eStartTime").val(),
+		sEndTime = $("#sEndTime").val(),
+		eEndTime = $("#eEndTime").val();
+	
+	if(sDistributeTime != "" && eDistributeTime == ""){
+		alertMsg.warn("请输入发布时间的结束时间！");
+		return false;
+	}
+	
+	if(sDistributeTime == "" && eDistributeTime != ""){
+		alertMsg.warn("请输入发布时间的起始时间！");
+		return false;
+	}
+	
+	if(sDistributeTime != "" && eDistributeTime != ""){
+		var result = Date.parse(eDistributeTime.replace(/-/g,"/"))- Date.parse(sDistributeTime.replace(/-/g,"/"));
+		if(result < 0){
+			alertMsg.warn("发布时间的起始时间不能在发布时间的结束时间之后！！");
+			return false;
+		}
+	}
+	
+	if(sStartTime != "" && eStartTime == ""){
+		alertMsg.warn("请输入开始时间的结束时间！");
+		return false;
+	}
+	
+	if(sStartTime == "" && eStartTime != ""){
+		alertMsg.warn("请输入开始时间的起始时间！");
+		return false;
+	}
+	
+	if(sStartTime != "" && eStartTime != ""){
+		var result = Date.parse(eStartTime.replace(/-/g,"/"))- Date.parse(sStartTime.replace(/-/g,"/"));
+		if(result < 0){
+			alertMsg.warn("开始时间的起始时间不能在开始时间的结束时间之后！！");
+			return false;
+		}
+	}
+	
+	if(sEndTime != "" && eEndTime == ""){
+		alertMsg.warn("请输入结束时间的结束时间！");
+		return false;
+	}
+	
+	if(sEndTime == "" && eEndTime != ""){
+		alertMsg.warn("请输入结束时间的起始时间！");
+		return false;
+	}
+	
+	if(sEndTime != "" && eEndTime != ""){
+		var result = Date.parse(eEndTime.replace(/-/g,"/"))- Date.parse(sEndTime.replace(/-/g,"/"));
+		if(result < 0){
+			alertMsg.warn("结束时间的起始时间不能在结束时间的结束时间之后！！");
+			return false;
+		}
+	}
+	
+	$("#proIndexForm").submit();
+}
+</script>

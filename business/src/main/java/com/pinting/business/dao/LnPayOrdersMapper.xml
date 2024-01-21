@@ -1,0 +1,1419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinting.business.dao.LnPayOrdersMapper">
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.LnPayOrders">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="payment_channel_id" jdbcType="INTEGER" property="paymentChannelId" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="amount" jdbcType="DOUBLE" property="amount" />
+    <result column="partner_code" jdbcType="VARCHAR" property="partnerCode" />
+    <result column="ln_user_id" jdbcType="INTEGER" property="lnUserId" />
+    <result column="sub_account_id" jdbcType="INTEGER" property="subAccountId" />
+    <result column="channel" jdbcType="VARCHAR" property="channel" />
+    <result column="pay_path" jdbcType="VARCHAR" property="payPath" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="money_type" jdbcType="INTEGER" property="moneyType" />
+    <result column="terminal_type" jdbcType="INTEGER" property="terminalType" />
+    <result column="start_jnl_no" jdbcType="INTEGER" property="startJnlNo" />
+    <result column="end_jnl_no" jdbcType="INTEGER" property="endJnlNo" />
+    <result column="bank_id" jdbcType="INTEGER" property="bankId" />
+    <result column="bank_card_no" jdbcType="VARCHAR" property="bankCardNo" />
+    <result column="account_type" jdbcType="INTEGER" property="accountType" />
+    <result column="trans_type" jdbcType="VARCHAR" property="transType" />
+    <result column="channel_trans_type" jdbcType="VARCHAR" property="channelTransType" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="id_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="is_protocol_pay" jdbcType="VARCHAR" property="isProtocolPay" />
+    <result column="return_code" jdbcType="VARCHAR" property="returnCode" />
+    <result column="return_msg" jdbcType="VARCHAR" property="returnMsg" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="BaseResultMapVO" type="com.pinting.business.model.vo.LnPayOrdersVO">
+    <result column="user_mobile" jdbcType="VARCHAR" property="userMobile" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, payment_channel_id, order_no, amount, partner_code, ln_user_id, sub_account_id, 
+    channel, pay_path, status, bank_name, money_type, terminal_type, start_jnl_no, end_jnl_no, 
+    bank_id, bank_card_no, account_type, trans_type, channel_trans_type, mobile, id_card, 
+    user_name, is_protocol_pay, return_code, return_msg, note, create_time, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.pinting.business.model.LnPayOrdersExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ln_pay_orders
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ln_pay_orders
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ln_pay_orders
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.LnPayOrdersExample">
+    delete from ln_pay_orders
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.LnPayOrders">
+    insert into ln_pay_orders (id, payment_channel_id, order_no, 
+      amount, partner_code, ln_user_id, 
+      sub_account_id, channel, pay_path, 
+      status, bank_name, money_type, 
+      terminal_type, start_jnl_no, end_jnl_no, 
+      bank_id, bank_card_no, account_type, 
+      trans_type, channel_trans_type, mobile, 
+      id_card, user_name, is_protocol_pay, 
+      return_code, return_msg, note, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{paymentChannelId,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=DOUBLE}, #{partnerCode,jdbcType=VARCHAR}, #{lnUserId,jdbcType=INTEGER}, 
+      #{subAccountId,jdbcType=INTEGER}, #{channel,jdbcType=VARCHAR}, #{payPath,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{bankName,jdbcType=VARCHAR}, #{moneyType,jdbcType=INTEGER}, 
+      #{terminalType,jdbcType=INTEGER}, #{startJnlNo,jdbcType=INTEGER}, #{endJnlNo,jdbcType=INTEGER}, 
+      #{bankId,jdbcType=INTEGER}, #{bankCardNo,jdbcType=VARCHAR}, #{accountType,jdbcType=INTEGER}, 
+      #{transType,jdbcType=VARCHAR}, #{channelTransType,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{idCard,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{isProtocolPay,jdbcType=VARCHAR}, 
+      #{returnCode,jdbcType=VARCHAR}, #{returnMsg,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyProperty="id" parameterType="com.pinting.business.model.LnPayOrders" useGeneratedKeys="true">
+    insert into ln_pay_orders
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="paymentChannelId != null">
+        payment_channel_id,
+      </if>
+      <if test="orderNo != null">
+        order_no,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="partnerCode != null">
+        partner_code,
+      </if>
+      <if test="lnUserId != null">
+        ln_user_id,
+      </if>
+      <if test="subAccountId != null">
+        sub_account_id,
+      </if>
+      <if test="channel != null">
+        channel,
+      </if>
+      <if test="payPath != null">
+        pay_path,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="bankName != null">
+        bank_name,
+      </if>
+      <if test="moneyType != null">
+        money_type,
+      </if>
+      <if test="terminalType != null">
+        terminal_type,
+      </if>
+      <if test="startJnlNo != null">
+        start_jnl_no,
+      </if>
+      <if test="endJnlNo != null">
+        end_jnl_no,
+      </if>
+      <if test="bankId != null">
+        bank_id,
+      </if>
+      <if test="bankCardNo != null">
+        bank_card_no,
+      </if>
+      <if test="accountType != null">
+        account_type,
+      </if>
+      <if test="transType != null">
+        trans_type,
+      </if>
+      <if test="channelTransType != null">
+        channel_trans_type,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="isProtocolPay != null">
+        is_protocol_pay,
+      </if>
+      <if test="returnCode != null">
+        return_code,
+      </if>
+      <if test="returnMsg != null">
+        return_msg,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="paymentChannelId != null">
+        #{paymentChannelId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null">
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="partnerCode != null">
+        #{partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="lnUserId != null">
+        #{lnUserId,jdbcType=INTEGER},
+      </if>
+      <if test="subAccountId != null">
+        #{subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null">
+        #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="payPath != null">
+        #{payPath,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="bankName != null">
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="moneyType != null">
+        #{moneyType,jdbcType=INTEGER},
+      </if>
+      <if test="terminalType != null">
+        #{terminalType,jdbcType=INTEGER},
+      </if>
+      <if test="startJnlNo != null">
+        #{startJnlNo,jdbcType=INTEGER},
+      </if>
+      <if test="endJnlNo != null">
+        #{endJnlNo,jdbcType=INTEGER},
+      </if>
+      <if test="bankId != null">
+        #{bankId,jdbcType=INTEGER},
+      </if>
+      <if test="bankCardNo != null">
+        #{bankCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="accountType != null">
+        #{accountType,jdbcType=INTEGER},
+      </if>
+      <if test="transType != null">
+        #{transType,jdbcType=VARCHAR},
+      </if>
+      <if test="channelTransType != null">
+        #{channelTransType,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="isProtocolPay != null">
+        #{isProtocolPay,jdbcType=VARCHAR},
+      </if>
+      <if test="returnCode != null">
+        #{returnCode,jdbcType=VARCHAR},
+      </if>
+      <if test="returnMsg != null">
+        #{returnMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.LnPayOrdersExample" resultType="java.lang.Integer">
+    select count(*) from ln_pay_orders
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ln_pay_orders
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.paymentChannelId != null">
+        payment_channel_id = #{record.paymentChannelId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderNo != null">
+        order_no = #{record.orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null">
+        amount = #{record.amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.partnerCode != null">
+        partner_code = #{record.partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lnUserId != null">
+        ln_user_id = #{record.lnUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.subAccountId != null">
+        sub_account_id = #{record.subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="record.channel != null">
+        channel = #{record.channel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payPath != null">
+        pay_path = #{record.payPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.bankName != null">
+        bank_name = #{record.bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.moneyType != null">
+        money_type = #{record.moneyType,jdbcType=INTEGER},
+      </if>
+      <if test="record.terminalType != null">
+        terminal_type = #{record.terminalType,jdbcType=INTEGER},
+      </if>
+      <if test="record.startJnlNo != null">
+        start_jnl_no = #{record.startJnlNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.endJnlNo != null">
+        end_jnl_no = #{record.endJnlNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.bankId != null">
+        bank_id = #{record.bankId,jdbcType=INTEGER},
+      </if>
+      <if test="record.bankCardNo != null">
+        bank_card_no = #{record.bankCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountType != null">
+        account_type = #{record.accountType,jdbcType=INTEGER},
+      </if>
+      <if test="record.transType != null">
+        trans_type = #{record.transType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.channelTransType != null">
+        channel_trans_type = #{record.channelTransType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null">
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCard != null">
+        id_card = #{record.idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null">
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isProtocolPay != null">
+        is_protocol_pay = #{record.isProtocolPay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.returnCode != null">
+        return_code = #{record.returnCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.returnMsg != null">
+        return_msg = #{record.returnMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null">
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ln_pay_orders
+    set id = #{record.id,jdbcType=INTEGER},
+      payment_channel_id = #{record.paymentChannelId,jdbcType=INTEGER},
+      order_no = #{record.orderNo,jdbcType=VARCHAR},
+      amount = #{record.amount,jdbcType=DOUBLE},
+      partner_code = #{record.partnerCode,jdbcType=VARCHAR},
+      ln_user_id = #{record.lnUserId,jdbcType=INTEGER},
+      sub_account_id = #{record.subAccountId,jdbcType=INTEGER},
+      channel = #{record.channel,jdbcType=VARCHAR},
+      pay_path = #{record.payPath,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      bank_name = #{record.bankName,jdbcType=VARCHAR},
+      money_type = #{record.moneyType,jdbcType=INTEGER},
+      terminal_type = #{record.terminalType,jdbcType=INTEGER},
+      start_jnl_no = #{record.startJnlNo,jdbcType=INTEGER},
+      end_jnl_no = #{record.endJnlNo,jdbcType=INTEGER},
+      bank_id = #{record.bankId,jdbcType=INTEGER},
+      bank_card_no = #{record.bankCardNo,jdbcType=VARCHAR},
+      account_type = #{record.accountType,jdbcType=INTEGER},
+      trans_type = #{record.transType,jdbcType=VARCHAR},
+      channel_trans_type = #{record.channelTransType,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      id_card = #{record.idCard,jdbcType=VARCHAR},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      is_protocol_pay = #{record.isProtocolPay,jdbcType=VARCHAR},
+      return_code = #{record.returnCode,jdbcType=VARCHAR},
+      return_msg = #{record.returnMsg,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.LnPayOrders">
+    update ln_pay_orders
+    <set>
+      <if test="paymentChannelId != null">
+        payment_channel_id = #{paymentChannelId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null">
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="partnerCode != null">
+        partner_code = #{partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="lnUserId != null">
+        ln_user_id = #{lnUserId,jdbcType=INTEGER},
+      </if>
+      <if test="subAccountId != null">
+        sub_account_id = #{subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null">
+        channel = #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="payPath != null">
+        pay_path = #{payPath,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="bankName != null">
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="moneyType != null">
+        money_type = #{moneyType,jdbcType=INTEGER},
+      </if>
+      <if test="terminalType != null">
+        terminal_type = #{terminalType,jdbcType=INTEGER},
+      </if>
+      <if test="startJnlNo != null">
+        start_jnl_no = #{startJnlNo,jdbcType=INTEGER},
+      </if>
+      <if test="endJnlNo != null">
+        end_jnl_no = #{endJnlNo,jdbcType=INTEGER},
+      </if>
+      <if test="bankId != null">
+        bank_id = #{bankId,jdbcType=INTEGER},
+      </if>
+      <if test="bankCardNo != null">
+        bank_card_no = #{bankCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="accountType != null">
+        account_type = #{accountType,jdbcType=INTEGER},
+      </if>
+      <if test="transType != null">
+        trans_type = #{transType,jdbcType=VARCHAR},
+      </if>
+      <if test="channelTransType != null">
+        channel_trans_type = #{channelTransType,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="isProtocolPay != null">
+        is_protocol_pay = #{isProtocolPay,jdbcType=VARCHAR},
+      </if>
+      <if test="returnCode != null">
+        return_code = #{returnCode,jdbcType=VARCHAR},
+      </if>
+      <if test="returnMsg != null">
+        return_msg = #{returnMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.LnPayOrders">
+    update ln_pay_orders
+    set payment_channel_id = #{paymentChannelId,jdbcType=INTEGER},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DOUBLE},
+      partner_code = #{partnerCode,jdbcType=VARCHAR},
+      ln_user_id = #{lnUserId,jdbcType=INTEGER},
+      sub_account_id = #{subAccountId,jdbcType=INTEGER},
+      channel = #{channel,jdbcType=VARCHAR},
+      pay_path = #{payPath,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      money_type = #{moneyType,jdbcType=INTEGER},
+      terminal_type = #{terminalType,jdbcType=INTEGER},
+      start_jnl_no = #{startJnlNo,jdbcType=INTEGER},
+      end_jnl_no = #{endJnlNo,jdbcType=INTEGER},
+      bank_id = #{bankId,jdbcType=INTEGER},
+      bank_card_no = #{bankCardNo,jdbcType=VARCHAR},
+      account_type = #{accountType,jdbcType=INTEGER},
+      trans_type = #{transType,jdbcType=VARCHAR},
+      channel_trans_type = #{channelTransType,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      is_protocol_pay = #{isProtocolPay,jdbcType=VARCHAR},
+      return_code = #{returnCode,jdbcType=VARCHAR},
+      return_msg = #{returnMsg,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="selectStagePayOrdersListPageInfo" parameterType="com.pinting.business.model.vo.LnPayOrdersVO" resultMap="BaseResultMapVO">
+     	select
+			u.mobile user_mobile,
+        	b.*
+        from ln_pay_orders b LEFT JOIN ln_user u ON b.ln_user_id = u.id 
+        where 1 = 1
+        <if test="userMobile != null and userMobile != '' ">
+            and u.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="mobile != null and mobile != '' ">
+            and b.mobile like concat(concat('%', #{mobile,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="userName != null and userName != '' ">
+            and b.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="idCard != null and idCard != '' ">
+            and b.id_card like concat(concat('%', #{idCard,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="orderNo != null and orderNo != '' ">
+            and b.order_no like concat(concat('%', #{orderNo,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="status != null and status &gt; 0 ">
+            and b.status = #{status}
+        </if>
+        <!-- 交易类型：-->
+        <if test="transType != null and transType != '' ">
+            and b.trans_type = #{transType}
+        </if>
+        <!-- 渠道交易类型 -->
+        <if test="channelTransType != null and channelTransType != '' ">
+            and b.channel_trans_type = #{channelTransType}
+        </if>
+        <!-- 订单渠道 -->
+        <if test="channel != null and channel != '' ">
+            and b.channel = #{channel}
+        </if>
+        <if test="bankName != null and bankName != '' ">
+            and b.bank_name like concat(concat('%', #{bankName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="bankCardNo != null and bankCardNo != '' ">
+            and b.bank_card_no like concat(concat('%', #{bankCardNo,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="beginTime != null and overTime != null and beginTime != '' and overTime!= '' ">
+            <!-- and b.create_time between #{beginTime} and #{overTime} -->
+            and b.create_time &gt;= #{beginTime} and b.create_time &lt;= DATE_ADD(#{overTime},INTERVAL 1 day)
+        </if>
+        
+        <if test="bankId != null and bankId != '' and bankId =='-1'">
+            and b.bank_id is null
+        </if>
+        <if test="bankId != null and bankId != '' and bankId !='-1'">
+            and b.bank_id = cast(#{bankId} as SIGNED INTEGER)
+        </if>
+        <if test="returnMsg != null and returnMsg != '' ">
+            and b.return_msg like concat(concat('%', #{returnMsg,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="lnUserId != null and lnUserId != '' ">
+            and b.ln_user_id = #{lnUserId}
+        </if>
+        <if test="orderDirection!=null and orderDirection != ''  and orderField != ''  and orderField!=null ">
+            order by ${orderField} ${orderDirection}
+        </if>
+        <if test="numPerPage != null and numPerPage != 0">
+            <include refid="sql-global.pagination" />
+        </if>
+    </select>
+    
+    <select id="selectStagePayOrdersListCount" parameterType="com.pinting.business.model.vo.LnPayOrdersVO" resultType="java.lang.Integer">
+     	select
+			COUNT(*)
+        from ln_pay_orders b LEFT JOIN ln_user u ON b.ln_user_id = u.id 
+        where 1 = 1
+        <if test="userMobile != null and userMobile != '' ">
+            and u.mobile like concat(concat('%', #{userMobile,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="mobile != null and mobile != '' ">
+            and b.mobile like concat(concat('%', #{mobile,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="userName != null and userName != '' ">
+            and b.user_name like concat(concat('%', #{userName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="idCard != null and idCard != '' ">
+            and b.id_card like concat(concat('%', #{idCard,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="orderNo != null and orderNo != '' ">
+            and b.order_no like concat(concat('%', #{orderNo,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="status != null and status &gt; 0 ">
+            and b.status = #{status}
+        </if>
+        <!-- 交易类型：-->
+        <if test="transType != null and transType != '' ">
+            and b.trans_type = #{transType}
+        </if>
+        <!-- 渠道交易类型 -->
+        <if test="channelTransType != null and channelTransType != '' ">
+            and b.channel_trans_type = #{channelTransType}
+        </if>
+        <!-- 订单渠道 -->
+        <if test="channel != null and channel != '' ">
+            and b.channel = #{channel}
+        </if>
+        <if test="bankName != null and bankName != '' ">
+            and b.bank_name like concat(concat('%', #{bankName,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="bankCardNo != null and bankCardNo != '' ">
+            and b.bank_card_no like concat(concat('%', #{bankCardNo,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="beginTime != null and overTime != null and beginTime != '' and overTime!= '' ">
+            <!-- and b.create_time between #{beginTime} and #{overTime} -->
+            and b.create_time &gt;= #{beginTime} and b.create_time &lt;= DATE_ADD(#{overTime},INTERVAL 1 day)
+        </if>
+        
+        <if test="bankId != null and bankId != '' and bankId =='-1'">
+            and b.bank_id is null
+        </if>
+        <if test="bankId != null and bankId != '' and bankId !='-1'">
+            and b.bank_id = cast(#{bankId} as SIGNED INTEGER)
+        </if>
+        <if test="returnMsg != null and returnMsg != '' ">
+            and b.return_msg like concat(concat('%', #{returnMsg,jdbcType=VARCHAR}),'%')
+        </if>
+        <if test="lnUserId != null and lnUserId != '' ">
+            and b.ln_user_id = #{lnUserId}
+        </if>
+
+    </select>
+
+    <select id="selectByPKForLock" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+      select * from ln_pay_orders where id = #{id} for update
+    </select>
+	
+	<resultMap id="HFBANKLoanWithdrawOrderVOMap" type="com.pinting.business.model.vo.HFBANKLoanWithdrawOrderVO">
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="amount" jdbcType="DOUBLE" property="amount" />
+        <result column="trans_type" jdbcType="VARCHAR" property="transType" />
+        <result column="note" jdbcType="VARCHAR" property="note" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    </resultMap>
+    
+	<select id="selectSysLoanerWithdrawCount" resultType="java.lang.Integer">
+        SELECT
+		  COUNT(*)
+        FROM ln_pay_orders a 
+        WHERE a.trans_type = 'DEP_WITHDRAW' AND a.channel_trans_type = 'DF'
+    </select>
+    
+    <select id="selectLoanerList" parameterType="java.lang.Integer" resultMap="HFBANKLoanWithdrawOrderVOMap">
+        SELECT
+          a.order_no, a.create_time, a.update_time, ABS(a.amount) AS amount, a.note, a.trans_type, a.status AS status
+        FROM ln_pay_orders a 
+        WHERE a.trans_type = 'DEP_WITHDRAW' AND a.channel_trans_type = 'DF'
+        ORDER BY create_time DESC
+        <include refid="sql-global.pagination" />
+    </select>
+    
+    <select id="selectBaofooAssistTransOrders"  resultMap="BaseResultMap">
+      	SELECT 
+			a.* 
+		FROM
+		ln_pay_orders a WHERE
+		a.payment_channel_id IN
+		(
+			SELECT id FROM bs_payment_channel
+			WHERE trans_type = 'DK' AND is_main = 2
+		)
+		and a.trans_type = 'REPAY'
+		and a.channel_trans_type = 'TRANSFER'
+		and DATE_FORMAT(a.update_time ,'%Y-%m-%d') = DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d')
+    </select>
+
+    <resultMap id="LnChannelVO" type="com.pinting.business.model.vo.LnChannelVO">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="merchant_no" property="merchantNo" jdbcType="VARCHAR"/>
+        <result column="is_main" property="isMain" jdbcType="INTEGER"/>
+        <result column="partner_code" property="partnerCode" jdbcType="VARCHAR"/>
+        <result column="is_protocol_pay" property="isProtocolPay" jdbcType="VARCHAR"/>
+        <result column="trans_time" property="transTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="queryLnMerchantInfoOfOrder"  resultMap="LnChannelVO">
+        SELECT b.id, b.merchant_no, b.is_main, a.partner_code,a.is_protocol_pay,a.create_time as trans_time
+        FROM ln_pay_orders a
+        LEFT JOIN bs_payment_channel b
+        ON a.payment_channel_id = b.id
+        WHERE a.order_no = #{payOrderNo}
+        AND a.status = '5'
+    </select>
+    
+   <select id="baoFooCheckAccountOrders"  resultMap="BaseResultMap">
+		SELECT
+			a.id, a.payment_channel_id, a.order_no, a.amount, a.partner_code, a.ln_user_id,
+			 a.sub_account_id, a.channel, a.pay_path, a.status, a.bank_name, a.money_type, a.terminal_type, 
+			 a.start_jnl_no, a.end_jnl_no, a.bank_id, a.bank_card_no, a.account_type, a.trans_type, a.channel_trans_type, 
+			 a.mobile, a.id_card, a.user_name, a.return_code, a.return_msg, a.note, a.create_time, a.update_time
+		FROM
+			ln_pay_orders a
+		WHERE
+			a.update_time IS NOT NULL
+			AND DATE_FORMAT(a.update_time, '%Y-%m-%d') = DATE_FORMAT(
+				DATE_SUB(NOW(), INTERVAL 1 DAY),
+				'%Y-%m-%d'
+			)
+			AND a.channel = 'BAOFOO'
+			AND (a.payment_channel_id  IN  (
+				SELECT id FROM
+					bs_payment_channel
+				WHERE
+					trans_type = 'DK'
+					AND is_main = 1
+			)
+			OR a.payment_channel_id IS NULL)
+			AND a.order_no NOT IN (
+				SELECT b.pay_order_no FROM ln_repay  b WHERE b.repay_type = 'OFFLINE_REPAY' 
+				AND DATE_FORMAT(b.update_time, '%Y-%m-%d') = DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 DAY), '%Y-%m-%d')
+			) 
+    </select>
+	
+  <select id="countCheckAccountOrders" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+	select count(id)
+	from ln_pay_orders 
+	<where>
+		update_time is not null and DATE_FORMAT(update_time,'%Y-%m-%d')= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d') 
+		<if test="status != null and status &gt; 0 ">
+			and status = #{status}
+		</if>
+		<if test="channel != null and channel != '' ">
+			and channel = #{channel}
+		</if>
+		<if test="partnerCode != null and partnerCode != '' ">
+			and partner_code = #{partnerCode}
+		</if>
+		<if test="channelTransType != null and channelTransType != '' ">
+	    	and channel_trans_type = #{channelTransType}
+	    </if>
+		<if test="transTypes != null and transTypes != '' ">
+	        and (trans_type in
+	        <foreach collection="transTypes" item="transType" index="index"
+	                 open="(" close=")" separator=",">
+	            #{transType,jdbcType=VARCHAR}
+	        </foreach>
+	        )
+	    </if> 
+    </where> 
+  </select>
+  
+  <select id="sumCheckAccountOrders" parameterType="java.util.HashMap" resultType="java.lang.Double">
+	select IFNULL(sum(amount), 0)
+	from ln_pay_orders 
+	<where> 
+		update_time is not null and DATE_FORMAT(update_time,'%Y-%m-%d')= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d') 
+		<if test="status != null and status &gt; 0 ">
+			and status = #{status}
+		</if>
+		<if test="channel != null and channel != '' ">
+			and channel = #{channel}
+		</if>
+		<if test="partnerCode != null and partnerCode != '' ">
+			and partner_code = #{partnerCode}
+		</if>
+		<if test="channelTransType != null and channelTransType != '' ">
+	    	and channel_trans_type = #{channelTransType}
+	    </if>
+		<if test="transTypes != null and transTypes != '' ">
+	        and (trans_type in
+	        <foreach collection="transTypes" item="transType" index="index"
+	                 open="(" close=")" separator=",">
+	            #{transType,jdbcType=VARCHAR}
+	        </foreach>
+	        )
+	    </if> 
+	</where>    
+  </select>
+  
+  <select id="selectByOrderNoAndChannel" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+	SELECT	id, payment_channel_id, order_no, amount, partner_code, ln_user_id, sub_account_id, 
+    	channel, pay_path, status, bank_name, money_type, terminal_type, start_jnl_no, end_jnl_no, 
+    	bank_id, bank_card_no, account_type, trans_type, channel_trans_type, mobile, id_card, 
+    	user_name, return_code, return_msg, note, create_time, update_time   		
+  	FROM ln_pay_orders 
+  	<where>
+  		<if test="status != null and status &gt; 0 ">
+        	and status = #{status}
+   		</if>
+  		<if test="channel != null and channel != '' ">
+            and channel = #{channel}
+        </if>
+        <if test="orderNo != null and orderNo != '' ">
+            and order_no = #{orderNo}
+        </if>
+  	</where>
+  </select>
+  
+  <select id="countBaofooAssist2MainTransOrders"  parameterType="java.util.HashMap" resultType="java.lang.Integer">
+      	SELECT 
+			COUNT(a.id)
+		FROM
+		ln_pay_orders a 
+	    <where>	
+			a.payment_channel_id IN
+			(
+				SELECT id FROM bs_payment_channel
+				WHERE trans_type = 'DK' AND is_main = 2
+			)
+			<if test="transType != null and transType != '' ">
+            	and a.trans_type = #{transType}
+        	</if>
+			<if test="channelTransType != null and channelTransType != '' ">
+            	and a.channel_trans_type = #{channelTransType}
+        	</if>
+        	<if test="channel != null and channel != '' ">
+            	and a.channel = #{channel}
+        	</if>
+			<if test="status != null and status &gt; 0 ">
+            	and a.status = #{status}
+       		</if>
+			and DATE_FORMAT(a.update_time ,'%Y-%m-%d') = DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d')
+		</where>
+    </select>
+    
+    <select id="sumBaofooAssist2MainTransOrders"  parameterType="java.util.HashMap" resultType="java.lang.Double">
+      	SELECT 
+			IFNULL(SUM(a.amount), 0)
+		FROM
+		ln_pay_orders a 
+		<where>
+			<if test="transType != null and transType != '' ">
+		        and a.trans_type = #{transType}
+		    </if> 
+			<if test="channelTransType != null and channelTransType != '' ">
+		    	and a.channel_trans_type = #{channelTransType}
+		    </if>
+			<if test="status != null and status &gt; 0 ">
+				and a.status = #{status}
+			</if>
+			<if test="checkDate != null and checkDate != '' ">
+		         and DATE_FORMAT(a.update_time, '%Y-%m-%d') = DATE_FORMAT(#{checkDate}, '%Y-%m-%d')
+		    </if>
+			<if test="channel != null and channel != '' ">
+				and a.channel = #{channel}
+			</if>
+			<if test="paymentChannelId != null and paymentChannelId != '' ">
+				AND a.payment_channel_id = #{paymentChannelId}
+			</if>
+		</where>	
+    </select>
+    
+   <select id="countPartnerOfflineRepay"  parameterType="java.util.HashMap" resultType="java.lang.Integer">
+      	SELECT 
+			COUNT(a.id)
+		FROM ln_pay_orders a LEFT JOIN ln_repay b ON a.order_no = b.pay_order_no
+	    <where>
+	        DATE_FORMAT(b.create_time, '%Y-%m-%d') = DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d')
+			AND a.update_time is not null AND (a.payment_channel_id = 1 OR a.payment_channel_id IS NULL)	
+	        <if test="transType != null and transType != '' ">
+            	and a.trans_type = #{transType}
+        	</if>
+        	<if test="channelTransType != null and channelTransType != '' ">
+		    	and a.channel_trans_type = #{channelTransType}
+		    </if>
+        	<if test="channel != null and channel != '' ">
+            	and a.channel = #{channel}
+        	</if>
+			<if test="status != null and status &gt; 0 ">
+            	and a.status = #{status}
+       		</if>
+			<if test="partnerCode != null and partnerCode != '' ">
+            	and a.partner_code = #{partnerCode}
+        	</if>
+			AND b.repay_type ='OFFLINE_REPAY'
+		</where>
+    </select>
+    
+    <select id="sumPartnerOfflineRepay"  parameterType="java.util.HashMap" resultType="java.lang.Double">
+      	SELECT 
+			IFNULL(SUM(a.amount), 0)
+		FROM ln_pay_orders a LEFT JOIN ln_repay b ON a.order_no = b.pay_order_no
+		<where>
+			DATE_FORMAT(b.create_time, '%Y-%m-%d') = DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d')
+			AND a.update_time is not null AND (a.payment_channel_id = 1 OR a.payment_channel_id IS NULL)
+	        <if test="transType != null and transType != '' ">
+            	and a.trans_type = #{transType}
+        	</if>
+        	<if test="channelTransType != null and channelTransType != '' ">
+		    	and a.channel_trans_type = #{channelTransType}
+		    </if>
+        	<if test="channel != null and channel != '' ">
+            	and a.channel = #{channel}
+        	</if>
+			<if test="status != null and status &gt; 0 ">
+            	and a.status = #{status}
+       		</if>
+			<if test="partnerCode != null and partnerCode != '' ">
+            	and a.partner_code = #{partnerCode}
+        	</if>
+			AND b.repay_type ='OFFLINE_REPAY'
+		</where>	
+    </select> 
+    
+    
+  <select id="selectLastByCard"  parameterType="java.util.Map"  resultMap="BaseResultMap">
+  		SELECT id,update_time
+		from ln_pay_orders where is_protocol_pay='YES' AND
+		bank_card_no =#{bankCardNo} and id != #{expId}
+		and `status`=6 ORDER BY update_time
+  </select>
+  
+    <!-- 管理台资产方费用结算查询 -->
+  <select id="countPartnerSmsRecord" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+	select count(a.id) 
+	from bs_sms_record_jnl a,
+	ln_bind_card b 
+	<where>
+		a.mobile = b.mobile
+		<if test="startTime != null and startTime != ''"> 
+			and date(a.send_time) &gt;= #{startTime} 
+		</if>
+		<if test="endTime != null and endTime != ''"> 
+			and date(a.send_time) &lt;= #{endTime}
+		</if>
+		<if test="partnerCode != null and partnerCode != '' and partnerCode=='YUN_DAI_SELF' ">
+	    	and b.partner_code = 'YUN_DAI_SELF' AND a.content like '%达飞云贷%'
+	    </if>
+	    <if test="partnerCode != null and partnerCode != '' and partnerCode=='7_DAI_SELF' ">
+	    	and b.partner_code = '7_DAI_SELF' 
+	    </if>
+	</where>
+  </select>
+  
+  <select id="countPartnerAuthRecord" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+	select count(a.id) from ln_pay_orders a
+	<where>
+		trans_type='BIND_CARD' and channel='HFBANK' 
+		<if test="partnerCode != null and partnerCode != '' ">
+	    	and partner_code = #{partnerCode}
+	    </if>
+	    <if test="startTime != null and startTime != ''"> 
+			and date(create_time) &gt;= #{startTime} 
+		</if>
+		<if test="endTime != null and endTime != ''"> 
+			and date(create_time) &lt;= #{endTime}
+		</if>
+	</where>
+  </select>
+
+  <select id="countPartnerLoanRecord" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+	SELECT
+			count(l.id)
+		FROM
+			(SELECT id, ln_user_id from ln_loan where `status` = 'PAIED' 
+			<if test="startTime != null and startTime != ''"> 
+				and date(loan_time) &gt;= #{startTime} 
+			</if>
+			<if test="endTime != null and endTime != ''"> 
+				and date(loan_time) &lt;= #{endTime}
+			</if>
+			 ) l
+		INNER JOIN ln_user u ON u.id = l.ln_user_id
+		LEFT JOIN (
+			SELECT
+				loan_id
+			FROM
+				ln_deposition_repay_schedule
+			WHERE
+				partner_repay_id LIKE '%RGCL%'
+		) a ON a.loan_id = l.id 
+		<if test="partnerCode != null and partnerCode != '' and partnerCode=='7_DAI_SELF' ">
+    		LEFT JOIN (
+				SELECT
+					conf_value
+				FROM
+					bs_sys_config
+				WHERE
+					conf_key = '7_DAI_SELF_SUPER_LN_USER'
+			) b ON b.conf_value = l.ln_user_id where 1=1 AND u.partner_code = '7_DAI_SELF' AND b.conf_value IS NULL
+			AND a.loan_id IS NULL
+    	</if>
+    	<if test="partnerCode != null and partnerCode != '' and partnerCode=='YUN_DAI_SELF' ">
+	    	LEFT JOIN (
+				SELECT
+					conf_value
+				FROM
+					bs_sys_config
+				WHERE
+					conf_key = 'YUN_DAI_SELF_SUPER_LN_USER'
+			) b ON b.conf_value = l.ln_user_id where 1=1 AND u.partner_code = 'YUN_DAI_SELF' AND b.conf_value IS NULL
+			AND a.loan_id IS NULL
+	    </if>
+  </select>
+  
+  <select id="countPartnerRepayRecord" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+	select count(a.id) from ln_pay_orders a
+	<where>
+		`status`=6 and trans_type='REPAY' and channel_trans_type='DK'
+		<if test="partnerCode != null and partnerCode != '' ">
+    		and partner_code = #{partnerCode}
+    	</if>
+    	<if test="startTime != null and startTime != ''"> 
+			and date(update_time) &gt;= #{startTime} 
+		</if>
+		<if test="endTime != null and endTime != ''"> 
+			and date(update_time) &lt;= #{endTime}
+		</if>
+	</where>
+  </select>
+  
+  
+  <select id="sumPartnerLoanAmount" parameterType="java.util.HashMap" resultType="java.lang.Double">
+	SELECT
+			SUM(l.approve_amount)
+		FROM
+			(SELECT id, ln_user_id, approve_amount from ln_loan where `status` = 'PAIED' 
+			<if test="startTime != null and startTime != ''"> 
+				and date(loan_time) &gt;= #{startTime} 
+			</if>
+			<if test="endTime != null and endTime != ''"> 
+				and date(loan_time) &lt;= #{endTime}
+			</if>
+			 ) l
+		INNER JOIN ln_user u ON u.id = l.ln_user_id
+		LEFT JOIN (
+			SELECT
+				loan_id
+			FROM
+				ln_deposition_repay_schedule
+			WHERE
+				partner_repay_id LIKE '%RGCL%'
+		) a ON a.loan_id = l.id 
+		<if test="partnerCode != null and partnerCode != '' and partnerCode=='7_DAI_SELF' ">
+    		LEFT JOIN (
+				SELECT
+					conf_value
+				FROM
+					bs_sys_config
+				WHERE
+					conf_key = '7_DAI_SELF_SUPER_LN_USER'
+			) b ON b.conf_value = l.ln_user_id where 1=1 AND u.partner_code = '7_DAI_SELF' AND b.conf_value IS NULL
+			AND a.loan_id IS NULL
+    	</if>
+    	<if test="partnerCode != null and partnerCode != '' and partnerCode=='YUN_DAI_SELF' ">
+	    	LEFT JOIN (
+				SELECT
+					conf_value
+				FROM
+					bs_sys_config
+				WHERE
+					conf_key = 'YUN_DAI_SELF_SUPER_LN_USER'
+			) b ON b.conf_value = l.ln_user_id where 1=1 AND u.partner_code = 'YUN_DAI_SELF' AND b.conf_value IS NULL
+			AND a.loan_id IS NULL
+	    </if>
+  </select>
+  
+  <!-- 宝付对账汇总凭证信息 -->
+  <select id="countCheckAccountOrdersForDK" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+	SELECT count(a.id)
+	FROM ln_pay_orders a 
+	<where>
+		<if test="transType != null and transType != '' ">
+	        and a.trans_type = #{transType}
+	    </if> 
+		<if test="channelTransType != null and channelTransType != '' ">
+	    	and a.channel_trans_type = #{channelTransType}
+	    </if>
+		<if test="status != null and status &gt; 0 ">
+			and a.status = #{status}
+		</if>
+		<if test="checkDate != null and checkDate != '' ">
+	         and DATE_FORMAT(a.update_time, '%Y-%m-%d') = DATE_FORMAT(#{checkDate}, '%Y-%m-%d')
+	    </if>
+		<if test="channel != null and channel != '' ">
+			and a.channel = #{channel}
+		</if>
+		<if test="partnerCode != null and partnerCode != '' ">
+			and a.partner_code = #{partnerCode}
+		</if>	
+		AND (a.payment_channel_id = 1 OR a.payment_channel_id IS NULL) 
+    </where> 
+  </select>
+  
+  <select id="sumCheckAccountOrdersForDK" parameterType="java.util.HashMap" resultType="java.lang.Double">
+	SELECT IFNULL(sum(a.amount), 0)
+	FROM ln_pay_orders a 
+	<where> 
+		<if test="transType != null and transType != '' ">
+	        and a.trans_type = #{transType}
+	    </if> 
+		<if test="channelTransType != null and channelTransType != '' ">
+	    	and a.channel_trans_type = #{channelTransType}
+	    </if>
+		<if test="status != null and status &gt; 0 ">
+			and a.status = #{status}
+		</if>
+		<if test="checkDate != null and checkDate != '' ">
+	         and DATE_FORMAT(a.update_time, '%Y-%m-%d') = DATE_FORMAT(#{checkDate}, '%Y-%m-%d')
+	    </if>
+		<if test="channel != null and channel != '' ">
+			and a.channel = #{channel}
+		</if>
+		<if test="partnerCode != null and partnerCode != '' ">
+			and a.partner_code = #{partnerCode}
+		</if>	
+		AND (a.payment_channel_id = 1 OR a.payment_channel_id IS NULL) 
+	</where>    
+  </select>
+  
+  <select id="countCheckAccountOrdersForAssistDK" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+	SELECT count(a.id)
+	FROM ln_pay_orders a 
+	<where>
+		<if test="transType != null and transType != '' ">
+	        and a.trans_type = #{transType}
+	    </if> 
+		<if test="channelTransType != null and channelTransType != '' ">
+	    	and a.channel_trans_type = #{channelTransType}
+	    </if>
+		<if test="status != null and status &gt; 0 ">
+			and a.status = #{status}
+		</if>
+		<if test="checkDate != null and checkDate != '' ">
+	         and DATE_FORMAT(a.update_time, '%Y-%m-%d') = DATE_FORMAT(#{checkDate}, '%Y-%m-%d')
+	    </if>
+		<if test="channel != null and channel != '' ">
+			and a.channel = #{channel}
+		</if>
+		<if test="partnerCode != null and partnerCode != '' ">
+			and a.partner_code = #{partnerCode}
+		</if>
+		<if test="paymentChannelId != null and paymentChannelId != '' ">
+			and a.payment_channel_id = #{paymentChannelId}
+		</if>	
+    </where> 
+  </select>
+  
+  <select id="sumCheckAccountOrdersForAssistDK" parameterType="java.util.HashMap" resultType="java.lang.Double">
+	SELECT IFNULL(sum(a.amount), 0)
+	FROM ln_pay_orders a 
+	<where> 
+		<if test="transType != null and transType != '' ">
+	        and a.trans_type = #{transType}
+	    </if> 
+		<if test="channelTransType != null and channelTransType != '' ">
+	    	and a.channel_trans_type = #{channelTransType}
+	    </if>
+		<if test="status != null and status &gt; 0 ">
+			and a.status = #{status}
+		</if>
+		<if test="checkDate != null and checkDate != '' ">
+	         and DATE_FORMAT(a.update_time, '%Y-%m-%d') = DATE_FORMAT(#{checkDate}, '%Y-%m-%d')
+	    </if>
+		<if test="channel != null and channel != '' ">
+			and a.channel = #{channel}
+		</if>
+		<if test="partnerCode != null and partnerCode != '' ">
+			and a.partner_code = #{partnerCode}
+		</if>
+		<if test="paymentChannelId != null and paymentChannelId != '' ">
+			and a.payment_channel_id = #{paymentChannelId}
+		</if>
+	</where>    
+  </select>	
+  
+  <select id="countPartnerOfflineRepayForAssist"  parameterType="java.util.HashMap" resultType="java.lang.Integer">
+      	SELECT 
+			COUNT(a.id)
+		FROM ln_pay_orders a LEFT JOIN ln_repay b ON a.order_no = b.pay_order_no
+	    <where>
+	        DATE_FORMAT(b.create_time, '%Y-%m-%d') = DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d')
+			AND a.update_time is not null 	
+			<if test="paymentChannelId != null and paymentChannelId != '' ">
+				AND a.payment_channel_id = #{paymentChannelId}
+			</if>
+	        <if test="transType != null and transType != '' ">
+            	and a.trans_type = #{transType}
+        	</if>
+        	<if test="channelTransType != null and channelTransType != '' ">
+		    	and a.channel_trans_type = #{channelTransType}
+		    </if>
+        	<if test="channel != null and channel != '' ">
+            	and a.channel = #{channel}
+        	</if>
+			<if test="status != null and status &gt; 0 ">
+            	and a.status = #{status}
+       		</if>
+			<if test="partnerCode != null and partnerCode != '' ">
+            	and a.partner_code = #{partnerCode}
+        	</if>
+			AND b.repay_type ='OFFLINE_REPAY'
+		</where>
+  </select>
+    
+  <select id="sumPartnerOfflineRepayForAssist"  parameterType="java.util.HashMap" resultType="java.lang.Double">
+      	SELECT 
+			IFNULL(SUM(a.amount), 0)
+		FROM ln_pay_orders a LEFT JOIN ln_repay b ON a.order_no = b.pay_order_no
+		<where>
+			DATE_FORMAT(b.create_time, '%Y-%m-%d') = DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 1 DAY),'%Y-%m-%d')
+			AND a.update_time is not null 
+			<if test="paymentChannelId != null and paymentChannelId != '' ">
+				AND a.payment_channel_id = #{paymentChannelId}
+			</if>
+	        <if test="transType != null and transType != '' ">
+            	and a.trans_type = #{transType}
+        	</if>
+        	<if test="channelTransType != null and channelTransType != '' ">
+		    	and a.channel_trans_type = #{channelTransType}
+		    </if>
+        	<if test="channel != null and channel != '' ">
+            	and a.channel = #{channel}
+        	</if>
+			<if test="status != null and status &gt; 0 ">
+            	and a.status = #{status}
+       		</if>
+			<if test="partnerCode != null and partnerCode != '' ">
+            	and a.partner_code = #{partnerCode}
+        	</if>
+			AND b.repay_type ='OFFLINE_REPAY'
+		</where>	
+  </select> 
+    
+  <select id="selectLnPayOrdersWithNoOffline" parameterType="java.util.Map" resultMap="BaseResultMap">
+     select a.* from ln_repay b LEFT JOIN ln_pay_orders a ON a.order_no = b.pay_order_no
+     <where>
+     	a.channel='BAOFOO' and a.status = 3 and (b.repay_type != 'OFFLINE_REPAY' or b.repay_type is null)
+     	<if test="channelTransType != null and channelTransType != '' ">
+	    	and a.channel_trans_type = #{channelTransType}
+	    </if>
+        <if test="transType != null and transType != '' ">
+	    	and a.trans_type = #{transType}
+	    </if>
+	    <if test="orderNo != null and orderNo != '' ">
+	    	and a.order_no = #{orderNo}
+	    </if>
+     </where>     
+  </select> 
+  
+  <select id="queryDailyCountAndSum" parameterType="java.lang.String" resultType="java.util.Map">
+		SELECT 
+			COUNT(id) as succCount,IFNULL(sum(amount), 0) as totalRepayBalance
+	  	from ln_pay_orders 
+  		where status = 6
+  			and trans_type = 'REPAY'
+  			and channel_trans_type = 'DK'
+			and partner_code = #{partnerCode}
+			and DATE_FORMAT(update_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+  </select>
+
+  <select id="sumAgreementFeeAmount" parameterType="java.util.Map" resultType="java.lang.Double">
+      SELECT
+        SUM(IFNULL(tab.amount, 0)) AS total_amount
+      FROM (
+        SELECT
+            CASE WHEN amount * 0.003 >= 1 THEN ROUND(amount * 0.003, 2)
+            ELSE 1
+            END amount
+        FROM ln_pay_orders
+        WHERE is_protocol_pay = 'YES'
+        AND `status` = 6
+        AND amount > 0
+        <if test="partnerCode != null and partnerCode != '' ">
+          AND partner_code = #{partnerCode}
+        </if>
+        <if test="startTime != null and startTime != ''">
+          AND DATE(create_time) &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+          AND DATE(create_time) &lt;= #{endTime}
+        </if>
+      ) tab
+  </select>
+
+  <resultMap id="AgreementFeeDetailVOMap" type="com.pinting.business.model.vo.AgreementFeeDetailVO">
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="amount" jdbcType="DOUBLE" property="amount" />
+    <result column="agreement_fee_amount" jdbcType="DOUBLE" property="agreementFeeAmount" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <select id="selectAgreementFeeDetailList" parameterType="java.util.Map" resultMap="AgreementFeeDetailVOMap">
+    SELECT
+      order_no, amount, update_time,
+      CASE WHEN amount * 0.003 >= 1 THEN ROUND(amount * 0.003, 2)
+      ELSE 1
+      END agreement_fee_amount
+    FROM ln_pay_orders
+    WHERE is_protocol_pay = 'YES'
+    AND `status` = 6
+    AND amount > 0
+    <if test="partnerCode != null and partnerCode != '' ">
+      AND partner_code = #{partnerCode}
+    </if>
+    <if test="startTime != null and startTime != ''">
+      AND DATE(create_time) &gt;= #{startTime}
+    </if>
+    <if test="endTime != null and endTime != ''">
+      AND DATE(create_time) &lt;= #{endTime}
+    </if>
+    ORDER BY update_time DESC
+    Limit 100
+  </select>
+
+  <select id="selectAgreementFeeDetailListExportXls" parameterType="java.util.Map" resultMap="AgreementFeeDetailVOMap">
+    SELECT
+    order_no, amount, update_time,
+    CASE WHEN amount * 0.003 >= 1 THEN ROUND(amount * 0.003, 2)
+    ELSE 1
+    END agreement_fee_amount
+    FROM ln_pay_orders
+    WHERE is_protocol_pay = 'YES'
+    AND `status` = 6
+    AND amount > 0
+    <if test="partnerCode != null and partnerCode != '' ">
+      AND partner_code = #{partnerCode}
+    </if>
+    <if test="startTime != null and startTime != ''">
+      AND DATE(create_time) &gt;= #{startTime}
+    </if>
+    <if test="endTime != null and endTime != ''">
+      AND DATE(create_time) &lt;= #{endTime}
+    </if>
+    ORDER BY update_time DESC
+  </select>
+
+</mapper>

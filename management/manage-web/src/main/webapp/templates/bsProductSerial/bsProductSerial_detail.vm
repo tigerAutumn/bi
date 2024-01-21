@@ -1,0 +1,69 @@
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	<form id="financeForm" method="post" action="$env.getWebURL('/bsProductSerial/save.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("id", "$!bsProductSerial.id")
+		<div class="pageFormContent nowrap" layoutH="50">
+			<dl>
+				<dt style="width:50px;">
+					系列名：
+                </dt>
+				<dd style="width:100px;">
+					<input type="text" id="serialName_id" name="serialName" maxlength="10" value="$!bsProductSerial.serialName" />
+                </dd>
+				
+				<dt style="margin-left:100px;width:50px;">
+					期限：
+                </dt>
+				<dd style="width:100px;">
+					<select name="term" id="term_id">
+						#set($Integer = 0)
+    					#foreach($code in $!codes)
+    						<option value="$!code.term" #if($!bsProductSerial.term == $!code.term)selected #end>
+								#if($Integer.parseInt("$!code.term") < 0) $math.abs($!code.term)天
+								#else $!code.term个月
+								#end
+							</option>
+    					#end
+                    </select>
+				</dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_financeForm()" >保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	function submit_financeForm(){
+		var serialName = $.trim($("#serialName_id").val());
+		var term = $.trim($("#term_id").val());
+		
+		if((serialName == null || serialName == "")){
+		    alertMsg.warn("系列名不能为空，请输入对应的信息！");
+        	return false;
+		}
+		if((term == null || term == "")){
+		    alertMsg.warn("期限不能为空，请输入对应的信息！");
+        	return false;
+		}
+		$('#financeForm').submit();
+	}
+	
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "301") {
+			alertMsg.warn('产品系列名称已存在!');
+		}else if (json.statusCode == "200") {
+			alertMsg.correct('操作成功!');
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('/bsProductSerial/index.htm')");
+		} else {
+			alertMsg.error('操作失败!');
+		}
+	}
+	
+</script>

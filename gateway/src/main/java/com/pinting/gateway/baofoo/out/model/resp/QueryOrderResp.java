@@ -1,0 +1,142 @@
+package com.pinting.gateway.baofoo.out.model.resp;
+
+public class QueryOrderResp{
+	/*报文发送日期时间*/
+	private 	String 		send_time;
+	/*应答报文流水号*/
+	private 	String 		msg_id;
+	/*报文编号/版本号*/
+	private 	String 		version;
+	/*应答码*/
+	private 	String 		resp_code;
+	/*终端号*/
+	private 	String 		terminal_id;
+	/*交易类型*/
+	private 	String 		txn_type;
+	/*商户号*/
+	private 	String 		member_id;
+	/*业务返回码*/
+	private 	String 		biz_resp_code;
+	/*业务返回说明*/
+	private 	String 		biz_resp_msg;
+	/*成功金额*/
+	private 	String 		succ_amt;
+	/*成功时间*/
+	private 	String 		succ_time;
+	/*宝付订单号*/
+	private 	String 		order_id;
+	/*商户保留域1*/
+	private 	String 		req_reserved1;
+	/*商户保留域2*/
+	private 	String 		req_reserved2;
+	/*系统保留域1*/
+	private 	String 		additional_info1;
+	/*系统保留域2*/
+	private 	String 		additional_info2;
+	/*签名域*/
+	private 	String 		signature;
+	public String getSend_time() {
+		return send_time;
+	}
+	public String getMsg_id() {
+		return msg_id;
+	}
+	public String getVersion() {
+		return version;
+	}
+	public String getResp_code() {
+		return resp_code;
+	}
+	public String getTerminal_id() {
+		return terminal_id;
+	}
+	public String getTxn_type() {
+		return txn_type;
+	}
+	public String getMember_id() {
+		return member_id;
+	}
+	public String getBiz_resp_code() {
+		return biz_resp_code;
+	}
+	public String getBiz_resp_msg() {
+		return biz_resp_msg;
+	}
+	public String getSucc_amt() {
+		return succ_amt;
+	}
+	public String getSucc_time() {
+		return succ_time;
+	}
+	public String getOrder_id() {
+		return order_id;
+	}
+	public String getReq_reserved1() {
+		return req_reserved1;
+	}
+	public String getReq_reserved2() {
+		return req_reserved2;
+	}
+	public String getAdditional_info1() {
+		return additional_info1;
+	}
+	public String getAdditional_info2() {
+		return additional_info2;
+	}
+	public String getSignature() {
+		return signature;
+	}
+	public void setSend_time(String send_time) {
+		this.send_time = send_time;
+	}
+	public void setMsg_id(String msg_id) {
+		this.msg_id = msg_id;
+	}
+	public void setVersion(String version) {
+		this.version = version;
+	}
+	public void setResp_code(String resp_code) {
+		this.resp_code = resp_code;
+	}
+	public void setTerminal_id(String terminal_id) {
+		this.terminal_id = terminal_id;
+	}
+	public void setTxn_type(String txn_type) {
+		this.txn_type = txn_type;
+	}
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
+	}
+	public void setBiz_resp_code(String biz_resp_code) {
+		this.biz_resp_code = biz_resp_code;
+	}
+	public void setBiz_resp_msg(String biz_resp_msg) {
+		this.biz_resp_msg = biz_resp_msg;
+	}
+	public void setSucc_amt(String succ_amt) {
+		this.succ_amt = succ_amt;
+	}
+	public void setSucc_time(String succ_time) {
+		this.succ_time = succ_time;
+	}
+	public void setOrder_id(String order_id) {
+		this.order_id = order_id;
+	}
+	public void setReq_reserved1(String req_reserved1) {
+		this.req_reserved1 = req_reserved1;
+	}
+	public void setReq_reserved2(String req_reserved2) {
+		this.req_reserved2 = req_reserved2;
+	}
+	public void setAdditional_info1(String additional_info1) {
+		this.additional_info1 = additional_info1;
+	}
+	public void setAdditional_info2(String additional_info2) {
+		this.additional_info2 = additional_info2;
+	}
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+	
+	
+}

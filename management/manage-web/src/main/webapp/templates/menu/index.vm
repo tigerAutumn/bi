@@ -1,0 +1,58 @@
+<form id="pagerForm" method="post" action="$!env.getWebURL('manage/wx/menu/index.htm')">
+	
+</form>
+
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="$env.getWebURL('/wx/menu/detail.htm')" target="dialog" mask="true" rel="createBack" height="350" width="650"><span>新增</span></a></li>
+			<li class="line">line</li>
+			<li><a title="确认要发布当前所有菜单吗？" href="$env.getWebURL('/wx/menu/wechat/createMenu.htm')" target="ajaxTodo" class="edit"><span>菜单发布</span></a></li>
+			<li class="line">line</li>
+			
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="10%">菜单编号</th>
+				<th width="10%">菜单名称</th>
+				<th width="10%">菜单类型</th>
+				<th width="43%">KEY/URL</th>
+				<th width="10%">父菜单</th>
+				<th width="10%">顺序</th>
+				<th width="17%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($menu in $menus)
+					
+			<tr target="sid_user" rel="1">
+				<td>$!menu.id</td>	
+				<td>$!menu.name</td>	
+				<td>$!menu.type</td>	
+				<td>$!menu.url</td>	
+				<td>$!menu.parentId</td>	
+				<td>$!menu.orderNum</td>
+				<td>
+					<a title="修改" name="detail4Update" target="dialog" href="$env.getWebURL('/wx/menu/detail4Update.htm')?menuId=$!menu.id"  height="350" width="650">修改菜单</a>
+					<a title="确认删除当前菜单？" name="delMenu" target="ajaxTodo" href="$env.getWebURL('/wx/menu/deleteMenu.htm')?menuId=$!menu.id" class="btnDel">删除菜单</a>
+				</td>	
+			</tr>
+			#end
+		</tbody>
+	</table>
+	
+</div>
+
+	<script>
+	function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			alertMsg.correct(json.message);
+			navTab.closeCurrentTab();
+			navTab.reload("$env.getWebURL('/wx/menu/index.htm')");
+		} else {
+			alertMsg.error(json.message);
+		}
+	}
+	</script>

@@ -1,0 +1,101 @@
+-- 补充存管上线日期配置
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('DEP_SYSTEM_PUBLISH_TIME', '2017-09-18', '存管上线日期', '存管上线日期');
+
+-- 恒丰对账结果查询菜单
+INSERT INTO `m_menu`(`url`, `parent_id`, `order_num`, `name`, `note`) VALUES ('/financeStatistics/queryHfCheckError.htm', 129, 24, '恒丰对账结果查询', NULL);
+
+-- 恒丰对账凭证汇总定时
+INSERT INTO `bs_schedule_config`(`job_name`, `job_group`, `job_status`, `cron_expression`, `bean_class`, `method_name`, `bean_id`, `is_concurrent`, `description`, `create_time`, `update_time`) 
+VALUES ('hfbankGachaSummaryTime', 'SCHEDULE', 'STOP', '0 10 10 * * ?', 'com.pinting.schedule.dayend.task.HfBankGachaSummaryTask', 'execute', 'hfBankGachaSummaryTask', 'NO', '恒丰对账汇总凭证定时', NOW(), NOW());
+
+-- 用户ip位置信息入mongodb定时
+INSERT INTO `bs_schedule_config` (`job_name`, `job_group`, `job_status`, `cron_expression`, `bean_class`, `method_name`, `bean_id`, `is_concurrent`, `description`, `create_time`, `update_time`) 
+VALUES ('addAddressTime', 'SCHEDULE', 'STOP', '1 0 0 * * ?', 'com.pinting.schedule.dayend.task.AddAddressTask', 'execute', 'addAddressTask', 'NO', '用户ip位置记录定时', NOW(), NOW());
+
+-- 注册用户信息发送邮件定时
+INSERT INTO `bs_schedule_config` ( `job_name`, `job_group`, `job_status`, `cron_expression`, `bean_class`, `method_name`, `bean_id`, `is_concurrent`, `description`, `create_time`, `update_time` )
+VALUES ( 'registerUserSendMailTime', 'SCHEDULE', 'STOP', '	0 30 01 1 * ?', 'com.pinting.schedule.dayend.task.RegisterUserSendMailTask', 'execute', 'registerUserSendMailTask', 'NO', '注册用户信息发送邮件定时', '2018-07-10 19:33:37', '2018-07-10 19:33:37' );
+	
+-- 用户信息通知运营邮箱地址
+INSERT INTO `bs_sys_config`(`conf_key`, `conf_value`, `name`, `note`) VALUES ('PRODUCT_OPERATOR_EMAIL', 'wangyue@dafy.com,qixiaoling@dafy.com,chenyimei@dafy.com', '用户信息通知运营邮箱地址', '多个邮箱用逗号隔开');
+
+-- 新增渠道
+ALTER TABLE bs_19pay_check_error ADD COLUMN `channel` VARCHAR (32) NULL
+DEFAULT NULL COMMENT '渠道' AFTER `merchant_no`;
+
+-- 管理台增加【用户注册查询】菜单
+INSERT INTO `m_menu` (`url`, `parent_id`, `order_num`, `name`, `note`) VALUES ('/bsuserRegister/index.htm', 21, 30, '用户注册查询', NULL);
+
+-- 新建回访记录表
+CREATE TABLE `bs_return_visit_record` (
+          `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
+          `user_id` int(11) NOT NULL COMMENT '用户编号',
+          `submit_time` datetime DEFAULT NULL COMMENT '回访时间',
+          `submitter` varchar(20) DEFAULT NULL COMMENT '回访人',
+          `content` varchar(64) DEFAULT NULL COMMENT '回访内容',
+          PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='回访记录表';
+
+-- 宝付代付到归集户配置菜单
+INSERT INTO `m_menu`(`url`, `parent_id`, `order_num`, `name`, `note`) VALUES ('/sys/payLimit/index.htm', 10, 35, '宝付代付归集户配置', NULL);	
+
+
+-- 新增日常业务-借款账单管理菜单
+INSERT INTO `m_menu` (`url`, `parent_id`, `order_num`, `name`, `note`) VALUES ('/statistics/getLoanBill/index.htm', '14', '28', '借款账单管理', '');
+
+-- 1、微信信息表bs_wx_info添加wx_agent_id字段
+ALTER TABLE `bs_wx_info` ADD COLUMN `wx_agent_id` int(11) NULL DEFAULT null COMMENT '公众号渠道编号' AFTER `cancel_time`;
+
+-- 2、bs_wx_info wx_agent_id添加外键
+ALTER TABLE bs_wx_info ADD CONSTRAINT FK_Reference_wx_agent_id FOREIGN KEY (wx_agent_id) REFERENCES bs_agent (id) 
+ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- 3、新增公众号渠道管理菜单
+INSERT INTO `m_menu` (`url`, `parent_id`, `order_num`, `name`, `note`) VALUES ('/wxAgent/getList.htm', '82', '14', '公众号渠道管理', '');
+
+
+-- 新增支付限制表
+drop table if exists bs_pay_limit;
+
+/*==============================================================*/
+/* Table: bs_pay_limit                                          */
+/*==============================================================*/
+create table bs_pay_limit
+(
+   id                   int(11) not null auto_increment comment '编号',
+   pay_business_type    varchar(32) comment '支付业务类型:
+            BFDF-宝付代付',
+   time_type            varchar(64) comment '时间类型:
+            DEFAULT-默认
+            HOLIDAY-节假日
+            MONDAY-周一
+            TUESDAY-周二
+            WEDNESDAY-周三
+            THURSDAY-周四
+            FRIDAY-周五
+            SATURDAY-周六
+            SUNDAY-周日',
+   time_start           varchar(32) comment '开始时间:
+            格式-HH:SS',
+   time_end             varchar(32) comment '结束时间:
+            格式-HH:SS',
+   limit_type           varchar(32) comment '限制条件类型:
+            AMOUNT - 金额
+            NUMBER - 笔数',
+   limit_equle_type     varchar(64) comment '限制条件大小类型:
+            LESS_THEN_OR_EQULE_TO-小于等于',
+   limit_vaule          int(11) comment '限制条件值:
+            限制条件为金额时，值的单位是元；',
+   is_delete            varchar(64) comment '删除标识:
+            YES-已删
+            NO-未删除
+            ',
+   m_user_id            int comment '最后操作人 关联m_user表编号',
+   note                 varchar(128) comment '备注
+            ',
+   create_time          datetime comment '创建时间',
+   update_time          datetime comment '更新时间',
+   primary key (id)
+);
+
+alter table bs_pay_limit comment '支付限制表';

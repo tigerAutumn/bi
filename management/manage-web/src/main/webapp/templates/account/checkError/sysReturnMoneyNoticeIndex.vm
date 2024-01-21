@@ -1,0 +1,36 @@
+<div class="pageContent">
+		#Hidden("userId", "$!user.userId")
+		<div class="pageFormContent" layoutH="56">
+			<p>
+			<label>回款批次号：</label>
+				<input name="sendBatchId" id="sendBatchId" type="text" size="30" maxlength="32" class="required textInput" value="" />
+			</p>
+            <div style="margin:45px;">
+                <font style="color: red; font-size:18px; font-weight:800">
+                    此功能将触发系统回款和投资人回款<br>
+                    操作前，请确认合作方回款金额是否已划拨到账，并在操作后跟踪合作方系统是否已数据同步！
+                </font>
+            </div>
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li><div class="buttonActive"><div class="buttonContent">
+					<button type="button" onclick="submitBtn(this)" url="$!env.getWebURL('/account/sysReturnMoneyNoticeConfirm.htm?sendBatchId=')">
+						提交
+					</button>
+					</div></div>
+				</li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+</div>
+
+<script>
+    function submitBtn(obj) {
+        var options = {"mask":true,"close":"function","height":441, "width":400};
+		var urlStr=$(obj).attr("url")+$('#sendBatchId').val();
+        $.pdialog.open(urlStr, "$('#sendBatchId').val()", "请确认回款信息", options);
+    }
+</script>

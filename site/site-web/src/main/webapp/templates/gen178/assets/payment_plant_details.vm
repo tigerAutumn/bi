@@ -1,0 +1,86 @@
+<script>
+    global.detail_total_pages = parseInt('$!bgwTotalPages');
+</script>
+<div class="money_play_tr_background">
+    <ul class="money_play_tr_title_txt clearfix">
+        <li class="money_play_tr_title_span">计划日期</li>
+        <li class="money_play_tr_title_span">计划回款</li>
+        <li class="money_play_tr_title_span">已回款</li>
+        <li class="money_play_tr_title_span">待回款</li>
+        <li class="money_play_tr_title_span">回款状态</li>
+    </ul>
+</div>
+<!--有记录-->
+#if($!paymentDetaclsList.paymentPlantDetailsList)
+    <div>
+        <input type="hidden" id="bgwTotalPages" name="bgwTotalPages" value="$!bgwTotalPages">
+        <input type="hidden" id="bgwPageNum" name="bgwPageNum" value="$!bgwPageNum">
+        <input type="hidden" id="DateclsTime" name="DateclsTime" value="$!DateclsTime"/>
+        <ul class="money_play_tr_title_num clearfix">
+            #foreach($paymentDetacls in $!paymentDetaclsList.paymentPlantDetailsList)
+                <li class="money_play_tr_title_li clearfix">
+                    <div class="money_play_td"><span>$!paymentDetacls.planDate</span></div>
+                    <div class="money_play_td"><span>$!money.format($!paymentDetacls.repayScheduleTotalAmount)</span></div>
+                    <div class="money_play_td money_play_color"><span>$!money.format($!paymentDetacls.planTotalRepaied)</span></div>
+                    <div class="money_play_td"><span>$!money.format($!paymentDetacls.receivableAmount)</span></div>
+                    #if($!paymentDetacls.receivableAmount == 0)
+                        <div class="money_play_td"><span>已还完</span></div>
+                    #elseif($!paymentDetacls.receivableAmount > 0 && $!paymentDetacls.planTotalRepaied > 0 )
+                        <div class="money_play_td money_play_color"><span>部分回款</span></div>
+                    #elseif($!paymentDetacls.receivableAmount > 0 && $!paymentDetacls.planTotalRepaied == 0)
+                        <div class="money_play_td money_play_color"><span>待回款</span></div>
+                    #end
+                </li>
+            #end
+            #if($bgwPageNum == $!bgwTotalPages)
+                <li class="money_play_tr_title_li money_play_tr_title_li_total clearfix">
+                    <div class="money_play_td"><span>合计</span></div>
+                    <div class="money_play_td"><span>$!money.format($!totalRepayScheduleTotalAmount)</span></div>
+                    <div class="money_play_td money_play_color"><span>$!money.format($!totalPlanTotalRepaied)</span></div>
+                    <div class="money_play_td"><span>$!money.format($!totalReceivableAmount)</span></div>
+                    <div class="money_play_td money_play_color"></div>
+                </li>
+            #end
+        </ul>
+
+        #if($!bgwTotalPages > 1)
+        <div class="fenye">
+            <div class="fenye_wrap">
+                #set($nextPage = $bgwPageNum + 1)
+                #set($nextSecondPage = $bgwPageNum + 2)
+                #set($prePage = $bgwPageNum - 1)
+                #set($preSecondPage = $bgwPageNum - 2)
+                #set($totalPage = $bgwTotalPages)
+                    <a href="javascript:void(0)" onclick="homePage('$!status', '$!dateTime')" class="fy_l">首页</a>
+                    <a href="javascript:void(0)" onclick="prePage('$!status', -1, '$!dateTime')" class="fy_ll"></a>
+                    #if($!prePage > 0)
+                        #if($!preSecondPage > 0 && $!nextPage > $totalPage)
+                            <a href="javascript:void(0)" onclick="prePage('$!status', -2, '$!dateTime')" class="fy_c">$!preSecondPage</a>
+                        #end
+                        <a href="javascript:void(0)" onclick="prePage('$!status', -1, '$!dateTime')" class="fy_c">$!prePage</a>
+                        <a href="javascript:void(0)" class="fy_c fy_atpage">$bgwPageNum</a>
+                        #if($!nextPage <= $totalPage)
+                            <a href="javascript:void(0)" onclick="nextPage('$!status', 1, '$!dateTime')" class="fy_c">$!nextPage</a>
+                        #end
+                    #else
+                        <a href="javascript:void(0)" class="fy_c fy_atpage">$bgwPageNum</a>
+                        #if($!nextPage <= $totalPage)
+                            <a href="javascript:void(0)" onclick="nextPage('$!status', 1, '$!dateTime')" class="fy_c">$!nextPage</a>
+                        #end
+                        #if($!nextSecondPage <= $totalPage)
+                            <a href="javascript:void(0)" onclick="nextPage('$!status', 2, '$!dateTime')" class="fy_c">$!nextSecondPage</a>
+                        #end
+                    #end
+                    <a href="javascript:void(0)" onclick="nextPage('$!status', 1, '$!dateTime')" class="fy_rr"></a>
+                    <a href="javascript:void(0)" onclick="endPage('$!status', '$!dateTime')" class="fy_r">尾页</a>
+            </div>
+        </div>
+        #end
+    </div>
+#else
+    <!--无记录-->
+    <div class="money_tr_title_null">
+        <div class="payment_plant_null_img"></div>
+        <p>暂无记录</p>
+    </div>
+#end

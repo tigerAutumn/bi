@@ -1,0 +1,495 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/activity/scale")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadCSS("resources/micro2.0/styles/activity/football")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/activity/football")
+
+#WeChatShare()
+#Head("end")
+<body>
+	<input type="hidden" id="app_root_path" name="app_root_path" value="$!env.getWebURL('')"/>
+	<input type="hidden" id="champion" name="champion" value="$!userChampion"/>
+	<input type="hidden" id="silver" name="silver" value="$!userSilver"/>
+	<input type="hidden" id="page" name="page" value="0" />
+	<input type="hidden" id="totalCount" name="totalCount" value="$!totalCount" />
+	<input type="hidden" id="now" value="$!now"/>
+	<!-- 头部 -->
+<div class="header">
+	<img class="header_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/banner.jpg" alt="">
+</div>
+<div class="main_padding">
+	
+	<div class="list list_two">
+		<i class="title_img"></i>
+		<div class="sm_wp">
+			<div class="left">
+				<img class="info_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/icon1.png" alt="">
+				<span class="left_info">投资送iPhone 6s plus 64G</span>
+			</div>
+			<div class="right">
+				<span class="left_info">每天限量5台</span>
+			</div>
+			
+			#if($!ecupStatus == 'noStart' || $!newUserPro.size() ==0)
+				<div class="ft_white_null"></div>
+				<div class="btn btn4">
+					敬请期待
+				</div>
+			#elseif($!ecupStatus == 'isEnd')
+				<div class="ft_white_null"></div>
+				<div class="btn btn4">
+					活动已结束
+				</div>
+			#else
+				#set($overAmount2 = ($!newUserPro.get(0).maxTotalAmount - $!newUserPro.get(0).currTotalAmount)/100000 )
+    			<input type="hidden" id="overAmount2" value="$!number.format("0",$overAmount2)"/>
+    			<input type="hidden" id="newUser_start_time" value="$!newUserPro.get(0).startTime"/>
+    			<input type="hidden" id="newUser_status" value="$!newUserPro.get(0).status"/>
+    			<input type="hidden" id="newUser_pro_id" value="$!newUserPro.get(0).id"/>
+				#if($!newUserPro.get(0).status == 5)
+					<div class="ft_white_1">仅限首次加入</div>
+					<div class="btn_1 to_product_1">
+        				<span class="strat_time_1">每天10点准时开抢</span>
+        				<span class="time_end_1"></span>
+        			</div>
+				#elseif($!newUserPro.get(0).status == 6)
+					
+					<div class="ft_white_1">仅限首次加入</div>
+					<div class="btn_1 to_product_1">
+        				<span class="strat_time_1">还剩$!number.format("0",$overAmount2)台iPhone 6s plus </span>
+        				<span class="time_end_1">立即开抢</span>
+        			</div> 
+				#elseif($!newUserPro.get(0).status == 7)
+					<div class="ft_white_1">活动期间每天10点准时开抢</div>
+					<div class="btn_1 btn3 to_product_1">
+        				标的已完成
+        			</div>
+				#end
+			#end
+			
+		</div>
+	</div>
+	
+	<div class="list">
+		<i class="title_img"></i>
+		<div class="sm_wp">
+			<div class="left">
+				<img class="info_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/icon1.png" alt="">
+				<span class="left_info">固定加息1%</span>
+			</div>
+			<div class="right">
+				<img class="info_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/icon2.png" alt="">
+				<span class="left_info">每天限量50万</span>
+			</div>
+			
+			#if($!ecupStatus == 'noStart' || $!ecupPro.size() == 0)
+				<div class="ft_white_null"></div>
+				<div class="btn btn4">
+					敬请期待
+				</div>
+			#elseif($!ecupStatus == 'isEnd')
+				<div class="ft_white_null"></div>
+				<div class="btn btn4">
+					活动已结束
+				</div>
+			#else
+				#set($overAmount1 = $!ecupPro.get(0).maxTotalAmount - $!ecupPro.get(0).currTotalAmount)
+    			<input type="hidden" id="overAmount1" value="$string.replace($!money.format($!overAmount1),".00","")"/>
+    			<input type="hidden" id="ecup_start_time" value="$!ecupPro.get(0).startTime"/>
+    			<input type="hidden" id="ecup_end_time" value="$!ecupPro.get(0).endTime"/>
+    			<input type="hidden" id="ecup_status" value="$!ecupPro.get(0).status"/>
+    			<input type="hidden" id="ecup_pro_id" value="$!ecupPro.get(0).id"/>
+				#if($!ecupPro.get(0).status == 5)
+					<div class="ft_white">疯抢1小时售完即止</div>
+					<div class="btn to_product">
+        				<span class="strat_time">每天10点准时开抢</span>
+        				<span class="time_end"></span>
+        			</div>
+				#elseif($!ecupPro.get(0).status == 6)
+					<div class="ft_white"></div>
+					<div class="btn to_product">
+        				<span class="strat_time">还剩$string.replace($!money.format($!overAmount1),".00","")元</span>
+        				<span class="time_end">立即开抢</span>
+        			</div> 
+				#elseif($!ecupPro.get(0).status == 7)
+					<div class="ft_white">活动期间每天10点准时开抢</div>
+					<div class="btn btn3 to_product">
+        				标的已完成
+        			</div>
+				#end
+			#end
+			
+		</div>
+	</div>
+	
+	#if($!userFlag == 'No')
+	<div class="Championship">
+		<i class="title_img"></i>
+		<div class="cham_wrap" id="champion-name">
+			<div class="cham_top">
+				<img class="cham_tu" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/icon3.png" alt="">
+				<span class="cham_ft">我猜冠军是：</span>
+				<input class="cham_ipt" type="text" id="my_champion" value="" placeholder="选择“投注”的球队" readonly="readonly">
+			</div>
+			<div class="upper_half">
+				<ul class="national_ul">
+					<li class="national_li">
+						<div class="national_cirle">
+							<img class="national_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/flag/1.png" alt="">
+						</div>
+						<div class="name">波兰</div>
+						<div class="approval">支持$!championList.get(0).championRate%</div>
+					</li>
+					<li class="national_li">
+						<div class="national_cirle">
+							<img class="national_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/flag/2.png" alt="">
+						</div>
+						<div class="name">威尔士</div>
+						<div class="approval">支持$!championList.get(1).championRate%</div>
+					</li>
+					<li class="national_li">
+						<div class="national_cirle">
+							<img class="national_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/flag/3.png" alt="">
+						</div>
+						<div class="name">葡萄牙</div>
+						<div class="approval">支持$!championList.get(2).championRate%</div>
+					</li>
+					<li class="national_li">
+						<div class="national_cirle">
+							<img class="national_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/flag/4.png" alt="">
+						</div>
+						<div class="name">法国</div>
+						<div class="approval">支持$!championList.get(3).championRate%</div>
+					</li>
+				</ul>
+				<ul class="national_ul">
+					<li class="national_li">
+						<div class="national_cirle">
+							<img class="national_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/flag/5.png" alt="">
+						</div>
+						<div class="name">德国</div>
+						<div class="approval">支持$!championList.get(4).championRate%</div>
+					</li>
+					<li class="national_li">
+						<div class="national_cirle">
+							<img class="national_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/flag/6.png" alt="">
+						</div>
+						<div class="name">比利时</div>
+						<div class="approval">支持$!championList.get(5).championRate%</div>
+					</li>
+					<li class="national_li">
+						<div class="national_cirle">
+							<img class="national_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/flag/7.png" alt="">
+						</div>
+						<div class="name">意大利</div>
+						<div class="approval">支持$!championList.get(6).championRate%</div>
+					</li>
+					<li class="national_li">
+						<div class="national_cirle">
+							<img class="national_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/flag/8.png" alt="">
+						</div>
+						<div class="name">冰岛</div>
+						<div class="approval">支持$!championList.get(7).championRate%</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="liner"></div>
+		<div class="cham_wrap" id="runner-up-name">
+			<div class="cham_top half_bottom_title">
+				<img class="cham_tu" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/icon4.png" alt="">
+				<span class="cham_ft">我猜亚军是：</span>
+				<input class="cham_ipt" type="text" id="my_silver" value="" placeholder="选择“投注”的球队" readonly="readonly">
+			</div>
+			<div class="half_bottom">
+				<ul class="national_ul">
+					<li class="national_li">
+						<div class="national_cirle">
+							<img class="national_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/flag/1.png" alt="">
+						</div>
+						<div class="name">波兰</div>
+						<div class="approval">支持$!silverList.get(0).silverRate%</div>
+					</li>
+					<li class="national_li">
+						<div class="national_cirle">
+							<img class="national_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/flag/2.png" alt="">
+						</div>
+						<div class="name">威尔士</div>
+						<div class="approval">支持$!silverList.get(1).silverRate%</div>
+					</li>
+					<li class="national_li">
+						<div class="national_cirle">
+							<img class="national_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/flag/3.png" alt="">
+						</div>
+						<div class="name">葡萄牙</div>
+						<div class="approval">支持$!silverList.get(2).silverRate%</div>
+					</li>
+					<li class="national_li">
+						<div class="national_cirle">
+							<img class="national_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/flag/4.png" alt="">
+						</div>
+						<div class="name">法国</div>
+						<div class="approval">支持$!silverList.get(3).silverRate%</div>
+					</li>
+				</ul>
+				<ul class="national_ul">
+					<li class="national_li">
+						<div class="national_cirle">
+							<img class="national_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/flag/5.png" alt="">
+						</div>
+						<div class="name">德国</div>
+						<div class="approval">支持$!silverList.get(4).silverRate%</div>
+					</li>
+					<li class="national_li">
+						<div class="national_cirle">
+							<img class="national_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/flag/6.png" alt="">
+						</div>
+						<div class="name">比利时</div>
+						<div class="approval">支持$!silverList.get(5).silverRate%</div>
+					</li>
+					<li class="national_li">
+						<div class="national_cirle">
+							<img class="national_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/flag/7.png" alt="">
+						</div>
+						<div class="name">意大利</div>
+						<div class="approval">支持$!silverList.get(6).silverRate%</div>
+					</li>
+					<li class="national_li">
+						<div class="national_cirle">
+							<img class="national_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/flag/8.png" alt="">
+						</div>
+						<div class="name">冰岛</div>
+						<div class="approval">支持$!silverList.get(7).silverRate%</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		#if($!ecupStatus4Guess == 'noStart')
+    		<div class="cham_btn_null btn3">
+    			活动未开始
+    		</div>
+		#elseif($!ecupStatus4Guess == 'isEnd')
+			<div class="cham_btn_null btn3">
+				活动已结束
+			</div>
+		#else
+    		<div class="cham_btn to_guess">
+    			我要赢奖品
+    		</div>
+		#end
+	</div>
+	#elseif($!userFlag == 'Yes')
+		<!-- 第二状态 -->
+	<div class="Championship">
+		<i class="title_img"></i>
+		<div class="my_champion">
+			我猜冠军是：$!userChampion
+		</div>
+		<div class="champion_support">
+			<div class="national_cirle">
+				<img class="national_img champion_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/icon5.png" alt="">
+			</div>
+			<div class="touch_support">
+				<img class="support_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/icon13.png" alt="">
+				<span class="support">$!userChampionRate%用户支持</span>
+			</div>
+		</div>
+		<div class="my_champion">
+			我猜亚军是：$!userSilver
+		</div>
+		<div class="champion_support">
+			<div class="national_cirle">
+				<img class="national_img silver_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/icon14.png" alt="">
+			</div>
+			<div class="touch_support">
+				<img class="support_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/icon13.png" alt="">
+				<span class="support">$!userSilverRate%用户支持</span>
+			</div>
+		</div>
+		<div class="ranking">
+			助力值：$!userSupportNum
+			#set($num = 20 - $!userSupportNum)
+			#if($num >0)
+				#if(0>$!overLuckyNum )
+					（还剩0个名额）
+				#else
+					（还剩$!overLuckyNum个名额）
+				#end
+			#else
+				#if(500 >= $!userSupportRanking)
+					（助力成功排名第$!userSupportRanking）
+				#else
+					（还剩0个名额）
+				#end
+			#end
+		</div>
+		<div class="cham_btn support_one">
+			助力排行榜
+		</div>
+		<div class="cham_btn support_two">
+			邀请好友来助力
+		</div>
+		<div class="support_info">助力值最先达到20的前500名用户可获得30元奖励金</div>
+	</div> 
+	#end
+	
+	<div class="Championship prize">
+		<i class="title_img"></i>
+		<div class="cham_wrap">
+			<div class="prize_ft">专业球迷奖排名规则：同时猜对冠亚军优先，同等条件下时间优先</div>
+			<table cellpadding="2" cellspacing="0" border="1" bordercolor="#000000">
+				<tbody>
+					<tr>
+						<td class="table_title">
+							奖项
+						</td>
+						<td class="table_title">
+							排名
+						</td>
+						<td class="table_title">
+							奖品
+						</td>
+					</tr>
+					<tr>
+						<td rowspan="5">
+							专业球迷奖
+						</td>
+						<td>
+							前三名
+						</td>
+						<td>
+							Apple Watch
+						</td>
+					</tr>
+					<tr>
+						<td>
+							4～7
+						</td>
+						<td>
+							红米note3
+						</td>
+					</tr>
+					<tr>
+						<td>
+							8～15
+						</td>
+						<td>
+							300元话费
+						</td>
+					</tr>
+					<tr>
+						<td>
+							16～40
+						</td>
+						<td>
+							80元奖励金
+						</td>
+					</tr>
+					<tr>
+						<td>
+							41～100
+						</td>
+						<td>
+							30元奖励金
+						</td>
+					</tr>
+					<tr>
+						<td>
+							疯狂球迷奖
+						</td>
+						<td>
+							助力值前<br>500名
+						</td>
+						<td>
+							30元奖励金
+						</td>
+					</tr>
+					<tr>
+						<td>
+							幸运球迷奖
+						</td>
+						<td>
+							随机500名
+						</td>
+						<td>
+							5元奖励金
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<footer class="foot_ber">
+		<div class="small_footer">
+			<div class="footer_title">活动规则：</div>
+			<ul class="footer_ul">
+				<li class="footer_li">1.活动时间：6月29日-7月11日；</li>
+				<li class="footer_li">2.获得iPhone 6s plus 64G的用户，平台将会在5个工作日内由客服回访用户确认用户信息，尽快寄出手机；</li>
+				<li class="footer_li">3.获得专业球迷奖实物奖励的用户，平台将会在活动结束后5个工作日内由客服回访用户确认用户信息，尽快寄出物品；</li>
+				<li class="footer_li">4.好友推荐奖励覆盖欧洲杯特享标和欧洲杯新手专享标；</li>
+				<li class="footer_li">5.欧洲杯新手专享标仅限未投资的新用户购买；</li>
+				<li class="footer_li">6.活动期间每位用户最多可为3位好友助力；</li>
+				<li class="footer_li">7.奖励金在活动结束后的3个工作日内，发放至用户账户，微信及app：可在“我的资产—我的奖励”中查看，电脑：可在“我的账户—邀请好友”中查看；</li>
+                <li class="footer_li">8.<span class="color_red">奖励金转到余额后方可提现</span>；</li>
+				<li class="footer_li">9.<span class="color_red">竞猜奖项可重复，可叠加</span>（获得专业球迷奖的同时可获得另外两项奖励）；</li>
+				<li class="footer_li">10.对于违规及作弊者（包括但不限于恶意注册虚假帐号、恶意刷奖等），币港湾将取消其相应奖励。</li>
+			</ul>
+			<div class="footer_bottom">
+				<div class="foor_info">本次活动的最终解释权归币港湾所有</div>
+				<div class="foor_info">如有疑问可致电币港湾客服：<a class="phone" href="tel:400-806-1230">400-806-1230</a></div>
+			</div>
+		</div>
+	</footer>
+</div>
+<!-- 弹窗 -->
+<div class="xz_info">
+	选择一个球队吧
+	<!-- 选择一个球队吧 -->
+</div>
+<div class="dialog_flex">
+	<!-- 竞猜成功弹窗 -->
+	<div class="alert_info">
+		<img class="infofive_img" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/list_title_five.png" alt="">
+		<div class="alert_ft">邀请好友来助力<br>前500名可获得30元奖励</div>
+		<div class="alert_btn_one">关闭</div>
+		<div class="alert_btn_two">分享</div>
+	</div>
+	<!-- 排行榜 -->
+	<div class="ranking_alert">
+		<i class="rankin_close"></i>
+		<img class="ranking_top" src="$!env.getWebURL('')/resources/micro2.0/images/activity/ecup2016/list_title_six.png"></img>
+		<div class="ranking_main">
+			<ul class="ranking_name_ul main">
+				#set($num = 0)
+				#foreach($grid in $!dataGrid)
+					#set($num = $num+1)
+					<li class="ranking_name_li">
+						<span class="ranking_left">$num)$grid.mobile</span>
+						<span class="ranking_right">完成助力</span>            
+					</li>
+				#end
+			</ul>
+			#if($!count == 0)
+				<div class="i_last">当前还未产生排名</div>
+			#elseif($!count > 0 && 10>=$!count)
+				<div class="i_last">以上为全部记录</div>
+			#elseif($!count > 10)
+				<div class="i_last" id="showmore">点击加载更多</div>
+			#end
+		</div>
+	</div>
+</div>
+
+
+<!-- 遮罩-分享朋友 -->
+<div class="shae_dialgo share_one">
+	<div class="arrow"></div>
+	<div class="shar_off"></div>
+</div>
+</body>
+	
+#Html("end")

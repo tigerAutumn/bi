@@ -1,0 +1,381 @@
+<style >
+	.text_span{float:left; width:30%;height:30px;text-align:left;}
+	.show_style {
+	    padding-left: 60px;
+	}
+	.pageFormContent p {
+		text-align: left;
+        line-height: 22px;
+		width: 1000px;
+        height: auto;
+		text-indent: 24px;
+	}
+	h1 h2 h3 h4 h5 {
+		margin-left: 0;
+		font-family: 微软雅黑;
+    }
+	
+</style>
+<div class="pageContent" id="gz_div">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+		#Hidden("productId", "$!product.id")
+		<div class="pageFormContent nowrap" layoutH="97" style="height:auto;">
+			<div style="margin-top:30px;margin-left:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					计划名称：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;">
+					$!product.name
+				</span>
+			</div>
+			<div style="margin-top:30px;float:left; width:30%;height:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					计划总额：
+				</span>
+				<span style="width:200px">
+					$!money.format($!product.maxtotalamount)  元
+				</span>
+			</div>
+			<div style="margin-top:30px;float:left; width:30%;height:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					债权类别：
+				</span>
+				<span style="width:200pxfont-family: 微软雅黑;">
+					#if("$!product.propertytype" == "CASH_LOOP")
+						小微借款 
+					#elseif("$!product.propertytype" == "CONSUME")
+						消费贷
+					#end
+					
+				</span>
+			</div>
+			
+			
+						<div style="margin-left:30px;float:left; width:30%;height:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					预期收益率：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;">
+					$!product.baserate %
+				</span>
+			</div>
+			<div  class="text_span">
+				<span>
+					投资期限：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;">
+					#set($Integer = 0)
+					
+				    #if(0 > $Integer.parseInt("$!product.term"))
+						 #set($termNum = $Integer.parseInt("$!product.term")*-1 ) $!termNum 天
+                    #else
+    					#if($!product.term == 12)
+    						365 天	
+    					#else
+    						#set($termDay = $!product.term * 30 ) $termDay 天
+    					#end
+                    #end
+				</span>
+			</div>
+			<div class="text_span">
+				<span>
+					&nbsp
+				</span>
+				<span style="width:200px">
+					&nbsp
+				</span>
+			</div>
+			
+			
+						<div style="margin-left:30px;float:left; width:30%;height:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					起息时间：
+				</span>
+				<span style="width:200px">
+					#if($!product.begininterestdays == "NEXT_DAY")
+						购买后第二天起息
+					#elseif($!product.begininterestdays == "MATCH_DAY")
+						匹配债权后当日起息
+					#end
+				</span>
+			</div>
+			<div class="text_span">
+				<span>
+					开始时间：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;">
+					$!date.format($!product.starttime)
+				</span>
+			</div>
+			<div class="text_span">
+				<span>
+					结束时间：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;">
+					$!date.format($!product.endtime)
+				</span>
+			</div>
+			
+			
+			<div style="margin-left:30px;float:left; width:30%;height:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					还款方式：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;">
+					#if($!product.returntype == "FINISH_RETURN_ALL")
+						到期一次性本息兑付
+					#elseif($!product.returntype == "AVERAGE_CAPITAL_PLUS_INTEREST")
+						等额本息
+					#end
+					
+				</span>
+			</div>
+			<div class="text_span">
+				<span>
+					收益处理：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;">
+					#if($!product.interestdeal == "FINISH_RETURN")
+						到期还本付息
+					#elseif($!product.interestdeal == "EVERY_MONTH")
+						按月还本付息
+					#end
+					
+				</span>
+			</div>
+			<div class="text_span">
+				<span>
+					&nbsp
+				</span>
+				<span style="width:200px">
+					&nbsp
+				</span>
+			</div>
+			
+			<hr style="margin-left:20px;float:left;border:1px dashed #333333;border-bottom:0;border-right:0;border-left:0;width:80%;">
+				
+				
+				
+			<div style="margin-top:30px;margin-left:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					管理费：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;">
+					$!product.managefee %
+				</span>
+			</div>
+			<div class="text_span" style="margin-top:30px;font-family: 微软雅黑;">
+				<span>
+					资产合作产品：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;">
+					$!product.propertyName
+				</span>
+			</div>
+			<div class="text_span" style="margin-top:30px;font-family: 微软雅黑;">
+				<span>
+					展示端口：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;">
+					#set($showTerminal = ",$!product.showterminal,")
+					#set($terminals = $showTerminal.replace(",PC,",",网站,").replace(",H5_178,",",钱报H5,").replace(",PC_178,",",钱报PC,").replace(",H5_KQ,",",柯桥日报H5,").replace(",PC_KQ,",",柯桥日报PC,").replace(",H5_HN,",",海宁日报H5,").replace(",PC_HN,",",海宁日报PC,").replace(",H5_RUIAN,",",瑞安日报H5,").replace(",PC_RUIAN,",",瑞安日报PC,").replace(",H5_QD,",",七店H5,").replace(",H5_QHD_JT,",",秦皇岛交通广播H5,").replace(",H5_QHD_XW,",",秦皇岛新闻891H5,").replace(",H5_QHD_TV,",",秦皇岛电视台今日报道H5,").replace(",PC_QHD_ST,",",视听之友PC,").replace(",H5_QHD_ST,",",视听之友H5,").replace(",H5_QHD_SJC,",",1038私家车广播H5,"))
+					#set($len = $terminals.length() - 1)
+					$terminals.substring(1,$len)
+				</span>
+			</div>
+			<div  class="text_span" style="margin-left:30px">
+				<span>
+					&nbsp
+				</span>
+				<span style="width:200px">
+					&nbsp
+				</span>
+			</div>
+			
+			
+			<hr style="margin-left:20px;float:left;border:1px dashed #333333;border-bottom:0;border-right:0;border-left:0;width:80%;">
+			
+				
+			<div style="margin-top:30px;margin-left:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					最低起投：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;">
+					$!money.format($!product.mininvestamount) 元
+				</span>
+			</div>
+			
+			<div class="text_span" style="margin-top:30px;font-family: 微软雅黑;" >
+				<span>
+					计划活动类型：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;">
+					#if($!product.activitytype == "NORMAL")普通产品
+					#elseif($!product.activitytype == "NEW_BUYER")新手标
+					#elseif($!product.activitytype == "ACTIVITY")限时活动标
+					#end
+				</span>
+			</div>
+			
+			<div class="text_span" style="margin-top:30px;font-family: 微软雅黑;" >
+				<span>
+					单笔限额：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;">
+					#if($!product.maxsingleinvestamount)
+						$!money.format($!product.maxsingleinvestamount)元
+					#end
+				</span>
+			</div>
+			
+			
+			<hr style="margin-left:20px;float:left;border:1px dashed #333333;border-bottom:0;border-right:0;border-left:0;width:80%;">
+
+            <div style="margin-top:30px;margin-left:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					是否支持红包：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;">
+					#if($!product.issupportredpacket == "TRUE")支持
+					#else
+						不支持
+					#end
+				</span>
+            </div>
+
+            <div class="text_span" style="margin-top:30px;font-family: 微软雅黑;" >
+				<span>
+					是否支持加息券：
+				</span>
+				<span style="width:200px;font-family: 微软雅黑;">
+					#if($!product.issupportincrinterest == "TRUE")支持
+					#else
+                        不支持
+					#end
+				</span>
+            </div>
+
+            <hr style="margin-left:20px;float:left;border:1px dashed #333333;border-bottom:0;border-right:0;border-left:0;width:80%;">
+
+<div id="show_img_text">	
+			
+			<div style="margin-top:30px;margin-left:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					计划简介：
+				</span>
+			</div>
+			<input type="hidden" class="pro_note" value='$!product.note'/>
+			<div class="show_style show_text" style="margin-left:30px;width:70%;heigt:auto;float:left;margin: 0 auto;font-size: 20px;line-height: text-indent: 2em;" >
+			</div>
+			<script >
+				$(".show_text").html($('.pro_note').val());
+            </script>
+			
+			<div style="margin-top:30px;margin-left:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					合作方简介：
+				</span>
+			</div>
+			<input type="hidden" class="pro_note_coo" value='$!product.propertySummary'/>
+			<div class="show_style show_text_coo" style="margin-left:30px;width:70%;heigt:auto;float:left;margin: 0 auto;font-size: 20px;line-height: text-indent: 2em;" >
+			</div>
+			<script >
+				$(".show_text_coo").html($('.pro_note_coo').val());
+            </script>
+			
+			<div style="margin-top:30px;margin-left:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					还款来源：
+				</span>
+			</div>
+			<input type="hidden" class="pro_note_repay" value='$!product.returnSource'/>
+			<div class="show_style show_text_repay" style="margin-left:30px;width:70%;heigt:auto;float:left;margin: 0 auto;font-size: 20px;line-height: text-indent: 2em;" >
+			</div>
+			<script >
+				$(".show_text_repay").html($('.pro_note_repay').val());
+            </script>
+			
+			<div style="margin-top:30px;margin-left:30px;" class="text_span">
+				<span>
+					合作协议：
+				</span>
+			</div>
+			<input type="hidden" class="pro_note_copro" value='$!product.coopProtocolPics'/>
+			<div class="show_style show_text_copro" style="margin-left:30px;width:70%;heigt:auto;float:left;margin: 0 auto;font-size: 20px;line-height: text-indent: 2em;" >
+				#foreach($!img in $!coopProtocolImgs)
+					<img src="$!img" width="700px"/>
+				#end
+			</div>
+			
+			<div style="margin-top:30px;margin-left:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					技术保障：
+				</span>
+			</div>
+			<input type="hidden" class="pro_note_safe" value='$!product.fundSecurity'/>
+			<div class="show_style show_text_safe" style="margin-left:30px;width:70%;heigt:auto;float:left;margin: 0 auto;font-size: 20px;line-height: text-indent: 2em;" >
+			</div>
+			<script >
+				$(".show_text_safe").html($('.pro_note_safe').val());
+            </script>
+			
+			<div style="margin-top:30px;margin-left:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					合作方信息披露：
+				</span>
+			</div>
+			<input type="hidden" class="pro_note_jigou" value='$!product.orgnizeCheck'/> ##orgnize_check_pics
+			<div class="show_style show_text_jigou" style="margin-left:30px;width:70%;heigt:auto;float:left;margin: 0 auto;font-size: 20px;line-height: text-indent: 2em;" >
+				<div id="show_text_jigou"></div>
+				#foreach($!img in $!orgnizeCheckImgs)
+					<img src="$!img"/>
+				#end
+			</div>
+			<script >
+				$("#show_text_jigou").html($('.pro_note_jigou').val());
+            </script>
+			
+			<div style="margin-top:30px;margin-left:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					第三方担保合同：
+				</span>
+			</div>
+			<input type="hidden" class="pro_note_three" value='$!product.ratingGrade'/>
+			<div class="show_style show_text_three" style="font-family: 微软雅黑;margin-left:30px;width:70%;heigt:auto;float:left;margin: 0 auto;font-size: 20px;line-height: text-indent: 2em;" >
+				<div id="show_text_three"></div>
+			</div>
+			<script >
+				$("#show_text_three").html($('.pro_note_three').val());
+            </script>
+			<div style="margin-top:30px;margin-left:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					第三方担保合同图片：
+				</span>
+			</div>
+			<div class="show_style show_text_three" style="font-family: 微软雅黑;margin-left:30px;width:70%;heigt:auto;float:left;margin: 0 auto;font-size: 20px;line-height: text-indent: 2em;" >
+				#foreach($!img in $!ratingGradeImgs)
+					<img src="$!img"/>
+				#end
+			</div>
+			
+			<div style="margin-top:30px;margin-left:30px;font-family: 微软雅黑;" class="text_span">
+				<span>
+					借款合同示例图：
+				</span>
+			</div>
+			<div class="show_style" style="margin-left:30px;width:70%;heigt:auto;float:left;margin: 0 auto;font-size: 20px;line-height: text-indent: 2em;" >
+				#foreach($!img in $!loanProtocolImgs)
+					<img src="$!img"/>
+				#end
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script >
+	$(function(){
+		$("#show_img_text").find("p,div,span,li,a").css({'font-size': '14px', 'font-family':'微软雅黑', 'line-height':'20px'});
+	});
+</script>
+

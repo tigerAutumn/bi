@@ -1,0 +1,55 @@
+#Html("begin")
+#Head("begin","币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("我的资产【币港湾官网】")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/assets/accumulated_income.min")
+#WeChatShare()
+#Head("end")
+
+<body>
+	#if($!totalCount ==0 )
+		<div class="header_none">
+        	<a class="header_arrow_none" href="javascript:history.go(-1)"></a>
+        	<h1 class="heade_ft">当日收益</h1>
+        </div>
+		<div class="Acc_null_img">
+			<div class="ACC_null_title">暂无收益</div>
+		</div>  
+	#else
+    	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    	<div class="container contactPageWrapper">
+			<div class="header">
+				<a class="header_arrow" href="javascript:history.go(-1)"></a>
+				<h1 class="heade_ft oran_color">当日收益</h1>
+				<span class="header_company">单位：元</span>
+			</div>    		
+    		<div class="total_money">$!money.format($!interest)</div>
+			<h3 class="conta_h3">收益</h3>
+    	</div>
+        <div class="main">
+			<input type="hidden" id="pageIndex" name="pageIndex" value="$!pageIndex" />
+			<input type="hidden" id="totalCount" name="totalCount" value="$!totalCount" />
+            <div class="time_info">
+				<div class="item info_title titl_max">时间</div>
+				<div class="info_title titl_men">金额（元）</div>
+				<div class="info_title titl_win">摘要</div>
+            </div>
+        	<div class="info_main" id="mainContent" url='/micro2.0/assets/day_income_content'>
+        		#foreach($!grid in $!investList)
+        		<div class="item_warp">
+        			<span class="info_title titl_max">$!date.formatDateTime($!grid.earningsDate,'yyyy-MM-dd')</span>
+        			<span class="info_title titl_men">$!money.format($!grid.amount)</span>
+        			<span class="info_title titl_win">收益</span>
+        		</div>
+				#end
+        	</div>
+        	<div class="main_color">
+				<div class="ga_height" id="showmore">查看更多</div>
+			</div>
+        </div>
+	#end
+#LoadJS("resources/micro2.0/scripts/assets/custom")
+#LoadJS("resources/micro2.0/scripts/common/detail_pagination_income")
+</body>
+#Html("end")

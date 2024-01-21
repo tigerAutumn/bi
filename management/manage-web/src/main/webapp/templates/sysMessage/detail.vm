@@ -1,0 +1,79 @@
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	<form id="financeForm" method="post" action="$env.getWebURL('/sysMessage/save.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("id", "$!bsErrorCode.id")
+		<div class="pageFormContent nowrap" layoutH="97">
+			<dl>
+				<dt >
+					标题：
+                </dt>
+				<dd >
+					<input type="text" id="title" name="title" class="required"  style="width:170px;"  maxlength="25" value="$!bsErrorCode.title" />
+                </dd>
+			</dl>
+			<dl>
+				<dt >
+					内容：
+                </dt>
+				<dd >
+					<textarea class="required textInput" rows="2" cols="25" maxlength="25" name="content" >$!bsErrorCode.content</textarea>
+                </dd>
+			</dl>
+			<dl>
+				<dt>
+					接收人类型：
+				</dt>
+				<dd>
+					<select name="receiverType" > 
+						<option value="USER_NORMAL" #if("$!bsErrorCode.receiverType"=="USER_NORMAL") selected #end>普通用户</option>
+    					<option value="USER_178" #if("$!bsErrorCode.receiverType"=="USER_178") selected  #end>钱报用户</option>
+                        <option value="USER_KQ" #if("$!bsErrorCode.receiverType"=="USER_KQ") selected  #end>柯桥日报用户</option>
+                        <option value="USER_HN" #if("$!bsErrorCode.receiverType"=="USER_KQ") selected  #end>海宁日报用户</option>
+						<option value="USER_RUIAN" #if("$!bsErrorCode.receiverType"=="USER_RUIAN") selected  #end>瑞安日报用户</option>
+    				</select>
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					状态：
+                </dt>
+				<dd >
+					<select name="status" > 
+						<option value="VISIBLE" #if("$!bsErrorCode.status"=="VISIBLE") selected #end>可见</option>
+    					<option value="INVISIBLE" #if("$!bsErrorCode.status"=="INVISIBLE") selected  #end>不可见</option>
+    				</select>
+                </dd>
+			</dl>
+			
+		</div>
+		<div class="formBar">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+	
+</div>
+<script>
+    //禁用回车提交事件
+    $("#financeForm").keydown(function(e){
+        if(e.keyCode==13){
+            return false;
+        }
+    })
+
+	function navTabAjaxDone(json) {
+		 if (json.statusCode == "200") {
+			alertMsg.correct(json.message);
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('/sysMessage/index.htm')");
+		} else {
+			alertMsg.error('操作失败!');
+		}
+	}
+	
+	
+</script>

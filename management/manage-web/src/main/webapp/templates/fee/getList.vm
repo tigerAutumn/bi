@@ -1,0 +1,147 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="page unitBox">
+    <div class="pageHeader">
+        <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/fee/getList.htm')" id="myform"  method="post">
+            <input type="hidden" name="pageNum" value="$!pageNum" />
+            <input type="hidden" name="numPerPage" value="$!numPerPage" />
+            <input type="hidden" id="queryDataFlag" name="queryDataFlag" value="QUERYDATA" />
+            <div class="searchBar">
+                <table class="searchContent">
+                    <tr>
+                        <td>
+                            <label>手续费类型</label>
+                            <select id="feeType" name="feeType">
+                                <option value="">全部</option>
+                                <option value="FINANCE_TOPUP" #if("$!feeType"=="FINANCE_TOPUP") selected  #end>理财用户充值</option>
+                                <option value="FINANCE_WITHDRAW" #if("$!feeType"=="FINANCE_WITHDRAW") selected  #end>理财用户提现（宝付）</option>
+                                <option value="HF_FINANCE_WITHDRAW" #if("$!feeType"=="HF_FINANCE_WITHDRAW") selected  #end>理财用户提现（恒丰）</option>
+                                <option value="ZAN_LOAN" #if("$!feeType"=="ZAN_LOAN") selected  #end>赞分期用户借款</option>
+                                <option value="ZAN_HF_LOAN" #if("$!feeType"=="ZAN_HF_LOAN") selected  #end>赞分期存管后借款</option>
+                                <option value="ZAN_DK" #if("$!feeType"=="ZAN_DK") selected  #end>赞分期用户还款</option>
+                                <option value="ZAN_HF_DK" #if("$!feeType"=="ZAN_HF_DK") selected  #end>赞分期代扣还款</option>
+                                <option value="PARTNER_MARKET_FEE" #if("$!feeType"=="PARTNER_MARKET_FEE") selected  #end>赞分期营销代付提现</option>
+                                <option value="YUNDAI_LOAN" #if("$!feeType"=="YUNDAI_LOAN") selected  #end>云贷用户借款</option>
+                                <option value="YUNDAI_DK" #if("$!feeType"=="YUNDAI_DK") selected  #end>云贷代扣还款</option>
+                                <option value="ZSD_LOAN" #if("$!feeType"=="ZSD_LOAN") selected  #end>赞时贷借款</option>
+                                <option value="ZSD_DK" #if("$!feeType"=="ZSD_DK") selected  #end>赞时贷代扣还款</option>
+                            </select>
+                        </td>
+                        <td>
+                            <label>产生日期</label>
+                            <input name="startTime" maxdate="{%y}-%M-{%d}" type="text" id="startTime" class="date textInput readonly" readonly="true" value="$!startTime"/>
+                            到
+                            <input name="endTime" maxdate="{%y}-%M-{%d}" type="text" id="endTime" class="date textInput readonly" readonly="true" value="$!endTime"/>
+                        </td>
+
+                        <td>
+                            <label>业务发生端：</label>
+                            <select id="channel" name="channel">
+                                <option value="">全部</option>
+                                <option value="HFBANK" #if("$!channel"=="HFBANK") selected  #end>恒丰</option>
+                                <option value="BAOFOO" #if("$!channel"=="BAOFOO") selected  #end>宝付</option>
+                            </select>
+                        </td>
+
+                        <td>
+                            <label>资产端：</label>
+                            <select id="partnerCode" name="partnerCode">
+                                <option value="">全部</option>
+                                <option value="YUN_DAI_SELF" #if("$!partnerCode"=="YUN_DAI_SELF") selected  #end>云贷</option>
+                                <option value="ZAN" #if("$!partnerCode"=="ZAN") selected  #end>赞分期</option>
+                                <option value="ZSD" #if("$!partnerCode"=="ZSD") selected  #end>赞时贷</option>
+                            </select>
+                        </td>
+
+                        <td>
+                            <div class="buttonActive">
+                                <div class="buttonContent">
+                                    <button onclick="searchFunction()" type="button">查询</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span style="color:red">代付手续费总额： $!money.format($!feeOfDF)元 </span></td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="pageContent">
+        <table class="table" width="100%" layoutH="115">
+            <thead>
+            <tr>
+                <th width="2%">序号</th>
+                <th width="3%">订单编号</th>
+                <th width="2%">手续费类型</th>
+                <th width="2%">业务发生端</th>
+                <th width="2%">资产端</th>
+                <th width="3%">操作金额</th>
+                <th width="3%">手续费</th>
+                <th width="5%">产生时间</th>
+            </tr>
+            </thead>
+            <tbody>
+                #foreach($grid in $list)
+                <tr target="sid_user" rel="1">
+                    <td>$!grid.rowNo</td>
+                    <td>$!grid.orderNo</td>
+                    <td>
+                        #if("$!grid.feeType"=="FINANCE_TOPUP")理财用户充值
+                        #elseif("$!grid.feeType"=="FINANCE_WITHDRAW")理财用户提现（宝付）
+                        #elseif("$!grid.feeType"=="HF_FINANCE_WITHDRAW")理财用户提现（恒丰）
+                        #elseif("$!grid.feeType"=="ZAN_LOAN")赞分期用户借款
+                        #elseif("$!grid.feeType"=="ZAN_HF_LOAN")赞分期存管后借款
+                        #elseif("$!grid.feeType"=="ZAN_DK")赞分期用户还款
+                        #elseif("$!grid.feeType"=="ZAN_HF_DK")赞分期代扣还款
+                        #elseif("$!grid.feeType"=="PARTNER_MARKET_FEE")赞分期营销代付提现
+                        #elseif("$!grid.feeType"=="YUNDAI_LOAN")云贷用户借款
+                        #elseif("$!grid.feeType"=="YUNDAI_DK")云贷代扣还款
+                        #elseif("$!grid.feeType"=="ZSD_LOAN")赞时贷借款
+                        #elseif("$!grid.feeType"=="ZSD_DK")赞时贷代扣还款
+                        #else $!grid.feeType #end
+                    </td>
+                    <td>
+                        #if("$!grid.channel"=="HFBANK")恒丰
+                        #elseif("$!grid.channel"=="BAOFOO")宝付
+                        #else  #end
+                    </td>
+                    <td>
+                        #if("$!grid.partnerCode"=="YUN_DAI_SELF")云贷
+                        #elseif("$!grid.partnerCode"=="ZAN")赞分期
+                        #elseif("$!grid.partnerCode"=="ZSD")赞时贷
+                        #else  
+                        #end
+                    </td>
+                    <td>$!grid.transAmount</td>
+                    <td>$!grid.paymentPlatformFee</td>
+                    <td>$!date.format($!grid.createTime)</td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+        <div class="panelBar">
+            <div class="pages">
+                <span>显示</span>
+                <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                    <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                    <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                    <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                    <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+                </select>
+                <span>条，共$!count条</span>
+            </div>
+            <div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+        </div>
+    </div>
+
+</div>
+<script>
+    function searchFunction(){
+        $("#myform").submit();
+    }
+</script>

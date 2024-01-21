@@ -1,0 +1,64 @@
+
+<div class="pageContent" >
+	<form method="post" id="indexForm" action="$env.getWebURL('')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+		<input type="hidden" id="verifyId" name="verifyId" value="$!userPoliceVerify.id"/>
+		
+		<div class="pageFormContent" layoutH="100" style="width:700px;margin-left: 70px;">
+           <p style="width:600px;">
+				<label style="line-height:13.5px;">审核结果：</label>
+				#if($!userPoliceVerify.verifyResult == "success")	
+					成功
+				#elseif($!userPoliceVerify.verifyResult == "fail")
+					失败	
+				#end
+			</p>
+			
+			<p style="width:600px;">
+				<label style="line-height:13.5px;">审核分数：</label>
+				$!userPoliceVerify.score
+			</p>
+			
+			<p style="width:600px;">
+				<label style="line-height:13.5px;">备注：</label>
+				#if("$!checkDesc" == "" || $!checkDesc == "null")
+					暂无
+				#else
+					<font color="red">$!checkDesc</font>
+				#end	
+			</p>
+			
+			<p style="width:600px;">
+				<label style="line-height:13.5px;">百度AI识别结果：</label>
+				#if("$!userPoliceVerify.note" == "")
+					暂无
+				#elseif("$!userPoliceVerify.note" =="param[id_card_number] format error")
+					<font color="red">参数身份证号格式错误</font>
+				#elseif("$!userPoliceVerify.note" =="param[image] format error")
+					<font color="red">参数image格式错误</font>
+				#elseif("$!userPoliceVerify.note" =="id number and name not match")
+					<font color="red">身份证号和姓名不匹配</font>
+				#else	
+					<font color="red">$!userPoliceVerify.note</font>
+				#end	
+			</p>
+			
+			<p style="width:600px;">
+				<label style="line-height:13.5px;">身份证照：</label>
+				<a title="身份证照" style="color:blue;" target="dialog"  href="$env.getWebURL('/bsuser/unBindCardPicInfoPage.htm?verifyId=')$!userPoliceVerify.id&picFlag=idCard" height="560" width="620" mask="true" rel="createBack">查看</a>
+			</p>
+			
+			<p style="width:600px;">
+				<label style="line-height:13.5px;">认证图像：</label>
+				<a title="认证图像" style="color:blue;" target="dialog"  href="$env.getWebURL('/bsuser/unBindCardPicInfoPage.htm?verifyId=')$!userPoliceVerify.id&picFlag=certified" height="680" width="620" mask="true" rel="createBack">查看</a>
+			</p>
+			
+		</div>
+		
+	</form>
+</div>
+
+<script>
+	
+
+</script>

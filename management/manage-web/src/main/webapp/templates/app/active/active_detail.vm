@@ -1,0 +1,188 @@
+<div class="pageContent">
+	<form id="activeForm" method="post" action="$env.getWebURL('/app/active/activeModify.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("id", "$!active.id")
+		<div class="pageFormContent nowrap" layoutH="50">
+			<dl>
+				<dt>发布时间</dt>
+				<dd style="width:100px;">
+					<input name="publishTime" datefmt="yyyy-MM-dd HH:mm:ss" type="text"  id="publishTime" class=" date textInput readonly" readonly="true" size="18" value="$!date.format($!active.publishTime)"/>
+				</dd>
+				<dt style="margin-left:100px;">开始时间</dt>
+				<dd style="width:100px;">
+					<input name="startTime" datefmt="yyyy-MM-dd HH:mm:ss" type="text"  id="startTime" class=" date textInput readonly" readonly="true" size="18" value="$!date.format($!active.startTime)"/>
+				</dd>
+				<dt style="margin-left:100px;">结束时间</dt>
+				<dd style="width:100px;">
+					<input name="endTime" datefmt="yyyy-MM-dd HH:mm:ss" type="text"  id="endTime" class=" date textInput readonly" readonly="true" size="18" value="$!date.format($!active.endTime)"/>
+				</dd>
+			</dl>
+			<dl>
+				<dt>标题</dt>
+				<dd>
+					<input type="text" id="title" name="title" size="30" maxlength="64" value="$!active.title" />
+				</dd>
+			</dl>
+            <dl>
+                <dt>展示端口：</dt>
+                <dd style="width:300px;">
+                    <input type="checkbox" name="terminal" value="BGW_APP"/>app
+                    <input type="checkbox" name="terminal" value="BGW_H5"/>h5
+                    <input type="hidden" id="showTerminal" name="showTerminal" value="$!active.showTerminal"/>
+                </dd>
+            </dl>
+			<dl>
+				<dt>封面 </dt>
+				<dd>
+                    <input id="imgUrlActive" value="$!active.imgUrl" name="imgUrl" type="hidden"/>
+                    <div id="uploader-demo">
+                        <!--用来存放item-->
+                        <div id="fileThumb" class="uploader-list">
+							#if("$!active.imgUrl"=="")
+                                <div class="file-item thumbnail" style="display: none;">
+                                    <img/><div class="info"></div>
+                                </div>
+							#else
+                                <div class="file-item thumbnail">
+                                    <img src="$!mUrl$!active.imgUrl"/><div class="info"></div>
+                                </div>
+							#end
+
+                        </div>
+                        <div id="filePicker">选择图片</div>
+                    </div>大图片建议尺寸：900像素*360像素
+				</dd>
+			</dl>
+			<dl>
+				<dt>点击链接</dt>
+				<dd>
+					<input type="text" name="url" id="url" size="100"  maxlength="200" value="$!active.url" />&nbsp;&nbsp;（绝对路径请输入“http://或者https://”,如百度：http://www.baidu.com）
+				</dd>
+			</dl>
+			<dl>
+				<dt>摘要</dt>
+				<dd>
+                    <textarea name="summary" id="summary" maxlength="120" rows="5" cols="101" >$!active.summary</textarea>
+				</dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul style="float:left;">
+				<li><div class="buttonActive"><div class="buttonContent"><button onclick="formSubmit()" type="button">保存</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+    <script>
+		//初始化展示端口
+        $(function(){
+            var terminals = $("#showTerminal").val();
+            var arr = terminals.split(",");
+            for(var i=0; i<arr.length; i++) {
+                if(arr[i] != null && arr[i] != '') {
+                    $("input[name=terminal]:checkbox").each(function(){
+                        if($(this).attr('value') == arr[i]) {
+                            $(this).prop('checked',true);
+                        }
+                    })
+                }
+            }
+        })
+
+		function formSubmit(){
+			var publishTime = $.trim($("#publishTime").val()),
+				startTime = $.trim($("#startTime").val()),
+				endTime = $.trim($("#endTime").val()),
+				title = $.trim($("#title").val()),
+				url = $.trim($("#url").val()),
+				summary = $.trim($("#summary").val());
+			if(publishTime == ''){
+				alertMsg.warn('发布时间不能为空！!');
+				return false;
+			}
+			if(startTime == ''){
+				alertMsg.warn('开始时间不能为空！!');
+				return false;
+			}
+			if(publishTime != "" && startTime != ""){
+				var result = Date.parse(startTime.replace(/-/g,"/"))- Date.parse(publishTime.replace(/-/g,"/"));
+				if(result < 0){
+					alertMsg.warn("发布时间不能在开始时间之后！！");
+					return false;
+				}
+			}
+			if(endTime == ''){
+				alertMsg.warn('结束时间不能为空！!');
+				return false;
+			}
+			if(endTime != "" && startTime != ""){
+				var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(startTime.replace(/-/g,"/"));
+				if(result == 0){
+					alertMsg.warn("开始时间不能等于结束时间！！");
+					return false;
+				}else if(result < 0) {
+					alertMsg.warn("开始时间不能在结束时间之后！！");
+					return false;
+				}
+			}
+
+			if(title == ''){
+				alertMsg.warn('标题不能为空！!');
+				return false;
+			}
+
+
+            var terminal = '';
+            $("input[name=terminal]:checkbox").each(function(){
+                if($(this).attr("checked")) {
+                    terminal += $(this).attr('value') + ",";
+                }
+            });
+            if(terminal != ''){
+                $("#showTerminal").val(terminal);
+            }else {
+                alertMsg.warn("展示端口至少要选择一个!");
+                return false;
+            }
+
+			var path=$("#imgUrlActive").val();
+			if(!path){
+				alertMsg.warn('请上传图片！!');
+				return false;
+			}
+
+			if(url == ''){
+				alertMsg.warn('点击链接不能为空！!');
+				return false;
+			}else {
+				if(url.indexOf("http://") != 0 && url.indexOf("https://") != 0) {
+					alertMsg.warn("url必须是以http或者https开头");
+					return false;
+				}
+			}
+
+			if(summary == ''){
+				alertMsg.warn('摘要不能为空！!');
+				return false;
+			}
+
+			$('#activeForm').submit();
+		}
+	
+	function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			navTab.closeCurrentTab();
+			alertMsg.correct(json.message);
+			navTab.reload("$env.getWebURL('/app/active/index.htm')");
+		} else {
+			alertMsg.error(json.message);
+		}
+	}
+
+	_global.uploadSingleImg("/upload/appActiveImage.htm", '#filePicker', 900, 360, 900/2, 360/2, '#fileThumb', function (file, data) {
+		$('#imgUrlActive').val(data.msg.pathUrl);
+	}, function(file, data) {
+		$('#filePicker').children('div').children('img').attr('src', '');
+		$('#imgUrlActive').val('');
+	});
+</script>
+</div>

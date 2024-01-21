@@ -1,0 +1,84 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾理财官网_安心可靠互联网金融投资理财平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#Head("end")
+</head>
+
+<body>
+<!-- website wrapper starts -->
+<div style="min-height: 57px;" class="websiteWrapper">
+	
+  #Header("定期理财","", "", "micro/index")
+    <!-- main menu wrapper ends --> 
+  </div>
+  <!-- header wrapper ends --> 
+<div class="newrow">
+
+  <div style="background:#FFF">
+    <ul id="pagenavi1" class="newtitle1">
+	  <li><a href="$!env.getWebURL('')/micro/regular/index?id=1" class="curnewbtn-normal"><span>3个月</span></a></li>
+      <li><a href="$!env.getWebURL('')/micro/regular/index?id=2" class="curnewbtn-normal"><span>6个月</span></a></li>
+      <li><a href="$!env.getWebURL('')/micro/regular/index?id=3" class="curnewbtn-normal"><span>12个月</span></a></li>
+      <li><a href="$!env.getWebURL('')/micro/regular/transferIndex" class="curnewbtn"><span>转让区</span></a></li>
+    </ul>
+  </div>
+<div class="li_list_zrq">
+  <div id="mainContent" url='/micro/regular/transferContent'>
+	<input type="hidden" id="pageIndex" name="pageIndex" value="$!pageIndex" />
+	<input type="hidden" id="totalCount" name="totalCount" value="$!totalCount" />
+		#foreach($!transfer in $!transferList)
+            <div class="zrq_con">
+              <p> 
+				<span> 
+				   $!transfer.id<br>
+                   <b>￥$!transfer.price</b>
+			    </span> 
+				<span style=" font-size:14px;color:#F60;">$!transfer.realRate%</span> 
+				<span>$!transfer.surplusTime天</span>
+                <input type="button" value="购买" name="" onclick="location.href='$!env.getWebURL('')/micro/regular/transferDetail?id=$!transfer.id'">
+              </p>
+            </div>
+		#end
+</div>
+<div id="showmore" style="color:#666;" class="showmore">查看更多</div>
+    <!-- back to top btn ends --> 
+    
+    <!-- copyright wrapper ends --> 
+            </div>
+  <!-- footer wrapper starts -->
+   #Footer("2")
+  <!-- footer wrapper ends --> 
+  <!-- footer wrapper ends --> 
+  #WeiChatShare("币港湾安全理财平台，拥有杭商国资和著名上市集团公司浙大网新的丰厚背景，打造全国性互联网理财平台。","取名'币港湾'，'币'乃财富与钱币的象征，'港湾'即为资金避险、存留、投资的港湾。背靠国企、上市公司优质资源，为投资者提供优质的小微债权，注册推荐有惊喜！www.bigangwan.com","$!env.getWebURL('/resources/micro/images/bgw.jpg')","",$!weichat.appid,$!weichat.timestamp,$!weichat.nonceStr,$!weichat.signature)
+  #LoadJS("resources/micro/scripts/common/detail_pagination")
+</div>
+<script type="text/javascript">
+    for (n = 1; n <= 1; n++) {
+        var page = 'pagenavi' + n;
+        var mslide = 'slider' + n;
+        var as = document.getElementById(page).getElementsByTagName('a');
+        var tt = new TouchSlider({id: mslide, 'auto': '-1', fx: 'ease-out', direction: 'left', speed: 600, timeout: 5000, 'before': function(index) {
+                var as = document.getElementById(this.page).getElementsByTagName('a');
+                as[this.p].className = 'curnewbtn-normal';
+                as[index].className = 'curnewbtn';
+                this.p = index;
+                $("#" + this.page).parent().find('.go_btn').hide();
+                $("#" + this.page).parent().find('.go_btn').eq(index).show();
+            }});
+        tt.page = page;
+        tt.p = 0;
+        for (var i = 0; i < as.length; i++) {
+            (function() {
+                var j = i;
+                as[j].tt = tt;
+                as[j].onclick = function() {
+                    this.tt.slide(j);
+                    return false;
+                }
+            })();
+        }
+    }
+</script> 
+<!-- website wrapper ends -->
+</body>
+</html>

@@ -1,0 +1,236 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+<div class="page unitBox">
+	<div class="pageHeader">
+    	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('redPacket/manualRedPocketReview.htm')" id="myform" method="post">
+        	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        	<input type="hidden" name="pageNum" value="$!pageNum" />
+        	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+			<input type="hidden" name="id" value="$!req.id" />
+			<div class="searchBar">
+				<!-- -->							
+		<div class="pageFormContent nowrap"   style="float:left;">
+			<dl>
+				<dt>
+					红包名称：
+				</dt>
+				<dd style="width:200px">
+					$!manualPocketMap.serialname
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					红包策略：
+				</dt>
+				<dd style="width:200px">
+					$!manualPocketMap.policytype
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					申请人：
+				</dt>
+				<dd style="width:200px">
+					$!manualPocketMap.applicantName
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					预算来源：
+				</dt>
+				<dd style="width:200px">
+					$!manualPocketMap.rpName
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					红包类型：
+                </dt>
+				<dd style="width:200px"> 
+					#if($!manualPocketMap.usecondition == 'FULL_SUBTRACT')
+					满减包
+					#else
+					$!manualPocketMap.usecondition
+					#end
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					使用条件：
+                </dt>
+				<dd style="width:200px"> 
+					满$!number.format("0.00", $!manualPocketMap.full)  减  $!number.format("0.00", $!manualPocketMap.subtract) 
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					红包金额：
+                </dt>
+				<dd style="width:200px"> 
+					$!number.format("0.00", $!manualPocketMap.amount)  元
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					成本比例：
+                </dt>
+				<dd style="width:200px">
+					#set($Integer = 0)
+					#set($termD=$Integer.parseInt($!manualPocketMap.termlimit.split(",")[0]))
+					#if($!termD == "365") #set($newNum = $!manualPocketMap.amount/$!manualPocketMap.full  )#else  #set($newNum = $!manualPocketMap.amount/$!manualPocketMap.full * 365/$!termD ) #end
+					$!number.format("0.000", $!newNum)
+				</dd>
+			</dl>
+
+		</div>
+		<!-- -->
+		<div class="pageFormContent nowrap"   style="float:left;">
+			<dl>
+				<dt>
+					限用标的：
+                </dt>
+				<dd style="width:200px"> 
+					$!manualPocketMap.termlimit 天
+				</dd>
+			</dl>
+			<dl>
+				<dt >
+					数量：
+                </dt>
+				<dd style="width:200px"> 
+					$!manualPocketMap.total 个
+                </dd>
+			</dl>
+			<dl>
+				<dt >
+					发放时间：
+                </dt>
+				<dd style="width:200px"> 
+					$!date.format($!manualPocketMap.updatetime)
+                </dd>
+			</dl>
+			<dl>
+				
+				<dt >
+					红包有效期：
+                </dt>
+				<dd style="width:200px"> 
+					$!date.formatYYYYMMDD($!manualPocketMap.usetimestart) 至   $!date.formatYYYYMMDD( $!manualPocketMap.usetimeend)
+                </dd>
+				
+				
+			</dl>
+			<dl>
+				
+				<dt >
+					红包备注：
+                </dt>
+				<dd style="width:200px"> 
+					$!manualPocketMap.note 
+                </dd>
+				
+				
+			</dl>
+
+			<dl>
+				<dt >
+					通知管道：
+                </dt>
+				<dd style="width:200px"> 
+					#foreach($notify in $!notifyChannel)
+                    #if($!notify =='SMS') 短信通知 ；  #elseif($!notify =='WECHAT') 微信通知   ；  #elseif($!notify =='APP') APP通知  #else $!notify #end
+					#end
+                </dd>
+			</dl>
+		</div>
+		<!-- -->
+		<div class="pageFormContent nowrap"  style="float:left;">
+			<dl>
+				<dt >
+					发放条件：
+                </dt>
+				<dd style="width:200px"> 
+					&nbsp 
+                </dd>
+			</dl>
+			#foreach($queryHistory in $!queryHistoryList)
+			<dl>
+				<dt >
+					$!queryHistory.name ：
+                </dt>
+				<dd style="width:200px" title="$!queryHistory.content" class="content_dd" content="$!queryHistory.content"> 
+					$!queryHistory.content
+                </dd>
+			</dl>
+			#end
+		</div>
+		
+        	</div>
+    	</form>
+    </div>
+    <div class="pageContent">
+
+    	<table class="table" width="1396" layoutH="350">
+    		<thead>
+    			<tr>
+					<th width="10%">序号</th>
+    				<th width="10%">手机号</th>
+					<th width="10%">已绑定银行</th>
+    				<th width="10%">持仓金额</th>
+					<th width="10%">总购买额</th>
+    				<th width="10%">购买次数</th>
+    				<th width="10%">注册时间</th>
+    				<th width="10%">首次购买时间</th>
+    				<th width="10%">最后购买时间</th>
+					<th width="10%">渠道</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			#foreach($grid in $dataGrid)
+    			<tr target="sid_user" rel="1">
+    				<td>$!grid.id</td>
+    				<td>$!grid.mobile</td>
+    				<td>$!grid.bankName</td>
+    				<td>#if(!$!grid.recentTotalBuy)0.00 #else  $!number.format("0.00", $!grid.recentTotalBuy) #end</td>
+    				<td>#if(!$!grid.totalBuy)0.00 #else  $!number.format("0.00", $!grid.totalBuy) #end</td>
+					<td>$!grid.countBuy</td>
+					<td>$!date.format($!grid.registerTime) </td>
+					<td>$!date.format($!grid.firstBuyDate) </td>
+					<td>$!date.format($!grid.lastBuyDate) </td>
+					<td>#if(!$!grid.agentName) 非渠道  #else  $!grid.agentName #end</td>
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+    			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!count条</span>
+    	</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+    </div>
+    </div>
+	
+</div>
+	
+<script >
+	$('.content_dd').each(function(){
+    	var content = $(this).attr('content');
+    	var size = content.length;
+    	if(size > 17) {
+    		var contentStr = content.substr(0, 17);
+    		$(this).html(contentStr + "...");
+    	}
+    	
+	});
+    	
+    </script>

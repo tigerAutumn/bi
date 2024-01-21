@@ -1,0 +1,95 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/special/warning/index.htm')" method="post">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						姓名：<input  id="userName" type="text" name="userName" value="$!userName" size="15"/>
+						手机号：<input  id="mobile" type="text" name="mobile" value="$!mobile" size="15"/>
+						订单号：<input  id="orderNo" type="text" name="orderNo" value="$!orderNo" size="15"/>
+						是否可用：<select name="status" >
+    							  <option value="" #if("$!status"=="") selected #end>全部</option>
+    							  <option value="1" #if("$!status"=="1") selected  #end>创建</option>
+    							  <option value="2" #if("$!status"=="2") selected  #end>处理中</option>
+								  <option value="3" #if("$!status"=="3") selected  #end>成功</option>
+								  <option value="4" #if("$!status"=="4") selected  #end>失败</option>
+            				  </select>
+					             交易类型:<select name="type" >
+    							  <option value="" #if("$!type"=="") selected #end>全部</option>
+    							  ##<option value="【卡bin不存在】" #if("$!type"=="【卡bin不存在】") selected  #end>【卡bin不存在】</option>
+    							  ##<option value="【达飞实名认证通知】" #if("$!type"=="【达飞实名认证通知】") selected  #end>【达飞实名认证通知】</option>
+								  ##<option value="【达飞绑卡通知】" #if("$!type"=="【达飞绑卡通知】") selected  #end>【达飞绑卡通知】</option>
+								  ##<option value="日终【获取达飞债权关系数据】" #if("$!type"=="日终【获取达飞债权关系数据】") selected  #end>日终【获取达飞债权关系数据】</option>
+								  ##<option value="日终【达飞理财资金对账】" #if("$!type"=="日终【达飞理财资金对账】") selected  #end>日终【达飞理财资金对账】</option>
+								  ##<option value="日终【达飞理财资金明细对账】" #if("$!type"=="日终【达飞理财资金明细对账】") selected  #end>日终【达飞理财资金明细对账】</option>
+								  <option value="【奖励金转提失败】：金额" #if("$!type"=="【奖励金转提失败】：金额") selected  #end>【奖励金转提失败】：金额</option>
+								  ##<option value="【用户提现异常】" #if("$!type"=="【用户提现异常】") selected  #end>【用户提现异常】</option>
+            				  </select>
+							  <spen style="padding-left:10px"><button type="submit">查询</button></spen>
+							  <spen style="padding-left:10px"><font color="red">总金额：$!money.format($!amounts) 元</font></spen>
+					</td>
+				</tr>
+			</table>
+		</div> 
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="60">姓名</th>
+				<th width="90">手机号</th>
+				<th width="190">订单号</th>
+				<th width="70">金额</th>
+				<th width="70">处理状态</th>
+				<th width="130">创建时间</th>
+				<th width="130">更新时间</th>
+				<th width="406">摘要</th>
+				<th width="50">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($specialJnls in $specialJnlList)
+			<tr>
+				<td>$!specialJnls.userName</td>
+				<td>$!specialJnls.mobile</td>
+				<td>$!specialJnls.orderNo</td>
+				<td>$!specialJnls.amount</td>
+				<td>#if("$!specialJnls.status" == 1)创建
+                    #elseif("$!specialJnls.status" == 2)处理中
+					#elseif("$!specialJnls.status" == 3)成功
+					#elseif("$!specialJnls.status" == 4)失败
+				    #end
+				</td>
+				<td>$!date.format($!specialJnls.opTime)</td>
+				<td>$!date.format($!specialJnls.updateTime)</td>
+				<td>$!specialJnls.detail</td>
+				<td>
+				#if("$!specialJnls.type" == "【奖励金转提失败】：金额" && ("$!specialJnls.status" == 1 || "$!specialJnls.status" == 2))
+				<a title="确定把创建或处理中的奖励金转提处理为成功？" target="ajaxTodo" mask="true" href="$env.getWebURL('/specialJnl/detail.htm?id=')$!specialJnls.id" class="btnSelect">操作</a>
+				#end
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>

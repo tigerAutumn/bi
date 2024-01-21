@@ -1,0 +1,938 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsActivityLuckyDrawMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsActivityLuckyDraw" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="activity_id" property="activityId" jdbcType="INTEGER" />
+    <result column="award_id" property="awardId" jdbcType="INTEGER" />
+    <result column="is_back_draw" property="isBackDraw" jdbcType="VARCHAR" />
+    <result column="back_draw_time" property="backDrawTime" jdbcType="TIMESTAMP" />
+    <result column="is_user_draw" property="isUserDraw" jdbcType="VARCHAR" />
+    <result column="user_draw_time" property="userDrawTime" jdbcType="TIMESTAMP" />
+    <result column="is_win" property="isWin" jdbcType="VARCHAR" />
+    <result column="is_confirm" property="isConfirm" jdbcType="VARCHAR" />
+    <result column="confirm_time" property="confirmTime" jdbcType="TIMESTAMP" />
+    <result column="is_auto_confirm" property="isAutoConfirm" jdbcType="VARCHAR" />
+    <result column="op_user_id" property="opUserId" jdbcType="INTEGER" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="coupon_id" property="couponId" jdbcType="INTEGER" />
+    <result column="coupon_type" property="couponType" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="year_interest" property="yearInterest" jdbcType="DOUBLE" />
+    <result column="sub_account_id" property="subAccountId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="BaseResultVOMap" type="com.pinting.business.model.vo.BsActivityLuckyDrawVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="activity_id" property="activityId" jdbcType="INTEGER" />
+    <result column="award_id" property="awardId" jdbcType="INTEGER" />
+    <result column="is_back_draw" property="isBackDraw" jdbcType="VARCHAR" />
+    <result column="back_draw_time" property="backDrawTime" jdbcType="TIMESTAMP" />
+    <result column="is_user_draw" property="isUserDraw" jdbcType="VARCHAR" />
+    <result column="user_draw_time" property="userDrawTime" jdbcType="TIMESTAMP" />
+    <result column="is_win" property="isWin" jdbcType="VARCHAR" />
+    <result column="is_confirm" property="isConfirm" jdbcType="VARCHAR" />
+    <result column="confirm_time" property="confirmTime" jdbcType="TIMESTAMP" />
+    <result column="is_auto_confirm" property="isAutoConfirm" jdbcType="VARCHAR" />
+    <result column="op_user_id" property="opUserId" jdbcType="INTEGER" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="mobile" property="mobile" jdbcType="INTEGER" />
+    <result column="award_content" property="awardContent" jdbcType="INTEGER" />
+    <result column="note_amount" property="noteAmount" jdbcType="VARCHAR" />
+    <result column="agent_name" property="agentName" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="activity_name" property="activityName" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, activity_id, award_id, is_back_draw, back_draw_time, is_user_draw, user_draw_time, 
+    is_win, is_confirm, confirm_time, is_auto_confirm, op_user_id, note, coupon_id, coupon_type, 
+    order_no, year_interest, sub_account_id, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsActivityLuckyDrawExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from bs_activity_lucky_draw
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_activity_lucky_draw
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_activity_lucky_draw
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsActivityLuckyDrawExample" >
+    delete from bs_activity_lucky_draw
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsActivityLuckyDraw" >
+    insert into bs_activity_lucky_draw (id, user_id, activity_id, 
+      award_id, is_back_draw, back_draw_time, 
+      is_user_draw, user_draw_time, is_win, 
+      is_confirm, confirm_time, is_auto_confirm, 
+      op_user_id, note, coupon_id, 
+      coupon_type, order_no, year_interest, 
+      sub_account_id, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, 
+      #{awardId,jdbcType=INTEGER}, #{isBackDraw,jdbcType=VARCHAR}, #{backDrawTime,jdbcType=TIMESTAMP}, 
+      #{isUserDraw,jdbcType=VARCHAR}, #{userDrawTime,jdbcType=TIMESTAMP}, #{isWin,jdbcType=VARCHAR}, 
+      #{isConfirm,jdbcType=VARCHAR}, #{confirmTime,jdbcType=TIMESTAMP}, #{isAutoConfirm,jdbcType=VARCHAR}, 
+      #{opUserId,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR}, #{couponId,jdbcType=INTEGER}, 
+      #{couponType,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{yearInterest,jdbcType=DOUBLE}, 
+      #{subAccountId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsActivityLuckyDraw" keyProperty="id" useGeneratedKeys="true">
+    insert into bs_activity_lucky_draw
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="activityId != null" >
+        activity_id,
+      </if>
+      <if test="awardId != null" >
+        award_id,
+      </if>
+      <if test="isBackDraw != null" >
+        is_back_draw,
+      </if>
+      <if test="backDrawTime != null" >
+        back_draw_time,
+      </if>
+      <if test="isUserDraw != null" >
+        is_user_draw,
+      </if>
+      <if test="userDrawTime != null" >
+        user_draw_time,
+      </if>
+      <if test="isWin != null" >
+        is_win,
+      </if>
+      <if test="isConfirm != null" >
+        is_confirm,
+      </if>
+      <if test="confirmTime != null" >
+        confirm_time,
+      </if>
+      <if test="isAutoConfirm != null" >
+        is_auto_confirm,
+      </if>
+      <if test="opUserId != null" >
+        op_user_id,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="couponId != null" >
+        coupon_id,
+      </if>
+      <if test="couponType != null" >
+        coupon_type,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="yearInterest != null" >
+        year_interest,
+      </if>
+      <if test="subAccountId != null" >
+        sub_account_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null" >
+        #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="awardId != null" >
+        #{awardId,jdbcType=INTEGER},
+      </if>
+      <if test="isBackDraw != null" >
+        #{isBackDraw,jdbcType=VARCHAR},
+      </if>
+      <if test="backDrawTime != null" >
+        #{backDrawTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isUserDraw != null" >
+        #{isUserDraw,jdbcType=VARCHAR},
+      </if>
+      <if test="userDrawTime != null" >
+        #{userDrawTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isWin != null" >
+        #{isWin,jdbcType=VARCHAR},
+      </if>
+      <if test="isConfirm != null" >
+        #{isConfirm,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmTime != null" >
+        #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isAutoConfirm != null" >
+        #{isAutoConfirm,jdbcType=VARCHAR},
+      </if>
+      <if test="opUserId != null" >
+        #{opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="couponId != null" >
+        #{couponId,jdbcType=INTEGER},
+      </if>
+      <if test="couponType != null" >
+        #{couponType,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="yearInterest != null" >
+        #{yearInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="subAccountId != null" >
+        #{subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsActivityLuckyDrawExample" resultType="java.lang.Integer" >
+    select count(*) from bs_activity_lucky_draw
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_activity_lucky_draw
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.activityId != null" >
+        activity_id = #{record.activityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.awardId != null" >
+        award_id = #{record.awardId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isBackDraw != null" >
+        is_back_draw = #{record.isBackDraw,jdbcType=VARCHAR},
+      </if>
+      <if test="record.backDrawTime != null" >
+        back_draw_time = #{record.backDrawTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isUserDraw != null" >
+        is_user_draw = #{record.isUserDraw,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userDrawTime != null" >
+        user_draw_time = #{record.userDrawTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isWin != null" >
+        is_win = #{record.isWin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isConfirm != null" >
+        is_confirm = #{record.isConfirm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.confirmTime != null" >
+        confirm_time = #{record.confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isAutoConfirm != null" >
+        is_auto_confirm = #{record.isAutoConfirm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.opUserId != null" >
+        op_user_id = #{record.opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.couponId != null" >
+        coupon_id = #{record.couponId,jdbcType=INTEGER},
+      </if>
+      <if test="record.couponType != null" >
+        coupon_type = #{record.couponType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderNo != null" >
+        order_no = #{record.orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yearInterest != null" >
+        year_interest = #{record.yearInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="record.subAccountId != null" >
+        sub_account_id = #{record.subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_activity_lucky_draw
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      activity_id = #{record.activityId,jdbcType=INTEGER},
+      award_id = #{record.awardId,jdbcType=INTEGER},
+      is_back_draw = #{record.isBackDraw,jdbcType=VARCHAR},
+      back_draw_time = #{record.backDrawTime,jdbcType=TIMESTAMP},
+      is_user_draw = #{record.isUserDraw,jdbcType=VARCHAR},
+      user_draw_time = #{record.userDrawTime,jdbcType=TIMESTAMP},
+      is_win = #{record.isWin,jdbcType=VARCHAR},
+      is_confirm = #{record.isConfirm,jdbcType=VARCHAR},
+      confirm_time = #{record.confirmTime,jdbcType=TIMESTAMP},
+      is_auto_confirm = #{record.isAutoConfirm,jdbcType=VARCHAR},
+      op_user_id = #{record.opUserId,jdbcType=INTEGER},
+      note = #{record.note,jdbcType=VARCHAR},
+      coupon_id = #{record.couponId,jdbcType=INTEGER},
+      coupon_type = #{record.couponType,jdbcType=VARCHAR},
+      order_no = #{record.orderNo,jdbcType=VARCHAR},
+      year_interest = #{record.yearInterest,jdbcType=DOUBLE},
+      sub_account_id = #{record.subAccountId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsActivityLuckyDraw" >
+    update bs_activity_lucky_draw
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null" >
+        activity_id = #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="awardId != null" >
+        award_id = #{awardId,jdbcType=INTEGER},
+      </if>
+      <if test="isBackDraw != null" >
+        is_back_draw = #{isBackDraw,jdbcType=VARCHAR},
+      </if>
+      <if test="backDrawTime != null" >
+        back_draw_time = #{backDrawTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isUserDraw != null" >
+        is_user_draw = #{isUserDraw,jdbcType=VARCHAR},
+      </if>
+      <if test="userDrawTime != null" >
+        user_draw_time = #{userDrawTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isWin != null" >
+        is_win = #{isWin,jdbcType=VARCHAR},
+      </if>
+      <if test="isConfirm != null" >
+        is_confirm = #{isConfirm,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmTime != null" >
+        confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isAutoConfirm != null" >
+        is_auto_confirm = #{isAutoConfirm,jdbcType=VARCHAR},
+      </if>
+      <if test="opUserId != null" >
+        op_user_id = #{opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="couponId != null" >
+        coupon_id = #{couponId,jdbcType=INTEGER},
+      </if>
+      <if test="couponType != null" >
+        coupon_type = #{couponType,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="yearInterest != null" >
+        year_interest = #{yearInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="subAccountId != null" >
+        sub_account_id = #{subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsActivityLuckyDraw" >
+    update bs_activity_lucky_draw
+    set user_id = #{userId,jdbcType=INTEGER},
+      activity_id = #{activityId,jdbcType=INTEGER},
+      award_id = #{awardId,jdbcType=INTEGER},
+      is_back_draw = #{isBackDraw,jdbcType=VARCHAR},
+      back_draw_time = #{backDrawTime,jdbcType=TIMESTAMP},
+      is_user_draw = #{isUserDraw,jdbcType=VARCHAR},
+      user_draw_time = #{userDrawTime,jdbcType=TIMESTAMP},
+      is_win = #{isWin,jdbcType=VARCHAR},
+      is_confirm = #{isConfirm,jdbcType=VARCHAR},
+      confirm_time = #{confirmTime,jdbcType=TIMESTAMP},
+      is_auto_confirm = #{isAutoConfirm,jdbcType=VARCHAR},
+      op_user_id = #{opUserId,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR},
+      coupon_id = #{couponId,jdbcType=INTEGER},
+      coupon_type = #{couponType,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      year_interest = #{yearInterest,jdbcType=DOUBLE},
+      sub_account_id = #{subAccountId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getLuckyAllList" parameterType="map" resultMap="BaseResultVOMap"> 
+  	select a.*,b.content as award_content,b.note as note_amount,c.mobile 
+  	from bs_activity_lucky_draw a, 
+  	bs_activity_award b, bs_user c
+	where a.user_id = c.id and a.award_id = b.id 
+	and a.is_win = 'Y' and a.is_user_draw = 'Y'
+	and a.activity_id = #{activityId,jdbcType=INTEGER}
+	order by a.user_draw_time desc 
+	<if test="limitNum != null">
+		limit #{limitNum}
+	</if>
+	
+  </select>
+  
+  <select id="getLuckyLenders" parameterType="map" resultMap="BaseResultVOMap"> 
+  	select a.note, c.mobile 
+  	from bs_activity_lucky_draw a, 
+  	bs_activity_award b, bs_user c,
+  	(select a1.back_draw_time as time
+  	from bs_activity_lucky_draw a1,
+		bs_activity_award b1, bs_user c1
+  	where a1.user_id = c1.id and a1.award_id = b1.id 
+		and a1.activity_id = #{activityId,jdbcType=INTEGER}
+		and DATE_FORMAT(a1.back_draw_time,'%Y-%m-%d') >
+		DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+  	order by a1.back_draw_time desc 
+  	limit 1
+  	) d
+	where a.user_id = c.id and a.award_id = b.id 
+	and  DATE_FORMAT(a.back_draw_time,'%Y-%m-%d')  = 
+	 DATE_FORMAT(d.time,'%Y-%m-%d')   
+	and a.activity_id = #{activityId,jdbcType=INTEGER}
+	order by a.back_draw_time desc
+	
+  </select>
+  
+  <select id="getLuckyLendersByDate" parameterType="map" resultMap="BaseResultVOMap"> 
+  	select id
+  	from bs_activity_lucky_draw
+	where DATE_FORMAT(back_draw_time,'%Y-%m-%d')  = 
+	   #{backDrawTime}
+	and activity_id = #{activityId,jdbcType=INTEGER}
+  </select>
+  
+   <select id="getUserLuckyList" parameterType="map" resultMap="BaseResultVOMap"> 
+  	select a.*,b.content as award_content,b.note as note_amount,c.mobile 
+  	from bs_activity_lucky_draw a, 
+  	bs_activity_award b, bs_user c
+	where a.user_id = c.id and a.award_id = b.id 
+	
+	<if test="luckyFlagS == 'YES'">
+		and a.is_win = 'Y' 
+		<!-- 已抽奖 -->
+		and a.is_user_draw = 'Y'
+	</if>
+	<if test="luckyFlagS == 'NO'">
+		and a.is_win = 'N' 
+		<!-- 未抽奖 -->
+		and a.is_user_draw = 'N'
+	</if>
+	
+	and a.activity_id = #{activityId,jdbcType=INTEGER}
+	and a.user_id = #{userId,jdbcType=INTEGER}
+	<if test="luckyFlagS == 'YES'">
+		<!-- 已抽奖 -->
+		order by a.user_draw_time desc 
+		<if test="page != null"> 
+		limit #{start},#{page}
+		</if>
+	</if>
+	<if test="luckyFlagS == 'NO'">
+		<!-- 未抽奖 -->
+		order by a.id limit 1
+	</if>
+  </select>
+  
+  <select id="countUserLucky" parameterType="map" resultType="java.lang.Integer"> 
+  	select count(*) from(select a.*,b.content,c.mobile 
+  	from bs_activity_lucky_draw a, 
+  	bs_activity_award b, bs_user c
+	where a.user_id = c.id and a.award_id = b.id 
+	
+	<if test="luckyFlagS == 'YES'">
+		<!-- 已抽奖 -->
+		and a.is_user_draw = 'Y'
+		and a.is_win = 'Y' 
+	
+	</if>
+	<if test="luckyFlagS == 'NO'">
+		<!-- 未抽奖 -->
+		and a.is_user_draw = 'N'
+		and a.is_win = 'N' 
+	</if>
+	
+	and a.activity_id = #{activityId,jdbcType=INTEGER}
+	and a.user_id = #{userId,jdbcType=INTEGER}
+	)t
+  </select>
+  
+  <select id="countLuckyNum" parameterType="map" resultType="java.lang.Integer">
+  select count(*) from(select * from bs_activity_lucky_draw 
+	where is_win = 'Y' and is_user_draw = 'Y' 
+	and activity_id = #{activityId,jdbcType=INTEGER} 
+	GROUP BY user_id) t
+  </select>
+  
+  <select id="getCountByAmount" parameterType="map" resultType="java.lang.Integer">
+	  select count(*) from (
+	  	select CAST(note AS SIGNED) as amount from bs_activity_lucky_draw
+	  	where activity_id=1 
+	  )t where 1=1 
+	  <if test="minAmount != null">
+	 	and t.amount >= #{minAmount}
+	  </if>
+	  <if test="maxAmount != null">
+	 	and t.amount &lt; #{maxAmount}
+	  </if>
+  	   
+  </select>
+  <select id="getIncreaseSalaryInfoForExcel" parameterType="map" resultMap="BaseResultVOMap">
+  	select 
+		e.name AS activity_name, 
+		a.user_draw_time,
+		c.id as user_id,
+		c.user_name,
+		c.mobile,
+		(case if(length(c.id_card)=18, cast(substring(c.id_card,17,1) as UNSIGNED)%2, if(length(c.id_card)=15,cast(substring(c.id_card,15,1) as UNSIGNED)%2,3)) when 1 then '男' when 0 then '女' else '' end ) as gender,
+		b.content as award_content,
+		a.id,
+		d.agent_name, 
+		a.is_user_draw,
+		a.is_win,
+		h.product_name,
+		i.show_terminal,
+		a.order_no,
+		h.open_time,
+		if(a.coupon_type='RED_PACKET',h.open_balance+f.amount,h.open_balance) as purchasing_price,
+		i.term,
+		h.product_rate,
+		a.year_interest,
+		if(a.coupon_type='RED_PACKET',f.amount,null)as use_red_packet,
+		if(a.coupon_type='INTEREST_TICKET',g.ticket_apr,null)as use_ticket
+	from 
+		bs_activity_lucky_draw a 
+		left join bs_activity_award b on a.award_id = b.id 
+		LEFT JOIN bs_activity e ON a.activity_id = e.id 
+		left join bs_red_packet_info f on a.coupon_id = f.id 
+		left join bs_interest_ticket_info g on a.coupon_id = g.id 
+		left join bs_sub_account h on a.sub_account_id=h.id 
+		left join bs_product i on h.product_id=i.id,
+		bs_user c left join bs_agent d on c.agent_id = d.id
+	where a.user_id = c.id
+		<if test="mobile != null and mobile != ''">
+			and c.mobile like concat('%', #{mobile,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="agentsFlag != null and agentsFlag == '-2'">
+		</if>
+		<if test="agentsFlag != null and agentsFlag == '-1'">
+			and c.agent_id is null 
+		</if>
+		<if test="agentsFlag == null and agentIds != null">
+			and c.agent_id in
+			<foreach collection="agentIds" item="agentId" index="index"
+	            open="(" close=")" separator=",">
+	            #{agentId}
+	        </foreach>
+		</if>
+		<if test="drawTimeStart != null and drawTimeStart != ''">
+			and a.user_draw_time >= #{drawTimeStart}
+		</if>
+		<if test="drawTimeEnd != null and drawTimeEnd != ''">
+			and a.user_draw_time &lt;= #{drawTimeEnd}
+		</if>
+		<if test="isUserDraw != null and isUserDraw != ''">
+			and a.is_user_draw = #{isUserDraw}
+		</if>
+		<if test="awardContent != null and awardContent != ''">
+			and b.content like concat('%', #{awardContent,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="isWin != null and isWin != ''">
+			and a.is_win = #{isWin}
+		</if>
+        <if test="userName != null and userName != ''">
+          and c.user_name like concat('%', #{userName,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="activityName != null and activityName != ''">
+          and e.id = #{activityName}
+        </if>
+	order by a.user_draw_time desc
+	LIMIT #{start}, #{numPerPage}
+  </select>
+  
+  <select id="getUserLuckyList4Manage" parameterType="map" resultMap="BaseResultVOMap"> 
+  	SELECT
+		a.user_draw_time,
+		a.id,
+		a.is_user_draw,
+		a.is_win,
+		a.order_no,
+		a.year_interest,
+		b.content AS award_content,
+		c.mobile,
+		d.agent_name,
+		c.user_name,
+		e.NAME AS activity_name,
+		(case if(length(c.id_card)=18, cast(substring(c.id_card,17,1) as UNSIGNED)%2, if(length(c.id_card)=15,cast(substring(c.id_card,15,1) as UNSIGNED)%2,3)) when 1 then '男' when 0 then '女' else '' end ) as gender
+	FROM
+		bs_activity_lucky_draw a
+		INNER JOIN bs_user c ON a.user_id = c.id
+		LEFT JOIN bs_activity_award b ON a.award_id = b.id
+		LEFT JOIN bs_activity e ON a.activity_id = e.id
+		LEFT JOIN bs_agent d ON c.agent_id = d.id
+		where 1=1
+		<if test="mobile != null and mobile != ''">
+			and c.mobile like concat('%', #{mobile,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="agentsFlag != null and agentsFlag == '-2'">
+		</if>
+		<if test="agentsFlag != null and agentsFlag == '-1'">
+			and c.agent_id is null 
+		</if>
+		<if test="agentsFlag == null and agentIds != null">
+			and c.agent_id in
+			<foreach collection="agentIds" item="agentId" index="index"
+	            open="(" close=")" separator=",">
+	            #{agentId}
+	        </foreach>
+		</if>
+		<if test="drawTimeStart != null and drawTimeStart != ''">
+			and a.user_draw_time >= #{drawTimeStart}
+		</if>
+		<if test="drawTimeEnd != null and drawTimeEnd != ''">
+			and a.user_draw_time &lt;= #{drawTimeEnd}
+		</if>
+		<if test="isUserDraw != null and isUserDraw != ''">
+			and a.is_user_draw = #{isUserDraw}
+		</if>
+		<if test="awardContent != null and awardContent != ''">
+			and b.content like concat('%', #{awardContent,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="isWin != null and isWin != ''">
+			and a.is_win = #{isWin}
+		</if>
+        <if test="userName != null and userName != ''">
+          and c.user_name like concat('%', #{userName,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="activityName != null and activityName != ''">
+          and e.id = #{activityName}
+        </if>
+	order by a.user_draw_time desc
+	LIMIT #{start}, #{numPerPage}
+  </select>
+  
+   <select id="countUserLuckyList4Manage" parameterType="map" resultType="java.lang.Integer"> 
+  	select count(*) from 
+	  	(select a.*,b.content as award_content,c.mobile,d.agent_name 
+		from bs_activity_lucky_draw a left join bs_activity_award b on a.award_id = b.id LEFT JOIN bs_activity e ON a.activity_id = e.id,
+			bs_user c left join bs_agent d on c.agent_id = d.id 
+		where a.user_id = c.id 
+			<if test="mobile != null and mobile != ''">
+				and c.mobile like concat('%', #{mobile,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="agentsFlag != null and agentsFlag == '-2'">
+			</if>
+			<if test="agentsFlag != null and agentsFlag == '-1'">
+				and c.agent_id is null 
+			</if>
+			<if test="agentsFlag == null and agentIds != null">
+				and c.agent_id in
+				<foreach collection="agentIds" item="agentId" index="index"
+		            open="(" close=")" separator=",">
+		            #{agentId}
+		        </foreach>
+			</if>
+			<if test="drawTimeStart != null and drawTimeStart != ''">
+				and a.user_draw_time >= #{drawTimeStart}
+			</if>
+			<if test="drawTimeEnd != null and drawTimeEnd != ''">
+				and a.user_draw_time &lt;= #{drawTimeEnd}
+			</if>
+			<if test="isUserDraw != null and isUserDraw != '' ">
+				and a.is_user_draw = #{isUserDraw}
+			</if>
+			<if test="awardContent != null and awardContent != ''">
+				and b.content like concat('%', #{awardContent,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="isWin != null and isWin != ''">
+				and a.is_win = #{isWin}
+			</if>
+            <if test="userName != null and userName != ''">
+              and c.user_name like concat('%', #{userName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="activityName != null and activityName != ''">
+              and e.id = #{activityName}
+            </if>
+	)t
+  </select>
+  
+  
+  <select id="countSalaryIncreasePlanList" parameterType="map" resultType="java.lang.Integer"> 
+  	select count(*) from 
+	  	(select a.id
+		from bs_activity_lucky_draw a left join bs_activity_award b on a.award_id = b.id LEFT JOIN bs_activity e ON a.activity_id = e.id,
+			bs_user c 
+		where a.user_id = c.id 
+			<if test="userDrawTime != null and userDrawTime != ''">
+				and DATE_FORMAT(a.user_draw_time,'%Y-%m') = #{userDrawTime}
+			</if>
+			<if test="awardId != null and awardId != ''">
+	          and a.award_id = #{awardId}
+	        </if>
+	        <if test="activityId != null and activityId != ''">
+	          and e.id = #{activityId}
+	        </if>
+	)t
+  </select>
+  
+  <select id="getSalaryIncreasePlanList" parameterType="map" resultMap="BaseResultVOMap"> 
+  	select a.user_draw_time, CONCAT(LEFT(c.mobile, 3), '****', RIGHT(c.mobile, 4)) AS mobile
+	from bs_activity_lucky_draw a left join bs_activity_award b on a.award_id = b.id LEFT JOIN bs_activity e ON a.activity_id = e.id,
+		bs_user c 
+	where a.user_id = c.id 
+		<if test="userDrawTime != null and userDrawTime != ''">
+			and DATE_FORMAT(a.user_draw_time,'%Y-%m') = #{userDrawTime}
+		</if>
+        <if test="awardId != null and awardId != ''">
+          and a.award_id = #{awardId}
+        </if>
+        <if test="activityId != null and activityId != ''">
+          and e.id = #{activityId}
+        </if>
+	order by a.user_draw_time
+  </select>
+  
+
+  <select id="sumAwardAmount" parameterType="map" resultType="java.lang.Double">
+    SELECT SUM(b.content) FROM bs_activity_lucky_draw a, bs_activity_award b
+    WHERE a.award_id = b.id AND a.activity_id = #{activityId} AND a.is_confirm = 'Y'
+  </select>
+
+
+  <resultMap id="LanternFestival2017LanternDetailVOMap" type="com.pinting.business.model.vo.LanternFestival2017LanternDetailVO" >
+    <result column="lantern_num" property="lanternNum" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectByPage" parameterType="map" resultMap="LanternFestival2017LanternDetailVOMap">
+    SELECT CONCAT(SUBSTRING(b.user_name FROM 1 FOR 1),'**') AS user_name,
+           CONCAT(LEFT(b.mobile, 3), '***', RIGHT(b.mobile, 4)) AS mobile,
+           a.create_time, SUBSTRING_INDEX(a.note, ',', 1) AS lantern_num
+    FROM bs_activity_lucky_draw a, bs_user b
+    WHERE a.user_id = b.id AND a.activity_id = #{activityId} AND a.is_win = 'Y'
+    ORDER BY a.create_time DESC
+    LIMIT #{start}, #{numPerPage}
+  </select>
+
+  <!-- 刮刮乐活动获奖名单记录 -->	 
+  <resultMap id="ActivityScratchcardAwardVOMap" type="com.pinting.business.model.vo.ActivityScratchcardAwardVO" >
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+  </resultMap>
+	
+  <select id="userAwardList" parameterType="map" resultMap="ActivityScratchcardAwardVOMap">
+    SELECT date_format(d.create_time, '%m.%d %H:%i:%s') as create_time, a.content, CONCAT(LEFT(b.mobile, 3), '****', RIGHT(b.mobile, 4)) as mobile 
+	FROM bs_activity_lucky_draw d
+	LEFT JOIN bs_activity_award a on d.award_id = a.id
+	LEFT JOIN bs_user b on d.user_id = b.id
+	WHERE d.activity_id = #{activityId} AND d.is_win = 'Y' 
+	AND d.create_time BETWEEN #{startTime} AND #{endTime} 
+	ORDER BY d.create_time desc LIMIT 20
+  </select>	
+  	
+  <!-- 刮刮乐活动用户中奖信息 -->	
+  <resultMap id="ActivityScratchcardPrizeVOMap" type="com.pinting.business.model.vo.ActivityScratchcardPrizeVO" >
+    <result column="isScratch" property="isScratch" jdbcType="VARCHAR" />
+    <result column="content" property="prizeContent" jdbcType="VARCHAR" />
+  </resultMap>	
+  <select id="scratchcardPrize" parameterType="map" resultMap="ActivityScratchcardPrizeVOMap">
+    SELECT b.content, if(a.award_id > 0, 'yes', 'no') as isScratch FROM bs_activity_lucky_draw a LEFT JOIN 
+	bs_activity_award b ON a.award_id=b.id WHERE a.user_id = #{userId} AND a.activity_id = 25
+	AND a.create_time BETWEEN #{startTime} AND #{endTime} 
+  </select>		
+  	
+  <!-- 抽奖成功，兑奖失败，默认为未抽奖 -->
+  <select id="countLuckyNumToDay" parameterType="map" resultType="java.lang.Integer">
+    select COUNT(id) from bs_activity_lucky_draw
+    where activity_id = #{activityId} AND is_win = 'Y' AND is_confirm = 'Y'
+  </select>
+
+
+  <!-- 统计元宝个数 -->
+  <select id="countGoldIngotByUserId" parameterType="map" resultType="java.lang.Integer">
+    SELECT COUNT(a.id) FROM bs_activity_lucky_draw a
+    WHERE a.activity_id = #{activityId} AND a.user_id = #{userId} AND a.award_id = #{awardId} AND a.is_win = 'Y'
+    <if test="isConfirm != null">
+      AND a.is_confirm = #{isConfirm}
+    </if>
+  </select>
+
+  <select id="countThanksGiving" parameterType="map" resultType="java.lang.Integer">
+    <if test="luckyDrawId != null">
+      select count(a.id) from bs_user_receive_address a where a.lucky_draw_id in (
+        select c.id from bs_activity_lucky_draw c where c.activity_id = (
+          select b.activity_id from bs_activity_lucky_draw b where b.id = #{luckyDrawId}
+        ) and c.user_id = #{userId}
+      )
+    </if>
+    <if test="luckyDrawId == null">
+      select count(a.id) from bs_user_receive_address a, bs_activity_lucky_draw b
+      where a.user_id = #{userId} and a.lucky_draw_id = b.id and b.activity_id = 28
+    </if>
+  </select>
+
+
+  <resultMap id="ActivityLuckyNumberMap" type="com.pinting.business.model.vo.ActivityLuckyNumber" >
+    <result column="invest_date" property="investDate" jdbcType="VARCHAR" />
+    <result column="lucky_number" property="luckyNumber" jdbcType="VARCHAR" />
+    <result column="invest_number" property="investNumber" jdbcType="VARCHAR" />
+    <result column="lucky_user" property="luckyUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectInvestNumber" parameterType="map" resultMap="ActivityLuckyNumberMap">
+    select a.note as invest_number, date(a.create_time) as invest_date from bs_activity_lucky_draw a left join bs_activity b on a.activity_id = b.id
+    where a.activity_id = 29 and a.user_id = #{userId}
+    order by a.create_time asc
+  </select>
+
+  <select id="selectLuckyNumber" parameterType="map" resultMap="ActivityLuckyNumberMap">
+    select a.note as lucky_number, CONCAT(LEFT(c.mobile, 3), '****', RIGHT(c.mobile, 4)) as lucky_user, date(a.create_time) as invest_date
+    from bs_activity_lucky_draw a left join bs_activity b on a.activity_id = b.id, bs_user c
+    where a.activity_id = 29 and a.user_id = c.id and a.is_win = 'Y'
+    order by a.create_time asc
+  </select>
+
+  <select id="selectAwardListByUserId" resultMap="BaseResultMap" parameterType="map" >
+      select note, user_draw_time
+      from bs_activity_lucky_draw
+      where activity_id = #{activityId} and user_id = #{userId} and award_id != 125
+      	and DATEDIFF(NOW(),user_draw_time) &lt; 10
+      order by user_draw_time DESC
+	  limit 20
+  </select>
+</mapper>

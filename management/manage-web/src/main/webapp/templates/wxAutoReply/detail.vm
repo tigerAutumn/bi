@@ -1,0 +1,259 @@
+<h2 class="contentTitle">
+	#if("addNew"=="$!type")新增#elseif("add"=="$!type") 新增图文 #else 编辑 #end
+</h2>
+	
+<div class="pageContent">
+	
+	<form id="flashForm" method="post" action="$env.getWebURL('/wx/autoReply/addOrUpdate.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		
+		#Hidden("type", "$!type")
+		#Hidden("id", "$!autoReply.id")
+		<div class="pageFormContent nowrap" layoutH="97">
+			#if("add"=="$!type")
+				#Hidden("name", "$!autoReply.name")
+				#Hidden("replyType", "$!autoReply.replyType")
+				#Hidden("keywords","$!autoReply.keywords")
+				#Hidden("msgType","$!autoReply.msgType")
+			<dl>
+				<dt>消息名称：</dt>
+				<dd>
+					$!autoReply.name
+				</dd>
+			</dl>
+			<dl>
+				<dt>回复类型：</dt>
+				<dd>
+					#if("$!autoReply.replyType"=="KEY_REPLY")关键字回复
+					#elseif("$!autoReply.replyType"=="SUBSCRIBE_REPLY")关注时回复
+					#elseif("$!autoReply.replyType"=="AUTO_REPLY") 自动回复
+					#end
+				</dd>
+			</dl>
+			<dl>
+				<dt>关键词：</dt>
+				<dd id="keyShow">
+					
+					
+				</dd>
+			</dl>
+			<script >
+				$(function(){
+					$("#keyShow").html($('#keywords').val().replace("&lt;","<").replace("&gt;",">"));
+				});
+            </script>
+			<dl>
+				<dt>消息类型：</dt>
+				<dd>
+					#if("$!autoReply.msgType"=="text") 文本
+					#elseif("$!autoReply.msgType"=="news")图文
+					#end
+				</dd>
+			</dl>
+			#else
+			<dl>
+				<dt>消息名称：</dt>
+				<dd>
+					<input type="text" id="name" name="name" size="30" class="required" maxlength="10" value="$!autoReply.name" />(10字以内)
+				</dd>
+			</dl>
+			<dl>
+				<dt>回复类型：</dt>
+				<dd>
+				<select name="replyType" id="replyType" class="required combox">
+					<option value="KEY_REPLY" #if("$!autoReply.replyType"=="KEY_REPLY") selected  #end>关键字回复</option>
+    				<option value="SUBSCRIBE_REPLY" #if("$!autoReply.replyType"=="SUBSCRIBE_REPLY") selected  #end>关注时回复</option>
+					<option value="AUTO_REPLY" #if("$!autoReply.replyType"=="AUTO_REPLY") selected  #end>自动回复</option>
+				</select>
+				</dd>
+			</dl>
+			#if("$!autoReply.replyType"=="" || "$!autoReply.replyType"=="KEY_REPLY")
+				<dl id="keywordsDiv" style="">
+			#else
+				<dl id="keywordsDiv" style="display:none;">
+			#end
+				<dt>关键词：</dt>
+				<dd>
+					<textarea name="keywords" id="keywords" class="editor"  rows="10" cols="40" tools="Emot">$!autoReply.keywords</textarea>
+					(多个关键词用逗号分隔，除去逗号30字以内)
+				</dd>
+			</dl>
+			<dl>
+				<dt>消息类型：</dt>
+				<dd>
+				<select name="msgType" id="msgType" class="required combox">
+    				<option value="text" #if("$!autoReply.msgType"=="text") selected  #end>文本</option>
+					<option value="news" #if("$!autoReply.msgType"=="news") selected  #end>图文</option>
+				</select>
+				</dd>
+			</dl>
+			#end
+			#if("$!autoReply.msgType"=="news") 
+				<dl id="titleDiv" style="">
+			#else
+				<dl id="titleDiv" style="display:none;">
+			#end
+				<dt>图文消息标题：</dt>
+				<dd>
+					<input type="text" id="title" name="title" size="80" maxlength="30" value="$!autoReply.title" />(30字以内)
+				</dd>
+			</dl>
+			<dl>
+				<dt>文本内容：</dt>
+				<dd>
+                    <textarea name="content" id="content" class="editor"  rows="10" cols="40" tools="Emot">$!autoReply.content</textarea>
+					<span id="contentSize">(600字以内)</span>
+				</dd>
+			</dl>
+			<dl>
+			#if("$!autoReply.msgType"=="news") 
+				<dl id="picDiv" style=""> 
+			#else
+				<dl id="picDiv" style="display:none;"> 
+			#end
+			
+				<dt>上传图片：</dt>
+				<dd>
+					<div class="unit" style="width:400;height:300px;float:left;margin-left:20px;">
+            		<div id="fileQueue"></div>
+					<input id="imgPathAutoReply" value="$!autoReply.picUrl" name="picUrl" type="hidden"/>
+            		#if("$!autoReply.picUrl"=="")
+            			<img src="$env.getWebURL('/resources/dwz/resource/images/nophoto.gif')" name="imgPho" id="imgPhoAutoReply" style="width:320px;height:200px;"/>
+            		#else
+            			<img src="$!autoReply.picUrl" name="imgPho" id="imgPhoAutoReply" style="width:320px;height:200px;"/>
+            		#end
+            			<input id="testFileInputAutoReply" type="file" name="filedata" 
+                                    uploader="$!env.getWebURL('/resources/dwz/external/dwz-ria/uploadify/scripts/uploadify.swf')"
+                            		cancelImg="$!env.getWebURL('/resources/dwz/external/dwz-ria/uploadify/cancel.png')" 
+                            		script="$!env.getWebURL('/upload/wxAutoReplyImg.htm')" 
+                            		scriptData="{PHPSESSID:'xxx', ajax:1}"
+                            		fileQueue="fileQueue"
+            						buttonText="上传"
+            						auto="true"
+            						multi="false"
+            						onComplete="uploadifyComplete"
+                            		fileExt="*.jpg;*.jpeg;*.gif;*.png;"
+                            		fileDesc="*.jpg;*.jpeg;*.gif;*.png;"
+            					/>
+                    <br>最佳图片大小：360*200(大图)，200*200(小图)。<br><div id="imageSize" style="margin-top: 8px;"></div>
+                </div>
+				</dd>
+			</dl>
+			#if("$!autoReply.msgType"=="news") 
+				<dl id="picURLDiv" style="">
+			#else
+				<dl id="picURLDiv" style="display:none;">
+			#end
+			
+				<dt>图片点击链接：</dt>
+				<dd>
+					<input type="text" name="url" id="url" size="100"  maxlength="200" value="$!autoReply.url" />&nbsp;&nbsp;（请输入绝对路径，含“http://”,如百度：http://www.baidu.com）
+				</dd>
+			</dl>
+		
+		</div>
+		<div class="formBar">
+			<ul style="float:left;">
+				<li><div class="buttonActive"><div class="buttonContent"><button onclick="formsubmint()" type="button">保存</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+    <script>
+	$("select[name=msgType]").on('change',function(){
+		var val = this.value;
+		if('text' == val){
+			document.getElementById("titleDiv").style.display="none";
+			document.getElementById("picURLDiv").style.display="none";
+			document.getElementById("picDiv").style.display="none";
+			$("#contentSize").html("(600字以内)");
+			
+		}else{
+			document.getElementById("titleDiv").style.display="";
+			document.getElementById("picURLDiv").style.display="";
+			document.getElementById("picDiv").style.display="";
+			$("#contentSize").html("(300字以内，且因该则为图文消息，输入的表情保存时会被丢失)");
+		}
+	});
+	
+	$("select[name=replyType]").on('change',function(){
+		var reply = this.value;
+		if('KEY_REPLY' == reply){
+			document.getElementById("keywordsDiv").style.display="";
+			
+		}else{
+			document.getElementById("keywordsDiv").style.display="none";
+		}
+	});
+
+	
+	function formsubmint(){
+		var type = $("#type").val();
+	
+		if("add" != type){
+			var subject = $("#name").val();
+    		var msgType = $("#msgType").val();
+			var replyType = $("#replyType").val();
+			
+    		if(subject == ''){
+    			alertMsg.warn('请输入消息名称！');
+    			return false;
+    		}
+			if(replyType == 'KEY_REPLY'){
+				var keywords = $("#keywords").val();
+				if(keywords == ''){
+        			alertMsg.warn('请输入关键词！');
+        			return false;
+        		}
+			}
+			if(msgType == 'text'){
+				var content = $("#content").val();
+    			if(content == ''){
+        			alertMsg.warn('请输入文本内容！');
+        			return false;
+        		}
+			}
+		}
+		if(msgType == 'news'){
+				var title = $("#title").val();
+    			if(title == ''){
+        			alertMsg.warn('请输入图文消息标题！');
+        			return false;
+        		}
+				var content = $("#content").val();
+    			if(content == ''){
+        			alertMsg.warn('请输入文本内容！');
+        			return false;
+        		}
+    		}
+		$("#flashForm").submit();
+    }
+	function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			navTab.closeCurrentTab();
+			alertMsg.correct(json.message);
+			navTab.reload("$env.getWebURL('/wx/autoReply/index.htm')");
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+	$(function(){
+	
+});
+
+	function uploadifyComplete(event,queueId,fileObj,response,data){
+		var response =jQuery.parseJSON(response);
+		var width = response.msg.width;
+		var height = response.msg.height;
+		var url = response.msg.url;
+        var pathUrl = response.msg.pathUrl;
+        $("#imgPhoAutoReply").attr("src",url);
+        $("#imgPathAutoReply").val(url);
+		$("#imageSize").html("上传图片大小为："+width+"*"+height);
+		
+     }
+</script>
+</div>

@@ -1,0 +1,70 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	 <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/statistics/agent/conciseIndex.htm')" method="post">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" id="queryDefaultPageFlag" name="queryDefaultPageFlag" value="DEFAULTPAGE" />
+	<div class="searchBar">
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="10%">渠道ID</th>
+				<th width="15%">渠道编码</th>
+				<th width="10%">渠道名称</th>
+				<th width="10%">渠道浏览量</th>
+				<th width="10%">注册用户数</th>
+				<th width="10%">投资用户数</th>
+				<th width="10%">交易总笔数</th>
+				<th width="15%">交易总金额</th>
+				<th width="10%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $agentList)
+    			#if($!grid.id == 15)
+    			#else
+    				<tr target="sid_user" rel="1">
+        				<td>$!grid.id</td>
+        				<td>$!grid.agentCode</td>
+        				<td>$!grid.agentName</td>
+        				<td>$!grid.pageViewTimes</td>
+        				<td>#if("$!grid.registUserCount"=="") 0 #else $!grid.registUserCount #end</td>
+        				<td>#if("$!grid.investUserCount"=="") 0 #else $!grid.investUserCount #end</td>
+        				<td>#if("$!grid.transItemCount"=="") 0 #else $!grid.transItemCount #end</td>
+        				<td>#if("$!grid.transAmountCount"=="") 0 #else $!money.format($!grid.transAmountCount) #end</td>
+        				<td><a title="查看渠道用户" target="navtab" href="$!env.getWebURL('/statistics/agent/agentUser.htm?agentId=')$!grid.id" class="btnLook">查看</a></td>
+        			</tr>
+    			#end
+			#end
+			
+		</tbody>
+	</table>
+    	
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+	

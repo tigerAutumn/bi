@@ -1,0 +1,154 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);"  action="$env.getWebURL('/financeStatistics/returnFeeToInvestor.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						姓名：<input id="userName" type="text" name="userName" maxlength="20" value="$!userName" class="clear"/>
+					</td>
+					<td>
+						手机号：<input id="mobile" type="text" name="mobile" maxlength="11" value="$!mobile" class="clear num"/>
+					</td>
+                    <td>
+                        <select name="partnerCode" >
+                            <option value="" #if("$!partnerCode"=="") selected #end>全部</option>
+                            <option value="yun" #if("$!partnerCode"=="yun") selected  #end>云贷</option>
+                            <option value="zsd" #if("$!partnerCode"=="zsd") selected  #end>赞时贷</option>
+                            <option value="seven" #if("$!partnerCode"=="seven") selected  #end>七贷</option>
+							<option value="free" #if("$!partnerCode"=="free") selected  #end>自由站岗户</option>
+                        </select>
+					</td>
+					<td >返还日期：<input name="startTime" type="text" id="startTime" class=" date textInput readonly" readonly="true" value="$!startTime" dateFmt="yyyy-MM-dd" maxdate="{%y}-%M-{%d}"/></td >
+					<td>到  &nbsp;&nbsp;&nbsp;&nbsp;
+						<input name="endTime" type="text" id="endTime" class=" date textInput readonly" readonly="true" value="$!endTime" dateFmt="yyyy-MM-dd" maxdate="{%y}-%M-{%d}"/>
+					</td>
+					<td>
+						<button  onclick="func()" type="button">查询</button>
+						<button  onclick="exp()" type="button">导出excel</button>
+					</td>
+				</tr>
+			</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li>		
+				<span style="margin-left:10px;">
+    				<font color="red">返还手续费金额总额：#if(!$!returnTotal || "$!returnTotal" == "0.0")0.00 #else - $!money.format($!returnTotal) #end 元</font>
+                </span>
+			</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="120">
+		<thead>
+			<tr>
+				<th width="5%">序号</th>
+                <th width="10%">单据编号</th>
+				<th width="5%">投资人</th>
+				<th width="10%">手机号</th>
+				<th width="8%">投资客户代码</th>
+                <th width="8%">资产方</th>
+				<th width="10%">返还手续费金额</th>
+				<th width="10%">返还日期</th>
+			</tr>
+		</thead>
+		<tbody>
+			#set($prefix="071")
+			#foreach($user in $detailList)
+			<tr>
+				<td>$!user.rowno</td>
+                <td>$prefix$!user.orderNo</td>
+				<td>$!user.userName</td>
+				<td>$!user.mobile</td>
+				<td>$!user.userId</td>
+				#if("$!user.partnerCode" == "ZSD")
+                    <td>赞时贷</td>
+				#elseif("$!user.partnerCode" == "YUN_DAI_SELF")
+                    <td>云贷</td>
+                #elseif("$!user.partnerCode" == "7_DAI_SELF")
+                    <td>七贷</td>
+				#elseif("$!user.partnerCode" == "FREE")
+                    <td>自由站岗户</td>
+				#end
+				<td>- $!money.format($!user.returnFeeAmount)</td>
+				<td>$!date.format($!user.time)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+#LoadJS("/resources/js/global_validate")
+<script>
+
+function func(){
+	var beginTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	if(!beginTime) {
+		alertMsg.warn("开始时间不能为空！");
+		return;
+	}
+	if(!endTime) {
+		alertMsg.warn("结束时间不能为空！");
+		return;
+	}
+    var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+	if(result < 0){
+		alertMsg.warn("开始时间不能在结束时间之后！");
+		return;
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/financeStatistics/returnFeeToInvestor.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+	var beginTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	if(!beginTime) {
+		alertMsg.warn("开始时间不能为空！");
+		return;
+	}
+	if(!endTime) {
+		alertMsg.warn("结束时间不能为空！");
+		return;
+	}
+    var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+	if(result < 0){
+		alertMsg.warn("开始时间不能在结束时间之后！");
+		return;
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/financeStatistics/exportReturnFeeToInvestor.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+</script>

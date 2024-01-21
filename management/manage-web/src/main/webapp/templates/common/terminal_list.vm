@@ -1,0 +1,135 @@
+<style type="text/css" >
+.dd{width:158px; height:50px;display:inline-block;}
+</style>
+<div class="pageContent">
+	<form method="post" id="detail_form" action="">
+		<div class="pageFormContent" layoutH="56">
+			<div class="dd">
+				<input type="checkbox" value="APP" name="terminal_list"/> APP
+			</div>
+			<div class="dd">
+				<input type="checkbox" value="PC" name="terminal_list"/> PC
+			</div>
+			<div class="dd">
+				<input type="checkbox" value="H5" name="terminal_list"/> H5
+			</div>
+			<div class="dd">
+				<input type="checkbox" value="H5_178" name="terminal_list"/> 钱报H5
+			</div>
+			<div class="dd">
+				<input type="checkbox" value="PC_178" name="terminal_list"/> 钱报PC
+			</div>
+            <div class="dd">
+                <input type="checkbox" value="H5_KQ" name="terminal_list"/> 柯桥日报H5
+            </div>
+            <div class="dd">
+                <input type="checkbox" value="PC_KQ" name="terminal_list"/> 柯桥日报PC
+            </div>
+            <div class="dd">
+                <input type="checkbox" value="H5_HN" name="terminal_list"/> 海宁日报H5
+            </div>
+            <div class="dd">
+                <input type="checkbox" value="PC_HN" name="terminal_list"/> 海宁日报PC
+            </div>
+			<div class="dd">
+                <input type="checkbox" value="H5_RUIAN" name="terminal_list"/> 瑞安日报H5
+            </div>
+            <div class="dd">
+                <input type="checkbox" value="PC_RUIAN" name="terminal_list"/> 瑞安日报PC
+            </div>
+            <div class="dd">
+                <input type="checkbox" value="H5_QD" name="terminal_list"/> 七店H5
+            </div>
+            
+            <div class="dd">
+                <input type="checkbox" value="H5_QHD_JT" name="terminal_list"/> 秦皇岛交通广播H5
+            </div>
+            <div class="dd">
+                <input type="checkbox" value="H5_QHD_XW" name="terminal_list"/> 秦皇岛新闻891H5
+            </div>
+            <div class="dd">
+                <input type="checkbox" value="H5_QHD_TV" name="terminal_list"/> 秦皇岛电视台今日报道H5
+            </div>
+            <div class="dd">
+                <input type="checkbox" value="PC_QHD_ST" name="terminal_list"/> 视听之友PC
+            </div>
+            <div class="dd">
+                <input type="checkbox" value="H5_QHD_ST" name="terminal_list"/> 视听之友H5
+            </div>
+            <div class="dd">
+                <input type="checkbox" value="H5_QHD_SJC" name="terminal_list"/> 1038私家车广播H5
+            </div>
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li style="margin-top: 3px; margin-right: 203px;"><input type="checkbox" id="checkedAll"/> 全选</li>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="checkTerminal()" class="close">确定</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	function checkTerminal() {
+		var terminal = "";
+		$("input[name=terminal_list]:checkbox").each(function(){
+			if($(this).attr("checked")) {
+				terminal += $(this).attr('value') + ",";
+			}
+		})
+		$("#sShowTerminal").val(terminal);
+	}
+	
+	$(function(){
+		var terminals = $("#sShowTerminal").val();
+		var arr = terminals.split(",");
+		var arrLength = 0;
+		for(var i=0; i<arr.length; i++) {
+			if(arr[i] != null && arr[i] != '') {
+				$("input[name=terminal_list]:checkbox").each(function(){
+					if($(this).attr('value') == arr[i]) {
+						$(this).prop('checked',true);
+        			}
+        		})
+				arrLength = parseInt(arrLength) + 1;
+			}
+		}
+		
+		if(arrLength == 11) {
+			$('#checkedAll').prop('checked',true);
+		}
+		
+		$('#checkedAll').on('click',function(){
+			if($('#checkedAll').attr('checked')) {
+				$("input[name=terminal_list]:checkbox").each(function(){
+        			$(this).prop('checked',true);
+        		})
+    		}else {
+    			$("input[name=terminal_list]:checkbox").each(function(){
+					$(this).prop('checked',false);
+        		})
+    		}
+		})
+		
+		$("input[name=terminal_list]:checkbox").on('click',function(){
+			if($(this).attr('checked')) {
+				var len = 0;
+    			$("input[name=terminal_list]:checkbox").each(function(){
+    				if($(this).attr('checked')) {
+    					len = parseInt(len) + 1;
+    				}
+            	})
+    			
+    			if(len == 11) {
+    				$('#checkedAll').prop('checked',true);
+    			}else {
+    				$('#checkedAll').prop('checked',false);
+    			}
+			}else {
+				$('#checkedAll').prop('checked',false);
+			}
+		})
+	})
+</script>

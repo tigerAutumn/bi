@@ -1,0 +1,172 @@
+#Html("begin")
+#Head("begin","互联网金融平台，互联网金融，币港湾，币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/swiper.min")
+#LoadCSS("resources/micro2.0/styles/home/index.min")
+#if("$!qianbao" == "qianbao")
+	#LoadCSS("resources/micro2.0/styles/footer-qianbao.min")
+#else
+	#LoadCSS("resources/micro2.0/styles/footer.min")
+#end
+#WeChatShare()
+#Head("end")
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    ## banner图 start
+    <div class="swiper-container swiper-container-horizontal">
+        <div class="swiper-wrapper">
+    		#foreach($banner in $!bannerList.bannerList)
+    			#if($string.isNotBlank($!banner.url))
+    				#if($string.startsWith($!banner.url,"http"))
+                        <div class="swiper-slide" style="background: url($!env.getWebURL($!banner.imgPath)) no-repeat center;">
+                            <a href="$!banner.url" style="display:block; width:100%; height:100%;" ></a>
+                        </div>
+    				#else
+                        <div class="swiper-slide" style="background: url($!env.getWebURL($!banner.imgPath)) no-repeat center;">
+                            <a href="$!env.getWebURL($!banner.url)" style="display:block; width:100%; height:100%;" ></a>
+                        </div>
+    				#end
+    			#else
+                    <div class="swiper-slide" style="background: url($!env.getWebURL($!banner.imgPath)) no-repeat center;">
+                    </div>
+    			#end
+    		#end
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+    ## banner图 end  
+	<!-- 公告  -->
+    #if($!hasNews==true)
+        <div class="notice">
+            <div class="broadcast"></div>
+            <div class="swiper-container2 swiper-container-horizontal line">
+				<div class="swiper-wrapper line_li">
+                    #foreach($!notice in $!news)
+                        <div class="swiper-slide ani_li li" onclick="go_notice(this)" url="$!env.getWebURL('')/micro2.0/platform/notice_info/detail?id=$!notice.id&entrance=HOMEPAGE">
+                            <i class="ani_li_txt">$!notice.subject</i>
+                            #if("$!notice.isRead" == "NO")
+                                <div class="ani_li_sbox"><span class="ani_li_spot"></span></div>
+                            #end
+                        </div>
+    				#end
+				</div>
+            </div>
+            <a class="notice_btn" href="$!env.getWebURL('')/micro2.0/platform/noticeInfo/index"><span class="close">更多</span></a>
+        </div>
+		
+        <script>
+            function go_notice(obj) {
+                location.href = $(obj).attr('url');
+            }	
+        </script>
+	#end
+    <!--重点导航-->
+    <div class="key_navigation">
+        <dl class="key_navbox" onclick="go_safe()">
+            <dt class="key_navimg icon1"></dt>
+            <dd class="key_info">安全保障</dd>
+        </dl>
+        <dl class="key_navbox" onclick="go_data_index()">
+            <dt class="key_navimg icon2"></dt>
+            <dd class="key_info">平台数据</dd>
+        </dl>
+        <dl class="key_navbox" onclick="go_recommend()">
+            <dt class="key_navimg icon3"></dt>
+            <dd class="key_info">推荐有礼</dd>
+        </dl>
+        <dl class="key_navbox" onclick="go_activity_center()"> <!-- 跳转链接 TODO -->
+            <dt class="key_navimg icon4">
+                ##红点
+                #if($!isRead == "NO")
+                    <span class="key_navspot"></span>
+                #end
+            </dt>
+            <dd class="key_info">活动中心</dd>
+        </dl>
+    </div>    
+    ## 主要内容 开始
+    #foreach($pro in $!recommendProductList)
+        #if($!pro.id)
+            <div class="product">
+                <input type="hidden" name="id" class="id" value="$!pro.id"/>
+                <input type="hidden" name="term" class="term" value="$!pro.term"/>
+                <input type="hidden" name="rate" class="rate" value="$!pro.rate"/>
+                <input type="hidden" name="name" class="name" value="$!pro.name"/>
+                <input type="hidden" name="minInvestAmount" class="minInvestAmount" value="$!pro.minInvestAmount"/>
+                <input type="hidden" name="userType" class="userType" value="$!userType"/>
+                <div class="product_label" onclick="selPro(this)">
+
+                    #if("$!pro.activityType" == "NEW_BUYER")
+                        <span class="small_label"><i class="small_i">新手专享</i></span>
+                    #elseif("$!pro.activityType" == "ACTIVITY")
+                        <span class="small_label"><i class="small_i">限时活动</i></span>
+                    #else
+                        <span class="small_label"><i class="small_i">精选产品</i></span>
+                    #end
+
+                    <span class="small_title"><i class="small_img"></i>
+                        #if($!pro.propertySymbol == "ZAN")
+                            等额本息
+                        #else
+                            到期还本付息
+                        #end
+                    </span>
+                </div>
+                <div class="product_title" onclick="selPro(this)">$pro.name</div>
+                <div class="product_number" onclick="selPro(this)">$!{pro.rate}<span class="number_pt">%</span>
+					#if($!pro.interestRatesTagContent)
+						<span class="numberTicket">$!pro.interestRatesTagContent</span>
+					#else
+					#end
+				</div>
+                <div class="product_time" onclick="selPro(this)">
+                    <span class="product_timeimg"></span>
+					#if($!pro.propertySymbol == "ZAN")
+						委托意向：$!{pro.term}个月内
+					#else
+						产品期限：$!{pro.term}天
+					#end                    
+                </div>
+                <div class="product_money" onclick="selPro(this)">
+					起投金额：<span class="product_color">$!string.replace($!money.format($!{pro.minInvestAmount}),".00","")</span> 元<i class="product_line"></i>
+					剩余金额：<span class="product_color">#set($leftAmount = $!pro.maxTotalAmount - $!pro.currTotalAmount)$!string.replace($!money.format($!{leftAmount}),".00","")</span> 元
+                </div>
+                #if($!pro.status == '5')
+                    <div class="product_btn" onclick="selPro(this)"><div class="product_abtn">预热中</div></div>
+                #elseif($!pro.status == '6')
+                    <div class="product_btn" onclick="go_buy(this)"><div class="product_abtn">立即加入</div></div>
+                #elseif($!pro.status == '7')
+                    <div class="product_btn" onclick="selPro(this)"><div class="product_abtn">已结束</div></div>
+                #end
+            </div>
+        #end
+    #end
+    <!--prompt-->
+    <div class="prompt">
+        <span class="prompt_line"></span><span class="prompt_img"></span>您的资金由恒丰银行资金存管系统全程监管<span class="prompt_line prompt_line_right"></span>
+    </div>
+    <!--data-->
+    <div class="data">
+        <dl class="data_box">
+            <dt class="data_img data_icon1"></dt>
+            <dd class="data_info">恒丰银行存管</dd>
+        </dl>
+        <dl class="data_box">
+            <dt class="data_img data_icon2"></dt>
+            <dd class="data_info">杭商国资背景</dd>
+        </dl>
+        <dl class="data_box">
+            <dt class="data_img data_icon3"></dt>
+            <dd class="data_info">债权小额分散</dd>
+        </dl>
+    </div>
+    <div class="placehold"></div>
+    ## 主要内容 结束
+#Footer2("1")
+#LoadJS("resources/micro2.0/scripts/swiper.jquery.min")
+#LoadJS("resources/micro2.0/scripts/home/index")
+</body>
+#Html("end")
+

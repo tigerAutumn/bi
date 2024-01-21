@@ -1,0 +1,128 @@
+#foreach($!grid in $!res.dataList)
+    #if($!req.status == "INIT")
+        <li class="red_pack init_li">
+			<img class="pack_img" src="$!{env.getWebURL('')}/resources/micro2.0/images/red_pack/Increase_bg01.png" alt="">
+			<div class="orange">
+				<div class="pack_money" onclick="go_buy()">
+					<i class="choose_icon">立即使用</i>
+					<span class="money_small">+</span>$!money.format($!grid.rate)%
+				</div>
+				<div class="gray_full inc_full">$!grid.serialName</div>
+				<div class="ticket_btn" id="ticket_btn"> 	
+					#if($money.subtract("$!grid.full", "10000") >= 0)
+						<i class="pack_spot"></i><span class="ticker_txt">限$!grid.termLimit天产品使用，单笔加入满$!number.format("0.00", $money.divide("$!grid.full", "10000"))万元启用</span>
+					#else
+						<i class="pack_spot"></i><span class="ticker_txt">限$!grid.termLimit天产品使用，单笔加入满$!number.format("0.00", $!grid.full)元启用</span>
+					#end
+					<span class="increase_img"></span>
+					<input type="hidden" id="productLimit" name="productLimit" value="$!grid.productLimit" />
+				</div>
+				<div class="alert_info">
+					<div class="alert_title">提示</div>
+					<div class="alert_ul">
+						#if($money.subtract("$!grid.full", "10000") >= 0)
+							$!money.format($!grid.rate)%$!grid.serialName，限$!grid.termLimit天产品使用，单笔加入满$!number.format("0.00", $money.divide("$!grid.full", "10000"))万元启用，<span class="bgw_name"></span>产品适用。加息收益将会在加入的产品到期后以奖励金的形式发放。
+						#else
+							$!money.format($!grid.rate)%$!grid.serialName，限$!grid.termLimit天产品使用，单笔加入满$!number.format("0.00", $!grid.full)元启用，<span class="bgw_name"></span>产品适用。加息收益将会在加入的产品到期后以奖励金的形式发放。
+						#end
+					</div>
+					<div class="btn_group">
+						<div class="top_line close_btn">我知道了</div>
+					</div>
+				</div>
+				<span class="pace_time inc_time"><i class="pack_spot1"></i>$!date.formatYYYYMMDD($!grid.useTimeStart)至$!date.formatYYYYMMDD($!grid.useTimeEnd)</span>
+			</div>																								
+		</li>
+    #elseif($!req.status == "USED")
+        <li class="red_pack over_li">
+			<img class="pack_img" src="$!{env.getWebURL('')}/resources/micro2.0/images/red_pack/Increase_bg02.png" alt="">
+			<div class="orange1">
+				<div class="pack_money">
+					<span class="money_small">+</span>$!money.format($!grid.rate)%
+				</div>
+				<div class="gray_full inc_full">$!grid.serialName</div>
+				<div class="red_money1"> 	
+					<i class="pack_spot1"></i><span class="ticker_txt">$!grid.productName</span>
+				</div>
+				<span class="pace_time inc_time"><i class="pack_spot1"></i>使用时间：$!date.formatYYYYMMDD($!grid.useTime)</span>
+			</div>                           
+        </li>
+    #else
+        <li class="red_pack over_li">
+			<img class="pack_img" src="$!{env.getWebURL('')}/resources/micro2.0/images/red_pack/Increase_bg02.png" alt="">
+			<div class="orange1">
+				<div class="pack_money">
+					<span class="money_small">+</span>$!money.format($!grid.rate)%
+				</div>
+				<div class="gray_full inc_full">$!grid.serialName</div>
+				<div class="red_money1 ticket_btn"> 	
+					#if($money.subtract("$!grid.full", "10000") >= 0)
+						<i class="pack_spot1"></i><span class="ticker_txt">限$!grid.termLimit天产品使用，单笔加入满$!number.format("0.00", $money.divide("$!grid.full", "10000"))万元启用</span>
+					#else
+						<i class="pack_spot1"></i><span class="ticker_txt">限$!grid.termLimit天产品使用，单笔加入满$!number.format("0.00", $!grid.full)元启用</span>
+					#end
+					<span class="increase_img1"></span>
+					<input type="hidden" id="productLimit" name="productLimit" value="$!grid.productLimit" />
+				</div>
+				<div class="alert_info">
+					<div class="alert_title">提示</div>
+					<div class="alert_ul">
+						#if($money.subtract("$!grid.full", "10000") >= 0)
+							$!money.format($!grid.rate)%$!grid.serialName，限$!grid.termLimit天产品使用，单笔加入满$!number.format("0.00", $money.divide("$!grid.full", "10000"))万元启用，<span class="bgw_name"></span>产品适用。加息收益将会在加入的产品到期后以奖励金的形式发放。
+						#else
+							$!money.format($!grid.rate)%$!grid.serialName，限$!grid.termLimit天产品使用，单笔加入满$!number.format("0.00", $!grid.full)元启用，<span class="bgw_name"></span>产品适用。加息收益将会在加入的产品到期后以奖励金的形式发放。
+						#end
+					</div>
+					<div class="btn_group">
+						<div class="top_line close_btn">我知道了</div>
+					</div>
+				</div>
+				<span class="pace_time inc_time"><i class="pack_spot1"></i>$!date.formatYYYYMMDD($!grid.useTimeStart)至$!date.formatYYYYMMDD($!grid.useTimeEnd)</span>
+			</div>                           
+        </li>
+    #end        
+#end
+<script>
+$(function(){
+	//加息券弹窗
+	  var productLimit=""
+	$(".ticket_btn").click(function(){
+		$(".dialog_notice").addClass("alert_show").removeClass("alert_hide");
+		$(this).next(".alert_info").stop().show();
+		productLimit=$(this).find("#productLimit").val();
+		var arr=productLimit.split(",");
+		var array=[];
+		for(var i=0;i<arr.length;i++){
+			if(arr[i]=="BIGANGWAN_SERIAL"){
+				array.push('港湾系列')
+			}
+		}
+		for(var i=0;i<arr.length;i++){
+			if(arr[i]=="YONGJIN_SERIAL"){
+				array.push('涌金系列')
+			}
+		}
+		for(var i=0;i<arr.length;i++){
+			if(arr[i]=="KUAHONG_SERIAL"){
+				array.push('跨虹系列')
+			}
+		}
+		for(var i=0;i<arr.length;i++){
+			if(arr[i]=="BAOXIN_SERIAL"){
+				array.push('保信系列')
+			}
+		}
+		var str=array.join("， ");
+		if(arr.length>=4){
+			$(".bgw_name").text("全部系列")
+		}else{
+			$(".bgw_name").text(str)
+		}
+	})
+	$(".close_btn").click(function(){
+		$(".dialog_notice").addClass("alert_hide").removeClass("alert_show");
+		$(".alert_info").stop().hide();
+		productLimit="";
+	})
+})
+</script>

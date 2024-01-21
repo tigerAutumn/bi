@@ -1,0 +1,74 @@
+<div class="pageContent">
+	<form id="flashForm" method="post" action="$env.getWebURL('/sys/maintainace/update.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("id", "$!record.id")
+		<div class="pageFormContent nowrap" layoutH="56">
+			<dl>
+				<dt>交易类型：</dt>
+				<dd>
+					#if("$!record.transType" == "transaction")普通交易
+					#elseif("$!record.transType" == "schedule") 定时
+					#end
+				</dd>
+			</dl>
+			#if("$!record.transType" == "schedule")
+			<dl>
+				<dt>交易编码：</dt>
+				<dd>
+					$!record.transCode
+				</dd>
+			</dl>
+			#end
+			<dl>
+				<dt>状态值：</dt>
+				<dd>
+					<select name="statusValue" class="valid">
+						<option value="1" #if($!record.statusValue== 1) selected #end>正常</option>
+						<option value="2" #if($!record.statusValue== 2) selected #end>挂起</option>
+                    </select>
+				</dd>
+			</dl>
+			<dl>
+				<dt>描述：</dt>
+				<dd>
+					$!record.note
+				</dd>
+			</dl>
+			<dl>
+				<dt>停用开始时间：</dt>
+				<dd>
+					<input name="startTime" type="text" size="20" id="startTime" class=" date dateInitStart textInput readonly" datefmt="yyyy-MM-dd HH:mm:ss" readonly="true" value="$!date.format($!record.startTime)" />
+				</dd>
+			</dl>
+			<dl>
+				<dt>停用结束时间：</dt>
+				<dd>
+					<input name="endTime" type="text" size="20" id="endTime" class=" date dateInitStart textInput readonly" datefmt="yyyy-MM-dd HH:mm:ss" readonly="true" value="$!date.format($!record.endTime)" />
+				</dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul style="float:left;">
+				<li><div class="buttonActive"><div class="buttonContent"><button onclick="formsubmint()" type="button">保存</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+	
+ <script>
+ function formsubmint(){
+ 	$("#flashForm").submit();
+ }
+ function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			alertMsg.correct(json.message);
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('/sys/maintainace/index.htm')");
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+ </script>

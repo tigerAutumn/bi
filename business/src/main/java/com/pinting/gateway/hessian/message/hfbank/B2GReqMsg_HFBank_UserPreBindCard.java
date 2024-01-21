@@ -1,0 +1,140 @@
+package com.pinting.gateway.hessian.message.hfbank;
+
+import com.pinting.core.hessian.msg.ReqMsg;
+
+import java.util.Date;
+
+/**
+ * Author:      cyb
+ * Date:        2017/4/3
+ * Description: 短验绑卡申请请求信息
+ */
+public class B2GReqMsg_HFBank_UserPreBindCard extends ReqMsg {
+
+    private static final long serialVersionUID = 7568065679202437394L;
+
+
+    /* 平台客户编号：已实名认证用户，参数必填  */
+    private String platcust;
+    /* 证件类型：未实名认证用户，参数必填 */
+    private String id_type;
+    /* 证件号码：未实名认证用户，参数必填 */
+    private String id_code;
+    /* 姓名：未实名认证用户，参数必填 */
+    private String name;
+    /* 卡号  */
+    private String card_no;
+    /* 卡类型(1:借记卡，2:信用卡) */
+    private String card_type;
+    /* 预留手机号 */
+    private String pre_mobile;
+    /* 支付通道 */
+    private String pay_code;
+    /* 备注 */
+    private String remark;
+
+    /* 订单号 */
+    private String order_no;
+
+    /* 商户交易日期 YYYYMMdd */
+    private Date partner_trans_date;
+
+    /* 商户交易时间 HHmmss */
+    private Date partner_trans_time;
+
+    public String getPlatcust() {
+        return platcust;
+    }
+
+    public void setPlatcust(String platcust) {
+        this.platcust = platcust;
+    }
+
+    public String getId_type() {
+        return id_type;
+    }
+
+    public void setId_type(String id_type) {
+        this.id_type = id_type;
+    }
+
+    public String getId_code() {
+        return id_code;
+    }
+
+    public void setId_code(String id_code) {
+        this.id_code = id_code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCard_no() {
+        return card_no;
+    }
+
+    public void setCard_no(String card_no) {
+        this.card_no = card_no;
+    }
+
+    public String getCard_type() {
+        return card_type;
+    }
+
+    public void setCard_type(String card_type) {
+        this.card_type = card_type;
+    }
+
+    public String getPre_mobile() {
+        return pre_mobile;
+    }
+
+    public void setPre_mobile(String pre_mobile) {
+        this.pre_mobile = pre_mobile;
+    }
+
+    public String getPay_code() {
+        return pay_code;
+    }
+
+    public void setPay_code(String pay_code) {
+        this.pay_code = pay_code;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getOrder_no() {
+        return order_no;
+    }
+
+    public void setOrder_no(String order_no) {
+        this.order_no = order_no;
+    }
+
+    public Date getPartner_trans_date() {
+        return partner_trans_date;
+    }
+
+    public void setPartner_trans_date(Date partner_trans_date) {
+        this.partner_trans_date = partner_trans_date;
+    }
+
+    public Date getPartner_trans_time() {
+        return partner_trans_time;
+    }
+
+    public void setPartner_trans_time(Date partner_trans_time) {
+        this.partner_trans_time = partner_trans_time;
+    }
+}

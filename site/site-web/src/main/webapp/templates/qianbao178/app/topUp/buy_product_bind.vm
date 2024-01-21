@@ -1,0 +1,141 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾官网_国资系互联网金融服务平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#LoadJS("resources/micro2.0/scripts/assets/six")
+#LoadCSS("resources/micro2.0/styles/assets/default")
+#LoadCSS("resources/micro2.0/styles/regular/top_up.min")
+#WeChatShare()
+#Head("end")
+<script type="text/javascript">
+	$(function(){
+		function alertHide(){
+			$(this).parents(".dialog_flex").addClass('alert_hide').removeClass("alert_open");
+		}
+		$(".right_title").on("click",function(){
+			if($("#explain").hasClass('alert_hide'))$("#explain").removeClass('alert_hide').addClass("alert_open");
+		});
+		$(".close").on("click",alertHide);
+
+        $('.close_pay').on('click', function(){
+            location.reload();
+        });
+	})
+</script>
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="bankName" name="bankName" value="$!bankName" />
+    <input type="hidden" id="cardNo" name="cardNo" value="$!cardNo" />
+    <input type="hidden" id="bankId" name="bankId" value="$!bankId" />
+    <input type="hidden" id="isFirst" name="isFirst" value="$!isFirst" />
+    <input type="hidden" id="oneTop" name="oneTop" value="$!oneTop" />
+    <input type="hidden" id="dayTop" name="dayTop" value="$!dayTop" />
+    <input type="hidden" id="accountId" name="accountId" value="$!accountId" />
+    <input type="hidden" id="balance" name="balance" value="$!balance" />
+    <input type="hidden" id="mobile" name="mobile" value="$!mobile" />
+    <input type="hidden" id="userName" name="userName" value="$!userName" />
+    <input type="hidden" id="idCard" name="idCard" value="$!idCard" />
+    <input type="hidden" id="isAvailable" name="isAvailable" value="$!isAvailable" />
+    <input type="hidden" id="rechangeLimit" name="rechangeLimit" value="$!rechangeLimit"/>
+    <input type="hidden" id="token" name="token" value="$!token" />
+    <input type="hidden" id="dailyNotice" name="dailyNotice" value="$!dailyNotice" />
+    <input type="hidden" id="qianbao" name="qianbao" value="$!qianbao"/>
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+    <input type="hidden" id="mobileToken" name="mobileToken" value="$!mobileToken">
+    <input type="hidden" id="from" name="from" value="$!from">
+    <input type="hidden" id="id" name="id" value="$!id"> ## 产品ID
+    <input type="hidden" id="buyAmount" name="buyAmount" value="$!buyAmount">
+    <input type="hidden" id="backUrl" name="backUrl" value="$!backUrl">
+    <input type="hidden" id="source" name="source" value="$!source">
+    <!-- 头部 -->
+    <div class="header">
+    	#if($!backUrl != '')
+            <a class="header_arrow" href="$!backUrl"></a>
+    	#else
+            <a class="header_arrow" href="javascript:history.go(-1)"></a>
+    	#end
+        <h1 class="heade_ft color_bg">充值</h1>
+        <div class="right_title"></div>
+    </div>
+    <!-- main -->
+    <div class="main">
+    	<div class="bank-card">
+            <img class="bank-card-img" src="$!env.getWebURL($!bankBigLogo)" alt="">
+            <div class="bank-card-name">$!bankName</div>
+    		<div class="bank-card-number">
+    			<i class="bank-card-spot"><img src="$!env.getWebURL('resources/micro2.0/images/regular/xingxing.png')" alt=""></i>
+    			<i class="bank-card-spot"><img src="$!env.getWebURL('resources/micro2.0/images/regular/xingxing.png')" alt=""></i>
+    			<i class="bank-card-spot"><img src="$!env.getWebURL('resources/micro2.0/images/regular/xingxing.png')" alt=""></i>
+    			$!string.right($!cardNo, 4)
+    		</div>
+    		<div class="bank-card-security">安全卡</div>
+        </div>
+    	<div class="limit" id="limit">
+            单笔限额<span class="cor_red">$string.replace($!number.format("0.00",$!{oneTop}),".00","")</span>万元，单日限额<span class="cor_red">$string.replace($!number.format("0.00",$!{dayTop}),".00","")</span>万元
+        </div>
+        <div class="Recharge_wrap">
+            <div class="samll_Recharge">
+                <div class="rge_title">充值金额</div>
+                <div class="reg_iptwrap">
+                    <img class="reg_icon" src="$!env.getWebURL('resources/micro2.0/images/reg.png')" alt="">
+                    <input class="rge_moeney" type="text" maxlength="12" name="amountNew" id="amountNew" value="" placeholder="0.00" oninput="checkMoney(this)">
+                </div>
+                <div class="rge_balance">存管账户余额：<span class="cor_red reg_margin">￥$!number.format("0.00", $!depBalance)</span> </div>
+    			<div class="hint-txt">*仅可充值到存管账户</div>
+            </div>
+        </div>  
+        <div class="limit">
+            <span id="prompt_info">$!dailyNotice</span>
+        </div>
+        <div class="Exit_login  btn_bgNO"  id="recharge_submit">提交</div>
+        <div class="rech_yes">
+    		<span>点击提交即代表您同意</span>
+    		<a class="cor_red" href="$!env.getWebURL('/micro2.0/agreement/pay')">《支付协议》和《授权委托书》</a>
+    	</div>
+    </div>
+    
+    
+    <!-- 弹窗 -->
+    <div id="explain" class="dialog_flex alert_hide">
+        <div class="alert_info">
+            <i class="close">
+                <img src="$!env.getWebURL('resources/micro2.0/images/close.png')" alt="">
+            </i>
+            <div class="alert_title">充值说明</div>
+            <ul class="alert_ul">
+                <li class="alert_list">
+                    <span class="fontBold">•充值金额不能低于$!{rechangeLimit}元；</span>
+                </li>
+                <li class="alert_list">
+                    •仅可使用储蓄卡进行充值，严禁洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用；
+                </li>
+                <li class="alert_list">
+                    •充值申请完成后，资金预计5分钟内到账，如遇到银行通道维护未及时处理，请联系客服<a href="tel:400-806-1230">400-806-1230</a>。
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="paylog" class="dialog_flex alert_hide">
+        <input type="hidden" id="orderNo" value=""/>
+        <div class="deposit_dialog alert_info_new">
+            <h3 class="deposit_info_title alert_title_new">支付验证</h3>            
+            <div class="yz_info"></div>
+            <div class="yz_warp">
+                <input class="pass_input" type="tel" name="verifyCode" maxlength="6" id="verifyCode" value="" placeholder="请输入短信验证码" oninput="checkNumber(this)">
+                <div class="phone_time">重发(<span>60</span>)</div>
+            </div>
+			<div class="open-card-btn">
+				<i class="close close_pay close_copy">取消</i>
+				<a class="down_ok" href="javascript:void(0)" title=""><div class="top_line">确定</div></a>
+			</div>
+        </div>
+    </div>
+    
+    <div id="reapal_form" >
+    </div>
+#LoadJS("resources/micro2.0/scripts/zepto.min")
+#LoadJS("resources/micro2.0/scripts/assets/custom")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/app/178/scripts/topup/buy_product_bind")
+</body>
+#Html("end")

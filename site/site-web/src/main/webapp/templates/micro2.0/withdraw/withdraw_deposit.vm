@@ -1,0 +1,248 @@
+#Html("begin")
+#Head("begin","币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("我的资产【币港湾官网】")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/regular/withdraw_deposit.min")
+#WeChatShare()
+#Head("end")
+<body>
+    <!-- 头部 -->
+    <div class="header">
+        #if("$!qianbao" == "qianbao")
+            <a class="header_arrow" href="$!env.getWebURL('micro2.0/assets/assets')?qianbao=qianbao&agentViewFlag=$!agentViewFlag"></a>
+        #else
+            <a class="header_arrow" href="$!env.getWebURL('micro2.0/assets/assets')"></a>
+        #end
+        <h1 class="heade_ft color_bg">提现</h1>
+        <div class="right_title"></div>
+    </div>
+    <!-- 头部提示 -->
+    ## 支付渠道替换成了宝付，无时间限制，在此提醒
+    ## <div class="waring_info" id="withdrawMsg">
+    ##    支付系统需每日定时维护，$!{begin} － $!{end}无法进行充值操作。
+    ##    给您带来的不便，敬请见谅。
+    ## </div>
+    <!-- main -->
+    <div class="main">
+    	#if($!hfDepGuideInfo.accountType == "DEP")
+            <!-- 存管户 -->
+            <div class="withdraw-content">
+                <img class="withdraw-bank-img" src="$!{env.getWebURL('')}/$!bankLogo" alt="">
+    				<span class="withdraw-bank-name">$!bankName
+                        <i class="withdraw-spot">****</i>
+    					<i class="withdraw-spot">****</i>
+    					<i class="withdraw-spot">****</i>
+    					$!cardNo
+    				</span>
+            </div>
+            <div class="withdraw-balance">
+                <span id="show_text_other" dep_can_withdraw="$!money.format($!depCanWithdraw)">存管账户余额：￥$!money.format($!depCanWithdraw)</span>
+            </div>
+            <div class="withdraw-samll psmall">
+                <div class="withdraw-title">提现金额</div>
+                <div class="withdraw-money">
+                    <input  class="withdraw-number" type="text" maxlength="12" id="amount" value="$!amount" placeholder="请输入您的提现金额" autocomplete="off">
+                </div>
+            </div>
+    	#elseif($!hfDepGuideInfo.accountType == "SIMPLE")
+            <!-- 普通账户 -->
+            <div class="withdraw-content">
+                <img class="withdraw-bank-img" src="$!{env.getWebURL('')}/$!bankLogo" alt="">
+                    <span class="withdraw-bank-name">$!bankName
+                        <i class="withdraw-spot">****</i>
+    					<i class="withdraw-spot">****</i>
+    					<i class="withdraw-spot">****</i>
+    					$!cardNo
+    				</span>
+            </div>
+            <div class="withdraw-balance">
+                <span id="show_text_other" can_withdraw="$!money.format($!canWithdraw)">可提余额：￥$!money.format($!canWithdraw)</span>
+            </div>
+            <div class="withdraw-samll psmall">
+                <div class="withdraw-title">提现金额</div>
+                <div class="withdraw-money">
+                    <input  class="withdraw-number" type="text" maxlength="12" id="amount" value="$!amount" placeholder="请输入您的提现金额" autocomplete="off">
+                </div>
+            </div>
+    	#elseif($!hfDepGuideInfo.accountType == "DOUBLE")
+            <!-- 双帐户 -->
+            <div class="HF-samll-withdraw">
+                <label for="HF-withdaaw-right" class="HF-withdaaw-txt">
+                    <input id="HF-withdaaw-right" name="accountTypeRadio" type="radio" value="SIMPLE" class="radio">
+                    <div>
+                        <i class="HF-withdaaw-color">普通账户</i>
+                        <span class="HF-withdaaw-btn"></span>
+                    </div>
+                </label>
+                <label for="HF-withdaaw-left" class="HF-withdaaw-txt">
+                    <input id="HF-withdaaw-left" name="accountTypeRadio" type="radio" value="DEP" checked="checked" class="radio">
+                    <div>
+                        <i class="HF-withdaaw-color">存管账户</i>
+                        <span class="HF-withdaaw-btn"></span>
+                    </div>
+                </label>
+            </div>
+            <div class="with_prompt" style="display: block;">*普通账户余额只能提现，您可将资金提现到银行卡后，再充值到恒丰存管账户，方可加入产品。</div>
+            <div class="withdraw-content">
+                <img class="withdraw-bank-img" src="$!{env.getWebURL('')}/$!bankLogo" alt="">
+    				<span class="withdraw-bank-name">$!bankName
+                        <i class="withdraw-spot">****</i>
+    					<i class="withdraw-spot">****</i>
+    					<i class="withdraw-spot">****</i>
+    					$!cardNo
+    				</span>
+            </div>
+            <div class="withdraw-balance">
+                <span id="show_text_other" can_withdraw="$!money.format($!canWithdraw)" dep_can_withdraw="$!money.format($!depCanWithdraw)">可提余额：￥$!money.format($!depCanWithdraw)</span>
+            </div>
+            <div class="withdraw-samll psmall">
+                <div class="withdraw-title">提现金额</div>
+                <div class="withdraw-money">
+                    <input  class="withdraw-number" type="text" maxlength="12" id="amount" value="$!amount" placeholder="请输入您的提现金额" autocomplete="off">
+                </div>
+            </div>
+    	#end
+        <div class="Exit_login btn_bgNO pre_withdraw_btn">提交</div>
+        <div class="limit" id="show_text">
+            本月还可免费提现<span class="num">$!{withdrawTimes}次</span>，超出后手续费<span class="num">$!{withdrawCounterFee}</span>元/笔
+        </div>
+    </div>
+    
+    <!-- 弹窗 -->
+    <div id="explain" class="dialog_flex alert_hide">
+        <div class="alert_info alert_hight">
+            <i class="close">
+                <img src="$!{env.getWebURL('')}/resources/micro2.0/images/close.png" alt="">
+            </i>
+            <div class="alert_title">提现说明</div>
+            <div class="alert_over">
+                <table class="depTable">
+                    <tbody class="depTbody">
+                    <tr class="depTh">
+                        <td class="depTd" rowspan="2"><i class="tf_three">手续费</i></td>
+                        <td class="depTd">每月$!{eachMonthWithdrawTimes}次以内</td>
+                        <td class="depTd">免费</td>
+                    </tr>
+                    <tr class="depTh">
+                        <td class="depTd">每月超过$!{eachMonthWithdrawTimes}次</td>
+                        <td class="depTd">$!{withdrawCounterFee}元/笔</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="alert_ul" style="padding:10px 0 0 0;margin-bottom:-10px;">提现到账说明：</div>
+                <table class="depTable">
+                    <tbody class="depTbody">
+    					#set($withdrawLimitAmountInteger = $!withdrawLimitAmount%10000)
+    					#if($withdrawLimitAmountInteger == 0)
+    						#set($withdrawLimitAmount = $!withdrawLimitAmount/10000)
+    						#set($withdrawLimitAmount = $!number.format("0", $!withdrawLimitAmount))
+    					#else
+    						#set($withdrawLimitAmount = $!withdrawLimitAmount/10000)
+    					#end
+                    <tr class="depTh">
+                        <td class="depTd deptd_min" colspan="3">注：当日充值未加入产品的资金均需下<br>一个工作日到账</td>
+                    </tr>
+                    <tr class="depTh">
+                        <td class="depTd">≤$!{withdrawLimitAmount}万</td>
+                        <td class="depTd" colspan="2">预计当日到账</td>
+                    </tr>
+                    <tr class="depTh">
+                        <td class="depTd" rowspan="3"><i class="tf_one">>$!{withdrawLimitAmount}万</i></td>
+                        <td class="depTd">工作日<br>8:00-16:30</td>
+                        <td class="depTd"><i class="deptd_up">预计当日到账</i></td>
+                    </tr>
+    
+                    <tr class="depTh">
+                        <td class="depTd">工作日<br/>16:30-8:00</td>
+                        <td class="depTd"><i class="deptd_up">预计下个工作日到账</i></td>
+                    </tr>
+                    <tr class="depTh">
+                        <td class="depTd">法定节假日<br/>0:00-24:00</td>
+                        <td class="depTd"><i class="deptd_up">预计下个工作日到账</i></td>
+                    </tr>
+    
+                    </tbody>
+                </table>
+                <ul class="alert_ul">
+                    <li class="alert_list">
+                        •如遇银行通道维护等特殊情况将顺延1-2个工作日到账，实际到账时间依据提现银行而有所差异。
+                    </li>
+                    <li class="alert_list">
+                        •为了您的资金能及时到账，请合理安排当日充值未加入产品的资金。
+                    </li>
+                    <li class="alert_list">
+                        •根据《反洗钱法》规定，严禁洗钱、信用卡套现、虚假交易等行为，一经发现并确认，将终止该账户的使用。
+                    </li>
+                    <li class="alert_list">
+                        •如有疑问请联系客服 400-806-1230。
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="paylog" class="dialog_flex alert_hide">
+        <div class="deposit_dialog reminder password_btn">
+            <h3 class="deposit_info_title">请输入交易密码</h3>
+            
+            <input class="pass_input" type="password" name="password" id="password" maxLength="16" value="" placeholder="请输入交易密码">
+            <div class="btn_group">
+				<i class="close dep_btn dep_line">取消</i>
+				<div class="top_line oran_color withdraw_btn">确定</div>
+			</div>
+        </div>
+    </div>
+    
+    <!-- 知道了 -->
+    <div class="dialog_notice have_fee_dialog" style="display: none">
+        <div class="alert_info_new">
+            <div class="alert_title_new">提示</div>
+            <ul class="alert_ul">
+                <li class="alert_list fee_show_text">
+					
+                </li>
+            </ul>
+            <div class="btn_group">
+                <div class="top_line_new close_btn know_this">知道了</div>
+            </div>
+        </div>
+    </div>
+    
+    #* 继续提现 *#
+    <div class="dialog_notice continue_dialog" style="display: none">
+        <div class="alert_info_new">
+            <div class="alert_title_new">提示</div>
+            <ul class="alert_ul">
+                <li class="alert_list continue_text">
+                </li>
+            </ul>
+            <div class="btn_group">
+                <div class="dep_btn know_this">取消</div>
+                <div class="dep_btn go_withdraw">继续提现</div>
+            </div>
+        </div>
+    </div>
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$!env.getWebURL('')" />
+<input type="hidden" id="canWithdraw" name="canWithdraw" value="$!{canWithdraw}">
+<input type="hidden" id="depCanWithdraw" name="depCanWithdraw" value="$!{depCanWithdraw}">
+<input type="hidden" id="eachMonthWithdrawTimes" name="eachMonthWithdrawTimes" value="$!{eachMonthWithdrawTimes}">
+<input type="hidden" id="withdrawCounterFee" name="withdrawCounterFee" value="$!{withdrawCounterFee}">
+<input type="hidden" id="failTime" name="failTime" value="$!failTime" />
+<input type="hidden" id="withdrawLimit" name="withdrawLimit" value="$!withdrawLimit" /> ## 提现最小金额
+<input type="hidden" id="withdrawTimes" name="withdrawTimes" value="$!withdrawTimes" /> ## 当月剩余免费提现次数
+<input type="hidden" id="token" name="token" value="$!token" /> ## 防重复提交
+<input type="hidden" id="beginTime" name="beginTime" value="$!beginTime" />
+<input type="hidden" id="endTime" name="endTime" value="$!endTime" />
+	#if("$!qianbao" == "qianbao")
+    <input type="hidden" id="qianbao" name="qianbao" value="$!qianbao" />
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+	#end
+<input type="hidden" id="from" name="from" value="$!from"> ## pwd
+
+<input type="hidden" id="singleWithdrawUpperLimit" name="singleWithdrawUpperLimit" value="$!singleWithdrawUpperLimit">
+<input type="hidden" id="dayWithdrawUpperLimit" name="dayWithdrawUpperLimit" value="$!dayWithdrawUpperLimit">
+<input type="hidden" id="accountType" name="accountType" value="$!hfDepGuideInfo.accountType">
+	#LoadJS("resources/micro2.0/scripts/assets/withdraw_deposit")
+	#LoadJS("resources/micro2.0/scripts/common/common")
+</body>
+#Html("end")

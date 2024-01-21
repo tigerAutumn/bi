@@ -1,0 +1,86 @@
+<div class="pageContent">
+	<form method="post" id="detail_form">
+		#Hidden("userCount","$!totalRows")
+		<div class="pageFormContent" layoutH="56">
+			<p>已选择<e id="total">$!totalRows</e>个用户</p>
+			<p style="height:35px;">
+				<label>选择通知</label>
+				<select name="name" class="required combox">
+					<option value="" >请选择</option>
+					#foreach($msg in $!messages)
+						<option value="$!msg.name">$!msg.name</option>
+					#end
+				</select>
+			</p>
+			<p>
+				<label>推送文字：</label>
+				<span id="pushMessage"></span>
+			</p>
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="pushMsg()">确定</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	$(function(){
+		$("select[name=name]").on('change',function(){
+    		var val = this.value;
+			if(val != null && val != '') {
+				var url = $("#APP_ROOT_PATH").val() + "/user/operate/queryMessage.htm";
+        		jQuery.ajax({
+        			type : 'post',
+        			url : url,
+        			data : {name : val},
+        			async : false,
+        			success : function(data) {
+        				$('#pushMessage').html(data);
+        			}
+        		});
+			}else {
+				$('#pushMessage').html('');
+			}
+		})
+	})
+	
+	
+	function pushMsg() {
+		var name = $.trim($("select[name=name]").val()),
+			userCount = $.trim($('#userCount').val());
+		if(name == null || name == '') {
+			alertMsg.warn("推送消息不能为空！！！");
+			return false;
+		}
+		if(parseInt(userCount) <= parseInt(0)) {
+			alertMsg.warn("当前没有选择用户，请重新选择用户！！");
+    		return false;
+		}
+		
+		alertMsg.confirm("app推送消息需要较长时间，推送人数越多推送时间越长，是否继续？", {     
+			okCall: function(){      
+			var params = "bankId=" + $('#bankId').val() + "&sLastBuyTime=" + $('#sLastBuyTime').val() + "&eLastBuyTime=" + $('#eLastBuyTime').val() +
+	           "&sFirstBuyTime=" + $('#sFirstBuyTime').val() + "&eFirstBuyTime=" + $('#eFirstBuyTime').val() + "&sTotalBonus=" + $('#sTotalBonus').val() + "&eTotalBonus=" + $('#eTotalBonus').val() + 
+			   "&sInvestMoney=" + $('#sInvestMoney').val() + "&eInvestMoney=" + $('#eInvestMoney').val() + "&sInvestTotalMoney=" + $('#sInvestTotalMoney').val() + "&eInvestTotalMoney=" + $('#eInvestTotalMoney').val() + 
+			   "&sRegistTime=" + $('#sRegistTime').val() + "&eRegistTime=" + $('#eRegistTime').val() + "&agentIds=" + $('#agentIds').val() + "&name=" + name + "&nonAgentId=" + $('#nonAgentId').val();
+		
+    			var url = $("#APP_ROOT_PATH").val() + "/user/operate/push.htm?"+params;
+        		$.ajax({
+        			type : 'post',
+        			url : url,
+        			success : function(data) {
+        				alertMsg.correct("app消息正在推送中！！！");
+        			}
+        		})
+				
+				//关闭弹出框
+				$.pdialog.close("app_push");
+			}    
+		
+		}); 
+	}
+</script>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
+	
+	<!-- 注解扫描 -->
+	<context:component-scan base-package="com.pinting" >
+		<context:exclude-filter type="custom" expression="com.pinting.business.util.MockTypeFilter"/>
+	</context:component-scan>
+	<!-- 默认的注解映射的支持 -->  
+    <mvc:annotation-driven />  
+    	
+	<!-- 方便根据 bean name 获得bean实例 -->
+	<bean id="springBeanUtil" class="com.pinting.core.util.SpringBeanUtil"></bean>
+	
+	<!-- 配置placeholder.properties文件的位置信息-->
+	<bean class="com.pinting.core.converter.LocalPropertyPlaceholderConfigurer">
+		<property name="locations" value="classpath:placeholder.properties"></property>
+	</bean>
+	
+	<!-- DBSrc -->
+	<import resource="classpath:META-INF/spring/spr-common-extends.xml"/>
+	<!-- mongoDB -->
+	<import resource="classpath:META-INF/spring/spr-mongo.xml"/>
+	
+	
+	<!-- 还款队列线程池配置 -->
+	<bean id="repayExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	 	<!-- 线程池维护线程的最少数量 -->
+		<property name="corePoolSize" value="5" />
+		<!-- 允许的空闲时间 -->
+		<property name="keepAliveSeconds" value="300" />
+		<!-- 线程池维护线程的最大数量 -->
+		<property name="maxPoolSize" value="20" />
+		<!-- 缓存队列 -->
+		<property name="queueCapacity" value="0" />
+		<!-- 对拒绝task的处理策略 -->
+		<property name="rejectedExecutionHandler">
+			<bean class="java.util.concurrent.ThreadPoolExecutor$AbortPolicy" />
+		</property>
+	</bean>
+
+	<!-- 还款业务结果处理轮询线程池配置 -->
+	<bean id="repayHandleExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 线程池维护线程的最少数量 -->
+		<property name="corePoolSize" value="5" />
+		<!-- 允许的空闲时间 -->
+		<property name="keepAliveSeconds" value="300" />
+		<!-- 线程池维护线程的最大数量 -->
+		<property name="maxPoolSize" value="50" />
+		<!-- 缓存队列 -->
+		<property name="queueCapacity" value="0" />
+		<!-- 对拒绝task的处理策略 -->
+		<property name="rejectedExecutionHandler">
+			<bean class="java.util.concurrent.ThreadPoolExecutor$AbortPolicy" />
+		</property>
+	</bean>
+
+	<!-- 借款队列线程池配置 -->
+	<bean id="loanExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	 	<!-- 线程池维护线程的最少数量 -->
+		<property name="corePoolSize" value="5" />
+		<!-- 允许的空闲时间 -->
+		<property name="keepAliveSeconds" value="300" />
+		<!-- 线程池维护线程的最大数量 -->
+		<property name="maxPoolSize" value="20" />
+		<!-- 缓存队列 -->
+		<property name="queueCapacity" value="0" />
+		<!-- 对拒绝task的处理策略 -->
+		<property name="rejectedExecutionHandler">
+			<bean class="java.util.concurrent.ThreadPoolExecutor$AbortPolicy" />
+		</property>
+	</bean>
+	
+	<!-- 七贷借款队列线程池配置 -->
+	<bean id="loan7DaiExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	 	<!-- 线程池维护线程的最少数量 -->
+		<property name="corePoolSize" value="5" />
+		<!-- 允许的空闲时间 -->
+		<property name="keepAliveSeconds" value="300" />
+		<!-- 线程池维护线程的最大数量 -->
+		<property name="maxPoolSize" value="20" />
+		<!-- 缓存队列 -->
+		<property name="queueCapacity" value="0" />
+		<!-- 对拒绝task的处理策略 -->
+		<property name="rejectedExecutionHandler">
+			<bean class="java.util.concurrent.ThreadPoolExecutor$AbortPolicy" />
+		</property>
+	</bean>
+	<!-- 积分发放队列线程池配置 -->
+	<bean id="mallTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	 	<!-- 线程池维护线程的最少数量 -->
+		<property name="corePoolSize" value="5"/>
+		<!-- 允许的空闲时间 -->
+		<property name="keepAliveSeconds" value="300"/>
+		<!-- 线程池维护线程的最大数量 -->
+		<property name="maxPoolSize" value="100"/>
+		<!-- 缓存队列 -->
+		<property name="queueCapacity" value="0"/>
+		<!-- 对拒绝task的处理策略 -->
+		<property name="rejectedExecutionHandler">
+			<bean class="java.util.concurrent.ThreadPoolExecutor$AbortPolicy" />
+		</property>
+	</bean>
+	
+	<!-- 积分商城兑换的红包、优惠券发放队列线程池配置 -->
+	<bean id="mallSendTicketsTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	 	<!-- 线程池维护线程的最少数量 -->
+		<property name="corePoolSize" value="5"/>
+		<!-- 允许的空闲时间 -->
+		<property name="keepAliveSeconds" value="300"/>
+		<!-- 线程池维护线程的最大数量 -->
+		<property name="maxPoolSize" value="100"/>
+		<!-- 缓存队列 -->
+		<property name="queueCapacity" value="0"/>
+		<!-- 对拒绝task的处理策略 -->
+		<property name="rejectedExecutionHandler">
+			<bean class="java.util.concurrent.ThreadPoolExecutor$AbortPolicy" />
+		</property>
+	</bean>
+	
+	
+</beans>
+

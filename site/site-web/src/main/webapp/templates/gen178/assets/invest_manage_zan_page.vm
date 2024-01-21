@@ -1,0 +1,158 @@
+<div class="product_list_title">
+    <ul class="clearfix fenqi_col">
+        <li class="fenqi_col_li02">产品名称</li>
+        <li class="fenqi_col_li01">预期年化收益率</li>
+        <li class="fenqi_col_li01">委托金额</li>
+        <li>委托意向</li>
+        #if($!req.investStatus == "ENTRUSTING")
+            <li class="fenqi_col_li01">委托时间</li>
+            <li class="fenqi_col_li01">已出借金额</li>
+        #elseif($!req.investStatus == "FINISH")
+            <li class="fenqi_col_li01">委托时间</li>
+            <li class="fenqi_col_li01">已获得收益</li>
+        #elseif($!req.investStatus == "HOLDING")
+            <li class="fenqi_col_li01">待收本息</li>
+            <li class="fenqi_col_li01">已回款</li>
+        #end
+        <li>产品状态</li>
+        <li class="fenqi_col_li02"><img src="$!env.get('gen.server.web')/resources/gen178/images/assets/investManage/text.png"></li>
+    </ul>
+</div>
+#if($!res.investList.size() > 0)
+<div class="stages_content">
+    #foreach($invest in $!res.investList)
+        <div class="product_card">
+            <ul class="clearfix fenqi_col">
+                <li class="fenqi_col_li02"><div style="padding: 0 15px;">$!invest.productName</div></li>
+                <li class="fenqi_col_li03"><div>$!{money.format($!invest.productRate)}%</div></li>
+                <li class="fenqi_col_li03"><div>￥$!money.format($!invest.openBalance)</div></li>
+                <li>
+                    <div>
+                        #if(0 > $!invest.term)
+                            #set($termShow = $!invest.term *-1)
+                            $!{termShow}天内
+                        #else
+                            $!{invest.term}个月内
+                        #end
+                    </div>
+                </li>
+                <li class="fenqi_col_li03">
+                    <div>
+                        #if($!invest.entrustStatus == "ENTRUSTING")
+                        ## 委托中
+                            $!date.formatDateTime($!invest.openTime,'yyyy-MM-dd')
+                        #elseif($!invest.entrustStatus == "RETURNING")
+                        ## 回款中
+                            #if($!invest.receiveAmount)
+                                ￥$!money.format($!invest.receiveAmount)
+                            #else
+                                ￥0.00
+                            #end
+                        #elseif($!invest.entrustStatus == "RETURN_OVER")
+                        ## 回款结束
+                            $!date.formatDateTime($!invest.openTime,'yyyy-MM-dd')
+                        #elseif($!invest.entrustStatus == "ENTRUST_OVER")
+                        ## 委托结束
+                            $!date.formatDateTime($!invest.openTime,'yyyy-MM-dd')
+                        #end
+                    </div>
+                </li>
+                <li class="fenqi_col_li03">
+                    <div>
+                        #if($!invest.entrustStatus == "ENTRUSTING")
+                        ## 委托中
+                            #if($!invest.balance)
+                                ￥$!money.format($!invest.balance)
+                            #else
+                                ￥0.00
+                            #end
+                        #elseif($!invest.entrustStatus == "RETURNING")
+                        ## 回款中
+                            #if($!invest.returnAmount)
+                                ￥$!money.format($!invest.returnAmount)
+                            #else
+                                ￥0.00
+                            #end
+                        #elseif($!invest.entrustStatus == "RETURN_OVER")
+                        ## 回款结束
+                            #if($!invest.returnAmount)
+                                ￥$!money.format($!invest.returnAmount)
+                            #else
+                                ￥0.00
+                            #end
+                        #elseif($!invest.entrustStatus == "ENTRUST_OVER")
+                        ## 委托结束
+                            #if($!invest.returnAmount)
+                                ￥$!money.format($!invest.returnAmount)
+                            #else
+                                ￥0.00
+                            #end
+                        #end
+                    </div>
+                </li>
+
+                #if($!invest.entrustStatus == "ENTRUSTING")
+                ## 委托中
+                    <li><div><span class="Investment_tr_title_spanbtn bnt_orange" data-datas="productId=$!invest.productId&subAccountId=$!invest.id" onclick="matchPrint(this);">委托中</span></div></li>
+                    <li class="fenqi_col_li02"><div><a onclick="autoLoanPrint(this);" data-datas="productId=$!invest.productId&subAccountId=$!invest.id">《自动出借计划协议》</a></div></li>
+                #elseif($!invest.entrustStatus == "RETURNING")
+                ## 回款中
+                    <li><div><span class="Investment_tr_title_spanbtn bnt_orange" data-datas="productId=$!invest.productId&subAccountId=$!invest.id" onclick="matchPrint(this);">回款中</span></div></li>
+                    <li class="fenqi_col_li02"><div><a onclick="autoLoanPrint(this);" data-datas="productId=$!invest.productId&subAccountId=$!invest.id">《自动出借计划协议》</a></div></li>
+                #elseif($!invest.entrustStatus == "RETURN_OVER")
+                ## 回款结束
+                    <li><div><span class="Investment_tr_title_spanbtn bnt_orange Investment_btn_after" data-datas="productId=$!invest.productId&subAccountId=$!invest.id" onclick="matchPrint(this);">回款结束</span></div></li>
+                    <li class="fenqi_col_li02"><div><a onclick="autoLoanPrint(this);" data-datas="productId=$!invest.productId&subAccountId=$!invest.id">《自动出借计划协议》</a></div></li>
+                #elseif($!invest.entrustStatus == "ENTRUST_OVER")
+                ## 委托结束
+                    <li><div><span class="Investment_tr_title_spanbtn bnt_orange Investment_btn_after" data-datas="productId=$!invest.productId&subAccountId=$!invest.id" onclick="matchPrint(this);">委托结束</span></div></li>
+                    <li class="fenqi_col_li02"><div><a onclick="autoLoanPrint(this);" data-datas="productId=$!invest.productId&subAccountId=$!invest.id">《自动出借计划协议》</a></div></li>
+                #end
+            </ul>
+        </div>
+    #end
+    <!--fenye-->
+    <div class="fenye">
+        <div class="fenye_wrap">
+            #set($page = $!req.pageNum)
+            #set($nextPage = $!req.pageNum + 1)
+            #set($nextSecondPage = $req.pageNum + 2)
+            #set($prePage = $req.pageNum - 1)
+            #set($preSecondPage = $req.pageNum - 2)
+            #set($totalPage = $totalPages)
+            #if($!totalPage > 1)
+                <a href="javascript:void(0)" onclick="homePage('$!req.returnType', '$!req.investStatus')" class="fy_l">首页</a>
+                <a href="javascript:void(0)" onclick="prePage('$!req.returnType', '$!req.investStatus', -1)" class="fy_ll"></a>
+                #if($!prePage > 0)
+                    #if($!preSecondPage > 0 && $!nextPage > $totalPage)
+                        <a href="javascript:void(0)" onclick="prePage('$!req.returnType', '$!req.investStatus', -2)" class="fy_c">$!preSecondPage</a>
+                    #end
+                    <a href="javascript:void(0)" onclick="prePage('$!req.returnType', '$!req.investStatus', -1)" class="fy_c">$!prePage</a>
+                    <a href="javascript:void(0)" class="fy_c fy_atpage">$!page</a>
+                    #if($!nextPage <= $totalPage)
+                        <a href="javascript:void(0)" onclick="nextPage('$!req.returnType', '$!req.investStatus', 1)" class="fy_c">$!nextPage</a>
+                    #end
+                #else
+                    <a href="javascript:void(0)" class="fy_c fy_atpage">$!page</a>
+                    #if($!nextPage <= $totalPage)
+                        <a href="javascript:void(0)" onclick="nextPage('$!req.returnType', '$!req.investStatus', 1)" class="fy_c">$!nextPage</a>
+                    #end
+                    #if($!nextSecondPage <= $totalPage)
+                        <a href="javascript:void(0)" onclick="nextPage('$!req.returnType', '$!req.investStatus', 2)" class="fy_c">$!nextSecondPage</a>
+                    #end
+                #end
+                <a href="javascript:void(0)" onclick="nextPage('$!req.returnType', '$!req.investStatus', 1)" class="fy_rr"></a>
+                <a href="javascript:void(0)" onclick="endPage('$!req.returnType', '$!req.investStatus')" class="fy_r">尾页</a>
+            #end
+        </div>
+    </div>
+</div>
+#else
+<!--无记录-->
+<div class="Investment_tr_title_null_zan_div">
+    <div class="Investment_tr_title_null" >
+        <img src="$!env.get('gen.server.web')/resources/gen178/images/assets/investManage/null_bg.png" />
+        <p>暂无记录</p>
+    </div>
+</div>
+#end

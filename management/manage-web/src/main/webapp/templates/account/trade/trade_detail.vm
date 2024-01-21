@@ -1,0 +1,95 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/account/trade/detail.htm')" method="post">
+		<!--<input type="hidden" name="numPerPage" value="$!numPerPage" />-->
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+		<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<div class="searchBar">
+		
+			<table class="searchContent">
+				<tr>
+					<td>
+						手机号码：<input id="sMobile" type="text" name="sMobile" maxlength="11" value="$!sMobile" class="clear num" />
+					</td>
+					<td>
+						姓名：<input id="sUserName" type="text" name="sUserName" maxlength="20" value="$!sUserName" class="clear"/>
+					</td>
+					
+					<td>
+						交易类型：
+						<select name="sTransType" class="valid">
+							<option value="" #if("$!sTransType"=="") selected  #end>全部显示</option>
+							<option value="TOP_UP" #if("$!sTransType"=="TOP_UP") selected  #end>充值</option>
+							<option value="BUY" #if("$!sTransType"=="BUY") selected  #end>购买</option>
+							<option value="RETURN" #if("$!sTransType"=="RETURN") selected  #end>回款</option>
+							<option value="BONUS_2_BALANCE" #if("$!sTransType"=="BONUS_2_BALANCE") selected  #end>奖励金转余额</option>
+							<option value="WITHDRAW" #if("$!sTransType"=="WITHDRAW") selected  #end>提现</option>
+        				</select>
+					</td>
+					
+					<td>
+						<button  type="submit">查询</button>
+					</td>
+				</tr>
+			</table>
+	
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="128">
+		<thead>
+			<tr>
+				<th width="174">手机号</th>
+				<th width="100">姓名</th>
+				<th width="252">订单号</th>
+				<th width="174">交易类型</th>
+				<th width="174">金额</th>
+				<th width="174">交易状态</th>
+				<th width="174">创建时间</th>
+				<th width="174">更新时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($userTransDetail in $userTransDetails)
+			<tr target="sid_user" rel="1">
+				<td>#if("$!userTransDetail.mobile" != "") $!userTransDetail.mobile#end</td>
+				<td>#if("$!userTransDetail.userName" != "") $!userTransDetail.userName#end</td>
+				<td>$!userTransDetail.orderNo</td>
+                <td>$!message.get("USER_TRADE_TRANS_TYPE_$!userTransDetail.transType")</td>
+                <td>
+				#if($!userTransDetail.amount < 0)
+					<span style="color:red;">$!money.format($!userTransDetail.amount)</span>
+				#else
+					<span style="color:blue;">$!money.format($!userTransDetail.amount)<span style="color:red;">
+				#end
+				</td>
+				<td>$!message.get("USER_TRADE_TRANS_STATUS_$!userTransDetail.transStatus")</td>
+				<td>$date.format($!userTransDetail.createTime)</td>
+				<td>$date.format($!userTransDetail.updateTime)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+#LoadJS("/resources/js/global_validate")

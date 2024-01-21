@@ -1,0 +1,78 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/bank/index.htm')" method="post">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						银行名称：<input  id="name" type="text" name="name" value="$!name" size="15" maxlength="18" style="width:210px; height:16px" />
+						是否可用：<select name="status" >
+    							  <option value="" #if("$!status"=="") selected #end>全部</option>
+    							  <option value="1" #if("$!status"=="1") selected  #end>可用</option>
+    							  <option value="2" #if("$!status"=="2") selected  #end>不可用</option>
+            				  </select>
+							  <spen style="padding-left:10px"><button type="submit">查询</button></spen>
+					</td>
+				</tr>
+			</table>
+		</div> 
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">	
+		<ul class="toolBar">
+			<li><a class="add" href="$env.getWebURL('/bank/detail.htm')" target="dialog" mask="true" rel="createBack" height="665" width="720"><span>新增</span></a></li>
+			<li class="line">line</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="10%">银行名称</th>
+				<th width="10%">是否可用</th>
+				<th width="35%">小图标</th>
+				<th width="35%">大图标</th>
+				<th width="10%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($banks in $bankList)
+			<tr>
+				<td>$!banks.name</td>
+				<td>#if("$!banks.status" == 1)可用
+                    #elseif("$!banks.status" == 2)不可用
+				    #end
+				</td>
+				<td>$!banks.smallLogo</td>
+				<td>$!banks.largeLogo</td>
+				<td>
+					<a title="编辑?" target="dialog" href="$env.getWebURL('/bank/detail.htm?id=')$!banks.id" class="btnEdit" mask="true" rel="createBack" height="665" width="720">编辑</a>
+					#if("$!banks.status" == 1)
+					<a title="禁用?" target="ajaxTodo" mask="true" href="$env.getWebURL('bank/statusModify.htm?status=2&id=')$!banks.id" class="btnDel">禁用</a>
+                    #elseif("$!banks.status" == 2)
+					<a title="启用?" target="ajaxTodo" mask="true" href="$env.getWebURL('bank/statusModify.htm?status=1&id=')$!banks.id" class="btnSelect">启用</a>
+				    #end
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>

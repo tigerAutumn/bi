@@ -1,0 +1,148 @@
+#Html("begin")
+#Head("begin")
+#Title("CA电子印章测试")
+<script>
+$(function(){
+	$("#getp10").click(function(){
+		$.post($(this).attr('url'), {}, function(data){
+			$("#Csr").html(data.Csr);
+			$("#KeyIdentifier").html(data.KeyIdentifier);
+		},"json");
+	});
+	
+	$("#getcert").click(function(){
+		$.post($(this).attr('url'), {
+				p10:$("#Csr").html(),
+				userName:$("#userName").val(),
+				identNo:$("#identNo").val()
+			}, function(data){
+    			$("#DN").html(data.DN);
+    			$("#CertStatus").html(data.CertStatus);
+    			$("#EncryptionCert").html(data.EncryptionCert);
+    			$("#EncryptionPrivateKey").html(data.EncryptionPrivateKey);
+    			$("#StartTime").html(data.StartTime);
+    			$("#EndTime").html(data.EndTime);
+    			$("#SequenceNo").html(data.SequenceNo);
+    			$("#SerialNo").html(data.SerialNo);
+    			$("#SignatureCert").html(data.SignatureCert);
+		},"json");
+	});
+	
+	$("#getpfx").click(function(){
+		$.post($(this).attr('url'), {
+				keyid:$("#KeyIdentifier").html(),
+				cert:$("#SignatureCert").html(),
+				path:$("#path").val(),
+				pfxName:$("#pfxName").val()
+			}, function(data){
+				$("#pfx").html(data.pfx);
+				$("#pfxPath").html(data.pfxPath);
+		},"json");
+	});
+	
+	$("#makeseal").click(function(){
+		$.post($(this).attr('url'), {
+				//path:$("#pfxPath").html(),
+				path:'/home/pinting/bigangwan/config/cfcatransfer/zan.pfx',
+				pass:$("#certPass").val(),
+				imagePath:'/home/pinting/bigangwan/config/cfcatransfer/zan.png',
+				hongchunCode:$("#hongchunCode").val(),
+				hongchunPass:$("#hongchunPass").val()
+			}, function(data){
+				$("#mkIsSucc").html(data.isSucc);
+		},"json");
+	});
+	$("#makenamedseal").click(function(){
+		$.post($(this).attr('url'), {
+				path:$("#pfxPath").html(),
+				pass:'cfca1234',
+				sealName:$("#sealName").val(),
+				perCode:$("#perCode").val(),
+				perPass:$("#perPass").val()
+			}, function(data){
+				$("#mkNamedIsSucc").html(data.isSucc);
+		},"json");
+	});
+	
+	$("#autoseal").click(function(){
+		$.post($(this).attr('url'), {
+				certSN:$("#certSN").val(),
+				certDN:$("#certDN").val(),
+				path:$("#srcPath").val(),
+				sealCode:$("#sealCode").val(),
+				sealPass:$("#sealPass").val(),
+				sealResson:$("#sealResson").val(),
+				keyword:$("#keyword").val()
+			}, function(data){
+				$("#isSucc").html(data.isSucc);
+				$("#sealedPath").html(data.sealedFilePath);
+		},"json");
+	});
+
+})
+</script>
+#Head("end")
+<body>
+<form action="$env.getWebURL('/remote/test/sealTest')" method="post" name="form1">
+	<input id="APP_ROOT_PATH" value="$!env.getWebURL('')" type="hidden">
+	<button id="getp10" type="button" url="$env.getWebURL('/remote/test/kt4p10')">获取P10</button>
+    <div id="Csr"></div>
+	<div id="KeyIdentifier"></div>
+	------------------------------------
+	<div >
+		identNo:<input type="text" name="identNo" id="identNo" value=""/>
+		userName:<input type="text" name="userName" id="userName" value=""/>
+    </div>
+	<button id="getcert" type="button" url="$env.getWebURL('/remote/test/ra4cert')">申请证书并下载</button>
+	<div id="DN"></div>
+	<div id="CertStatus"></div>
+	<div id="EncryptionCert"></div>
+	<div id="EncryptionPrivateKey"></div>
+	<div id="StartTime"></div>
+	<div id="EndTime"></div>
+	<div id="SequenceNo"></div>
+	<div id="SerialNo"></div>
+	<div id="SignatureCert"></div>
+	------------------------------------
+	<div >
+		path:<input type="text" name="path" id="path" value="/home/pinting/bigangwan/deploy/gateway/resources/upload/sign/"/>
+		pfxName:<input type="text" name="pfxName" id="pfxName" value="丁鹏风"/>
+    </div>
+	<button id="getpfx" type="button" url="$env.getWebURL('/remote/test/kt4pfx')">获取证书</button>
+	<div id="pfx"></div>
+	<div id="pfxPath"></div>
+	------------------------------------
+	<div > 品听资产  </div>
+	<div > 
+		certPass:<input type="text" name="certPass" id="certPass" value="pinting"/>
+		hongchunCode:<input type="text" name="hongchunCode" id="hongchunCode" value="pinting"/>
+		hongchunPass:<input type="text" name="hongchunPass" id="hongchunPass" value="pinting1234"/>
+	</div>
+	<button id="makeseal" type="button" url="$env.getWebURL('/remote/test/makeseal')">普通制章（企业）</button>
+	<div id="mkIsSucc"></div>
+	------------------------------------
+	<div > 品听资产 </div>
+	<div > 
+		sealName:<input type="text" name="sealName" id="sealName" value=""/>
+		perCode:<input type="text" name="perCode" id="perCode" value=""/>
+		perPass:<input type="text" name="perPass" id="perPass" value=""/>
+	</div>
+	<button id="makenamedseal" type="button" url="$env.getWebURL('/remote/test/makenamedseal')">制个人章</button>
+	<div id="mkNamedIsSucc"></div>
+	------------------------------------
+	<div > 
+		certSN:<input type="text" name="certSN" id="certSN" value="1032902392"/>
+		certDN:<input type="text" name="certDN" id="certDN" value="CN=041@8330104000287123@泓淳(杭州)科技有限公司@00000001,OU=Enterprises,OU=Local RA OCA1,O=CFCA OCA1,C=cn"/>
+		srcPath:<input type="text" name="srcPath" id="srcPath" value=""/>
+		sealCode:<input type="text" name="sealCode" id="sealCode" value=""/>
+		sealPass:<input type="text" name="sealPass" id="sealPass" value=""/>
+		sealResson:<input type="text" name="sealResson" id="sealResson" value=""/>
+		keyword:<input type="text" name="keyword" id="keyword" value=""/>
+	</div>
+	<button id="autoseal" type="button" url="$env.getWebURL('/remote/test/autoseal')">pdf签章</button>
+	<div id="isSucc"></div>
+	<div id="sealedPath"></div>
+		
+</form>
+</body>
+#Html("end")

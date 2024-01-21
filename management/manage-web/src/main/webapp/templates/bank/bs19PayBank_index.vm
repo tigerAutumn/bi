@@ -1,0 +1,138 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/bank/bs19PayBank/index.htm')" method="post">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						银行名称：<input  id="name" type="text" name="name" value="$!name" size="15"/>
+					19付银行编码：<input  id="pay19BankCode" type="text" name="pay19BankCode" value="$!pay19BankCode" size="15"/>
+					        支付类型：<select name="payType" >
+        							  <option value="" #if("$!payType"=="") selected #end>全部</option>
+        							  <option value="1" #if("$!payType"=="1") selected  #end>快捷</option>
+        							  <option value="2" #if("$!payType"=="2") selected  #end>代付</option>
+									  <option value="3" #if("$!payType"=="3") selected  #end>代扣</option>
+									  <option value="4" #if("$!payType"=="4") selected  #end>网银</option>
+            				     </select> 
+    				       是否可用：<select name="isAvailable" >
+    							  <option value="" #if("$!isAvailable"=="") selected #end>全部</option>
+    							  <option value="1" #if("$!isAvailable"=="1") selected  #end>可用</option>
+    							  <option value="2" #if("$!isAvailable"=="2") selected  #end>不可用</option>
+        				        </select>
+					  是否主通道：<select name="isMain" >
+    							  <option value="" #if("$!isMain"=="") selected #end>全部</option>
+    							  <option value="1" #if("$!isMain"=="1") selected  #end>是</option>
+    							  <option value="2" #if("$!isMain"=="2") selected  #end>否</option>
+        				        </select>
+					         优先级：<select name="channelPriority">
+    							  <option value="" #if("$!isAvailable"=="") selected #end>全部</option>
+    							  <option value="1" #if("$!channelPriority"=="1") selected  #end>1</option>
+    							  <option value="2" #if("$!channelPriority"=="2") selected  #end>2</option>
+								  <option value="3" #if("$!channelPriority"=="3") selected  #end>3</option>
+        				       </select>
+					    渠道类型：<select name="channel" >
+    							  <option value="" #if("$!channel"=="") selected #end>全部</option>
+								  <option value="BAOFOO" #if("$!channel"=="BAOFOO") selected  #end>宝付</option>
+    							  <option value="PAY19" #if("$!channel"=="PAY19") selected  #end>19付</option>
+    							  <option value="REAPAL" #if("$!channel"=="REAPAL") selected  #end>融宝</option>
+								  <option value="HFBANK" #if("$!channel"=="HFBANK") selected  #end>恒丰</option>
+        				       </select>
+							   <spen style="padding-left:10px"><button type="submit">查询</button></spen>
+					</td>
+				</tr>
+			</table>
+		</div> 
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">	
+		<ul class="toolBar">
+			<li><a class="add" href="$env.getWebURL('/bank/bs19PayBank/detail.htm')" target="dialog" mask="true" rel="createBack" height="520" width="500"><span>新增</span></a></li>
+			<li class="line">line</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="70">银行名称</th>
+				<th width="70">19付银行编码</th>
+				<th width="60">支付类型</th>
+				<th width="60">是否可用</th>
+				<th width="60">渠道类型</th>
+				<th width="66">是否主通道</th>
+				<th width="60">优先级</th>
+				<th width="80">单笔限额</th>
+				<th width="80">单日限额</th>
+				<th width="80">单月限额</th>
+				<th width="120">停用开始时间</th>
+				<th width="120">停用结束时间</th>
+				<th width="205">重要提示</th>
+				<th width="205">日常提示</th>
+				<th width="60">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($bs19PayBanks in $bs19PayBankList)
+			<tr>
+				<td>$!bs19PayBanks.name</td>
+				<td>$!bs19PayBanks.pay19BankCode</td>
+				<td>#if("$!bs19PayBanks.payType" == 1)快捷
+                    #elseif("$!bs19PayBanks.payType" == 2)代付
+					#elseif("$!bs19PayBanks.payType" == 3)代扣
+					#elseif("$!bs19PayBanks.payType" == 4)网银
+				    #end
+				</td>
+				<td>#if("$!bs19PayBanks.isAvailable" == 1)可用
+                    #elseif("$!bs19PayBanks.isAvailable" == 2)不可用
+				    #end
+				</td>
+				<td>#if("$!bs19PayBanks.channel" == "PAY19")19付
+                    #elseif("$!bs19PayBanks.channel" == "REAPAL")融宝
+					#elseif("$!bs19PayBanks.channel" == "BAOFOO")宝付
+					#elseif("$!bs19PayBanks.channel" == "HFBANK")恒丰
+				    #end
+				</td>
+				<td>#if("$!bs19PayBanks.isMain" == 1)是
+                    #elseif("$!bs19PayBanks.isMain" == 2)否
+				    #end
+				</td>
+				<td>$!bs19PayBanks.channelPriority 
+				</td>
+				<td>$!money.format($!bs19PayBanks.oneTopStr)</td>
+				<td>$!money.format($!bs19PayBanks.dayTopStr)</td>
+				<td>$!money.format($!bs19PayBanks.monthTopStr)</td>
+				<td>$!date.format($!bs19PayBanks.forbiddenStart)</td>
+				<td>$!date.format($!bs19PayBanks.forbiddenEnd)</td>
+				<td>$!bs19PayBanks.notice</td>
+				<td>$!bs19PayBanks.dailyNotice</td>
+				<td>
+					<a title="编辑?" target="dialog" href="$env.getWebURL('/bank/bs19PayBank/detail.htm?id=')$!bs19PayBanks.id" class="btnEdit" mask="true" rel="createBack" height="520" width="500">编辑</a>
+					#if("$!bs19PayBanks.isAvailable" == 1)
+					<a title="禁用?" target="ajaxTodo" mask="true" href="$env.getWebURL('bank/isAvailableModify.htm?isAvailable=2&id=')$!bs19PayBanks.id" class="btnDel">禁用</a>
+                    #elseif("$!bs19PayBanks.isAvailable" == 2)
+					<a title="启用?" target="ajaxTodo" mask="true" href="$env.getWebURL('bank/isAvailableModify.htm?isAvailable=1&id=')$!bs19PayBanks.id" class="btnSelect">启用</a>
+				    #end
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>

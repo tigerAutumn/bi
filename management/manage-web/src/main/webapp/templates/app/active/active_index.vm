@@ -1,0 +1,111 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!record.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!record.numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('app/active/index.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!record.numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!record.pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+		
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						状态：
+						<select name="sActiveStatus" >
+                        	<option value="">全部</option>
+        					<option value="1" #if("$!record.sActiveStatus"=="1") selected  #end>等待开始</option>
+        					<option value="2" #if("$!record.sActiveStatus"=="2") selected  #end>进行中</option>
+        					<option value="3" #if("$!record.sActiveStatus"=="3") selected  #end>已结束</option>
+                        </select>
+					</td>
+					<td>
+						开始时间：<input style="width:70px;" name="sStartTime" datefmt="yyyy-MM-dd"  type="text"  id="sStartTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!record.sStartTime)" />
+					</td>
+					<td>
+						结束时间：<input style="width:70px;" name="eEndTime" datefmt="yyyy-MM-dd"  type="text"  id="eEndTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!record.eEndTime)" />
+					</td>
+					<td>
+						<button   type="submit">查询</button>
+					</td>
+				</tr>
+			</table>
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a title="添加活动" class="add" href="$env.getWebURL('/app/active/activeDetail.htm')" target="navtab" mask="true" rel="createBack" height="550"><span>新增</span></a></li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="118">
+		<thead>
+			<tr>
+				<th width="5%">序号</th>
+				<th width="12%">发布时间</th>
+				<th width="12%">开始时间</th>
+				<th width="12%">结束时间</th>
+				<th width="25%">标题</th>
+				<th width="10%">状态</th>
+				<th width="14%">展示端口</th>
+				<th width="10%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($active in $actives)
+			<tr target="sid_user" rel="1">
+				<td>$!active.id</td>	
+				<td>$!date.format($!active.publishTime)</td>
+				<td>$!date.format($!active.startTime)</td>
+				<td>$!date.format($!active.endTime)</td>
+				<td>$!active.title</td>	
+				<td>$!active.activeStatus</td>
+                <td>
+					#if($!active.showTerminal == "BGW_H5,") 币港湾H5
+					#elseif($!active.showTerminal == "BGW_APP,")币港湾APP
+					#elseif($!active.showTerminal == 'BGW_APP,BGW_H5,') 币港湾APP，币港湾H5
+					#elseif($!active.showTerminal == 'BGW_H5,BGW_APP,') 币港湾APP，币港湾H5
+					#else
+					#end
+				</td>
+				<td>
+					<a title="修改" class="btnEdit" href="$env.getWebURL('/app/active/activeDetail.htm')?activeId=$!active.id" target="navtab" mask="true" rel="createBack" height="500"><span>修改</span></a>
+					<a title="确认删除此活动？" name="delactive" target="ajaxTodo" href="$env.getWebURL('/app/active/activeDelete.htm')?id=$!active.id" class="btnDel">删除</a>
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!record.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!record.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!record.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!record.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!record.numPerPage" currentPage="$!record.pageNum"></div>
+
+	</div>
+</div>
+
+	<script>
+	function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			alertMsg.correct(json.message);
+			navTab.closeCurrentTab();
+			navTab.reload("$env.getWebURL('/app/active/index.htm')");
+		} else {
+			alertMsg.error(json.message);
+		}
+	}
+	</script>

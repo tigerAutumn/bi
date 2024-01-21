@@ -1,0 +1,158 @@
+#LoadGenCSS("/resources/gen178/styles/assets/payment_plant")
+<!--开始-->
+<div class="money_play_box">
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.get('gen.server.web')"/>
+    <input type="hidden" id="totalCount" name="totalCount" value="$!totalCount" class="totalCount">
+    <input type="hidden" id="pageIndex" name="pageIndex" value="$!pageIndex" class="pageIndex"/>
+
+    <input type="hidden" id="pastTotalCount" name="pastTotalCount" value="$!pastTotalCount" class="pastTotalCount">
+    <input type="hidden" id="pastPageIndex" name="pastPageIndex" value="$!pastPageIndex" class="pastPageIndex"/>
+
+    <input type="hidden" id="payment_collect_detail" value="/gen178/assets/payment_plant/loadDatas">
+    <input type="hidden" id="payment_past" value="/gen178/assets/payment_past/loadDatas">
+
+    <input type="hidden" id="status" value="$!status">
+    <div class="swiper-container">
+        <div class="swiper-wrapper clearfix" style="height:auto;">
+            <!--回款列表 -->
+            <div class="swiper-slide payment_list" data-hash="slide1" style="height:auto;">
+                <div class="money_play_warp">
+                    <div class="money_play_tab">
+                        <ul class="money_play_tab_btn clearfix">
+                            <li class="future_payment_tab money_play_tab_btn_list focuse">待收回款</li>
+                            <li class="history_payment_tab money_play_tab_btn_list">往期回款</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="money_play_red">
+                    ## 待收回款
+                    <div class="money_play future_payment">
+                        <div class="money_play_tr_title payment_ifo_list_collect">
+                            <p class="money_play_tr_tips">*当前仅统计分期类计划回款明细</p>
+                            <div class="money_play_tr_background money_play_tr_wait">
+                                <ul class="money_play_tr_title_txt clearfix">
+                                    <li class="money_play_tr_title_span">计划日期</li>
+                                    <li class="money_play_tr_title_span">计划回款</li>
+                                    <li class="money_play_tr_title_span">已回款</li>
+                                    <li class="money_play_tr_title_span">待回款</li>
+                                    <li class="money_play_tr_title_span">查看详情</li>
+                                </ul>
+                            </div>
+
+                            #if($!resMsgPaymentPlant.paymentPastList && $!resMsgPaymentPlant.paymentPastList.size() > 0)
+                                <ul class="money_play_tr_title_num">
+                                    #foreach($payment in $!resMsgPaymentPlant.paymentPastList)
+                                        <li class="money_play_tr_title_li clearfix">
+                                            <div class="money_play_td"><span>$!payment.planDate</span></div>
+                                            <div class="money_play_td">
+                                                <span>$!money.format($!payment.repayScheduleTotalAmount)</span></div>
+                                            <div class="money_play_td"><span
+                                                    class="money_play_color">$!money.format($!payment.planTotalRepaied)</span>
+                                            </div>
+                                            <div class="money_play_td">
+                                                <span>$!money.format($!payment.receivableAmount)</span></div>
+                                            <div class="money_play_td">
+                                                <a onclick="details(this)" href="javascript:()" dataTime="$!payment.planDate" class="money_play_tr_title_spanbtn">详情</a>
+                                            </div>
+                                        </li>
+                                    #end
+                                </ul>
+                                #if($!totalCount > 1)
+                                <!--分页-->
+                                    <div class="fenye money_play_tr_title_num_fenye">
+                                        <div class="fenye_wrap">
+                                            #set($nextPage = $pageIndex + 1)
+                                            #set($nextSecondPage = $pageIndex + 2)
+                                            #set($prePage = $pageIndex - 1)
+                                            #set($preSecondPage = $pageIndex - 2)
+                                            #set($totalPage = $totalCount)
+                                            <a href="javascript:void(0)" onclick="homePage('$!status')"
+                                               class="fy_l">首页</a>
+                                            <a href="javascript:void(0)" onclick="prePage('$!status', -1)"
+                                               class="fy_ll"></a>
+                                            #if($!prePage > 0)
+                                                #if($!preSecondPage > 0 && $!nextPage > $totalPage)
+                                                    <a href="javascript:void(0)" onclick="prePage('$!status', -2)"
+                                                       class="fy_c">$!preSecondPage</a>
+                                                #end
+                                                <a href="javascript:void(0)" onclick="prePage('$!status', -1)"
+                                                   class="fy_c">$!prePage</a>
+                                                <a href="javascript:void(0)" class="fy_c fy_atpage">$!pageIndex</a>
+                                                #if($!nextPage <= $totalPage)
+                                                    <a href="javascript:void(0)" onclick="nextPage('$!status', 1)"
+                                                       class="fy_c">$!nextPage</a>
+                                                #end
+                                            #else
+                                                <a href="javascript:void(0)" class="fy_c fy_atpage">$!pageIndex</a>
+                                                #if($!nextPage <= $totalPage)
+                                                    <a href="javascript:void(0)" onclick="nextPage('$!status', 1)"
+                                                       class="fy_c">$!nextPage</a>
+                                                #end
+                                                #if($!nextSecondPage <= $totalPage)
+                                                    <a href="javascript:void(0)" onclick="nextPage('$!status', 2)"
+                                                       class="fy_c">$!nextSecondPage</a>
+                                                #end
+                                            #end
+                                            <a href="javascript:void(0)" onclick="nextPage('$!status', 1)"
+                                               class="fy_rr"></a>
+                                            <a href="javascript:void(0)" onclick="endPage('$!status')"
+                                               class="fy_r">尾页</a>
+                                        </div>
+                                    </div>
+                                #end
+                            #else
+                                <div class="money_play_tr_title_null">
+                                    <div class="payment_plant_null_img"></div>
+                                    <p>暂无记录</p>
+                                </div>
+                            #end
+                        </div>
+                    </div>
+
+                    ## 往期回款
+                    <div class="money_play history_payment" style="display:none;">
+                        <div class="money_play_tr_title payment_ifo_list_past">
+                            <div class="money_play_tr_background money_play_tr_past">
+                                <ul class="money_play_tr_title_txt clearfix">
+                                    <li class="money_play_tr_title_span">
+                                        <div class="money_play_select"></div>
+                                        <ul class="money_play_selectchild">
+                                        </ul>
+                                    </li>
+                                    <li class="money_play_tr_title_span">计划回款</li>
+                                    <li class="money_play_tr_title_span">已回款</li>
+                                    <li class="money_play_tr_title_span">待回款</li>
+                                    <li class="money_play_tr_title_span">查看详情</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="history_payment_list">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--回款详情-->
+            <div class="swiper-slide payment_detail" data-hash="slide2" style="display:none;">
+                <div class="money_play_warp">
+                    <div class="money_play_detail_top">
+                        <a href="javascript:;" class="money_play_child_spanbtn">返回></a>
+                        <p class="money_play_tr_tips">*当前仅统计分期类计划回款明细</p>
+                    </div>
+                </div>
+
+                <div class="money_play_red1">
+                    <div class="money_play_tr_title money_plant_details" style="display: block;">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+<!--结束-->
+#LoadGenJS("/resources/gen178/scripts/assets/payment_plant")

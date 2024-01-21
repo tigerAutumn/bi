@@ -1,0 +1,62 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/regular/product_detail_new_six")
+#LoadCSS("resources/micro2.0/styles/regular/product_detail_new_default")
+#LoadCSS("resources/micro2.0/styles/regular/scale")
+#LoadCSS("resources/micro2.0/styles/regular/product_detail_new.min")
+#WeChatShare()
+#Head("end")
+<style>
+.swiper-slide{display:block;flex-shrink: 0;-webkit-flex-shrink:1;width:100%; height:100%;}
+</style>
+<body >	
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<input type="hidden" id="id" name="id" value="$!id" />
+<input type="hidden" id="name" name="name" value="$!name" />
+<input type="hidden" id="rate" name="rate" value="$!rate" />
+<input type="hidden" id="term" name="term" value="$!term" />
+<input type="hidden" id="totalCount" name="totalCount" value="$!totalCount" />	##总条数
+<input type="hidden" id="pageNum" name="pageNum" value="$!pageNum" /> ##当前页码
+<input type="hidden" id="minInvestAmount" name="minInvestAmount" value="$!minInvestAmount" />
+<input type="hidden" id="qianbao" name="qianbao" value="$!qianbao" />
+<input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+<!-- 头部 -->
+#if($!resourceType == 'APP')
+#else
+<div class="header_copy">
+	<a class="header_arrow_copy" href="javascript:history.go(-1)"></a>
+	<h1 class="heade_ft_copy">$!protocolType </h1>
+</div>
+#end
+<div class="swiper-container">
+    <div class="swiper-wrapper">     
+       <div class="swiper-slide">
+        	<div class="slide2_wp">
+	        	<div class="plan_pp">
+					$!content
+				</div>
+				<div class="plan_pp" >
+					#foreach($img in $!imgs)
+						<img class="pro_img" src="$!img" style="padding-top: 10px;width: 100%;"/>
+					#end
+				</div>
+			</div>		
+		</div>    
+	</div>
+    <section class="imgzoom_pack">
+    	<div class="imgzoom_x">X</div>
+    	<div class="imgzoom_img"><img src="" /></div>
+    </section>
+</div>
+#LoadJS("resources/micro2.0/scripts/regular/scale")
+#LoadJS("resources/micro2.0/scripts/regular/product_detail_new")
+<script>
+//	document.addEventListener("DOMContentLoaded", function(event){
+//		ImagesZoom.init({
+//			"elem": ".plan_p"
+//		});
+//	}, false);
+</script>
+</body>
+#Html("end")

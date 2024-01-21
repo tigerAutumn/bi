@@ -1,0 +1,337 @@
+<div class="pageContent">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<form id="propertyInfoForm" method="post" action="$env.getWebURL('/propertyInfo/save.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("id", "$!bsPropertyInfo.id")
+		<input type="hidden" id="btn_num" name="btn_num" value="$!btn_num" class='btn_num'/>
+		<input type="hidden" id="btn_protocol" name="btn_protocol" value="$!btn_protocol" class='btn_protocol'/>
+		<input type="hidden" id="btn_check_pics" name="btn_check_pics" value="$!btn_check_pics" class="btn_check_pics" />
+		<input type="hidden" id="btn_grade_pics" name="btn_grade_pics" value="$!btn_grade_pics" class="btn_grade_pics" />
+		<div class="pageFormContent nowrap" layoutH="50">
+			<dl>
+				<dt>名称</dt>
+				<dd>
+					<input type="text" id="propertyName" name="propertyName" size="30" maxlength="15" value="$!bsPropertyInfo.propertyName" />
+				</dd>
+			</dl>
+			<dl>
+				#if("$!canEdit" == "yes")
+					<dt>站岗户标识</dt>
+    				<dd>
+    					<select name="propertySymbol" id="propertySymbol">
+    						<option value="">请选择站岗户标识</option>
+    						<option value="YUN_DAI" #if("$!bsPropertyInfo.propertySymbol" == "YUN_DAI") selected #end>云贷循环贷</option>
+    						<option value="7_DAI" #if("$!bsPropertyInfo.propertySymbol" == "7_DAI") selected #end>7贷</option>
+							<option value="ZAN" #if("$!bsPropertyInfo.propertySymbol" == "ZAN") selected #end>赞分期</option>
+                            <option value="YUN_DAI_SELF" #if("$!bsPropertyInfo.propertySymbol" == "YUN_DAI_SELF") selected #end>存管云贷</option>
+                            <option value="ZSD" #if("$!bsPropertyInfo.propertySymbol" == "ZSD") selected #end>赞时贷</option>
+                            <option value="7_DAI_SELF" #if("$!bsPropertyInfo.propertySymbol" == "7_DAI_SELF") selected #end>存管7贷</option>
+                            <option value="FREE" #if("$!bsPropertyInfo.propertySymbol" == "FREE") selected #end>自由站岗户</option>
+                        </select>
+    				</dd>
+				#else
+					<dt>站岗户标识</dt>
+                    <dd>
+						#if("$!bsPropertyInfo.propertySymbol" == "YUN_DAI") 
+							云贷循环贷 
+						#elseif("$!bsPropertyInfo.propertySymbol" == "7_DAI")
+							7贷
+						#elseif("$!bsPropertyInfo.propertySymbol" == "ZAN")
+							赞分期
+						#elseif("$!bsPropertyInfo.propertySymbol" == "YUN_DAI_SELF")
+                            存管云贷
+						#elseif("$!bsPropertyInfo.propertySymbol" == "ZSD")
+                            赞时贷
+						#elseif("$!bsPropertyInfo.propertySymbol" == "7_DAI_SELF")
+                            存管7贷
+						#elseif("$!bsPropertyInfo.propertySymbol" == "FREE")
+                            自由站岗户
+						#end
+						<input type="hidden" name="propertySymbol" id="propertySymbol" value="$!bsPropertyInfo.propertySymbol" />
+					</dd>
+				#end
+			</dl>
+			<dl>
+				<dt>合作方简介：</dt>
+				<dd  id="dd_editor"> <!-- 新闻编辑器 -->
+                    <textarea id="propertySummary" name="propertySummary" class="editor"  rows="50" cols="115"   tools="simple" upImgUrl="$env.getWebURL('/upload/newsImg.htm')" upImgExt="jpg,jpeg,gif,png">$!bsPropertyInfo.propertySummary</textarea>
+				</dd>
+				<dd style="display:none" id="dd_content"> <!-- 公告 -->
+					<textarea class="textInput content" rows="50" cols="115" name="other"></textarea>
+				</dd>
+			</dl>
+			<dl>
+				<dt>还款来源：</dt>
+				<dd  id="dd_editor">
+                    <textarea id="returnSource" name="returnSource" class="editor"  rows="50" cols="115"   tools="simple" upImgUrl="$env.getWebURL('/upload/newsImg.htm')" upImgExt="jpg,jpeg,gif,png">$!bsPropertyInfo.returnSource</textarea>
+				</dd>
+				<dd style="display:none" id="dd_content">
+					<textarea class="textInput content" rows="50" cols="115" name="other"></textarea>
+				</dd>
+			</dl>
+			<dl style="height:auto;">
+				<dt>合作协议：</dt>
+				<dd>
+					<div id="unit_protoco" class="unit" style="width:640;height:auto;float:left;">
+                    <div style="padding-bottom:10px;">图片支持jpg，png两种格式，图片最多上传10张！</div>
+            		<div id="fileQueue_protoco"></div>
+					
+					<div id="foreach_protoco" style="width:648px;height:auto;float:left;">
+                        <div id="uploader_div_CA">
+                            <!--用来存放item-->
+                            <div id="filePickerCA" class="webuploader-bottom-spacing">选择图片</div>
+                            <div id="thumbListCA" class="uploader-list">
+								#if($coopList)
+									#foreach($coop in ${coopList})
+                                        <div id="WU_FILE_DIV_CA_$velocityCount" class="file-item thumbnail webuploader-left">
+											<img width="100" height="100" src="$coop.url">
+											<div class="info">$!{string.split($coop.name,'@&!!@&')[1]}</div>
+											<span class="webuploader-remove-this" onclick="removeFile(this)">删除</span>
+										</div>
+                                        <input id="WU_FILE_PAHT_CA_$velocityCount" value="$coop.url" name="imgUrlActive_protoco_pic" type="hidden"/>
+									#end
+								#end
+                            </div>
+						</div>
+					</div>
+					</br>
+                </div>
+				</dd>
+			</dl>
+			
+			<dl>
+				<dt>技术保障：</dt>
+				<dd  id="dd_editor">
+                    <textarea id="fundSecurity" name="fundSecurity" class="editor"  rows="50" cols="115"   tools="simple" upImgUrl="$env.getWebURL('/upload/newsImg.htm')" upImgExt="jpg,jpeg,gif,png">$!bsPropertyInfo.fundSecurity</textarea>
+				</dd>
+				<dd style="display:none" id="dd_content">
+					<textarea class="textInput content" rows="50" cols="115" name="other"></textarea>
+				</dd>
+			</dl>
+			<dl>
+				<dt>合作方信息披露：</dt>
+				<dd  id="dd_editor">
+                    <textarea id="orgnizeCheck" name="orgnizeCheck" class="editor"  rows="50" cols="115"   tools="simple" upImgUrl="$env.getWebURL('/upload/newsImg.htm')" upImgExt="jpg,jpeg,gif,png">$!bsPropertyInfo.orgnizeCheck</textarea>
+				</dd>
+				<dd style="display:none" id="dd_content">
+					<textarea class="textInput content" rows="50" cols="115" name="other"></textarea>
+				</dd>
+			</dl>
+			
+			<dl style="height:auto;">
+				<dt>合作方信息披露图片：</dt>
+				<dd>
+					<div id="unit_check_pics" class="unit_check_pics" style="width:640;height:auto;float:left;">
+                    <div style="padding-bottom:10px;position:relative;top:4px;">图片支持jpg，png两种格式，图片最多上传10张！</div>
+            		<div id="fileQueue_check_pics"></div>
+					
+					<div id="foreach_check_pics" style="width:648px;height:auto;float:left;">
+                        <div id="uploader_div_ID">
+                            <!--用来存放item-->
+                            <div id="filePickerID" class="webuploader-bottom-spacing">选择图片</div>
+                            <div id="thumbListID" class="uploader-list">
+								#if($orgnizeList)
+									#foreach($orgnize in ${orgnizeList})
+                                        <div id="WU_FILE_DIV_ID_$velocityCount" class="file-item thumbnail webuploader-left">
+                                            <img width="100" height="100" src="$orgnize.url">
+                                            <div class="info">$!{string.split($orgnize.name,'@&!!@&')[1]}</div>
+                                            <span class="webuploader-remove-this" onclick="removeFile(this)">删除</span>
+                                        </div>
+                                        <input id="WU_FILE_PAHT_ID_$velocityCount" value="$orgnize.url" name="imgUrlActive_loan_check_pics" type="hidden"/>
+									#end
+								#end
+                            </div>
+                        </div>
+                    </div>
+				  </br>
+                </div>
+				</dd>
+			</dl>
+			
+			<dl>
+				<dt>第三方担保合同：</dt>
+				<dd  id="dd_editor">
+                    <textarea id="ratingGrade" name="ratingGrade" class="editor"  rows="50" cols="115"   tools="simple" upImgUrl="$env.getWebURL('/upload/newsImg.htm')" upImgExt="jpg,jpeg,gif,png">$!bsPropertyInfo.ratingGrade</textarea>
+				</dd>
+				<dd style="display:none" id="dd_content">
+					<textarea class="textInput content" rows="50" cols="115" name="other"></textarea>
+				</dd>
+			</dl>
+			
+			<dl style="height:auto;">
+				<dt>第三方担保合同图片：</dt>
+				<dd> ## Guarantee contract 担保合同
+					<div id="unit_grade_pics" class="unit_grade_pics" style="width:640;height:auto;float:left;">
+                    <div style="padding-bottom:10px;position:relative;top:4px;">图片支持jpg，png两种格式，图片最多上传10张！</div>
+            		<div id="fileQueue_grade_pics"></div>
+					<div id="foreach_grade_pics" style="width:648px;height:auto;float:left;">
+                        <div id="uploader_div_GC">
+                            <!--用来存放item-->
+                            <div id="filePickerGC" class="webuploader-bottom-spacing">选择图片</div>
+                            <div id="thumbListGC" class="uploader-list">
+								#if($ratingList)
+									#foreach($rating in ${ratingList})
+                                        <div id="WU_FILE_DIV_GC_$velocityCount" class="file-item thumbnail webuploader-left" >
+                                            <img width="100" height="100" src="$rating.url">
+                                            <div class="info">$!{string.split($rating.name,'@&!!@&')[1]}</div>
+                                            <span class="webuploader-remove-this" onclick="removeFile(this)">删除</span>
+                                        </div>
+                                        <input id="WU_FILE_PAHT_GC_$velocityCount" value="$rating.url" name="imgUrlActive_loan_grade_pics" type="hidden"/>
+									#end
+								#end
+                            </div>
+                        </div>
+                    </div>
+				  </br>
+                </div>
+				</dd>
+			</dl>
+			
+			<dl style="height:auto;">
+				<dt>借款合同示例：</dt> ## Loan contract
+				<dd>
+					<div id="unit_loan_protocol" class="unit_loan_protocol" style="width:640;height:auto;float:left;">
+                    <div style="padding-bottom:10px;">图片支持jpg，png两种格式，图片最多上传10张！</div>
+            		<div id="fileQueue_loan_protocol"></div>
+					<div id="foreach_protocol" style="width:648px;height:auto;float:left;">
+                        <div id="uploader_div_LC">
+                            <!--用来存放item-->
+                            <div id="filePickerLC" class="webuploader-bottom-spacing">选择图片</div>
+                            <div id="thumbListLC" class="uploader-list">
+								#if($loanList)
+									#foreach($loan in ${loanList})
+                                        <div id="WU_FILE_DIV_LC_$velocityCount" class="file-item thumbnail webuploader-left">
+                                            <img width="100" height="100" src="$loan.url">
+                                            <div class="info">$!{string.split($loan.name,'@&!!@&')[1]}</div>
+                                            <span class="webuploader-remove-this" onclick="removeFile(this)">删除</span>
+                                        </div>
+                                        <input id="WU_FILE_PAHT_LC_$velocityCount" value="$loan.url" name="imgUrlActive_loan_protocol" type="hidden"/>
+									#end
+								#end
+                            </div>
+                        </div>
+                    </div>
+				  </br>
+                </div>
+				</dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button onclick="formSubmit()" type="button">保存</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+(function() {
+	// 1. 批量上传合作协议图片
+	_global.uploadImgList('/upload/propertyInfoImg.htm', '#filePickerCA', 10, '#thumbListCA', 'input[name="imgUrlActive_protoco_pic"]', function(file, data) {
+		if(data.msg.extendName == ".jpg" || data.msg.extendName == ".png") {
+			$('#' + file.id).addClass('upload-state-done');
+			$('#uploader_div_CA').append('<input id="' + file.id + '_CA' + '" name="' + 'imgUrlActive_protoco_pic' + '" type="hidden"/>');
+			$('#' + file.id + '_CA').val(data.msg.url);
+		} else {
+			alertMsg.warn('图片格式不正确，只支持jpg、png两种格式，请重新选择！');
+		}
+	}, function(file, data) {
+	}, function (file, data) {
+		$('#' + file.id).remove();
+		$('#' + file.id + '_CA').remove();
+	});
+
+	// 2. 合作方信息披露图片
+    _global.uploadImgList('/upload/propertyInfoImg.htm', '#filePickerID', 10, '#thumbListID', 'input[name="imgUrlActive_loan_check_pics"]', function(file, data) {
+        if(data.msg.extendName == ".jpg" || data.msg.extendName == ".png") {
+            $('#' + file.id).addClass('upload-state-done');
+            $('#uploader_div_ID').append('<input id="' + file.id + '_ID' + '" name="' + 'imgUrlActive_loan_check_pics' + '" type="hidden"/>');
+            $('#' + file.id + '_ID').val(data.msg.url);
+        } else {
+            alertMsg.warn('图片格式不正确，只支持jpg、png两种格式，请重新选择！');
+        }
+    }, function(file, data) {
+    }, function (file, data) {
+        $('#' + file.id).remove();
+        $('#' + file.id + '_ID').remove();
+    });
+
+
+    // 3. 第三方担保合同图片
+    _global.uploadImgList('/upload/propertyInfoImg.htm', '#filePickerGC', 10, '#thumbListGC', 'input[name="imgUrlActive_loan_grade_pics"]', function(file, data) {
+        if(data.msg.extendName == ".jpg" || data.msg.extendName == ".png") {
+            $('#' + file.id).addClass('upload-state-done');
+            $('#uploader_div_GC').append('<input id="' + file.id + '_GC' + '" name="' + 'imgUrlActive_loan_grade_pics' + '" type="hidden"/>');
+            $('#' + file.id + '_GC').val(data.msg.url);
+        } else {
+            alertMsg.warn('图片格式不正确，只支持jpg、png两种格式，请重新选择！');
+        }
+    }, function(file, data) {
+    }, function (file, data) {
+        $('#' + file.id).remove();
+        $('#' + file.id + '_GC').remove();
+    });
+
+
+    // 4. 借款合同图片
+    _global.uploadImgList('/upload/propertyInfoImg.htm', '#filePickerLC', 10, '#thumbListLC', 'input[name="imgUrlActive_loan_protocol"]', function(file, data) {
+        if(data.msg.extendName == ".jpg" || data.msg.extendName == ".png") {
+            $('#' + file.id).addClass('upload-state-done');
+            $('#uploader_div_LC').append('<input id="' + file.id + '_LC' + '" name="' + 'imgUrlActive_loan_protocol' + '" type="hidden"/>');
+            $('#' + file.id + '_LC').val(data.msg.url);
+        } else {
+            alertMsg.warn('图片格式不正确，只支持jpg、png两种格式，请重新选择！');
+        }
+    }, function(file, data) {
+    }, function (file, data) {
+        $('#' + file.id).remove();
+        $('#' + file.id + '_LC').remove();
+    });
+
+})();
+
+function removeFile(obj) {
+    $(obj).parent('div').next('input').remove();
+    $(obj).parent('div').remove();
+}
+
+
+var num = 1 + $!num;
+function formSubmit(){
+	var propertyName = $.trim($("#propertyName").val()),
+		propertySummary = $.trim($("#propertySummary").val()),
+		returnSource = $.trim($("#returnSource").val());
+	
+	var propertySymbol = $("#propertySymbol").val();
+	if(!propertySymbol) {
+		alertMsg.warn('请选择资金接收方标识！');
+		return false;
+	}
+	if(propertyName == ''){
+		alertMsg.warn('名称不能为空！');
+		return false;
+	}
+	if(propertySummary == ''){
+		alertMsg.warn('合作方简介不能为空！');
+		return false;
+	}
+	if(returnSource == ''){
+		alertMsg.warn('还款来源不能为空！');
+		return false;
+	}
+	$('#propertyInfoForm').submit();
+}
+
+function navTabAjaxDone(json) {
+	if (json.statusCode == "301") {
+		alertMsg.warn('资产合作方名称已存在!');
+	}else if (json.statusCode == "200") {
+		alertMsg.correct('操作成功!');
+		navTab.closeCurrentTab();
+		navTab.reload("$env.getWebURL('/propertyInfo/index.htm')");
+	} else {
+		alertMsg.error('操作失败!');
+	}
+}
+
+
+</script>

@@ -1,0 +1,86 @@
+<div class="page unitBox">
+	<div class="pageHeader">
+    	<form  onsubmit="return dialogSearch(this);" action="$env.getWebURL('/financial/statistics/company_customer/choose_user.htm')" id="choose_user_form" method="post">
+        	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+			<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+			<div class="searchBar">
+                <table class="searchContent">
+        			<tr>
+						<td >
+        				<label>用户名</label>
+						 <input type="text" name="userName" value="$!req.userName" style="float:left;width:100px;"/>
+						 
+						 <label>手机号</label>
+						 <input type="text" name="mobile" value="$!req.mobile" style="float:left;width:100px;" />
+						 
+						 <label>身份证</label>
+						 <input type="text" name="idCard" value="$!req.idCard" style="float:left;width:100px;" />
+						</td>
+        				<td >
+        					<div class="buttonActive">
+        						<div class="buttonContent">
+        							<button onclick="chooseUserFunction()" type="button">查询</button>
+        						</div>
+        					</div>
+        				 </td>
+                    </tr>
+        		</table>
+        	</div>
+    	</form>
+    </div>
+    <div class="pageContent">
+    	<table class="table"  layoutH="130">
+    		<thead>
+    			<tr>
+					<th width="3%">选择</th>
+					<th width="15%">用户ID</th>
+					<th width="15%">用户名</th>
+					<th width="15%">手机号</th>
+    				<th width="15%">身份证</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			#foreach($grid in $dataGrid)
+    			<tr target="sid_user" rel="1">
+					<td><input type="radio" name="choose_user" user_id="$!grid.id"/></td>
+					<td>$!grid.id</td>
+    				<td>$!grid.userName</td>
+					<td>$!grid.mobile</td>
+					<td>$!grid.idCard</td>
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="dialogPageBreak({pageNum:1,numPerPage:this.value})">
+    			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!count条</span>
+    	</div>
+    	<div class="pagination" targetType="dialog" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+    </div>
+    </div>
+</div>
+<div class="formBar">
+	<ul style="float:left;">
+		<li><div class="buttonActive"><div class="buttonContent"><button onclick="choose_user_save()" type="button">保存</button></div></div></li>
+		<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+	</ul>
+</div>
+<script>  
+	function chooseUserFunction(){
+    	$("#choose_user_form").submit();
+    }
+	function choose_user_save() {
+		$("input[name='choose_user']:checked").each(function(){
+			$("#new_user_id").val($(this).attr('user_id'));
+			$(".show_user_id").text($(this).attr('user_id'));
+		});
+		$.pdialog.closeCurrent();
+	}
+</script>

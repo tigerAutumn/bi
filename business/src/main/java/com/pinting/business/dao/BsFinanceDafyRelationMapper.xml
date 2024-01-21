@@ -1,0 +1,2123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsFinanceDafyRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsFinanceDafyRelation" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="sub_account_id" property="subAccountId" jdbcType="INTEGER" />
+    <result column="customer_manager_dafy_id" property="customerManagerDafyId" jdbcType="INTEGER" />
+    <result column="dafy_dept_id" property="dafyDeptId" jdbcType="INTEGER" />
+    <result column="dafy_dept_code" property="dafyDeptCode" jdbcType="VARCHAR" />
+    <result column="dafy_dept_name" property="dafyDeptName" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, sub_account_id, customer_manager_dafy_id, dafy_dept_id, dafy_dept_code, dafy_dept_name, 
+    note, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsFinanceDafyRelationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_finance_dafy_relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_finance_dafy_relation
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_finance_dafy_relation
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsFinanceDafyRelationExample" >
+    delete from bs_finance_dafy_relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsFinanceDafyRelation" >
+    insert into bs_finance_dafy_relation (id, sub_account_id, customer_manager_dafy_id, 
+      dafy_dept_id, dafy_dept_code, dafy_dept_name, 
+      note, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{subAccountId,jdbcType=INTEGER}, #{customerManagerDafyId,jdbcType=INTEGER}, 
+      #{dafyDeptId,jdbcType=INTEGER}, #{dafyDeptCode,jdbcType=VARCHAR}, #{dafyDeptName,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsFinanceDafyRelation" >
+    insert into bs_finance_dafy_relation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="subAccountId != null" >
+        sub_account_id,
+      </if>
+      <if test="customerManagerDafyId != null" >
+        customer_manager_dafy_id,
+      </if>
+      <if test="dafyDeptId != null" >
+        dafy_dept_id,
+      </if>
+      <if test="dafyDeptCode != null" >
+        dafy_dept_code,
+      </if>
+      <if test="dafyDeptName != null" >
+        dafy_dept_name,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="subAccountId != null" >
+        #{subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="customerManagerDafyId != null" >
+        #{customerManagerDafyId,jdbcType=INTEGER},
+      </if>
+      <if test="dafyDeptId != null" >
+        #{dafyDeptId,jdbcType=INTEGER},
+      </if>
+      <if test="dafyDeptCode != null" >
+        #{dafyDeptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dafyDeptName != null" >
+        #{dafyDeptName,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsFinanceDafyRelationExample" resultType="java.lang.Integer" >
+    select count(*) from bs_finance_dafy_relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_finance_dafy_relation
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.subAccountId != null" >
+        sub_account_id = #{record.subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="record.customerManagerDafyId != null" >
+        customer_manager_dafy_id = #{record.customerManagerDafyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.dafyDeptId != null" >
+        dafy_dept_id = #{record.dafyDeptId,jdbcType=INTEGER},
+      </if>
+      <if test="record.dafyDeptCode != null" >
+        dafy_dept_code = #{record.dafyDeptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dafyDeptName != null" >
+        dafy_dept_name = #{record.dafyDeptName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_finance_dafy_relation
+    set id = #{record.id,jdbcType=INTEGER},
+      sub_account_id = #{record.subAccountId,jdbcType=INTEGER},
+      customer_manager_dafy_id = #{record.customerManagerDafyId,jdbcType=INTEGER},
+      dafy_dept_id = #{record.dafyDeptId,jdbcType=INTEGER},
+      dafy_dept_code = #{record.dafyDeptCode,jdbcType=VARCHAR},
+      dafy_dept_name = #{record.dafyDeptName,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsFinanceDafyRelation" >
+    update bs_finance_dafy_relation
+    <set >
+      <if test="subAccountId != null" >
+        sub_account_id = #{subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="customerManagerDafyId != null" >
+        customer_manager_dafy_id = #{customerManagerDafyId,jdbcType=INTEGER},
+      </if>
+      <if test="dafyDeptId != null" >
+        dafy_dept_id = #{dafyDeptId,jdbcType=INTEGER},
+      </if>
+      <if test="dafyDeptCode != null" >
+        dafy_dept_code = #{dafyDeptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dafyDeptName != null" >
+        dafy_dept_name = #{dafyDeptName,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsFinanceDafyRelation" >
+    update bs_finance_dafy_relation
+    set sub_account_id = #{subAccountId,jdbcType=INTEGER},
+      customer_manager_dafy_id = #{customerManagerDafyId,jdbcType=INTEGER},
+      dafy_dept_id = #{dafyDeptId,jdbcType=INTEGER},
+      dafy_dept_code = #{dafyDeptCode,jdbcType=VARCHAR},
+      dafy_dept_name = #{dafyDeptName,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  
+  <resultMap id="FinancialIntentionGridMap" type="com.pinting.business.model.vo.FinancialIntentionVO">
+  	<result column="id" property="id" jdbcType="INTEGER" />
+  	<result column="sub_account_id" property="subAccountId" jdbcType="INTEGER" />
+  	<result column="user_name" property="userName" jdbcType="VARCHAR" />
+  	<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+  	<result column="id_card" property="idCard" jdbcType="VARCHAR" />
+  	<result column="product_name" property="productName" jdbcType="VARCHAR" />
+  	<result column="manager_name" property="managerName" jdbcType="VARCHAR" />
+  	<result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+  	<result column="status" property="status" jdbcType="INTEGER" />
+  	<result column="status_str" property="statusStr" jdbcType="VARCHAR" />
+  	<result column="base_rate" property="baseRate" jdbcType="DOUBLE" />
+  	<result column="subtract" property="subtract" jdbcType="DOUBLE" />
+  	<result column="incentive_rate" property="incentiveRate" jdbcType="DOUBLE" />
+  	<result column="term" property="term" jdbcType="INTEGER" />
+  	<result column="balance" property="balance" jdbcType="DOUBLE" />
+  	<result column="open_balance" property="openBalance" jdbcType="DOUBLE" />
+  	<result column="recharge_amount" property="rechargeAmount" jdbcType="DOUBLE" />
+  	<result column="accumulation_inerest" property="accumulationInerest" jdbcType="DOUBLE" />
+  	<result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
+  	<result column="success_time" property="successTime" jdbcType="TIMESTAMP" />
+  	<result column="interest_begin_date" property="interestBeginDate" jdbcType="TIMESTAMP" />
+  	<result column="payment_date" property="paymentDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectFinancialIntentionGrid" resultMap="FinancialIntentionGridMap" parameterType="java.util.HashMap">
+	SELECT a.id, e.user_name, e.mobile, e.id_card, b.product_name, c.strName AS manager_name, c.strDeptName AS dept_name, b.`status`, 
+		g.base_rate, h.amount AS subtract, 0 AS incentive_rate, g.term, b.balance, a.sub_account_id,
+		CASE WHEN h.amount IS NULL THEN b.balance ELSE b.balance - h.amount END AS recharge_amount,
+		b.accumulation_inerest, f.create_time AS apply_time, f.update_time AS success_time, b.interest_begin_date, 
+		CASE WHEN i.return_status = 'SUCCESS' THEN i.update_time ELSE NULL END AS payment_date
+	FROM bs_finance_dafy_relation a, bs_sub_account b LEFT JOIN bs_batch_buy_detail i ON b.id = i.sub_account_id,
+		tbemployee c, bs_account d, bs_user e, bs_product g,bs_property_info j,
+		bs_pay_orders f LEFT JOIN bs_red_packet_info h ON h.order_no = f.order_no
+	WHERE a.sub_account_id = b.id AND a.customer_manager_dafy_id = c.lUserId
+		AND b.account_id = d.id AND d.user_id = e.id AND b.id = f.sub_account_id
+		AND b.product_id = g.id AND g.property_id = j.id AND (j.property_symbol = 'YUN_DAI' OR j.property_symbol = '7_DAI')
+		AND (f.trans_type = 'CARD_BUY_PRODUCT' OR f.trans_type = 'BALANCE_BUY_PRODUCT')
+		AND b.`status` NOT IN (1,6)
+		<if test="deptIds != null">
+			AND (
+			<if test="isOrDafyUserId != null">
+	        	a.customer_manager_dafy_id = #{isOrDafyUserId} OR 
+	        </if>
+				a.dafy_dept_id in
+			<foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+	            #{item} 
+	        </foreach>
+	        )
+		</if>
+		<if test="record.managerName != null">
+			AND a.customer_manager_dafy_id = #{record.managerName}
+		</if>
+		<if test="record.userName != null and record.userName != ''">
+			AND e.user_name LIKE CONCAT(CONCAT('%', #{record.userName}),'%')
+		</if>
+		<if test="record.mobile != null and record.mobile != ''">
+			AND e.mobile LIKE CONCAT(CONCAT('%', #{record.mobile}),'%')
+		</if>
+		<if test="record.idCard != null and record.idCard != ''">
+			AND e.id_card LIKE CONCAT(CONCAT('%', #{record.idCard}),'%')
+		</if>
+		<if test="record.productName != null and record.productName != ''">
+			AND b.product_name LIKE CONCAT(CONCAT('%', #{record.productName}),'%')
+		</if>
+		<if test="record.status != null and record.status != ''">
+			AND b.`status` = #{record.status}
+		</if>
+		<if test="record.applyTimeStart != null and record.applyTimeStart != ''">
+			<![CDATA[
+				AND f.create_time >= #{record.applyTimeStart}
+			]]>
+		</if>
+		<if test="record.applyTimeEnd != null and record.applyTimeEnd != ''">
+			<![CDATA[
+				AND f.create_time <= #{record.applyTimeEnd}
+			]]>
+		</if>
+		<if test="record.interestBeginDateStart != null and record.interestBeginDateStart != ''">
+			<![CDATA[
+				AND b.interest_begin_date >= #{record.interestBeginDateStart}
+			]]>
+		</if>
+		<if test="record.interestBeginDateEnd != null and record.interestBeginDateEnd != ''">
+			<![CDATA[
+				AND b.interest_begin_date <= #{record.interestBeginDateEnd}
+			]]>
+		</if>
+		<if test="record.paymentDateStart != null and record.paymentDateStart != ''">
+			<![CDATA[
+				AND i.update_time >= #{record.paymentDateStart}
+			]]>
+		</if>
+		<if test="record.paymentDateEnd != null and record.paymentDateEnd != ''">
+			<![CDATA[
+				AND i.update_time <= #{record.paymentDateEnd}
+			]]>
+		</if>
+		ORDER BY f.update_time desc
+		LIMIT #{record.start}, #{record.numPerPage}
+  </select>
+  
+  
+    <select id="selectFinancialIntentionGridZan" resultMap="FinancialIntentionGridMap" parameterType="java.util.HashMap">
+	select * from (
+	SELECT a.id, e.user_name, e.mobile, e.id_card, b.product_name, c.strName AS manager_name, 
+		c.strDeptName AS dept_name, 
+		CASE WHEN NOW()&lt; ADDDATE(b.interest_begin_date,5) AND b.`status` not in (1,6) AND regs.`status` NOT IN(1,6) THEN '委托中'
+			WHEN NOW()>= ADDDATE(b.interest_begin_date,5) AND b.`status` not in (1,6) AND regs.`status` NOT IN(1,5,6,7) AND regs.balance>0  THEN '投资中' 
+			WHEN NOW()>= ADDDATE(b.interest_begin_date,5) AND b.`status` not in (1,6) AND regs.`status` IN(5,7) THEN '已完成' 
+			WHEN NOW()>= ADDDATE(b.interest_begin_date,5) AND b.`status` not in (1,6) AND regs.`status` NOT IN(1,5,6,7) AND regs.balance=0 THEN '委托结束' 
+		END status_str, 
+		g.base_rate, h.amount AS subtract, 0 AS incentive_rate, g.term, b.open_balance, a.sub_account_id,
+		tt.buy_amount AS recharge_amount ,tt.balance,
+		tt.total_income accumulation_inerest, f.create_time AS apply_time, f.update_time AS success_time,  tt.interest_begin_date, 
+		tt.actual_payment_date payment_date
+	FROM bs_finance_dafy_relation a, bs_sub_account b LEFT JOIN bs_batch_buy_detail i ON b.id = i.sub_account_id,
+		tbemployee c, bs_account d, bs_user e, bs_product g,bs_property_info j,
+		bs_pay_orders f LEFT JOIN bs_red_packet_info h ON h.order_no = f.order_no,
+		bs_sub_account_pair s,
+ 		bs_sub_account regs LEFT JOIN
+		(select bs_sub_account_id,SUM(total_amount) buy_amount, MIN(loan_time1) interest_begin_date,
+						SUM(in_amount) balance ,MAX(plan_date) plan_payment_date,
+						SUM(sum_plan_interest) total_income,SUM(sum_plan_total) payment,MAX(actual_payment_date) actual_payment_date
+						from
+						(select dd.loan_time,bb.total_amount,bb.bs_sub_account_id,case when cc.id is null then dd.loan_time when cc.id is not null then cc.create_time end as loan_time1,
+						 case when cc.id is null then bb.total_amount when cc.id is not null then cc.in_amount end as in_amount,
+						l.plan_date,l.sum_plan_interest,l.sum_plan_total,l.actual_payment_date
+						from ln_loan_relation bb LEFT JOIN ln_credit_transfer cc ON cc.in_loan_relation_id = bb.id,
+						ln_loan dd,(
+							SELECT
+								z.id,
+								z.relation_id,
+								MAX(z.repay_serial) repay_serial,
+								MAX(z.plan_date) plan_date,
+								SUM(z.plan_interest) sum_plan_interest,
+								SUM(z.plan_total) sum_plan_total,
+								MAX(ff.update_time) actual_payment_date
+							FROM
+								ln_finance_repay_schedule z LEFT JOIN bs_loan_finance_repay ff ON ff.finance_repay_schedule_id = z.id and ff.`status`='REPAIED'
+							GROUP BY
+								relation_id
+						) l 
+						where 
+						##bb.bs_sub_account_id =85656 and 
+						bb.loan_id = dd.id 
+						and l.relation_id=bb.id
+						) t GROUP BY t.bs_sub_account_id
+				)tt ON tt.bs_sub_account_id = regs.id 
+	WHERE a.sub_account_id = b.id AND a.customer_manager_dafy_id = c.lUserId
+		AND b.account_id = d.id AND d.user_id = e.id AND b.id = f.sub_account_id
+		AND b.product_id = g.id AND s.auth_account_id = a.sub_account_id
+		AND regs.id = s.reg_d_account_id
+		AND g.property_id = j.id AND j.property_symbol = 'ZAN'
+		AND (f.trans_type = 'CARD_BUY_PRODUCT' OR f.trans_type = 'BALANCE_BUY_PRODUCT')
+		AND b.`status` NOT IN (1,6)
+		<if test="deptIds != null">
+			AND (
+			<if test="isOrDafyUserId != null">
+	        	a.customer_manager_dafy_id = #{isOrDafyUserId} OR 
+	        </if>
+				a.dafy_dept_id in
+			<foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+	            #{item} 
+	        </foreach>
+	        )
+		</if>
+		<if test="record.managerName != null">
+			AND a.customer_manager_dafy_id = #{record.managerName}
+		</if>
+		<if test="record.userName != null and record.userName != ''">
+			AND e.user_name LIKE CONCAT(CONCAT('%', #{record.userName}),'%')
+		</if>
+		<if test="record.mobile != null and record.mobile != ''">
+			AND e.mobile LIKE CONCAT(CONCAT('%', #{record.mobile}),'%')
+		</if>
+		<if test="record.idCard != null and record.idCard != ''">
+			AND e.id_card LIKE CONCAT(CONCAT('%', #{record.idCard}),'%')
+		</if>
+		<if test="record.productName != null and record.productName != ''">
+			AND b.product_name LIKE CONCAT(CONCAT('%', #{record.productName}),'%')
+		</if>
+		<if test="record.applyTimeStart != null and record.applyTimeStart != ''">
+			<![CDATA[
+				AND f.create_time >= #{record.applyTimeStart}
+			]]>
+		</if>
+		<if test="record.applyTimeEnd != null and record.applyTimeEnd != ''">
+			<![CDATA[
+				AND f.create_time <= #{record.applyTimeEnd}
+			]]>
+		</if>
+		<if test="record.interestBeginDateStart != null and record.interestBeginDateStart != ''">
+			<![CDATA[
+				AND DATE_FORMAT(tt.interest_begin_date,'%Y-%m-%d')  >= #{record.interestBeginDateStart}
+			]]>
+		</if>
+		<if test="record.interestBeginDateEnd != null and record.interestBeginDateEnd != ''">
+			<![CDATA[
+				AND DATE_FORMAT(tt.interest_begin_date,'%Y-%m-%d')  <= #{record.interestBeginDateEnd}
+			]]>
+		</if>
+		)p
+		<where>
+		<if test="record.status != null and record.status != ''">
+			<if test="record.status == 1">
+				AND p.status_str = '委托中' 
+			</if>
+			<if test="record.status == 2">
+				AND p.status_str = '委托结束' 
+			</if>
+			<if test="record.status == 3">
+				AND p.status_str = '投资中' 
+			</if>
+			<if test="record.status == 4">
+				AND p.status_str = '已完成' 
+			</if>
+		</if>
+		<if test="record.paymentDateStart != null and record.paymentDateStart != ''">
+			<![CDATA[
+				AND DATE_FORMAT(p.payment_date,'%Y-%m-%d')  >= #{record.paymentDateStart} AND p.status_str = '已完成' 
+			]]>
+		</if>
+		<if test="record.paymentDateEnd != null and record.paymentDateEnd != ''">
+			<![CDATA[
+				AND DATE_FORMAT(p.payment_date,'%Y-%m-%d')  <= #{record.paymentDateEnd} AND p.status_str = '已完成' 
+			]]>
+		</if>
+	</where>
+		
+		ORDER BY p.success_time desc
+		LIMIT #{record.start}, #{record.numPerPage}
+  </select>
+  
+  
+  <select id="countFinancialIntention" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+	SELECT COUNT(a.id)
+	FROM bs_finance_dafy_relation a, bs_sub_account b LEFT JOIN bs_batch_buy_detail i ON b.id = i.sub_account_id,
+		tbemployee c, bs_account d, bs_user e, bs_product g,bs_property_info j,   
+		bs_pay_orders f LEFT JOIN bs_red_packet_info h ON h.order_no = f.order_no
+	WHERE a.sub_account_id = b.id AND a.customer_manager_dafy_id = c.lUserId 
+		AND b.account_id = d.id AND d.user_id = e.id AND b.id = f.sub_account_id
+		AND b.product_id = g.id AND g.property_id = j.id AND (j.property_symbol = 'YUN_DAI' OR j.property_symbol = '7_DAI')
+		AND (f.trans_type = 'CARD_BUY_PRODUCT' OR f.trans_type = 'BALANCE_BUY_PRODUCT')
+		AND b.`status` NOT IN (1,6)
+		<if test="deptIds != null">
+			AND (
+			<if test="isOrDafyUserId != null">
+	        	a.customer_manager_dafy_id = #{isOrDafyUserId} OR 
+	        </if>
+				a.dafy_dept_id in
+			<foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+	            #{item} 
+	        </foreach>
+	        )
+		</if>
+		<if test="record.managerName != null">
+			AND a.customer_manager_dafy_id = #{record.managerName}
+		</if>
+		<if test="record.userName != null and record.userName != ''">
+			AND e.user_name LIKE CONCAT(CONCAT('%', #{record.userName}),'%')
+		</if>
+		<if test="record.mobile != null and record.mobile != ''">
+			AND e.mobile LIKE CONCAT(CONCAT('%', #{record.mobile}),'%')
+		</if>
+		<if test="record.idCard != null and record.idCard != ''">
+			AND e.id_card LIKE CONCAT(CONCAT('%', #{record.idCard}),'%')
+		</if>
+		<if test="record.productName != null and record.productName != ''">
+			AND b.product_name LIKE CONCAT(CONCAT('%', #{record.productName}),'%')
+		</if>
+		<if test="record.status != null and record.status != ''">
+			AND b.`status` = #{record.status}
+		</if>
+		<if test="record.applyTimeStart != null and record.applyTimeStart != ''">
+			<![CDATA[
+				AND f.create_time >= #{record.applyTimeStart}
+			]]>
+		</if>
+		<if test="record.applyTimeEnd != null and record.applyTimeEnd != ''">
+			<![CDATA[
+				AND f.create_time <= #{record.applyTimeEnd}
+			]]>
+		</if>
+		<if test="record.interestBeginDateStart != null and record.interestBeginDateStart != ''">
+			<![CDATA[
+				AND b.interest_begin_date >= #{record.interestBeginDateStart}
+			]]>
+		</if>
+		<if test="record.interestBeginDateEnd != null and record.interestBeginDateEnd != ''">
+			<![CDATA[
+				AND b.interest_begin_date <= #{record.interestBeginDateEnd}
+			]]>
+		</if>
+		<if test="record.paymentDateStart != null and record.paymentDateStart != ''">
+			<![CDATA[
+				AND i.update_time >= #{record.paymentDateStart}
+			]]>
+		</if>
+		<if test="record.paymentDateEnd != null and record.paymentDateEnd != ''">
+			<![CDATA[
+				AND i.update_time <= #{record.paymentDateEnd}
+			]]>
+		</if>
+  </select>
+   <select id="countFinancialIntentionZan" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+	select COUNT(p.id) from (
+	SELECT a.id, e.user_name, e.mobile, e.id_card, b.product_name, c.strName AS manager_name, 
+		c.strDeptName AS dept_name, 
+		CASE WHEN NOW()&lt;ADDDATE(b.interest_begin_date,5)AND b.`status` not in (1,6) AND regs.`status` NOT IN(1,6) THEN '委托中'
+			WHEN NOW()>= ADDDATE(b.interest_begin_date,5) AND b.`status` not in (1,6) AND regs.`status` NOT IN(1,5,6,7) AND regs.balance>0  THEN '投资中' 
+			WHEN NOW()>= ADDDATE(b.interest_begin_date,5) AND b.`status` not in (1,6) AND regs.`status` IN(5,7) THEN '已完成' 
+			WHEN NOW()>= ADDDATE(b.interest_begin_date,5) AND b.`status` not in (1,6) AND regs.`status` NOT IN(1,5,6,7) AND regs.balance=0 THEN '委托结束' 
+		END status_str, 
+		g.base_rate, h.amount AS subtract, 0 AS incentive_rate, g.term, b.open_balance, a.sub_account_id,
+		tt.buy_amount AS recharge_amount ,tt.balance,
+		tt.total_income accumulation_inerest, f.create_time AS apply_time, f.update_time AS success_time,  tt.interest_begin_date, 
+		tt.actual_payment_date payment_date
+	FROM bs_finance_dafy_relation a, bs_sub_account b LEFT JOIN bs_batch_buy_detail i ON b.id = i.sub_account_id,
+		tbemployee c, bs_account d, bs_user e, bs_product g,bs_property_info j,
+		bs_pay_orders f LEFT JOIN bs_red_packet_info h ON h.order_no = f.order_no,
+		bs_sub_account_pair s,
+ 		bs_sub_account regs LEFT JOIN
+		(select bs_sub_account_id,SUM(total_amount) buy_amount, MIN(loan_time1) interest_begin_date,
+						SUM(in_amount) balance ,MAX(plan_date) plan_payment_date,
+						SUM(sum_plan_interest) total_income,SUM(sum_plan_total) payment,MAX(actual_payment_date) actual_payment_date
+						from
+						(select dd.loan_time,bb.total_amount,bb.bs_sub_account_id,case when cc.id is null then dd.loan_time when cc.id is not null then cc.create_time end as loan_time1,
+						 case when cc.id is null then bb.total_amount when cc.id is not null then cc.in_amount end as in_amount,
+						l.plan_date,l.sum_plan_interest,l.sum_plan_total,l.actual_payment_date
+						from ln_loan_relation bb LEFT JOIN ln_credit_transfer cc ON cc.in_loan_relation_id = bb.id,
+						ln_loan dd,(
+							SELECT
+								z.id,
+								z.relation_id,
+								MAX(z.repay_serial) repay_serial,
+								MAX(z.plan_date) plan_date,
+								SUM(z.plan_interest) sum_plan_interest,
+								SUM(z.plan_total) sum_plan_total,
+								MAX(ff.update_time) actual_payment_date
+							FROM
+								ln_finance_repay_schedule z LEFT JOIN bs_loan_finance_repay ff ON ff.finance_repay_schedule_id = z.id and ff.`status`='REPAIED'
+							GROUP BY
+								relation_id
+						) l 
+						where 
+						bb.loan_id = dd.id 
+						and l.relation_id=bb.id
+						) t GROUP BY t.bs_sub_account_id
+				)tt ON tt.bs_sub_account_id = regs.id 
+	WHERE a.sub_account_id = b.id AND a.customer_manager_dafy_id = c.lUserId
+		AND b.account_id = d.id AND d.user_id = e.id AND b.id = f.sub_account_id
+		AND b.product_id = g.id AND s.auth_account_id = a.sub_account_id
+		AND regs.id = s.reg_d_account_id
+		AND g.property_id = j.id AND j.property_symbol = 'ZAN'
+		AND (f.trans_type = 'CARD_BUY_PRODUCT' OR f.trans_type = 'BALANCE_BUY_PRODUCT')
+		AND b.`status` NOT IN (1,6)
+		<if test="deptIds != null">
+			AND (
+			<if test="isOrDafyUserId != null">
+	        	a.customer_manager_dafy_id = #{isOrDafyUserId} OR 
+	        </if>
+				a.dafy_dept_id in
+			<foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+	            #{item} 
+	        </foreach>
+	        )
+		</if>
+		<if test="record.managerName != null">
+			AND a.customer_manager_dafy_id = #{record.managerName}
+		</if>
+		<if test="record.userName != null and record.userName != ''">
+			AND e.user_name LIKE CONCAT(CONCAT('%', #{record.userName}),'%')
+		</if>
+		<if test="record.mobile != null and record.mobile != ''">
+			AND e.mobile LIKE CONCAT(CONCAT('%', #{record.mobile}),'%')
+		</if>
+		<if test="record.idCard != null and record.idCard != ''">
+			AND e.id_card LIKE CONCAT(CONCAT('%', #{record.idCard}),'%')
+		</if>
+		<if test="record.productName != null and record.productName != ''">
+			AND b.product_name LIKE CONCAT(CONCAT('%', #{record.productName}),'%')
+		</if>
+		<if test="record.applyTimeStart != null and record.applyTimeStart != ''">
+			<![CDATA[
+				AND f.create_time >= #{record.applyTimeStart}
+			]]>
+		</if>
+		<if test="record.applyTimeEnd != null and record.applyTimeEnd != ''">
+			<![CDATA[
+				AND f.create_time <= #{record.applyTimeEnd}
+			]]>
+		</if>
+		<if test="record.interestBeginDateStart != null and record.interestBeginDateStart != ''">
+			<![CDATA[
+				AND DATE_FORMAT(tt.interest_begin_date,'%Y-%m-%d') >= #{record.interestBeginDateStart}
+			]]>
+		</if>
+		<if test="record.interestBeginDateEnd != null and record.interestBeginDateEnd != ''">
+			<![CDATA[
+				AND DATE_FORMAT(tt.interest_begin_date,'%Y-%m-%d') <= #{record.interestBeginDateEnd}
+			]]>
+		</if>
+		)p
+		<where>
+		<if test="record.status != null and record.status != ''">
+			<if test="record.status == 1">
+				AND p.status_str = '委托中' 
+			</if>
+			<if test="record.status == 2">
+				AND p.status_str = '委托结束' 
+			</if>
+			<if test="record.status == 3">
+				AND p.status_str = '投资中' 
+			</if>
+			<if test="record.status == 4">
+				AND p.status_str = '已完成' 
+			</if>
+		</if>
+		<if test="record.paymentDateStart != null and record.paymentDateStart != ''">
+			<![CDATA[
+				AND DATE_FORMAT(p.payment_date,'%Y-%m-%d')  >= #{record.paymentDateStart} AND p.status_str = '已完成' 
+			]]>
+		</if>
+		<if test="record.paymentDateEnd != null and record.paymentDateEnd != ''">
+			<![CDATA[
+				AND DATE_FORMAT(p.payment_date,'%Y-%m-%d')  <= #{record.paymentDateEnd} AND p.status_str = '已完成' 
+			]]>
+		</if>
+	</where>
+  </select>
+<!-- 达飞财务结算-理财S   -->
+ <resultMap id="FinancialSettlementGridMap" type="com.pinting.business.model.vo.FinancialSettlementVO">
+  	<result column="success_time" property="successTime" jdbcType="TIMESTAMP" />
+  	<result column="interest_begin_date" property="interestBeginDate" jdbcType="TIMESTAMP" />
+  	<result column="user_name" property="userName" jdbcType="VARCHAR" />
+  	<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+  	<result column="id_card" property="idCard" jdbcType="VARCHAR" />
+  	<result column="product_name" property="productName" jdbcType="VARCHAR" />
+  	<result column="contract_id" property="contractId" jdbcType="VARCHAR" />
+  	<result column="balance" property="balance" jdbcType="DOUBLE" />
+  	<result column="actual_amount" property="actualAmount" jdbcType="DOUBLE" />
+  	<result column="status" property="status" jdbcType="INTEGER" />
+  	<result column="term" property="term" jdbcType="INTEGER" />
+  	<result column="return_day" property="returnDay" jdbcType="TIMESTAMP" />
+  	<result column="base_rate" property="baseRate" jdbcType="DOUBLE" />
+  	<result column="manager_name" property="managerName" jdbcType="VARCHAR" />
+  	<result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+  	<result column="dept_code" property="deptCode" jdbcType="VARCHAR" />
+  </resultMap> 
+ <select id="queryFinancialSettlementGrid" resultMap="FinancialSettlementGridMap" parameterType="java.util.HashMap">
+		SELECT
+				b.open_time success_time,
+				b.interest_begin_date ,
+				CONCAT(SUBSTRING(e.user_name FROM 1 FOR 1),"**") user_name,
+				CONCAT(SUBSTRING(e.mobile FROM 1 FOR 7),"****") mobile,
+				CONCAT("****",SUBSTRING(e.id_card FROM 5 FOR 10),"****") id_card,
+				b.product_name,
+				f.id contract_id,
+				b.balance,
+				CASE WHEN h.amount IS NULL THEN b.balance
+				ELSE b.balance - h.amount
+				END AS actual_amount,
+				b.`status`,
+				CASE WHEN g.term > 0 AND g.term =12 THEN 365
+						 WHEN g.term > 0 AND g.term != 12 THEN 30*g.term
+						 WHEN g.term &lt; 0 THEN -g.term END term,
+				CASE WHEN g.term &lt; 0  THEN
+				DATE_ADD(b.interest_begin_date,INTERVAL -g.term DAY) 
+				WHEN g.term > 0 AND g.term = 12 THEN DATE_ADD(b.interest_begin_date,INTERVAL 365 DAY) 
+				WHEN g.term > 0 AND g.term != 12 THEN DATE_ADD(b.interest_begin_date,INTERVAL g.term*30 DAY) END
+				return_day,
+				g.base_rate,
+				c.strName AS manager_name,
+				c.strDeptName AS dept_name,
+				a.dafy_dept_code AS dept_code
+		FROM
+			bs_finance_dafy_relation a,
+			bs_sub_account b
+		LEFT JOIN bs_batch_buy_detail m ON b.id = m.sub_account_id,
+		 tbemployee c,
+		 bs_account d,
+		 bs_user e,
+		 bs_product g,
+		 bs_property_info i,
+		 bs_pay_orders f
+		LEFT JOIN bs_red_packet_info h ON h.order_no = f.order_no
+		WHERE
+			a.sub_account_id = b.id
+		AND a.customer_manager_dafy_id = c.lUserId
+		AND b.account_id = d.id
+		AND d.user_id = e.id
+		AND b.id = f.sub_account_id
+		AND b.product_id = g.id
+		AND g.property_id = i.id
+		AND (i.property_symbol='YUN_DAI' OR i.property_symbol='7_DAI')
+		AND (
+			f.trans_type = 'CARD_BUY_PRODUCT'
+			OR f.trans_type = 'BALANCE_BUY_PRODUCT'
+		)
+		AND b.`status` NOT IN (1, 6)
+		<if test="deptIds != null">
+			AND (
+			<if test="isOrDafyUserId != null">
+	        	a.customer_manager_dafy_id = #{isOrDafyUserId} OR 
+	        </if>
+				a.dafy_dept_id in
+			<foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+	            #{item} 
+	        </foreach>
+	        )
+		</if>
+		<if test="record.managerName != null">
+			AND a.customer_manager_dafy_id = #{record.managerName}
+		</if>
+		<if test="record.productName != null and record.productName != ''">
+			AND b.product_name LIKE CONCAT(CONCAT('%', #{record.productName}),'%')
+		</if>
+		<if test="record.status != null and record.status != ''">
+			AND b.`status` = #{record.status}
+		</if>
+		<if test="record.timeStart != null and record.timeStart != ''">
+			<![CDATA[
+				AND b.open_time >= #{record.timeStart}
+			]]>
+		</if>
+		<if test="record.timeEnd != null and record.timeEnd != ''">
+			<![CDATA[
+				AND b.open_time <= #{record.timeEnd }
+			]]>
+		</if>
+		<if test="record.amountStart != null and record.amountStart != ''">
+			<![CDATA[
+				AND b.balance >= #{record.amountStart}
+			]]>
+		</if>
+		<if test="record.amountEnd != null and record.amountEnd != ''">
+			<![CDATA[
+				AND b.balance <= #{record.amountEnd}
+			]]>
+		</if>
+		ORDER BY b.open_time ASC
+		LIMIT #{record.start}, #{record.numPerPage}
+  </select>
+  
+  <select id="queryFinancialSettlementGridZan" resultMap="FinancialSettlementGridMap" parameterType="java.util.HashMap">
+		SELECT
+				CASE WHEN n.id IS NOT NULL then n.create_time WHEN n.id IS NULL THEN
+					jj.loan_time END success_time,
+				CASE WHEN n.id IS NOT NULL then n.create_time WHEN n.id IS NULL THEN
+					jj.loan_time END interestBeginDate,
+				CONCAT(SUBSTRING(e.user_name FROM 1 FOR 1),"**") user_name,
+				CONCAT(SUBSTRING(e.mobile FROM 1 FOR 7),"****") mobile,
+				CONCAT("****",SUBSTRING(e.id_card FROM 5 FOR 10),"****") id_card,
+				b.product_name,
+				f.id contract_id,
+				j.total_amount balance,
+				CASE WHEN n.id IS NOT NULL then n.in_amount WHEN n.id IS NULL THEN
+				j.total_amount END actual_amount,
+				CASE WHEN j.`status` = 'SUCCESS' THEN 2 WHEN j.`status` = 'REPAID' THEN 5 END AS `status`,
+				
+				CASE WHEN n.id IS NOT NULL then DATEDIFF(l.plan_date, n.create_time) WHEN n.id IS NULL THEN
+				DATEDIFF(l.plan_date, jj.loan_time)  END term,
+				l.plan_date return_day,
+				g.base_rate,
+				c.strName AS manager_name,
+				c.strDeptName AS dept_name,
+				a.dafy_dept_code AS dept_code
+		FROM
+			bs_finance_dafy_relation a,
+			bs_sub_account b
+		LEFT JOIN bs_batch_buy_detail m ON b.id = m.sub_account_id,
+		 tbemployee c,
+		 bs_account d,
+		 bs_user e,
+		 bs_product g,
+		 bs_property_info i,
+		 ln_loan_relation j
+		 LEFT JOIN ln_credit_transfer n ON n.in_loan_relation_id = j.id,
+		 ln_loan jj,
+		 bs_sub_account_pair k,
+		 (select id,relation_id,MAX(repay_serial) repay_serial,MAX(plan_date) plan_date 
+		 from ln_finance_repay_schedule GROUP BY relation_id ) l,
+		 bs_pay_orders f
+		WHERE
+			a.sub_account_id = b.id
+		AND a.customer_manager_dafy_id = c.lUserId
+		AND b.account_id = d.id
+		AND d.user_id = e.id
+		AND b.id = f.sub_account_id
+		AND b.product_id = g.id
+		AND g.property_id = i.id
+		AND i.property_symbol='ZAN'
+		AND k.auth_account_id = b.id 
+		AND k.reg_d_account_id = j.bs_sub_account_id
+		AND l.relation_id = j.id
+		AND jj.id = j.loan_id
+		AND (j.`status` ='SUCCESS' OR j.`status` ='REPAID')
+		AND (
+			f.trans_type = 'CARD_BUY_PRODUCT'
+			OR f.trans_type = 'BALANCE_BUY_PRODUCT'
+		)
+		AND b.`status` NOT IN (1, 6)
+		<if test="deptIds != null">
+			AND (
+			<if test="isOrDafyUserId != null">
+	        	a.customer_manager_dafy_id = #{isOrDafyUserId} OR 
+	        </if>
+				a.dafy_dept_id in
+			<foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+	            #{item} 
+	        </foreach>
+	        )
+		</if>
+		<if test="record.managerName != null">
+			AND a.customer_manager_dafy_id = #{record.managerName}
+		</if>
+		<if test="record.productName != null and record.productName != ''">
+			AND b.product_name LIKE CONCAT(CONCAT('%', #{record.productName}),'%')
+		</if>
+		<if test="record.strStatus != null and record.strStatus != ''">
+			AND j.`status` = #{record.strStatus}
+		</if>
+		<if test="record.timeStart != null and record.timeStart != ''">
+			<![CDATA[
+				AND ((n.id is null AND jj.loan_time>= #{record.timeStart}) 
+					OR (n.id is not null AND n.create_time >= #{record.timeStart}))
+			]]>
+		</if>
+		<if test="record.timeEnd != null and record.timeEnd != ''">
+			<![CDATA[
+				AND ((n.id is null AND jj.loan_time <= #{record.timeEnd}) 
+					OR (n.id is not null AND n.create_time <= #{record.timeEnd}))
+			]]>
+		</if>
+		<if test="record.amountStart != null and record.amountStart != ''">
+			<![CDATA[
+				AND j.total_amount >= #{record.amountStart}
+			]]>
+		</if>
+		<if test="record.amountEnd != null and record.amountEnd != ''">
+			<![CDATA[
+				AND j.total_amount <= #{record.amountEnd}
+			]]>
+		</if>
+		ORDER BY b.open_time ASC
+		LIMIT #{record.start}, #{record.numPerPage}
+  </select>
+  
+  
+  
+    <select id="countFinancialSettlement" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+		SELECT
+			COUNT(a.id)
+		FROM
+			bs_finance_dafy_relation a,
+			bs_sub_account b
+		LEFT JOIN bs_batch_buy_detail m ON b.id = m.sub_account_id,
+		 tbemployee c,
+		 bs_account d,
+		 bs_user e,
+		 bs_product g,
+		 bs_property_info i,
+		 bs_pay_orders f
+		LEFT JOIN bs_red_packet_info h ON h.order_no = f.order_no
+		WHERE
+			a.sub_account_id = b.id
+		AND a.customer_manager_dafy_id = c.lUserId
+		AND b.account_id = d.id
+		AND d.user_id = e.id
+		AND b.id = f.sub_account_id
+		AND b.product_id = g.id
+		AND g.property_id = i.id
+		AND (i.property_symbol='YUN_DAI' OR i.property_symbol='7_DAI')
+		AND (
+			f.trans_type = 'CARD_BUY_PRODUCT'
+			OR f.trans_type = 'BALANCE_BUY_PRODUCT'
+		)
+		AND b.`status` NOT IN (1, 6)
+		<if test="deptIds != null">
+			AND (
+			<if test="isOrDafyUserId != null">
+	        	a.customer_manager_dafy_id = #{isOrDafyUserId} OR 
+	        </if>
+				a.dafy_dept_id in
+			<foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+	            #{item} 
+	        </foreach>
+	        )
+		</if>
+		<if test="record.managerName != null">
+			AND a.customer_manager_dafy_id = #{record.managerName}
+		</if>
+		<if test="record.productName != null and record.productName != ''">
+			AND b.product_name LIKE CONCAT(CONCAT('%', #{record.productName}),'%')
+		</if>
+		<if test="record.status != null and record.status != ''">
+			AND b.`status` = #{record.status}
+		</if>
+		<if test="record.timeStart != null and record.timeStart != ''">
+			<![CDATA[
+				AND b.open_time >= #{record.timeStart}
+			]]>
+		</if>
+		<if test="record.timeEnd != null and record.timeEnd != ''">
+			<![CDATA[
+				AND b.open_time <= #{record.timeEnd}
+			]]>
+		</if>
+		<if test="record.amountStart != null and record.amountStart != ''">
+			<![CDATA[
+				AND b.balance >= #{record.amountStart}
+			]]>
+		</if>
+		<if test="record.amountEnd != null and record.amountEnd != ''">
+			<![CDATA[
+				AND b.balance <= #{record.amountEnd}
+			]]>
+		</if>
+  </select>
+  
+  <select id="countFinancialSettlementZan" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+		SELECT
+			COUNT(a.id)
+		FROM
+			bs_finance_dafy_relation a,
+			bs_sub_account b
+		LEFT JOIN bs_batch_buy_detail m ON b.id = m.sub_account_id,
+		 tbemployee c,
+		 bs_account d,
+		 bs_user e,
+		 bs_product g,
+		 bs_property_info i,
+		 ln_loan_relation j
+		 LEFT JOIN ln_credit_transfer n ON n.in_loan_relation_id = j.id,
+		 ln_loan jj,
+		 bs_sub_account_pair k,
+		 (select id,relation_id,MAX(repay_serial) repay_serial,MAX(plan_date) plan_date 
+		 from ln_finance_repay_schedule GROUP BY relation_id ) l,
+		 bs_pay_orders f
+		LEFT JOIN bs_red_packet_info h ON h.order_no = f.order_no
+		WHERE
+			a.sub_account_id = b.id
+		AND a.customer_manager_dafy_id = c.lUserId
+		AND b.account_id = d.id
+		AND d.user_id = e.id
+		AND b.id = f.sub_account_id
+		AND b.product_id = g.id
+		AND g.property_id = i.id
+		AND i.property_symbol='ZAN'
+		AND k.auth_account_id = b.id 
+		AND k.reg_d_account_id = j.bs_sub_account_id
+		AND l.relation_id = j.id
+		AND jj.id = j.loan_id
+		AND (j.`status` ='SUCCESS' OR j.`status` ='REPAID')
+		AND (
+			f.trans_type = 'CARD_BUY_PRODUCT'
+			OR f.trans_type = 'BALANCE_BUY_PRODUCT'
+		)
+		AND b.`status` NOT IN (1, 6)
+		<if test="deptIds != null">
+			AND (
+			<if test="isOrDafyUserId != null">
+	        	a.customer_manager_dafy_id = #{isOrDafyUserId} OR 
+	        </if>
+				a.dafy_dept_id in
+			<foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+	            #{item} 
+	        </foreach>
+	        )
+		</if>
+		<if test="record.managerName != null">
+			AND a.customer_manager_dafy_id = #{record.managerName}
+		</if>
+		<if test="record.productName != null and record.productName != ''">
+			AND b.product_name LIKE CONCAT(CONCAT('%', #{record.productName}),'%')
+		</if>
+		<if test="record.strStatus != null and record.strStatus != ''">
+			AND j.`status` = #{record.strStatus}
+		</if>
+		<if test="record.timeStart != null and record.timeStart != ''">
+			<![CDATA[
+				AND ((n.id is null AND jj.loan_time>= #{record.timeStart}) 
+					OR (n.id is not null AND n.create_time >= #{record.timeStart}))
+			]]>
+		</if>
+		<if test="record.timeEnd != null and record.timeEnd != ''">
+			<![CDATA[
+				AND ((n.id is null AND jj.loan_time <= #{record.timeEnd}) 
+					OR (n.id is not null AND n.create_time <= #{record.timeEnd}))
+			]]>
+		</if>
+		<if test="record.amountStart != null and record.amountStart != ''">
+			<![CDATA[
+				AND j.total_amount >= #{record.amountStart}
+			]]>
+		</if>
+		<if test="record.amountEnd != null and record.amountEnd != ''">
+			<![CDATA[
+				AND j.total_amount <= #{record.amountEnd}
+			]]>
+		</if>
+  </select>
+  <!-- 达飞财务结算-理财E   -->
+
+  <resultMap id="DafyBusinessManagerMap" type="com.pinting.business.model.vo.DafyBusinessManagerVO">
+  	<result column="id" property="id" jdbcType="INTEGER" />
+  	<result column="sub_account_id" property="subAccountId" jdbcType="INTEGER" />
+  	<result column="user_name" property="userName" jdbcType="VARCHAR" />
+  	<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+  	<result column="id_card" property="idCard" jdbcType="VARCHAR" />
+  	<result column="product_name" property="productName" jdbcType="VARCHAR" />
+  	<result column="manager_name" property="managerName" jdbcType="VARCHAR" />
+  	<result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+  	<result column="dept_code" property="deptCode" jdbcType="VARCHAR" />
+  	<result column="status" property="status" jdbcType="INTEGER" />
+  	<result column="status_str" property="statusStr" jdbcType="VARCHAR" />
+  	<result column="base_rate" property="baseRate" jdbcType="DOUBLE" />
+  	<result column="term" property="term" jdbcType="INTEGER" />
+  	<result column="open_balance" property="openBalance" jdbcType="DOUBLE" />
+  	<result column="balance" property="balance" jdbcType="DOUBLE" />
+  	<result column="buy_amount" property="buyAmount" jdbcType="DOUBLE" />
+  	<result column="total_income" property="totalIncome" jdbcType="DOUBLE" />
+  	<result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
+  	<result column="success_time" property="successTime" jdbcType="TIMESTAMP" />
+  	<result column="interest_begin_date" property="interestBeginDate" jdbcType="TIMESTAMP" />
+  	<result column="actual_payment_date" property="actualPaymentDate" jdbcType="TIMESTAMP" />
+  	<result column="plan_payment_date" property="planPaymentDate" jdbcType="TIMESTAMP" />
+  	<result column="payment" property="payment" jdbcType="DOUBLE" />
+  </resultMap>
+  
+    <select id="selectDafyBusinessManager" resultMap="DafyBusinessManagerMap" parameterType="java.util.HashMap">
+	SELECT p.* FROM
+	(
+		SELECT
+			t.*, (t.balance + t.total_income) payment
+		FROM
+			(
+				SELECT
+					a.id,
+					b.id sub_account_id,
+					e.user_name,
+					e.mobile,
+					e.id_card,
+					b.product_name,
+					c.strName AS manager_name,
+					c.strDeptName AS dept_name,
+					a.dafy_dept_code AS dept_code,
+					b.`status`,
+					g.base_rate,
+					g.term,
+					b.balance,
+					f.amount buy_amount,
+					CASE
+						WHEN g.term = -7 THEN ROUND(b.balance * 7 * g.base_rate / 100 / 365, 2)
+						WHEN g.term = 12 THEN ROUND(b.balance * g.base_rate / 100, 2)
+						ELSE ROUND(b.balance * g.term * 30 * g.base_rate / 100 / 365, 2)
+					END AS total_income,
+					f.create_time AS apply_time,
+					f.update_time AS success_time,
+					b.interest_begin_date,
+					CASE
+						WHEN i.return_status = 'SUCCESS' THEN i.update_time
+						ELSE NULL
+					END AS actual_payment_date,
+					b.last_finish_interest_date AS plan_payment_date
+				FROM
+					bs_finance_dafy_relation a,
+					bs_sub_account b LEFT JOIN bs_batch_buy_detail i ON b.id = i.sub_account_id,
+					tbemployee c,
+					bs_account d,
+					bs_user e,
+					bs_product g,
+					bs_property_info j,
+					bs_pay_orders f
+				WHERE
+					a.sub_account_id = b.id
+				AND a.customer_manager_dafy_id = c.lUserId
+				AND b.account_id = d.id
+				AND d.user_id = e.id
+				AND b.id = f.sub_account_id
+				AND b.product_id = g.id
+				AND g.property_id = j.id
+				AND (j.property_symbol = 'YUN_DAI' OR j.property_symbol = '7_DAI')
+				AND (f.trans_type = 'CARD_BUY_PRODUCT' OR f.trans_type = 'BALANCE_BUY_PRODUCT')
+				AND b.`status` NOT IN (1, 6)
+				<if test="deptIds != null">
+					AND (
+					<if test="isOrDafyUserId != null">
+			        	a.customer_manager_dafy_id = #{isOrDafyUserId} OR 
+			        </if>
+						a.dafy_dept_id in
+					<foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+			            #{item} 
+			        </foreach>
+			        )
+				</if>
+				<if test="record.managerName != null">
+					AND a.customer_manager_dafy_id = #{record.managerName}
+				</if>
+				<if test="record.productName != null and record.productName != ''">
+					AND b.product_name LIKE CONCAT(CONCAT('%', #{record.productName}),'%')
+				</if>
+				<if test="record.status != null and record.status != ''">
+					AND b.`status` = #{record.status}
+				</if>
+				<if test="record.term != null and record.term != ''">
+					AND g.term = #{record.term}
+				</if>
+				<if test="record.balanceStart != null and record.balanceStart != ''">
+					<![CDATA[
+						AND b.balance >= #{record.balanceStart}
+					]]>
+				</if>
+				<if test="record.balanceEnd != null and record.balanceEnd != ''">
+					<![CDATA[
+						AND b.balance <= #{record.balanceEnd}
+					]]>
+				</if>
+				<if test="successTimeStart != null">
+					<![CDATA[
+						AND f.update_time >= #{successTimeStart}
+					]]>
+				</if>
+				<if test="successTimeEnd != null">
+					<![CDATA[
+						AND f.update_time <= #{successTimeEnd}
+					]]>
+				</if>
+		) t
+	) p
+	<where>
+		<if test="record.paymentStart != null and record.paymentStart != ''">
+			<![CDATA[
+				AND p.payment >= #{record.paymentStart}
+			]]>
+		</if>
+		<if test="record.paymentEnd != null and record.paymentEnd != ''">
+			<![CDATA[
+				AND p.payment <= #{record.paymentEnd}
+			]]>
+		</if>
+	</where>
+	ORDER BY p.apply_time
+	LIMIT #{record.start}, #{record.numPerPage}
+  </select>
+  
+  <select id="selectDafyBusinessManagerZan" resultMap="DafyBusinessManagerMap" parameterType="java.util.HashMap">
+	SELECT p.* FROM
+	(
+			SELECT
+					a.id,
+					b.id sub_account_id,
+					e.user_name,
+					e.mobile,
+					e.id_card,
+					b.product_name,
+					c.strName AS manager_name,
+					c.strDeptName AS dept_name,
+					a.dafy_dept_code AS dept_code,
+					CASE WHEN NOW()&lt;ADDDATE(b.interest_begin_date,5)  AND b.`status` not in (1,6) AND regs.`status` NOT IN(1,6) THEN '委托中'
+							WHEN NOW()>= ADDDATE(b.interest_begin_date,5) AND b.`status` not in (1,6) AND regs.`status` NOT IN(1,5,6,7) AND regs.balance>0  THEN '投资中' 
+							WHEN NOW()>= ADDDATE(b.interest_begin_date,5) AND b.`status` not in (1,6) AND regs.`status` IN(5,7) THEN '已完成' 
+							WHEN NOW()>= ADDDATE(b.interest_begin_date,5) AND b.`status` not in (1,6) AND regs.`status` NOT IN(1,5,6,7) AND regs.balance=0 THEN '委托结束' 
+					END status_str,
+					g.base_rate,
+					g.term,
+					b.open_balance,
+					tt.balance,
+					tt.buy_amount,
+					tt.total_income,
+					f.create_time AS apply_time,
+					f.update_time AS success_time,
+					tt.interest_begin_date,
+					tt.actual_payment_date,
+					tt.plan_payment_date,
+					tt.payment
+				FROM
+					bs_finance_dafy_relation a,
+					bs_sub_account b,
+					tbemployee c,
+					bs_account d,
+					bs_user e,
+					bs_product g,
+					bs_property_info j,
+					bs_pay_orders f,
+					bs_sub_account_pair s,
+					bs_sub_account regs LEFT JOIN
+					(select bs_sub_account_id,SUM(total_amount) buy_amount, MIN(loan_time1) interest_begin_date,
+						SUM(in_amount) balance ,MAX(plan_date) plan_payment_date,
+						SUM(sum_plan_interest) total_income,SUM(sum_plan_total) payment,MAX(actual_payment_date) actual_payment_date
+						from
+						(select dd.loan_time,bb.total_amount,bb.bs_sub_account_id,case when cc.id is null then dd.loan_time when cc.id is not null then cc.create_time end as loan_time1,
+						 case when cc.id is null then bb.total_amount when cc.id is not null then cc.in_amount end as in_amount,
+						l.plan_date,l.sum_plan_interest,l.sum_plan_total,l.actual_payment_date
+						from ln_loan_relation bb LEFT JOIN ln_credit_transfer cc ON cc.in_loan_relation_id = bb.id,
+						ln_loan dd,(
+							SELECT
+								z.id,
+								z.relation_id,
+								MAX(z.repay_serial) repay_serial,
+								MAX(z.plan_date) plan_date,
+								SUM(z.plan_interest) sum_plan_interest,
+								SUM(z.plan_total) sum_plan_total,
+								MAX(ff.update_time) actual_payment_date
+							FROM
+								ln_finance_repay_schedule z LEFT JOIN bs_loan_finance_repay ff ON ff.finance_repay_schedule_id = z.id and ff.`status`='REPAIED'
+							GROUP BY
+								relation_id
+						) l 
+						where 
+						##bb.bs_sub_account_id =85656 and 
+						bb.loan_id = dd.id 
+						and l.relation_id=bb.id
+						) t GROUP BY t.bs_sub_account_id
+				)tt ON tt.bs_sub_account_id = regs.id 
+				WHERE
+					a.sub_account_id = b.id
+				AND s.auth_account_id = a.sub_account_id
+				AND regs.id = s.reg_d_account_id
+				AND a.customer_manager_dafy_id = c.lUserId
+				AND b.account_id = d.id
+				AND d.user_id = e.id
+				AND b.id = f.sub_account_id
+				AND b.product_id = g.id
+				AND g.property_id = j.id
+				AND j.property_symbol = 'ZAN'
+				AND (f.trans_type = 'CARD_BUY_PRODUCT' OR f.trans_type = 'BALANCE_BUY_PRODUCT')
+				AND b.`status` NOT IN (1, 6)
+				<if test="deptIds != null">
+					AND (
+					<if test="isOrDafyUserId != null">
+			        	a.customer_manager_dafy_id = #{isOrDafyUserId} OR 
+			        </if>
+						a.dafy_dept_id in
+					<foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+			            #{item} 
+			        </foreach>
+			        )
+				</if>
+				<if test="record.managerName != null">
+					AND a.customer_manager_dafy_id = #{record.managerName}
+				</if>
+				<if test="record.productName != null and record.productName != ''">
+					AND b.product_name LIKE CONCAT(CONCAT('%', #{record.productName}),'%')
+				</if>
+				
+				<if test="record.term != null and record.term != ''">
+					AND g.term = #{record.term}
+				</if>
+				<if test="record.balanceStart != null and record.balanceStart != ''">
+					<![CDATA[
+						AND tt.balance >= #{record.balanceStart}
+					]]>
+				</if>
+				<if test="record.balanceEnd != null and record.balanceEnd != ''">
+					<![CDATA[
+						AND tt.balance <= #{record.balanceEnd}
+					]]>
+				</if>
+				<if test="successTimeStart != null">
+					<![CDATA[
+						AND f.update_time  >= #{successTimeStart}
+					]]>
+				</if>
+				<if test="successTimeEnd != null">
+					<![CDATA[
+						AND f.update_time <= #{successTimeEnd}
+					]]>
+				</if>
+	) p
+	<where>
+		<if test="record.status != null and record.status != ''">
+			<if test="record.status == 1">
+				AND p.status_str = '委托中' 
+			</if>
+			<if test="record.status == 2">
+				AND p.status_str = '委托结束' 
+			</if>
+			<if test="record.status == 3">
+				AND p.status_str = '投资中' 
+			</if>
+			<if test="record.status == 4">
+				AND p.status_str = '已完成' 
+			</if>
+		</if>
+		<if test="record.paymentStart != null and record.paymentStart != ''">
+			<![CDATA[
+				AND p.payment >= #{record.paymentStart}
+			]]>
+		</if>
+		<if test="record.paymentEnd != null and record.paymentEnd != ''">
+			<![CDATA[
+				AND p.payment <= #{record.paymentEnd}
+			]]>
+		</if>
+	</where>
+	ORDER BY p.apply_time
+	LIMIT #{record.start}, #{record.numPerPage}
+  </select>
+  
+  <select id="countDafyBusinessManager" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+	SELECT COUNT(p.payment) FROM
+	(
+		SELECT
+			(t.balance + t.total_income) payment
+		FROM
+			(
+				SELECT
+					b.balance,
+					CASE
+						WHEN g.term = -7 THEN ROUND(b.balance * 7 * g.base_rate / 100 / 365, 2)
+						WHEN g.term = 12 THEN ROUND(b.balance * g.base_rate / 100, 2)
+						ELSE ROUND(b.balance * g.term * 30 * g.base_rate / 100 / 365, 2)
+					END AS total_income
+				FROM
+					bs_finance_dafy_relation a,
+					bs_sub_account b,
+					tbemployee c,
+					bs_account d,
+					bs_user e,
+					bs_product g,
+					bs_property_info j,
+					bs_pay_orders f
+				WHERE
+					a.sub_account_id = b.id
+				AND a.customer_manager_dafy_id = c.lUserId
+				AND b.account_id = d.id
+				AND d.user_id = e.id
+				AND b.id = f.sub_account_id
+				AND b.product_id = g.id
+				AND g.property_id = j.id
+				AND (j.property_symbol = 'YUN_DAI' OR j.property_symbol = '7_DAI')
+				AND (f.trans_type = 'CARD_BUY_PRODUCT' OR f.trans_type = 'BALANCE_BUY_PRODUCT')
+				AND b.`status` NOT IN (1, 6)
+				<if test="deptIds != null">
+					AND (
+					<if test="isOrDafyUserId != null">
+			        	a.customer_manager_dafy_id = #{isOrDafyUserId} OR 
+			        </if>
+						a.dafy_dept_id in
+					<foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+			            #{item} 
+			        </foreach>
+			        )
+				</if>
+				<if test="record.managerName != null">
+					AND a.customer_manager_dafy_id = #{record.managerName}
+				</if>
+				<if test="record.productName != null and record.productName != ''">
+					AND b.product_name LIKE CONCAT(CONCAT('%', #{record.productName}),'%')
+				</if>
+				<if test="record.status != null and record.status != ''">
+					AND b.`status` = #{record.status}
+				</if>
+				<if test="record.term != null and record.term != ''">
+					AND g.term = #{record.term}
+				</if>
+				<if test="record.balanceStart != null and record.balanceStart != ''">
+					<![CDATA[
+						AND b.balance >= #{record.balanceStart}
+					]]>
+				</if>
+				<if test="record.balanceEnd != null and record.balanceEnd != ''">
+					<![CDATA[
+						AND b.balance <= #{record.balanceEnd}
+					]]>
+				</if>
+				<if test="successTimeStart != null">
+					<![CDATA[
+						AND f.update_time >= #{successTimeStart}
+					]]>
+				</if>
+				<if test="successTimeEnd != null">
+					<![CDATA[
+						AND f.update_time <= #{successTimeEnd}
+					]]>
+				</if>
+		) t
+	) p
+	<where>
+		<if test="record.paymentStart != null and record.paymentStart != ''">
+			<![CDATA[
+				AND p.payment >= #{record.paymentStart}
+			]]>
+		</if>
+		<if test="record.paymentEnd != null and record.paymentEnd != ''">
+			<![CDATA[
+				AND p.payment <= #{record.paymentEnd}
+			]]>
+		</if>
+	</where>
+  </select>
+  
+  <select id="countDafyBusinessManagerZan" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+  SELECT COUNT(p.id) FROM
+	(
+			SELECT
+					a.id,
+					b.id sub_account_id,
+					e.user_name,
+					e.mobile,
+					e.id_card,
+					b.product_name,
+					c.strName AS manager_name,
+					c.strDeptName AS dept_name,
+					a.dafy_dept_code AS dept_code,
+					CASE WHEN NOW()&lt; ADDDATE(b.interest_begin_date,5) AND b.`status` not in (1,6) AND regs.`status` NOT IN(1,6) THEN '委托中'
+							WHEN NOW()>= ADDDATE(b.interest_begin_date,5) AND b.`status` not in (1,6) AND regs.`status` NOT IN(1,5,6,7) AND regs.balance>0  THEN '投资中' 
+							WHEN NOW()>= ADDDATE(b.interest_begin_date,5) AND b.`status` not in (1,6) AND regs.`status` IN(5,7) THEN '已完成' 
+							WHEN NOW()>= ADDDATE(b.interest_begin_date,5) AND b.`status` not in (1,6) AND regs.`status` NOT IN(1,5,6,7) AND regs.balance=0 THEN '委托结束' 
+					END status_str,
+					g.base_rate,
+					g.term,
+					b.open_balance,
+					tt.balance,
+					tt.buy_amount,
+					tt.total_income,
+					f.create_time AS apply_time,
+					f.update_time AS success_time,
+					tt.interest_begin_date,
+					tt.actual_payment_date,
+					tt.payment
+				FROM
+					bs_finance_dafy_relation a,
+					bs_sub_account b,
+					tbemployee c,
+					bs_account d,
+					bs_user e,
+					bs_product g,
+					bs_property_info j,
+					bs_pay_orders f,
+					bs_sub_account_pair s,
+					bs_sub_account regs LEFT JOIN
+					(select bs_sub_account_id,SUM(total_amount) buy_amount, MIN(loan_time1) interest_begin_date,
+						SUM(in_amount) balance ,MAX(plan_date) plan_payment_date,
+						SUM(sum_plan_interest) total_income,SUM(sum_plan_total) payment,MAX(actual_payment_date) actual_payment_date
+						from
+						(select dd.loan_time,bb.total_amount,bb.bs_sub_account_id,case when cc.id is null then dd.loan_time when cc.id is not null then cc.create_time end as loan_time1,
+						 case when cc.id is null then bb.total_amount when cc.id is not null then cc.in_amount end as in_amount,
+						l.plan_date,l.sum_plan_interest,l.sum_plan_total,l.actual_payment_date
+						from ln_loan_relation bb LEFT JOIN ln_credit_transfer cc ON cc.in_loan_relation_id = bb.id,
+						ln_loan dd,(
+							SELECT
+								z.id,
+								z.relation_id,
+								MAX(z.repay_serial) repay_serial,
+								MAX(z.plan_date) plan_date,
+								SUM(z.plan_interest) sum_plan_interest,
+								SUM(z.plan_total) sum_plan_total,
+								MAX(ff.update_time) actual_payment_date
+							FROM
+								ln_finance_repay_schedule z LEFT JOIN bs_loan_finance_repay ff ON ff.finance_repay_schedule_id = z.id and ff.`status`='REPAIED'
+							GROUP BY
+								relation_id
+						) l 
+						where 
+						bb.loan_id = dd.id 
+						and l.relation_id=bb.id
+						) t GROUP BY t.bs_sub_account_id
+				)tt ON tt.bs_sub_account_id = regs.id
+				WHERE
+					a.sub_account_id = b.id
+				AND s.auth_account_id = a.sub_account_id
+				AND regs.id = s.reg_d_account_id
+				AND a.customer_manager_dafy_id = c.lUserId
+				AND b.account_id = d.id
+				AND d.user_id = e.id
+				AND b.id = f.sub_account_id
+				AND b.product_id = g.id
+				AND g.property_id = j.id
+				AND j.property_symbol = 'ZAN'
+				AND (f.trans_type = 'CARD_BUY_PRODUCT' OR f.trans_type = 'BALANCE_BUY_PRODUCT')
+				AND b.`status` NOT IN (1, 6)
+				<if test="deptIds != null">
+					AND (
+					<if test="isOrDafyUserId != null">
+			        	a.customer_manager_dafy_id = #{isOrDafyUserId} OR 
+			        </if>
+						a.dafy_dept_id in
+					<foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+			            #{item} 
+			        </foreach>
+			        )
+				</if>
+				<if test="record.managerName != null">
+					AND a.customer_manager_dafy_id = #{record.managerName}
+				</if>
+				<if test="record.productName != null and record.productName != ''">
+					AND b.product_name LIKE CONCAT(CONCAT('%', #{record.productName}),'%')
+				</if>
+				
+				<if test="record.term != null and record.term != ''">
+					AND g.term = #{record.term}
+				</if>
+				<if test="record.balanceStart != null and record.balanceStart != ''">
+					<![CDATA[
+						AND tt.balance >= #{record.balanceStart}
+					]]>
+				</if>
+				<if test="record.balanceEnd != null and record.balanceEnd != ''">
+					<![CDATA[
+						AND tt.balance <= #{record.balanceEnd}
+					]]>
+				</if>
+				<if test="successTimeStart != null">
+					<![CDATA[
+						AND f.update_time >= #{successTimeStart}
+					]]>
+				</if>
+				<if test="successTimeEnd != null">
+					<![CDATA[
+						AND f.update_time <= #{successTimeEnd}
+					]]>
+				</if>
+	) p
+	<where>
+		<if test="record.status != null and record.status != ''">
+			<if test="record.status == 1">
+				AND p.status_str = '委托中' 
+			</if>
+			<if test="record.status == 2">
+				AND p.status_str = '委托结束' 
+			</if>
+			<if test="record.status == 3">
+				AND p.status_str = '投资中' 
+			</if>
+			<if test="record.status == 4">
+				AND p.status_str = '已完成' 
+			</if>
+		</if>
+		<if test="record.paymentStart != null and record.paymentStart != ''">
+			<![CDATA[
+				AND p.payment >= #{record.paymentStart}
+			]]>
+		</if>
+		<if test="record.paymentEnd != null and record.paymentEnd != ''">
+			<![CDATA[
+				AND p.payment <= #{record.paymentEnd}
+			]]>
+		</if>
+	</where>
+  </select>
+  
+  
+  
+  <!-- 达飞财务结算-赎回S   -->
+ <resultMap id="FinancialRedeemGridMap" type="com.pinting.business.model.vo.FinancialRedeemVO">
+  	<result column="success_time" property="successTime" jdbcType="TIMESTAMP" />
+  	<result column="interest_begin_date" property="interestBeginDate" jdbcType="TIMESTAMP" />
+  	<result column="user_name" property="userName" jdbcType="VARCHAR" />
+  	<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+  	<result column="id_card" property="idCard" jdbcType="VARCHAR" />
+  	<result column="product_name" property="productName" jdbcType="VARCHAR" />
+  	<result column="contract_id" property="contractId" jdbcType="VARCHAR" />
+  	<result column="balance" property="balance" jdbcType="DOUBLE" />
+  	<result column="actual_amount" property="actualAmount" jdbcType="DOUBLE" />
+  	<result column="status" property="status" jdbcType="INTEGER" />
+  	<result column="term" property="term" jdbcType="INTEGER" />
+  	<result column="return_day" property="returnDay" jdbcType="TIMESTAMP" />
+  	<result column="base_rate" property="baseRate" jdbcType="DOUBLE" />
+  	<result column="manager_name" property="managerName" jdbcType="VARCHAR" />
+  	<result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+  	<result column="dept_code" property="deptCode" jdbcType="VARCHAR" />
+  	<result column="redeem_success_time" property="redeemSuccessTime" jdbcType="TIMESTAMP" />
+  	<result column="redeem_balance" property="redeemBalance" jdbcType="DOUBLE" />
+  	<result column="redeem_principal_balance" property="redeemPrincipalBalance" jdbcType="DOUBLE" />
+  	<result column="redeem_interest_balance" property="redeemInterestBalance" jdbcType="DOUBLE" />
+  </resultMap> 
+ <select id="queryFinancialRedeemGrid" resultMap="FinancialRedeemGridMap" parameterType="java.util.HashMap">
+		SELECT
+				b.open_time success_time,
+				b.interest_begin_date ,
+				CONCAT(SUBSTRING(e.user_name FROM 1 FOR 1),"**") user_name,
+				CONCAT(SUBSTRING(e.mobile FROM 1 FOR 7),"****") mobile,
+				CONCAT("****",SUBSTRING(e.id_card FROM 5 FOR 10),"****") id_card,
+				b.product_name,
+				f.id contract_id,
+				b.balance,
+				CASE WHEN h.amount IS NULL THEN b.balance
+				ELSE b.balance - h.amount
+				END AS actual_amount,
+				b.`status`,
+				CASE WHEN g.term > 0 AND g.term =12 THEN 365
+						 WHEN g.term > 0 AND g.term != 12 THEN 30*g.term
+						 WHEN g.term &lt; 0 THEN -g.term END term,
+				CASE WHEN g.term &lt; 0  THEN
+				DATE_ADD(b.interest_begin_date,INTERVAL -g.term DAY) 
+				WHEN g.term > 0 AND g.term = 12 THEN DATE_ADD(b.interest_begin_date,INTERVAL 365 DAY) 
+				WHEN g.term > 0 AND g.term != 12 THEN DATE_ADD(b.interest_begin_date,INTERVAL g.term*30 DAY) END
+				return_day,
+				g.base_rate,
+				c.strName AS manager_name,
+				c.strDeptName AS dept_name,
+				a.dafy_dept_code AS dept_code,
+				b.last_finish_interest_date AS redeem_success_time,
+				b.accumulation_inerest + b.balance AS redeem_balance,
+				b.balance AS redeem_principal_balance,
+				b.accumulation_inerest AS redeem_interest_balance
+		FROM
+			bs_finance_dafy_relation a,
+			bs_sub_account b
+		LEFT JOIN bs_batch_buy_detail m ON b.id = m.sub_account_id,
+		 tbemployee c,
+		 bs_account d,
+		 bs_user e,
+		 bs_product g,
+		 bs_property_info i,
+		 bs_pay_orders f
+		LEFT JOIN bs_red_packet_info h ON h.order_no = f.order_no
+		WHERE
+			a.sub_account_id = b.id
+		AND a.customer_manager_dafy_id = c.lUserId
+		AND b.account_id = d.id
+		AND d.user_id = e.id
+		AND b.id = f.sub_account_id
+		AND b.product_id = g.id
+		AND g.property_id = i.id
+		AND (i.property_symbol='YUN_DAI' OR i.property_symbol='7_DAI')
+		AND (
+			f.trans_type = 'CARD_BUY_PRODUCT'
+			OR f.trans_type = 'BALANCE_BUY_PRODUCT'
+		)
+		AND b.`status` NOT IN (1,2,3,4,6)
+		<if test="deptIds != null">
+			AND (
+			<if test="isOrDafyUserId != null">
+	        	a.customer_manager_dafy_id = #{isOrDafyUserId} OR 
+	        </if>
+				a.dafy_dept_id in
+			<foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+	            #{item} 
+	        </foreach>
+	        )
+		</if>
+		<if test="record.managerName != null">
+			AND a.customer_manager_dafy_id = #{record.managerName}
+		</if>
+		<if test="record.productName != null and record.productName != ''">
+			AND b.product_name LIKE CONCAT(CONCAT('%', #{record.productName}),'%')
+		</if>
+		<if test="record.status != null and record.status != ''">
+			AND b.`status` = #{record.status}
+		</if>
+		<if test="record.interestDateStart != null and record.interestDateStart != ''">
+			<![CDATA[
+				AND b.interest_begin_date >= #{record.interestDateStart}
+			]]>
+		</if>
+		<if test="record.interestDateEnd != null and record.interestDateEnd != ''">
+			<![CDATA[
+				AND b.interest_begin_date <= #{record.interestDateEnd }
+			]]>
+		</if>
+		<if test="record.redeemDateStart != null and record.redeemDateStart != ''">
+			<![CDATA[
+				AND b.last_finish_interest_date >= #{record.redeemDateStart}
+			]]>
+		</if>
+		<if test="record.redeemDateEnd != null and record.redeemDateEnd != ''">
+			<![CDATA[
+				AND b.last_finish_interest_date <= #{record.redeemDateEnd }
+			]]>
+		</if>
+		<if test="record.amountStart != null and record.amountStart != ''">
+			<![CDATA[
+				AND b.balance >= #{record.amountStart}
+			]]>
+		</if>
+		<if test="record.amountEnd != null and record.amountEnd != ''">
+			<![CDATA[
+				AND b.balance <= #{record.amountEnd}
+			]]>
+		</if>
+		
+		<if test="record.redeemAmountStart != null and record.redeemAmountStart != ''">
+			<![CDATA[
+				AND b.accumulation_inerest + b.balance >= #{record.redeemAmountStart}
+			]]>
+		</if>
+		<if test="record.redeemAmountEnd != null and record.redeemAmountEnd != ''">
+			<![CDATA[
+				AND b.accumulation_inerest + b.balance <= #{record.redeemAmountEnd}
+			]]>
+		</if>
+		ORDER BY b.interest_begin_date ASC
+		LIMIT #{record.start}, #{record.numPerPage}
+  </select>
+  
+  <!-- 达飞财务-赎回结算-分期产品 -->
+  <select id="queryFinancialRedeemGridZan" resultMap="FinancialRedeemGridMap" parameterType="java.util.HashMap">
+	select 
+		CASE WHEN nn.id IS NOT NULL then nn.create_time WHEN nn.id IS NULL THEN
+		jjloan_time END success_time,
+				
+		CASE WHEN nn.id IS NOT NULL then nn.create_time WHEN nn.id IS NULL THEN
+		jjloan_time END interestBeginDate,
+				
+		CASE WHEN nn.id IS NOT NULL then nn.in_amount WHEN nn.id IS NULL THEN
+		jtotal_amount END actual_amount,
+				
+		CASE WHEN nn.id IS NOT NULL then DATEDIFF(o.plan_date, nn.create_time) WHEN nn.id IS NULL THEN
+		DATEDIFF(o.plan_date, jjloan_time)  END term,
+		o.plan_date return_day,
+	aaa.* from(
+		SELECT
+				j.id jid,jj.loan_time jjloan_time,j.total_amount jtotal_amount,
+				CONCAT(SUBSTRING(e.user_name FROM 1 FOR 1),"**") user_name,
+				CONCAT(SUBSTRING(e.mobile FROM 1 FOR 7),"****") mobile,
+				CONCAT("****",SUBSTRING(e.id_card FROM 5 FOR 10),"****") id_card,
+				b.product_name,
+				f.id contract_id,
+				j.total_amount balance,
+				CASE
+				WHEN n.`status` = 'REPAYING' THEN
+				7
+				WHEN n.`status` = 'REPAIED' THEN
+				5
+				WHEN n.`status` = 'FAIL' THEN
+				8
+				END AS `status`,
+				g.base_rate,
+				c.strName AS manager_name,
+				c.strDeptName AS dept_name,
+				a.dafy_dept_code AS dept_code,
+				n.update_time AS redeem_success_time,
+				n.total AS redeem_balance,
+				n.principal AS redeem_principal_balance,
+				n.interest AS redeem_interest_balance
+		FROM
+			bs_finance_dafy_relation a,
+			bs_sub_account b,
+		 tbemployee c,
+		 bs_account d,
+		 bs_user e,
+		 bs_product g,
+		 bs_property_info i,
+		 ln_loan_relation j,
+		 bs_sub_account_pair k,
+		 bs_sub_account regs,
+	   	 ln_finance_repay_schedule l,
+     	 bs_loan_finance_repay n,
+     	 ln_loan jj,
+		 bs_pay_orders f
+		WHERE
+			a.sub_account_id = b.id
+		AND a.customer_manager_dafy_id = c.lUserId
+		AND b.account_id = d.id
+		AND d.user_id = e.id
+		AND b.id = f.sub_account_id
+		AND b.product_id = g.id
+		AND g.property_id = i.id
+		AND i.property_symbol='ZAN'
+		AND k.auth_account_id = b.id 
+		AND regs.id = k.reg_d_account_id
+		AND k.reg_d_account_id = j.bs_sub_account_id
+		AND l.relation_id = j.id
+		AND j.loan_id = jj.id
+		AND l.id = n.finance_repay_schedule_id
+		AND k.reg_d_account_id = j.bs_sub_account_id
+        AND n.`status` != 'INIT'
+		AND (
+			f.trans_type = 'CARD_BUY_PRODUCT'
+			OR f.trans_type = 'BALANCE_BUY_PRODUCT'
+		)
+		AND regs.`status` NOT IN (1,3,4,6)
+		<if test="deptIds != null">
+			AND (
+			<if test="isOrDafyUserId != null">
+	        	a.customer_manager_dafy_id = #{isOrDafyUserId} OR 
+	        </if>
+				a.dafy_dept_id in
+			<foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+	            #{item} 
+	        </foreach>
+	        )
+		</if>
+		<if test="record.managerName != null">
+			AND a.customer_manager_dafy_id = #{record.managerName}
+		</if>
+		<if test="record.productName != null and record.productName != ''">
+			AND b.product_name LIKE CONCAT(CONCAT('%', #{record.productName}),'%')
+		</if>
+		<if test="record.strStatus != null and record.strStatus != ''">
+			AND n.`status` = #{record.strStatus}
+		</if>
+		<if test="record.redeemDateStart != null and record.redeemDateStart != ''">
+			<![CDATA[
+				AND DATE_FORMAT(n.update_time,'%Y-%m-%d') >= #{record.redeemDateStart}
+			]]>
+		</if>
+		<if test="record.redeemDateEnd != null and record.redeemDateEnd != ''">
+			<![CDATA[
+				AND DATE_FORMAT(n.update_time,'%Y-%m-%d') <= #{record.redeemDateEnd }
+			]]>
+		</if>
+		<if test="record.amountStart != null and record.amountStart != ''">
+			<![CDATA[
+				AND j.total_amount >= #{record.amountStart}
+			]]>
+		</if>
+		<if test="record.amountEnd != null and record.amountEnd != ''">
+			<![CDATA[
+				AND j.total_amount <= #{record.amountEnd}
+			]]>
+		</if>
+		
+		<if test="record.redeemAmountStart != null and record.redeemAmountStart != ''">
+			<![CDATA[
+				AND n.total >= #{record.redeemAmountStart}
+			]]>
+		</if>
+		<if test="record.redeemAmountEnd != null and record.redeemAmountEnd != ''">
+			<![CDATA[
+				AND n.total <= #{record.redeemAmountEnd}
+			]]>
+		</if>
+		ORDER BY jj.loan_time ASC LIMIT #{record.start}, #{record.numPerPage}
+	)aaa
+		LEFT JOIN ln_credit_transfer nn ON nn.in_loan_relation_id = aaa.jid 	
+		LEFT JOIN (
+			SELECT
+				id,
+				relation_id,
+				MAX(repay_serial) repay_serial,
+				MAX(plan_date) plan_date
+			FROM
+				ln_finance_repay_schedule
+			GROUP BY
+				relation_id
+		) o ON aaa.jid = o.relation_id
+		where 1=1
+		<if test="record.interestDateStart != null and record.interestDateStart != ''">
+			<![CDATA[
+				AND (( nn.id IS NULL and jjloan_time >= #{record.interestDateStart} )
+					OR (nn.id IS NOT NULL and nn.create_time >= #{record.interestDateStart}))
+			]]>
+		</if>
+		<if test="record.interestDateEnd != null and record.interestDateEnd != ''">
+			<![CDATA[
+				AND (( nn.id IS NULL and jjloan_time <= #{record.interestDateEnd}) 
+					OR (nn.id IS NOT NULL and nn.create_time <= #{record.interestDateEnd}))
+			]]>
+		</if>
+		
+  </select>
+  
+  
+    <select id="countFinancialRedeem" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+		SELECT
+			COUNT(a.id)
+		FROM
+			bs_finance_dafy_relation a,
+			bs_sub_account b
+		LEFT JOIN bs_batch_buy_detail m ON b.id = m.sub_account_id,
+		 tbemployee c,
+		 bs_account d,
+		 bs_user e,
+		 bs_product g,
+		 bs_property_info i,
+		 bs_pay_orders f
+		LEFT JOIN bs_red_packet_info h ON h.order_no = f.order_no
+		WHERE
+			a.sub_account_id = b.id
+		AND a.customer_manager_dafy_id = c.lUserId
+		AND b.account_id = d.id
+		AND d.user_id = e.id
+		AND b.id = f.sub_account_id
+		AND b.product_id = g.id
+		AND g.property_id = i.id
+		AND (i.property_symbol='YUN_DAI' OR i.property_symbol='7_DAI')
+		AND (
+			f.trans_type = 'CARD_BUY_PRODUCT'
+			OR f.trans_type = 'BALANCE_BUY_PRODUCT'
+		)
+		AND b.`status` NOT IN (1,2,3,4,6)
+		<if test="deptIds != null">
+			AND (
+			<if test="isOrDafyUserId != null">
+	        	a.customer_manager_dafy_id = #{isOrDafyUserId} OR 
+	        </if>
+				a.dafy_dept_id in
+			<foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+	            #{item} 
+	        </foreach>
+	        )
+		</if>
+		<if test="record.managerName != null">
+			AND a.customer_manager_dafy_id = #{record.managerName}
+		</if>
+		<if test="record.productName != null and record.productName != ''">
+			AND b.product_name LIKE CONCAT(CONCAT('%', #{record.productName}),'%')
+		</if>
+		<if test="record.status != null and record.status != ''">
+			AND b.`status` = #{record.status}
+		</if>
+		<if test="record.interestDateStart != null and record.interestDateStart != ''">
+			<![CDATA[
+				AND b.interest_begin_date >= #{record.interestDateStart}
+			]]>
+		</if>
+		<if test="record.interestDateEnd != null and record.interestDateEnd != ''">
+			<![CDATA[
+				AND b.interest_begin_date <= #{record.interestDateEnd }
+			]]>
+		</if>
+		<if test="record.redeemDateStart != null and record.redeemDateStart != ''">
+			<![CDATA[
+				AND b.last_finish_interest_date >= #{record.redeemDateStart}
+			]]>
+		</if>
+		<if test="record.redeemDateEnd != null and record.redeemDateEnd != ''">
+			<![CDATA[
+				AND b.last_finish_interest_date <= #{record.redeemDateEnd }
+			]]>
+		</if>
+		<if test="record.amountStart != null and record.amountStart != ''">
+			<![CDATA[
+				AND b.balance >= #{record.amountStart}
+			]]>
+		</if>
+		<if test="record.amountEnd != null and record.amountEnd != ''">
+			<![CDATA[
+				AND b.balance <= #{record.amountEnd}
+			]]>
+		</if>
+		
+		<if test="record.redeemAmountStart != null and record.redeemAmountStart != ''">
+			<![CDATA[
+				AND b.accumulation_inerest + b.balance >= #{record.redeemAmountStart}
+			]]>
+		</if>
+		<if test="record.redeemAmountEnd != null and record.redeemAmountEnd != ''">
+			<![CDATA[
+				AND b.accumulation_inerest + b.balance <= #{record.redeemAmountEnd}
+			]]>
+		</if>
+  </select>
+  
+  <select id="countFinancialRedeemZan" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+		SELECT
+			COUNT(a.id)
+		FROM
+			bs_finance_dafy_relation a,
+			bs_sub_account b,
+		 tbemployee c,
+		 bs_account d,
+		 bs_user e,
+		 bs_product g,
+		 bs_property_info i,
+		 ln_loan_relation j
+		 LEFT JOIN ln_credit_transfer nn ON nn.in_loan_relation_id = j.id ,
+		 bs_sub_account_pair k,
+		 bs_sub_account regs,
+	   	 ln_finance_repay_schedule l,
+     	 bs_loan_finance_repay n,
+     	 ln_loan jj,
+		 bs_pay_orders f
+		WHERE
+			a.sub_account_id = b.id
+		AND a.customer_manager_dafy_id = c.lUserId
+		AND b.account_id = d.id
+		AND d.user_id = e.id
+		AND b.id = f.sub_account_id
+		AND b.product_id = g.id
+		AND g.property_id = i.id
+		AND i.property_symbol='ZAN'
+		AND k.auth_account_id = b.id 
+		AND k.reg_d_account_id = j.bs_sub_account_id
+		AND regs.id = k.reg_d_account_id
+		AND l.relation_id = j.id
+		AND j.loan_id = jj.id
+		AND l.id = n.finance_repay_schedule_id
+		AND k.reg_d_account_id = j.bs_sub_account_id
+		AND n.`status` != 'INIT'
+		AND (
+			f.trans_type = 'CARD_BUY_PRODUCT'
+			OR f.trans_type = 'BALANCE_BUY_PRODUCT'
+		)
+		AND regs.`status` NOT IN (1,3,4,6)
+		<if test="deptIds != null">
+			AND (
+			<if test="isOrDafyUserId != null">
+	        	a.customer_manager_dafy_id = #{isOrDafyUserId} OR 
+	        </if>
+				a.dafy_dept_id in
+			<foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+	            #{item} 
+	        </foreach>
+	        )
+		</if>
+		<if test="record.managerName != null">
+			AND a.customer_manager_dafy_id = #{record.managerName}
+		</if>
+		<if test="record.productName != null and record.productName != ''">
+			AND b.product_name LIKE CONCAT(CONCAT('%', #{record.productName}),'%')
+		</if>
+		<if test="record.strStatus != null and record.strStatus != ''">
+			AND n.`status` = #{record.strStatus}
+		</if>
+		<if test="record.interestDateStart != null and record.interestDateStart != ''">
+			<![CDATA[
+				AND (( nn.id IS NULL and jj.loan_time >= #{record.interestDateStart} )
+					OR (nn.id IS NOT NULL and nn.create_time >= #{record.interestDateStart}))
+			]]>
+		</if>
+		<if test="record.interestDateEnd != null and record.interestDateEnd != ''">
+			<![CDATA[
+				AND (( nn.id IS NULL and jj.loan_time <= #{record.interestDateEnd}) 
+					OR (nn.id IS NOT NULL and nn.create_time <= #{record.interestDateEnd}))
+			]]>
+		</if>
+		<if test="record.redeemDateStart != null and record.redeemDateStart != ''">
+			<![CDATA[
+				AND DATE_FORMAT(n.update_time,'%Y-%m-%d') >= #{record.redeemDateStart}
+			]]>
+		</if>
+		<if test="record.redeemDateEnd != null and record.redeemDateEnd != ''">
+			<![CDATA[
+				AND DATE_FORMAT(n.update_time,'%Y-%m-%d') <= #{record.redeemDateEnd }
+			]]>
+		</if>
+		<if test="record.amountStart != null and record.amountStart != ''">
+			<![CDATA[
+				AND j.total_amount >= #{record.amountStart}
+			]]>
+		</if>
+		<if test="record.amountEnd != null and record.amountEnd != ''">
+			<![CDATA[
+				AND j.total_amount <= #{record.amountEnd}
+			]]>
+		</if>
+		
+		<if test="record.redeemAmountStart != null and record.redeemAmountStart != ''">
+			<![CDATA[
+				AND n.total >= #{record.redeemAmountStart}
+			]]>
+		</if>
+		<if test="record.redeemAmountEnd != null and record.redeemAmountEnd != ''">
+			<![CDATA[
+				AND n.total <= #{record.redeemAmountEnd}
+			]]>
+		</if>
+  </select>
+  <!-- 达飞财务结算-赎回E   -->
+  
+</mapper>

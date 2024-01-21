@@ -1,0 +1,78 @@
+## 管理台公众号用户管理
+1. 需求描述
+	+ 因为公众号对外开放，其他用户也可以关注，此处需要做账户绑定：关注微信公众号后可获取用户微信号，指定的微信号人群可以查看数据。
+	+ 管理台做人员微信号管理，新增、删除功能（防止以后有人员离职等状况）
+
+2. 需求背景
+	解决需求方问题：处理运营每天实时查数据的问题（节假日、晚上、周末查数据），以下罗列常用数据查询。
+
+3. 业务逻辑
+### 原型地址: svn\产品专用\项目需求\原型\2018年需求\6月份-查看运营实时数据
+
+### 业务实现点（管理台编辑过该用户的真实姓名后，该类用户才可查看以下数据）
+1. 运营数据微信用户管理列表：主表微信运营用户信息表（m_wx_muser_info）状态是OPEN，关联微信信息表（bs_wx_info）关联m_user表  
+	昵称：bs_wx_info表nick，真实姓名m_user表name，修改时间m_wx_muser_info表update_time
+	初始化显示全部列表，昵称：支持模糊搜索，输入框支持中文、英文、数字
+	排序：【有真实姓名>真实姓名为空】，修改时间降序
+
+2. 编辑：对输入的真实姓名进行校验，查询m_user状态是1且对应真实姓名是否有记录，通过更新m_wx_muser_info表muser_id为m_user表的id，update_time，operator字段
+
+3. 删除：更新m_wx_muser_info表status为DELETED，update_time，operator字段
+
+4. 关注运营公众号微信后，
+   如果open_id值不为空的情况，会往m_wx_muser_info插入一条数据open_id为用户唯一标识，status是OPEN，create_time和update_time是当前时间，
+   bs_wx_info是微信接口返回的数据，如果用户之前已经关注过官网的公众号，只会更新is_follow字段，如果 bs_wx_info没有对应记录，
+   会插入一条数据（open_id, sex, province, city, country, headImgUrl, create_time和follow_time=当前时间, isFollow=FOLLOW）。
+   
+5. 建表sql
+<pre> 
+CREATE TABLE `m_wx_muser_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `open_id` varchar(256) NOT NULL COMMENT '用户的唯一标识',
+  `muser_id` int(11) DEFAULT NULL COMMENT 'm_user表id',
+  `status` varchar(16) NOT NULL COMMENT '状态 OPEN开启 DELETED已删除',
+  `create_time` datetime DEFAULT NULL COMMENT '添加时间',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `operator` int(11) DEFAULT NULL COMMENT '操作人',
+  `note` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`),
+  KEY `FK_Reference_235` (`muser_id`),
+  CONSTRAINT `FK_Reference_235` FOREIGN KEY (`muser_id`) REFERENCES `m_user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='微信运营用户信息表'
+</pre>
+
+6. 新增菜单 
+<pre>
+INSERT INTO `m_menu`(`url`, `parent_id`, `order_num`, `name`, `note`) VALUES ('/sys/operationalData/index.htm', 10, 12, '运营数据微信用户管理', NULL);
+</pre>
+
+
+## 管理台渠道业绩统计和红包加息券名称配置
+1. 需求描述
+	渠道业绩统计新增终端，统计各个终端的数据
+
+2. 需求背景
+	运营为了查看渠道用户在各个终端的投资情况。比如：查看钱报渠道用户在币港湾官网投资情况
+
+3. 业务逻辑
+### 原型地址: svn\产品专用\项目需求\原型\2018年需求\6月份-管理台渠道用户统计
+	入口：/statistics/agentUser/performance
+		  bsAgentMapper.selectPerformanceList
+
+### 业务实现点
+1. 举例：如果终端选择钱报，sql中产品表的条件新增
+	and (FIND_IN_SET('PC_178', p.show_terminal) or FIND_IN_SET('H5_178', p.show_terminal))
+
+2. 渠道终端
+<pre>
+	币港湾(PC、APP、H5)		PC、APP、H5
+	钱报(PC、H5)			PC_178、H5_178
+	柯桥日报(PC、H5)		PC_KQ、H5_KQ
+	海宁日报(PC、H5)		PC_HN、H5_HN
+	瑞安日报(PC、H5)		PC_RUIAN、H5_RUIAN
+	七店(PC、H5)			H5_QD
+</pre>
+
+###
+1. 红包加息券名称配置只修改页面maxLength属性，菜单是红包发放管理-发自动红包和手动红包
+

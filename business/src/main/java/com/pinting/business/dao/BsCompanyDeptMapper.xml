@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsCompanyDeptMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsCompanyDept" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="dept_code" property="deptCode" jdbcType="VARCHAR" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="BsCompanyDeptVOMap" type="com.pinting.business.model.vo.BsCompanyDeptVO" extends="BaseResultMap">
+    	 <result column="parent_code" property="parentCode" jdbcType="VARCHAR" />
+   		 <result column="parent_name" property="parentName" jdbcType="VARCHAR" />
+   		 <result column="employee_id" property="employeeId" jdbcType="INTEGER" />
+   		 <result column="dept_id" property="deptId" jdbcType="INTEGER" />
+   		 <result column="dept_detail" property="deptDetail" jdbcType="VARCHAR" />
+   		 
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, dept_code, dept_name, parent_id, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsCompanyDeptExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_company_dept
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_company_dept
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_company_dept
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsCompanyDeptExample" >
+    delete from bs_company_dept
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsCompanyDept" >
+    insert into bs_company_dept (id, dept_code, dept_name, 
+      parent_id, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{deptCode,jdbcType=VARCHAR}, #{deptName,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsCompanyDept" >
+    insert into bs_company_dept
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="deptCode != null" >
+        dept_code,
+      </if>
+      <if test="deptName != null" >
+        dept_name,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="deptCode != null" >
+        #{deptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null" >
+        #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsCompanyDeptExample" resultType="java.lang.Integer" >
+    select count(*) from bs_company_dept
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_company_dept
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.deptCode != null" >
+        dept_code = #{record.deptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deptName != null" >
+        dept_name = #{record.deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentId != null" >
+        parent_id = #{record.parentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_company_dept
+    set id = #{record.id,jdbcType=INTEGER},
+      dept_code = #{record.deptCode,jdbcType=VARCHAR},
+      dept_name = #{record.deptName,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsCompanyDept" >
+    update bs_company_dept
+    <set >
+      <if test="deptCode != null" >
+        dept_code = #{deptCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null" >
+        dept_name = #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsCompanyDept" >
+    update bs_company_dept
+    set dept_code = #{deptCode,jdbcType=VARCHAR},
+      dept_name = #{deptName,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="queryFinancialStatisticsIndex" resultMap="BsCompanyDeptVOMap" parameterType="java.util.Map" >
+		SELECT
+			a.*, b.dept_code parent_code,
+			b.dept_name parent_name,
+			CASE WHEN (SELECT COUNT(c.id) FROM bs_company_dept c WHERE c.parent_id = a.id) > 0 THEN "FALSE"
+			ELSE "TRUE"  END dept_detail
+		FROM
+			`bs_company_dept` a
+		LEFT JOIN `bs_company_dept` b ON a.parent_id = b.id
+		where 1=1
+     	<if test="deptCode != null and deptCode != ''" >
+       	AND a.dept_code like concat(concat('%', #{deptCode}),'%')
+     	</if>
+     	<if test="deptName != null and deptName != ''" >
+       	AND a.dept_name like concat(concat('%', #{deptName}),'%')
+     	</if>
+     	<if test="parentId != null and parentId != ''" >
+       	AND a.parent_id = #{parentId}
+     	</if>
+     	<if test="parentName != null and parentName != '' and parentName != '币港湾'" >
+       	AND b.dept_name like concat(concat('%', #{parentName}),'%')
+     	</if>
+     	<if test="parentName == '币港湾'" >
+       	AND a.parent_id = 0
+     	</if>
+     	<if test="startTime != null and startTime != ''"> 
+			<![CDATA[
+				AND a.create_time >= #{startTime}
+			]]>
+		</if>
+		<if test="endTime != null and endTime != ''"> 
+			<![CDATA[
+				AND a.create_time <= #{endTime}
+			]]>
+		</if>
+		order by a.update_time desc
+     	limit #{start},#{pageSize}
+ 	</select>
+ 	
+ 	<select id="queryFinancialStatisticsCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		SELECT
+			count(*)
+		FROM
+			`bs_company_dept` a
+		LEFT JOIN `bs_company_dept` b ON a.parent_id = b.id
+		where 1=1
+     	<if test="deptCode != null and deptCode != ''" >
+       	AND a.dept_code like concat(concat('%', #{deptCode}),'%')
+     	</if>
+     	<if test="deptName != null and deptName != ''" >
+       	AND a.dept_name like concat(concat('%', #{deptName}),'%')
+     	</if>
+     	<if test="parentId != null and parentId != ''" >
+       	AND a.parent_id = #{parentId}
+     	</if>
+     	<if test="parentName != null and parentName != '' and parentName != '币港湾'" >
+       	AND b.dept_name like concat(concat('%', #{parentName}),'%')
+     	</if>
+     	<if test="parentName == '币港湾'" >
+       	AND a.parent_id = 0
+     	</if>
+		<if test="startTime != null and startTime != ''"> 
+			<![CDATA[
+				AND a.create_time >= #{startTime}
+			]]>
+		</if>
+		<if test="endTime != null and endTime != ''"> 
+			<![CDATA[
+				AND a.create_time <= #{endTime}
+			]]>
+		</if>
+     	
+ 	</select>
+ 	
+  <select id="queryFinancialStatisticsDeptEmployeeTree" resultMap="BsCompanyDeptVOMap" parameterType="java.util.Map" >
+	SELECT 
+		a.id employee_id,a.employee_code,a.employee_name,
+		b.id dept_id
+	FROM 
+	bs_company_employee a
+	LEFT JOIN bs_company_dept b ON a.dept_id = b.id
+	WHERE b.id = #{parentId}
+	GROUP BY  b.id
+     	
+  </select>
+ 	
+ 	
+</mapper>

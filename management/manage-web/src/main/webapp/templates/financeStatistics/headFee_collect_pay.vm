@@ -1,0 +1,177 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);"  action="$env.getWebURL('/financeStatistics/headFeeCollectPay.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+                    <td>
+                        资产方：
+                        <select name="partnerCode" >
+                            <option value="" #if("$!partnerCode"=="") selected #end>全部</option>
+                            <option value="yun" #if("$!partnerCode"=="yun") selected #end>云贷</option>
+                            <option value="zsd" #if("$!partnerCode"=="zsd") selected  #end>赞时贷</option>
+                        </select>
+                    </td>
+					<td>
+						姓名：<input id="userName" type="text" name="userName" maxlength="20" value="$!userName" class="clear"/>
+					</td>
+					<td>
+						手机号：<input id="mobile" type="text" name="mobile" maxlength="11" value="$!mobile" class="clear num"/>
+					</td>
+					<td>
+						类型：
+						<select name="type" > 
+							<option value="" #if("$!type"=="") selected #end>全部</option>
+							<option value="代收" #if("$!type"=="代收") selected #end>代收</option>
+        					<option value="代付" #if("$!type"=="代付") selected  #end>代付</option>
+        				</select>
+					</td>
+					<td >产生日期：<input name="startTime" type="text" id="startTime" class=" date textInput readonly" readonly="true" value="$!startTime" dateFmt="yyyy-MM-dd" maxdate="{%y}-%M-{%d}"/></td >
+					<td>到  &nbsp;&nbsp;&nbsp;&nbsp;
+						<input name="endTime" type="text" id="endTime" class=" date textInput readonly" readonly="true" value="$!endTime" dateFmt="yyyy-MM-dd" maxdate="{%y}-%M-{%d}"/>
+					</td>
+					<td>
+						<button  onclick="func()" type="button">查询</button>
+						<button  onclick="exp()" type="button">导出excel</button>
+					</td>
+				</tr>
+			</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li>		
+				<span style="margin-left:10px;">
+    				<font color="red">代收总额：#if(!$!collectTotal)0.00 #else $!money.format($!collectTotal) #end 元</font>
+                </span>
+			</li>
+			<li>		
+				<span style="margin-left:10px;">
+    				<font color="blue">代付总额：#if(!$!payTotal)0.00 #else $!money.format($!payTotal) #end 元</font>
+                </span>
+			</li>
+			
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="168">
+		<thead>
+			<tr>
+				<th width="5%">序号</th>
+				<th width="10%">融资客户名称</th>
+				<th width="10%">手机号</th>
+				<th width="10%">类型</th>
+                <th width="10%">借款金额</th>
+				<th width="10%">代收</th>
+				<th width="10%">代付</th>
+				<th width="15%">产生日期</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			
+			#foreach($user in $collectList)
+			<tr>
+				<td>$!user.rowno</td>
+				<td>$!user.lnUserName</td>
+				<td>$!user.mobile</td>
+				<td>
+					#if("$!user.type"=="代收")
+						代收
+					#elseif("$!user.type"=="代付")
+						代付
+					#else
+						$!user.type
+					#end
+				</td>
+                <td>#if($!user.loanAmount != 0) $!money.format($!user.loanAmount)  #end  </td>
+				<td>#if($!user.collectAmount != 0) $!money.format($!user.collectAmount)  #end  </td>
+				<td>#if($!user.payAmount != 0 )$!money.format($!user.payAmount)  #end</td>
+				<td>$!date.formatDateTime($!date.parseDateTime("$!user.time"), "yyyy-MM-dd HH:mm:ss")</td>
+				
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+#LoadJS("/resources/js/global_validate")
+<script>
+
+function func(){
+	var beginTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	if(!beginTime && endTime) {
+		alertMsg.warn("开始时间不能为空！");
+		return;
+	}
+	if(!endTime && beginTime) {
+		alertMsg.warn("结束时间不能为空！");
+		return;
+	}
+	if(beginTime && endTime){
+	    var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+    	if(result < 0){
+    		alertMsg.warn("开始时间不能在结束时间之后！");
+    		return;
+    	}
+	}
+
+
+	var url = $("#APP_ROOT_PATH").val() + "/financeStatistics/headFeeCollectPay.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+	var beginTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	
+	
+	if(!beginTime && endTime) {
+		alertMsg.warn("开始时间不能为空！");
+		return;
+	}
+	if(!endTime && beginTime) {
+		alertMsg.warn("结束时间不能为空！");
+		return;
+	}
+	if(beginTime && endTime){
+	    var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+    	if(result < 0){
+    		alertMsg.warn("开始时间不能在结束时间之后！");
+    		return;
+    	}
+	}
+
+
+	var url = $("#APP_ROOT_PATH").val() + "/financeStatistics/exportHeadFeeCollectPay.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+</script>

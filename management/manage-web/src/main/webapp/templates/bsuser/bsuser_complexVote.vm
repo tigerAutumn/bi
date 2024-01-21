@@ -1,0 +1,181 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/bsuser/complexVote.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" id="queryDateFlag" name="queryDateFlag" value="QUERYDATE" />
+	<input type="hidden" name="totalRows" value="$!totalRows" />
+	<div class="searchBar">
+		<table class="searchContent">
+			<tr>
+				<td>
+					用户ID：<input  id="userId" type="text" name="userId" value="$!req.userId" maxlength="10" size="10"/>
+					
+					回款时间： <input name="sLastFinishInterestDate" type="text" id="sLastFinishInterestDate" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.sLastFinishInterestDate)" /> 
+					到 <input name="eLastFinishInterestDate" type="text" id="eLastFinishInterestDate" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.eLastFinishInterestDate)" />
+					
+					投资时间： <input name="sInterestBeginDate" type="text" id="sInterestBeginDate" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.sInterestBeginDate)" /> 
+					到 <input name="eInterestBeginDate" type="text" id="eInterestBeginDate" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.eInterestBeginDate)" />
+					
+					<span style="margin-left:20px;">
+						<button onclick="func()" type="button">查询</button>
+						<button onclick="exp()" type="button">导出excel</button>
+                    </span>
+				</td>
+			</tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="138" >
+		<thead>
+			<tr>
+				<th orderfield="id"  class=#if("$!id" != "") $!id #else "asc" #end width="25%">用户ID</th>
+				<th width="25%" orderfield="totalPrincipal"  class=#if("$!totalPrincipal" != "") $!totalPrincipal #else "asc" #end>回款金额</th>
+				<th width="25%" orderfield="totalPrincipal"  class=#if("$!totalPrincipal" != "") $!totalPrincipal #else "asc" #end>投资金额</th>
+				<th width="25%" orderfield="investment_times"  class=#if("$!investment_times" != "") $!investmentTimes #else "asc" #end>投资次数</th>
+			</tr>
+		</thead>
+	
+		<tbody>
+			#foreach($grid in $complexVoteList)
+    			<tr target="sid_user" rel="1" >
+                    <td>$!grid.id</td>
+    				<td>$!money.format($!grid.amountOfPayment)</td>
+    				<td>$!money.format($!grid.totalPrincipal)</td>
+    				<td>$!grid.investmentTimes</td>
+    			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+<script>
+function func(){
+	var sInterestBeginDate = $("#sInterestBeginDate").val();
+	var eInterestBeginDate = $("#eInterestBeginDate").val();
+	
+	var sLastFinishInterestDate = $("#sLastFinishInterestDate").val();
+	var eLastFinishInterestDate = $("#eLastFinishInterestDate").val();
+	
+	if(sInterestBeginDate != "" && eInterestBeginDate == ""){
+		alert("请输入投资结束时间！");
+		return false;
+	}
+	if(sInterestBeginDate == "" && eInterestBeginDate != ""){
+		alert("请输入投资开始时间！");
+		return false;
+	}
+	
+	if(sLastFinishInterestDate != "" && eLastFinishInterestDate == ""){
+		alert("请输入回款结束时间！");
+		return false;
+	}
+	if(sLastFinishInterestDate == "" && eLastFinishInterestDate != ""){
+		alert("请输入回款开始时间！");
+		return false;
+	}
+	
+	if(sInterestBeginDate != "" && eInterestBeginDate != ""){
+		var result = Date.parse(eInterestBeginDate.replace(/-/g,"/"))- Date.parse(sInterestBeginDate.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	if(sLastFinishInterestDate != "" && eLastFinishInterestDate != ""){
+		var result = Date.parse(eLastFinishInterestDate.replace(/-/g,"/"))- Date.parse(sLastFinishInterestDate.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	var userId = $.trim($("#userId").val());
+	var reg = /^[1-9]\d*$/;
+	if((userId != "" && !reg.test(userId)) ) {
+		alert("userID必须是正整数！！");
+    	return false;
+	} 
+
+	var url = $("#APP_ROOT_PATH").val() + "/bsuser/complexVote.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+	var sInterestBeginDate = $("#sInterestBeginDate").val();
+	var eInterestBeginDate = $("#eInterestBeginDate").val();
+	
+	var sLastFinishInterestDate = $("#sLastFinishInterestDate").val();
+	var eLastFinishInterestDate = $("#eLastFinishInterestDate").val();
+	
+	if(sInterestBeginDate != "" && eInterestBeginDate == ""){
+		alert("请输入投资结束时间！");
+		return false;
+	}
+	if(sInterestBeginDate == "" && eInterestBeginDate != ""){
+		alert("请输入投资开始时间！");
+		return false;
+	}
+	
+	if(sLastFinishInterestDate != "" && eLastFinishInterestDate == ""){
+		alert("请输入回款结束时间！");
+		return false;
+	}
+	if(sLastFinishInterestDate == "" && eLastFinishInterestDate != ""){
+		alert("请输入回款开始时间！");
+		return false;
+	}
+	
+	if(sInterestBeginDate != "" && eInterestBeginDate != ""){
+		var result = Date.parse(eInterestBeginDate.replace(/-/g,"/"))- Date.parse(sInterestBeginDate.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	if(sLastFinishInterestDate != "" && eLastFinishInterestDate != ""){
+		var result = Date.parse(eLastFinishInterestDate.replace(/-/g,"/"))- Date.parse(sLastFinishInterestDate.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	var userId = $.trim($("#userId").val());
+	var reg = /^[1-9]\d*$/;
+	if((userId != "" && !reg.test(userId)) ) {
+		alert("userID必须是正整数！！");
+    	return false;
+	} 
+	
+	var url = $("#APP_ROOT_PATH").val() + "/userComplexVote/exportXls.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+
+</script>

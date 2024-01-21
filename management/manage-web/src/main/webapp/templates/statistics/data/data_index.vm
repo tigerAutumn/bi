@@ -1,0 +1,324 @@
+<style>
+#tishi ul{
+	font-weight: lighter;
+}
+.a{
+	font-size: 15px;
+}
+.b{
+	margin-bottom: 5px;
+    color: #ccc;
+    font-weight: lighter;
+    margin-top: 2px;
+    font-size: 14px;
+}
+
+</style>
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="startTime" value="$!req.startTime" />
+	<input type="hidden" name="endTime" value="$!req.endTime" />
+	<input type="hidden" name="queryType" value="$!req.queryType" />
+	<input type="hidden" name="timeType" value="$!req.timeType" />
+	<input type="hidden" name="currentDays" value="$!req.currentDays" />
+	##<input type="hidden" name="agent" value="$!req.agent" />
+	
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+<input type="hidden" value='$!chartDatas' id="chartDatas"/>
+<div class="pageHeader">
+	<form id="sub_form" rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/data/data_index.htm')" method="post">
+	</form>
+</div>
+<div class="page unitBox">
+    <div class="pageContent"  layoutH="10">
+    	<div class="panel" style="text-align: center;">
+			<h1>
+				<span style="position: absolute;left: 0px;padding-top: 10px;">关键指标</span>
+				<span id="wenhao" style="position: absolute;right: 20px;padding-top: 10px; cursor:pointer">?</span>
+				<span id="tishi" style="position: absolute;right: 20px;padding-top: 10px;cursor: pointer;width: 150px;text-align: left;top: 25px;background-color: #fff;padding: 5px;display:none;">
+					<ul>
+						<li class="a">老用户投资笔数</li><li class="b">第二次及以上投资的</li>
+					</ul>
+					<ul>
+						<li class="a">老用户投资金额</li><li class="b">第二次及以上投资的</li>
+					</ul>
+				</span>
+			</h1>
+			<script >
+				$("#wenhao").on("mouseenter", function(){
+					$("#tishi").show();
+				});
+				$("#wenhao").on("mouseleave", function(){
+					$("#tishi").hide();
+				});
+            </script>
+    		<div>
+    			<table class="searchContent" width="100%" border="0" cellspacing="0" cellpadding="0" >
+        			<tr>
+        				<td style="height:100px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+                            <div>累计注册人数</div>
+                            <div style="font-size:26px; margin-top:10px;">
+								#if($!totalDatas.totalRegistUser)
+									$!totalDatas.totalRegistUser
+								#else
+									0
+								#end
+							</div>
+        				</td>
+        				<td style="height:100px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+        					<div>累计投资人数</div>
+                            <div style="font-size:26px; margin-top:10px;">
+								#if($!totalDatas.totalInvestUser)
+									$!totalDatas.totalInvestUser
+								#else
+									0
+								#end
+							</div>
+        				</td>
+        				<td style="height:100px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+        					<div>参与复投人数 </div>
+        					<div style="font-size:26px; margin-top:10px;">
+								#if($!totalDatas.totalReinvestUser)
+									$!totalDatas.totalReinvestUser
+								#else
+									0
+								#end
+							</div>
+        				</td>
+        				<td style="height:100px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+        					<div>累计投资金额 </div>
+        					<div style="font-size:26px; margin-top:10px;">
+								#if($!totalDatas.totalInvestAmount)
+									$!money.format($!totalDatas.totalInvestAmount)
+								#else
+									0.00
+								#end
+							</div>
+        				</td>
+        			</tr>
+        			<tr>
+        				<td style="height:100px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+                            <div>当日新增微信关注数</div>
+                            <div style="font-size:26px; margin-top:10px;">
+								#if($!totalDatas.dailyNewWxUser)
+									$!totalDatas.dailyNewWxUser
+								#else
+									0
+								#end
+							</div>
+        				</td>
+        				<td style="height:100px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+        					<div>新增用户投资笔数</div>
+                            <div style="font-size:26px; margin-top:10px;">
+								#if($!totalDatas.dailyNewUserInvestTimes)
+									$!totalDatas.dailyNewUserInvestTimes
+								#else
+									0
+								#end
+							</div>
+        				</td>
+        				<td style="height:100px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+        					<div>当日老用户投资笔数 </div>
+        					<div style="font-size:26px; margin-top:10px;">
+								#if($!totalDatas.dailyOldUserInvestTimes)
+									$!totalDatas.dailyOldUserInvestTimes
+								#else
+									0
+								#end
+							</div>
+        				</td>
+        				<td style="height:100px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+        					<div>当日全部投资笔数 </div>
+        					<div style="font-size:26px; margin-top:10px;">
+								#if($!totalDatas.dailyTotalInvestTimes)
+									$!totalDatas.dailyTotalInvestTimes
+								#else
+									0
+								#end
+							</div>
+        				</td>
+        			</tr>
+        			<tr>
+        				<td style="height:100px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+                            <div>当日新增用户数</div>
+                            <div style="font-size:26px; margin-top:10px;">
+								#if($!totalDatas.dailyNewRegistUser)
+									$!totalDatas.dailyNewRegistUser
+								#else
+									0
+								#end
+							</div>
+        				</td>
+        				<td style="height:100px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+        					<div>新增用户投资额</div>
+                            <div style="font-size:26px; margin-top:10px;">
+								#if($!totalDatas.dailyNewUserInvestAmount)
+									$!money.format($!totalDatas.dailyNewUserInvestAmount)
+								#else
+									0.00
+								#end
+							</div>
+        				</td>
+						
+						
+        				<td style="height:100px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+        					<div>当日老用户投资金额 </div>
+        					<div style="font-size:26px; margin-top:10px;">
+								#if($!totalDatas.dailyOldUserInvestAmount)
+									$!money.format($!totalDatas.dailyOldUserInvestAmount)
+								#else
+									0.00
+								#end
+							</div>
+        				</td>
+        				<td style="height:100px;border:1px solid #8dcccc;border-right:0; width: 25%;">
+        					<div>当日全部投资金额 </div>
+        					<div style="font-size:26px; margin-top:10px;">
+								#if($!totalDatas.dailyTotalInvestAmount)
+									$!money.format($!totalDatas.dailyTotalInvestAmount)
+								#else
+									0.00
+								#end
+							</div>
+        				</td>
+        			</tr>
+        		</table>
+    		</div>
+    	</div>
+    	<div class="panel">
+			<div>
+				<form id="query_form" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/data/data_index.htm')" method="post">
+                #if("$!req.timeType" == "day")
+    				<select id="current_days" name="currentDays">
+    					<option value="30" #if("$!req.currentDays" == "30") selected #end>最近30天</option>
+    					<option value="15" #if("$!req.currentDays" == "15") selected #end>最近15天</option>
+    					<option value="7" #if("$!req.currentDays" == "7") selected #end>最近7天</option>
+    				</select>
+				#else
+					<select id="current_days" name="currentDays" style="display:none;">
+    					<option value="30" #if("$!req.currentDays" == "30") selected #end>最近30天</option>
+    					<option value="15" #if("$!req.currentDays" == "15") selected #end>最近15天</option>
+    					<option value="7" #if("$!req.currentDays" == "7") selected #end>最近7天</option>
+    				</select>
+				#end
+				<input type="text" id="start_time" name="startTime" value="$!req.startTime" class="date" [pattern="yyyy-MM-dd"] [yearstart="-80"] [yearend="5"] readonly/>
+				#if("$!req.timeType" == "day")
+					<span id="span_text">至</span>
+					<input type="text" id="end_time" name="endTime" value="$!req.endTime" class="date" [pattern="yyyy-MM-dd"] [yearstart="-80"] [yearend="5"] readonly/>
+				#else
+					<span id="span_text" style="display:none;">至</span>
+					<input type="text" id="end_time" name="endTime" style="display:none;" value="$!req.endTime" class="date" [pattern="yyyy-MM-dd"] [yearstart="-80"] [yearend="5"] readonly/>
+				#end
+				<a class="add" href="$env.getWebURL('/agent/agent_list.htm')" target="dialog" mask="true" rel="createBack" height="390" width="600"><span><button type="button">选择渠道</button></span></a>
+                <input type="hidden" id="agentTotal" name="agentTotal" value="$!agentTotal"/>
+                <input type="hidden" id="agentIds" name="agentIds" value="$!req.agentIds"/>
+                <input type="hidden" id="nonAgentId" name="nonAgentId" value="$!req.nonAgentId"/>
+				<input type="hidden" value="$!req.timeType" name="timeType" id="time_type"/>
+				<div id="right_btn" style="float:right">
+    				#if($!req.timeType == "day")
+    					<button id="day" type="button" style="background-color:#5cb85c;color:#fff;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">按日对比</button>
+    					<button id="hour" type="button" style="cursor: pointer;color:#fff;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">按时对比</button>
+    				#else
+    					<button id="day" type="button" style="cursor: pointer;border: 0;color:#fff;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">按日对比</button>
+    					<button id="hour" type="button" style="background-color:#5cb85c;color:#fff;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">按时对比</button>
+    				#end
+    				<button id="sub_query" type="button" style="cursor: pointer;border: 0;padding-left: 30px;padding-right: 30px;padding-top: 5px;padding-bottom: 5px;margin-left: 25px;">查询</button>
+				</div>
+				</form>
+			</div>
+    		<div>
+    			<div id="tubiao">
+    			</div>
+    		</div>
+    	</div>
+    	<div class="panel" >
+			<div>
+				<table class="table" width="100%">
+            		<thead>
+            			<tr>
+            				<th><b>时间</b></th>
+            				<th><b>新增注册用户数</b></th>
+							<th><b>新增绑卡用户数</b></th>
+							<th><b>新增投资用户数</b></th>
+							<th><b>投资用户数</b></th>
+							<th><b>新投资用户投资金额</b></th>
+							<th><b>新投资用户年化投资金额</b></th>
+            				<th><b>投资金额</b></th>
+							<th><b>年化投资金额</b></th>
+            			</tr>
+            		</thead>
+            		<tbody>
+						#foreach($!dataTable in $!chartDatasTable)
+							##if((!$!dataTable.dailyNewRegistUser || $!dataTable.dailyNewRegistUser == 0) && (!$!dataTable.dailyNewUserInvestAmount || $!dataTable.dailyNewUserInvestAmount==0) && (!$!dataTable.dailyOldUserInvestAmount || $!dataTable.dailyOldUserInvestAmount==0))
+							##else
+								<tr>
+                    				<td width="3%"><b>$!dataTable.time</b></td>
+                    				<td width="3%"><!-- 当日新增注册用户数 -->
+    									#if($!dataTable.dailyNewRegistUser)
+    										$!dataTable.dailyNewRegistUser
+    									#else
+    										0
+    									#end
+    								</td>
+									<td width="3%"><!-- 当日新增绑卡用户数 -->
+    									#if($!dataTable.dailyNewBindUser)
+    										$!dataTable.dailyNewBindUser
+    									#else
+    										0
+    									#end
+    								</td>
+									<td width="3%"><!-- 当日新增投资用户数 -->
+    									#if($!dataTable.dailyNewInvestUser)
+    										$!dataTable.dailyNewInvestUser
+    									#else
+    										0
+    									#end
+    								</td>
+									<td width="3%"><!-- 当日投资用户数 -->
+    									#if($!dataTable.dailyInvestUser)
+    										$!dataTable.dailyInvestUser
+    									#else
+    										0
+    									#end
+    								</td>
+                    				<td width="3%"><!-- 当日新用户投资金额 -->
+    									#if($!dataTable.dailyNewUserInvestAmount)
+    										$!money.format($!dataTable.dailyNewUserInvestAmount)
+    									#else
+    										0.00
+    									#end
+    								</td>
+									<td width="3%"><!-- 新投资用户年化投资金额-->
+    									#if($!dataTable.dailyNewUserInvestAnnual)
+    										$!dataTable.dailyNewUserInvestAnnual
+    									#else
+    										0.00
+    									#end
+    								</td>
+									<td width="3%"><!-- 当日投资金额 -->
+    									#if($!dataTable.dailyTotalInvestAmount)
+    										$!money.format($!dataTable.dailyTotalInvestAmount)
+    									#else
+    										0.00
+    									#end
+    								</td>
+									<td width="3%"><!-- 年化投资金额 -->
+    									#if($!dataTable.dailyInvestAnnual)
+    										$!dataTable.dailyInvestAnnual
+    									#else
+    										0.00
+    									#end
+    								</td>
+                    			</tr>
+							##end
+						#end
+            		</tbody>
+            	</table>
+			</div>
+    	</div>
+    </div>
+</div>
+
+#LoadJS("/resources/js/data_index")

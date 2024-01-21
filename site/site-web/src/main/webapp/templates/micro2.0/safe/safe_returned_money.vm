@@ -1,0 +1,102 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#WeChatShare()
+#Head("end")
+#LoadJS('resources/micro2.0/scripts/six')
+#LoadCSS('resources/micro2.0/styles/default')
+#LoadCSS("resources/micro2.0/styles/user/touch")
+#LoadCSS('resources/micro2.0/styles/assets/safe_returned_money.min')
+<style>
+	.box-mask{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;opacity:0.5;filter:alpha(opacity=50);z-index:99;display:none;}
+	.box{position:absolute;z-index:101;display:none; width:240px; height:120px; border:1px solid #ccc; border-radius:6px; text-align:center; background:#fff;}
+	.box p{ width:240px; height:40px; line-height: 40px; margin:0; padding:0;}
+	.box p span{ width:119.5px; height:40px; line-height: 40px; display:inline-block; border-top:1px solid #30a9fe; color:#30a9fe;}
+	.box p span.span1{border-right:1px solid #30a9fe;}
+</style>
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$!env.getWebURL('')" />
+    #if("$!qianbao" == "qianbao")
+        <input type="hidden" id="qianbao" name="qianbao" value="$!qianbao" />
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+    #end
+    <div class="header">
+    	<a class="header_arrow" href="javascript:history.go(-1)"></a>
+    	<h1 class="heade_ft">回款路径</h1>
+    </div>
+    <!-- 头部提示 -->
+    <div class="waring_info">
+    	2017年1月1日起取消回款到银行卡设置，资金将自动回款到账户余额
+    </div>
+    #if("$!bankName" == "")
+    <div class="return_one bor" card_id="" bankName="账户余额" card_no="">
+    	<div class="return_font" style="float: left;">账户余额</div>
+    	<i class="check_right cek_actvie"></i>
+    </div>
+    #else
+	#if($!isShowReturnPath == 'no')
+		<div class="return_one bor" card_id="" bankName="账户余额" card_no="">
+			<div class="return_font" style="float: left;">账户余额</div>
+			<i class="check_right cek_actvie"></i>
+		</div>
+		<div class="return_info">回款至余额，方便随时投资 </div>
+		<div class="return_one_hide return_two bor" card_id="$!cardId" bankName="$!bankName" card_no="$!string.right($!cardNo, 4)">
+			<div class="return_font_hide" style="float: left;">$!bankName（$!string.right($!cardNo, 4)）</div>
+			<span style="float: right;font-size: 22px;margin-bottom: 16px;padding-left: 30px;color: #999999;">暂停使用</span>
+		</div>	
+	#else
+	#if($!returnPath == "2")
+		<div class="return_one bor" card_id="" bankName="账户余额" card_no="">
+			<div class="return_font" style="float: left;">账户余额</div>
+			<i class="check_right"></i>
+		</div>
+		<div class="return_info">回款至余额，方便随时投资 </div>
+		<div class="return_one return_two bor" card_id="$!cardId" bankName="$!bankName" card_no="$!string.right($!cardNo, 4)">
+			<div class="return_font" style="float: left;">$!bankName（$!string.right($!cardNo, 4)）</div>
+			<i class="check_right cek_actvie" ></i>
+		</div>
+	#else
+		<div class="return_one bor" card_id="" bankName="账户余额" card_no="">
+			<div class="return_font" style="float: left;">账户余额</div>
+			<i class="check_right cek_actvie"></i>
+		</div>
+		<div class="return_info">回款至余额，方便随时投资 </div>
+		<div class="return_one return_two bor" card_id="$!cardId" bankName="$!bankName" card_no="$!string.right($!cardNo, 4)">
+			<div class="return_font" style="float: left;">$!bankName（$!string.right($!cardNo, 4)）</div>
+			<i class="check_right" ></i>
+		</div>
+        #end
+	#end
+#end
+<!-- 
+<div class="info_center">
+	#if("$!qianbao" == "qianbao")
+		<a class="info_return" style="color:#0066FF" href="$!env.getWebURL('/micro2.0/assets/safe_remittance_path')?qianbao=qianbao&agentViewFlag=$!agentViewFlag">了解回款路径 ></a>
+	#else
+		<a class="info_return" style="color:#0066FF" href="$!env.getWebURL('/micro2.0/assets/safe_remittance_path')">了解回款路径 ></a>
+    #end
+</div>
+-->
+
+<input type="hidden" id="bankName" name="bankName"/>
+<input type="hidden" id="cardId" name="cardId"/>
+<input type="hidden" id="cardNo" name="cardNo"/>
+
+<!--代码-->
+<div class="mal">
+	<div class="dialog">
+		<h3 class="dialog_title">提示</h3>
+		<div class="settign_ft">您的投资资金将回款至农业银行（8519）</div>
+		<div class="yesor_no">
+			<div class="no">取消</div>
+			<div class="yes oran_color">确定</div>
+		</div>
+	</div>
+</div>
+#LoadJS('resources/micro2.0/scripts/assets/zepto.min')
+#LoadJS('resources/micro2.0/scripts/common/common')
+#LoadJS('resources/micro2.0/scripts/assets/custom')
+#LoadJS('resources/micro2.0/scripts/safe/safe_returned_money')
+</body>
+#Html("end")
+

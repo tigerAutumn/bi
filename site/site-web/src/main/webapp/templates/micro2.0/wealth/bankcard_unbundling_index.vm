@@ -1,0 +1,63 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+## 解绑
+#LoadJS("resources/micro2.0/scripts/user/six")
+#LoadCSS("resources/micro2.0/styles/user/default")
+#LoadCSS("resources/micro2.0/styles/assets/bank_card_detail")
+#LoadJS("resources/micro2.0/scripts/zepto.min")
+#LoadJS("resources/micro2.0/scripts/user/custom")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/user/bankcard_unbundling_index")
+<script type="text/javascript">
+    $(function(){
+        $s=$(window).height();
+        $('#box').css("height",$s);
+    })
+</script>
+#WeChatShare()
+#Head("end")
+
+<body>
+<div id="box">
+<input type="hidden" value="$!env.getWebURL('')" id="APP_ROOT_PATH" />
+<form id="generalForm" action="$!env.getWebURL('/micro2.0/wealth/bankcard_unbundling')" method="post">
+	<input type="hidden" id="cardId" value="$bankcard.cardId" name="cardId" />
+	<input type="hidden" id="cardNo" value="$bankcard.cardNo" name="cardNo" />
+	<input type="hidden" id="bankName" value="$bankcard.bankName" name="bankName" />
+</form>
+    <div class="header">
+        <a class="header_arrow" href="javascript:history.go(-1)"></a>
+        <h1 class="heade_ft oran_color">银行卡详情</h1>
+    </div>
+    <div class="kk">
+        <div class="k">
+            <div class="logo">
+				#if("$!smallLogo" != "")
+					<img src="$!env.getWebURL('$!smallLogo')" />
+				#elseif("$!largeLogo" != "")
+					<img src="$!env.getWebURL('$!largeLogo')" />
+				#else
+					<img src="$!env.getWebURL('resources/micro2.0/images/NB.png')" />
+				#end
+            </div>
+            <ul>
+                <li>
+                    <span>$bankcard.bankName</span>
+                    <br />
+                    <br />
+                    <span style="color: #8cd5cc;">储蓄卡</span>
+                </li>
+                <li class="hm">**** **** **** $bankcard.cardNo</li>
+            </ul>
+        </div>
+    </div>
+	<div class="but">
+    	<button>
+        	解除绑定
+        </button>
+	</div>
+</div>
+</body>
+#Html("end")
+

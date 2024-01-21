@@ -1,0 +1,63 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾理财官网_安全可靠互联网金融投资理财平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#Head("end")
+<link rel="stylesheet" type="text/css" href="$!env.get('gen.server.web')/resources/gen/styles/touch.css?v=1.1.2" charset="UTF-8"></link>
+<body  #if($!result == "no")load="drawToast('系统检测系统有风险，请重试！')" #end>
+<input id="security_token" name="ci_csrf_token" value="" type="hidden">
+<!--top-->
+#GenHeader()
+<!--top--> 
+
+<!--S banner--> 
+
+<!--E banner-->
+
+<div class="th3 clearfix">
+  
+  <div class="wrapper" style="margin-top: 100px; margin-bottom: 100px;"> 
+    
+    <!--1-->
+    <div class="newrow">
+	<input name="buyNum" id="buyNum" value="$!result.buyNum" type="hidden">
+	<input name="ceiling" id="ceiling" value="$!result.priceCeiling" type="hidden">
+	<input name="limit" id="limit" value="$!result.priceLimit" type="hidden">
+  <div id="slider1" class="newbox">
+    <div style="margin-top:0px;boder:1px dotted #333; background:none;" class="dq2">
+      
+      <div style="font-size:20px;color:#f60;">
+			定期理财-$result.trem月理财，年化收益$result.rate%
+      </div>
+      <div class="wz13">*次日开始计息&nbsp;&nbsp;&nbsp;&nbsp;收益显示时间&nbsp;&nbsp;<span>$!date.formatDateTime($!interestBeginDate,"yyyy.MM.dd")</span></div>
+    <div style="line-height:40px;margin-top: 20px;" class="gm3"><span style="font-size:16px;color:#666666;">购入金额</span>
+		<form onkeydown="if(event.keyCode==13){return false;}" method="post" action="$!env.get('gen.server.web')/gen/regular/buySubmit.htm" id="myForm">
+			<input type="text" placeholder="请输入$!result.priceLimit元整数倍的金额" onkeyup="onlyNum(this);" id="money" name="money" style="width:20%;font-size: 14px;margin-top: 7px;" value="">
+			<input type="hidden" value="$!result.id" id="productId" name="productId">
+        </form>
+    </div>
+    <!--tab-e-->
+    <div class="wz4">
+      <div style="margin-bottom:50px;font-size: 14px;color:#716e7f;line-height: 40px;width: 650px;" class="xy1">点击确认购买即代表您同意<a href="$!env.get('gen.server.web')/gen/regular/buyagreement.htm?term=$!result.trem">《投资协议》</a></div>
+    </div>
+  </div>
+  <!-- footer wrapper starts -->
+	#LoadJS("resources/gen/scripts/regular/buy")
+ <!-- footer wrapper starts -->
+
+
+</div>
+
+</div>
+    <!--1-->
+    
+    <div class="pl50" style="margin-bottom:50px;margin-top:20px;">
+      <input type="button" value="立即购买" class="ui-button-rrd-blue ui-button-rrd-blue-large" id="commit" date-maxInvestTimes="$!result.maxInvestTimes" date-buyNum="$!result.buyNum" date-surplusAmount="$!money.defaultRound($!result.surplusAmount)"  product-id="$!result.id" date-money="money" date-limit="$!money.defaultRound($!result.priceLimit)" date-ceiling="-1">
+    </div>
+  </div>
+</div>
+<div class="hidden"> <script> var _hmt = _hmt || []; (function() { var hm = document.createElement("script"); hm.src = "//hm.baidu.com/hm.js?3b6fd20f28f9c7cf68479877df4e04be"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s); })(); </script> </div>
+#GenFooter()
+<!--E gb_foot-->
+
+</body>
+</html>

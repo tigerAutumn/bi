@@ -1,0 +1,255 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/activity/default")
+#LoadGenCSS("/resources/gen2.0/styles/activity/2018/yearmeetin")
+
+
+<body>
+<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')"/>
+<input type="hidden" class="first_drawn_times" value="$!result.drawnTimes.first">
+<input type="hidden" class="second_drawn_times" value="$!result.drawnTimes.second">
+<input type="hidden" class="third_drawn_times" value="$!result.drawnTimes.third">
+<input type="hidden" class="lucky_drawn_times" value="$!result.drawnTimes.lucky">
+<div class="meeting">
+    <div class="container">
+        <h2><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/meeting_2017/meeting_title.png"></h2>
+        <div class="counter">
+            <div class="counter_inside counter_left">
+                <ul class="prize">
+                    <li class="prize_list">
+                        <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/meeting_2017/first_prize.png" class="disabled_img">
+                        <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/meeting_2017/first_prize_light.png" class="light_img">
+                    </li>
+                    <li class="prize_list">
+                        <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/meeting_2017/second_prize.png" class="disabled_img">
+                        <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/meeting_2017/second_prize_light.png" class="light_img">
+                    </li>
+                    <li class="prize_list">
+                        <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/meeting_2017/third_prize.png" class="disabled_img">
+                        <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/meeting_2017/third_prize_light.png" class="light_img">
+                    </li>
+                    <li class="prize_list" style="margin-bottom: 0;">
+                        <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/meeting_2017/lucky_prize.png" class="disabled_img">
+                        <img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/meeting_2017/lucky_prize_light.png" class="light_img">
+                    </li>
+                </ul>
+            </div>
+
+            <div class="counter_inside counter_middle">
+                <div class="prize_board">
+                    <div class="start_btn"></div>
+                    <div class="board_content">
+                        <h3><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/meeting_2017/prizing_list_title.png"></h3>
+                        <div class="board_list">
+                            <ul id="first_prize">
+                                #if($!result.drawnList.size() > 0)
+                                    #set($index = 1)
+                                    #set($winnernum = 0)
+                                    #foreach($user in $!result.drawnList)
+                                        #if($!user.type == '1')
+                                            #set($winnernum = $winnernum + 1)
+                                        #end
+                                    #end
+                                    #set($index2 = 1)
+                                    #foreach($user in $!result.drawnList)
+                                        #if($!index <= 1)
+                                            #if($winnernum < 1)
+                                                #if(1 >= $!index2)
+                                                    <li class="less_list"></li>
+                                                #end
+                                                #set($index2 = 2)
+                                            #else
+                                                #if($!user.type == '1')
+                                                    <li class="less_list">$user.mobile</li>
+                                                    #set($index = $index + 1)
+                                                #end
+                                            #end
+                                        #end
+                                    #end
+                                #else
+                                    <li class="less_list"></li>
+                                #end
+                            </ul>
+                            <ul id="second_prize">
+                                #if($!result.drawnList.size() > 0)
+                                    #set($index = 1)
+                                    #set($winnernum = 0)
+                                    #foreach($user in $!result.drawnList)
+                                        #if($!user.type == '2')
+                                            #set($winnernum = $winnernum + 1)
+                                        #end
+                                    #end
+                                    #if($winnernum < 1)
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                    #else
+                                        #foreach($user in $!result.drawnList)
+                                            #if($!user.type == '2')
+                                                #if($index <= 10)
+                                                    <li>$user.mobile</li>
+                                                    #set($index = $index + 1)
+                                                #end
+                                            #end
+                                        #end
+                                    #end
+                                #else
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                #end
+                            </ul>
+                            <ul id="third_prize">
+                                #if($!result.drawnList.size() > 0)
+                                    #set($index = 1)
+                                    #set($winnernum = 0)
+                                    #foreach($user in $!result.drawnList)
+                                        #if($!user.type == '3')
+                                            #set($winnernum = $winnernum + 1)
+                                        #end
+                                    #end
+                                    #if($winnernum < 1)
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                    #else
+                                        #foreach($user in $!result.drawnList)
+                                            #if($!user.type == '3')
+                                                #if($index <= 10)
+                                                    <li>$user.mobile</li>
+                                                    #set($index = $index + 1)
+                                                #end
+                                            #end
+                                        #end
+                                    #end
+                                #else
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                #end
+                            </ul>
+                            <ul id="lucky_prize">
+                                #if($!result.drawnList.size() > 0)
+                                    #set($index = 1)
+                                    #set($winnernum = 0)
+                                    #foreach($user in $!result.drawnList)
+                                        #if($!user.type == '0')
+                                            #set($winnernum = $winnernum + 1)
+                                        #end
+                                    #end
+                                    #if($winnernum < 1)
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                    #else
+                                        #foreach($user in $!result.drawnList)
+                                            #if($!index <= 10)
+                                                #if($!user.type == '0')
+                                                    <li>$user.mobile</li>
+                                                    #set($index = $index + 1)
+                                                #end
+                                            #end
+                                        #end
+                                    #end
+                                #else
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                #end
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="meeting_interface">
+                        <div id="first_prize_btn" class="meeting_interface_btn">
+                            <div class="start_btn_small data_preparation"></div>
+                            <div class="make_btn"></div>
+                        </div>
+                        <div id="second_prize_btn" class="meeting_interface_btn">
+                            <div class="start_btn_small data_preparation"></div>
+                            <div class="make_btn"></div>
+                        </div>
+                        <div id="third_prize_btn" class="meeting_interface_btn">
+                            <div class="start_btn_small data_preparation"></div>
+                            <div class="make_btn"></div>
+                        </div>
+                        <div id="lucky_prize_btn" class="meeting_interface_btn">
+                            <div class="start_btn_small data_preparation"></div>
+                            <div class="make_btn"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="counter_inside counter_right #if($!result.drawnList.size() == 0) data_null_right #end">
+                <img class="right_light" src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/meeting_2017/right_light.png" ondragstart="return false;">
+                <div class="winner_list">
+                    <ul class="winner_list_ul">
+                        #foreach($user in $!result.drawnList)
+                            #if($!user.type == '1')
+                                <li class="winner_list_account first" type="$!user.type"><span></span>$user.mobile</li>
+                            #elseif($!user.type == '2')
+                                <li class="winner_list_account second" type="$!user.type"><span></span>$user.mobile</li>
+                            #elseif($!user.type == '3')
+                                <li class="winner_list_account third" type="$!user.type"><span></span>$user.mobile</li>
+                            #elseif($!user.type == '0')
+                                <li class="winner_list_account lucky" type="$!user.type"><span></span>$user.mobile</li>
+                            #end
+                        #end
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <h2 style="margin-top: 20px;"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/2017/meeting_2017/2018_nianhui_theme.png.png"></h2>
+    </div>
+</div>
+#foreach($!user in $!result.list)
+    <input type="hidden" class="user" value="$!user.mobile" user_id="$!user.userId" type="$!user.type">
+#end
+</body>
+
+#LoadGenJS("/resources/gen2.0/scripts/common/jquery")
+#LoadGenJS("/resources/gen2.0/scripts/common/common")
+#LoadGenJS("/resources/gen2.0/scripts/activity/2018/year_end/lucky_draw")
+#Html("end")

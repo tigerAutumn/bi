@@ -1,0 +1,1070 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsRedPacketCheckMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsRedPacketCheck" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="apply_no" property="applyNo" jdbcType="VARCHAR" />
+    <result column="serial_no" property="serialNo" jdbcType="VARCHAR" />
+    <result column="serial_name" property="serialName" jdbcType="VARCHAR" />
+    <result column="policy_type" property="policyType" jdbcType="VARCHAR" />
+    <result column="distribute_type" property="distributeType" jdbcType="VARCHAR" />
+    <result column="total" property="total" jdbcType="INTEGER" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="use_condition" property="useCondition" jdbcType="VARCHAR" />
+    <result column="full" property="full" jdbcType="DOUBLE" />
+    <result column="subtract" property="subtract" jdbcType="DOUBLE" />
+    <result column="use_time_start" property="useTimeStart" jdbcType="TIMESTAMP" />
+    <result column="use_time_end" property="useTimeEnd" jdbcType="TIMESTAMP" />
+    <result column="applicant" property="applicant" jdbcType="INTEGER" />
+    <result column="check_status" property="checkStatus" jdbcType="VARCHAR" />
+    <result column="msg_status" property="msgStatus" jdbcType="VARCHAR" />
+    <result column="checker" property="checker" jdbcType="INTEGER" />
+    <result column="notify_channel" property="notifyChannel" jdbcType="VARCHAR" />
+    <result column="term_limit" property="termLimit" jdbcType="VARCHAR" />
+    <result column="manual_conditions" property="manualConditions" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+   
+  <resultMap id="BsRedPacketCheckVOMap" extends="BaseResultMap" type="com.pinting.business.model.vo.BsRedPacketCheckVO"  >
+    <result column="trigger_type" property="triggerType" jdbcType="VARCHAR" />
+    <result column="valid_term_type" property="validTermType" jdbcType="VARCHAR" />
+    <result column="available_days" property="availableDays" jdbcType="INTEGER" />
+   <result column="status" property="status" jdbcType="VARCHAR" />
+   <result column="distribute_time_start" property="distributeTimeStart" jdbcType="TIMESTAMP" />
+   <result column="distribute_time_end" property="distributeTimeEnd" jdbcType="TIMESTAMP" />
+	<result column="rp_name" property="rpName" jdbcType="VARCHAR" />
+   <result column="applicant_name" property="applicantName" jdbcType="VARCHAR" />
+   <result column="checker_name" property="checkerName" jdbcType="VARCHAR" />
+   <result column="agent_ids" property="agentIds" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="BsRedPacketCheckStatisticsMap" extends="BaseResultMap" type="com.pinting.business.model.vo.RedPacketStatisticsVO"  >
+		<result column="total_amount" property="totalAmount" jdbcType="DOUBLE" />	   
+		<result column="used_red_pocket" property="usedRedPocket" jdbcType="INTEGER" />
+    	<result column="used_red_pocket_amount" property="usedRedPocketAmount" jdbcType="DOUBLE" />
+    	<result column="init_red_pocket" property="initRedPocket" jdbcType="INTEGER" />
+    	<result column="init_red_pocket_amount" property="initRedPocketAmount" jdbcType="DOUBLE" />
+    	<result column="over_red_pocket" property="overRedPocket" jdbcType="INTEGER" />
+    	<result column="over_red_pocket_amount" property="overRedPocketAmount" jdbcType="DOUBLE" />
+		<result column="rp_name" property="rpName" jdbcType="VARCHAR" />
+		<result column="buy_amount" property="buyAmount" jdbcType="DOUBLE" />
+		<result column="buy_year_amount" property="buyYearAmount" jdbcType="DOUBLE" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, apply_no, serial_no, serial_name, policy_type, distribute_type, total, amount, 
+    use_condition, full, subtract, use_time_start, use_time_end, applicant, check_status, 
+    msg_status, checker, notify_channel, term_limit, manual_conditions, note, create_time, 
+    update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsRedPacketCheckExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_red_packet_check
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_red_packet_check
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_red_packet_check
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsRedPacketCheckExample" >
+    delete from bs_red_packet_check
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsRedPacketCheck" >
+    insert into bs_red_packet_check (id, apply_no, serial_no, 
+      serial_name, policy_type, distribute_type, 
+      total, amount, use_condition, 
+      full, subtract, use_time_start, 
+      use_time_end, applicant, check_status, 
+      msg_status, checker, notify_channel, 
+      term_limit, manual_conditions, note, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{applyNo,jdbcType=VARCHAR}, #{serialNo,jdbcType=VARCHAR}, 
+      #{serialName,jdbcType=VARCHAR}, #{policyType,jdbcType=VARCHAR}, #{distributeType,jdbcType=VARCHAR}, 
+      #{total,jdbcType=INTEGER}, #{amount,jdbcType=DOUBLE}, #{useCondition,jdbcType=VARCHAR}, 
+      #{full,jdbcType=DOUBLE}, #{subtract,jdbcType=DOUBLE}, #{useTimeStart,jdbcType=TIMESTAMP}, 
+      #{useTimeEnd,jdbcType=TIMESTAMP}, #{applicant,jdbcType=INTEGER}, #{checkStatus,jdbcType=VARCHAR}, 
+      #{msgStatus,jdbcType=VARCHAR}, #{checker,jdbcType=INTEGER}, #{notifyChannel,jdbcType=VARCHAR}, 
+      #{termLimit,jdbcType=VARCHAR}, #{manualConditions,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsRedPacketCheck" >
+    insert into bs_red_packet_check
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="applyNo != null" >
+        apply_no,
+      </if>
+      <if test="serialNo != null" >
+        serial_no,
+      </if>
+      <if test="serialName != null" >
+        serial_name,
+      </if>
+      <if test="policyType != null" >
+        policy_type,
+      </if>
+      <if test="distributeType != null" >
+        distribute_type,
+      </if>
+      <if test="total != null" >
+        total,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="useCondition != null" >
+        use_condition,
+      </if>
+      <if test="full != null" >
+        full,
+      </if>
+      <if test="subtract != null" >
+        subtract,
+      </if>
+      <if test="useTimeStart != null" >
+        use_time_start,
+      </if>
+      <if test="useTimeEnd != null" >
+        use_time_end,
+      </if>
+      <if test="applicant != null" >
+        applicant,
+      </if>
+      <if test="checkStatus != null" >
+        check_status,
+      </if>
+      <if test="msgStatus != null" >
+        msg_status,
+      </if>
+      <if test="checker != null" >
+        checker,
+      </if>
+      <if test="notifyChannel != null" >
+        notify_channel,
+      </if>
+      <if test="termLimit != null" >
+        term_limit,
+      </if>
+      <if test="manualConditions != null" >
+        manual_conditions,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="applyNo != null" >
+        #{applyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNo != null" >
+        #{serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="serialName != null" >
+        #{serialName,jdbcType=VARCHAR},
+      </if>
+      <if test="policyType != null" >
+        #{policyType,jdbcType=VARCHAR},
+      </if>
+      <if test="distributeType != null" >
+        #{distributeType,jdbcType=VARCHAR},
+      </if>
+      <if test="total != null" >
+        #{total,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="useCondition != null" >
+        #{useCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="full != null" >
+        #{full,jdbcType=DOUBLE},
+      </if>
+      <if test="subtract != null" >
+        #{subtract,jdbcType=DOUBLE},
+      </if>
+      <if test="useTimeStart != null" >
+        #{useTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useTimeEnd != null" >
+        #{useTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applicant != null" >
+        #{applicant,jdbcType=INTEGER},
+      </if>
+      <if test="checkStatus != null" >
+        #{checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="msgStatus != null" >
+        #{msgStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="checker != null" >
+        #{checker,jdbcType=INTEGER},
+      </if>
+      <if test="notifyChannel != null" >
+        #{notifyChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="termLimit != null" >
+        #{termLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="manualConditions != null" >
+        #{manualConditions,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsRedPacketCheckExample" resultType="java.lang.Integer" >
+    select count(*) from bs_red_packet_check
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_red_packet_check
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.applyNo != null" >
+        apply_no = #{record.applyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serialNo != null" >
+        serial_no = #{record.serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serialName != null" >
+        serial_name = #{record.serialName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.policyType != null" >
+        policy_type = #{record.policyType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.distributeType != null" >
+        distribute_type = #{record.distributeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.total != null" >
+        total = #{record.total,jdbcType=INTEGER},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.useCondition != null" >
+        use_condition = #{record.useCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.full != null" >
+        full = #{record.full,jdbcType=DOUBLE},
+      </if>
+      <if test="record.subtract != null" >
+        subtract = #{record.subtract,jdbcType=DOUBLE},
+      </if>
+      <if test="record.useTimeStart != null" >
+        use_time_start = #{record.useTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.useTimeEnd != null" >
+        use_time_end = #{record.useTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.applicant != null" >
+        applicant = #{record.applicant,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkStatus != null" >
+        check_status = #{record.checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.msgStatus != null" >
+        msg_status = #{record.msgStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checker != null" >
+        checker = #{record.checker,jdbcType=INTEGER},
+      </if>
+      <if test="record.notifyChannel != null" >
+        notify_channel = #{record.notifyChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.termLimit != null" >
+        term_limit = #{record.termLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.manualConditions != null" >
+        manual_conditions = #{record.manualConditions,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_red_packet_check
+    set id = #{record.id,jdbcType=INTEGER},
+      apply_no = #{record.applyNo,jdbcType=VARCHAR},
+      serial_no = #{record.serialNo,jdbcType=VARCHAR},
+      serial_name = #{record.serialName,jdbcType=VARCHAR},
+      policy_type = #{record.policyType,jdbcType=VARCHAR},
+      distribute_type = #{record.distributeType,jdbcType=VARCHAR},
+      total = #{record.total,jdbcType=INTEGER},
+      amount = #{record.amount,jdbcType=DOUBLE},
+      use_condition = #{record.useCondition,jdbcType=VARCHAR},
+      full = #{record.full,jdbcType=DOUBLE},
+      subtract = #{record.subtract,jdbcType=DOUBLE},
+      use_time_start = #{record.useTimeStart,jdbcType=TIMESTAMP},
+      use_time_end = #{record.useTimeEnd,jdbcType=TIMESTAMP},
+      applicant = #{record.applicant,jdbcType=INTEGER},
+      check_status = #{record.checkStatus,jdbcType=VARCHAR},
+      msg_status = #{record.msgStatus,jdbcType=VARCHAR},
+      checker = #{record.checker,jdbcType=INTEGER},
+      notify_channel = #{record.notifyChannel,jdbcType=VARCHAR},
+      term_limit = #{record.termLimit,jdbcType=VARCHAR},
+      manual_conditions = #{record.manualConditions,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsRedPacketCheck" >
+    update bs_red_packet_check
+    <set >
+      <if test="applyNo != null" >
+        apply_no = #{applyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNo != null" >
+        serial_no = #{serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="serialName != null" >
+        serial_name = #{serialName,jdbcType=VARCHAR},
+      </if>
+      <if test="policyType != null" >
+        policy_type = #{policyType,jdbcType=VARCHAR},
+      </if>
+      <if test="distributeType != null" >
+        distribute_type = #{distributeType,jdbcType=VARCHAR},
+      </if>
+      <if test="total != null" >
+        total = #{total,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="useCondition != null" >
+        use_condition = #{useCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="full != null" >
+        full = #{full,jdbcType=DOUBLE},
+      </if>
+      <if test="subtract != null" >
+        subtract = #{subtract,jdbcType=DOUBLE},
+      </if>
+      <if test="useTimeStart != null" >
+        use_time_start = #{useTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useTimeEnd != null" >
+        use_time_end = #{useTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applicant != null" >
+        applicant = #{applicant,jdbcType=INTEGER},
+      </if>
+      <if test="checkStatus != null" >
+        check_status = #{checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="msgStatus != null" >
+        msg_status = #{msgStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="checker != null" >
+        checker = #{checker,jdbcType=INTEGER},
+      </if>
+      <if test="notifyChannel != null" >
+        notify_channel = #{notifyChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="termLimit != null" >
+        term_limit = #{termLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="manualConditions != null" >
+        manual_conditions = #{manualConditions,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsRedPacketCheck" >
+    update bs_red_packet_check
+    set apply_no = #{applyNo,jdbcType=VARCHAR},
+      serial_no = #{serialNo,jdbcType=VARCHAR},
+      serial_name = #{serialName,jdbcType=VARCHAR},
+      policy_type = #{policyType,jdbcType=VARCHAR},
+      distribute_type = #{distributeType,jdbcType=VARCHAR},
+      total = #{total,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DOUBLE},
+      use_condition = #{useCondition,jdbcType=VARCHAR},
+      full = #{full,jdbcType=DOUBLE},
+      subtract = #{subtract,jdbcType=DOUBLE},
+      use_time_start = #{useTimeStart,jdbcType=TIMESTAMP},
+      use_time_end = #{useTimeEnd,jdbcType=TIMESTAMP},
+      applicant = #{applicant,jdbcType=INTEGER},
+      check_status = #{checkStatus,jdbcType=VARCHAR},
+      msg_status = #{msgStatus,jdbcType=VARCHAR},
+      checker = #{checker,jdbcType=INTEGER},
+      notify_channel = #{notifyChannel,jdbcType=VARCHAR},
+      term_limit = #{termLimit,jdbcType=VARCHAR},
+      manual_conditions = #{manualConditions,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectGrantManagermentGrid" resultMap="BsRedPacketCheckVOMap" parameterType="java.util.Map">
+	SELECT 
+	a.id,a.update_time,a.serial_no,a.serial_name,a.policy_type,a.manual_conditions,
+	a.distribute_type,b.trigger_type,a.total,a.amount,
+	a.use_condition,a.`full`,a.subtract,
+	b.valid_term_type,b.available_days,a.use_time_start,a.use_time_end,b.agent_ids,
+	a.check_status,a.msg_status,
+	CASE 
+	WHEN  a.distribute_type = 'MANUAL' AND a.msg_status = 'NOT' THEN  '未发放'
+	WHEN  a.distribute_type = 'MANUAL' AND a.check_status = 'PASS' AND a.msg_status = 'FINISHED'  THEN  '发放结束'
+	WHEN  a.distribute_type = 'AUTO' AND ((a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() &lt; b.distribute_time_start) OR (a.check_status = 'UNCHECKED' OR a.check_status = 'REFUSE' )) THEN  '未发放'
+	WHEN  a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() >= b.distribute_time_start AND NOW() &lt;= b.distribute_time_end  THEN  '发放中'
+	WHEN  a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() > b.distribute_time_end THEN  '发放结束'
+	WHEN  a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'DISABLE'  THEN   '已停用'
+	ELSE  ''  END  AS `status`,b.distribute_time_start,b.distribute_time_end,a.checker,
+	c.rp_name,a.create_time,d.name as applicant_name,e.name as checker_name,a.term_limit
+	FROM
+	bs_red_packet_check a
+	LEFT JOIN bs_auto_red_packet_rule b ON a.serial_no = b.serial_no
+	LEFT JOIN bs_red_packet_apply c ON a.apply_no = c.apply_no
+	LEFT JOIN m_user d ON a.applicant = d.id
+	LEFT JOIN m_user e ON a.checker = e.id
+	LEFT JOIN (SELECT ch.id,concat(ch.term_limit,',') term_limit_n  FROM bs_red_packet_check ch) f ON a.id = f.id
+	where 1=1
+	<if test="serialName != null and serialName !='' " >
+		and a.serial_name like CONCAT(CONCAT('%', #{serialName}),'%')
+	</if>
+	<if test="serialNo != null and serialNo !='' " >
+		and a.serial_no like CONCAT(CONCAT('%', #{serialNo}),'%')
+	</if>
+	<if test="policyType != null and policyType !='' " >
+		and a.policy_type like CONCAT(CONCAT('%', #{policyType}),'%')
+	</if>
+	<if test="termLimit != null and termLimit !='' " >
+		and f.term_limit_n like CONCAT(CONCAT('%', #{termLimit}),'%')
+	</if>
+	
+	<if test="applicantTimeStart != null and applicantTimeStart != '' ">
+		and a.create_time >= DATE_FORMAT(#{applicantTimeStart},'%Y-%m-%d 00:00:00')
+	</if>
+	<if test="applicantTimeEnd != null and applicantTimeEnd != '' ">
+		and DATE_FORMAT(#{applicantTimeEnd},'%Y-%m-%d 23:59:59') >=  a.create_time 
+	</if>
+	
+	<if test="amountMin != null and amountMin != '' ">
+		and a.amount >= #{amountMin}
+	</if>
+	<if test="amountMax != null and amountMax != '' ">
+		and  #{amountMax} >= a.amount 
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='BIRTHDAY_BENEFIT' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'BIRTHDAY_BENEFIT'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='EXCHANGE_4MALL' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'EXCHANGE_4MALL'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='318_GAME_OLD_USER' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = '318_GAME_OLD_USER'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='AUTO_NEW_USER' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'NEW_USER'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='AUTO_BUY_FULL' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'BUY_FULL'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='AUTO_INVITE_FULL' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'INVITE_FULL'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='MANUAL' " >
+		and a.distribute_type = 'MANUAL'
+	</if>
+ 	<if test="checkStatus != null and checkStatus !=''" >
+ 		and a.check_status = #{checkStatus} 
+ 	</if>
+ 	<if test="status != null and status !='' and status =='NOT_GRANT' " >
+		and ((a.distribute_type = 'MANUAL' and a.msg_status = 'NOT' ) OR
+			(a.distribute_type = 'AUTO' AND ((a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() &lt; b.distribute_time_start) OR (a.check_status = 'UNCHECKED' OR a.check_status = 'REFUSE' ))))
+	</if>
+	 <if test="status != null and status !='' and status =='GRANTING' " >
+		and a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() >= b.distribute_time_start AND NOW() &lt;= b.distribute_time_end
+	</if>
+	 <if test="status != null and status !='' and status =='GRANT_OVER' " >
+		and ((a.distribute_type = 'MANUAL' AND a.check_status = 'PASS' and a.msg_status = 'FINISHED' ) OR (a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() > b.distribute_time_end) )
+	</if>
+	 <if test="status != null and status !='' and status =='STOP' " >
+		and  a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'DISABLE' 
+	</if>
+	order by a.create_time desc
+	LIMIT #{start}, #{numPerPage}
+  </select>
+  
+   <select id="selectGrantManagermentCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+	SELECT 
+	COUNT(a.id)
+	FROM
+	bs_red_packet_check a
+	LEFT JOIN bs_auto_red_packet_rule b ON a.serial_no = b.serial_no
+	LEFT JOIN (SELECT ch.id,concat(ch.term_limit,',') term_limit_n  FROM bs_red_packet_check ch) f ON a.id = f.id
+	where 1=1
+	<if test="serialName != null and serialName !='' " >
+		and a.serial_name like CONCAT(CONCAT('%', #{serialName}),'%')
+	</if>
+	<if test="serialNo != null and serialNo !='' " >
+		and a.serial_no like CONCAT(CONCAT('%', #{serialNo}),'%')
+	</if>
+	<if test="policyType != null and policyType !='' " >
+		and a.policy_type like CONCAT(CONCAT('%', #{policyType}),'%')
+	</if>
+	<if test="termLimit != null and termLimit !='' " >
+		and f.term_limit_n like CONCAT(CONCAT('%', #{termLimit}),'%')
+	</if>
+	<if test="applicantTimeStart != null and applicantTimeStart != '' ">
+		and a.create_time >= DATE_FORMAT(#{applicantTimeStart},'%Y-%m-%d 00:00:00')
+	</if>
+	<if test="applicantTimeEnd != null and applicantTimeEnd != '' ">
+		and DATE_FORMAT(#{applicantTimeEnd},'%Y-%m-%d 23:59:59') >=  a.create_time 
+	</if>
+	
+	<if test="amountMin != null and amountMin != '' ">
+		and a.amount >= #{amountMin}
+	</if>
+	<if test="amountMax != null and amountMax != '' ">
+		and #{amountMax}  >= a.amount 
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='BIRTHDAY_BENEFIT' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'BIRTHDAY_BENEFIT'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='EXCHANGE_4MALL' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'EXCHANGE_4MALL'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='318_GAME_OLD_USER' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = '318_GAME_OLD_USER'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='AUTO_NEW_USER' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'NEW_USER'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='AUTO_BUY_FULL' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'BUY_FULL'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='AUTO_INVITE_FULL' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'INVITE_FULL'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='MANUAL' " >
+		and a.distribute_type = 'MANUAL'
+	</if>
+ 	<if test="checkStatus != null and checkStatus !='' " >
+ 		 and a.check_status = #{checkStatus} 
+ 	</if>
+ 	<if test="status != null and status !='' and status =='NOT_GRANT' " >
+		and ((a.distribute_type = 'MANUAL' and  a.msg_status = 'NOT' ) OR
+			(a.distribute_type = 'AUTO' AND ((a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() &lt; b.distribute_time_start) OR (a.check_status = 'UNCHECKED' OR a.check_status = 'REFUSE' ))))
+	</if>
+	 <if test="status != null and status !='' and status =='GRANTING' " >
+		and a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() >= b.distribute_time_start AND NOW() &lt;= b.distribute_time_end
+	</if>
+	 <if test="status != null and status !='' and status =='GRANT_OVER' " >
+		and ((a.distribute_type = 'MANUAL' AND a.check_status = 'PASS' and a.msg_status = 'FINISHED' ) OR (a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() > b.distribute_time_end) )
+	</if>
+	 <if test="status != null and status !='' and status =='STOP' " >
+		and  a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'DISABLE' 
+	</if>
+  </select>
+  
+  
+  <select id="selectManualRedPocketReview" resultMap="BsRedPacketCheckVOMap" parameterType="java.util.Map">
+		SELECT 
+		a.serial_name,c.`name` applicant_name,d.rp_name,
+		a.use_condition,a.`full`,a.subtract,a.amount,
+		a.total,a.update_time,a.use_time_start,a.use_time_end,
+		a.notify_channel,a.note,a.term_limit,a.manual_conditions,a.policy_type
+		FROM
+		bs_red_packet_check a 
+		LEFT JOIN m_user c ON a.applicant = c.id
+		LEFT JOIN bs_red_packet_apply d ON a.apply_no = d.apply_no
+		WHERE  
+		a.id = #{id} AND a.distribute_type = 'MANUAL'
+  </select>
+  
+  
+    <select id="selectRedPacketCheckGrid" resultMap="BsRedPacketCheckVOMap" parameterType="java.util.Map">
+	SELECT 
+	a.id,a.update_time,a.serial_no,a.serial_name,a.policy_type,a.manual_conditions,
+	a.distribute_type,b.trigger_type,a.total,a.amount,
+	a.use_condition,a.`full`,a.subtract,
+	b.valid_term_type,b.available_days,a.use_time_start,a.use_time_end,b.agent_ids,
+	a.check_status,
+	CASE 
+	WHEN  a.distribute_type = 'MANUAL' AND a.msg_status = 'NOT' THEN  '未发放'
+	WHEN  a.distribute_type = 'MANUAL' AND a.check_status = 'PASS' AND a.msg_status = 'FINISHED' THEN  '发放结束'
+	WHEN  a.distribute_type = 'AUTO' AND ((a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() &lt; b.distribute_time_start) OR (a.check_status = 'UNCHECKED' OR a.check_status = 'REFUSE' )) THEN  '未发放'
+	WHEN  a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() >= b.distribute_time_start AND NOW() &lt;= b.distribute_time_end  THEN  '发放中'
+	WHEN  a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() > b.distribute_time_end THEN  '发放结束'
+	WHEN  a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'DISABLE'  THEN   '已停用'
+	ELSE  ''  END  AS `status`,b.distribute_time_start,b.distribute_time_end,a.checker,
+	c.rp_name,a.create_time,d.name as applicant_name,e.name as checker_name,a.term_limit
+	FROM
+	bs_red_packet_check a
+	LEFT JOIN bs_auto_red_packet_rule b ON a.serial_no = b.serial_no
+	LEFT JOIN bs_red_packet_apply c ON a.apply_no = c.apply_no
+	LEFT JOIN m_user d ON a.applicant = d.id
+	LEFT JOIN m_user e ON a.checker = e.id
+	LEFT JOIN (SELECT ch.id,concat(ch.term_limit,',') term_limit_n  FROM bs_red_packet_check ch) f ON a.id = f.id
+	where 1=1
+	<if test="serialName != null and serialName !='' " >
+		and a.serial_name like CONCAT(CONCAT('%', #{serialName}),'%')
+	</if>
+		<if test="serialNo != null and serialNo !='' " >
+		and a.serial_no like CONCAT(CONCAT('%', #{serialNo}),'%')
+	</if>
+	<if test="policyType != null and policyType !='' " >
+		and a.policy_type like CONCAT(CONCAT('%', #{policyType}),'%')
+	</if>
+	<if test="termLimit != null and termLimit !='' " >
+		and f.term_limit_n like CONCAT(CONCAT('%', #{termLimit}),'%')
+	</if>
+	
+	<if test="applicantTimeStart != null and applicantTimeStart != '' ">
+		and a.create_time >= DATE_FORMAT(#{applicantTimeStart},'%Y-%m-%d 00:00:00')
+	</if>
+	<if test="applicantTimeEnd != null and applicantTimeEnd != '' ">
+		and DATE_FORMAT(#{applicantTimeEnd},'%Y-%m-%d 23:59:59') >=  a.create_time 
+	</if>
+	
+	<if test="amountMin != null and amountMin != '' ">
+		and a.amount >= #{amountMin}
+	</if>
+	<if test="amountMax != null and amountMax != '' ">
+		and  #{amountMax} >= a.amount 
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='BIRTHDAY_BENEFIT' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'BIRTHDAY_BENEFIT'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='EXCHANGE_4MALL' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'EXCHANGE_4MALL'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='318_GAME_OLD_USER' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = '318_GAME_OLD_USER'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='AUTO_NEW_USER' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'NEW_USER'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='AUTO_BUY_FULL' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'BUY_FULL'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='AUTO_INVITE_FULL' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'INVITE_FULL'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='MANUAL' " >
+		and a.distribute_type = 'MANUAL'
+	</if>
+ 	<if test="checkStatus != null and checkStatus !=''" >
+ 		and a.check_status = #{checkStatus} 
+ 	</if>
+ 	<if test="status != null and status !='' and status =='NOT_GRANT' " >
+		and ((a.distribute_type = 'MANUAL' and  a.msg_status = 'NOT') OR
+			(a.distribute_type = 'AUTO' AND ((a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() &lt; b.distribute_time_start) OR (a.check_status = 'UNCHECKED' OR a.check_status = 'REFUSE' ))))
+	</if>
+	 <if test="status != null and status !='' and status =='GRANTING' " >
+		and a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() >= b.distribute_time_start AND NOW() &lt;= b.distribute_time_end
+	</if>
+	 <if test="status != null and status !='' and status =='GRANT_OVER' " >
+		and ((a.distribute_type = 'MANUAL' AND a.check_status = 'PASS' AND a.msg_status = 'FINISHED' ) OR (a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() > b.distribute_time_end) )
+	</if>
+	 <if test="status != null and status !='' and status =='STOP' " >
+		and  a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'DISABLE' 
+	</if>
+	order by check_status DESC,  a.create_time DESC 
+	LIMIT #{start}, #{numPerPage}
+  </select>
+  
+   <select id="selectRedPacketCheckCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+	SELECT 
+	COUNT(a.id)
+	FROM
+	bs_red_packet_check a
+	LEFT JOIN bs_auto_red_packet_rule b ON a.serial_no = b.serial_no
+	LEFT JOIN (SELECT ch.id,concat(ch.term_limit,',') term_limit_n  FROM bs_red_packet_check ch) f ON a.id = f.id
+	where 1=1
+	<if test="serialName != null and serialName !='' " >
+		and a.serial_name like CONCAT(CONCAT('%', #{serialName}),'%')
+	</if>
+		<if test="serialNo != null and serialNo !='' " >
+		and a.serial_no like CONCAT(CONCAT('%', #{serialNo}),'%')
+	</if>
+	<if test="policyType != null and policyType !='' " >
+		and a.policy_type like CONCAT(CONCAT('%', #{policyType}),'%')
+	</if>
+	<if test="termLimit != null and termLimit !='' " >
+		and f.term_limit_n like CONCAT(CONCAT('%', #{termLimit}),'%')
+	</if>
+	<if test="applicantTimeStart != null and applicantTimeStart != '' ">
+		and a.create_time >= DATE_FORMAT(#{applicantTimeStart},'%Y-%m-%d 00:00:00')
+	</if>
+	<if test="applicantTimeEnd != null and applicantTimeEnd != '' ">
+		and DATE_FORMAT(#{applicantTimeEnd},'%Y-%m-%d 23:59:59') >=  a.create_time 
+	</if>
+	
+	<if test="amountMin != null and amountMin != '' ">
+		and a.amount >= #{amountMin}
+	</if>
+	<if test="amountMax != null and amountMax != '' ">
+		and #{amountMax}  >= a.amount 
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='EXCHANGE_4MALL' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'EXCHANGE_4MALL'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='318_GAME_OLD_USER' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = '318_GAME_OLD_USER'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='AUTO_NEW_USER' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'NEW_USER'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='AUTO_BUY_FULL' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'BUY_FULL'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='AUTO_INVITE_FULL' " >
+		and a.distribute_type = 'AUTO' and  b.trigger_type = 'INVITE_FULL'
+	</if>
+	<if test="distributeType != null and distributeType !='' and distributeType =='MANUAL' " >
+		and a.distribute_type = 'MANUAL'
+	</if>
+ 	<if test="checkStatus != null and checkStatus !='' " >
+ 		 and a.check_status = #{checkStatus} 
+ 	</if>
+ 	<if test="status != null and status !='' and status =='NOT_GRANT' " >
+		and ((a.distribute_type = 'MANUAL' and  a.msg_status = 'NOT') OR
+			(a.distribute_type = 'AUTO' AND ((a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() &lt; b.distribute_time_start) OR (a.check_status = 'UNCHECKED' OR a.check_status = 'REFUSE' ))))
+	</if>
+	 <if test="status != null and status !='' and status =='GRANTING' " >
+		and a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() >= b.distribute_time_start AND NOW() &lt;= b.distribute_time_end
+	</if>
+	 <if test="status != null and status !='' and status =='GRANT_OVER' " >
+		and ((a.distribute_type = 'MANUAL' AND a.check_status = 'PASS' AND a.msg_status = 'FINISHED' ) OR (a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'AVAILABLE' AND NOW() > b.distribute_time_end) )
+	</if>
+	 <if test="status != null and status !='' and status =='STOP' " >
+		and  a.distribute_type = 'AUTO' AND a.check_status = 'PASS' AND b.status = 'DISABLE' 
+	</if>
+  </select>
+  <insert id="insertRedPocketInfo" parameterType="java.util.Map" >
+		INSERT INTO bs_red_packet_info(apply_no,serial_no,user_id,status,
+		amount,order_no,use_time_start,use_time_end,	
+		create_time,update_time)(
+		SELECT 
+		b.apply_no,b.serial_no,a.user_id,"INIT" status,
+		b.amount,NULL order_no,b.use_time_start,b.use_time_end,
+		NOW() create_time,NOW() update_time
+		FROM 
+		bs_red_packet_pre_detail a
+		
+		LEFT JOIN bs_red_packet_check b ON a.serial_no = b.serial_no
+		WHERE b.id = #{id})
+  </insert>
+  <select id="queryManualRedPcketUserIdList" resultType="java.lang.Integer" parameterType="java.util.Map">
+		SELECT a.user_id FROM
+		bs_red_packet_pre_detail a
+		WHERE a.serial_no = #{serialNo}
+  </select>
+   <select id="queryManualRedPcketUserMobileList" resultType="java.lang.String" parameterType="java.util.Map">
+		SELECT b.mobile FROM
+		bs_red_packet_pre_detail a
+		LEFT JOIN bs_user b ON a.user_id = b.id
+		WHERE a.serial_no = #{serialNo}
+  </select>
+  
+  
+  
+  <select id="selectStatisticsData" resultMap="BsRedPacketCheckStatisticsMap" parameterType="java.util.Map">
+		SELECT * 
+		FROM (
+			SELECT 
+			a.serial_name,a.serial_no,a.amount,a.use_condition,a.`full`,a.subtract,
+			a.term_limit,a.total,a.total*a.amount total_amount,
+					case WHEN aa.used_red_pocket IS NULL then 0 else aa.used_red_pocket END used_red_pocket,
+					case WHEN aa.used_red_pocket*a.amount IS NULL then 0 else aa.used_red_pocket*a.amount  END used_red_pocket_amount,
+					case WHEN aa.init_red_pocket IS NULL then 0 else aa.init_red_pocket END init_red_pocket,
+					case WHEN aa.init_red_pocket*a.amount IS NULL then 0 else aa.init_red_pocket*a.amount  END init_red_pocket_amount,
+					case WHEN aa.over_red_pocket IS NULL then 0 else aa.over_red_pocket END over_red_pocket,
+					case WHEN aa.over_red_pocket*a.amount  IS NULL then 0 else aa.over_red_pocket*a.amount END over_red_pocket_amount,
+					b.rp_name,a.update_time,
+					0  buy_amount,
+					0  buy_year_amount
+			FROM  
+		 (SELECT * FROM bs_red_packet_check WHERE check_status = 'PASS'  
+			<if test="serialName != null and serialName !='' " >
+			and serial_name like CONCAT(CONCAT('%', #{serialName}),'%')
+			</if>
+			<if test="applyNo != null and applyNo !='' " >
+	 		 and apply_no = #{applyNo} 
+	 		</if>
+	 		<if test="applicant != null and applicant !='' " >
+	 		 and applicant = #{applicant} 
+	 		</if>
+		   ORDER BY update_time DESC LIMIT #{start}, #{numPerPage} ) a
+			LEFT JOIN bs_red_packet_apply b ON a.apply_no = b.apply_no	
+			LEFT JOIN 
+			(SELECT 
+			serial_no,
+					SUM(IF(STATUS = 'USED',1,0))  used_red_pocket,
+					SUM(IF(STATUS = 'BUYING' OR (STATUS = 'INIT' AND NOW() &lt;= use_time_end),1,0)) init_red_pocket,
+					SUM(IF(STATUS = 'INIT' AND NOW() > use_time_end,1,0))  over_red_pocket
+					FROM
+					bs_red_packet_info 
+				  GROUP BY serial_no) aa ON a.serial_no = aa.serial_no 
+		)tb_1
+		UNION
+		SELECT 
+			'合计' serial_name,NULL serial_no, NULL amount,
+			NULL use_condition, NULL `full`, NULL subtract,
+			NULL term_limit,0 total,0 total_amount,
+			0 used_red_pocket,0 used_red_pocket_amount,
+			0 init_red_pocket,0 init_red_pocket_amount,
+			0 over_red_pocket,0 over_red_pocket_amount,
+			NULL rp_name, NULL update_time,
+			0 buy_amount,
+			0 buy_year_amount
+		FROM 
+		bs_red_packet_check
+  </select>
+  
+  
+  
+    <select id="selectStatisticsCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+		SELECT 
+			COUNT(a.id)
+		FROM 
+		bs_red_packet_check a
+		LEFT JOIN bs_red_packet_apply b ON a.apply_no = b.apply_no
+		WHERE a.check_status = 'PASS'
+		<if test="serialName != null and serialName !='' " >
+			and a.serial_name like CONCAT(CONCAT('%', #{serialName}),'%')
+		</if>
+		<if test="applyNo != null and applyNo !='' " >
+ 		 	and a.apply_no = #{applyNo} 
+ 		</if>
+ 		<if test="applicant != null and applicant !='' " >
+ 		 	and a.applicant = #{applicant} 
+ 		</if>
+  </select>
+  
+  <select id="selectByPolicyType" resultMap="BaseResultMap"  parameterType="java.util.Map">
+  select * from bs_red_packet_check where policy_type is not null 
+  <if test="policyType != null and policyType != '' ">
+  	and policy_type like CONCAT(CONCAT('%', #{policyType}),'%')
+  </if>
+  group by policy_type order by create_time desc limit 0,5
+  </select>
+  
+  <resultMap id="autoRedPacketTotalVOMap" extends="BaseResultMap" type="com.pinting.business.model.vo.AutoRedPacketTotalAmountVO"  >
+	<result column="subtract" property="subtract" jdbcType="DOUBLE" />
+	<result column="agent_ids" property="agentIds" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="autoRedPacketTotalGrid" resultMap="autoRedPacketTotalVOMap" parameterType="java.util.Map">
+  	SELECT a.subtract, b.agent_ids
+	FROM `bs_red_packet_check` a, bs_auto_red_packet_rule b 
+	WHERE a.serial_no = b.serial_no AND b.`status` = 'AVAILABLE' AND a.check_status = 'PASS' AND a.distribute_type = 'AUTO'
+	<if test="showTerminal == null">
+		AND (b.agent_ids LIKE '%0%' OR b.agent_ids LIKE '%-1%') 
+	</if>
+	<if test="showTerminal != null">
+		AND (
+			FIND_IN_SET("15",b.agent_ids)
+			OR b.agent_ids LIKE '%-1%'
+		)
+	</if>
+	AND b.trigger_type = #{triggerType} 
+<!-- 	AND a.total > (
+		SELECT COUNT(c.serial_no) FROM bs_red_packet_info c WHERE c.serial_no = a.serial_no
+	) -->
+	AND b.distribute_time_start &lt; NOW() AND b.distribute_time_end > NOW()
+  </select>
+  
+  <select id="selectEffectiveActivityRedPacketCheckAndRule" resultMap="BsRedPacketCheckVOMap" parameterType="java.util.Map">
+  	SELECT 
+  		a.id, a.term_limit,a.serial_no, a.`full`, a.subtract, b.agent_ids, b.`status`,
+  		b.distribute_time_start,b.distribute_time_end
+	FROM 
+		bs_red_packet_check a, bs_auto_red_packet_rule b
+	WHERE 
+		a.serial_no = b.serial_no AND b.trigger_type = '318_GAME_OLD_USER' AND b.`status` = 'AVAILABLE' 
+		AND b.distribute_time_start &lt;= NOW() AND b.distribute_time_end >= NOW() 
+		AND a.check_status = 'PASS' AND a.distribute_type = 'AUTO'
+		AND SUBSTRING_INDEX(a.term_limit, ',', 1) = #{term}
+	ORDER BY a.full DESC
+  </select>
+  
+  
+  <select id="selectRedPacketPolicyCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+	SELECT 
+	COUNT(a.id)
+	FROM
+	bs_red_packet_check a
+	LEFT JOIN bs_auto_red_packet_rule b ON a.serial_no = b.serial_no
+	where 1=1 and a.check_status='PASS'
+	and a.distribute_type='AUTO' and b.status='AVAILABLE'
+	<if test="policyType != null and policyType !='' " >
+		and a.policy_type like CONCAT(CONCAT('%', #{policyType}),'%')
+	</if>
+  </select>
+  
+  <select id="queryAmountYear" resultType="java.lang.Double" parameterType="java.util.Map">
+								SELECT SUM(CASE buy_year_p.term 
+										WHEN -7 THEN (buy_year_o.amount+buy_year_m.amount)*7/365
+										WHEN 1 THEN (buy_year_o.amount+buy_year_m.amount)*30/365
+										WHEN 3 THEN (buy_year_o.amount+buy_year_m.amount)*90/365
+										WHEN 6 THEN (buy_year_o.amount+buy_year_m.amount)*180/365
+										WHEN 12 THEN (buy_year_o.amount+buy_year_m.amount)END) 
+								FROM 
+								bs_red_packet_info  buy_year_m 
+								LEFT JOIN bs_pay_orders buy_year_o ON buy_year_m.order_no = buy_year_o.order_no AND buy_year_o.status = 6
+								LEFT JOIN bs_sub_account buy_year_s ON buy_year_o.sub_account_id = buy_year_s.id
+								LEFT JOIN bs_product buy_year_p ON buy_year_s.product_id = buy_year_p.id,
+								(SELECT * FROM bs_red_packet_check where  check_status = 'PASS' ) buy_year_mm
+								WHERE buy_year_m.order_no IS NOT NULL
+								AND buy_year_m.serial_no = #{serialNo} AND buy_year_mm.serial_no = buy_year_m.serial_no 
+  </select>
+  
+  
+  <select id="queryBuyAmount" resultType="java.lang.Double" parameterType="java.util.Map">
+
+			SELECT
+				SUM(buy_o.amount + buy_m.amount)
+			FROM
+				(
+					SELECT
+						*
+					FROM
+						bs_red_packet_info
+					WHERE
+						order_no IS NOT NULL
+				) buy_m
+			LEFT JOIN bs_pay_orders buy_o ON buy_m.order_no = buy_o.order_no
+			AND buy_o. STATUS = 6,
+			(
+				SELECT
+					*
+				FROM
+					bs_red_packet_check
+				WHERE
+					check_status = 'PASS'
+			) buy_mm
+		WHERE
+			buy_m.order_no IS NOT NULL
+		AND buy_m.serial_no = #{serialNo}
+		AND buy_mm.serial_no = buy_m.serial_no
+
+  </select>
+  
+</mapper>

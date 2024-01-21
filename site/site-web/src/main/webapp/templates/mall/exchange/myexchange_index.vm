@@ -1,0 +1,86 @@
+#Html("begin")
+#Head("begin","互联网金融产品,币港湾,币港湾官网","欢迎了解币港湾产品,币港湾官网为您提供多种互联网金融产品,是优质的互联网金融服务平台。")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+#LoadJS("resources/mall/scripts/common/rem_750")
+#LoadCSS("resources/mall/styles/common/default")
+#LoadCSS("resources/mall/styles/exchange/myexchange_index")
+#WeChatShare()
+#Head("end")
+<body>
+    <div class="header">
+		<a class="header_arrow" href="javascript:history.go(-1)"></a>
+		<h1 class="heade_ft color_bg">兑换详情</h1>
+	</div>
+	<div class="commodityImg">
+		<img src="$!res.commPictureUrl" />
+	</div>
+	<div class="commodityBox">
+		<div class="commodityName">$!res.commName</div>
+	</div>
+	<div class="commodityExchange">
+		<div class="commodityExchangeTime">
+			<div class="commodityExchangeName">兑换时间：</div>
+			<div class="commodityExchangeNumber">$!date.formatDateTime($!res.exchangeTime,'yyyy-MM-dd HH:mm')</div>
+		</div>
+		<div class="commodityExchangeTime">
+			<div class="commodityExchangeName">支出积分：</div>
+			<div class="commodityExchangeNumber"><span class="numberColor">$!money.format($!res.payPoints).replace(".00","")积分</span></div>
+		</div>
+		<div class="commodityExchangeAddress">
+			<div class="commodityExchangeName">收货信息：</div>
+			#if($!res.commProperty == "EMPTY")
+			<div class="commodityExchangeNumber">
+				<div class="commodityExchangeTop"><span class="commodityExchangeIcon1"></span>$!res.userName<span class="commodityExchangeIcon2"></span>$!res.mobile</div>
+				##<div class="commodityExchangeBottom"><span class="commodityExchangeIcon3"></span>$res.recAdressDetail</div>
+			</div>
+			#else
+			<div class="commodityExchangeNumber">
+				<div class="commodityExchangeTop"><span class="commodityExchangeIcon1"></span>$!res.recName<span class="commodityExchangeIcon2"></span>$!res.recMobile</div>
+				<div class="commodityExchangeBottom"><span class="commodityExchangeIcon3"></span>$res.recAdress $res.recAdressDetail</div>
+			</div>
+			#end
+		</div>
+		<div class="commodityExchangeTime">
+			<div class="commodityExchangeName">订单状态：</div>
+			<div class="commodityExchangeNumber">
+				#if($!res.sendStatus == "FINISHED")
+				<div class="recordExchangeAlready">已发货</div>
+				#else
+				<div class="recordExchangeNot">未发货</div>
+				#end
+			</div>
+		</div>
+		<div class="commodityExchangeTime">
+			<div class="commodityExchangeName">发货时间：</div>
+			<div class="commodityExchangeNumber">
+				#if($!res.sendStatus == "FINISHED")
+    				#if($!res.sendCommodityTime)
+    				$!date.formatDateTime($!res.sendCommodityTime,'yyyy-MM-dd HH:mm')
+    				#else
+    					暂无
+					#end
+				#else
+					暂无
+				#end
+			</div>
+		</div>
+		<div class="commodityExchangeAddress">
+			<div class="commodityExchangeName">发货信息：</div>
+			<div class="commodityExchangeNumber1">
+				#if($!res.sendStatus == "FINISHED")
+					#if("$!res.deliveryNote" == "")
+                        暂无
+					#elseif($!res.deliveryNote)
+						$!res.deliveryNote
+					#else
+                        暂无
+					#end
+				#else
+					暂无
+				#end
+			</div>
+		</div>
+	</div>
+</body>
+#Html("end")

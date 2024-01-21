@@ -1,0 +1,211 @@
+<input type="hidden" name="realShowData" id="realShowData" value="$!result.showData" />
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!result.pageNum" />
+    <input type="hidden" name="numPerPage" value="$!result.numPerPage" />
+    <input type="hidden" name="showData" value="yes" />
+</form>
+<div class="pageHeader">
+    <form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/hfBgwRevenueOfZan/index.htm')" onsubmit="return navTabSearch(this);">
+        <input type="hidden" name="pageNum" value="$!result.pageNum" />
+        <input type="hidden" name="numPerPage" value="$!result.numPerPage" />
+        <input type="hidden" name="showData" value="yes" />
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        结算日期：
+                        <input name="startTime" mindate="2017-11-09" type="text" id="startTime" class="date textInput readonly" readonly="true" value="$!result.startTime" />
+                        到
+                        <input name="endTime" mindate="2017-11-09" type="text" id="endTime" class="date textInput readonly" readonly="true" value="$!result.endTime" />
+                    </td>
+                    <td>
+                        <div class="buttonActive">
+                            <div class="buttonContent">
+                                <button onclick="search()" type="button">查询</button>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="buttonActive">
+                            <div class="buttonContent">
+                                <button onclick="exportExcel()" type="button">导出</button>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar" style="line-height: 25px;height: 50px;padding-left: 5px;">
+        <span style="color:blue;">说明：赞分期产品请从2017年11月9日开始查询</span><br/>
+        <span style="color:red;">币港湾营收（恒丰）总计：<span id="totalAmount">0.00</span></span>
+    </div>
+    <table class="table" width="100%" layoutH="140" >
+        <thead>
+        <tr>
+            <th width="10%">投资人姓名</th>
+            <th width="10%">手机号</th>
+            <th width="10%">资产方</th>
+            <th width="10%">出借金额</th>
+            <th width="10%">币港湾营收（恒丰）</th>
+            <th width="10%">结算日期</th>
+        </tr>
+        </thead>
+
+        <tbody>
+            #foreach($data in $result.list)
+            <span class="benison_span">
+				<tr target="rid" rel="1" class="asda">
+                    <td>$!data.userName</td>
+                    <td>$!data.mobile</td>
+                    <td>
+                        #if($!data.partnerCode == "ZAN")赞分期
+                        #elseif($!data.partnerCode == "YUN_DAI")云贷
+                        #elseif($!data.partnerCode == "YUN_DAI_SELF")云贷存管
+                        #elseif($!data.partnerCode == "7_DAI")七贷
+                        #elseif($!data.partnerCode == "7_DAI_SELF")七贷存管
+                        #elseif($!data.partnerCode == "ZSD")赞时贷#end
+                    </td>
+                    <td>$!money.format($!data.totalAmount)</td>
+                    <td>$!money.format($!data.transAmount)</td>
+                    <td>$!date.format($!data.transTime)</td>
+                </tr>
+                </span>
+            #end
+        </tbody>
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+                <option #if("$!result.numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!result.numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!result.numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!result.numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!{result.count}条</span>
+        </div>
+        <div class="pagination" targetType="navTab" totalCount="$!{result.count}" numPerPage="$!result.numPerPage" currentPage="$!result.pageNum"></div>
+    </div>
+</div>
+<script>
+    function search() {
+        var totalAmountOld = $('#totalAmount').text();
+        $('#totalAmount').text('加载中...');
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+
+        if(startTime != "" && endTime == ""){
+            alert("请输入结束时间！");
+            $('#totalAmount').text('0.00');
+            return false;
+        }
+        if(startTime == "" && endTime != ""){
+            alert("请输入开始时间！");
+            $('#totalAmount').text('0.00');
+            return false;
+        }
+        if(startTime != "" && endTime != ""){
+            var result = new Date(endTime).getTime() - new Date(startTime).getTime();
+            if(result < 0) {
+                $('#totalAmount').text('0.00');
+                alert("开始时间不能在结束时间之后！！");
+                return false;
+            }
+        }
+        if(!startTime && !endTime){
+            alert("请输入查询时间！");
+            $('#totalAmount').text('0.00');
+            return false;
+        }
+        var url = $("#ROOT_PATH").val() + "/hfBgwRevenueOfZan/index.htm";
+        $("#myform").attr("action", url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+
+    function exportExcel() {
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+
+        if(startTime != "" && endTime == ""){
+            alert("请输入结束时间！");
+            return false;
+        }
+        if(startTime == "" && endTime != ""){
+            alert("请输入开始时间！");
+            return false;
+        }
+        if(startTime != "" && endTime != ""){
+            var result = new Date(endTime).getTime() - new Date(startTime).getTime();
+            if(result < 0) {
+                alert("开始时间不能在结束时间之后！！");
+            }
+        }
+        if(!startTime && !endTime){
+            alert("请输入查询时间！");
+            return false;
+        }
+        var url = $("#ROOT_PATH").val() + "/hfBgwRevenueOfZan/exportXls.htm";
+        $("#myform").attr("action", url);
+        $("#myform").attr("onsubmit", "");
+        $("#myform").submit();
+    }
+
+    (function() {
+        if($('#realShowData').val() && $('#realShowData').val() == "yes") {
+            $.ajaxSettings.global = false;
+            var loading = true;
+            $('#totalAmount').text('加载中...');
+            var startTime = $("#startTime").val();
+            var endTime = $("#endTime").val();
+
+            if(startTime != "" && endTime == ""){
+                $('#totalAmount').text('0.00');
+                loading = false;
+                $.ajaxSettings.global = true;
+            }
+            if(startTime == "" && endTime != ""){
+                $('#totalAmount').text('0.00');
+                loading = false;
+                $.ajaxSettings.global = true;
+            }
+            if(startTime != "" && endTime != ""){
+                var result = new Date(endTime).getTime() - new Date(startTime).getTime();
+                if(result < 0) {
+                    $('#totalAmount').text('0.00');
+                    loading = false;
+                    $.ajaxSettings.global = true;
+                }
+            }
+            if(!startTime && !endTime){
+                $('#totalAmount').text('0.00');
+                loading = false;
+                $.ajaxSettings.global = true;
+            }
+            if(loading) {
+                $.ajax({
+                    url: $("#ROOT_PATH").val() + "/hfBgwRevenueOfZan/totalAmount.htm",
+                    type: 'post',
+                    data: {
+                        startTime: startTime,
+                        endTime: endTime
+                    },
+                    success: function(data) {
+                        $('#totalAmount').text(data.result);
+                    },
+                    error: function() {
+                        $('#totalAmount').text('查询失败');
+                    },
+                    complete: function() {
+                        $.ajaxSettings.global = true;
+                    }
+                });
+            }
+        }
+    })();
+</script>

@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsProfitLossMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsProfitLoss" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="clear_date" property="clearDate" jdbcType="DATE" />
+    <result column="principal" property="principal" jdbcType="DOUBLE" javaType="DOUBLE"/>
+    <result column="interest" property="interest" jdbcType="DOUBLE" />
+    <result column="sys_interest" property="sysInterest" jdbcType="DOUBLE" />
+    <result column="pinting_profit" property="pintingProfit" jdbcType="DOUBLE" />
+    <result column="should_bonus" property="shouldBonus" jdbcType="DOUBLE" />
+    <result column="surplus_bonus" property="surplusBonus" jdbcType="DOUBLE" />
+    <result column="bonus" property="bonus" jdbcType="DOUBLE" />
+    <result column="dafy_2_percent" property="dafy2Percent" jdbcType="DOUBLE" />
+    <result column="dafy_should_profit" property="dafyShouldProfit" jdbcType="DOUBLE" />
+    <result column="dafy_send_profit" property="dafySendProfit" jdbcType="DOUBLE" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, clear_date, principal, interest, sys_interest, pinting_profit, should_bonus, 
+    surplus_bonus, bonus, dafy_2_percent, dafy_should_profit, dafy_send_profit, create_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsProfitLossExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_profit_loss
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_profit_loss
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_profit_loss
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsProfitLossExample" >
+    delete from bs_profit_loss
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsProfitLoss" >
+    insert into bs_profit_loss (id, clear_date, principal, 
+      interest, sys_interest, pinting_profit, 
+      should_bonus, surplus_bonus, bonus, 
+      dafy_2_percent, dafy_should_profit, dafy_send_profit, 
+      create_time)
+    values (#{id,jdbcType=INTEGER}, #{clearDate,jdbcType=DATE}, #{principal,jdbcType=DOUBLE}, 
+      #{interest,jdbcType=DOUBLE}, #{sysInterest,jdbcType=DOUBLE}, #{pintingProfit,jdbcType=DOUBLE}, 
+      #{shouldBonus,jdbcType=DOUBLE}, #{surplusBonus,jdbcType=DOUBLE}, #{bonus,jdbcType=DOUBLE}, 
+      #{dafy2Percent,jdbcType=DOUBLE}, #{dafyShouldProfit,jdbcType=DOUBLE}, #{dafySendProfit,jdbcType=DOUBLE}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsProfitLoss" >
+    insert into bs_profit_loss
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="clearDate != null" >
+        clear_date,
+      </if>
+      <if test="principal != null" >
+        principal,
+      </if>
+      <if test="interest != null" >
+        interest,
+      </if>
+      <if test="sysInterest != null" >
+        sys_interest,
+      </if>
+      <if test="pintingProfit != null" >
+        pinting_profit,
+      </if>
+      <if test="shouldBonus != null" >
+        should_bonus,
+      </if>
+      <if test="surplusBonus != null" >
+        surplus_bonus,
+      </if>
+      <if test="bonus != null" >
+        bonus,
+      </if>
+      <if test="dafy2Percent != null" >
+        dafy_2_percent,
+      </if>
+      <if test="dafyShouldProfit != null" >
+        dafy_should_profit,
+      </if>
+      <if test="dafySendProfit != null" >
+        dafy_send_profit,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="clearDate != null" >
+        #{clearDate,jdbcType=DATE},
+      </if>
+      <if test="principal != null" >
+        #{principal,jdbcType=DOUBLE},
+      </if>
+      <if test="interest != null" >
+        #{interest,jdbcType=DOUBLE},
+      </if>
+      <if test="sysInterest != null" >
+        #{sysInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="pintingProfit != null" >
+        #{pintingProfit,jdbcType=DOUBLE},
+      </if>
+      <if test="shouldBonus != null" >
+        #{shouldBonus,jdbcType=DOUBLE},
+      </if>
+      <if test="surplusBonus != null" >
+        #{surplusBonus,jdbcType=DOUBLE},
+      </if>
+      <if test="bonus != null" >
+        #{bonus,jdbcType=DOUBLE},
+      </if>
+      <if test="dafy2Percent != null" >
+        #{dafy2Percent,jdbcType=DOUBLE},
+      </if>
+      <if test="dafyShouldProfit != null" >
+        #{dafyShouldProfit,jdbcType=DOUBLE},
+      </if>
+      <if test="dafySendProfit != null" >
+        #{dafySendProfit,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsProfitLossExample" resultType="java.lang.Integer" >
+    select count(*) from bs_profit_loss
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_profit_loss
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.clearDate != null" >
+        clear_date = #{record.clearDate,jdbcType=DATE},
+      </if>
+      <if test="record.principal != null" >
+        principal = #{record.principal,jdbcType=DOUBLE},
+      </if>
+      <if test="record.interest != null" >
+        interest = #{record.interest,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sysInterest != null" >
+        sys_interest = #{record.sysInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="record.pintingProfit != null" >
+        pinting_profit = #{record.pintingProfit,jdbcType=DOUBLE},
+      </if>
+      <if test="record.shouldBonus != null" >
+        should_bonus = #{record.shouldBonus,jdbcType=DOUBLE},
+      </if>
+      <if test="record.surplusBonus != null" >
+        surplus_bonus = #{record.surplusBonus,jdbcType=DOUBLE},
+      </if>
+      <if test="record.bonus != null" >
+        bonus = #{record.bonus,jdbcType=DOUBLE},
+      </if>
+      <if test="record.dafy2Percent != null" >
+        dafy_2_percent = #{record.dafy2Percent,jdbcType=DOUBLE},
+      </if>
+      <if test="record.dafyShouldProfit != null" >
+        dafy_should_profit = #{record.dafyShouldProfit,jdbcType=DOUBLE},
+      </if>
+      <if test="record.dafySendProfit != null" >
+        dafy_send_profit = #{record.dafySendProfit,jdbcType=DOUBLE},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_profit_loss
+    set id = #{record.id,jdbcType=INTEGER},
+      clear_date = #{record.clearDate,jdbcType=DATE},
+      principal = #{record.principal,jdbcType=DOUBLE},
+      interest = #{record.interest,jdbcType=DOUBLE},
+      sys_interest = #{record.sysInterest,jdbcType=DOUBLE},
+      pinting_profit = #{record.pintingProfit,jdbcType=DOUBLE},
+      should_bonus = #{record.shouldBonus,jdbcType=DOUBLE},
+      surplus_bonus = #{record.surplusBonus,jdbcType=DOUBLE},
+      bonus = #{record.bonus,jdbcType=DOUBLE},
+      dafy_2_percent = #{record.dafy2Percent,jdbcType=DOUBLE},
+      dafy_should_profit = #{record.dafyShouldProfit,jdbcType=DOUBLE},
+      dafy_send_profit = #{record.dafySendProfit,jdbcType=DOUBLE},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsProfitLoss" >
+    update bs_profit_loss
+    <set >
+      <if test="clearDate != null" >
+        clear_date = #{clearDate,jdbcType=DATE},
+      </if>
+      <if test="principal != null" >
+        principal = #{principal,jdbcType=DOUBLE},
+      </if>
+      <if test="interest != null" >
+        interest = #{interest,jdbcType=DOUBLE},
+      </if>
+      <if test="sysInterest != null" >
+        sys_interest = #{sysInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="pintingProfit != null" >
+        pinting_profit = #{pintingProfit,jdbcType=DOUBLE},
+      </if>
+      <if test="shouldBonus != null" >
+        should_bonus = #{shouldBonus,jdbcType=DOUBLE},
+      </if>
+      <if test="surplusBonus != null" >
+        surplus_bonus = #{surplusBonus,jdbcType=DOUBLE},
+      </if>
+      <if test="bonus != null" >
+        bonus = #{bonus,jdbcType=DOUBLE},
+      </if>
+      <if test="dafy2Percent != null" >
+        dafy_2_percent = #{dafy2Percent,jdbcType=DOUBLE},
+      </if>
+      <if test="dafyShouldProfit != null" >
+        dafy_should_profit = #{dafyShouldProfit,jdbcType=DOUBLE},
+      </if>
+      <if test="dafySendProfit != null" >
+        dafy_send_profit = #{dafySendProfit,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsProfitLoss" >
+    update bs_profit_loss
+    set clear_date = #{clearDate,jdbcType=DATE},
+      principal = #{principal,jdbcType=DOUBLE},
+      interest = #{interest,jdbcType=DOUBLE},
+      sys_interest = #{sysInterest,jdbcType=DOUBLE},
+      pinting_profit = #{pintingProfit,jdbcType=DOUBLE},
+      should_bonus = #{shouldBonus,jdbcType=DOUBLE},
+      surplus_bonus = #{surplusBonus,jdbcType=DOUBLE},
+      bonus = #{bonus,jdbcType=DOUBLE},
+      dafy_2_percent = #{dafy2Percent,jdbcType=DOUBLE},
+      dafy_should_profit = #{dafyShouldProfit,jdbcType=DOUBLE},
+      dafy_send_profit = #{dafySendProfit,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectProfitLossListPageInfo" resultMap="BaseResultMap" parameterType="com.pinting.business.model.vo.BsProfitLossVO">
+ 	select 
+		<include refid="Base_Column_List"/>
+		from bs_profit_loss
+		<where>
+			<if test="beginTime != null and overTime != null and beginTime != '' and overTime!= '' ">
+				and clear_date between #{beginTime} and #{overTime}
+			</if>
+		</where>
+  		<include refid="sql-global.pagination"/>
+  </select>
+  
+  <select id="selectProfitLossByClearDateMonth" resultMap="BaseResultMap">
+ 	select 
+		<include refid="Base_Column_List"/>
+		from bs_profit_loss
+		where DATE_FORMAT(clear_date,'%Y-%m') = DATE_FORMAT(now(),'%Y-%m')
+  </select>
+  
+  <select id="sumProfite" resultType="java.lang.Double">
+ 	select 
+		sum(sys_interest)+sum(dafy_2_percent)
+		from bs_profit_loss where DATE_FORMAT(now(),'%Y-%m') > DATE_FORMAT(clear_date,'%Y-%m')  
+		
+  </select>
+</mapper>

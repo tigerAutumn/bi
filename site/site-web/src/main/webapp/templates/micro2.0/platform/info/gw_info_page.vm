@@ -1,0 +1,19 @@
+#foreach($!data in $!dataGrid)
+	<div class="main_content" onclick='go_detail($!data.id, "$!data.type")'>
+		<div class="info_img"><img class="info_img_content" src="$!data.subjectImg" alt=""/></div>
+		<div class="info_title">
+			<span class="info_title_txt">
+				#if("$!data.type" == "NEWS")
+					【媒体报道】$!data.subject
+				#elseif("$!data.type" == "COMPANY_DYNAMIC")
+					【公司动态】$!data.subject
+				#elseif("$!data.type" == "WFANS_ACTIVITY")
+					【湾粉活动】$!data.subject
+				#else
+					$!data.subject
+				#end
+			</span>
+		</div>
+		<div class="info_time"><span class="info_time_img"></span>$!date.formatYYYYMMDD($!data.publishTime)</div>
+	</div>
+#end

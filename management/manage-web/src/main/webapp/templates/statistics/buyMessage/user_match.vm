@@ -1,0 +1,43 @@
+<div class="pageContent">
+	<div class="pageFormContent" layoutH="80">
+<table class="table">
+	<tr heigth=30px;>
+		<td width="15%">借款人</td>
+		<td width="15%">借款金额</td>
+		<td width="15%">剩余本金</td>
+        <td width="15%">出借时间</td>
+		<td width="15%">还款金额</td>
+		<td width="15%">最近还款时间 </td>
+		<td width="15%">还款状态</td>
+		<td width="15%">备注</td>
+    </tr>
+	#foreach($data in $!list)
+		<tr>
+			<td>$data.borrowerName</td>
+			<td>$!money.format($!data.amount)</td>
+			<td>$!money.format($!data.leftPrincipal)</td>
+			<td>
+				$!date.formatDateTime($!data.matchDate,'yyyy-MM-dd')
+			</td>
+			<td>$!money.format($!data.repayAmount)</td>
+			<td>
+				#if(!$data.lastRepayDate)	
+				#else
+					$!date.formatDateTime($!data.lastRepayDate,'yyyy-MM-dd')
+				#end
+			</td>
+			<td>
+    			#if($!data.repayStatus == 1)
+        		借款中
+        		#elseif($!data.repayStatus == 2)
+        		部分还款
+        		#elseif($!data.repayStatus == 3)
+        		已还完
+        		#end
+			</td>
+			<td >$!data.note</div>
+    </tr>
+	#end
+</table>
+</div>
+</div>

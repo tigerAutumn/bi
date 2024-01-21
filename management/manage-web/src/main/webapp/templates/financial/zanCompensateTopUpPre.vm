@@ -1,0 +1,78 @@
+<div class="pageContent" id="topUp">
+	#Hidden("APP_ROOT_PATH",$!env.getWebURL(''))
+	<form id="topUpForm" method="post" action="$env.getWebURL('/financial/accountZanCompensateTopUp.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<div class="pageFormContent nowrap" layoutH="60">
+			<label >充值验证码：</label>
+			<input type="text" name="smsCode" id="smsCode" maxLength="6"/>
+			<input type="hidden" name="orderNo" id="orderNo" value="$!orderNo"/>
+			<input type="hidden" name="userId" id="userId" value="$!userId"/>
+			<input type="hidden" name="amount" id="amount" value="$!amount"/>
+            <input type="hidden" name="serverTokenTopUp" id="serverTokenTopUp" value="$!serverToken"/>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li>
+					<div class="buttonActive">
+						<div class="buttonContent">
+							<button onclick="topUp()" type="button">提交</button>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
+							<button type="button" class="close">取消</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+	
+<script>
+    function topUp(){
+		if($('#smsCode').val()) {
+            var smsCode = $.trim($("#smsCode").val());
+            var orderNo = $.trim($("#orderNo").val());
+            var userId = $.trim($("#userId").val());
+            var amount = $.trim($("#amount").val());
+            var serverTokenTopUp = $.trim($("#serverTokenTopUp").val());
+
+            jQuery.ajax({
+                url: $('#APP_ROOT_PATH').val() + '/financial/accountZanCompensateTopUp.htm',
+                data:{
+                    smsCode: smsCode,
+                    orderNo: orderNo,
+                    userId: userId,
+                    amount: amount,
+                    token: serverTokenTopUp
+                },
+                type:'post',
+                success: function(data){
+                    if (data.statusCode == 200) {
+                        alertMsg.correct('申请已提交！');
+                        $.pdialog.closeCurrent();
+                        $("#serverTokenTopUp").val(data.serverToken);
+                        navTab.reload("$env.getWebURL('financial/zanCompensateListIndex.htm')");
+                    } else if (data.statusCode == 304) {
+                        $("#serverTokenTopUp").val(data.serverToken);
+                        alertMsg.warn(data.message);
+                        $.pdialog.closeCurrent();
+                    } else if (data.statusCode == 305) {
+                        $("#serverTokenTopUp").val(data.serverToken);
+                        alertMsg.warn('请勿重复提交!');
+                    } else {
+                        alertMsg.error('充值失败请重试！');
+                        $.pdialog.closeCurrent();
+                        $("#serverTokenTopUp").val(data.serverToken);
+                        navTab.reload("$env.getWebURL('financial/zanCompensateListIndex.htm')");
+                    }
+                }
+            });
+    	} else if(!$('#smsCode').val()) {
+    		alertMsg.info('请输入验证码！');
+    	}
+    }
+
+</script>

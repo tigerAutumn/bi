@@ -1,0 +1,141 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);"  action="$env.getWebURL('/financial/queryDepBaoFooBalanceFinance.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+	
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td >对账日期：<input name="startTime" type="text" id="startTime" class=" date textInput readonly" readonly="true" value="$!startTime" dateFmt="yyyy-MM-dd" maxdate="{%y}-%M-{%d-1}"/></td >
+					<td>到  &nbsp;&nbsp;&nbsp;&nbsp;
+						<input name="endTime" type="text" id="endTime" class=" date textInput readonly" readonly="true" value="$!endTime" dateFmt="yyyy-MM-dd" maxdate="{%y}-%M-{%d-1}"/>
+					</td>
+					<td>
+						<button  onclick="func()" type="button">查询</button> 
+						<button  onclick="exp()" type="button">导出excel</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	
+	<table class="table" width="1396" layoutH="160">
+		<thead>
+			<tr>
+				<th width="2%">序号</th>
+				<th width="4%">对账日期</th>
+				<th width="5%">出_提现(用户)</th>
+				<th width="5%">出_提现(奖励金)</th>
+				<th width="5%">出_宝付代付到归集户</th>
+				<th width="5%">出_赞分期营收</th>
+				<th width="5%">出_云贷营收</th>
+				<th width="5%">出_云贷重复还款</th>
+				<th width="5%">出_赞时贷营收</th>
+				<th width="5%">出_赞时贷重复还款</th>
+				<th width="5%">入_回款_云贷</th>
+				<th width="5%">入_回款_七贷</th>
+				<th width="5%">入_赞分期还款</th>
+				<th width="5%">入_云贷还款</th>
+				<th width="5%">入_赞时贷还款</th>
+				<th width="5%">入_云贷代偿</th>
+				<th width="5%">入_赞时贷代偿</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($user in $userList)
+			<tr>
+				<td>$!user.rowno</td>
+				<td>$!user.transDate</td>
+				<td>$!money.format($!user.outUserWithdraw)</td>
+				<td>$!money.format($!user.outBonusWithdraw)</td>
+				<td>$!money.format($!user.outWithdrawToDepRepayCard)</td>
+				<td>$!money.format($!user.outSysPartnerRevenue)</td>
+				<td>$!money.format($!user.outSysYunRepayRevenue)</td>
+				<td>$!money.format($!user.outSysYunRepeat)</td>
+				<td>$!money.format($!user.outSysZsdRepayRepeat)</td>
+				<td>$!money.format($!user.outSysZsdRepeat)</td>
+				<td>$!money.format($!user.inYunDaiBack)</td>
+				<td>$!money.format($!user.inSevenDaiBack)</td>
+				<td>$!money.format($!user.inDepZanBack)</td>
+				<td>$!money.format($!user.inDepYunBack)</td>
+				<td>$!money.format($!user.inDepZsdBack)</td>
+				<td>$!money.format($!user.inDepYunCompensate)</td>
+				<td>$!money.format($!user.inDepZsdCompensate)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+	</div>
+</div>
+#LoadJS("/resources/js/global_validate")
+<script>
+function func(){
+	var beginTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	if(!beginTime) {
+		alertMsg.warn("开始时间不能为空！");
+		return;
+	}
+	if(!endTime) {
+		alertMsg.warn("结束时间不能为空！");
+		return;
+	}
+    var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+	if(result < 0){
+		alertMsg.warn("开始时间不能在结束时间之后！");
+		return;
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/financial/queryDepBaoFooBalanceFinance.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+	
+}
+
+function exp(){
+	var beginTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
+	if(!beginTime) {
+		alertMsg.warn("开始时间不能为空！");
+		return;
+	}
+	if(!endTime) {
+		alertMsg.warn("结束时间不能为空！");
+		return;
+	}
+    var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+	if(result < 0){
+		alertMsg.warn("开始时间不能在结束时间之后！");
+		return;
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/financial/expDepBaoFooBalanceFinance.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+</script>

@@ -1,0 +1,181 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+	
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+	<input type="hidden" name="startDate" value="$!req.startDate" />
+	<input type="hidden" name="endDate" value="$!req.endDate" />
+	<input type="hidden" name="propertySymbol" value="$!req.propertySymbol" />
+</form>
+	
+
+<div class="page unitBox">
+	<div class="pageHeader">
+    	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/statistics/bgwDailySnap/index.htm')" id="myform"  method="post">
+			<input type="hidden" name="propertySymbol" value="$!req.propertySymbol" />
+        	<div class="searchBar">
+                <table class="searchContent" border="0" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+                    <tr height="60px;">
+                        <td width="10%">
+						#if($req.propertySymbol == 'BGW')
+							<button id="BGW" type="button" style="margin-right: 30px;background-color:#5cb85c;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">币港湾--恒丰账户</button>
+						#else
+							<button id="BGW" type="button" style="margin-right: 30px;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">币港湾--恒丰账户</button>
+						#end
+						</td>
+                        <td width="10%">
+						#if($req.propertySymbol == 'CW_BAOFOO')
+							<button id="CW_BAOFOO" type="button" style="margin-right: 30px;background-color:#5cb85c;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">币港湾--宝付账户</button>
+						#else
+							<button id="CW_BAOFOO" type="button" style="margin-right: 30px;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">币港湾--宝付账户</button>
+						#end
+						</td>
+					</tr>
+        			#*<tr>
+						<td colspan="2">
+                       		<label>日期</label>
+                            <input type="text" id="startDate" name="startDate" value="$!req.startDate" class="date" dateFmt="yyyy-MM-dd" readonly/>
+						</td>
+						<td colspan="2">
+							<label style="text-align: center;">至</label>
+							<input type="text" id="endDate" name="endDate" value="$!req.endDate" class="date" dateFmt="yyyy-MM-dd" readonly/>
+						</td>
+						<td style="padding-left: 30px;">
+							<div class="buttonActive">
+        						<div class="buttonContent">
+        							<button onclick="searchFunction()" type="button">查询</button>
+        						</div>
+        					</div>
+        				</td>
+					</tr>*#
+        		</table>
+        	</div>
+    	</form>
+    </div>
+    <div class="pageContent" >
+		#if($req.propertySymbol == 'CW_BAOFOO')
+			<table class="table" width="1833" layoutH="140">
+		#else
+			<table class="table" width="1833" layoutH="140">
+		#end
+    		<thead>
+    			<tr>
+					#if($req.propertySymbol == 'BGW')
+        				<th width="6%">截止日期</th>
+			            <th width="6%">系统自有账户余额</th>
+			            <th width="6%">系统红包可用余额</th>
+			            <th width="6%">用户余额</th>
+			            <th width="6%">云贷产品户余额</th>
+			            <th width="6%">云贷站岗户余额</th>
+			            <th width="6%">云贷产品站岗红包</th>
+			            <th width="6%">云贷回款户余额</th>
+			            <th width="6%">赞分期产品户余额</th>
+			            <th width="6%">赞分期站岗户余额</th>
+			            <th width="6%">赞分期回款户余额</th>
+			            <th width="6%">币港湾营收户（赞分期）</th>
+			            <th width="6%">币港湾营收户（云贷）</th>
+			            <th width="6%">提现手续费余额</th>
+			            <th width="6%">云贷砍头息户余额</th>
+			            <th width="6%">垫付金账户余额</th>
+					#else
+    					<th width="6%">截止日期</th>
+			            <th width="6%">系统账户余额</th>
+			            <th width="6%">用户利息冻结余额</th>
+			            <th width="5%">用户余额</th>
+			            <th width="6%">云贷产品户余额</th>
+			            <th width="6%">云贷回款户余额</th>
+			            <th width="6%">七贷产品站岗红包</th>
+			            <th width="6%">七贷回款户余额</th>
+			            <th width="6%">币港湾营收（云贷存管）</th>
+			            <th width="6%">币港湾营收户（赞分期）</th>
+			            <th width="6%">云贷营收账户余额</th>
+			            <th width="6%">赞分期营收账户余额</th>
+			            <th width="6%">赞分期保证金账户余额</th>
+			            <th width="6%">赞分期坏账户余额</th>
+			            <th width="6%">提现手续费余额</th>
+			            <th width="5%">红包已支出</th>
+			            <th width="6%">用户未提奖励金</th>
+					#end
+    			</tr>
+    		</thead>
+    		<tbody>
+    			#foreach($grid in $list)
+    			<tr target="sid_user" rel="1">
+					#if($req.propertySymbol == 'BGW')
+						<td>$!grid.snapDate</td>
+		                <td>$!money.format($!grid.depJsh)</td>
+		                <td>$!money.format($!grid.depRedpacket)</td>
+		                <td>$!money.format($!grid.bgwUser)</td>
+		                <td>$!money.format($!grid.bgwRegYun)</td>
+		                <td>$!money.format($!grid.bgwAuthYun)</td>
+		                <td>$!money.format($!grid.bgwReturnYun)</td>
+		                <td>$!money.format($!grid.bgwRegZan)</td>
+		                <td>$!money.format($!grid.bgwAuthZan)</td>
+		                <td>$!money.format($!grid.bgwReturnZan)</td>
+		                <td>$!money.format($!grid.depBgwRevenueZan)</td>
+		                <td>$!money.format($!grid.depBgwRevenueYun)</td>
+		                <td>$!money.format($!grid.depOtherFee)</td>
+		                <td>$!money.format($!grid.depHeadFeeYun)</td>
+		                <td>$!money.format($!grid.redYun)</td>
+		                <td>$!money.format($!grid.depAdvance)</td>
+					#end
+					#if($req.propertySymbol == 'CW_BAOFOO')
+						<td>$!grid.snapDate</td>
+		                <td>$!money.format($!grid.jsh)</td>
+		                <td>$!money.format($!grid.user)</td>
+		                <td>$!money.format($!grid.regYun)</td>
+		                <td>$!money.format($!grid.returnYun)</td>
+		                <td>$!money.format($!grid.reg7)</td>
+		                <td>$!money.format($!grid.return7)</td>
+		                <td>$!money.format($!grid.thdBgwRevenueYun)</td>
+		                <td>$!money.format($!grid.thdBgwRevenueZan)</td>
+		                <td>$!money.format($!grid.thdRevenueYun)</td>
+		                <td>$!money.format($!grid.thdRevenueZan)</td>
+		                <td>$!money.format($!grid.thdMarginZan)</td>
+		                <td>$!money.format($!grid.fee)</td>
+		                <td>$!money.format($!grid.userIntertest)</td>
+		                <td>$!money.format($!grid.badLoansZan)</td>
+		                <td>$!money.format($!grid.thdRedpacket)</td>
+		                <td>$!money.format($!grid.jlj)</td>
+					#end
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+    			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!count条</span>
+    	</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+    </div>
+    </div>
+	
+</div>
+<script>  
+	function searchFunction(){
+    	var beginTime = $("#startDate").val();
+    	var overTime = $("#endDate").val();
+    	if(beginTime != "" && overTime != ""){
+    		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+    		if(result < 0){
+    			alert("开始时间不能在结束时间之后！！");
+    			return false;
+    		}
+    	}
+    	$("#myform").submit();
+   }
+	
+	$("#CW_BAOFOO").click(function(){
+		navTab.reload("$env.getWebURL('/statistics/bgwDailySnap/index.htm?toPropertySymbol=CW_BAOFOO')");
+	});
+	$("#BGW").click(function(){
+		navTab.reload("$env.getWebURL('/statistics/bgwDailySnap/index.htm?toPropertySymbol=BGW')");
+	});
+</script> 

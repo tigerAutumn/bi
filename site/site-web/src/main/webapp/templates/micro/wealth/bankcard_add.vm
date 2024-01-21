@@ -1,0 +1,114 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾理财官网_安心可靠互联网金融投资理财平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#Head("end")
+	
+<body #if($!res.openCityId) onload="change($!res.openProvinceId,$!res.openCityId)" #end>
+	<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$!env.getWebURL('')" />
+    <!-- website wrapper starts -->
+    <div class="websiteWrapper"> 
+      
+      #Header("添加银行卡", "", "", "micro/wealth/bankcard_index")
+      
+      <!-- notification starts -->
+      
+      <!-- notification ends --> 
+      
+      <!--tab-s-->
+      
+      <div class="newrow">
+        <!-- page content wrapper starts -->
+        <div class="pageWrapper contactPageWrapper"> 
+  
+ <input type="hidden" id="cardIdReg" value="(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d{1}|X|x)$)" />
+ <input type="hidden" id="nameReg" value="^([\u4e00-\u9fa5]+|([a-z]+\s?)+){1,20}$" />
+
+  <div class="newbox" id="slider1">
+	<!--<div class="dq2" style="margin-top:0px;background-image: url('$!env.getWebURL('')/resources/micro/images/dq4.png');background-position: right top;background-repeat: no-repeat; background-size: 50px 50px;">-->
+    <div class="dq2" style="background:none;">
+		<form id="myform">
+        <input type="hidden" id="token" name="token" value="$!token" />
+		<div class="gm1">
+			<span style="color:#333; width: 32%;">选择开户行 </span>
+			<input  type="hidden" name="bankName" id="bankName"/>
+            <select name="bankId" id="bank">
+				#foreach($!bank in $!res.bankList)
+			       <option value="$!bank.id" #if($!bank.id == $!res.bankId) selected="selected" #end>$!bank.name</option>
+				#end
+            </select>
+		 </div>
+		 
+		 <div class="gm1">
+			<span style="color:#333; width: 32%;">选择开户省份</span>
+			<input  type="hidden" name="provinceName" id="provinceName"/>
+			<input  type="hidden" name="provinceCode" id="provinceCode"/>
+    		<select  id="sProvince" name="openProvince" >
+				#foreach($!province in $!res.provinceList)
+			       <option value="$!province.id" code="$!province.itemCode" #if($!province.id == $!res.openProvinceId) selected="selected" #end>$!province.itemName</option>
+				#end
+    		</select>
+		 </div>
+		 
+		 <div class="gm1">
+			<span style="color:#333; width: 32%;">选择开户城市</span>
+			<input  type="hidden" name="cityName" id="cityName"/>
+			<input  type="hidden" name="cityCode" id="cityCode"/>
+			<select id="sCity" name="openCity" >
+				#foreach($!city in $!res.cityList)
+			       <option value="$!city.id" code="$!city.itemCode">$!city.itemName</option>
+				#end
+			</select>
+		 </div>
+		<div class="validate">
+			
+    		<div>
+    		##	<div class="gm1 formFieldWrapper"><span style="color:#333; width: 32%;">支行名称</span>
+    			<input class="requiredField" name="branchName"  id="branchName" placeholder="请输入支行名称" type="hidden"  value="$!res.subBranchName">
+    		##	<span style="color:#F00;margin-left:5px;font-size: 14px;margin-top: 5px;">*</span></div>
+            </div>
+		 
+    		<div id="card" >
+    			<div class="gm1"><span style="color:#333; width: 32%;">卡&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</span>
+    			<input name="cardNo" id="cardNo" placeholder="请输入您的卡号" type="text"  value="$!res.cardNo">
+    			<span style="color:#F00;margin-left:5px;font-size: 14px;margin-top: 5px;">*</span></div>
+            </div>
+		
+    		<div class="gm1 formFieldWrapper"><span style="color:#333; width: 32%;">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名 </span>
+    			<input name="cardOwner" id="name" class="nameField requiredField regExpField" placeholder="请输入您的姓名" type="text" #if($!res.userName && $!res.idCard) value="$!res.userName"  #end />
+            <span style="color:#F00;margin-left:5px;font-size: 14px;margin-top: 5px;">*</span></div>
+    		<div class="gm1 formFieldWrapper"><span style="color:#333; width: 32%;">身&nbsp;&nbsp;份&nbsp;&nbsp;证</span>
+    				<input name="idCard" id="cardId" class="cardIdField requiredField regExpField" placeholder="请输入您的身份证" type="text"  #if($!res.userName && $!res.idCard) value="$!res.idCard"  #end/>
+            <span style="color:#F00;margin-left:5px;font-size: 14px;margin-top: 5px;">*</span></div>
+        </div>
+      </form>
+		 <div class="formSubmitButtonErrorsWrapper"> 
+           <!-- form errors start -->  
+			   <span class="formValidationError" id="branchNameFieldError">
+                	<span>请输入支行名称</span>
+               </span>
+               <span class="formValidationError" id="cardIdFieldError">
+                	<span>请输入身份证号</span>
+            		<span>身份证号格式不正确</span>
+               </span>
+                <span class="formValidationError" id="nameFieldError">
+                	<span>请输入姓名</span>
+            		<span>姓名格式不正确</span>
+               </span>
+		    <!-- form errors end -->
+         </div>
+
+	  <!--tab-e-->
+	<div class="wz4" style="margin-bottom:50px;"> 
+		<input id="addment"  class="go_btn3" type="button"  value="我要添加" style="color:#fff;margin-top:20px;">
+    </div>
+      
+      #Footer("4")
+       
+    </div>
+	#LoadJS("resources/micro/scripts/wealth/addBank")
+	#LoadJS("resources/micro/scripts/wealth/province")
+	 #LoadJS("resources/micro/scripts/regular/bankTest")
+	<!-- website wrapper ends -->
+</body>
+
+#Html("end")

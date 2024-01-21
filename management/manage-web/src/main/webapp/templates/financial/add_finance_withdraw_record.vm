@@ -1,0 +1,58 @@
+<div class="pageContent" >
+	#Hidden("APP_ROOT_PATH",$!env.getWebURL(''))
+	<form id="financeForm" method="post" action="$env.getWebURL('/financial/financialRegistry.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<div class="pageFormContent nowrap" layoutH="60">
+			<label >金额：</label>
+			<input type="text" name="amount" class="amount" maxLength="12" oninput="onlyPositiveNum(this)"/>
+			
+			<label >提现时间：</label>
+			<input type="text" name="withdrawTime" class="date withdraw_time" datefmt="yyyy-MM-dd HH:mm:ss" yearstart="-20" yearend="5" readonly/>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li>
+					<div class="buttonActive">
+						<div class="buttonContent">
+							<button onclick="formsubmint()" type="button">保存</button>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
+							<button type="button" class="close">取消</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+    function onlyPositiveNum(input_obj) {
+		// \d{2}$/
+    	input_obj.value = input_obj.value.match(/^[-]?\d{0,}[.]?\d{0,2}$/);
+    }
+	function formsubmint(){
+		if($('.amount').val() == 0 || $('.amount').val() == "0") {
+			alertMsg.info('金额不能为0元');
+		} else {
+			if($('.withdraw_time').val() && $('.amount').val()) {
+    			$("#financeForm").submit();
+    		} else if(!$('.amount').val()) {
+    			alertMsg.info('请输入金额！');
+    		} else if(!$('.withdraw_time').val()) {
+    			alertMsg.info('请选择提现日期！');
+    		}
+		}
+    }
+	function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			alertMsg.correct('您的数据提交成功!');
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('financial/financeWithdrawRecords.htm')");
+		} else {
+			alertMsg.error('保存失败：'+json.message);
+		}
+	}
+</script>

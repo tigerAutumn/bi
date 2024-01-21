@@ -1,0 +1,130 @@
+
+#Title("安全中心")
+#LoadGenCSS("/resources/gen2.0/styles/safe/public")
+#LoadGenCSS("/resources/gen2.0/styles/safe/safe_center")
+
+<div class="safe_center_index">
+    <div class="safe_wrap">
+        <div class="safe_warp_title clearfix">
+            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/safe/safe_icon01.png" alt="">
+            <p class="safe_wrap_name">存管账户</p>
+            <p class="safe_wrap_text">与恒丰银行合作资金存管，保障您的资金安全</p>
+            #if($!hfDepGuideInfo.isOpened == "NO_BIND_CARD" || $!hfDepGuideInfo.isOpened == "FAILED_BIND_HF")
+                <span class="safe_wrap_btn go_bind_card"><a href="javascript:void(0);">未开通</a></span>
+            #else
+                <span class="safe_wrap_btn passed">已开通</span>
+            #end
+        </div>
+    </div>
+    <div class="safe_wrap">
+        <div class="safe_warp_title clearfix">
+            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/safe/safe_icon02.png" alt="">
+            <p class="safe_wrap_name">实名认证</p>
+            #if($!hfDepGuideInfo.isBindName != 'YES')
+                <div class="safe_wrap_text">
+                    请进行实名认证，以保障您的资金安全
+                </div>
+                <span class="safe_wrap_btn go_bind_card"><a href="javascript:void(0);">未认证</a></span>
+            #else
+
+                <div class="safe_wrap_text">
+                    <span>$!string.left($!bankCardInfo.userName, 1)
+                        **</span><span> $!string.left($!bankCardInfo.idCard, 4)
+                    **********$!string.right($!bankCardInfo.idCard, 4)</span>
+                </div>
+
+                <span class="safe_wrap_btn passed">已认证</span>
+            #end
+        </div>
+    </div>
+    <div class="safe_wrap">
+        <div class="safe_warp_title clearfix">
+            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/safe/safe_icon03.png" alt="">
+            <p class="safe_wrap_name">登录密码</p>
+            <p class="safe_wrap_text">登录币港湾账户时需要输入的密码</p>
+            <span class="safe_wrap_btn interface">修改登录密码</span>
+            <span class="safe_wrap_btn slideup" style="display: none">收起</span>
+        </div>
+        <div class="safe_wrap_slidedown">
+            <form action="" method="post" class="pwdForm" id="pwdForm">
+                <label class="clearfix">
+                    <span>当前登录密码：</span>
+                    <input type="password" name="oldPassWord" id="oldPassWord" maxLength="16" placeholder="请输入当前密码">
+                </label>
+                <label class="clearfix">
+                    <span>新登录密码：</span>
+                    <input type="password" name="newPassWord" id="newPassWord" maxLength="16" placeholder="请输入新密码">
+                </label>
+                <label class="clearfix">
+                    <span>确认新登录密码：</span>
+                    <input type="password" name="curPassWord" id="curPassWord" maxLength="16" placeholder="请确认新密码">
+                </label>
+                <input type="button" value="提交" id="savePassword" class="safe_form_btn">
+            </form>
+        </div>
+    </div>
+    <div class="safe_wrap">
+        <div class="safe_warp_title pay_password clearfix">
+            <img src="$!env.get('gen.server.web')/resources/gen2.0/images/safe/safe_icon04.png" alt="">
+            <p class="safe_wrap_name">交易密码</p>
+            <p class="safe_wrap_text">在账户资金变动时需要输入的密码</p>
+                    <span class="safe_wrap_btn interface">
+                        #if($!isBindPayPassword == false)
+                            设置交易密码
+                        #else
+                            修改/找回交易密码
+                        #end
+                    </span>
+            <span class="safe_wrap_btn slideup" style="display: none">收起</span>
+        </div>
+        <div class="safe_wrap_slidedown" id="pay_password_wrap">
+            #if($!isBindPayPassword == false)
+                <form action="" method="post" class="setTradeForm" id="setTradeForm">
+                    <label class="clearfix">
+                        <span>设置交易密码：</span>
+                        <input type="password" name="payPassword" id="payPassword" autocomplete="off" maxLength="16"
+                               placeholder="请输入新交易密码">
+                    </label>
+                    <label class="clearfix">
+                        <span>确认交易密码：</span>
+                        <input type="password" name="curPayPassWord" id="curPayPassword" maxLength="16"
+                               placeholder="请确认新交易密码">
+                    </label>
+                    <p style="margin-bottom: 20px;font-size: 14px;color: #999;padding-left: 137px;">
+                        密码需6-16位，建议使用字母和数字的组合</p>
+                    <input type="button" value="提交" id="saveTrade" class="safe_form_btn">
+                </form>
+            #else
+                <form action="" method="post" class="updateTradeForm" id="updateTradeForm">
+                    <input type="hidden" value="$!userInfo.mobile" name="mobile" id="mobile"/>
+                    <label class="clearfix">
+                        <span>手机号：</span>
+                        $!string.left($!userInfo.mobile,3)****$!string.right($!userInfo.mobile, 4)
+                    </label>
+                    <label class="clearfix safe_message">
+                        <span>短信验证码：</span>
+                        <input type="text" name="mobileCode" id="mobileCode" maxLength="4" autocomplete="off"
+                               placeholder="请输入验证码" style="width: 140px">
+                        <a href="javascript:" id="sendCode" count="60">立即获取</a>
+                    ##<button id="sendCode" count="60"><a class="disabled">立即获取</a></button>
+                    </label>
+                    <label class="clearfix">
+                        <span>新交易密码：</span>
+                        <input type="password" name="password" id="newPayPassWord" autocomplete="off" maxLength="16"
+                               placeholder="请输入新交易密码">
+                    </label>
+                    <label class="clearfix" style="margin-bottom: 10px;">
+                        <span>确认交易密码：</span>
+                        <input type="password" name="curPayPassWord" id="curPayPassword" maxLength="16"
+                               placeholder="请确认新交易密码">
+                    </label>
+                    <p style="margin-bottom: 20px;font-size: 14px;color: #999;padding-left: 137px;">
+                        密码需6-16位，建议使用字母和数字的组合</p>
+                    <input type="button" value="提交" id="updateTrade" class="safe_form_btn">
+                </form>
+            #end
+        </div>
+    </div>
+</div>
+#LoadGenJS("/resources/gen2.0/scripts/assets/safe_center")
+#LoadGenJS("/resources/gen2.0/scripts/assets/forget_trade_password")

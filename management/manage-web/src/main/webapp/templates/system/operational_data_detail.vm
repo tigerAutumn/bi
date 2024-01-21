@@ -1,0 +1,60 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')"/>
+<div class="pageContent">
+	<form method="post" name="detail_form" action="$env.getWebURL('/sys/operationalData/updateWxUserInfo.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+        <div class="pageFormContent" layoutH="56">
+     
+           	<dl>
+                <dt >昵称：</dt>
+                <dd>
+                	$!nick
+                </dd>
+            </dl>
+		   
+		    <dl>
+                <dt ><span style="color: red">*</span>真实姓名：</dt>
+                <dd style="width:100px;">
+                    <input name="mName" id="mName" type="text" maxlength="8"/>
+                </dd>
+            </dl>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li>
+                    <div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+                </li>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_verifyForm('$!mId')">保存</button></div></div></li>
+            </ul>
+        </div>
+	</form>
+</div>
+<script>
+	
+		function submit_verifyForm(id) {
+	        var updateId = id;
+            var mName = $.trim($("#mName").val());
+            $.ajax({
+                type: 'post',
+                url: $("#APP_ROOT_PATH").val() + "/sys/operationalData/updateWxUserInfo.htm",
+                data: JSON.stringify({
+                    id: updateId,
+                    mName: mName
+                }),
+                dataType: 'json',
+                contentType:"application/json;charset=UTF-8",
+                success: function (data) {
+                    if (data.statusCode == "200") {
+                    	alertMsg.correct('操作成功!');
+                    	$.pdialog.closeCurrent();
+                        navTab.reload("$env.getWebURL('sys/operationalData/index.htm')");
+                    } else {
+                        if (data.message) {
+                            alertMsg.error(data.message);
+                        } else {
+                            alertMsg.error("操作失败");
+                        }
+                    }
+                }
+            })
+        }
+	
+</script>

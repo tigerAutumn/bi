@@ -1,0 +1,99 @@
+## 积分商城首页
+### 一、首页数据
+#### 1、描述
+pc端顶部导航增加积分商城入口，点击积分商城，调用后台接口
+#### 2、接口
+##### a.接口链接
+{channel}/mall/homeIndex
+> + 微信请求channel为h5
+> + 安卓请求channel为android
+> + 苹果请求channel为ios
+> + 电脑请求channel为pc
+##### b.接口地址
+com.pinting.mall.controller.home.MallHomeController.homeIndex
+#### 3、流程
+##### a.一期
+```
+    判断channel
+        当channel为h5时
+            从cookie中获取userId和mobile
+            执行分享相关的代码
+            返回页面设置为 mall/home/mall_index
+        当channel为android或者ios时
+            从请求request中获取userId和mobile
+            返回页面设置为 mall/home/mall_index_app
+    判断userId
+        当userId不为空时
+            获取用户积分和签到标识
+    获取商品列表
+    返回页面
+```
+
+##### b.二期
+```
+    判断channel
+        当channel为android或者ios时
+            从请求request中获取userId和mobile
+            返回页面设置为 mall/home/mall_index_app
+        否则
+            从cookie中获取userId和mobile
+            判断channel
+                当channle为h5时
+                    执行分享相关的内容
+                    返回页面设置为 mall/home/mall_index
+                当channel为pc时
+                    返回页面设置为 mall2.0/home/mall_index
+    判断userId
+        当userId不为空时
+            获取用户积分和签到标识
+    获取商品列表
+    返回页面
+```
+
+### 二、首页签到
+#### 1、描述
+积分商城首页登录后按钮变为`签到领积分`，点击按钮后调用签到接口
+#### 2、接口
+##### a.接口链接
+{channel}/mall/userSign
+> + 微信请求channel为h5
+> + 安卓请求channel为android
+> + 苹果请求channel为ios
+> + 电脑请求channel为pc
+##### b.接口地址
+com.pinting.mall.controller.home.MallHomeController.userSign
+#### 3、流程
+##### a.一期
+
+```
+    判断channel
+        当channel为h5时
+            从cookie中获取userId
+        当channel为android或者ios时
+            从请求request中获取userId
+    判断userId
+        当userId为空时
+            参数isLogin设置为"NO"
+            返回
+        当userId不为空时
+            参数isLogin设置为"YES"
+            进行签到
+    返回
+```
+##### b.二期
+```
+    判断channel
+        当channel为h5或者pc时
+            从cookie中获取userId
+        当channel为android或者ios时
+            从请求request中获取userId
+    判断userId
+        当userId为空时
+            参数isLogin设置为"NO"
+            返回
+        当userId不为空时
+            参数isLogin设置为"YES"
+            进行签到
+    返回
+```
+

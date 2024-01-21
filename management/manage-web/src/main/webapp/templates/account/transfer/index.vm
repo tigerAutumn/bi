@@ -1,0 +1,121 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!product.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!product.numPerPage" />
+	<input type="hidden" name="orderField" value="$!{param.orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{param.orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" method="post"  rel="pagerForm" action="$env.getWebURL('/account/transfer/index.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" name="pageNum" value="$!product.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!product.numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+			<tbody><tr>
+				<td>
+    				<label>系统状态：</label>
+        			<select class="combox" name="status">
+        				<option value="">请选择</option>
+        				<option value="1" #if($!product.status == 1) selected #end>交易成功</option>
+        				<option value="2" #if($!product.status == 2) selected #end>交易失败</option>
+        				<option value="3" #if($!product.status == 3) selected #end>系统确认中</option>
+        				<option value="4" #if($!product.status == 4) selected #end>银行处理中</option>
+						<option value="5" #if($!product.status == 5) selected #end>通讯超时</option>
+						<option value="9" #if($!product.status == 9) selected #end>状态未知</option>
+        			</select>
+				</td>
+				<td>
+					开始日期：<input type="text" readonly="true" class="date textInput readonly" name="beginTime" id="beginTime" value="$!date.format($!product.beginTime)">
+				</td>
+				<td>
+					结束日期：<input type="text" readonly="true" class="date textInput readonly" name="overTime" id="overTime" value="$!date.format($!product.overTime)">
+				</td>
+				<td>
+					<input type="button" id="search" onclick="func()" value="查询"/>
+                </td>
+			</tr>
+		</tbody></table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+			<tr>
+	            <th width="10%">交易名称</th>
+				<th width="10%">订单号</th>
+				<th width="10%">账务时间</th>
+				<th width="10%">交易金额</th>
+				<th width="5%">借贷标志</th>
+				<th width="10%">结算户账户编号</th>
+				<th width="10%">用户编号</th>
+				<th width="10%">相关账户号</th>
+				<th width="5%">系统状态</th>
+				<th width="5%">对账状态</th>
+				<th width="5%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($product in $accountList)
+			<tr target="sid_user" rel="1">
+                <td>$!product.transName</td>
+				<td>$!product.orderNo</td>
+				<td>$!date.format($!product.transTime)</td>
+				<td>$!product.transAmount</td>
+				<td>#if($!product.cdFlag1 == 1) 借 #else 贷 #end</td>
+				<td>$!product.subAccountId1</td>
+				<td><a target="dialog" href="$!env.getWebURL('/bsuser/detail.htm')?op=none&userId=$!product.userId1" target="ajax" rel="jbsxBox">$!product.userId1 (查看详情)</a></td>
+				<td>$!product.subAccountId2</td>
+				<td>$!message.get("ACCOUNT_JNL_STATUS_$!product.status")</td>
+				<td>#if($!product.isCheck ==1)未对账 #elseif($!product.isCheck ==2)已对账  #end</td>
+				<td>
+				     <a title="详情" target="dialog" href="$env.getWebURL('/account/transfer/detail.htm')?id=$!product.id" class="btnLook" width="1190" height="600">流水详情</a>
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!product.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!product.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!product.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!product.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!product.totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!product.totalRows" numPerPage="$!product.numPerPage" currentPage="$!product.pageNum"></div>
+
+	</div>
+</div>
+<script>
+
+function func(){
+	var beginTime = $("#beginTime").val();
+	var overTime = $("#overTime").val();
+	
+	if(beginTime != "" && overTime == ""){
+		alert("请输入结束时间！");
+		return false;
+	}
+	
+	if(beginTime == "" && overTime != ""){
+		alert("请输入开始时间！");
+		return false;
+	}
+	
+	if(beginTime != "" && overTime != ""){
+		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	$("#myform").submit();
+}
+
+</script>

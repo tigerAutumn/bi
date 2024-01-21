@@ -1,0 +1,29 @@
+﻿# 奖励金查询投资金额显示 
+## 1.项目背景
+### 管理台优化
+
++ 当前：金额显示不正确
++ 期望：统计真实的投资本金（含红包金额）
+## 2.业务逻辑
+### 在管理台**客户信息管理-用户奖励金查询**菜单中，查询出来的投资金额不包含红包金额，需要修改查询sql，使查询出来的投资金额含红包金额
+## 3.代码变动
+### `BsDailyBonusMapper.xml` 中的 `bsDailyBonusPage` 语句
++ 现在**投资金额**查询的是bs_sub_account表的balance字段，有误。应修改为open_balance字段
+
++ 要查询出**红包金额**，联表方式为
+```
+bs_sub_account i 
+LEFT JOIN bs_sub_account_pair pr ON pr.auth_account_id = i.id 
+LEFT JOIN bs_sub_account red ON red.id = pr.red_account_id
+```
+
++ 加总**投资金额**
+``` 
+i.open_balance + IFNULL(red.open_balance,0) as balance 
+```
+
+
+
+
+
+

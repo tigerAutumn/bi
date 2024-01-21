@@ -1,0 +1,426 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+
+<div class="pageHeader" style="overflow:visible;">
+	<form rel="pagerForm" style="overflow:visible;" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" method="post" action="$env.getWebURL('/financialIntention/financialIntentionIndex.htm?isSelect=y')">
+		<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!req.pageNum" />
+		<input type="hidden" name="totalRows" value="$!req.totalRows" />
+		
+		<input type="hidden" id="dafyUserId" value="$!dafyUserId" />
+		<input type="hidden" id="dafyUserName" value="$!dafyUserName" />
+		<input type="hidden" id="dafyDeptId" value="$!dafyDeptId" />
+		<input type="hidden" id="dafyDeptName" value="$!dafyDeptName" />
+		<input type="hidden" id="isDafyUser" value="$!isDafyUser" />
+		<input type="hidden" id="deptStatus" value="$!deptStatus" />
+		<input type="hidden" id="userStatus" value="$!userStatus" />
+		<input type="hidden" id="productType" name="productType" value="$!productType"/>
+    	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+                    <td>
+						#if($!productType == 'NORMAL')
+							<button id="NORMAL" type="button"style="margin-right: 30px;background-color:#5cb85c;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">普通产品业务</button>
+    					#else
+    						<button id="NORMAL" type="button"style="margin-right: 30px;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">普通产品业务</button>
+    					#end
+					</td>
+					<td>
+						#if($!productType == 'ZAN')
+							<button id="ZAN" type="button"style="margin-right: 30px;background-color:#5cb85c;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">分期产品业务</button>
+    					#else
+    						<button id="ZAN" type="button"style="margin-right: 30px;color:#000;cursor: pointer;border: 0;padding-left: 10px;padding-right: 10px;padding-top: 5px;padding-bottom: 5px;">分期产品业务</button>
+    					#end
+					</td>
+                </tr>
+                <tr><td></td><td></td></tr>
+			</table>
+    		<table class="searchContent">
+    			<tr>
+    				<td style="position:relative;">
+    					<label >
+    						营业部：
+                        </label>
+    					<input id="deptName" type="text" name="deptName" maxlength="20" value="$!req.deptName" class="clear" autocomplete="off" onkeyup="selectDept(this)"/>
+						<input type="hidden" id="selectDeptId" name="selectDeptId" value="$!selectDeptId"/>
+    				</td>
+    				<td>
+    					<label >
+    						客户经理：
+                        </label>
+						<select id="managerName" name="managerName" style="width:145px;">
+							<option value="-1">&nbsp;</option>
+							#foreach($user in $userList)
+								<option value="$!user.luserid">$!user.strname$!user.strmobile</option>
+							#end
+                        </select>
+						<input type="hidden" id="selectUserId" value="$!req.managerName"/>
+    				</td>
+    				<td>
+    					<label >
+    						理财人姓名：
+                        </label>
+    					<input id="userName" type="text" name="userName" maxlength="20" value="$!req.userName" class="clear trim"/>
+    				</td>
+    				<td>
+    					<label >
+    						手机号：
+                        </label>
+    					<input id="mobile" type="text" name="mobile" maxlength="20" value="$!req.mobile" class="clear" onkeyup="onlyInteger(this)"/>
+    				</td>
+				</tr>
+    			<tr>
+    				<td>
+    					<label >
+    						身份证号：
+                        </label>
+    					<input id="idCard" type="text" name="idCard" maxlength="20" value="$!req.idCard" class="clear trim"/>
+    				</td>
+    				<td>
+    					<label >
+    						产品名称：
+                        </label>
+    					<input id="productName" type="text" name="productName" maxlength="20" value="$!req.productName" class="clear trim"/>
+    				</td>
+    				<td>
+    					<label >
+    						理财意向状态：
+                        </label>
+    					<select name="status">
+                            <option value="">全部</option>
+    						<option value="2" #if($!req.status == 2) selected #end>投资中</option>
+    						<option value="7" #if($!req.status == 7) selected #end>回款中</option>
+    						<option value="5" #if($!req.status == 5) selected #end>已完成</option>
+                        </select>
+    				</td>
+    			</tr>
+                <tr>
+    				<td >
+    					<label >
+    						申请时间：
+                        </label>
+    					<input name="applyTimeStart" type="text" id="applyTimeStart" class=" date textInput readonly" readonly="true" value="$!req.applyTimeStart" dateFmt="yyyy-MM-dd HH:mm:ss" />
+    				</td >
+    				<td>至  &nbsp;&nbsp;&nbsp;&nbsp;
+    					<input name="applyTimeEnd" type="text" id="applyTimeEnd" class=" date textInput readonly" readonly="true" value="$!req.applyTimeEnd" dateFmt="yyyy-MM-dd HH:mm:ss"/>
+    				</td>
+    				<td >
+    					<label >
+    						计息开始时间：
+                        </label>
+    					<input name="interestBeginDateStart" type="text" id="interestBeginDateStart" class=" date textInput readonly" readonly="true" value="$!req.interestBeginDateStart" dateFmt="yyyy-MM-dd"/>
+    				</td >
+    				<td>至  &nbsp;&nbsp;&nbsp;&nbsp;
+    					<input name="interestBeginDateEnd" type="text" id="interestBeginDateEnd" class=" date textInput readonly" readonly="true" value="$!req.interestBeginDateEnd" dateFmt="yyyy-MM-dd"/>
+    				</td>
+    			</tr>
+    			<tr>
+    				<td >
+    					<label >
+    						实际赎回时间：
+                        </label>
+    					<input name="paymentDateStart" type="text" id="paymentDateStart" class=" date textInput readonly" readonly="true" value="$!req.paymentDateStart" dateFmt="yyyy-MM-dd"/>
+    				</td >
+    				<td>至  &nbsp;&nbsp;&nbsp;&nbsp;
+    					<input name="paymentDateEnd" type="text" id="paymentDateEnd" class=" date textInput readonly" readonly="true" value="$!req.paymentDateEnd" dateFmt="yyyy-MM-dd"/>
+    				</td>
+    				<td>
+    					<button  onclick="func('/financialIntention/financialIntentionIndex.htm?isSelect=y','select')" type="button">查询</button>
+						<button  onclick="func('/financialIntention/financialIntentionExport.htm','export')" type="button">导出Excel</button>
+    				</td>
+    			</tr>
+    		</table>
+    	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1700" layoutH="220">
+		<thead>
+			<tr>
+				<th width="4%">理财人姓名</th>
+				<th width="6%">手机号</th>
+				<th width="8%">身份证</th>
+				<th width="8%">产品名称</th>
+				<th width="4%">客户经理</th>
+				<th width="8%">营业部</th>
+				<th width="4%">理财意向状态</th>
+				<th width="5%">预期年化利率</th>
+				<th width="3%">红包抵扣</th>
+				<th width="3%">奖励利率</th>
+				<th width="3%">理财周期</th>
+				<th width="3%">理财金额</th>
+				<th width="4%">充值金额</th>
+				<th width="3%">当前收益</th>
+				<th width="6%">申请时间</th>
+				<th width="6%">购买成功时间</th>
+				<th width="5%">计息开始时间</th>
+				<th width="5%">实际赎回时间</th>
+				<th width="12%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($data in $dataGrid)
+			<tr>
+				<td>$!data.userName</td>
+				<td>$!string.substringBefore($!data.mobile, $!string.right($!data.mobile, 4))****</td>
+				<td>
+					****
+					$!string.substringAfter($!string.substringBefore($!data.idCard, $!string.right($!data.idCard, 4)), $!string.left($!data.idCard, 4))
+					****
+				</td>
+				<td>$!data.productName</td>
+				<td>$!data.managerName</td>
+				<td>$!data.deptName</td>
+				<td>
+					#if($!data.status == 2)
+						<span color='blue'>投资中</span>
+					#elseif($!data.status == 5)
+						<span color='green'>已完成</span>
+					#elseif($!data.status == 7)
+						<span color='red'>回款中</span>
+					#end
+				</td>
+				<td>$!money.format($!data.baseRate)</td>
+				<td>$!money.format($!data.subtract)</td>
+				<td>0.00</td>
+				<td>
+					#if(0 > $!data.term)
+						$!math.abs($!data.term)
+					#elseif($!data.term == 12)
+						365
+					#else
+						#set($termDate=$!data.term*30)
+						$!termDate
+					#end
+					天
+				</td>
+				<td>$!money.format($!data.balance)</td>
+				<td>$!money.format($!data.rechargeAmount)</td>
+				<td>$!money.format($!data.accumulationInerest)</td>
+				<td>$!date.format($!data.applyTime)</td>
+				<td>$!date.format($!data.successTime)</td>
+				<td>$!date.formatYYYYMMDD($!data.interestBeginDate)</td>
+				<td>$!date.formatYYYYMMDD($!data.paymentDate)</td>
+				<td>				
+				<a href="$env.getWebURL('/financialIntention/userInvestDetail.htm?subAccountId=')$!data.subAccountId"  target="dialog" mask="true" height="720" width="960" style="text-decoration: underline;">
+					查看收益
+				</a>&nbsp
+				<a href="$env.getWebURL('/financialIntention/rechargeRecord.htm?subAccountId=')$!data.subAccountId"  target="dialog" mask="true" height="720" width="1000" style="text-decoration: underline;">
+					查看充值记录
+				</a>&nbsp
+				<a href="$env.getWebURL('/statistics/buyMessage/userMatch.htm?subAccountId=')$!data.subAccountId" target="dialog" mask="true" height="720" width="960" style="text-decoration: underline;">
+					匹配关系
+				</a>
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!req.totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!req.totalRows" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+	</div>
+</div>
+<script>
+$("#NORMAL").click(function(){
+		navTab.reload("$env.getWebURL('/financialIntention/financialIntentionIndex.htm?productType=NORMAL')");
+	});
+	
+$("#ZAN").click(function(){
+		navTab.reload("$env.getWebURL('/financialIntention/financialIntentionIndex.htm?productType=ZAN')");
+	});
+
+$(function(){
+	var isDafyUser = $("#isDafyUser").val();
+	var deptStatus = $("#deptStatus").val();
+	var userStatus = $("#userStatus").val();
+	var dafyDeptId = $("#dafyDeptId").val();
+	var dafyDeptName = $("#dafyDeptName").val();
+	var dafyUserId = $("#dafyUserId").val();
+	if(isDafyUser == "yes") {
+		if(deptStatus == "disable") {
+			$("#selectDeptId").val(dafyDeptId);
+			$("#deptName").val(dafyDeptName);
+			$("#deptName").attr("readonly","readonly");
+		}
+		if(userStatus == "disable") {
+			$("#managerName").val(dafyUserId);
+			$("#managerName option[value='-1']").remove();
+		}
+		else {
+			var selectUserId = $("#selectUserId").val();
+			if(selectUserId) {
+				if($("#managerName option").size() == 2) {
+					$("#managerName option[value='-1']").remove();
+				}
+				$("#managerName").val(selectUserId);
+			}
+			else {
+				$("#managerName").val("-1");
+			}
+		}
+		
+	}
+	else {
+		$("#deptName").attr("readonly","readonly");
+		$("#managerName").attr("disabled","disabled");
+	}
+	
+	$('.trim').keyup(function(){
+    	$(this).val(this.value.replace(/^ +| +$/g,''));
+    });
+	
+	$(document).click(function(){
+		if(!$(this).is("#show_all_policy_div")) {
+			$("#show_all_policy_div").remove();
+		}
+	});
+	
+});
+
+function selectDept(obj) {
+	$(obj).val(obj.value.replace(/^ +| +$/g,''));
+	var value = $(obj).val();
+	
+	if(value) {
+		$("#selectDeptId").val("-1");
+	}
+	else {
+		$("#selectDeptId").val("");
+	}
+	$("#managerName option").remove();
+	var html = "<option value='-1'>&nbsp;</option>";
+	$("#managerName").append(html);
+	
+	var codeReg = /^[A-Za-z0-9]{2,}$/;
+	var nameReg = /^[\u4e00-\u9fa5（）()、]{4,}$/;
+	if(codeReg.test(value) || nameReg.test(value)) {
+		var url = $("#APP_ROOT_PATH").val() + "/financialIntention/selectDeptByParam.htm";
+    	jQuery.ajax({
+    		type : "post",
+    		url : url,
+			async : false,
+    		data : {"param":value},
+    		success : function(data) {
+				if(data.deptList.length>0){
+					if($("#show_all_policy_div")) {
+						$("#show_all_policy_div").remove();
+					}
+					var showHtml ='<div id="show_all_policy_div" style="border: 1px solid #aaa;line-height: 25px;position: absolute;top: 25px;left: 90px;cursor:pointer;width: auto;height:250px;overflow-x:hidden;;overflow-y:auto;background-color: #fff;padding: 6px;z-index: 100;">';
+					for(var i=0;i<data.deptList.length;i++){
+						showHtml = showHtml + '<div onclick="choose('+data.deptList[i].lid+',\''+data.deptList[i].strdeptname+'\')" style="font-size: 14px;padding:5px;">'+data.deptList[i].strdeptcode+'-'+data.deptList[i].strdeptname+'</div>';
+					}
+					showHtml = showHtml + '</div>';
+        			$('#deptName').after(showHtml);
+				} else {
+					$("#show_all_policy_div").remove();
+				}
+    		}
+    	});
+	}
+	else {
+		$("#show_all_policy_div").remove();
+	}
+}
+
+function choose(dafyDeptId,dafyDeptName) {
+	$("#selectDeptId").val(dafyDeptId);
+	$("#deptName").val(dafyDeptName);
+	$("#show_all_policy_div").remove();
+	
+	var url = $("#APP_ROOT_PATH").val() + "/financialIntention/selectUserByDeptId.htm";
+	$.post(url,{"deptId":dafyDeptId},function(data){
+		$("#managerName option").remove();
+		var html = "";
+		if(data.userList.length > 1) {
+			html += "<option value='-1'>&nbsp;</option>";
+		}
+		for(var i=0;i<data.userList.length;i++) {
+			var obj = data.userList[i];
+			html += "<option value='"+obj.luserid+"'>"+obj.strname+obj.strmobile+"</option>";
+		}
+		$("#managerName").append(html);
+	},"json");
+}
+
+function onlyInteger(input_obj) {
+	input_obj.value = input_obj.value.replace(/\D/g, '');
+}
+
+function func(url,type){
+	var isDafyUser = $("#isDafyUser").val();
+	if(isDafyUser != "yes") {
+		alertMsg.warn("当前用户没有权限进行此操作！");
+		return;
+	}
+	var applyTimeStart = $("#applyTimeStart").val();
+	var applyTimeEnd = $("#applyTimeEnd").val();
+	if(!applyTimeStart && applyTimeEnd) {
+		alertMsg.warn("申请开始时间不能为空！");
+		return;
+	}
+	if(applyTimeStart && !applyTimeEnd) {
+		alertMsg.warn("申请结束时间不能为空！");
+		return;
+	}
+    var result = Date.parse(applyTimeEnd.replace(/-/g,"/"))- Date.parse(applyTimeStart.replace(/-/g,"/"));
+	if(result < 0){
+		alertMsg.warn("申请开始时间不能在申请结束时间之后！");
+		return;
+	}
+	
+	var interestBeginDateStart = $("#interestBeginDateStart").val();
+	var interestBeginDateEnd = $("#interestBeginDateEnd").val();
+	if(!interestBeginDateStart && interestBeginDateEnd) {
+		alertMsg.warn("计息开始时间不能为空！");
+		return;
+	}
+	if(interestBeginDateStart && !interestBeginDateEnd) {
+		alertMsg.warn("计息结束时间不能为空！");
+		return;
+	}
+    var result = Date.parse(interestBeginDateEnd.replace(/-/g,"/"))- Date.parse(interestBeginDateStart.replace(/-/g,"/"));
+	if(result < 0){
+		alertMsg.warn("计息开始时间不能在计息结束时间之后！");
+		return;
+	}
+	
+	
+	var paymentDateStart = $("#paymentDateStart").val();
+	var paymentDateEnd = $("#paymentDateEnd").val();
+	if(!paymentDateStart && paymentDateEnd) {
+		alertMsg.warn("实际赎回开始时间不能为空！");
+		return;
+	}
+	if(paymentDateStart && !paymentDateEnd) {
+		alertMsg.warn("实际赎回结束时间不能为空！");
+		return;
+	}
+    var result = Date.parse(paymentDateEnd.replace(/-/g,"/"))- Date.parse(paymentDateStart.replace(/-/g,"/"));
+	if(result < 0){
+		alertMsg.warn("实际赎回开始时间不能在实际赎回结束时间之后！");
+		return;
+	}
+	var url = $("#APP_ROOT_PATH").val() + url;
+	$("#myform").attr("action",url);
+	if(type == "select") {
+		$("#myform").attr("onsubmit","return navTabSearch(this);");
+	}
+	else {
+		$("#myform").attr("onsubmit","");
+	}
+	$("#myform").submit();
+}
+</script>

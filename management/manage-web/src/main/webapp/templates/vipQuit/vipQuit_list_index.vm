@@ -1,0 +1,172 @@
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="pageHeader">
+    <form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/vipQuit/vipQuitListIndex.htm')" onsubmit="return navTabSearch(this);">
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="pageNum" value="$!pageNum" />
+        <input type="hidden" name="numPerPage" value="$!numPerPage" />
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        <label >姓名：</label>
+                        <select id="userId" >
+                            #foreach($zanUser in $!zanUserList)
+                                <option value="$!zanUser.id" #if($!req.userId == $!zanUser.id) selected #end >$!zanUser.userName</option>
+                            #end
+                        </select>
+                    </td>
+                    <td>
+                        <label >退出金额：</label>
+                        <input  id="amount" type="text" name="amount" maxlength="12"/>
+                    </td>
+
+                    <td>
+                        <button  onclick="zanVipQuit()" type="button">申请退出</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <button onclick="func()" type="button" style="background-color:#666666; display:none;"></button>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li>
+				<span style="margin-left:10px;">
+    				<font color="red">站岗户余额：#if(!$!zanVipAuthAmount)0.00 #else $!money.format($!zanVipAuthAmount) #end 元</font>
+                </span>
+            </li>
+        </ul>
+    </div>
+    <table class="table" width="1396" layoutH="145">
+        <thead>
+        <tr>
+            <th width="15%">姓名</th>
+            <th width="10%">退出金额</th>
+            <th width="10%">申请时间</th>
+            <th width="10%">审核时间</th>
+            <th width="10%">退出时间</th>
+            <th width="10%">操作人</th>
+            <th width="10%">审核人</th>
+            <th width="5%">状态</th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach($grid in $vipQuitList)
+            <tr target="sid_user" rel="1" >
+                <td>$!grid.userName</td>
+                <td>$!money.format($!grid.amount)</td>
+                <td>$!date.format($!grid.createTime)</td>
+                <td>$!date.format($!grid.checkTime)</td>
+                <td>$!date.format($!grid.quitTime)</td>
+                <td>$!grid.quitUserName</td>
+                <td>$!grid.checkUserName</td>
+                <td>
+                    #if($!grid.status == "INIT")
+                        待审核
+                    #elseif($!grid.status == "PASS")
+                        待退出
+                    #elseif($!grid.status == "REFU")
+                        不通过
+                    #elseif($!grid.status == "QUIT_SUCC")
+                        退出成功
+                    #elseif($!grid.status == "QUIT_FAIL")
+                        退出失败
+                    #end
+                </td>
+            </tr>
+            #end
+        </tbody>
+
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+                <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!totalRows条</span>
+        </div>
+
+        <div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+    </div>
+</div>
+
+<script>
+    function func(){
+        var url = $("#APP_ROOT_PATH").val() + "/vipQuit/vipQuitListIndex.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+
+    function funcOther(userId){
+        var url = $("#APP_ROOT_PATH").val() + "/vipQuit/vipQuitListIndex.htm?userId="+userId;
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+
+    $("#userId").on('change', function() {
+        var zanUserId_value = parseInt($.trim($('#userId').val()));//拿到选中项的值
+
+        var url = $("#APP_ROOT_PATH").val() + "/vipQuit/vipQuitListIndex.htm?userId=" + zanUserId_value;
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    });
+
+    //申请退出
+    function zanVipQuit() {
+        var amount = $.trim($("#amount").val());
+        regAmount = /^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$/;
+
+        //代偿人
+        var zanUserId_value = $.trim($('#userId').val());//拿到选中项的值
+
+        if(zanUserId_value == "" || zanUserId_value == null) {
+            alertMsg.warn("请选择代偿人姓名！");
+            return false;
+        }
+
+        if((amount == null || amount == "")){
+            alertMsg.warn("请输入退出金额！");
+            return false;
+        }
+        if(amount == 0) {
+            alertMsg.warn("退出金额必须大于0！");
+            return false;
+        }
+
+        if(!regAmount.test(amount)) {
+            alertMsg.warn("提现金额必须是正整数或者小数点后保留两位！");
+            return false;
+        }
+
+        var root = $('#APP_ROOT_PATH').val();
+        $.post(root+"/vipQuit/applyForExit.htm",{"userId":zanUserId_value,"amount":amount},function(data){
+            if(data.statusCode == "200") {
+                alertMsg.correct("申请成功！");
+                funcOther(data.message)
+            }else {
+                alertMsg.warn("申请失败！");;
+            }
+        },"json");
+
+    }
+
+</script>

@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.mall.dao.MallPointsRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.mall.model.MallPointsRule" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="get_scene" property="getScene" jdbcType="VARCHAR" />
+    <result column="get_times" property="getTimes" jdbcType="VARCHAR" />
+    <result column="get_time_type" property="getTimeType" jdbcType="VARCHAR" />
+    <result column="points" property="points" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="trigger_time_start" property="triggerTimeStart" jdbcType="TIMESTAMP" />
+    <result column="trigger_time_end" property="triggerTimeEnd" jdbcType="TIMESTAMP" />
+    <result column="creator" property="creator" jdbcType="INTEGER" />
+    <result column="last_operator" property="lastOperator" jdbcType="INTEGER" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, get_scene, get_times, get_time_type, points, status, trigger_time_start, trigger_time_end, 
+    creator, last_operator, note, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.mall.model.MallPointsRuleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from mall_points_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from mall_points_rule
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from mall_points_rule
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.mall.model.MallPointsRuleExample" >
+    delete from mall_points_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.mall.model.MallPointsRule" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mall_points_rule (id, get_scene, get_times, 
+      get_time_type, points, status, 
+      trigger_time_start, trigger_time_end, creator, 
+      last_operator, note, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{getScene,jdbcType=VARCHAR}, #{getTimes,jdbcType=VARCHAR}, 
+      #{getTimeType,jdbcType=VARCHAR}, #{points,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, 
+      #{triggerTimeStart,jdbcType=TIMESTAMP}, #{triggerTimeEnd,jdbcType=TIMESTAMP}, #{creator,jdbcType=INTEGER}, 
+      #{lastOperator,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.mall.model.MallPointsRule" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mall_points_rule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="getScene != null" >
+        get_scene,
+      </if>
+      <if test="getTimes != null" >
+        get_times,
+      </if>
+      <if test="getTimeType != null" >
+        get_time_type,
+      </if>
+      <if test="points != null" >
+        points,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="triggerTimeStart != null" >
+        trigger_time_start,
+      </if>
+      <if test="triggerTimeEnd != null" >
+        trigger_time_end,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="lastOperator != null" >
+        last_operator,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="getScene != null" >
+        #{getScene,jdbcType=VARCHAR},
+      </if>
+      <if test="getTimes != null" >
+        #{getTimes,jdbcType=VARCHAR},
+      </if>
+      <if test="getTimeType != null" >
+        #{getTimeType,jdbcType=VARCHAR},
+      </if>
+      <if test="points != null" >
+        #{points,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerTimeStart != null" >
+        #{triggerTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="triggerTimeEnd != null" >
+        #{triggerTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="lastOperator != null" >
+        #{lastOperator,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.mall.model.MallPointsRuleExample" resultType="java.lang.Integer" >
+    select count(*) from mall_points_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update mall_points_rule
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.getScene != null" >
+        get_scene = #{record.getScene,jdbcType=VARCHAR},
+      </if>
+      <if test="record.getTimes != null" >
+        get_times = #{record.getTimes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.getTimeType != null" >
+        get_time_type = #{record.getTimeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.points != null" >
+        points = #{record.points,jdbcType=BIGINT},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.triggerTimeStart != null" >
+        trigger_time_start = #{record.triggerTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.triggerTimeEnd != null" >
+        trigger_time_end = #{record.triggerTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=INTEGER},
+      </if>
+      <if test="record.lastOperator != null" >
+        last_operator = #{record.lastOperator,jdbcType=INTEGER},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update mall_points_rule
+    set id = #{record.id,jdbcType=INTEGER},
+      get_scene = #{record.getScene,jdbcType=VARCHAR},
+      get_times = #{record.getTimes,jdbcType=VARCHAR},
+      get_time_type = #{record.getTimeType,jdbcType=VARCHAR},
+      points = #{record.points,jdbcType=BIGINT},
+      status = #{record.status,jdbcType=VARCHAR},
+      trigger_time_start = #{record.triggerTimeStart,jdbcType=TIMESTAMP},
+      trigger_time_end = #{record.triggerTimeEnd,jdbcType=TIMESTAMP},
+      creator = #{record.creator,jdbcType=INTEGER},
+      last_operator = #{record.lastOperator,jdbcType=INTEGER},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.mall.model.MallPointsRule" >
+    update mall_points_rule
+    <set >
+      <if test="getScene != null" >
+        get_scene = #{getScene,jdbcType=VARCHAR},
+      </if>
+      <if test="getTimes != null" >
+        get_times = #{getTimes,jdbcType=VARCHAR},
+      </if>
+      <if test="getTimeType != null" >
+        get_time_type = #{getTimeType,jdbcType=VARCHAR},
+      </if>
+      <if test="points != null" >
+        points = #{points,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerTimeStart != null" >
+        trigger_time_start = #{triggerTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="triggerTimeEnd != null" >
+        trigger_time_end = #{triggerTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="lastOperator != null" >
+        last_operator = #{lastOperator,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.mall.model.MallPointsRule" >
+    update mall_points_rule
+    set get_scene = #{getScene,jdbcType=VARCHAR},
+      get_times = #{getTimes,jdbcType=VARCHAR},
+      get_time_type = #{getTimeType,jdbcType=VARCHAR},
+      points = #{points,jdbcType=BIGINT},
+      status = #{status,jdbcType=VARCHAR},
+      trigger_time_start = #{triggerTimeStart,jdbcType=TIMESTAMP},
+      trigger_time_end = #{triggerTimeEnd,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=INTEGER},
+      last_operator = #{lastOperator,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByStatus" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+	select a.*
+	from mall_points_rule a
+	<where> 
+		<if test="status != null and status != '' ">
+	     	and status = #{status}
+		</if>
+	</where>    
+  </select>
+  
+  <select id="findPointsRuleList" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+	select a.*
+	from mall_points_rule a
+	<where> 
+		<if test="status != null and status != '' ">
+	     	and status != #{status}
+		</if>
+	</where>
+  </select>
+  
+</mapper>

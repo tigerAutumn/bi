@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsDailyStatMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsDailyStat" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="agent_id" property="agentId" jdbcType="INTEGER" />
+    <result column="total_regist_user" property="totalRegistUser" jdbcType="INTEGER" />
+    <result column="total_invest_user" property="totalInvestUser" jdbcType="INTEGER" />
+    <result column="total_reinvest_user" property="totalReinvestUser" jdbcType="INTEGER" />
+    <result column="total_invest_amount" property="totalInvestAmount" jdbcType="DOUBLE" />
+    <result column="daily_new_wx_user" property="dailyNewWxUser" jdbcType="INTEGER" />
+    <result column="daily_new_user_invest_times" property="dailyNewUserInvestTimes" jdbcType="INTEGER" />
+    <result column="daily_old_user_invest_times" property="dailyOldUserInvestTimes" jdbcType="INTEGER" />
+    <result column="daily_total_invest_times" property="dailyTotalInvestTimes" jdbcType="INTEGER" />
+    <result column="daily_new_regist_user" property="dailyNewRegistUser" jdbcType="INTEGER" />
+    <result column="daily_new_user_invest_amount" property="dailyNewUserInvestAmount" jdbcType="DOUBLE" />
+    <result column="daily_old_user_invest_amount" property="dailyOldUserInvestAmount" jdbcType="DOUBLE" />
+    <result column="daily_total_invest_amount" property="dailyTotalInvestAmount" jdbcType="DOUBLE" />
+    <result column="daily_new_bind_user" property="dailyNewBindUser" jdbcType="INTEGER" />
+    <result column="daily_new_invest_user" property="dailyNewInvestUser" jdbcType="INTEGER" />
+    <result column="daily_invest_user" property="dailyInvestUser" jdbcType="INTEGER" />
+    <result column="daily_new_user_invest_annual" property="dailyNewUserInvestAnnual" jdbcType="DOUBLE" />
+    <result column="daily_invest_annual" property="dailyInvestAnnual" jdbcType="DOUBLE" />
+    <result column="stat_date" property="statDate" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, agent_id, total_regist_user, total_invest_user, total_reinvest_user, total_invest_amount, 
+    daily_new_wx_user, daily_new_user_invest_times, daily_old_user_invest_times, daily_total_invest_times, 
+    daily_new_regist_user, daily_new_user_invest_amount, daily_old_user_invest_amount, 
+    daily_total_invest_amount, daily_new_bind_user, daily_new_invest_user, daily_invest_user, 
+    daily_new_user_invest_annual, daily_invest_annual, stat_date
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsDailyStatExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_daily_stat
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_daily_stat
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_daily_stat
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsDailyStatExample" >
+    delete from bs_daily_stat
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsDailyStat" >
+    insert into bs_daily_stat (id, agent_id, total_regist_user, 
+      total_invest_user, total_reinvest_user, total_invest_amount, 
+      daily_new_wx_user, daily_new_user_invest_times, 
+      daily_old_user_invest_times, daily_total_invest_times, 
+      daily_new_regist_user, daily_new_user_invest_amount, 
+      daily_old_user_invest_amount, daily_total_invest_amount, 
+      daily_new_bind_user, daily_new_invest_user, daily_invest_user, 
+      daily_new_user_invest_annual, daily_invest_annual, 
+      stat_date)
+    values (#{id,jdbcType=INTEGER}, #{agentId,jdbcType=INTEGER}, #{totalRegistUser,jdbcType=INTEGER}, 
+      #{totalInvestUser,jdbcType=INTEGER}, #{totalReinvestUser,jdbcType=INTEGER}, #{totalInvestAmount,jdbcType=DOUBLE}, 
+      #{dailyNewWxUser,jdbcType=INTEGER}, #{dailyNewUserInvestTimes,jdbcType=INTEGER}, 
+      #{dailyOldUserInvestTimes,jdbcType=INTEGER}, #{dailyTotalInvestTimes,jdbcType=INTEGER}, 
+      #{dailyNewRegistUser,jdbcType=INTEGER}, #{dailyNewUserInvestAmount,jdbcType=DOUBLE}, 
+      #{dailyOldUserInvestAmount,jdbcType=DOUBLE}, #{dailyTotalInvestAmount,jdbcType=DOUBLE}, 
+      #{dailyNewBindUser,jdbcType=INTEGER}, #{dailyNewInvestUser,jdbcType=INTEGER}, #{dailyInvestUser,jdbcType=INTEGER}, 
+      #{dailyNewUserInvestAnnual,jdbcType=DOUBLE}, #{dailyInvestAnnual,jdbcType=DOUBLE}, 
+      #{statDate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsDailyStat" >
+    insert into bs_daily_stat
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="agentId != null" >
+        agent_id,
+      </if>
+      <if test="totalRegistUser != null" >
+        total_regist_user,
+      </if>
+      <if test="totalInvestUser != null" >
+        total_invest_user,
+      </if>
+      <if test="totalReinvestUser != null" >
+        total_reinvest_user,
+      </if>
+      <if test="totalInvestAmount != null" >
+        total_invest_amount,
+      </if>
+      <if test="dailyNewWxUser != null" >
+        daily_new_wx_user,
+      </if>
+      <if test="dailyNewUserInvestTimes != null" >
+        daily_new_user_invest_times,
+      </if>
+      <if test="dailyOldUserInvestTimes != null" >
+        daily_old_user_invest_times,
+      </if>
+      <if test="dailyTotalInvestTimes != null" >
+        daily_total_invest_times,
+      </if>
+      <if test="dailyNewRegistUser != null" >
+        daily_new_regist_user,
+      </if>
+      <if test="dailyNewUserInvestAmount != null" >
+        daily_new_user_invest_amount,
+      </if>
+      <if test="dailyOldUserInvestAmount != null" >
+        daily_old_user_invest_amount,
+      </if>
+      <if test="dailyTotalInvestAmount != null" >
+        daily_total_invest_amount,
+      </if>
+      <if test="dailyNewBindUser != null" >
+        daily_new_bind_user,
+      </if>
+      <if test="dailyNewInvestUser != null" >
+        daily_new_invest_user,
+      </if>
+      <if test="dailyInvestUser != null" >
+        daily_invest_user,
+      </if>
+      <if test="dailyNewUserInvestAnnual != null" >
+        daily_new_user_invest_annual,
+      </if>
+      <if test="dailyInvestAnnual != null" >
+        daily_invest_annual,
+      </if>
+      <if test="statDate != null" >
+        stat_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="agentId != null" >
+        #{agentId,jdbcType=INTEGER},
+      </if>
+      <if test="totalRegistUser != null" >
+        #{totalRegistUser,jdbcType=INTEGER},
+      </if>
+      <if test="totalInvestUser != null" >
+        #{totalInvestUser,jdbcType=INTEGER},
+      </if>
+      <if test="totalReinvestUser != null" >
+        #{totalReinvestUser,jdbcType=INTEGER},
+      </if>
+      <if test="totalInvestAmount != null" >
+        #{totalInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="dailyNewWxUser != null" >
+        #{dailyNewWxUser,jdbcType=INTEGER},
+      </if>
+      <if test="dailyNewUserInvestTimes != null" >
+        #{dailyNewUserInvestTimes,jdbcType=INTEGER},
+      </if>
+      <if test="dailyOldUserInvestTimes != null" >
+        #{dailyOldUserInvestTimes,jdbcType=INTEGER},
+      </if>
+      <if test="dailyTotalInvestTimes != null" >
+        #{dailyTotalInvestTimes,jdbcType=INTEGER},
+      </if>
+      <if test="dailyNewRegistUser != null" >
+        #{dailyNewRegistUser,jdbcType=INTEGER},
+      </if>
+      <if test="dailyNewUserInvestAmount != null" >
+        #{dailyNewUserInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="dailyOldUserInvestAmount != null" >
+        #{dailyOldUserInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="dailyTotalInvestAmount != null" >
+        #{dailyTotalInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="dailyNewBindUser != null" >
+        #{dailyNewBindUser,jdbcType=INTEGER},
+      </if>
+      <if test="dailyNewInvestUser != null" >
+        #{dailyNewInvestUser,jdbcType=INTEGER},
+      </if>
+      <if test="dailyInvestUser != null" >
+        #{dailyInvestUser,jdbcType=INTEGER},
+      </if>
+      <if test="dailyNewUserInvestAnnual != null" >
+        #{dailyNewUserInvestAnnual,jdbcType=DOUBLE},
+      </if>
+      <if test="dailyInvestAnnual != null" >
+        #{dailyInvestAnnual,jdbcType=DOUBLE},
+      </if>
+      <if test="statDate != null" >
+        #{statDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsDailyStatExample" resultType="java.lang.Integer" >
+    select count(*) from bs_daily_stat
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_daily_stat
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.agentId != null" >
+        agent_id = #{record.agentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalRegistUser != null" >
+        total_regist_user = #{record.totalRegistUser,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalInvestUser != null" >
+        total_invest_user = #{record.totalInvestUser,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalReinvestUser != null" >
+        total_reinvest_user = #{record.totalReinvestUser,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalInvestAmount != null" >
+        total_invest_amount = #{record.totalInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.dailyNewWxUser != null" >
+        daily_new_wx_user = #{record.dailyNewWxUser,jdbcType=INTEGER},
+      </if>
+      <if test="record.dailyNewUserInvestTimes != null" >
+        daily_new_user_invest_times = #{record.dailyNewUserInvestTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.dailyOldUserInvestTimes != null" >
+        daily_old_user_invest_times = #{record.dailyOldUserInvestTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.dailyTotalInvestTimes != null" >
+        daily_total_invest_times = #{record.dailyTotalInvestTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.dailyNewRegistUser != null" >
+        daily_new_regist_user = #{record.dailyNewRegistUser,jdbcType=INTEGER},
+      </if>
+      <if test="record.dailyNewUserInvestAmount != null" >
+        daily_new_user_invest_amount = #{record.dailyNewUserInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.dailyOldUserInvestAmount != null" >
+        daily_old_user_invest_amount = #{record.dailyOldUserInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.dailyTotalInvestAmount != null" >
+        daily_total_invest_amount = #{record.dailyTotalInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.dailyNewBindUser != null" >
+        daily_new_bind_user = #{record.dailyNewBindUser,jdbcType=INTEGER},
+      </if>
+      <if test="record.dailyNewInvestUser != null" >
+        daily_new_invest_user = #{record.dailyNewInvestUser,jdbcType=INTEGER},
+      </if>
+      <if test="record.dailyInvestUser != null" >
+        daily_invest_user = #{record.dailyInvestUser,jdbcType=INTEGER},
+      </if>
+      <if test="record.dailyNewUserInvestAnnual != null" >
+        daily_new_user_invest_annual = #{record.dailyNewUserInvestAnnual,jdbcType=DOUBLE},
+      </if>
+      <if test="record.dailyInvestAnnual != null" >
+        daily_invest_annual = #{record.dailyInvestAnnual,jdbcType=DOUBLE},
+      </if>
+      <if test="record.statDate != null" >
+        stat_date = #{record.statDate,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_daily_stat
+    set id = #{record.id,jdbcType=INTEGER},
+      agent_id = #{record.agentId,jdbcType=INTEGER},
+      total_regist_user = #{record.totalRegistUser,jdbcType=INTEGER},
+      total_invest_user = #{record.totalInvestUser,jdbcType=INTEGER},
+      total_reinvest_user = #{record.totalReinvestUser,jdbcType=INTEGER},
+      total_invest_amount = #{record.totalInvestAmount,jdbcType=DOUBLE},
+      daily_new_wx_user = #{record.dailyNewWxUser,jdbcType=INTEGER},
+      daily_new_user_invest_times = #{record.dailyNewUserInvestTimes,jdbcType=INTEGER},
+      daily_old_user_invest_times = #{record.dailyOldUserInvestTimes,jdbcType=INTEGER},
+      daily_total_invest_times = #{record.dailyTotalInvestTimes,jdbcType=INTEGER},
+      daily_new_regist_user = #{record.dailyNewRegistUser,jdbcType=INTEGER},
+      daily_new_user_invest_amount = #{record.dailyNewUserInvestAmount,jdbcType=DOUBLE},
+      daily_old_user_invest_amount = #{record.dailyOldUserInvestAmount,jdbcType=DOUBLE},
+      daily_total_invest_amount = #{record.dailyTotalInvestAmount,jdbcType=DOUBLE},
+      daily_new_bind_user = #{record.dailyNewBindUser,jdbcType=INTEGER},
+      daily_new_invest_user = #{record.dailyNewInvestUser,jdbcType=INTEGER},
+      daily_invest_user = #{record.dailyInvestUser,jdbcType=INTEGER},
+      daily_new_user_invest_annual = #{record.dailyNewUserInvestAnnual,jdbcType=DOUBLE},
+      daily_invest_annual = #{record.dailyInvestAnnual,jdbcType=DOUBLE},
+      stat_date = #{record.statDate,jdbcType=DATE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsDailyStat" >
+    update bs_daily_stat
+    <set >
+      <if test="agentId != null" >
+        agent_id = #{agentId,jdbcType=INTEGER},
+      </if>
+      <if test="totalRegistUser != null" >
+        total_regist_user = #{totalRegistUser,jdbcType=INTEGER},
+      </if>
+      <if test="totalInvestUser != null" >
+        total_invest_user = #{totalInvestUser,jdbcType=INTEGER},
+      </if>
+      <if test="totalReinvestUser != null" >
+        total_reinvest_user = #{totalReinvestUser,jdbcType=INTEGER},
+      </if>
+      <if test="totalInvestAmount != null" >
+        total_invest_amount = #{totalInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="dailyNewWxUser != null" >
+        daily_new_wx_user = #{dailyNewWxUser,jdbcType=INTEGER},
+      </if>
+      <if test="dailyNewUserInvestTimes != null" >
+        daily_new_user_invest_times = #{dailyNewUserInvestTimes,jdbcType=INTEGER},
+      </if>
+      <if test="dailyOldUserInvestTimes != null" >
+        daily_old_user_invest_times = #{dailyOldUserInvestTimes,jdbcType=INTEGER},
+      </if>
+      <if test="dailyTotalInvestTimes != null" >
+        daily_total_invest_times = #{dailyTotalInvestTimes,jdbcType=INTEGER},
+      </if>
+      <if test="dailyNewRegistUser != null" >
+        daily_new_regist_user = #{dailyNewRegistUser,jdbcType=INTEGER},
+      </if>
+      <if test="dailyNewUserInvestAmount != null" >
+        daily_new_user_invest_amount = #{dailyNewUserInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="dailyOldUserInvestAmount != null" >
+        daily_old_user_invest_amount = #{dailyOldUserInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="dailyTotalInvestAmount != null" >
+        daily_total_invest_amount = #{dailyTotalInvestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="dailyNewBindUser != null" >
+        daily_new_bind_user = #{dailyNewBindUser,jdbcType=INTEGER},
+      </if>
+      <if test="dailyNewInvestUser != null" >
+        daily_new_invest_user = #{dailyNewInvestUser,jdbcType=INTEGER},
+      </if>
+      <if test="dailyInvestUser != null" >
+        daily_invest_user = #{dailyInvestUser,jdbcType=INTEGER},
+      </if>
+      <if test="dailyNewUserInvestAnnual != null" >
+        daily_new_user_invest_annual = #{dailyNewUserInvestAnnual,jdbcType=DOUBLE},
+      </if>
+      <if test="dailyInvestAnnual != null" >
+        daily_invest_annual = #{dailyInvestAnnual,jdbcType=DOUBLE},
+      </if>
+      <if test="statDate != null" >
+        stat_date = #{statDate,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsDailyStat" >
+    update bs_daily_stat
+    set agent_id = #{agentId,jdbcType=INTEGER},
+      total_regist_user = #{totalRegistUser,jdbcType=INTEGER},
+      total_invest_user = #{totalInvestUser,jdbcType=INTEGER},
+      total_reinvest_user = #{totalReinvestUser,jdbcType=INTEGER},
+      total_invest_amount = #{totalInvestAmount,jdbcType=DOUBLE},
+      daily_new_wx_user = #{dailyNewWxUser,jdbcType=INTEGER},
+      daily_new_user_invest_times = #{dailyNewUserInvestTimes,jdbcType=INTEGER},
+      daily_old_user_invest_times = #{dailyOldUserInvestTimes,jdbcType=INTEGER},
+      daily_total_invest_times = #{dailyTotalInvestTimes,jdbcType=INTEGER},
+      daily_new_regist_user = #{dailyNewRegistUser,jdbcType=INTEGER},
+      daily_new_user_invest_amount = #{dailyNewUserInvestAmount,jdbcType=DOUBLE},
+      daily_old_user_invest_amount = #{dailyOldUserInvestAmount,jdbcType=DOUBLE},
+      daily_total_invest_amount = #{dailyTotalInvestAmount,jdbcType=DOUBLE},
+      daily_new_bind_user = #{dailyNewBindUser,jdbcType=INTEGER},
+      daily_new_invest_user = #{dailyNewInvestUser,jdbcType=INTEGER},
+      daily_invest_user = #{dailyInvestUser,jdbcType=INTEGER},
+      daily_new_user_invest_annual = #{dailyNewUserInvestAnnual,jdbcType=DOUBLE},
+      daily_invest_annual = #{dailyInvestAnnual,jdbcType=DOUBLE},
+      stat_date = #{statDate,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectLatestRecord" resultMap="BaseResultMap">
+  	SELECT * FROM bs_daily_stat ORDER BY id DESC LIMIT 1
+  </select>
+  
+  <select id="selectDailyDataGrid" resultMap="BaseResultMap" parameterType="java.util.Map">
+	SELECT 
+		SUM(a.daily_new_regist_user) AS daily_new_regist_user, 
+		SUM(a.daily_new_user_invest_amount) AS daily_new_user_invest_amount,
+		SUM(a.daily_old_user_invest_amount) AS daily_old_user_invest_amount,
+		a.stat_date
+	FROM bs_daily_stat a 
+	GROUP BY a.stat_date
+	LIMIT #{start,jdbcType=INTEGER}, #{numPerPage,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countDailyDataGrid" resultType="java.lang.Integer">
+	SELECT count(*) FROM (
+		SELECT *
+		FROM bs_daily_stat a 
+		GROUP BY a.stat_date
+	) AS total_daily
+  </select>
+  
+  <!-- 按日查询图表 -->
+  <select id="selectDailyDataCharts" resultMap="BaseResultMap" parameterType="java.util.Map">
+ 		SELECT * FROM (
+		SELECT 
+			SUM(a.daily_new_regist_user) AS daily_new_regist_user, 
+			SUM(a.daily_new_user_invest_amount) AS daily_new_user_invest_amount,
+			SUM(a.daily_old_user_invest_amount) AS daily_old_user_invest_amount,
+			SUM(a.daily_new_bind_user) AS daily_new_bind_user,
+			SUM(a.daily_new_invest_user) AS daily_new_invest_user,
+			SUM(a.daily_invest_user) AS daily_invest_user,
+			SUM(a.daily_new_user_invest_annual) AS daily_new_user_invest_annual,
+			SUM(a.daily_invest_annual) AS daily_invest_annual,
+			a.stat_date
+		FROM bs_daily_stat a 
+		where 1=1
+		<if test="agentIds != null and agentIds !='' and (nonAgentId == null or nonAgentId == '')">
+			and a.agent_id in 
+			<foreach collection="agentIds" item="agentId" index="index"
+	            open="(" close=")" separator=",">
+	            #{agentId}
+	        </foreach>
+		</if>
+		<if test="(agentIds == null or agentIds =='' ) and nonAgentId != null and nonAgentId != ''">
+			and a.agent_id is null
+		</if>
+		<if test="agentIds != null and agentIds !='' and nonAgentId != null and nonAgentId != ''">
+			and (a.agent_id in 
+			<foreach collection="agentIds" item="agentId" index="index"
+	            open="(" close=")" separator=",">
+	            #{agentId}
+	        </foreach>
+	        or a.agent_id is null)
+		</if>
+		GROUP BY a.stat_date
+	) AS daily_stat
+	WHERE daily_stat.stat_date >= #{startTime} AND daily_stat.stat_date &lt;= #{endTime}
+  </select>
+  
+  <select id="selectDailyStat" resultMap="BaseResultMap"  parameterType="java.util.Map" >
+    SELECT * FROM bs_daily_stat a WHERE DATE(a.stat_date) &lt; DATE(#{startTime})
+	ORDER BY a.id DESC
+	LIMIT 0,#{size}
+  </select>
+</mapper>

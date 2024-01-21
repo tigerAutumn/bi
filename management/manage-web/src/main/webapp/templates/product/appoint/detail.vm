@@ -1,0 +1,75 @@
+<h2 class="contentTitle">#if("create"=="$product.type")添加产品#else 修改产品 #end</h2>
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$!env.getWebURL(''))
+	<form id="financeForm" method="post" action="$env.getWebURL('/fund/appoint/save.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("id", "$!product.id")
+		
+		<div class="pageFormContent nowrap" layoutH="97">
+			<dl>
+				<dt>姓名：</dt>
+				<dd>
+					<input type="text" name="name" class="required" maxlength="256" value="$!product.name" />
+				</dd>
+			</dl>
+			
+			<dl>
+				<dt>手机号：</dt>
+				<dd>
+					<input type="text" name="mobile" class="required" maxlength="256" value="$!product.mobile" />
+				</dd>
+			</dl>
+			
+			<dl>
+				<dt>城市：</dt>
+				<dd>
+					<input type="text" name="city"  maxlength="256" value="$!product.city" />
+				</dd>
+			</dl>
+	
+			<dl>
+				<dt>备注：</dt>
+				<dd>
+					<input type="text" name="note"  maxlength="256" value="$!product.note" />
+				</dd>
+			</dl>
+			
+			<dl>
+				<dt >
+					是否受理：
+                </dt>
+				<dd >
+					<select class="combox" name="isDeal" ref="qa_type" refUrl="">
+							<option value ="1" #if($!product.isDeal == 1) selected #end>
+									否
+							</option>
+							<option value ="2" #if($!product.isDeal == 2) selected #end>
+								        是
+                            </option>
+                    </select>
+                </dd>
+			</dl>
+		
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button onclick="formsubmint()" type="button">保存</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	
+</div>
+<script>
+	function formsubmint(){
+		$("#financeForm").submit();
+    }
+	function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			alertMsg.correct('您的数据提交成功!');
+			navTab.closeCurrentTab();
+			navTab.reload("$env.getWebURL('/fund/appoint/index.htm')");
+		} else if (json.statusCode == 201) {
+			alertMsg.error('保存失败！');
+		}
+	}
+</script>

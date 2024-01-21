@@ -1,0 +1,52 @@
+<form id="pagerForm" method="post" action="$env.getWebURL('/sys/config/index.htm')">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			## <li><a class="add" href="$env.getWebURL('/sys/config/detail.htm?updateFlag=create')" target="navTab"><span>新增</span></a></li>
+			<li class="line">line</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="20%">规则主键</th>
+				<th width="15%">规则值</th>
+                <th width="25%">规则名称</th>
+				<th width="25%">规则备注</th>
+				<th width="15%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($config in $configList)
+			<tr>
+                <td>$!config.confKey</td>
+				<td>$!config.confValue</td>
+				<td>$!config.name</td>
+				<td>$!config.note</td>
+				<td>
+					<a title="编辑" target="navTab" href="$env.getWebURL('/sys/config/detail.htm')?confKey=$!config.confKey&updateFlag=update" class="btnEdit">编辑</a>
+					## <a title="删除" target="ajaxTodo" href="$env.getWebURL('/sys/config/update.htm')?updateFlag=delete&confKey=$!config.confKey" class="btnDel">删除</a>
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>

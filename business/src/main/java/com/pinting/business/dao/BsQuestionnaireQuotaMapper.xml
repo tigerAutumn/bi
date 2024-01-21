@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsQuestionnaireQuotaMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsQuestionnaireQuota" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="operate_user_id" property="operateUserId" jdbcType="INTEGER" />
+    <result column="evaluate_type" property="evaluateType" jdbcType="VARCHAR" />
+    <result column="amount_limit" property="amountLimit" jdbcType="DOUBLE" />
+    <result column="period_limit" property="periodLimit" jdbcType="INTEGER" />
+    <result column="term" property="term" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, evaluate_type, amount_limit, period_limit, term, create_time, update_time, note
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsQuestionnaireQuotaExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from bs_questionnaire_quota
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_questionnaire_quota
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_questionnaire_quota
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsQuestionnaireQuotaExample" >
+    delete from bs_questionnaire_quota
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsQuestionnaireQuota" >
+    insert into bs_questionnaire_quota (id, operate_user_id, evaluate_type, amount_limit, 
+      period_limit, term, create_time, 
+      update_time, note)
+    values (#{id,jdbcType=INTEGER}, #{operateUserId,jdbcType=INTEGER}, #{evaluateType,jdbcType=VARCHAR}, #{amountLimit,jdbcType=DOUBLE}, 
+      #{periodLimit,jdbcType=INTEGER}, #{term,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{note,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsQuestionnaireQuota" >
+    insert into bs_questionnaire_quota
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="operateUserId != null" >
+        operateUserId,
+      </if>
+      <if test="evaluateType != null" >
+        evaluate_type,
+      </if>
+      <if test="amountLimit != null" >
+        amount_limit,
+      </if>
+      <if test="periodLimit != null" >
+        period_limit,
+      </if>
+      <if test="term != null" >
+        term,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="operateUserId != null" >
+        #{operateUserId,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateType != null" >
+        #{evaluateType,jdbcType=VARCHAR},
+      </if>
+      <if test="amountLimit != null" >
+        #{amountLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="periodLimit != null" >
+        #{periodLimit,jdbcType=INTEGER},
+      </if>
+      <if test="term != null" >
+        #{term,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsQuestionnaireQuotaExample" resultType="java.lang.Integer" >
+    select count(*) from bs_questionnaire_quota
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_questionnaire_quota
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.operateUserId != null" >
+        id = #{record.operateUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.evaluateType != null" >
+        evaluate_type = #{record.evaluateType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amountLimit != null" >
+        amount_limit = #{record.amountLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="record.periodLimit != null" >
+        period_limit = #{record.periodLimit,jdbcType=INTEGER},
+      </if>
+      <if test="record.term != null" >
+        term = #{record.term,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_questionnaire_quota
+    set id = #{record.id,jdbcType=INTEGER},
+   	  operate_user_id = #{record.operateUserId,jdbcType=INTEGER},
+      evaluate_type = #{record.evaluateType,jdbcType=VARCHAR},
+      amount_limit = #{record.amountLimit,jdbcType=DOUBLE},
+      period_limit = #{record.periodLimit,jdbcType=INTEGER},
+      term = #{record.term,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      note = #{record.note,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsQuestionnaireQuota" >
+    update bs_questionnaire_quota
+    <set >
+      <if test="operateUserId != null" >
+        operate_user_id = #{operateUserId,jdbcType=INTEGER},
+      </if>
+      <if test="evaluateType != null" >
+        evaluate_type = #{evaluateType,jdbcType=VARCHAR},
+      </if>
+      <if test="amountLimit != null" >
+        amount_limit = #{amountLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="periodLimit != null" >
+        period_limit = #{periodLimit,jdbcType=INTEGER},
+      </if>
+      <if test="term != null" >
+        term = #{term,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsQuestionnaireQuota" >
+    update bs_questionnaire_quota
+    set evaluate_type = #{evaluateType,jdbcType=VARCHAR},
+      operate_user_id = #{operateUserId,jdbcType=INTEGER},
+      amount_limit = #{amountLimit,jdbcType=DOUBLE},
+      period_limit = #{periodLimit,jdbcType=INTEGER},
+      term = #{term,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      note = #{note,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, evaluate_type, ROUND(amount_limit/10000) as amount_limit, period_limit, term, create_time, update_time, operate_user_id, note
+    from bs_questionnaire_quota
+    <where>
+    	<if test="id != null" >
+        	id = #{id,jdbcType=INTEGER}
+        </if>
+    </where>
+  </select>
+  
+</mapper>

@@ -1,0 +1,101 @@
+## 秦皇岛项目管理台
+1. 需求描述
+	+ 本秦皇岛项目共有5个子渠道，需要做5个前端页面，对应管理台需要添加相关渠道信息
+	+ 视友之听需要做pc+h5端，其他只需做h5端
+	+ 前端复制一个报业的页面，把一些相关报业的内容替换成秦皇岛渠道的，比如logo等文案之类的
+
+2. 需求背景
+	
+
+3. 业务逻辑
+### 原型地址: svn\产品专用\项目需求\原型\2018年需求\7月份-秦皇岛项目
+
+### 业务实现点
+### 1. 有关于【选择渠道】的，库表已插入，检查页面见SVN原型
+
+### 2. 运营管理-网站公告管理/sysNews/notice.htm，涉及搜索条件发布端口，新增、编辑接口的发布端口，新增端口见SVN原型 ###
+<pre>	
+秦皇岛交通广播-币港湾（h5），端口对应bs_sys_news表receiver_type字段标识 BGWQHDJT
+秦皇岛新闻891-币港湾（h5） ，端口对应bs_sys_news表receiver_type字段标识 BGWQHDXW
+秦皇岛电视台今日报道-币港湾（h5） ，端口对应bs_sys_news表receiver_type字段标识 BGWQHDTV
+视听之友-币港湾（pc、h5）	，端口对应bs_sys_news表receiver_type字段标识 BGWQHDST
+1038私家车广播-币港湾（h5） ，端口对应bs_sys_news表receiver_type字段标识 BGWQHDSJC
+</pre>
+
+### 3. 运营管理-banner管理/banner/banner_index.htm，涉及新增、编辑接口的发布端口，新增端口见SVN原型 ###
+<pre>
+秦皇岛交通广播微信，端口对应bs_banner_config表channel字段标识MICROJT
+秦皇岛新闻891微信，端口对应bs_banner_config表channel字段标识MICROXW
+秦皇岛电视台今日报道微信，端口对应bs_banner_config表channel字段标识MICROTV
+视听之友电脑，端口对应bs_banner_config表channel字段标识GENSTZY
+视听之友微信，端口对应bs_banner_config表channel字段标识MICROSTZY
+1038私家车广播微信，端口对应bs_banner_config表channel字段标识MICROSJC
+</pre>
+
+### 4. 运营管理-媒体报道管理/sysNews/news.htm，涉及搜索条件发布端口，新增、编辑接口的发布端口，新增端口见SVN原型，端口对应标识同运营管理-网站公告管理菜单
+   
+### 5. 运营管理-公司动态活动管理/sysNews/company_dynamic.htm，涉及搜索条件发布端口，新增、编辑接口的发布端口，新增端口见SVN原型，端口对应标识同运营管理-网站公告管理菜单
+
+### 6. 理财计划管理
+	1. 计划系列维护（由运营添加系列名）
+	2. 理财计划申请管理（添加秦皇岛展示端口）
+		1. 查询条件：展示端口添加秦皇岛的查询复合选项，对应页面/common/terminal_list
+		2. 新增理财计划：展示端口添加秦皇岛的复合选项，对应页面product/manage/product_detail
+		3. 查看详情：添加秦皇岛展示端口，对应页面product/manage/product_detail_page
+		4. 克隆：添加秦皇岛展示端口，对应页面product/manage/product_clone
+	3. 理财计划审核管理（添加秦皇岛展示端口）
+		1. 查询条件：展示端口添加秦皇岛的查询复合选项，对应页面/product/plan/check_index
+	4. 理财计划发布管理（添加秦皇岛展示端口）
+		1. 查询条件：展示端口添加秦皇岛的查询复合选项，对应页面/product/plan/release/release_index
+		2. 详情：添加秦皇岛展示端口，对应页面/product/plan/release/release_detail
+
+### 理财计划展示端口说明 		
+<pre>
+秦皇岛交通广播H5，展示端口对应bs_product表show_terminal字段标识 H5_QHD_JT
+秦皇岛新闻891H5，展示端口对应bs_product表show_terminal字段标识  H5_QHD_XW
+秦皇岛电视台今日报道H5，展示端口对应bs_product表show_terminal字段标识 H5_QHD_TV
+视听之友PC，展示端口对应bs_product表show_terminal字段标识 PC_QHD_ST
+视听之友H5，展示端口对应bs_product表show_terminal字段标识 H5_QHD_ST
+1038私家车广播H5，展示端口对应bs_product表show_terminal字段标识	H5_QHD_SJC
+</pre>
+
+### 7. 渠道用户查询（秦皇岛）###  
+1. 根据当前登录用户渠道(m_user表的agent_id)查询相应渠道用户信息，用户权限对应渠道信息见原型。
+2. 初始进来默认不查询数据
+
+<pre>
+-- 新增菜单
+INSERT INTO `m_menu`(`url`, `parent_id`, `order_num`, `name`, `note`) VALUES ('/agent/user/qhdIndex.htm', 56, 4, '渠道用户查询(秦皇岛)', NULL);
+INSERT INTO `m_menu`(`url`, `parent_id`, `order_num`, `name`, `note`) VALUES ('/agent/userInvest/qhdIndex.htm', 56, 5, '渠道用户投资查询(秦皇岛)', NULL);
+-- 新增管理台角色
+INSERT INTO `m_role`(`name`, `create_time`, `note`, `dafy_role_id`) VALUES ('渠道代理(秦皇岛)', '2015-11-23 19:27:18', '', NULL);
+-- 新增秦皇岛管理员用户
+INSERT INTO `m_user`(`name`, `nick`, `password`, `email`, `mobile`, `status`, `role_id`, `user_type`, `create_time`, `login_time`, `logout_time`, `login_fail_times`, `login_fail_time`, `note`, `agent_id`) VALUES ('交通频道管理员', '交通频道管理', '1bb388b8f7fc154e8b8999293f97e8d6', 'xxguanli@qq.com', 'xx', 1, 49, 'NORMAL', '2015-12-11 12:52:47', '2018-02-08 20:15:35', NULL, 1, '2018-07-16 19:10:11', '', 51);
+INSERT INTO `m_user`(`name`, `nick`, `password`, `email`, `mobile`, `status`, `role_id`, `user_type`, `create_time`, `login_time`, `logout_time`, `login_fail_times`, `login_fail_time`, `note`, `agent_id`) VALUES ('新闻频道管理员', '新闻频道管理', '1bb388b8f7fc154e8b8999293f97e8d6', 'xx2guanli@qq.com', 'xx', 1, 49, 'NORMAL', '2015-12-11 12:52:47', '2018-02-08 20:15:35', NULL, 1, '2018-07-16 19:10:11', '', 52);
+INSERT INTO `m_user`(`name`, `nick`, `password`, `email`, `mobile`, `status`, `role_id`, `user_type`, `create_time`, `login_time`, `logout_time`, `login_fail_times`, `login_fail_time`, `note`, `agent_id`) VALUES ('报纸频道管理员', '报纸频道管理', '1bb388b8f7fc154e8b8999293f97e8d6', 'xx4guanli@qq.com', 'xx', 1, 49, 'NORMAL', '2015-12-11 12:52:47', '2018-02-08 20:15:35', NULL, 1, '2018-07-16 19:10:11', '', 54);
+INSERT INTO `m_user`(`name`, `nick`, `password`, `email`, `mobile`, `status`, `role_id`, `user_type`, `create_time`, `login_time`, `logout_time`, `login_fail_times`, `login_fail_time`, `note`, `agent_id`) VALUES ('电视台频道管理员', '电视台频道管理', '1bb388b8f7fc154e8b8999293f97e8d6', 'xx3guanli@qq.com', 'xx', 1, 49, 'NORMAL', '2015-12-11 12:52:47', '2018-02-08 20:15:35', NULL, 1, '2018-07-16 19:10:11', '', 53);
+INSERT INTO `m_user`(`name`, `nick`, `password`, `email`, `mobile`, `status`, `role_id`, `user_type`, `create_time`, `login_time`, `logout_time`, `login_fail_times`, `login_fail_time`, `note`, `agent_id`) VALUES ('私家车频道管理员', '私家车频道管理', '1bb388b8f7fc154e8b8999293f97e8d6', 'xx5guanli@qq.com', 'xx', 1, 49, 'NORMAL', '2015-12-11 12:52:47', '2018-02-08 20:15:35', NULL, 1, '2018-07-16 19:10:11', '', 55);
+INSERT INTO `m_user`(`name`, `nick`, `password`, `email`, `mobile`, `status`, `role_id`, `user_type`, `create_time`, `login_time`, `logout_time`, `login_fail_times`, `login_fail_time`, `note`, `agent_id`) VALUES ('秦皇岛管理员', '秦皇岛管理', '1bb388b8f7fc154e8b8999293f97e8d6', 'xxxguanli@qq.com', 'xx', 1, 49, 'NORMAL', '2015-12-11 12:52:47', '2018-02-08 20:15:35', NULL, 1, '2018-07-16 19:10:11', '', NULL);
+</pre>
+
+#### 渠道用户查询（秦皇岛）对应表字段，参考之前的菜单/agent/user/index ###
+<pre>
+手机号bs_user表mobile，姓名bs_user表user_name，总资产 站岗户金额求和+current_interest+结算户余额+奖励金余额，可提现金额bs_sub_account表can_withdraw（DEP_JSH户）
+预期投资收益bs_user表current_interest，当前投资本金 站岗户金额求和，累计投资收益bs_user表total_interest，注册日期bs_user表register_time
+</pre>
+
+### 8. 渠道用户投资查询（秦皇岛）###
+1. 根据当前登录用户渠道(m_user表的agent_id)查询相应渠道用户信息，用户权限对应渠道信息见原型。
+2. 初始进来默认不查询数据
+3. 查询展示终端在秦皇岛系列的产品
+
+<pre>
+渠道用户投资查询（秦皇岛）对应表字段，参考之前的菜单/agent/query/index
+手机号bs_user表mobile，姓名bs_user表user_name，产品名称bs_sub_account表product_name，投资期限bs_product表term（到期日减计息日），利率bs_sub_account表product_rate
+投资金额 站岗户金额+红包金额，提现银行bs_bank_card表bank_name，投资状态bs_sub_account表status，购买日期bs_sub_account表open_time，结算日期bs_sub_account表last_finish_interest_date，
+</pre>
+
+### 9.财务管理-品听-服务费查询排除秦皇岛 /financial/ptDepServiceFeeIndex
+1. 统计和查询列表、购买总金额和信息服务费求和的sql：bs_user表agent_id排除是秦皇岛的，bs_product表show_terminal排除是秦皇岛的，
+   加上AUTH_FREE站岗户数据
+ 

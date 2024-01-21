@@ -1,0 +1,84 @@
+<div class="pageContent">
+	<form>
+		#Hidden("pushType","$!msg.pushType")
+		#Hidden("content","$!msg.content")
+		#Hidden("appPage","$!msg.appPage")
+		<div class="pageFormContent" layoutH="56">
+			<p>
+				<label>发布端口：</label>
+				<select class="combox">
+					<option value="1" #if($!msg.releasePart == 1) selected #end>币港湾</option>
+					<!--<option value="2">钱报币港湾</option>
+					<option value="3">全部</option>-->
+				</select>
+			</p>
+			<p>
+				<label>名称：</label>
+				<input type="text"  size="20" class="textInput" value="$!msg.name" readonly/>
+			</p>
+			<p>
+				<label>标题：</label>
+				<input type="text"  size="20" class="textInput" value="$!msg.title" readonly/>
+			</p>
+			<p>
+				<label>推送文字：</label>
+				<input type="text"  size="20" class="textInput" value="$!msg.pushChar" readonly/>
+			</p>
+			<p style="height:95px;">
+				<label>摘要：</label>
+				<textarea class="textInput" rows="5" cols="25" readonly>$!msg.pushAbstract</textarea>
+			</p>
+			<p>
+				<label>内容：</label>
+				<input type="text" size="20" readonly 
+    				value=
+    				    #if($!msg.pushType == "1")url
+    					#elseif($!msg.pushType == "2")文本
+    					#elseif($!msg.pushType == "3")APP内页
+    					#end />
+				<p style="margin-left: 130px" class="native_content"><textarea class="textInput" rows="8" cols="25" readonly>$!msg.content</textarea></p>
+			</p>
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+    $(function(){
+    	var pushType = $.trim($('#pushType').val());
+		if(pushType == 1) {
+			$(".native_content").html("<input name='content' type='text'  size='30' value='"+$.trim($('#content').val())+"' readonly/>");
+		}else if(pushType == 3) {
+			var options = "<select id='page' class='combox'> "
+					+ "<option value='1'"+dealAppPage(1)+">首页</option>"
+					+ "<option value='2'"+dealAppPage(2)+">理财产品</option>"
+					+ "<option value='3'"+dealAppPage(3)+">我的资产</option>"
+					+ "<option value='4'"+dealAppPage(4)+">更多</option>"
+					+ "<option value='5'"+dealAppPage(5)+">推荐奖励金</option>"
+					+ "<option value='6'"+dealAppPage(6)+">安全保障</option>"
+					+ "<option value='7'"+dealAppPage(7)+">我的推荐</option>"
+					+ "<option value='8'"+dealAppPage(8)+">帮助中心</option>"
+					+ "<option value='9'"+dealAppPage(9)+">意见反馈</option>"
+					+ "<option value='11'"+dealAppPage(11)+">我的投资页面</option>"
+					+ "<option value='12'"+dealAppPage(12)+">交易明细页面</option>"
+					+ "<option value='13'"+dealAppPage(13)+">安全中心</option>"
+					+ "<option value='14'"+dealAppPage(14)+">银行卡界面</option>"
+					+ "<option value='15'"+dealAppPage(15)+">我的红包列表</option>"
+				+ "</select>";
+				
+				$(".native_content").html(options);
+		}
+    })
+	
+	function dealAppPage(page) {
+		var appPage = $.trim($('#appPage').val());
+		if(appPage == page) {
+			return 'selected';
+		}else {
+			return "";
+		}
+	}
+</script>

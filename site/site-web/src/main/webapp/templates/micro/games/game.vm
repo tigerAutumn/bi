@@ -1,0 +1,127 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾理财官网_安心可靠互联网金融投资理财平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#Header("小游戏", "", "", "micro/index")
+<script type="text/javascript">
+var GID = "shuqian";
+var SCORE_LIMIT = 6000;
+var APP_LIST_URL = 'http://m.bigangwan.com';
+</script>
+
+#LoadJS("/resources/micro/scripts/games/jquery-2.1.1.min")
+#LoadJS("/resources/micro/scripts/games/jquery.cookie")
+#LoadJS("/resources/micro/scripts/games/createjs-2013.12.12.min")
+#LoadJS("/resources/micro/scripts/games/qipa_app")
+#LoadJS("/resources/micro/scripts/games/qipa_stage")
+#LoadJS("/resources/micro/scripts/games/main")
+
+<style type="text/css">
+html,body,canvas {
+margin: 0px;
+padding: 0px;
+border:none;
+text-align: center;
+background-color: black;
+}
+canvas {
+background-color: white;
+}
+</style>
+#Head("end")
+<body>
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<canvas id="stage">
+您的浏览器不支持html5, 请换用支持html5的浏览器。
+</canvas>
+<script type="text/javascript">
+		var mebtnopenurl = '$!env.getWebURL('')';
+		window.shareData = {
+		        "imgUrl": "$!env.getWebURL('')/gameimg/share.png",
+		        "timeLineLink": "$!env.getWebURL('')/games/game",
+		        "tTitle": "抢钱抢到手抽筋-币港湾游戏",
+		        "tContent": "抢钱抢到手抽筋-币港湾游戏"
+		};
+				
+		function goHome(){
+			window.location=mebtnopenurl;
+		}
+		function clickMore(){
+			if((window.location+"").indexOf("zf",1)>0){
+				window.location = "http://m.bigangwan.com";
+			 }
+			 else{
+				goHome();
+			 }
+		}
+		function dp_share(){
+			document.title ="我30秒内抢了"+myData.score+"元钞票，手都快抽筋，你也来试试看！";
+			document.getElementById("share").style.display="";
+			window.shareData.tTitle = document.title;
+		}
+		function dp_Ranking(){
+			window.location=mebtnopenurl;
+		}
+
+	
+		document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+		    
+		    WeixinJSBridge.on('menu:share:appmessage', function(argv) {
+		        WeixinJSBridge.invoke('sendAppMessage', {
+		            "img_url": window.shareData.imgUrl,
+		            "link": window.shareData.timeLineLink,
+		            "desc": window.shareData.tContent,
+		            "title": window.shareData.tTitle
+		        }, onShareComplete);
+		    });
+
+		    WeixinJSBridge.on('menu:share:timeline', function(argv) {
+		        WeixinJSBridge.invoke('shareTimeline', {
+		            "img_url": window.shareData.imgUrl,
+		            "img_width": "640",
+		            "img_height": "640",
+		            "link": window.shareData.timeLineLink,
+		            "desc": window.shareData.tContent,
+		            "title": window.shareData.tTitle
+		        }, onShareComplete);
+		    });
+		}, false);
+		</script>
+		<div id="share" style="display: none">
+			<img width="100%" src="$!env.getWebURL('')/resources/micro/images/gameimg/shareus.png" style="position: fixed; z-index: 9999; top: 0; left: 0; display: " ontouchstart="document.getElementById('share').style.display='none';" />
+		</div>
+		<div style="display: none;">
+			<script type="text/javascript">
+            var myData = { gameid: "sqsdscj" };
+			function dp_submitScore(score){
+				myData.score = score;
+				myData.scoreName = "抢了"+score+"元";
+				if(score>0){
+					if (confirm("我勒个去了，30秒您在币港湾抢了"+score+"元！快通知一下小伙伴吧！")){
+						dp_share();
+					}
+				}
+			}
+			function onShareComplete(res) {
+                if (localStorage.myuid && myData.score != undefined) {
+                    setTimeout(function(){
+                        if (confirm("要将成绩提交到币港湾游戏排行榜吗？")) {
+                            window.location ="http://m.bigangwan.com";
+                        }
+                        else {
+                            document.location.href = mebtnopenurl;
+                        }
+                    }, 500);
+                }
+				else {
+		        	document.location.href = mebtnopenurl;
+				}
+	        }
+			</script>
+			#* <div style="display: none;">
+				<script type="text/javascript">var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F0ae524064813b8dc07ece5ce724a7b04' type='text/javascript'%3E%3C/script%3E"));</script>
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_2947366'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s5.cnzz.com/stat.php%3Fid%3D2947366' type='text/javascript'%3E%3C/script%3E"));</script>
+			</div>*#
+        </div>
+		
+</body>
+#Html("end")

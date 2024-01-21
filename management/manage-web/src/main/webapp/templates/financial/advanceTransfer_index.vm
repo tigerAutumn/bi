@@ -1,0 +1,106 @@
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="pageHeader">
+    <form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/financial/advanceTransferOrderIndex.htm')" onsubmit="return navTabSearch(this);">
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="pageNum" value="$!pageNum" />
+        <input type="hidden" name="numPerPage" value="$!numPerPage" />
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        <button onclick="func()" type="button" style="background-color:#666666; display:none;"></button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li><a class="add" href="$env.getWebURL('/financial/advanceTransfer2HFBank.htm')" target="dialog" mask="true" rel="createBack" height="450" width="580"><span>人工调账</span></a></li>
+            <li class="line">line</li>
+        </ul>
+    </div>
+    <table class="table" width="1396" layoutH="118">
+        <thead>
+        <tr>
+            <th width="15%">订单号</th>
+            <th width="10%">创建时间</th>
+            <th width="10%">交易时间</th>
+            <th width="10%">转出账户</th>
+            <th width="10%">转入账户</th>
+
+            <th width="10%">交易金额</th>
+            <th width="10%">交易类型</th>
+            <th width="10%">备注信息</th>
+            <th width="10%">订单状态</th>
+            <th width="5%">操作人</th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach($grid in $advanceTransferList)
+            <tr target="sid_user" rel="1" >
+                <td>$!grid.orderNo</td>
+                <td> $!date.format($!grid.createTime)</td>
+                <td> $!date.format($!grid.updateTime)</td>
+                <td>$!grid.transferOutAccount</td>
+                <td>$!grid.transferInAccount</td>
+                <td>$!money.format($!grid.amount)</td>
+
+                <td>
+                    #if($!grid.transType == "HFBANK_ADVANCE_TRANSFER")
+                        人工调账
+                    #else
+                        自动调账
+                    #end
+                </td>
+                <td>
+                    #if($!grid.note == "null")
+                    #else
+                        $!grid.note
+                    #end
+                </td>
+                <td>
+                    #if($!grid.status == "5")
+                        处理中
+                    #elseif($!grid.status == "6")
+                        成功
+                    #elseif($!grid.status == "7")
+                        失败
+                    #end
+                </td>
+                <td>$!grid.userName</td>
+            </tr>
+            #end
+        </tbody>
+
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+                <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!totalRows条</span>
+        </div>
+
+        <div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+    </div>
+</div>
+
+<script>
+    function func(){
+        var url = $("#APP_ROOT_PATH").val() + "/financial/advanceTransferOrderIndex.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+</script>

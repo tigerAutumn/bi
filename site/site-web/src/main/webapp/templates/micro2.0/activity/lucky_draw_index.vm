@@ -1,0 +1,386 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadCSS("resources/micro2.0/styles/activity/index_lottery")
+#LoadCSS("resources/micro2.0/styles/activity/lottery")
+#LoadCSS("resources/micro2.0/styles/activity/xz_lottery")
+#LoadCSS("resources/micro2.0/styles/activity/zz_lottery")
+#LoadCSS("resources/micro2.0/styles/activity/number_phone")
+#LoadCSS("resources/micro2.0/styles/activity/new_user")
+#LoadCSS("resources/micro2.0/styles/activity/lottery_succed_info")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/activity/six")
+#LoadJS("resources/micro2.0/scripts/activity/Custom")
+#LoadJS("resources/micro2.0/scripts/activity/lucky_draw_index")
+<style>
+	.item_width {
+        text-align: left;
+        padding-left: 45px;
+    }
+</style>
+#WeChatShare()
+#Head("end")
+<body>
+    <input type="hidden" value="$!env.getWebURL('')" id="APP_ROOT_PATH" />
+	<input type="hidden" value='$!jsonLuckyDraws' id="jsonLuckyDraws" />
+	<input type="hidden" value="$!qianbao" id="qianbao" />
+	<input type="hidden" value='$!token' id="token" name="token"/>
+    <div class="recom_bg"></div>
+    <div class="share">
+    	<img class="monkey" src="$!env.getWebURL('resources/micro2.0/images/activity/small_monkey.png')" alt="">
+    	<ul class="share_ul">
+    		<li class="share_icon">
+    			<a class="tem share_tem1" href="javascript:;" title="" activityBatchNo="$!res.normal.id">
+    				<img src="$!env.getWebURL('resources/micro2.0/images/activity/small_pb_egg.png')" alt="">
+    			</a>
+    			<div class="pb_egg share_tem1">金蛋</div>
+    			<div class="egg_number">$!res.normal.leftTimes 次机会</div>
+    		</li>
+    		<li class="share_icon">
+				<img class="qiao" src="$!env.getWebURL('resources/micro2.0/images/activity/qiao.png')" alt="">
+    			<a class="tem share_tem2" href="javascript:;" title="" activityBatchNo="$!res.setAuger.id">
+    				<img src="$!env.getWebURL('resources/micro2.0/images/activity/small_xz_egg.png')" alt="">
+    			</a>
+    			<div class="pb_egg share_tem2">镶钻金蛋</div>
+    			<div class="egg_number">$!res.setAuger.leftTimes 次机会</div>
+    		</li>
+    		<li class="share_icon in_lot_top">
+    			<a class="tem share_tem3" href="javascript:;" title="" activityBatchNo="$!res.supreme.id">
+    				<img src="$!env.getWebURL('resources/micro2.0/images/activity/small_zz_egg.png')" alt="">
+    			</a>
+    			<div class="pb_egg share_tem3">至尊金蛋</div>
+    			<div class="egg_number">$!res.supreme.leftTimes 次机会</div>
+    		</li>
+    	</ul>
+    </div>
+    <!-- 中奖名单 -->
+	#if($!rowDatas.size() == 0)
+		<div class="lott_main">
+        	<h2 class="lott_title">中奖名单</h2>
+        	<ul class="lott_ul">
+    			<li class="lott_item">
+					<div class="item item_right" id="item_1">
+						暂无中奖记录
+                    </div>
+					<div class="item" id="item_2">
+						暂无中奖记录
+                    </div>
+				</li>
+        	</ul>
+        </div>
+	#else
+        <div class="lott_main">
+        	<h2 class="lott_title">中奖名单</h2>
+        	<ul class="lott_ul">
+    			<li class="lott_item">
+        			<div class="item item_right" id="item_1">
+        				<p id="mobile1">
+    						#if($!rowDatas.size() > 0)
+    							$!rowDatas[0].mobile1
+    						#end
+    					</p>
+        				<p id="content1">
+    						#if($!rowDatas.size() > 0)
+    							$!rowDatas[0].content1
+    						#end
+    					</p>
+        			</div>
+    				<div class="item" id="item_2">
+        				<p id="mobile2">
+    						#if($!rowDatas.size() > 0)
+    							$!rowDatas[0].mobile2
+    						#end
+    					</p>
+        				<p id="content2">
+    						#if($!rowDatas.size() > 0)
+    							$!rowDatas[0].content2
+    						#end
+    					</p>
+    				</div>
+        		</li>
+        	</ul>
+        </div>
+	#end
+		
+	#if($!res.myBonuses.size() == 0)
+	#else
+		<div class="lott_main my_lott">
+        	<h2 class="lott_title">我的中奖</h2>
+        	<ul class="lott_ul">
+    			
+    			#foreach($!data in $!res.myBonuses)
+        			<li class="lott_item ">
+            			<div class="item item_width" id="item_1">
+            				<p id="content1">
+    							<span>$!date.formatDateTime($!data.createtime,'yyyy年MM月dd日')</span>&nbsp;&nbsp;获得&nbsp;&nbsp;<span>$!data.content  $!data.createTime</span>	
+        					</p>
+            			</div>
+            		</li>
+    			#end
+        	</ul>
+        </div>
+	#end
+	
+    <div class="recom_btn">点击查看活动详情</div>
+	
+    <div class="recom_wrap01 recom_wrap02">
+    	<div class="dotted recom_fp">
+			<div class="ft_title">活动时间：</div>
+        	<div class="ft_time">2016年1月29日-2016年2月15日</div>
+    		<h3 class="warp02_title">活动奖品：</h3>
+			#if("$!qianbao" == "qianbao")
+				<div class="main_info">
+        			<ul>
+        				<li class="recom_item"><span class="reco_list">金蛋(高中奖率)：</span><span class="left_ftpadding left_mar">5元、10元、20元、50元话费</span></li>
+        				<li class="recom_item"><span class="reco_list">至尊金蛋(100%中奖)：</span><span class="left_ftpadding">200元-2000元面值不等的京东卡、iPad mini 4、iPhone 6、iPhone 6s</span></li>
+        			</ul>
+					<div class="ft_title">获得砸蛋机会：</div>
+        			<div class="ft_main">
+        				<ul class="ft_main_ul">
+							<li class="ft_num bg_gray">
+								<div class="num_left ">
+									已投资用户
+								</div>
+								<div class="num_right">
+									1枚“金蛋”
+								</div>
+							</li>
+							<li class="ft_num bg_white">
+								<div class="num_left two_height">
+									单笔投资5万及以上<br>(365天)
+								</div>
+								<div class="num_right two_height">
+									1枚“至尊金蛋”<br>(100%中奖，次数不限)
+								</div>
+							</li>
+						</ul>
+        			</div>
+					<div class="ft_time">温馨提示：单笔投资金额越高，中奖的奖品价值也越高哦</div>
+        			<div class="ft_title">奖品发放时间：</div>
+        			<div class="ft_time">2016年2月22日统一发放</div>
+					<div class="ft_time">币港湾拥有本次活动的最终解释权</div>
+				</div>
+        	#else
+				<div class="main_info">
+					
+        			<ul>
+        				<li class="recom_item"><span class="reco_list">金蛋(高中奖率)：</span><span class="left_ftpadding left_mar">5元、10元、20元、50元话费</span></li>
+        				<li class="recom_item"><span class="reco_list">镶钻金蛋(100%中奖)：</span><span class="left_ftpadding">20元、50元、100元话费、200元京东卡</span></li>
+        				<li class="recom_item"><span class="reco_list">至尊金蛋(100%中奖)：</span><span class="left_ftpadding">200元-2000元面值不等的京东卡、iPad mini 4、iPhone 6、iPhone 6s</span></li>
+        			</ul>
+					<div class="ft_title">获得砸蛋机会：</div>
+        			<div class="ft_main">
+        				<ul class="ft_main_ul">
+							<li class="ft_num bg_gray">
+								<div class="num_left ">
+									已投资用户
+								</div>
+								<div class="num_right">
+									1枚“金蛋”
+								</div>
+							</li>
+							<li class="ft_num bg_white">
+								<div class="num_left two_height">
+									未投资用户<br>(投资100元)
+								</div>
+								<div class="num_right">
+									1枚“金蛋”(仅限一次)
+								</div>
+							</li>
+							<li class="ft_num bg_gray">
+								<div class="num_left">
+									邀请好友投资
+								</div>
+								<div class="num_right">
+									1枚“金蛋”(次数不限)
+								</div>
+							</li>
+							<li class="ft_num bg_white">
+								<div class="num_left two_height">
+									单笔投资1万及以上<br>(30天)
+								</div>
+								<div class="num_right two_height">
+									1枚“金蛋”<br>(100%中奖，次数不限)
+								</div>
+							</li>
+							<li class="ft_num bg_gray">
+								<div class="num_left two_height">
+									单笔投资1万-5万<br>(365天)
+								</div>
+								<div class="num_right two_height">
+									1枚“镶钻金蛋”<br>(100%中奖，次数不限)
+								</div>
+							</li>
+							<li class="ft_num bg_white">
+								<div class="num_left two_height">
+									单笔投资5万及以上<br>(365天)
+								</div>
+								<div class="num_right two_height">
+									1枚“至尊金蛋”<br>(100%中奖，次数不限)
+								</div>
+							</li>
+						</ul>
+        			</div>
+					<div class="ft_time">温馨提示：单笔投资金额越高，中奖的奖品价值也越高哦</div>
+        			<div class="ft_title">奖品发放时间：</div>
+        			<div class="ft_time">2016年2月22日统一发放</div>
+					<div class="ft_time">币港湾拥有本次活动的最终解释权</div>
+				</div>
+        	#end
+    	</div>
+    </div>    
+	<div style="height:6px;"></div>
+	
+	<!-- 1、输入手机号（未登录用户）开始 -->
+	<div class="succed_wp number_phone" style="display:none;">
+  		<div class="succ_bg">
+  			<img class="user_bg" src="$!env.getWebURL('resources/micro2.0/images/activity/user_lott_login.png')" alt="">
+  			<img class="monkey_number_phone" src="$!env.getWebURL('resources/micro2.0/images/activity/monkey.png')" alt="">
+  			<div class="info_dialog">
+  				<img class="piaodai" src="$!env.getWebURL('resources/micro2.0/images/activity/piaodai.png')" alt="">
+  				<img class="succ_close close" src="$!env.getWebURL('resources/micro2.0/images/activity/succ_close.png')" alt="">
+  				<span class="piao_title">注意啦</span>
+  				<div class="succ_main">
+					#if("$!qianbao" != "qianbao")
+						<h2 class="main_title">币港湾平台，送您1枚金蛋。输入手机号领取啦~</h2>
+					#else
+						<h2 class="main_title">钱报-币港湾平台，送您1枚金蛋。输入手机号领取啦~</h2>
+					#end
+  					<input class="main_ft" name="mobile" id="mobile" type="tel" maxLength="11" placeholder="输入手机号" oninput="onlyNumber(this)">
+  				</div>
+  				<div class="btn_login" id="phone_btn">立即参加</div>
+  			</div>
+  		</div>
+    </div>  
+	<!-- 1、输入手机号（未登录用户）结束 -->
+	<!-- 2、登录开始  -->
+	<div class="succed_wp login_layer" style="display:none;">
+  		<div class="succ_bg">
+  			<img class="user_bg" src="$!env.getWebURL('resources/micro2.0/images/activity/user_lott_login.png')" alt="">
+  			<img class="monkey_number_phone" src="$!env.getWebURL('resources/micro2.0/images/activity/monkey.png')" alt="">
+  			<div class="info_dialog">
+  				<img class="piaodai" src="$!env.getWebURL('resources/micro2.0/images/activity/piaodai.png')" alt="">
+  				<img class="succ_close login_close" src="$!env.getWebURL('resources/micro2.0/images/activity/succ_close.png')" alt="">
+  				<span class="piao_title">登录赢大奖</span>
+  				<div class="succ_main">
+  					<h2 class="main_title">登录赢大奖哦~</h2>
+  					<div class="main_ft show_mobile"></div>
+  					<input class="main_ft password login_pwd" type="password" name="password" maxLength="16" placeholder="输入密码，赢大奖">
+  				</div>
+  				<div class="btn_login" id="login_btn">我知道了</div>
+  			</div>
+  		</div>
+  	</div>
+	<!-- 2、登录结束 -->
+	<!-- 3、注册开始 -->
+	<div class="succed_wp register_layer" style="display:none;">
+  		<div class="succ_bg">
+  			<img class="user_bg" src="$!env.getWebURL('resources/micro2.0/images/activity/user_lott_login.png')" alt="">
+  			<img class="monkey_number_phone" src="$!env.getWebURL('resources/micro2.0/images/activity/monkey.png')" alt="">
+  			<div class="info_dialog">
+  				<img class="piaodai" src="$!env.getWebURL('resources/micro2.0/images/activity/piaodai.png')" alt="">
+  				<img class="succ_close register_close" src="$!env.getWebURL('resources/micro2.0/images/activity/succ_close.png')" alt="">
+  				<span class="piao_title">注册</span>
+  				<div class="succ_main">
+  					<h2 class="main_title">只需几步，即可砸蛋抽奖</h2>
+  					<input class="main_ft register_mobile" type="tel" name="mobile" readonly placeholder="">
+  					<div class="yz">
+  						<input class="main_ft" type="tel" name="mobileCode" id="mobileCode" oninput="onlyNumber(this)" maxlength="4" placeholder="验证码">
+						<div class="btn_yz" id="sendCode" count="60">验证码</div>
+  					</div>
+  					<input class="main_ft register_pwd" type="password" name="password" maxLength="16" placeholder="设置密码，赢大奖">
+  				</div>
+  				<div class="btn_login" id="register_btn">立即参加</div>
+  			</div>
+  		</div>
+	</div>
+	<!-- 3、注册结束 -->
+	
+	<!-- 砸蛋浮层开始(已登录用户) -->
+	<!-- 1、金蛋砸蛋浮层：默认隐藏 -->
+	<div class="lotter" style="display:none;">
+    	<div class="lotter_egg_warp">
+    		<div class="WuKong">
+    			<div class="stick"></div>
+    		</div>
+    		<div class="lotter_pb_egg" activityBatchNo="$!res.normal.id"></div>
+			#if("$!qianbao" != "qianbao")
+				<div class="btn invite_btn">邀请用户获得更多砸蛋机会</div>
+			#else
+			#end
+    		<div class="btn btn_two invest_btn">继续投资获得更多砸蛋机会</div>
+    	</div>
+    </div>  
+	
+	<!-- 2、镶钻金蛋砸蛋浮层：默认隐藏 -->
+	<div class="lotter" style="display:none;">
+    	<div class="lotter_egg_warp">
+    		<div class="WuKong">
+    			<div class="stick"></div>
+    		</div>
+    		<div class="lotter_xz_egg" activityBatchNo="$!res.setAuger.id"></div>
+			#if("$!qianbao" != "qianbao")
+				<div class="btn invite_btn">邀请用户获得更多砸蛋机会</div>
+			#else
+			#end
+    		<div class="btn btn_two invest_btn">继续投资获得更多砸蛋机会</div>
+    	</div>
+    </div>   
+	
+	<!-- 3、至尊金蛋砸蛋浮层：默认隐藏 -->
+	<div class="lotter" style="display:none;">
+    	<div class="lotter_egg_warp">
+    		<div class="WuKong">
+    			<div class="stick"></div>
+    		</div>
+    		<div class="lotter_zz_egg" activityBatchNo="$!res.supreme.id"></div>
+			#if("$!qianbao" != "qianbao")
+				<div class="btn invite_btn">邀请用户获得更多砸蛋机会</div>
+			#else
+			#end
+    		<div class="btn btn_two invest_btn">继续投资获得更多砸蛋机会</div>
+    	</div>
+	</div>
+	<!-- 砸蛋浮层结束 -->
+	
+	<!-- 获奖结果开始 -->
+	<div class="succed_wp award_result_layer" style="display:none;">
+  		<div class="succ_bg">
+  			<img src="$!env.getWebURL('resources/micro2.0/images/activity/succ_bg.png')" alt="">
+  			<div class="info_dialog">
+  				<img class="piaodai" src="$!env.getWebURL('resources/micro2.0/images/activity/piaodai.png')" alt="">
+  				<img class="succ_close award_close" src="$!env.getWebURL('resources/micro2.0/images/activity/succ_close.png')" alt="">
+  				<span class="piao_title result_title">获奖信息</span>
+  				<div class="succ_main">
+  					<h2 class="main_title award_title"></h2>
+  					<div style="font-size: 35px;line-height: 35px; color:#5f2502;">
+						<span class="award_content"></span>
+					</div>
+  				</div>
+  				<div class="btn_result award_btn">我知道了</div>
+  				<img class="monkey_result" src="$!env.getWebURL('resources/micro2.0/images/activity/monkey.png')" alt="">
+  			</div>
+  		</div>
+	</div>
+	<!-- 获奖结果结束 -->
+	<!--页面上拉顶部显示input-->
+	<script type="text/javascript">
+		$(function(){
+			$("input").focus(function(){
+				$(".succ_bg").css({"margin-top":-200});
+				
+			})
+			$("input").blur(function(){
+    			setTimeout(function(){
+					if($("input").is(":focus")){
+						return false;
+					}
+    				$(".succ_bg").attr("style","");
+    			},600)
+			})
+		})
+	</script>
+	
+</body>
+</html>

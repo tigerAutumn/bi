@@ -1,0 +1,414 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen178/styles/default")
+#LoadGenCSS("/resources/gen178/styles/agree/agree-print")
+#LoadGenCSS("/resources/gen178/styles/match/tan")
+#LoadGenJS("/resources/gen178/scripts/match/my_match")
+#LoadGenJS("/resources/gen178/scripts/common/common")
+#parse("/gen178/match/match_repay_detail.vm")
+#GenHead("end")
+<body>
+	<input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')"/>
+	<form id="generalForm" method="post" action="$!env.get('gen.server.web')/gen178/match/myMatch">
+		<input type="hidden" id="product_id" name="productId" value="$!productId"/>
+		<input type="hidden" id="subAccountId" name="subAccountId" value="$!subAccountId"/>
+		<input type="hidden" id="pageIndex" name="pageIndex" value="$!pageIndex"/>
+	</form>
+		<input type="hidden" name="totalPages" value="$!pageNum" class="totalPages"/>
+	<div class="">
+	<div class="agess win_fo" id="agree_content">
+		<!--startprint1-->
+		<div class="agess_title">
+			<span class="agess_ft">债权明细</span>
+			<i class="agess_off close"></i>
+		</div>
+		#if($!total > 0 )
+			<div class="tan_msg">
+				#if($!propertySymbol == "YUN_DAI_SELF")
+                    该产品计划所投向的合作产品为小微借款业务，
+				#elseif($!propertySymbol == "ZSD")
+                    该产品计划所投向的合作产品为小微借款业务，
+				#elseif($!propertySymbol == "7_DAI_SELF")
+                    该产品计划所投向的合作产品为小微借款业务，
+				#elseif($!propertySymbol == "FREE")
+                    该产品计划所投向的合作产品为小微借款业务，
+				#else
+					#if($!debtDetailsFlag == 'AUTH_YUN_FLAG')
+                        该产品计划所投向的合作产品为小微借款业务，
+					#elseif($!debtDetailsFlag == 'AUTH_7_FLAG')
+                        该产品计划所投向的合作产品为小微借款业务，
+					#else
+                        该产品计划所投向的合作产品为小微借款业务，
+					#end
+				#end
+                该业务向借款人授予一个信用额度，借款人可以在该额度内进行借还款。借款人的每笔借款均与出借人的投资对应，您的该笔出借对应关系如下表所示：（如有疑问，可详询客服热线400-806-1230）
+			</div>
+		#else
+			<div class="tan_msg">计划加入成功后，数据的更新需要1-3天，请您稍后再进行查询。（如有疑问，可详询客服热线400-806-1230）。</div>
+		#end
+		<div class="tan_list">
+			<ul class="tan_list_ul">
+				<li class="tan_list_width1">借款人</li>
+				<li>借款金额</li>
+				<li>剩余本金</li>
+				<li>出借时间</li>
+				<li>已还金额</li>
+				<li>最近还款时间</li>
+				<li class="tan_list_ulli_t">还款状态</li>
+				<li class="tan_list_ulli">备注</li>
+				<li class="tan_list_ulli_b">还款查询</li>
+				#if($!propertySymbol == "YUN_DAI_SELF" || $!propertySymbol == "ZSD" || $!propertySymbol == "7_DAI_SELF" || $!propertySymbol == "FREE")
+					<li class="tan_list_null"></li>
+				#else
+				#end
+			</ul>
+			#if($!total > 0 )
+				#foreach($data in $!dataList)
+					<div class="tan_list_div">
+						<div class="tan_list_width1">$data.borrowerName</div>
+						<div>$!money.format($!data.amount)</div>
+						<div>$!money.format($!data.leftPrincipal)</div>
+						<div>
+							$!date.formatDateTime($!data.matchDate,'yyyy-MM-dd')
+						</div>
+                        <div>
+							$!money.format($!data.repayAmount)
+                        </div>
+						<div>
+							#if($!propertySymbol == "YUN_DAI_SELF" || $!propertySymbol == "ZSD"  || $!propertySymbol == "7_DAI_SELF" || $!propertySymbol == "FREE")
+								$!date.formatDateTime($!data.lastRepayDate,'yyyy-MM-dd')
+							#else
+								#if(!$data.lastRepayDate)
+								#else
+									$!date.formatDateTime($!data.lastRepayDate,'yyyy-MM-dd')
+								#end
+							#end
+						</div>
+						<div class="tan_list_divli_t">
+							#if($!propertySymbol == "YUN_DAI_SELF" || $!propertySymbol == "ZSD"  || $!propertySymbol == "7_DAI_SELF" || $!propertySymbol == "FREE")
+								#if($!data.repayStatus == "PAYING")
+                                    借款中
+								#elseif($!data.repayStatus == "TRANSFERRED" || $!data.repayStatus == "REPAID")
+                                    已还完
+								#end
+							#else
+
+								#if($!debtDetailsFlag == 'AUTH_YUN_FLAG' || $!debtDetailsFlag == 'AUTH_7_FLAG')
+									#if($!data.repayStatus == "PAYING")
+                                        借款中
+									#elseif($!data.repayStatus == "TRANSFERRED" || $!data.repayStatus == "REPAID")
+                                        已还完
+									#end
+								#else
+									#if($!data.repayStatus == 1)
+                                        借款中
+									#elseif($!data.repayStatus == 2)
+                                        部分还款
+									#elseif($!data.repayStatus == 3)
+                                        已还完
+									#end
+								#end
+
+							#end
+						</div>
+						<div class="tan_list_divli">$!data.note</div>
+						#if($!data.repayFlag)
+							<div class="tan_list_divli_b"><a href="javascript:matchDetail($!data.id, '$!propertySymbol', $!subAccountId, '$!data.repayFlag', $!data.amount, '$!date.formatDateTime($!data.lastRepayDate,'yyyy-MM-dd')')">查询</a></div>
+						#else
+							<div class="tan_list_divli_b"><a href="javascript:matchDetail($!data.id, '$!propertySymbol', $!subAccountId, 'OTHER', $!data.amount, '$!date.formatDateTime($!data.lastRepayDate,'yyyy-MM-dd')')">查询</a></div>
+						#end
+
+						#if($!propertySymbol == "YUN_DAI_SELF")
+							#if($!data.partnerBusinessFlag == 'REPAY_ANY_TIME')
+							## 1、消费循环贷借款产品/存管版本、合规版本
+								#if($!data.repayStatus == "TRANSFERRED")
+                                    <div class="tan_list_div_null1">
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyLoanPrintNew(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&loanAgreementType=HF_YUN_LOAN_AGREEMENT&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                    </div>
+								#elseif($!data.transMark == "TRANS_IN")
+                                    <div class="tan_list_div_null1">
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyLoanPrintNew(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&loanAgreementType=HF_YUN_LOAN_AGREEMENT&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                    </div>
+								#else
+                                    <div class="tan_list_div_null1">
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyLoanPrintNew(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&loanAgreementType=HF_YUN_LOAN_AGREEMENT&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                    </div>
+								#end
+							#elseif($!data.partnerBusinessFlag == 'FIXED_INSTALLMENT')
+							## 2、等额本息借款产品
+								#if($!data.repayStatus == "TRANSFERRED")
+                                    <div class="tan_list_div_null1">
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="installmentLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_loanAgreement_installment&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                    </div>
+								#elseif($!data.transMark == "TRANS_IN")
+                                    <div class="tan_list_div_null1">
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="installmentLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_loanAgreement_installment&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                    </div>
+								#else
+                                    <div class="tan_list_div_null1">
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="installmentLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_loanAgreement_installment&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                    </div>
+								#end
+							#elseif($!data.partnerBusinessFlag == 'FIXED_PRINCIPAL_INTEREST')
+							## 3、等本等息借款产品
+								#if($!data.repayStatus == "TRANSFERRED")
+                                    <div class="tan_list_div_null1">
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="principalInterestLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_loanAgreement_principal_interest&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                    </div>
+								#elseif($!data.transMark == "TRANS_IN")
+                                    <div class="tan_list_div_null1">
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="principalInterestLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_loanAgreement_principal_interest&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                    </div>
+								#else
+                                    <div class="tan_list_div_null1">
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="principalInterestLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_loanAgreement_principal_interest&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                    </div>
+								#end
+							#end
+
+						#elseif($!propertySymbol == "ZSD")
+							#if($!data.repayStatus == "TRANSFERRED")
+                                <div class="tan_list_div_null1">
+                                    <a href="javascript:;" class="tan_list_div_null2a" onclick="zsdLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agentViewFlag=$!agentViewFlag" >《借款协议》</a>
+                                    <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                    <a href="javascript:;" class="tan_list_div_null2a" onclick="zsdClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agentViewFlag=$!agentViewFlag" >《债权转让协议》</a>
+                                </div>
+							#elseif($!data.transMark == "TRANS_IN")
+                                <div class="tan_list_div_null1">
+                                    <a href="javascript:;" class="tan_list_div_null2a" onclick="zsdLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agentViewFlag=$!agentViewFlag" >《借款协议》</a>
+                                    <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                    <a href="javascript:;" class="tan_list_div_null2a" onclick="zsdClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agentViewFlag=$!agentViewFlag" >《债权转让协议》</a>
+                                </div>
+							#else
+                                <div class="tan_list_div_null1">
+                                    <a href="javascript:;" class="tan_list_div_null2a" onclick="zsdLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agentViewFlag=$!agentViewFlag" >《借款协议》</a>
+                                    <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                </div>
+							#end
+						#elseif($!propertySymbol == "7_DAI_SELF")
+							#if($!data.repayStatus == "TRANSFERRED")
+                                <div class="tan_list_div_null1">
+		                             #if($!data.partnerBusinessFlag == 'REPAY_ANY_TIME')
+		                            	<a href="javascript:;" class="tan_list_div_null2a" onclick="sevenLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_7dai_loanAgreement_anyRepay&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+		                             #else
+		                             	<a href="javascript:;" class="tan_list_div_null2a" onclick="sevenLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_7dai_loanAgreement&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+		                             #end		                             
+                                    <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                    <a href="javascript:;" class="tan_list_div_null2a" onclick="sevenClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_7dai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                </div>
+							#elseif($!data.transMark == "TRANS_IN")
+                                <div class="tan_list_div_null1">
+                                	#if($!data.partnerBusinessFlag == 'REPAY_ANY_TIME')
+			                        	<a href="javascript:;" class="tan_list_div_null2a" onclick="sevenLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_7dai_loanAgreement_anyRepay&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+			                        #else
+			                        	<a href="javascript:;" class="tan_list_div_null2a" onclick="sevenLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_7dai_loanAgreement&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+			                        #end
+                                    <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                    <a href="javascript:;" class="tan_list_div_null2a" onclick="sevenClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_7dai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                </div>
+							#else
+                                <div class="tan_list_div_null1">
+		                            #if($!data.partnerBusinessFlag == 'REPAY_ANY_TIME')
+			                   			<a href="javascript:;" class="tan_list_div_null2a" onclick="sevenLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_7dai_loanAgreement_anyRepay&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+			                   		#else                       		 
+			                        	<a href="javascript:;" class="tan_list_div_null2a" onclick="sevenLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_7dai_loanAgreement&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+			                   		#end
+                                    <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                </div>
+							#end
+						#elseif($!propertySymbol == "FREE")
+							#if($!data.partnerCode == 'YUN_DAI_SELF') ## 借款来源为云贷借款人
+								#if($!data.partnerBusinessFlag == 'REPAY_ANY_TIME')
+								## 1、消费循环贷借款产品/存管版本、合规版本
+									#if($!data.repayStatus == "TRANSFERRED")
+                                        <div class="tan_list_div_null1">
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyLoanPrintNew(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&loanAgreementType=HF_YUN_LOAN_AGREEMENT&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                        </div>
+									#elseif($!data.transMark == "TRANS_IN")
+                                        <div class="tan_list_div_null1">
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyLoanPrintNew(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&loanAgreementType=HF_YUN_LOAN_AGREEMENT&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                        </div>
+									#else
+                                        <div class="tan_list_div_null1">
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyLoanPrintNew(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&loanAgreementType=HF_YUN_LOAN_AGREEMENT&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                        </div>
+									#end
+								#elseif($!data.partnerBusinessFlag == 'FIXED_INSTALLMENT')
+								## 2、等额本息借款产品
+									#if($!data.repayStatus == "TRANSFERRED")
+                                        <div class="tan_list_div_null1">
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="installmentLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_loanAgreement_installment&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                        </div>
+									#elseif($!data.transMark == "TRANS_IN")
+                                        <div class="tan_list_div_null1">
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="installmentLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_loanAgreement_installment&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                        </div>
+									#else
+                                        <div class="tan_list_div_null1">
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="installmentLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_loanAgreement_installment&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                        </div>
+									#end
+								#elseif($!data.partnerBusinessFlag == 'FIXED_PRINCIPAL_INTEREST')
+								## 3、等本等息借款产品
+									#if($!data.repayStatus == "TRANSFERRED")
+                                        <div class="tan_list_div_null1">
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="principalInterestLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_loanAgreement_principal_interest&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                        </div>
+									#elseif($!data.transMark == "TRANS_IN")
+                                        <div class="tan_list_div_null1">
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="principalInterestLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_loanAgreement_principal_interest&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="custodyClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                        </div>
+									#else
+                                        <div class="tan_list_div_null1">
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="principalInterestLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_yundai_loanAgreement_principal_interest&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                        </div>
+									#end
+								#end
+							#elseif($!data.partnerCode == '7_DAI_SELF') ## 借款来源为七贷借款人
+								#if($!data.repayStatus == "TRANSFERRED")
+                                    <div class="tan_list_div_null1">
+										#if($!data.partnerBusinessFlag == 'REPAY_ANY_TIME')
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="sevenLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_7dai_loanAgreement_anyRepay&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+										#else
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="sevenLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_7dai_loanAgreement&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+										#end
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="sevenClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_7dai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                    </div>
+								#elseif($!data.transMark == "TRANS_IN")
+                                    <div class="tan_list_div_null1">
+										#if($!data.partnerBusinessFlag == 'REPAY_ANY_TIME')
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="sevenLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_7dai_loanAgreement_anyRepay&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+										#else
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="sevenLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_7dai_loanAgreement&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+										#end
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="sevenClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_7dai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                    </div>
+								#else
+                                    <div class="tan_list_div_null1">
+										#if($!data.partnerBusinessFlag == 'REPAY_ANY_TIME')
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="sevenLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_7dai_loanAgreement_anyRepay&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+										#else
+                                            <a href="javascript:;" class="tan_list_div_null2a" onclick="sevenLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=hf_7dai_loanAgreement&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+										#end
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=$!propertySymbol" >《借款详情》</a>
+                                    </div>
+								#end
+
+							#else
+							#end
+
+						#elseif($!debtDetailsFlag == 'AUTH_YUN_FLAG') ## 云贷老产品重新匹配后的协议
+							#if($!data.stockGeneratedClaims == 'STOCKGENERATEDCLAIMS')
+								##存量数据迁移老云贷、7贷生成的债权记录，借款、债转协议不显示
+							#else
+								#if($!data.repayStatus == "TRANSFERRED")
+                                    <div class="tan_list_div_null1">
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="stockYunDaiLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=stock_hf_yundai_loanAgreement&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=YUN_DAI_SELF" >《借款详情》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="stockYunDaiClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=stock_hf_yundai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                    </div>
+								#elseif($!data.transMark == "TRANS_IN")
+                                    <div class="tan_list_div_null1">
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="stockYunDaiLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=stock_hf_yundai_loanAgreement&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=YUN_DAI_SELF" >《借款详情》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="stockYunDaiClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=stock_hf_yundai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                    </div>
+								#else
+                                    <div class="tan_list_div_null1">
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="stockYunDaiLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=stock_hf_yundai_loanAgreement&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=YUN_DAI_SELF" >《借款详情》</a>
+                                    </div>
+								#end
+							#end
+						#elseif($!debtDetailsFlag == 'AUTH_7_FLAG') ## 7贷老产品重新匹配后的协议
+							#if($!data.stockGeneratedClaims == 'STOCKGENERATEDCLAIMS')
+								##存量数据迁移老云贷、7贷生成的债权记录，借款、债转协议不显示
+							#else
+								#if($!data.repayStatus == "TRANSFERRED")
+                                    <div class="tan_list_div_null1">
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="stock7daiLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=stock_hf_7dai_loanAgreement&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=7_DAI_SELF" >《借款详情》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="stock7daiClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=stock_hf_7dai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                    </div>
+								#elseif($!data.transMark == "TRANS_IN")
+                                    <div class="tan_list_div_null1">
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="stock7daiLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=stock_hf_7dai_loanAgreement&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=7_DAI_SELF" >《借款详情》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="stock7daiClaimsPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=stock_hf_7dai_claimsAgreement&effectiveTime=$!date.formatDateTime($!data.transferTime,'yyyy-MM-dd HH:mm:ss')" >《债权转让协议》</a>
+                                    </div>
+								#else
+                                    <div class="tan_list_div_null1">
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="stock7daiLoanPrint(this);" data-datas="loanRelationId=$!data.id&subAccountId=$!subAccountId&agreementType=stock_hf_7dai_loanAgreement&effectiveTime=$!date.formatDateTime($!data.loanTime,'yyyy-MM-dd HH:mm:ss')" >《借款协议》</a>
+                                        <a href="javascript:;" class="tan_list_div_null2a" onclick="borrowerDetail(this);" data-datas="loanRelationId=$!data.id&partnerCode=7_DAI_SELF" >《借款详情》</a>
+                                    </div>
+								#end
+							#end
+						#else
+						#end
+					</div>
+				#end
+
+			<!--fenye-->
+			<div class="fenye">
+				#set($nextPage = $pageIndex + 1)
+				#set($prePage = $pageIndex - 1)
+				<a href="javascript:void(0)" onclick="prePage(0)" class="fy_l">首页</a>
+				<a href="javascript:void(0)" onclick="prePage($prePage)" class="fy_ll">上一页</a>
+				<a href="javascript:void(0)" class="fy_c">$!nextPage</a>
+				<a href="javascript:void(0)" onclick="nextPage($nextPage)" class="fy_rr">下一页</a>
+				<!--<a href="" class="fy_r">尾页</a>-->
+			</div>
+			#end
+		</div>
+		
+		
+		
+        </div>
+<script>
+$(function(){
+	var close=$(".close");
+	
+	close.on("click",off);
+	function off(){
+		window.close();
+	}
+});
+
+
+</script>
+</body>
+	
+#Html("end")

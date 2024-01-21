@@ -1,0 +1,285 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+	<input type="hidden" name="serialNameSearch" value="$!req.serialNameSearch" />
+	<input type="hidden" name="distributeTypeSearch" value="$!req.distributeTypeSearch" />
+	<input type="hidden" name="checkStatus" value="$!req.checkStatus" />
+	<input type="hidden" name="status" value="$!req.status" />
+</form>
+<div class="page unitBox">
+	<div class="pageHeader">
+    	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('redPacket/redPacketCheckIndex.htm')" id="check_myform" method="post">
+        	<div class="searchBar">
+                <table class="searchContent">
+        			<tr>
+						<td >
+        				<label>红包名称</label>
+						 <input type="text" id="serialNameSearch" name="serialNameSearch" value="$!req.serialNameSearch" style="float:left;width:100px;"/>
+						 
+        				<label>批次号</label>
+						 <input type="text" id="serialNoSearch" name="serialNoSearch" value="$!req.serialNoSearch" style="float:left;width:100px;" />
+						</td>
+						<td >
+        				<label>红包策略</label>
+						 <input type="text" id="policyTypeSearch" name="policyTypeSearch" value="$!req.policyTypeSearch" style="float:left;width:100px;" />
+						 
+						<label>发放方式</label>
+						<select name="distributeTypeSearch" id="distributeTypeSearch" style="float:left;width:160px;">
+							<option value="">所有</option>
+							<option value="MANUAL" #if("$!req.distributeTypeSearch"=="MANUAL") selected #end >手动发放 </option>
+							<option value="AUTO_NEW_USER" #if("$!req.distributeTypeSearch"=="AUTO_NEW_USER") selected #end >自动发放-新用户注册</option>
+							<option value="AUTO_BUY_FULL" #if("$!req.distributeTypeSearch"=="AUTO_BUY_FULL") selected #end >自动发放-投资满额</option>
+							<option value="AUTO_INVITE_FULL" #if("$!req.distributeTypeSearch"=="AUTO_INVITE_FULL") selected #end >自动发放-邀请满额</option>
+							<option value="318_GAME_OLD_USER" #if("$!req.distributeTypeSearch"=="318_GAME_OLD_USER") selected #end >自动发放-318摇一摇老用户</option>
+							<option value="EXCHANGE_4MALL" #if("$!req.distributeTypeSearch"=="EXCHANGE_4MALL") selected #end >自动发放-积分商城兑换</option>
+							<option value="BIRTHDAY_BENEFIT" #if("$!req.distributeTypeSearch"=="BIRTHDAY_BENEFIT") selected #end >自动发放-生日福利</option>
+						</select>
+						</td>
+						<td >
+							<label>审核状态</label>
+							<select name="checkStatus" id="checkStatus" style="float:left;width:60px;">
+    							<option value="">所有</option>
+    							<option value="UNCHECKED" #if("$!req.checkStatus"=="UNCHECKED") selected #end >待审核 </option>
+								<option value="PASS" #if("$!req.checkStatus"=="PASS") selected #end >已通过</option>
+								<option value="REFUSE" #if("$!req.checkStatus"=="REFUSE") selected #end >不通过</option>
+    						</select>
+                        </td>
+
+						</tr>
+						<tr>
+                       
+						<td >
+							<label>发放状态</label>
+							<select name="status" id="status" style="float:left;">
+    							<option value="">所有</option>
+    							<option value="NOT_GRANT" #if("$!req.status"=="NOT_GRANT") selected #end >未发放 </option>
+								<option value="GRANTING" #if("$!req.status"=="GRANTING") selected #end >发放中</option>
+								<option value="GRANT_OVER" #if("$!req.status"=="GRANT_OVER") selected #end >发放结束</option>
+								<option value="STOP" #if("$!req.status"=="STOP") selected #end >已停用</option>
+    						</select>
+							<label style="width:20px;">&nbsp</label>
+							<label>可用标的</label>
+							<select name="termLimitSearch" id="termLimitSearch" style="float:left;">
+    							<option value="">不限</option>
+								<option value="1," #if("$!req.termLimitSearch"=="1,") selected #end >1个月 </option>
+								<option value="3," #if("$!req.termLimitSearch"=="3,") selected #end >3个月</option>
+								<option value="6," #if("$!req.termLimitSearch"=="6,") selected #end >6个月</option>
+								<option value="12," #if("$!req.termLimitSearch"=="12,") selected #end >12个月</option>
+    						</select>
+        				</td>
+						<td >
+                       		<label>申请时间</label>
+                            <input type="text" id="applicantTimeStart" name="applicantTimeStart" value="$!req.applicantTimeStart" class="date" dateFmt="yyyy-MM-dd" readonly/>
+							至
+							<input type="text" id="applicantTimeEnd" name="applicantTimeEnd" value="$!req.applicantTimeEnd" class="date" dateFmt="yyyy-MM-dd" readonly/>
+						</td>	
+						<td >&nbsp
+                        </td>
+						</tr>
+						<tr>
+
+						<td >
+                       		<label>红包金额</label>
+                            <input type="text" id="amountMin" name="amountMin" value="$!req.amountMin" style="width:100px;" />
+							至
+							<input type="text" id="amountMax" name="amountMax" value="$!req.amountMax" style="width:100px;" />
+						</td>
+        				 <td >
+        					<div class="buttonActive">
+        						<div class="buttonContent">
+        							<button  onclick="searchFunction()" type="button">查询</button>
+        						</div>
+        					</div>
+        				 </td>
+                    </tr>
+        		</table>
+        	</div>
+    	</form>
+    </div>
+    <div class="pageContent">
+    	<table class="table" width="1396" layoutH="150">
+    		<thead>
+    			<tr>
+					<th width="5%">红包名称</th>
+					<th width="5%">红包策略</th>
+					<th width="6%">审核处理时间</th>
+    				<th width="3%">审核状态</th>
+					<th width="3%">审核人</th>
+					<th width="6%">批次号</th>
+    				<th width="5%">发放方式</th>
+					<th width="5%">限用标的</th>
+					<th width="4%">数量</th>
+					<th width="4%">使用条件</th>
+    				<th width="4%">红包金额</th>
+					<th width="4%">成本比例</th>
+    				<th width="4%">红包类型</th>
+    				<th width="6%">有效期</th>
+					<th width="4%">渠道个数</th>
+					<th width="4%">申请人</th>
+					<th width="6%">申请时间</th>
+					<th width="5%">预算来源</th>
+    				<th width="4%">发放状态</th>
+    				<th width="13%">操作</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			#foreach($grid in $dataGrid)
+				
+				#set($Integer = 0)
+				#set($termD=$Integer.parseInt($!grid.termLimit.split(",")[0]))
+    			<tr target="sid_user" rel="1">
+    				<td>$!grid.serialName</td>
+					<td>$!grid.policyType</td>
+    				<td>#if($!grid.checkStatus=="PASS" || $!grid.checkStatus=="REFUSE") $!date.format($!grid.updateTime) #else &nbsp #end</td>
+    				<td>#if($!grid.checkStatus =="UNCHECKED") 待审核   #elseif($!grid.checkStatus=="PASS") 已通过   #elseif($!grid.checkStatus=="REFUSE") 不通过   #else $!grid.checkStatus  #end   </td>
+					<td>$!grid.checkerName</td>
+					<td>$!grid.serialNo</td>
+    				<td>#if($!grid.distributeType =="MANUAL")  手动   
+							#elseif($!grid.distributeType =="AUTO" && $!grid.triggerType == 'NEW_USER')  自动-新用户注册    
+							#elseif($!grid.distributeType =="AUTO" && $!grid.triggerType == 'BUY_FULL')  自动-购买满额    
+							#elseif($!grid.distributeType =="AUTO" && $!grid.triggerType == 'INVITE_FULL')  自动-邀请满额     
+							#elseif($!grid.distributeType =="AUTO" && $!grid.triggerType == '318_GAME_OLD_USER')  自动-318摇一摇老用户  
+							#elseif($!grid.distributeType =="AUTO" && $!grid.triggerType == 'EXCHANGE_4MALL')  自动-积分商城兑换
+							#elseif($!grid.distributeType =="AUTO" && $!grid.triggerType == 'BIRTHDAY_BENEFIT')  自动-生日福利
+							#else $!grid.distributeType  #end</td>
+    				<td>$!grid.termLimit 天</td>
+					<td>$!grid.total</td>
+					<td>满$!number.format("0",  $!grid.full) 减 $!termD</td>
+					<td>$!number.format("0.00", $!grid.amount)</td>
+					<td>#if($!termD == "365") #set($newNum = $!grid.amount/$!grid.full  )#else  #set($newNum = $!grid.amount/$!grid.full*365/$!termD ) #end  <font color='red'> $!number.format("0.000", $!newNum)</font></td>
+					<td>#if($!grid.useCondition =="FULL_SUBTRACT")  满减包   #else $!grid.useCondition #end </td>
+					<td>#if($!grid.validTermType=="AFTER_RECEIVE") 获得后$!grid.availableDays 日  #elseif($!grid.validTermType=="FIXED")   $!date.formatYYYYMMDD($!grid.useTimeStart) 至  $!date.formatYYYYMMDD($!grid.useTimeEnd)    #else  $!date.formatYYYYMMDD($!grid.useTimeStart) 至  $!date.formatYYYYMMDD($!grid.useTimeEnd)  #end</td>
+					<td>#if(!$!grid.channelNum) 0 个   #else $!grid.channelNum 个  #end</td>
+					<td>$!grid.applicantName</td>
+					<td>$!date.format($!grid.createTime)</td>
+					<td>$!grid.rpName</td>
+					<td>$!grid.status</td>
+					<td>
+					#if($!grid.distributeType == 'MANUAL')
+					<a title="红包预览" target="navTab" href="$env.getWebURL('/redPacket/manualRedPocketCheckReview.htm?id=')$!grid.id" mask="true">红包预览</a> &nbsp&nbsp&nbsp 
+					#elseif($!grid.distributeType == 'AUTO')
+					<a title="红包预览" target="dialog" href="$env.getWebURL('/redPacket/autoRedPocketCheckReview.htm?id=')$!grid.id" height="665" width="720" mask="true">红包预览</a> &nbsp&nbsp&nbsp 
+					#else
+					&nbsp
+					#end
+						
+						
+					#if($!grid.checkStatus =="UNCHECKED")
+					<a title="通过" class='pass_a' onclick="click_a(this)" grid_id="$!grid.id" server_token="$!serverToken" href="javascript:void(0)" mask="true" url="$env.getWebURL('/redPacket/redPacketCheckPass.htm')">通过</a> &nbsp&nbsp&nbsp 
+					<a title="不通过" class='refuse_a' onclick="click_a(this)" grid_id="$!grid.id" href="javascript:void(0)" mask="true" url="$env.getWebURL('/redPacket/redPacketCheckRefuse.htm')">不通过</a>
+					#else
+					&nbsp
+					#end
+					</td>
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+    			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!count条</span>
+    	</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+    </div>
+    </div>
+	
+</div>
+	
+<script>  
+	function searchFunction(){
+				var applicantTimeStart = $("#applicantTimeStart").val();
+		var applicantTimeEnd = $("#applicantTimeEnd").val();
+		var amountMin = parseFloat($("#amountMin").val());
+		var amountMax = parseFloat($("#amountMax").val());
+		if(amountMin !== "" && !isNaN(amountMin)){
+			if(isNaN(amountMax) || amountMax == null || amountMax == undefined  || amountMax === "" ){
+				alertMsg.info('请输入红包金额上限');
+				return false;
+			}
+		}
+		
+		if(amountMax !== "" && !isNaN(amountMax)){
+			if(isNaN(amountMin) || amountMin === "" || amountMin == null || amountMin == undefined ){
+				alertMsg.info('请输入红包金额下限');
+				return false;
+			}
+		}
+		
+		if(amountMin !== "" && amountMax !== "" && !isNaN(amountMax) && !isNaN(amountMin)){
+    			if(amountMax<0 ||amountMin <0)
+            	{
+            		alertMsg.info("输入金额不能小于0！");
+            		return false;
+            	}
+        		
+            	if(amountMin > amountMax)
+            	{
+            		alertMsg.info("上限金额不能小于下限金额！");
+            		return false;
+            	}
+		}
+		
+		
+		
+		if(applicantTimeStart && applicantTimeStart != ""){
+			if(!applicantTimeEnd || applicantTimeEnd == ""){
+				alertMsg.info('请输入结束时间');
+				return false;
+			}
+		}
+		
+		if(applicantTimeEnd && applicantTimeEnd != ""){
+			if(!applicantTimeStart || applicantTimeStart == ""){
+				alertMsg.info('请输入开始时间');
+				return false;
+			}
+		}
+	
+		
+    	if(applicantTimeStart != "" && applicantTimeEnd != ""){
+    		var result = Date.parse(applicantTimeEnd.replace(/-/g,"/"))- Date.parse(applicantTimeStart.replace(/-/g,"/"));
+    		if(result < 0){
+    			alertMsg.info("开始时间不能在结束时间之后！！");
+    			return false;
+    		}
+    	}
+    	$("#check_myform").submit();
+    }
+	
+	function click_a(obj){
+            var $this = $(obj);
+            var title = $this.attr("title");
+                  alertMsg.confirm(title, {
+                        okCall: function(){
+                            jQuery.ajax({
+                            	url:$this.attr("url"),
+                            	data:{
+                            		id: $this.attr('grid_id'),
+									token: $this.attr('server_token')
+                            	},
+                            	type:'post',
+                            	success: function(data){
+									if(data.statusCode == '200'){
+										alertMsg.correct('操作成功！');
+                            			navTab.reload("$env.getWebURL('redPacket/redPacketCheckIndex.htm')");
+									}else{
+										alertMsg.error('操作失败!');
+                            			navTab.reload("$env.getWebURL('redPacket/redPacketCheckIndex.htm')");
+									}
+
+                            	}
+                            });
+                        }
+                  });
+	}	
+	
+      
+</script> 

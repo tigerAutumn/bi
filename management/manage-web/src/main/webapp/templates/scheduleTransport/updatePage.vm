@@ -1,0 +1,49 @@
+<div class="pageContent">
+	<form id="flashForm" method="post" action="$env.getWebURL('/scheduleTransport/update.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<div class="pageContent">
+	
+	<form id="flashForm" method="post" action="$env.getWebURL('/scheduleTransport/update.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<div class="pageFormContent nowrap" layoutH="97">
+			<input type="hidden" name="jobId" value="$!id" />
+            <input type="hidden" name="jobGroup" value="$!jobGroup" />
+			<dl>
+				<dt>执行表达式：</dt>
+				<dd>
+					<input type="text" id="cronExpression" name="cronExpression" size="30" class="required" maxlength="20" value="$!cronExpression" />
+				</dd>
+			</dl>
+			<dl>
+				<dt>任务描述：</dt>
+				<dd>
+					$!description
+				</dd>
+			</dl>
+				
+		</div>
+		<div class="formBar">
+			<ul style="float:left;">
+				<li><div class="buttonActive"><div class="buttonContent"><button onclick="formsubmint()" type="button">保存</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+	
+ <script>
+ function formsubmint(){
+ 
+ 	$("#flashForm").submit();
+ }
+ function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			navTab.closeCurrentTab();
+			alertMsg.correct(json.message);
+			navTab.reload("$env.getWebURL('/scheduleTransport/index.htm')");
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+ </script>

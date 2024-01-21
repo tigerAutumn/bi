@@ -1,0 +1,45 @@
+
+	#Hidden("APP_ROOT_PATH",$!env.getWebURL(''))
+	<form id="preForm" method="post" action="$env.getWebURL('/financial/bindCardPre.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<div class="pageFormContent nowrap">
+			<label style="width: 60px;">卡号：</label>
+			<input type="text" name="bankCardNo" id="bankCardNo"  readonly="readonly" value="4367421542007311880"/>
+			
+			<label style="width: 60px;">手机号：</label>
+			<input type="text" name="mobile"   id="mobile"  readonly="readonly"  value="15867163699"  style="margin-right: 40px;"/>
+			
+
+			<br><br>
+			<ul>
+				<li>
+					<div class="buttonActive" style="margin:30px;">
+						<div class="buttonContent">
+							<button onclick="formsubmint()" type="button">提交</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+
+            <br><br>
+			<div style="margin:45px;">
+				<font style="color: red; font-size:18px; font-weight:800">此功能用于测试资金充值前置绑卡，操作完后下架。</font>
+			</div>
+
+		</div>
+		
+	</form>
+
+<script>
+
+	function formsubmint(){
+		$("#preForm").submit();
+    }
+	function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			$.pdialog.open("$env.getWebURL('financial/bindCardConfirm.htm?bankCardNo="+$("#bankCardNo").val()+"&mobile="+$("#mobile").val()+"&transId="+json.transId+"')", 
+			"topUp", "输入验证码","width:100px,height:100px,max:true,mask:true,mixable:true,minable:true,resizable:true,drawable:true,fresh:true,close:”function”, param:”{msg:’message’}");
+		} else {
+			alertMsg.error('保存失败：'+json.message);
+		}
+	}
+</script>

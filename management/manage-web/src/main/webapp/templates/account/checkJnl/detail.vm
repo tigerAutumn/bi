@@ -1,0 +1,54 @@
+<style>
+#p_page p{ height:auto;}
+</style>
+<div class="pageContent">
+	<form method="post">
+		<div class="pageFormContent" id="p_page" layoutH="60">
+			<p>
+				<label style="width:110px;">编号:</label>
+				<input type="text" size="40" value="$!checkJnl.id" readonly="readonly"/>
+			</p>
+			<p>
+				<label style="width:110px;">记账流水号：</label>
+				<input type="text" size="40" value="$!checkJnl.transfJnlId" readonly="readonly"/>
+			</p>
+			<p>
+				<label style="width:110px;">对账时间：</label>
+				<input type="text" size="40" value="$!date.format($!checkJnl.time)" readonly="readonly"/>
+			</p>
+			<p>
+				<label style="width:110px;">系统金额：</label>
+				<input type="text" size="40" value="$!checkJnl.sysAmount" readonly="readonly"/>
+			</p>
+			<p>
+				<label style="width:110px;">对账金额：</label>
+				<input type="text" size="40" value="$!checkJnl.doneAmount" readonly="readonly"/>
+			</p>
+			<p>
+				<label style="width:110px;">对账结果：</label>
+				<input type="text" size="40" value="#if($!checkJnl.result==1) 账目符合 #elseif($!checkJnl.result==2) 账目不符 #elseif($!checkJnl.result==3) 第三方没有此账务 #elseif($!checkJnl.result==4) 第三方有，本系统未记录此账务 #end" readonly="readonly"/>
+			</p>
+			
+			<p>
+				<label style="width:110px;">对账信息:</label>
+				<input type="text" size="40" value="$!checkJnl.info" readonly="readonly"/>
+			</p>
+			<p>
+				<label style="width:110px;">用户编号：</label>
+				<input type="text" size="40" value="$!checkJnl.userId" readonly="readonly"/>
+			</p>
+			
+		
+			
+			#Hidden("id","$!checkJnl.id")
+			
+		</div>
+		<div class="formBar">
+			<ul>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">返回</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>

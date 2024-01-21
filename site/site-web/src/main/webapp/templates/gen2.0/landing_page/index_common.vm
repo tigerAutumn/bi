@@ -1,0 +1,195 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadGenCSS("/resources/gen2.0/styles/landing_page/default")
+#LoadGenCSS("/resources/gen2.0/styles/landing_page/pc_common")
+#LoadGenJS("/resources/gen2.0/scripts/landing_page/tools")
+#LoadGenJS("/resources/gen2.0/scripts/landing_page/placeholderfriend")
+#LoadGenJS("/resources/gen2.0/scripts/landing_page/landing_page_common")
+#LoadGenJS("/resources/gen2.0/scripts/landing_page/rotate")
+#parse("/regist_accountService_agreement.vm")
+#GenHead("end")
+	<body class="body">
+		<input type="hidden" id="agent_id" value="$!agentID"/>
+        <input type="hidden" id="mobileToken" name="mobileToken" value="$!mobileToken">
+        <input type="hidden" value="$!env.get('gen.server.web')/gen2.0/common/captcha/code?ts=" id="VALIDATE_PATH" />
+			#Gen2Header("home")
+		<div class="div_login" id="ly">
+		</div>
+		<div class="banner">
+			<div class="banner-content">
+				<div class="banner-register">
+					<h3 class="banner-title">快速注册</h3>
+					<div class="banner-common">
+						<div class="banner-input">
+							<form id="generalForm" name=forms action="$!env.get('gen.server.web')/gen2.0/user/register_submit" method="post">
+								<div class="banner-box">
+									<div class="banner-img"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/banner-phone.png" /></div>
+									<input type="text" name="mobile" id="mobile" placeholder="手机号码" class="input-focus" oninput="FormCheckUtil.onlyInteger(this)" maxlength=11/>
+								</div>
+								<div class="banner-box">
+									<div class="banner-img"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/banner-password.png" /></div>
+									<input type="password" name="password" size="20" class="input" placeholder="密码由6-16位字符(字母+数字)" id="pwd" maxlength=16>
+								</div>
+
+                                <div class="yzm">
+                                    <div class="banner-yzm">
+                                        <div class="banner-img"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/banner-yzm.png" /></div>
+                                        <input type="text" placeholder="图片验证码" class="input" name="verCode" id="verCode" oninput="FormCheckUtil.onlyInteger(this)" maxlength=4/>
+                                    </div>
+                                    <img id="validateImg" class="banner-btn" src="$!env.get('gen.server.web')/gen2.0/common/captcha/code?ts=" width="80" height="30" onclick="change()" alt="点击切换验证码">
+								</div>
+
+								<div class="yzm">
+									<div class="banner-yzm">
+										<div class="banner-img"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/banner-yzm.png" /></div>
+										<input type="text" placeholder="手机验证码" class="input" name="mobileCode" id="mobileCode" oninput="FormCheckUtil.onlyInteger(this)" maxlength=4/>
+									</div>
+									<div class="banner-btn">
+										<a href="#" class="banner-btna" id="sendCode" count="60">发送验证码</a>
+									</div>
+								</div>
+								<div class="banner-register-btn">
+									<input type="button" id="register_btn" class="banner-register-btna" style="cursor:pointer;" value="注册领318红包" />
+								</div>
+								<div class="banner-register-Agreement">
+									注册即视为同意
+									<a href="javascript:void(0)" name="agree_register_div" class="banner-register-Agreementa">《注册账户服务协议》</a>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--main-->
+		<div class="main-content">
+			<div class="main_num">
+				<div class="num_top">
+					<div class="num_t1"><span class="numspan1">平台累计成交额：</span><i class="numi">$!string.substringBefore($!money.format($math.toInteger($!currTotalAmount)), ".00")</i><span class="numspan1 numspan2">元</span></div>
+					<div class="num_t2"><span class="numspan1">为用户赚取了：</span><i class="numi">$!totalInterest</i><span class="numspan1 numspan2">元</span></div>
+					<div class="num_t3"><span class="numspan1">平台已安全运营：</span><i class="numi operate_days"></i><span class="numspan1 numspan2">天</span></div>
+				</div>
+				<div class="num_down">
+					<div class="num_d1">
+						<div class="d1_left1">
+						</div>
+						<div class="dl_l1"></div>
+						<div class="d1_right">
+							<div class="d1_r1">国资背景</div>
+							<div class="d1_r2">杭商资产  倾力打造</div>
+						</div>
+					</div>
+					<div class="num_d1">
+						<div class="d1_left2">
+						</div>
+						<div class="dl_l2"></div>
+						<div class="d1_right">
+							<div class="d1_r1">资金托管</div>
+							<div class="d1_r2">宝付支付  联合托管</div>
+						</div>
+					</div>
+					<div class="num_d1">
+						<div class="d1_left3" style="transform: rotate(207deg); transform-origin: 50% 50% 0px;">
+						</div>
+						<div class="dl_l3"></div>
+						<div class="d1_right">
+							<div class="d1_r1">高收益</div>
+							<div class="d1_r2">年化收益  高达10.5%</div>
+						</div>
+					</div>
+					<div class="num_d1">
+						<div class="d1_left4">
+						</div>
+						<div class="dl_l4"></div>
+						<div class="d1_right">
+							<div class="d1_r1">灵活可靠</div>
+							<div class="d1_r2">百元起投  次日起息</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="main-product">
+				<h3 class="main-title">我们的产品</h3>
+				<div class="main-product-lists">
+					<div class="main-plist">
+						<div class="main-plist-title">预期年化收益</div>
+						<div class="main-plist-Proportion">7.0<span class="main-plist-Proportionspan">%</span></div>
+						<div class="main-plist-date">30天投资期限</div>
+						<div class="main-plist-btn"><a href="$!env.get('gen.server.web')/gen2.0/regular/list" class="main-plist-btna">立即购买</a></div>
+					</div>
+					<div class="main-plist">
+						<div class="main-plist-title">预期年化收益</div>
+						<div class="main-plist-Proportion">8.0<span class="main-plist-Proportionspan">%</span></div>
+						<div class="main-plist-date">90天投资期限</div>
+						<div class="main-plist-btn"><a href="$!env.get('gen.server.web')/gen2.0/regular/list" class="main-plist-btna">立即购买</a></div>
+					</div>
+					<div class="main-plist">
+						<div class="main-plist-title">预期年化收益</div>
+						<div class="main-plist-Proportion">9.0<span class="main-plist-Proportionspan">%</span></div>
+						<div class="main-plist-date">180天投资期限</div>
+						<div class="main-plist-btn"><a href="$!env.get('gen.server.web')/gen2.0/regular/list" class="main-plist-btna">立即购买</a></div>
+					</div>
+					<div class="main-plist">
+						<div class="main-plist-title">预期年化收益</div>
+						<div class="main-plist-Proportion">10.5<span class="main-plist-Proportionspan">%</span></div>
+						<div class="main-plist-date">365天投资期限</div>
+						<div class="main-plist-btn"><a href="$!env.get('gen.server.web')/gen2.0/regular/list" class="main-plist-btna">立即购买</a></div>
+					</div>
+				</div>
+			</div>
+			<div class="main-Partner">
+				<h3 class="main-title">合作伙伴</h3>
+				<div class="main-Partner-lists">
+					<div class="main-Partner-img"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/dfcf.png" class="main-Partner-img1"/></div>
+					<div class="main-Partner-img"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/pay.png" class="main-Partner-img2"/></div>
+					<div class="main-Partner-img"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/dskb.png" class="main-Partner-img3"/></div>
+					<div class="main-Partner-img"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/sym.png" class="main-Partner-img4"/></div>
+					<div class="main-Partner-img"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/qjwb.png" class="main-Partner-img5"/></div>
+					<div class="main-Partner-img"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/cfca.png" class="main-Partner-img6"/></div>
+				</div>
+			</div>
+		</div>
+		<!--footer-->
+		<div class="footer1">
+			<div class="footer-em">
+				<div class="footer-em-content">
+					<div class="footer-em-box">
+						<img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/appem.png" class="footer-em-img"/>
+						<p>手机客户端下载</p>
+					</div>
+					<div class="footer-em-box footer-em-box1">
+						<img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/wxem.jpg" class="footer-em-img"/>
+						<p>微信关注币港湾</p>
+					</div>
+				</div>
+			</div>
+			<div class="footer-number">400-806-1230</div>
+			<div class="footer-date">客服电话(工作日9:00-18:00)</div>
+			<div class="footer-date footer-dateborder">最终解释权归币港湾所有</div>
+			<div class="footer-date1">温馨提示：理财有风险，投资需谨慎。</div>
+			<div class="footer-date1">杭州币港湾科技有限公司版权所有   浙ICP备15004803号-1   浙ICP证B2-20160720   浙公网安备33010402002677号</div>
+			<div class="foot_dleft1">
+                <a href="javascript:;" class="footer-a" > 
+                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/footer1.png">
+                </a>
+                <a href="javascript:;"  class="footer-a" >
+                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/footer2.png">
+                </a>
+                <a href="javascript:;"  class="footer-a" >
+                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/footer3.png">
+                </a>
+                <a  href="javascript:;" class="footer-a" >
+                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/footer4.png">
+                </a>
+                 <a  href="javascript:;" class="footer-a" >
+                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/footer5.png">
+                </a>
+                <a  href="javascript:;" class="footer-a" >
+                    <img src="$!env.get('gen.server.web')/resources/gen2.0/images/landing_page/footer6.png">
+                </a>
+            </div>
+		</div>		
+		
+	</body>
+#Html("end")

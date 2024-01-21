@@ -1,0 +1,114 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('app/notice/index.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+		
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						名称：<input id="name" type="text" name="name" maxlength="11" value="$!req.name"/>
+					</td>
+					<td>
+						标题：<input id="title" type="text" name="title" maxlength="20" value="$!req.title" />
+					</td>
+					<td>
+						发送端口：
+						<select name="releasePart" class="valid">
+        					<option value="1" #if("$!req.releasePart"=="1") selected  #end>币港湾</option>
+        					##<option value="2" #if("$!req.releasePart"=="2") selected  #end>钱报币港湾</option>
+							##<option value="3" #if("$!req.releasePart"=="3") selected  #end>全部</option>
+        				</select>
+					
+						状态：
+						<select name="isSend" >
+                        	<option value="0" #if("$!req.isSend"=="0") selected  #end>全部</option>
+        					<option value="1" #if("$!req.isSend"=="1") selected  #end>已发送</option>
+        					<option value="2" #if("$!req.isSend"=="2") selected  #end>未发送</option>
+                        </select>
+					</td>
+					<td>
+						<button   type="submit">查询</button>
+					</td>
+				</tr>
+			</table>
+	
+	</div>
+	</form>
+</div>
+
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="$env.getWebURL('/app/notice/add_notice_page.htm')" target="dialog" mask="true" rel="createBack" height="550"><span>新增</span></a></li>
+		</ul>
+	</div>
+	<table class="table" width="1082" layoutH="138">
+		<thead>
+			<tr>
+				<th width="10%">名称</th>
+				<th width="10%">标题</th>
+				<th width="28%">摘要</th>
+				<th width="7%">发送端口</th>
+				<th width="5%">状态</th>
+				<th width="12%">创建时间</th>
+				<th width="12%">发送时间</th>
+				<th width="6%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($notice in $notices)
+					
+			<tr target="sid_user" rel="1">
+				<td>$!notice.name</td>	
+				<td>$!notice.title</td>	
+				<td>$!notice.pushAbstract</td>	
+				<td>#if($!notice.releasePart == 1) 币港湾  #elseif($!notice.releasePart == 2) 钱报币港湾  #else 全部  #end</td>	
+				<td>#if($!notice.isSend == 1) 已发送  #else 未发送  #end</td>	
+				<td>$!date.format($!notice.createTime)</td>
+				<td>$!date.format($!notice.pushTime)</td>
+				<td>
+					<a title="查看" class="btnLook" href="$env.getWebURL('/app/notice/detail.htm')?id=$!notice.id" target="dialog" mask="true" height="500"><span>查看</span></a>
+					#if($!notice.isSend == 2)
+						<a title="确认删除当前通知？" name="delnotice" target="ajaxTodo" href="$env.getWebURL('/app/notice/deleteNotice.htm')?id=$!notice.id" class="btnDel">删除通知</a>
+					#end
+				</td>	
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+	<script>
+	function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			alertMsg.correct(json.message);
+			navTab.closeCurrentTab();
+			navTab.reload("$env.getWebURL('/app/notice/index.htm')");
+		} else {
+			alertMsg.error(json.message);
+		}
+	}
+	</script>

@@ -1,0 +1,54 @@
+<div class="invite_ifo_list_title">
+    <ul class="clearfix">
+        <li>好友</li>
+        <li>注册时间</li>
+        <li>加入项目状态</li>
+    </ul>
+</div>
+
+#foreach($!grid in $!bsUserList)
+<div class="invite_ifo_card">
+	<ul class="clearfix">
+		<li>
+		$!string.left($!grid.mobile,3)****$!string.right($!grid.mobile, 4)
+		</li>
+		<li>$!date.format($!grid.registerTime)</li>
+		<li class="income">#if($!grid.firstBuyTime)已加入 #else 暂未加入 #end</li>
+	</ul>
+</div>
+#end
+
+
+
+<div class="fenye">
+    <div class="fenye_wrap">
+		#set($nextPage = $recommendPageIndex + 1)
+		#set($nextSecondPage = $recommendPageIndex + 2)
+		#set($prePage = $recommendPageIndex - 1)
+		#set($preSecondPage = $recommendPageIndex - 2)
+		#set($totalPage = $recommendTotalCount)
+        <a href="javascript:void(0)" onclick="prePage(1, '$!req.status')" class="fy_l">首页</a>
+        <a href="javascript:void(0)" onclick="prePage($prePage, '$!req.status')" class="fy_ll"></a>
+		#if($!prePage > 0)
+			#if($!preSecondPage > 0 && $!nextPage > $totalPage)
+                <a href="javascript:void(0)" onclick="prePage($preSecondPage, '$!req.status')" class="fy_c">$!preSecondPage</a>
+			#end
+            <a href="javascript:void(0)" onclick="prePage($prePage, '$!req.status')" class="fy_c">$!prePage</a>
+            <a href="javascript:void(0)" class="fy_c fy_atpage">$!recommendPageIndex</a>
+			#if($!nextPage <= $totalPage)
+                <a href="javascript:void(0)" onclick="nextPage($nextPage, '$!req.status')" class="fy_c">$!nextPage</a>
+			#end
+		#else
+            <a href="javascript:void(0)" class="fy_c fy_atpage">$!recommendPageIndex</a>
+			#if($!nextPage <= $totalPage)
+                <a href="javascript:void(0)" onclick="nextPage($nextPage, '$!req.status')" class="fy_c">$!nextPage</a>
+			#end
+			#if($!nextSecondPage <= $totalPage)
+                <a href="javascript:void(0)" onclick="nextPage($nextSecondPage, '$!req.status')" class="fy_c">$!nextSecondPage</a>
+			#end
+		#end
+        <a href="javascript:void(0)" onclick="nextPage($nextPage, '$!req.status')" class="fy_rr"></a>
+        <a href="javascript:void(0)" onclick="nextPage($totalPage, '$!req.status')" class="fy_r">尾页</a>
+    </div>
+</div>
+

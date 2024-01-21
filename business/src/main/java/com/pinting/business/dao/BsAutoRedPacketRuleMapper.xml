@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsAutoRedPacketRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsAutoRedPacketRule" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="serial_no" property="serialNo" jdbcType="VARCHAR" />
+    <result column="agent_ids" property="agentIds" jdbcType="VARCHAR" />
+    <result column="trigger_type" property="triggerType" jdbcType="VARCHAR" />
+    <result column="valid_term_type" property="validTermType" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="trigger_amount_start" property="triggerAmountStart" jdbcType="DOUBLE" />
+    <result column="trigger_amount_end" property="triggerAmountEnd" jdbcType="DOUBLE" />
+    <result column="trigger_invite_num" property="triggerInviteNum" jdbcType="INTEGER" />
+    <result column="distribute_time_start" property="distributeTimeStart" jdbcType="TIMESTAMP" />
+    <result column="distribute_time_end" property="distributeTimeEnd" jdbcType="TIMESTAMP" />
+    <result column="available_days" property="availableDays" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  
+   <resultMap id="AutoRedPacketReviewVOMap" extends="BaseResultMap" type="com.pinting.business.model.vo.AutoRedPocketReviewVO"  >
+	    <result column="serial_name" property="serialName" jdbcType="VARCHAR" />
+	   	<result column="full" property="full" jdbcType="DOUBLE" />
+	   	<result column="apply_no" property="applyNo" jdbcType="DOUBLE" />
+	    <result column="subtract" property="subtract" jdbcType="DOUBLE" />
+	    <result column="use_time_start" property="useTimeStart" jdbcType="TIMESTAMP" />
+	    <result column="use_time_end" property="useTimeEnd" jdbcType="TIMESTAMP" />
+   	    <result column="total" property="total" jdbcType="INTEGER" />
+   	    <result column="notify_channel" property="notifyChannel" jdbcType="VARCHAR" />
+   	    <result column="rp_name" property="rpName" jdbcType="VARCHAR" />
+   		<result column="applicant_name" property="applicantName" jdbcType="VARCHAR" />
+   		<result column="amount" property="amount" jdbcType="DOUBLE" />
+   		<result column="use_condition" property="useCondition" jdbcType="VARCHAR" />
+   		<result column="term_limit" property="termLimit" jdbcType="VARCHAR" />
+    	<result column="note" property="note" jdbcType="VARCHAR" />
+    	 <result column="policy_type" property="policyType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, serial_no, agent_ids, trigger_type, valid_term_type, status, trigger_amount_start, 
+    trigger_amount_end, trigger_invite_num, distribute_time_start, distribute_time_end, 
+    available_days, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsAutoRedPacketRuleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_auto_red_packet_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_auto_red_packet_rule
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_auto_red_packet_rule
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsAutoRedPacketRuleExample" >
+    delete from bs_auto_red_packet_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsAutoRedPacketRule" >
+    insert into bs_auto_red_packet_rule (id, serial_no, agent_ids, 
+      trigger_type, valid_term_type, status, 
+      trigger_amount_start, trigger_amount_end, trigger_invite_num, 
+      distribute_time_start, distribute_time_end, 
+      available_days, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{serialNo,jdbcType=VARCHAR}, #{agentIds,jdbcType=VARCHAR}, 
+      #{triggerType,jdbcType=VARCHAR}, #{validTermType,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{triggerAmountStart,jdbcType=DOUBLE}, #{triggerAmountEnd,jdbcType=DOUBLE}, #{triggerInviteNum,jdbcType=INTEGER}, 
+      #{distributeTimeStart,jdbcType=TIMESTAMP}, #{distributeTimeEnd,jdbcType=TIMESTAMP}, 
+      #{availableDays,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsAutoRedPacketRule" >
+    insert into bs_auto_red_packet_rule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="serialNo != null" >
+        serial_no,
+      </if>
+      <if test="agentIds != null" >
+        agent_ids,
+      </if>
+      <if test="triggerType != null" >
+        trigger_type,
+      </if>
+      <if test="validTermType != null" >
+        valid_term_type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="triggerAmountStart != null" >
+        trigger_amount_start,
+      </if>
+      <if test="triggerAmountEnd != null" >
+        trigger_amount_end,
+      </if>
+      <if test="triggerInviteNum != null" >
+        trigger_invite_num,
+      </if>
+      <if test="distributeTimeStart != null" >
+        distribute_time_start,
+      </if>
+      <if test="distributeTimeEnd != null" >
+        distribute_time_end,
+      </if>
+      <if test="availableDays != null" >
+        available_days,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="serialNo != null" >
+        #{serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="agentIds != null" >
+        #{agentIds,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerType != null" >
+        #{triggerType,jdbcType=VARCHAR},
+      </if>
+      <if test="validTermType != null" >
+        #{validTermType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerAmountStart != null" >
+        #{triggerAmountStart,jdbcType=DOUBLE},
+      </if>
+      <if test="triggerAmountEnd != null" >
+        #{triggerAmountEnd,jdbcType=DOUBLE},
+      </if>
+      <if test="triggerInviteNum != null" >
+        #{triggerInviteNum,jdbcType=INTEGER},
+      </if>
+      <if test="distributeTimeStart != null" >
+        #{distributeTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="distributeTimeEnd != null" >
+        #{distributeTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="availableDays != null" >
+        #{availableDays,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsAutoRedPacketRuleExample" resultType="java.lang.Integer" >
+    select count(*) from bs_auto_red_packet_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_auto_red_packet_rule
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.serialNo != null" >
+        serial_no = #{record.serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agentIds != null" >
+        agent_ids = #{record.agentIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.triggerType != null" >
+        trigger_type = #{record.triggerType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.validTermType != null" >
+        valid_term_type = #{record.validTermType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.triggerAmountStart != null" >
+        trigger_amount_start = #{record.triggerAmountStart,jdbcType=DOUBLE},
+      </if>
+      <if test="record.triggerAmountEnd != null" >
+        trigger_amount_end = #{record.triggerAmountEnd,jdbcType=DOUBLE},
+      </if>
+      <if test="record.triggerInviteNum != null" >
+        trigger_invite_num = #{record.triggerInviteNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.distributeTimeStart != null" >
+        distribute_time_start = #{record.distributeTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.distributeTimeEnd != null" >
+        distribute_time_end = #{record.distributeTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.availableDays != null" >
+        available_days = #{record.availableDays,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_auto_red_packet_rule
+    set id = #{record.id,jdbcType=INTEGER},
+      serial_no = #{record.serialNo,jdbcType=VARCHAR},
+      agent_ids = #{record.agentIds,jdbcType=VARCHAR},
+      trigger_type = #{record.triggerType,jdbcType=VARCHAR},
+      valid_term_type = #{record.validTermType,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      trigger_amount_start = #{record.triggerAmountStart,jdbcType=DOUBLE},
+      trigger_amount_end = #{record.triggerAmountEnd,jdbcType=DOUBLE},
+      trigger_invite_num = #{record.triggerInviteNum,jdbcType=INTEGER},
+      distribute_time_start = #{record.distributeTimeStart,jdbcType=TIMESTAMP},
+      distribute_time_end = #{record.distributeTimeEnd,jdbcType=TIMESTAMP},
+      available_days = #{record.availableDays,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsAutoRedPacketRule" >
+    update bs_auto_red_packet_rule
+    <set >
+      <if test="serialNo != null" >
+        serial_no = #{serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="agentIds != null" >
+        agent_ids = #{agentIds,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerType != null" >
+        trigger_type = #{triggerType,jdbcType=VARCHAR},
+      </if>
+      <if test="validTermType != null" >
+        valid_term_type = #{validTermType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerAmountStart != null" >
+        trigger_amount_start = #{triggerAmountStart,jdbcType=DOUBLE},
+      </if>
+      <if test="triggerAmountEnd != null" >
+        trigger_amount_end = #{triggerAmountEnd,jdbcType=DOUBLE},
+      </if>
+      <if test="triggerInviteNum != null" >
+        trigger_invite_num = #{triggerInviteNum,jdbcType=INTEGER},
+      </if>
+      <if test="distributeTimeStart != null" >
+        distribute_time_start = #{distributeTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="distributeTimeEnd != null" >
+        distribute_time_end = #{distributeTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="availableDays != null" >
+        available_days = #{availableDays,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsAutoRedPacketRule" >
+    update bs_auto_red_packet_rule
+    set serial_no = #{serialNo,jdbcType=VARCHAR},
+      agent_ids = #{agentIds,jdbcType=VARCHAR},
+      trigger_type = #{triggerType,jdbcType=VARCHAR},
+      valid_term_type = #{validTermType,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      trigger_amount_start = #{triggerAmountStart,jdbcType=DOUBLE},
+      trigger_amount_end = #{triggerAmountEnd,jdbcType=DOUBLE},
+      trigger_invite_num = #{triggerInviteNum,jdbcType=INTEGER},
+      distribute_time_start = #{distributeTimeStart,jdbcType=TIMESTAMP},
+      distribute_time_end = #{distributeTimeEnd,jdbcType=TIMESTAMP},
+      available_days = #{availableDays,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="autoRedPocketReview" resultMap="AutoRedPacketReviewVOMap" parameterType="java.util.Map" >
+  	SELECT 
+	a.serial_name,a.`full`,a.subtract,b.agent_ids,
+	b.trigger_type,b.trigger_amount_start,b.trigger_amount_end,
+	b.trigger_invite_num,b.distribute_time_start,b.distribute_time_end,
+	b.valid_term_type,b.available_days,a.use_time_start,a.use_time_end,
+	a.total,a.notify_channel,c.`name` applicant_name,d.rp_name,a.amount,
+	a.use_condition,a.term_limit,a.note,a.policy_type
+	FROM
+	bs_red_packet_check a	
+	LEFT JOIN m_user c ON a.applicant = c.id
+	LEFT JOIN bs_red_packet_apply d ON a.apply_no = d.apply_no, 
+	bs_auto_red_packet_rule b
+	WHERE a.serial_no = b.serial_no
+  	and a.id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectNewAutoRedPacket" resultMap="AutoRedPacketReviewVOMap" parameterType="java.util.Map" >
+  	SELECT 
+	a.serial_name,a.`full`,a.subtract,b.agent_ids,a.apply_no,
+	b.trigger_type,b.trigger_amount_start,b.trigger_amount_end,
+	b.trigger_invite_num,b.distribute_time_start,b.distribute_time_end,
+	b.valid_term_type,b.available_days,a.use_time_start,a.use_time_end,
+	a.total,a.notify_channel,c.`name` applicant_name,d.rp_name,a.amount,
+	a.use_condition,a.term_limit,a.note,a.policy_type
+	FROM
+	bs_red_packet_check a	
+	LEFT JOIN m_user c ON a.applicant = c.id
+	LEFT JOIN bs_red_packet_apply d ON a.apply_no = d.apply_no, 
+	bs_auto_red_packet_rule b
+	WHERE a.serial_no = b.serial_no and a.distribute_type = 'AUTO'
+  	order by a.create_time desc limit 1
+  </select>
+  
+  <select id="selectPassRedPackerRuleInfo" resultType="com.pinting.business.model.vo.RedPacketInfoGrantVO" parameterType="Map">
+   	SELECT * FROM (
+		select a.*, b.apply_no, b.total, b.notify_channel, b.amount, b.use_time_start, b.use_time_end, IFNULL(COUNT(c.id),0) send_count, b.total-IFNULL(COUNT(c.id),0) as left_count
+			from
+			(select valid_term_type, available_days, agent_ids, id as ruleId, distribute_time_end,distribute_time_start,trigger_type,serial_no 
+				from bs_auto_red_packet_rule 
+				where trigger_type= #{triggerType}
+				and `status`='AVAILABLE' and (NOW() between distribute_time_start and distribute_time_end)
+			)a,bs_red_packet_check b
+		LEFT JOIN bs_red_packet_info c on c.serial_no = b.serial_no
+			where b.serial_no = a.serial_no and b.distribute_type='AUTO' and b.check_status='PASS'
+		GROUP BY a.ruleId)t
+	ORDER BY t.left_count asc
+  </select>
+
+  <select id="selectRedPackerRuleLeftCount" resultType="java.lang.Integer" parameterType="Map">
+   		SELECT b.total-IFNULL(COUNT(c.id),0) as left_count
+			FROM
+			(select id,serial_no 
+				from bs_auto_red_packet_rule 
+				where trigger_type= #{triggerType}
+				and `status`='AVAILABLE' and (#{time} between distribute_time_start and distribute_time_end)
+			)a,bs_red_packet_check b
+		LEFT JOIN bs_red_packet_info c on c.serial_no = b.serial_no
+			where b.serial_no = a.serial_no and b.distribute_type='AUTO' and b.check_status='PASS'
+		GROUP BY a.id
+		ORDER BY left_count asc limit 1
+  </select>
+  
+</mapper>

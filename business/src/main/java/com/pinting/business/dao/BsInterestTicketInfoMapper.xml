@@ -1,0 +1,758 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsInterestTicketInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsInterestTicketInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="serial_no" property="serialNo" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="ticket_apr" property="ticketApr" jdbcType="DOUBLE" />
+    <result column="auth_account_id" property="authAccountId" jdbcType="INTEGER" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="interest_amount" property="interestAmount" jdbcType="DOUBLE" />
+    <result column="use_time" property="useTime" jdbcType="TIMESTAMP" />
+    <result column="use_time_start" property="useTimeStart" jdbcType="TIMESTAMP" />
+    <result column="use_time_end" property="useTimeEnd" jdbcType="TIMESTAMP" />
+    <result column="msg_status" property="msgStatus" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, serial_no, user_id, status, ticket_apr, auth_account_id, order_no, interest_amount,
+    use_time, use_time_start, use_time_end, msg_status, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsInterestTicketInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_interest_ticket_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from bs_interest_ticket_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_interest_ticket_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsInterestTicketInfoExample" >
+    delete from bs_interest_ticket_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsInterestTicketInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bs_interest_ticket_info (serial_no, user_id, status,
+      ticket_apr, auth_account_id, order_no,
+      interest_amount, use_time, use_time_start,
+      use_time_end, msg_status, create_time,
+      update_time)
+    values (#{serialNo,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR},
+      #{ticketApr,jdbcType=DOUBLE}, #{authAccountId,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR},
+      #{interestAmount,jdbcType=DOUBLE}, #{useTime,jdbcType=TIMESTAMP}, #{useTimeStart,jdbcType=TIMESTAMP},
+      #{useTimeEnd,jdbcType=TIMESTAMP}, #{msgStatus,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsInterestTicketInfo" useGeneratedKeys="true" keyProperty="id">
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bs_interest_ticket_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="serialNo != null" >
+        serial_no,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="ticketApr != null" >
+        ticket_apr,
+      </if>
+      <if test="authAccountId != null" >
+        auth_account_id,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="interestAmount != null" >
+        interest_amount,
+      </if>
+      <if test="useTime != null" >
+        use_time,
+      </if>
+      <if test="useTimeStart != null" >
+        use_time_start,
+      </if>
+      <if test="useTimeEnd != null" >
+        use_time_end,
+      </if>
+      <if test="msgStatus != null" >
+        msg_status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="serialNo != null" >
+        #{serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketApr != null" >
+        #{ticketApr,jdbcType=DOUBLE},
+      </if>
+      <if test="authAccountId != null" >
+        #{authAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="interestAmount != null" >
+        #{interestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="useTime != null" >
+        #{useTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useTimeStart != null" >
+        #{useTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useTimeEnd != null" >
+        #{useTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="msgStatus != null" >
+        #{msgStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsInterestTicketInfoExample" resultType="java.lang.Integer" >
+    select count(*) from bs_interest_ticket_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_interest_ticket_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.serialNo != null" >
+        serial_no = #{record.serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ticketApr != null" >
+        ticket_apr = #{record.ticketApr,jdbcType=DOUBLE},
+      </if>
+      <if test="record.authAccountId != null" >
+        auth_account_id = #{record.authAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderNo != null" >
+        order_no = #{record.orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interestAmount != null" >
+        interest_amount = #{record.interestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.useTime != null" >
+        use_time = #{record.useTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.useTimeStart != null" >
+        use_time_start = #{record.useTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.useTimeEnd != null" >
+        use_time_end = #{record.useTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.msgStatus != null" >
+        msg_status = #{record.msgStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_interest_ticket_info
+    set id = #{record.id,jdbcType=INTEGER},
+      serial_no = #{record.serialNo,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      ticket_apr = #{record.ticketApr,jdbcType=DOUBLE},
+      auth_account_id = #{record.authAccountId,jdbcType=INTEGER},
+      order_no = #{record.orderNo,jdbcType=VARCHAR},
+      interest_amount = #{record.interestAmount,jdbcType=DOUBLE},
+      use_time = #{record.useTime,jdbcType=TIMESTAMP},
+      use_time_start = #{record.useTimeStart,jdbcType=TIMESTAMP},
+      use_time_end = #{record.useTimeEnd,jdbcType=TIMESTAMP},
+      msg_status = #{record.msgStatus,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsInterestTicketInfo" >
+    update bs_interest_ticket_info
+    <set >
+      <if test="serialNo != null" >
+        serial_no = #{serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketApr != null" >
+        ticket_apr = #{ticketApr,jdbcType=DOUBLE},
+      </if>
+      <if test="authAccountId != null" >
+        auth_account_id = #{authAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="interestAmount != null" >
+        interest_amount = #{interestAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="useTime != null" >
+        use_time = #{useTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useTimeStart != null" >
+        use_time_start = #{useTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useTimeEnd != null" >
+        use_time_end = #{useTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="msgStatus != null" >
+        msg_status = #{msgStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsInterestTicketInfo" >
+    update bs_interest_ticket_info
+    set serial_no = #{serialNo,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      ticket_apr = #{ticketApr,jdbcType=DOUBLE},
+      auth_account_id = #{authAccountId,jdbcType=INTEGER},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      interest_amount = #{interestAmount,jdbcType=DOUBLE},
+      use_time = #{useTime,jdbcType=TIMESTAMP},
+      use_time_start = #{useTimeStart,jdbcType=TIMESTAMP},
+      use_time_end = #{useTimeEnd,jdbcType=TIMESTAMP},
+      msg_status = #{msgStatus,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <resultMap id="InterestTicketInfoVOMap" type="com.pinting.business.model.vo.InterestTicketInfoVO" >
+    <id column = "id" property = "id" jdbcType = "INTEGER" />
+    <result column = "user_id" property = "userId" jdbcType = "INTEGER" />
+    <result column = "serial_name" property = "serialName" jdbcType = "VARCHAR" />
+    <result column = "full" property = "full" jdbcType = "DOUBLE" />
+    <result column = "term_limit" property = "termLimit" jdbcType = "VARCHAR" />
+    <result column = "product_limit" property = "productLimit" jdbcType = "VARCHAR" />
+    <result column = "rate" property = "rate" jdbcType = "DOUBLE" />
+    <result column = "term" property = "term" jdbcType = "INTEGER" />
+    <result column = "interest" property = "interest" jdbcType = "DOUBLE" />
+    <result column = "use_time_start" property = "useTimeStart" jdbcType = "TIMESTAMP" />
+    <result column = "use_time_end" property = "useTimeEnd" jdbcType = "TIMESTAMP" />
+    <result column = "use_time" property = "useTime" jdbcType = "TIMESTAMP" />
+    <result column = "product_name" property = "productName" jdbcType = "VARCHAR" />
+    <result column = "status" property = "status" jdbcType = "VARCHAR" />
+    <result column = "is_support_incr_interest" property = "isSupportIncrInterest" jdbcType = "VARCHAR" />
+  </resultMap>
+  <!-- 优惠多 > 优惠一样 > 先到期 > 后到期 -->
+  <select id="selectBuyTicketINITList" resultMap="InterestTicketInfoVOMap" parameterType="java.util.Map" >
+    select a.id, a.user_id, b.serial_name, d.invest_limit as full, concat('限', d.term_limit, '天产品使用') as term_limit,
+      d.product_limit, d.ticket_apr as rate, a.use_time_start, a.use_time_end, a.`status`, e.term, e.is_support_incr_interest,
+      <if test="amount != null and amount > 0">
+        ROUND(#{amount} * IFNULL(d.ticket_apr,0) * IFNULL(e.term,0)/ 36500,2) as interest
+      </if>
+      <if test="amount == null or amount &lt;= 0">
+        0 as interest
+      </if>
+    from (
+      select a.id, a.serial_no, a.user_id,a.use_time_start, a.use_time_end, a.`status` from bs_interest_ticket_info a
+      where a.`status` = 'INIT' and a.use_time_end >= NOW() AND a.use_time_start &lt;= NOW()
+      and a.user_id = #{userId}
+    ) as a, bs_ticket_grant_plan_check b, bs_interest_ticket_grant_attribute d, (
+      select e.id, e.activity_type, e.is_support_incr_interest,
+      case
+        when e.`name` like '%港湾%' then 'BIGANGWAN_SERIAL'
+        when e.`name` like '%涌金%' then 'YONGJIN_SERIAL'
+        when e.`name` like '%跨虹%' then 'KUAHONG_SERIAL'
+        when e.`name` like '%保信%' then 'BAOXIN_SERIAL'
+      end as `name`, case e.term when 1 then 30 when 3 then 90 when 6 then 180 when 12 then 365 end as term
+      from bs_product e where e.id = #{productId} and e.activity_type != 'NEW_BUYER' and e.is_support_incr_interest = 'TRUE'
+    ) as e
+    where a.serial_no = b.serial_no and a.serial_no = d.serial_no
+    and find_in_set(e.term, d.term_limit) and find_in_set(e.`name`, d.product_limit)
+    order by IFNULL(d.ticket_apr,0) * IFNULL(e.term,0)/ 36500 desc, a.use_time_end asc, a.id desc
+  </select>
+  <select id="selectInterestTicketListNew" resultMap="InterestTicketInfoVOMap" parameterType="java.util.Map" >
+        SELECT a.id, a.user_id, b.ticket_name as serial_name, a.ticket_apr as rate, b.term_limit,
+        b.product_limit, b.invest_limit  as full, a.use_time, a.use_time_start, a.use_time_end, s.product_name,
+        CASE
+            WHEN a.`status` = 'INIT' AND a.use_time_end >= NOW() AND a.use_time_start &lt;= NOW() THEN 'INIT'
+            WHEN a.`status` = 'INIT' AND a.use_time_end &lt; NOW() THEN 'OVER'
+            ELSE 'USED'
+        END AS status
+        FROM bs_interest_ticket_info a left join bs_sub_account s on a.auth_account_id = s.id
+        and s.product_type in ('AUTH_7', 'AUTH_YUN', 'AUTH_ZSD', 'AUTH_FREE')
+        , bs_interest_ticket_grant_attribute b
+        WHERE a.serial_no = b.serial_no AND a.user_id = #{userId}
+        <if test="status != '' and status != null">
+            <if test="status == 'INIT'">
+                AND a.`status` = 'INIT' AND a.use_time_end >= NOW() AND a.use_time_start &lt;= NOW()
+                ORDER BY a.use_time_end ASC, a.id desc
+            </if>
+            <if test="status == 'OVER'">
+                AND a.`status` = 'INIT' AND a.use_time_end &lt; NOW() AND DATE(a.use_time_end) >= ADDDATE(DATE(NOW()),-89)
+                ORDER BY a.use_time_end DESC, a.id desc
+            </if>
+            <if test="status == 'USED'">
+                AND a.`status` = 'USED' AND DATE(a.use_time) >= ADDDATE(DATE(NOW()),-89)
+                ORDER BY a.use_time DESC, a.id desc
+            </if>
+        </if>
+        LIMIT #{start}, #{numPerPage}
+    </select>
+    
+    <!-- 加息券查询  -->
+    <select id="selectTicketInterestInfoList" parameterType="com.pinting.business.model.vo.BsInterestTicketManageVO" resultMap="BsInterestTicketManageVOMap">
+			SELECT d.id as user_id, d.mobile, a.serial_no, 
+				f.distribute_type, f.serial_name, a.use_time_start as use_valid_time_start, a.use_time_end as use_valid_time_end,
+				e.product_limit, e.term_limit, e.invest_limit, a.ticket_apr, a.create_time as distribute_time,
+				CASE
+		            WHEN a.`status` = 'INIT' AND a.use_time_end >= NOW() AND a.use_time_start &lt;= NOW() THEN 'INIT'
+		            WHEN a.`status` = 'INIT' AND a.use_time_end &lt; NOW() THEN 'OVER'
+		            ELSE 'USED'
+		        END AS status, 
+				a.use_time, a.order_no, a.interest_amount, b.last_finish_interest_date, b.status as distribute_status
+			FROM bs_interest_ticket_info a
+			LEFT JOIN bs_sub_account b ON a.auth_account_id = b.id
+			LEFT JOIN bs_user d ON a.user_id = d.id
+			LEFT JOIN bs_interest_ticket_grant_attribute e ON a.serial_no = e.serial_no
+			LEFT JOIN bs_ticket_grant_plan_check f ON a.serial_no = f.serial_no
+			<where>
+			<if test="userId != null and userId != '' ">
+				and d.id  like concat(concat('%', #{userId}),'%')
+			</if>
+			<if test="mobile != null and mobile != '' ">
+				and d.mobile like concat(concat('%', #{mobile, jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="distributeType != null and distributeType != '' ">
+				and f.distribute_type = #{distributeType}
+			</if>
+			<if test="serialName != null and serialName != '' ">
+				and f.serial_name like concat(concat('%', #{serialName, jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="useValidTimeStart != null and useValidTimeStart != ''"> 
+				and a.use_time_end &gt;= #{useValidTimeStart} 
+			</if>
+			<if test="useValidTimeEnd != null and useValidTimeEnd != ''">   
+				and a.use_time_start &lt;= #{useValidTimeEnd}
+			</if>
+			<if test="distributeTimeStart != null and distributeTimeStart != ''"> 
+				and a.create_time &gt;= #{distributeTimeStart} 
+			</if>
+			<if test="distributeTimeEnd != null and distributeTimeEnd != ''">   
+				and a.create_time &lt;= #{distributeTimeEnd}
+			</if>
+			<if test="useTimeStart != null and useTimeStart != ''"> 
+				and a.use_time &gt;= #{useTimeStart} 
+			</if>
+			<if test="useTimeEnd != null and useTimeEnd != ''"> 
+				and a.use_time &lt;= #{useTimeEnd}
+			</if>
+			<if test="lastFinishInterestDateStart != null and lastFinishInterestDateStart != ''"> 
+				and b.last_finish_interest_date &gt;= #{lastFinishInterestDateStart} 
+			</if>
+			<if test="lastFinishInterestDateEnd != null and lastFinishInterestDateEnd != ''"> 
+				and b.last_finish_interest_date &lt;= #{lastFinishInterestDateEnd}
+			</if>
+			<if test="status != '' and status != null">
+	            <if test="status == 'INIT'">
+	                AND a.`status` = 'INIT' AND a.use_time_end >= NOW() AND a.use_time_start &lt;= NOW()
+	            </if>
+	            <if test="status == 'OVER'">
+	                AND a.`status` = 'INIT' AND a.use_time_end &lt; NOW()
+	            </if>
+	            <if test="status == 'USED'">
+	                AND a.`status` = 'USED'
+	            </if>
+        	</if>
+			<if test="distributeStatus != null and distributeStatus == 5 ">
+				and b.status = #{distributeStatus}
+			</if>
+			<if test="distributeStatus != null and distributeStatus == 7 ">
+				and (b.status != 5 or b.status is null)
+			</if>
+			</where>
+			ORDER BY a.create_time DESC
+			<include refid="sql-global.pagination" />
+	</select>
+
+	<select id="countTicketInterestInfo" parameterType="com.pinting.business.model.vo.BsInterestTicketManageVO" resultType="java.lang.Integer">
+			SELECT 
+				COUNT(a.id)
+			FROM bs_interest_ticket_info a
+			LEFT JOIN bs_sub_account b ON a.auth_account_id = b.id
+			LEFT JOIN bs_user d ON a.user_id = d.id
+			LEFT JOIN bs_interest_ticket_grant_attribute e ON a.serial_no = e.serial_no
+			LEFT JOIN bs_ticket_grant_plan_check f ON a.serial_no = f.serial_no
+			<where>
+			<if test="userId != null and userId != '' ">
+				and d.id  like concat(concat('%', #{userId}),'%')
+			</if>
+			<if test="mobile != null and mobile != '' ">
+				and d.mobile like concat(concat('%', #{mobile, jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="distributeType != null and distributeType != '' ">
+				and f.distribute_type = #{distributeType}
+			</if>
+			<if test="serialName != null and serialName != '' ">
+				and f.serial_name like concat(concat('%', #{serialName, jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="useValidTimeStart != null and useValidTimeStart != ''"> 
+				and a.use_time_end &gt;= #{useValidTimeStart} 
+			</if>
+			<if test="useValidTimeEnd != null and useValidTimeEnd != ''">   
+				and a.use_time_start &lt;= #{useValidTimeEnd}
+			</if>
+			<if test="distributeTimeStart != null and distributeTimeStart != ''"> 
+				and a.create_time &gt;= #{distributeTimeStart} 
+			</if>
+			<if test="distributeTimeEnd != null and distributeTimeEnd != ''">   
+				and a.create_time &lt;= #{distributeTimeEnd}
+			</if>
+			<if test="useTimeStart != null and useTimeStart != ''"> 
+				and a.use_time &gt;= #{useTimeStart} 
+			</if>
+			<if test="useTimeEnd != null and useTimeEnd != ''"> 
+				and a.use_time &lt;= #{useTimeEnd}
+			</if>
+			<if test="lastFinishInterestDateStart != null and lastFinishInterestDateStart != ''"> 
+				and b.last_finish_interest_date &gt;= #{lastFinishInterestDateStart} 
+			</if>
+			<if test="lastFinishInterestDateEnd != null and lastFinishInterestDateEnd != ''"> 
+				and b.last_finish_interest_date &lt;= #{lastFinishInterestDateEnd}
+			</if>
+			<if test="status != '' and status != null">
+	            <if test="status == 'INIT'">
+	                AND a.`status` = 'INIT' AND a.use_time_end >= NOW() AND a.use_time_start &lt;= NOW()
+	            </if>
+	            <if test="status == 'OVER'">
+	                AND a.`status` = 'INIT' AND a.use_time_end &lt; NOW() 
+	            </if>
+	            <if test="status == 'USED'">
+	                AND a.`status` = 'USED'
+	            </if>
+        	</if>
+			<if test="distributeStatus != null and distributeStatus == 5 ">
+				and b.status = #{distributeStatus}
+			</if>
+			<if test="distributeStatus != null and distributeStatus == 7 ">
+				and (b.status != 5 or b.status is null)
+			</if>
+			</where>
+	</select>
+
+	<select id="sumTicketInterest" parameterType="com.pinting.business.model.vo.BsInterestTicketManageVO" resultType="java.lang.Double">
+		SELECT 
+				IFNULL(SUM(a.interest_amount), 0)	
+			FROM bs_interest_ticket_info a
+			LEFT JOIN bs_sub_account b ON a.auth_account_id = b.id
+			LEFT JOIN bs_account c ON b.account_id = c.id
+			LEFT JOIN bs_user d ON c.user_id = d.id
+			LEFT JOIN bs_interest_ticket_grant_attribute e ON a.serial_no = e.serial_no
+			LEFT JOIN bs_ticket_grant_plan_check f ON a.serial_no = f.serial_no
+			<where>
+			<if test="userId != null and userId != '' ">
+				and d.id  like concat(concat('%', #{userId}),'%')
+			</if>
+			<if test="mobile != null and mobile != '' ">
+				and d.mobile like concat(concat('%', #{mobile, jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="distributeType != null and distributeType != '' ">
+				and f.distribute_type = #{distributeType}
+			</if>
+			<if test="serialName != null and serialName != '' ">
+				and f.serial_name like concat(concat('%', #{serialName, jdbcType=VARCHAR}),'%')
+			</if>
+			<if test="useValidTimeStart != null and useValidTimeStart != ''"> 
+				and a.use_time_end &gt;= #{useValidTimeStart} 
+			</if>
+			<if test="useValidTimeEnd != null and useValidTimeEnd != ''">   
+				and a.use_time_start &lt;= #{useValidTimeEnd}
+			</if>
+			<if test="distributeTimeStart != null and distributeTimeStart != ''"> 
+				and a.create_time &gt;= #{distributeTimeStart} 
+			</if>
+			<if test="distributeTimeEnd != null and distributeTimeEnd != ''">   
+				and a.create_time &lt;= #{distributeTimeEnd}
+			</if>
+			<if test="useTimeStart != null and useTimeStart != ''"> 
+				and a.use_time &gt;= #{useTimeStart} 
+			</if>
+			<if test="useTimeEnd != null and useTimeEnd != ''"> 
+				and a.use_time &lt;= #{useTimeEnd}
+			</if>
+			<if test="lastFinishInterestDateStart != null and lastFinishInterestDateStart != ''"> 
+				and b.last_finish_interest_date &gt;= #{lastFinishInterestDateStart} 
+			</if>
+			<if test="lastFinishInterestDateEnd != null and lastFinishInterestDateEnd != ''"> 
+				and b.last_finish_interest_date &lt;= #{lastFinishInterestDateEnd}
+			</if>
+			<if test="status != '' and status != null">
+	            <if test="status == 'INIT'">
+	                AND a.`status` = 'INIT' AND a.use_time_end >= NOW() AND a.use_time_start &lt;= NOW()
+	            </if>
+	            <if test="status == 'OVER'">
+	                AND a.`status` = 'INIT' AND a.use_time_end &lt; NOW()
+	            </if>
+	            <if test="status == 'USED'">
+	                AND a.`status` = 'USED'
+	            </if>
+        	</if>
+			<if test="distributeStatus != null and distributeStatus == 5 ">
+				and b.status = #{distributeStatus}
+			</if>
+			<if test="distributeStatus != null and distributeStatus == 7 ">
+				and (b.status != 5 or b.status is null)
+			</if>
+			</where>
+	</select>
+    
+    <resultMap type="com.pinting.business.model.vo.BsInterestTicketManageVO" id="BsInterestTicketManageVOMap" >
+		<result column="user_id" property="userId" />
+		<result column="mobile" property="mobile" />
+		<result column="serial_no" property="serialNo" />
+		<result column="distribute_type" property="distributeType" />
+		<result column="serial_name" property="serialName" />
+		<result column="use_valid_time_start" property="startUseValidTime" />
+		<result column="use_valid_time_end" property="endUseValidTime" />
+		<result column="product_limit" property="productLimit" />
+		<result column="term_limit" property="termLimit" />
+		<result column="invest_limit" property="investLimit" />
+		<result column="ticket_apr" property="ticketApr" />
+		<result column="distribute_time" property="distributeTime" />
+		<result column="status" property="status" />
+		<result column="use_time" property="useTime" />
+		<result column="order_no" property="orderNo" />
+		<result column="interest_amount" property="interestAmount" />
+		<result column="last_finish_interest_date" property="lastFinishInterestDate" />
+		<result column="distribute_status" property="distributeStatus" />
+	</resultMap>
+
+    <select id="selectInterestTicketNotify" resultType="com.pinting.business.model.vo.TicketInterestNotifyVO">
+      SELECT
+      a.id,
+      a.user_id AS userId,
+      a.serial_no AS serialNo,
+      b.mobile,
+      c.ticket_apr AS ticketApr,
+      c.ticket_name AS ticketName,
+      c.notify_channel AS notifyChannel
+      FROM
+      (
+        SELECT
+        t.id,
+        t.user_id,
+        t.serial_no,
+        t.msg_status,
+        t.`status`
+        FROM
+        bs_interest_ticket_info t
+        WHERE
+        t.`status` = 'INIT'
+        AND t.msg_status = 'NOT'
+        AND t.use_time_start BETWEEN DATE_SUB(now(), INTERVAL 10 HOUR) AND now()
+        AND t.use_time_end > now()
+      ) a
+      INNER JOIN bs_user b ON a.user_id = b.id
+      INNER JOIN bs_interest_ticket_grant_attribute c ON c.serial_no = a.serial_no
+      WHERE
+      b.`status` = 1
+    </select>
+    
+    <select id="ticketInterest" parameterType="java.util.Map"  resultType="java.lang.Double">
+    	select  interest_amount from bs_interest_ticket_info where user_id =#{userId} 
+    	and auth_account_id = #{subAccountId} 
+    </select>
+    
+    <select id="selectInterestTicketNotifyByInfoId" resultType="com.pinting.business.model.vo.TicketInterestNotifyVO">
+      SELECT
+      a.id,
+      a.user_id AS userId,
+      a.serial_no AS serialNo,
+      b.mobile,
+      c.ticket_apr AS ticketApr,
+      c.ticket_name AS ticketName,
+      c.notify_channel AS notifyChannel
+      FROM
+      (
+        SELECT
+        t.id,
+        t.user_id,
+        t.serial_no,
+        t.msg_status,
+        t.`status`
+        FROM
+        bs_interest_ticket_info t
+        WHERE
+        t.`status` = 'INIT'
+        AND t.msg_status = 'NOT'
+        AND t.id= #{infoId}
+      ) a
+      INNER JOIN bs_user b ON a.user_id = b.id
+      INNER JOIN bs_interest_ticket_grant_attribute c ON c.serial_no = a.serial_no
+      WHERE
+      b.`status` = 1
+    </select>
+
+    <resultMap type="com.pinting.business.model.vo.TicketReminderNotifyVO" id="TicketReminderNotifyVOMap" >
+      <result column="user_id" property="userId" />
+      <result column="mobile" property="mobile" />
+      <result column="ticket_count" property="ticketCount" />
+    </resultMap>
+
+    <select id="selectTicketReminderList" parameterType="com.pinting.business.model.vo.TicketReminderNotifyVO" resultMap="TicketReminderNotifyVOMap" >
+      SELECT
+        cc.user_id, cc.mobile, SUM(cc.ticket_count) as ticket_count
+      FROM
+      (
+        SELECT * FROM
+        (
+          SELECT
+            a.user_id, b.mobile, COUNT(*) AS ticket_count
+          FROM bs_interest_ticket_info a, bs_user b
+          WHERE a.status = 'INIT'
+          AND DATE(a.use_time_end) = #{dueDate}
+          AND a.user_id = b.id AND b.`status` = 1
+          GROUP BY a.user_id
+        ) aa
+        UNION ALL
+        SELECT * FROM
+        (
+          SELECT
+            a.user_id, b.mobile, COUNT(*) AS ticket_count
+          FROM bs_red_packet_info a, bs_user b
+          WHERE a.status = 'INIT'
+          AND DATE(a.use_time_end) = #{dueDate}
+          AND a.user_id = b.id AND b.`status` = 1
+          GROUP BY a.user_id
+        ) bb
+      ) cc
+      GROUP BY cc.user_id
+    </select>
+
+</mapper>

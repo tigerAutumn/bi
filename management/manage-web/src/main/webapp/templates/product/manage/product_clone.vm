@@ -1,0 +1,731 @@
+<div class="pageContent">
+	<form id="productCloneForm" method="post" action="$env.getWebURL('/product/manage/cloneProduct.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("serialSize","$!serialSize")
+		#Hidden("id","$!product.id")
+		#Hidden("proName","$!product.name")
+		#Hidden("proTerm","$!product.term")
+		#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+		#Hidden("SupportRedPacketYesOrNo","$!SupportRedPacketYesOrNo")
+		#Hidden("cloneId",$!cloneId)
+		<div class="pageFormContent nowrap" layoutH="50">
+			<dl>
+				<dt>计划系列：</dt>
+				<dd style="width:100px;">
+					<select name="serialId" id="serialId" style="width:200px;">
+                    	#foreach($serial in $!serials)
+							<option value="$!serial.id" #if($!product.serialId == $!serial.id)selected #end>$!serial.serialName</option>
+						#end
+						<option value="-1" #if($!product.serialId == -1)selected #end>非系列计划(自定义计划名称)</option>
+                    </select>
+				</dd>
+				<div id="pName"></div>
+				<dt style="margin-left:100px;">计划总额：</dt>
+				<dd style="width:134px;">
+					<input type="text" id="maxTotalAmount" name="maxTotalAmount" size="15" maxlength="13" value="$!number.format("0",$!product.maxTotalAmount)"/>元
+				</dd>
+			</dl>
+			<dl>
+				<dt>债权类别：</dt>
+				<dd style="width:100px;">
+					<select id="propertyType" name="propertyType">
+						<option value="CASH_LOOP" #if("$!product.propertyType" == "CASH_LOOP") selected #end>小微借款</option>
+						<option value="CONSUME" #if("$!product.propertyType" == "CONSUME") selected #end>消费贷</option>
+                    </select>
+				</dd>
+				<dt style="margin-left:100px;">预期收益率：</dt>
+				<dd style="width:134px;">
+					<input type="text" id="baseRate" name="baseRate" size="15" maxlength="5" value="$!product.baseRate"/>%
+				</dd>
+				<dt style="margin-left:100px;">投资期限：</dt>
+				<dd style="width:134px;">
+					<select name="term" id="term">
+    					#foreach($code in $!codes)
+    						<option value="$!code.term" #if($!product.term == $!code.term)selected #end>$!code.term月</option>
+    					#end
+                    </select>
+				</dd>
+			</dl>
+			<dl>
+				<dt>起息时间：</dt>
+				<dd style="width:100px;">
+					<select id="beginInterestDays" name="beginInterestDays">
+						<option value="NEXT_DAY" #if($!product.beginInterestDays == "NEXT_DAY") selected #end>购买后第二天起息</option>
+						<option value="MATCH_DAY" #if($!product.beginInterestDays == "MATCH_DAY") selected #end>匹配债权后当日起息</option>	
+                    </select>
+				</dd>
+				<dt style="margin-left:100px;">开始时间：</dt>
+				<dd style="width:134px;">
+					<input name="startTime" datefmt="yyyy-MM-dd HH:mm:ss" type="text"  id="startTime" class=" date textInput readonly" readonly="true" size="15" value="$!date.format($!product.startTime)"/>
+				</dd>
+				<dt style="margin-left:100px;">结束时间：</dt>
+				<dd style="width:134px;">
+					<input name="endTime" datefmt="yyyy-MM-dd HH:mm:ss" type="text"  id="endTime" class=" date textInput readonly" readonly="true" size="15" value="$!date.format($!product.endTime)"/>
+				</dd>
+			</dl>
+			<dl>
+				<dt>还款方式：</dt>
+				<dd style="width:100px;">
+					<select id="returnType" name="returnType">
+						<option value="FINISH_RETURN_ALL" #if("$!product.returnType" == "FINISH_RETURN_ALL") selected #end>到期一次性本息兑付</option>
+						<option value="AVERAGE_CAPITAL_PLUS_INTEREST" #if("$!product.returnType" == "AVERAGE_CAPITAL_PLUS_INTEREST") selected #end>等额本息</option>
+                    </select>
+				</dd>
+				<dt style="margin-left:100px;">收益处理：</dt>
+				<dd style="width:134px;">
+					<select id="interestDeal" name="interestDeal">
+						<option value="FINISH_RETURN" #if("$!product.interestDeal" == "FINISH_RETURN") selected #end>到期还本付息</option>
+						<option value="EVERY_MONTH" #if("$!product.interestDeal" == "EVERY_MONTH") selected #end>按月还本付息</option>
+                    </select>
+				</dd>
+				<dt style="margin-left:100px;">债权转让：</dt>
+				<dd style="width:134px;">
+					<select id="isSupportTransfer" name="isSupportTransfer">
+						<option value="NO" #if("$!product.isSupportTransfer" == "NO") selected #end>不支持</option>
+						<option value="YES" #if("$!product.isSupportTransfer" == "YES") selected #end>支持</option>
+                    </select>
+				</dd>
+			</dl>
+			<dl>
+				<dt>资产合作产品：</dt>
+				<dd style="width:100px;">
+					<select id="propertyId" name="propertyId" style="width:200px;">
+						<option value="">请选择资产合作产品</option>
+						#foreach($propertyInfo in $!propertyInfos)
+							<option value="$!propertyInfo.id" propertySymbol="$!propertyInfo.propertySymbol" #if($!product.propertyId == $!propertyInfo.id) selected #end>$!propertyInfo.propertyName</option>
+						#end
+                    </select>
+                    <span style="display:none;" id="propertySymbolSpan">
+    					#foreach($propertyInfo in $!propertyInfos)
+    						#if($!product.propertyId == $!propertyInfo.id)
+    							$!propertyInfo.propertySymbol
+    						#end
+    					#end
+					</span>
+				</dd>
+				<dt style="margin-left:100px;">管理费：</dt>
+				<dd style="width:134px;">
+					<input type="text" id="manageFee" name="manageFee" size="15" maxlength="64" value="0" readonly="readonly" value="$!number.format("0",$!product.manageFee)"/>%
+				</dd>
+				<dt style="margin-left:100px;">最低起投：</dt>
+				<dd style="width:134px;">
+					<input type="text" id="minInvestAmount" name="minInvestAmount" size="15" maxlength="64" class="num" value="$!number.format("0",$!product.minInvestAmount)"/>元
+				</dd>
+			</dl>
+			<dl>
+				<dt>展示端口：</dt>
+				<dd style="width:700px;">
+					<input type="checkbox" name="terminal" value="APP"/>APP
+					<input type="checkbox" name="terminal" value="PC"/>网站
+					<input type="checkbox" name="terminal" value="H5"/>H5
+					<input type="checkbox" name="terminal" value="H5_178"/>钱报H5
+					<input type="checkbox" name="terminal" value="PC_178"/>钱报PC
+                    <input type="checkbox" name="terminal" value="H5_KQ"/>柯桥日报H5
+                    <input type="checkbox" name="terminal" value="PC_KQ"/>柯桥日报PC
+                    <input type="checkbox" name="terminal" value="H5_HN"/>海宁日报H5
+                    <input type="checkbox" name="terminal" value="PC_HN"/>海宁日报PC
+					<input type="checkbox" name="terminal" value="H5_RUIAN"/>瑞安日报H5
+                    <input type="checkbox" name="terminal" value="PC_RUIAN"/>瑞安日报PC
+                    <input type="checkbox" name="terminal" value="H5_QD"/>七店H5
+                    
+                    <input type="checkbox" name="terminal" value="H5_QHD_JT"/>秦皇岛交通广播H5
+                    <input type="checkbox" name="terminal" value="H5_QHD_XW"/>秦皇岛新闻891H5
+                    <input type="checkbox" name="terminal" value="H5_QHD_TV"/>秦皇岛电视台今日报道H5
+                    <input type="checkbox" name="terminal" value="PC_QHD_ST"/>视听之友PC  <br/>
+                    <input type="checkbox" name="terminal" value="H5_QHD_ST"/>视听之友H5
+                    <input type="checkbox" name="terminal" value="H5_QHD_SJC"/>1038私家车广播H5
+                    <input type="hidden" id="showTerminal" name="showTerminal" value="$!product.showTerminal"/>
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					<label style="margin-left:0;">
+						<input type="checkbox" id="selectSingleQuota" name="selectSingleQuota" #if($!product.maxSingleInvestAmount) checked #end style="float:left;margin-top: 3px;margin-left: 0;"/>单笔限额：
+                    </label>
+				</dt>
+				<dd style="width:150px;">
+					#if($!product.maxSingleInvestAmount)
+						<input type="text" value="$!number.format("0",$!product.maxSingleInvestAmount)" id="maxSingleInvestAmount" name="maxSingleInvestAmount" size="15" maxlength="13" class="num" />元
+					#else
+						<input type="text" value="$!number.format("0",$!product.maxSingleInvestAmount)" id="maxSingleInvestAmount" name="maxSingleInvestAmount" size="15" maxlength="13" class="num" readonly/>元
+					#end
+				</dd>
+				
+				<dt style="margin-left:50px;">计划活动类型：</dt>
+				<dd style="width:100px;">
+					<select id="activityType" name="activityType" style="width:100px;">
+						<option value="NORMAL" #if("$!product.activityType" == "NORMAL") selected #end>
+							普通产品
+						</option>
+						<option value="NEW_BUYER" #if("$!product.activityType" == "NEW_BUYER") selected #end>
+							新手标
+						</option>
+						<option value="ACTIVITY" #if("$!product.activityType" == "ACTIVITY") selected #end>
+							限时活动标
+						</option>
+                    </select>
+				</dd>
+				<dt style="margin-left:50px;">是否支持红包：</dt>
+				<dd style="width:100px;">
+					#if($!propertySymbol == "ZAN")
+                        <select id="isSupportRedPacket" name="isSupportRedPacket" style="width:100px;" disabled="true">
+							#if($!product.isSupportRedPacket)
+                                <option value="TRUE" #if("$!product.isSupportRedPacket" == "TRUE") selected #end>
+                                    支持
+                                </option>
+                                <option value="FALSE" #if("$!product.isSupportRedPacket" == "FALSE") selected #end>
+                                    不支持
+                                </option>
+							#else
+                                <option value="TRUE" selected >
+                                    支持
+                                </option>
+							#end
+                        </select>
+					#else
+                        <select id="isSupportRedPacket" name="isSupportRedPacket" style="width:100px;">
+							#if($!product.isSupportRedPacket)
+                                <option value="TRUE" #if("$!product.isSupportRedPacket" == "TRUE") selected #end>
+                                    支持
+                                </option>
+                                <option value="FALSE" #if("$!product.isSupportRedPacket" == "FALSE") selected #end>
+                                    不支持
+                                </option>
+							#else
+                                <option value="TRUE" #if("$!product.isSupportRedPacket" == "TRUE") selected #end>
+                                    支持
+                                </option>
+                                <option value="FALSE" #if("$!product.isSupportRedPacket" == "FALSE") selected #end>
+                                    不支持
+                                </option>
+							#end
+                        </select>
+					#end
+					
+				</dd>
+                <dt style="margin-left:50px;">是否支持加息券：</dt>
+                <dd style="width:100px;">
+					#if($!propertySymbol == "ZAN")
+                        <select id="isSupportIncrInterest" name="isSupportIncrInterest" style="width:100px;" disabled="true">
+                            <option value="TRUE" >支持</option>
+                            <option value="FALSE" selected>不支持</option>
+                        </select>
+					#else
+                        <select id="isSupportIncrInterest" name="isSupportIncrInterest" style="width:100px;">
+							#if($!product.isSupportIncrInterest)
+                                <option value="TRUE" #if("$!product.isSupportIncrInterest" == "TRUE") selected #end>
+                                    支持
+                                </option>
+                                <option value="FALSE" #if("$!product.isSupportIncrInterest" == "FALSE") selected #end>
+                                    不支持
+                                </option>
+							#else
+                                <option value="TRUE" #if("$!product.isSupportIncrInterest" == "TRUE") selected #end>
+                                    支持
+                                </option>
+                                <option value="FALSE" #if("$!product.isSupportIncrInterest" == "FALSE") selected #end>
+                                    不支持
+                                </option>
+							#end
+                        </select>
+					#end
+                </dd>
+			</dl>
+			<dl>
+				<dt>计划简介：</dt>
+				<dd>
+                   <textarea name="note" id="note" class="editor" rows="50" cols="115" tools="simple" upImgUrl="$env.getWebURL('/upload/newsImg.htm')" upImgExt="jpg,jpeg,gif,png">
+					#if($!product.note) $!product.note
+					#else 
+						本计划资金投资于达飞财富推荐的小微借款项目，借款人主要为蓝领工人、服务业人员等消费者，借款小额分散，风险可控。每个借款人经过达飞财富与币港湾的严格筛选，并由达飞财富承诺回购。
+					#end
+				   </textarea>
+				</dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul style="float:left;">
+				<li><div class="buttonActive"><div class="buttonContent"><button onclick="formCloneSubmit(1)" type="button">保存</button></div></div></li>
+				##<li><div class="buttonActive"><div class="buttonContent"><button onclick="formCloneSubmit(2)" type="button">提审</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	#LoadJS("/resources/js/global_validate")
+    <script>
+
+	$(function(){
+        /**
+         * 赞分期产品(资产合作产品)不支持红包
+         * @param obj
+         */
+        function notSupportRedPacket(obj) {
+            var propertySimbol = $(obj).children('option:selected').attr('propertySymbol');
+            var newActivityType = $('#activityType option:selected').val();
+            if(propertySimbol == 'ZAN') {
+                $('#isSupportRedPacket').val('FALSE');
+                $('#isSupportRedPacket').attr('disabled', true);
+                $('#SupportRedPacketYesOrNo').val('FALSE');
+
+                $('#isSupportIncrInterest').val('FALSE');
+                $('#isSupportIncrInterest').attr('disabled', true);
+            } else if(newActivityType == 'NEW_BUYER'){
+                $('#isSupportRedPacket').val('FALSE');
+                $('#isSupportRedPacket').attr('disabled', true);
+                $('#SupportRedPacketYesOrNo').val('FALSE');
+
+                $('#isSupportIncrInterest').val('FALSE');
+                $('#isSupportIncrInterest').attr('disabled', true);
+            } else {
+                $('#isSupportRedPacket').val('TRUE');
+                $('#isSupportRedPacket').attr('disabled', false);
+                $('#SupportRedPacketYesOrNo').val('TRUE');
+
+                $('#isSupportIncrInterest').val('TRUE');
+                $('#isSupportIncrInterest').attr('disabled', false);
+            }
+        }
+        $('#propertyId').on('change', function() {
+            notSupportRedPacket(this);
+        });
+
+        /**
+         * 新手标产品不支持红包
+         * @param obj
+         */
+        function notNewActivityType(obj) {
+            var newActivityType = $('#activityType option:selected').val();
+            var propertyId = $('#propertyId option:selected').val();
+            if(newActivityType == 'NEW_BUYER') {
+                $('#isSupportRedPacket').val('FALSE');
+                $('#isSupportRedPacket').attr('disabled', true);
+
+                $('#isSupportIncrInterest').val('FALSE');
+                $('#isSupportIncrInterest').attr('disabled', true);
+            } else if(propertyId == '3'){
+                $('#isSupportRedPacket').val('FALSE');
+                $('#isSupportRedPacket').attr('disabled', true);
+                var str2 = $('#isSupportRedPacket').val();
+
+                $('#isSupportIncrInterest').val('FALSE');
+                $('#isSupportIncrInterest').attr('disabled', true);
+            } else {
+                $('#isSupportRedPacket').val('TRUE');
+                $('#isSupportRedPacket').attr('disabled', false);
+
+                $('#isSupportIncrInterest').val('TRUE');
+                $('#isSupportIncrInterest').attr('disabled', false);
+            }
+        }
+        $('#activityType').on('change', function() {
+            notNewActivityType(this);
+        });
+
+		//计划系列列表为空时
+		var rootUrl = $.trim($('#APP_ROOT_PATH').val());
+		var serialId = $.trim($('#serialId').val());
+		var proTerm = $.trim($('#proTerm').val());
+		if(serialId == -1) {
+			var nameStr = $.trim($('#proName').val());
+			var html = '<dt style="margin-left:100px;">计划名称：</dt>' +
+					   '<dd style="width:134px;">' +
+					   '<input type="text" id="name" name="name" size="15" maxlength="15" value="'+nameStr+'" class="clear"/>' +
+					   '</dd>';
+			$('#pName').html(html);
+			
+			//查询term列表
+			$.ajax({
+				type : 'post',
+				url : rootUrl + "/product/manage/selectTerms.htm",
+				async : false,
+				success : function(data) {
+					var options = '';
+					if(data.terms.length > 0) {
+						$.each(data.terms,function(index,tm){
+							options += '<option value="'+tm.term+'"';
+							if(tm.term == proTerm) {
+								options += 'selected';
+							}
+							if(tm.term > 0) {
+								options += '>'+tm.term+'月</option>';
+							} else {
+								options += '>'+Math.abs(tm.term)+'天</option>';
+							}
+						})
+						$("#term").html(options);
+					}
+				}
+			});
+		}else {
+			//查询系列对应的期限
+			$.ajax({
+				type : 'post',
+				url : rootUrl + "/product/manage/selectSerialTerm.htm",
+				data : {
+					serialId : serialId
+				},
+				async : false,
+				success : function(data) {
+					if(data.term > 0) {
+						$("#term").html("<option value="+data.term+">"+data.term+"月</option>");
+					} else {
+						$("#term").html("<option value="+data.term+">"+Math.abs(data.term)+"天</option>");
+					}
+				}
+			});
+		}
+		
+		//起投金额默认设置
+		var id = $.trim($('#id').val());
+		if(id == null || id == '') {
+			$('#minInvestAmount').val(100);
+		}
+		
+		$('#serialId').on('change',function(){
+			var serialId = $.trim($('#serialId').val());
+			if(serialId == -1) {
+				var nameStr = $.trim($('#proName').val());
+    			var html = '<dt style="margin-left:100px;">计划名称：</dt>' +
+    					   '<dd style="width:134px;">' +
+    					   '<input type="text" id="name" name="name" size="15" maxlength="15" value="'+nameStr+'" class="clear"/>' +
+    					   '</dd>';
+    			$('#pName').html(html);
+				
+				//查询term列表
+				$.ajax({
+					type : 'post',
+					url : rootUrl + "/product/manage/selectTerms.htm",
+					async : false,
+					success : function(data) {
+						var options = '';
+						if(data.terms.length > 0) {
+							$.each(data.terms,function(index,tm){
+								options += '<option value="'+tm.term+'"';
+								if(tm.term == proTerm) {
+									options += 'selected';
+								}
+								if(tm.term > 0) {
+    								options += '>'+tm.term+'月</option>';
+    							} else {
+    								options += '>'+Math.abs(tm.term)+'天</option>';
+    							}
+							})
+							$("#term").html(options);
+						}
+					}
+				});
+			}else {
+				$("#pName").html("");
+				
+				//查询系列对应的期限
+				$.ajax({
+					type : 'post',
+					url : rootUrl + "/product/manage/selectSerialTerm.htm",
+					data : {
+						serialId : serialId
+					},
+					async : false,
+					success : function(data) {
+						if(data.term > 0) {
+							$("#term").html("<option value="+data.term+">"+data.term+"月</option>");
+						} else {
+							$("#term").html("<option value="+data.term+">"+Math.abs(data.term)+"天</option>");
+						}
+					}
+				});
+			}
+		})
+		
+		var terminals = $("#showTerminal").val();
+		var arr = terminals.split(",");
+		for(var i=0; i<arr.length; i++) {
+			if(arr[i] != null && arr[i] != '') {
+				$("input[name=terminal]:checkbox").each(function(){
+					if($(this).attr('value') == arr[i]) {
+						$(this).prop('checked',true);
+        			}
+        		})
+			}
+		}
+	})
+	
+	$("#selectSingleQuota").change(function(){
+		var selectSingleQuota = $("#selectSingleQuota").attr('checked');
+		if(selectSingleQuota) {
+			$("#maxSingleInvestAmount").attr('readonly', false);
+		} else {
+			$("#maxSingleInvestAmount").attr('readonly', true);
+			$("#maxSingleInvestAmount").val('');
+		}
+	});
+	$("#propertyId").change(function(){
+		var propertySymbol = $("#propertyId").children('option:selected').attr('propertySymbol');
+		$('#propertySymbolSpan').text(propertySymbol);
+	});
+	
+	function formCloneSubmit(status){
+		var serialId = $.trim($("#serialId").val()),
+			name = $.trim($("#name").val()),
+			maxTotalAmount = $.trim($("#maxTotalAmount").val()),
+			baseRate = $.trim($("#baseRate").val()),
+			term = $.trim($("#term").val()),
+			startTime = $.trim($("#startTime").val()),
+			endTime = $.trim($("#endTime").val()),
+			propertyId = $.trim($("#propertyId").val()),
+			minInvestAmount = $.trim($("#minInvestAmount").val()),
+			note = $.trim($("#note").val()),
+			rootUrl = $.trim($("#APP_ROOT_PATH").val()),
+			id = $.trim($('#id').val()),
+			selectSingleQuota = $("#selectSingleQuota").attr('checked'),
+			maxSingleInvestAmount = $("#maxSingleInvestAmount").val(),
+			activityType = $("#activityType").val(),
+            cloneId = $("#cloneId").val()
+			;
+		if(serialId == -1) {
+			if(name == '') {
+				alertMsg.warn('计划名称不能为空!');
+				return false;
+			}else {
+				//自定义计划名称要和已有系列做重名检验
+				var flag = false;
+				$.ajax({
+					type : 'post',
+					url : rootUrl + "/product/manage/checkSerialName.htm",
+					data : {
+						name : name,
+						id : id,
+                        cloneId : cloneId
+					},
+					async : false,
+					success : function(data) {
+						flag = data;
+					}
+				});
+				
+				if(flag) {
+    				alertMsg.warn('自定义计划名称不能和已有计划名称重名!');
+    				return false;
+    			}
+				
+			}
+		}
+		
+		if(maxTotalAmount == ''){
+			alertMsg.warn('计划总额不能为空!');
+			return false;
+		}else {
+			if(!BGW.check.isDecimal(maxTotalAmount)) {
+				alertMsg.warn('计划总额必须是最多保留两位小数的数字!');
+				return false;
+			}
+		}
+		
+		if(baseRate == ''){
+			alertMsg.warn('预期收益率不能为空!');
+			return false;
+		}else {
+			if(!BGW.check.isDecimal(baseRate)) {
+				alertMsg.warn('预期收益率必须是最多保留两位小数的数字!');
+				return false;
+			}
+			if(parseFloat(baseRate) <= 0) {
+				alertMsg.warn('预期收益率必须是大于0的数字!');
+				return false;
+			}
+			if(parseFloat(baseRate) >= 100) {
+				alertMsg.warn('预期收益率必须是0-100的数字!');
+				return false;
+			}
+		}
+		
+		if(term == ''){
+			alertMsg.warn('投资期限不能为空!');
+			return false;
+		}else {
+			if(serialId != -1) {
+				//校验计划系列和期限是否匹配
+				var flag = false;
+				$.ajax({
+					type : 'post',
+					url : rootUrl + "/product/manage/checkSerialTerm.htm",
+					data : {
+						serialId : serialId,
+						termStr : term
+					},
+					async : false,
+					success : function(data) {
+						flag = data;
+					}
+				});
+				if(!flag) {
+    				alertMsg.warn('计划系列和期限不匹配!');
+    				return false;
+				}
+			}
+		}
+		
+		
+		if(startTime != ''){
+			//校验开始时间是否大于当前时间
+			var flag = true;
+			$.ajax({
+				type : 'post',
+				url : rootUrl + "/product/manage/checkStartTime.htm",
+				data : {
+					startTime : startTime
+				},
+				async : false,
+				success : function(data) {
+					flag = data;
+				}
+			});
+			if(!flag) {
+				alertMsg.warn('开始时间必须大于当前时间!');
+				return false;
+			}
+		}
+		
+		if(endTime != ''){
+			//校验结束时间是否大于当前时间
+			var flag = true;
+			$.ajax({
+				type : 'post',
+				url : rootUrl + "/product/manage/checkStartTime.htm",
+				data : {
+					startTime : endTime
+				},
+				async : false,
+				success : function(data) {
+					flag = data;
+				}
+			});
+			if(!flag) {
+				alertMsg.warn('结束时间必须大于当前时间!');
+				return false;
+			}
+		}
+		
+		if(endTime != "" && startTime != ""){
+    		var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(startTime.replace(/-/g,"/"));
+    		if(result == 0){
+    			alertMsg.warn("开始时间不能等于结束时间！");
+    			return false;
+    		}else if(result < 0) {
+				alertMsg.warn("开始时间不能在结束时间之后！");
+    			return false;
+			}
+    	}
+		
+		if(propertyId == ''){
+			alertMsg.warn('资产合作产品不能为空!');
+			return false;
+		}
+		
+		var propertySymbolSpan = $.trim($('#propertySymbolSpan').text());
+		if(propertySymbolSpan == "7_DAI") {
+			if(minInvestAmount == ''){
+    			alertMsg.warn('7贷最低起投不能为空!');
+    			return false;
+    		}else {
+    			if(parseInt(minInvestAmount) < 100){
+    				alertMsg.warn("7贷最低起投必须大于等于100！");
+    				return false;
+    			}else{
+    				var t = parseInt(minInvestAmount) % parseInt(100);
+    				if(parseInt(t) != parseInt(0)){
+    					alertMsg.warn("最低起投金额只能是100的整数倍!");
+    					return false;
+    				}
+    			}
+    			
+    			if(parseFloat(maxTotalAmount) < parseFloat(minInvestAmount)) {
+    				alertMsg.warn("计划总额不能小于最低起投金额!");
+    				return false;
+    			}
+    		}
+		}
+		if(minInvestAmount == ''){
+			alertMsg.warn('最低起投不能为空!');
+			return false;
+		}else {
+			if(parseInt(minInvestAmount) <= parseInt(0)){
+				alertMsg.warn("最低起投必须大于0！");
+				return false;
+			}else{
+				var t = parseInt(minInvestAmount) % parseInt(100);
+				if(parseInt(t) != parseInt(0)){
+					alertMsg.warn("最低起投金额只能是100的整数倍!");
+					return false;
+				}
+			}
+			
+			if(parseFloat(maxTotalAmount) < parseFloat(minInvestAmount)) {
+				alertMsg.warn("计划总额不能小于最低起投金额!");
+				return false;
+			}
+		}
+		
+		var terminal = '';
+		$("input[name=terminal]:checkbox").each(function(){
+			if($(this).attr("checked")) {
+				terminal += $(this).attr('value') + ",";
+			}
+		});
+		if(terminal != ''){
+			$("#showTerminal").val(terminal);
+		}else {
+			alertMsg.warn("展示端口至少要选择一个!");
+			return false;
+		}
+		
+		if(note == ''){
+			alertMsg.warn('计划简介不能为空!');
+			return false;
+		}
+		
+		// 单笔限额
+		if(selectSingleQuota) {
+			if(!maxSingleInvestAmount) {
+				alertMsg.warn('单笔限额不能为空！');
+				return false;
+			}
+			if(parseFloat(maxSingleInvestAmount)%100 != 0) {
+				alertMsg.warn('单笔限额必须是100的整数倍！');
+				return false;
+			}
+			// 大于等于起投金额，小于等于限额
+			if(parseFloat(maxSingleInvestAmount) < parseFloat(minInvestAmount)) {
+				alertMsg.warn('单笔限额必须大于等于起投金额！');
+				return false;
+			}
+			if(parseFloat(maxSingleInvestAmount) > parseFloat(maxTotalAmount)) {
+				alertMsg.warn('单笔限额必须小于等于计划总额！');
+				return false;
+			}
+		} else {
+			maxSingleInvestAmount = null;
+		}
+		// 计划活动类型
+		if(!activityType) {
+			alertMsg.warn('请选择计划活动类型！');
+			return false;
+		}
+		
+		var url = rootUrl + "/product/manage/cloneProduct.htm?status="+status;
+		$('#productCloneForm').attr("action",url);
+		$('#productCloneForm').submit();
+
+    }
+	
+	function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			navTab.closeCurrentTab();
+			alertMsg.correct(json.message);
+			navTab.reload("$env.getWebURL('/product/manage/index.htm')");
+		} else {
+			alertMsg.error(json.message);
+		}
+	}
+	
+	
+</script>
+</div>

@@ -1,0 +1,39 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/user/six")
+#LoadCSS("resources/micro2.0/styles/user/default")
+#LoadCSS("resources/micro2.0/styles/user/register.min")
+#WeChatShare()
+#Head("end")
+<body>
+<input type="hidden" value="$!env.getWebURL('')" id="APP_ROOT_PATH" />
+<div class="header">
+	<a class="header_arrow" href="javascript:history.go(-1)"></a>
+	#if("$!qianbao" == "qianbao")
+		<h1 class="heade_ft oran_color">$!agentView.getView($!agentViewFlag).get('H5_KEY_REGISTER_TITLE_TEXT')</h1>
+	#else
+		<h1 class="heade_ft oran_color">注册</h1>
+	#end
+	
+</div>
+<form action="$!env.getWebURL('micro2.0/user/register_first_validate/mobile')" method="post" class="generalForm" id="generalForm">
+    <div class="former_pass">
+    	<div class="former_font">手机号</div>
+    	<input class="former_btn" type="tel" name="mobile" id="mobile" maxLength="11" placeholder="请输入手机号">
+		<input class="former_btn" type="hidden" name="qianbao" id="qianbao" value="$!qianbao" >
+		<input class="former_btn" type="hidden" name="recommendId" id="recommendId" value="$!recommendId" >
+        <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+        <input type="hidden" id="mobileToken" name="mobileToken" value="$!mobileToken">
+	</div>
+</form>
+<a href="javascript:void(0)" class="pass_ok btn_fail">下一步</a>
+<h3 class="forget_pass">
+	<div href="javascript:void(0)" class="forget">点击注册即代表您同意<a class="rech_ok" href="$!env.getWebURL('/micro2.0/agreement/registAccountServiceAgreement')">《注册协议》</a></div>
+</h3>
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/zepto.min")
+#LoadJS("resources/micro2.0/scripts/user/custom")
+#LoadJS("resources/micro2.0/scripts/user/register_first_index")
+</body>
+#Html("end")

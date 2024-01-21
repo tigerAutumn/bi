@@ -1,0 +1,121 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+<div class="page unitBox">
+	<div class="pageHeader">
+    	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/operationReport/reportIndex.htm')" id="report_myform" method="post">
+    	</form>
+    </div>
+	
+    <div class="pageContent">
+    	<div class="panelBar">
+    		<ul class="toolBar">
+    			<li><a class="add" href="$env.getWebURL('/operationReport/reportAdd.htm')" target="navtab" mask="true" rel="createBack" ><span>新增</span></a></li>
+    		</ul>
+        </div>
+    	<table class="table" width="1396" layoutH="150">
+    		<thead>
+    			<tr>
+					<th width="5%">序号</th>
+					<th width="15%">名称</th>
+					<th width="10%">首页显示时间</th>
+					<th width="10%">修改时间</th>
+    				<th width="10%">展示端口</th>
+					<th width="10%">操作人员</th>
+					<th width="10%">是否推荐</th>
+					<th width="30%">操作</th>
+    			</tr>
+    		</thead>
+			
+    		<tbody>
+    			#foreach($grid in $reportList)
+    			<tr target="sid_user" rel="1">
+    				<td>$!grid.rowno</td>
+					<td>$!grid.reportName</td>
+					<td>$!grid.displayTime</td>
+					<td>$!date.format($!grid.updateTime)</td>
+					<td>$!grid.showTerminal</td>
+					<td>$!grid.operationName</td>
+					<td>#if("$!grid.isSugguest" == "FALSE")
+							非推荐
+						#elseif("$!grid.isSugguest" == "TRUE")
+							推荐
+						#else
+							$!grid.isSugguest
+						#end
+					</td>
+					<td>
+						<a title="编辑" target="navTab" rel="createBack" href="$env.getWebURL('/operationReport/reportDetail.htm?id=')$!grid.id" mask="true">编辑</a>&nbsp&nbsp&nbsp 
+						#if("$!grid.isSugguest" == "FALSE")
+						<a title="确认要推荐码?" target="ajaxTodo" href="$env.getWebURL('/operationReport/reportSugguest.htm')?id=$!grid.id" >推荐</a>&nbsp&nbsp&nbsp 
+						#else
+						<a title="确认要取消推荐码?" target="ajaxTodo" href="$env.getWebURL('/operationReport/reportSugguest.htm')?id=$!grid.id" >取消推荐</a>&nbsp&nbsp&nbsp 
+						#end
+						<a title="删除后不可恢复，确定删除吗?" target="ajaxTodo" href="$env.getWebURL('/operationReport/reportDelete.htm')?id=$!grid.id" >删除</a>&nbsp&nbsp&nbsp 
+					</td>
+    			</tr>
+    			#end
+    		</tbody>
+    	</table>
+		<div class="panelBar">
+    	<div class="pages">
+    		<span>显示</span>
+    		<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+    			<option #if("$!req.numPerPage" == "20") selected #end value="20">20</option>
+    			<option #if("$!req.numPerPage" == "50") selected #end value="50">50</option>
+    			<option #if("$!req.numPerPage" == "100") selected #end value="100">100</option>
+    			<option #if("$!req.numPerPage" == "200") selected #end value="200">200</option>
+    		</select>
+    		<span>条，共$!count条</span>
+    	</div>
+    	<div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!req.numPerPage" currentPage="$!req.pageNum"></div>
+		</div>
+    </div>
+</div>
+
+<script>  
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "200") {
+				alertMsg.correct(json.message);
+        		navTab.closeCurrentTab();
+        		navTab.reload("$env.getWebURL('/operationReport/reportIndex.htm')");
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+	
+	
+	
+function ajaxTodo(url, callback){
+	$.ajax({
+		url: url,
+		type: 'get',
+		success: function(data){
+			if(data.statusCode && data.statusCode == '200') {
+				navTab.reload("$env.getWebURL('/operationReport/reportIndex.htm')");
+			} else {
+				if(data.message) {
+    				alertMsg.error(data.message);
+    			} else {
+    				alertMsg.error('操作失败');
+    			}
+			}
+			navTab.reload('');
+		},
+		error: function(data){
+			if(data.message) {
+				alertMsg.error(data.message);
+			} else {
+				alertMsg.error('操作失败');
+			}
+		}
+	});
+	return false;
+}
+</script> 

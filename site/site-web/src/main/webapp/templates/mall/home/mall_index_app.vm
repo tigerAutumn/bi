@@ -1,0 +1,151 @@
+#Html("begin")
+#Head("begin","互联网金融产品,币港湾,币港湾官网","欢迎了解币港湾产品,币港湾官网为您提供多种互联网金融产品,是优质的互联网金融服务平台。")
+#set($strTitle="$!{productDetail.name}【币港湾官网】")
+#Title("$!strTitle")
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+#LoadJS("resources/micro2.0/scripts/activity/rem_750")
+#LoadJS("resources/mall/scripts/common/jquery.min")
+#LoadCSS("resources/mall/styles/common/default")
+#LoadCSS("resources/mall/styles/home/home")
+#WeChatShare()
+#Head("end")
+<body>
+<input type="hidden" id="user_id" value="$!userId">
+<input type="hidden" id="client" value="$!client">
+<input type="hidden" id="ROOT_PATH" value="$!env.getWebURL('')">
+<input type="hidden" id="mobile" value="$!mobile">
+<input type="hidden" id="userPoints" value="$!points">
+<div class="mall_home">
+    <div class="mall_information">
+        <div class="mall_topbar">
+            <a class="back landingPageBtnbgw"><img src="$!env.getWebURL('')/resources/mall/images/common/back_arrow_white.png"></a>
+            积分商城
+            <a class="mall_rule" href="$!env.getWebURL('')/$!client/mallPoints/pointsRuleIndex?client=client"><img src="$!env.getWebURL('')/resources/mall/images/home/question_nor.png"></img></a>
+        </div>
+        <div class="mall_info_row" style="margin-top: 0.3rem">
+            <div class="mall_info_account">
+                <div class="account_ico">
+                    <img src="$!env.getWebURL('')/resources/mall/images/home/phone.png">
+                </div>
+                $!mobile
+            </div>
+
+            #if($!isSign == 'NO')
+                <div class="signIn uncomplete">
+                    <div class="signIn_bar">
+                        <div class="signIn_state">
+                            签到
+                        </div>
+                    </div>
+                </div>
+            #elseif($!isSign == 'YES')
+                <div class="signIn">
+                    <div class="signIn_bar">
+                        <div class="signIn_state" style="right: -1px;left: auto">
+                            已签
+                        </div>
+                    </div>
+                </div>
+            #else
+            #end
+
+            <div class="clearfix"></div>
+        </div>
+        <div class="mall_info_row">
+            <div class="mall_info_integral">
+				
+                <a href="$!env.getWebURL('')/$!client/mallPoints/pointsRecord?userId=$!userId&client=$!client&mobile=$!mobile">
+                    <span class="userPoints">$!money.format($!points).replace(".00","")</span>积分<img src="$!env.getWebURL('')/resources/mall/images/home/arrowRight_white.png" style="margin-left: 10px;">
+                </a>
+            </div>
+            <div class="mall_info_myhistory">
+                <a href="$!env.getWebURL('')/$!client/mallExchange/myExchangeList?userId=$!userId&client=$!client">我的兑换<img src="$!env.getWebURL('')/resources/mall/images/home/arrowRight_white.png" style="margin-left: 10px;"></a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    #if($!commList)
+        #foreach($categroy in $!commList)
+            <div class="mall_products">
+                <div class="mall_products_title">
+                    <h5>$categroy.commTypeName</h5>
+                </div>
+                <div class="mall_products_list">
+                    <div class="row">
+                        #foreach($list in $categroy.commInfoList)
+                            <div class="mall_product_card" data-id="$!list.id">
+                                <div class="product_pic">
+                                    <img src="$!list.commPictureUrl">
+                                </div>
+                                <p class="product_name">$!list.commName</p>
+                                <p class="product_price">$!money.format($!list.points).replace(".00","")积分</p>
+                            </div>
+                        #end
+                    </div>
+                </div>
+            </div>
+        #end
+    #else
+        <div class="mall_products_null">
+            <img src="$!env.getWebURL('')/resources/mall/images/home/icon_empty.png">
+            <p class="null_tips">暂无商品</p>
+        </div>
+    #end
+</div>
+
+<div class="cover_bg">
+    <div class="signUp_cover">
+        <div class="signUp_cover_wrap">
+            <div class="signUp_cover_top">
+                积分
+                <span id="cover_sigIn_points">+12</span>
+            </div>
+            <div class="signUp_cover_content">
+                <p>恭喜你，已连续<span>签到<span id="cover_sigIn_day">7</span>天</span></p>
+                <p id="signUp_cover_tips">每连续签到满7天可获得更多积分</p>
+            </div>
+            <div class="cover_close">
+                知道了
+            </div>
+        </div>
+    </div>
+
+    <div class="signUp_false">
+        <div class="signUp_cover_wrap">
+            <div class="signUp_false_content">
+                <p>签到失败</p>
+            </div>
+            <div class="cover_close">
+                知道了
+            </div>
+        </div>
+    </div>
+</div>
+    #LoadJS("resources/mall/scripts/interface/dropload")
+    #LoadJS("resources/mall/scripts/home/mall_home_app")
+    #LoadJS("resources/micro2.0/scripts/more/tools")
+<script>
+    $(function(){
+        var counter = 0;
+        // 每页展示4个
+        var num = 4;
+        var pageStart = 0,pageEnd = 0;
+
+        // dropload
+        $('.mall_home').dropload({
+            scrollArea : window,
+            domUp : {
+                domClass   : 'dropload-up',
+                domRefresh : '<div class="dropload-refresh">↓下拉刷新</div>',
+                domUpdate  : '<div class="dropload-update">↑释放刷新</div>',
+                domLoad    : '<div class="dropload-load"><span class="loading"></span>刷新中...</div>'
+            },
+            loadUpFn : function(me){
+                window.location.reload();
+            },
+            threshold : 50
+        });
+    });
+</script>
+</body>
+#Html("end")

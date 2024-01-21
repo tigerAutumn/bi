@@ -1,0 +1,68 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾安心理财平台-管理登录")
+#LoadCSS("resources/dwz/external/dwz-ria/themes/css/login")
+##LoadZUI("core")
+##LoadZUI("util")
+##LoadZUI("ajax")
+
+#LoadJS("resources/dwz/zui/jquery-1.7.2.min")
+#LoadJS("resources/dwz/zui/zui-core")
+
+#LoadJS("resources/dwz/zui/zui-string")
+#LoadJS("resources/dwz/zui/zui-ajax")
+#LoadJS("resources/dwz/app/login/login")
+#Head("end")
+<body>
+	<div id="login">
+		<div id="login_header">
+			<h1 class="login_logo">
+				<a href="$!env.getWebURL('')"><img src="$!env.getWebURL('resources/dwz/external/dwz-ria/themes/default/images/login_logo.gif')" /></a>
+			</h1>
+			<div class="login_headerContent">
+				<div class="navList">
+					##<ul>
+					##	<li><a href="#">设为首页</a></li>
+					##	<li><a href="http://bbs.dwzjs.com">反馈</a></li>
+					##	<li><a href="doc/dwz-user-guide.pdf" target="_blank">帮助</a></li>
+					##</ul>
+				</div>
+				<h2 class="login_title"><img src="$!env.getWebURL('resources/dwz/external/dwz-ria/themes/default/images/login_title.png')" /></h2>
+			</div>
+		</div>
+		<div id="login_content">
+			<div class="loginForm">
+				<form id="loginForm" name="loginForm" method="post">
+					#Hidden("APP_ROOT_PATH", $env.getWebURL(''))
+					#Hidden("VALIDATE_PATH", $env.get('validate.code.path'))
+					<p>
+						<label>账户名：</label>
+						<input id="email" type="text" name="email" size="20" class="login_input" placeholder="输入邮箱或手机号" oninput="gain()"/>
+						<input type="button" value="发送初始密码" id="gainPassword" style="display:none;margin-left:70px;margin-top:4px;" onclick="sendPassword()"/>
+					</p>
+					<p>
+						<label>密&nbsp;&nbsp;&nbsp;码：</label>
+						<input id="passwd" type="password" name="passwd" size="20" class="login_input" placeholder="输入密码"/>
+					</p>
+					<p>
+						<label>验证码：</label>
+						<input id="verCode" class="code" name="verCode" type="text" size="5" maxlength="4"/>
+                        <span><img id="validateImg" src="$env.getPath('validate.code.path')" width="80" height="30" style="cursor:pointer" onclick="LoginApp.change()" alt="点击切换验证码"></img></span>
+					</p>
+					<div class="login_bar">
+						<input class="sub" type="button" onclick="LoginApp.logo()" />
+					</div>
+				</form>
+			</div>
+			<div class="login_banner"><img src="$!env.getWebURL('resources/dwz/external/dwz-ria/themes/default/images/login_banner.jpg')" /></div>
+			<div class="login_main">
+				<div class="login_inner">
+				</div>
+			</div>
+		</div>
+		<div id="login_footer">
+			Copyright &copy; 2015 bigangwan.com Inc. All Rights Reserved.
+		</div>
+	</div>
+</body>
+#Html("end")

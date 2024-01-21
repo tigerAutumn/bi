@@ -1,0 +1,332 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/agent/query/index.htm')" method="post" id="myform" class="pageForm required-validate">
+	##	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	##<input type="hidden" name="pageNum" value="$!pageNum" />
+	##<input type="hidden" name="numPerPage" value="$!numPerPage" />
+    <input type="hidden" id="queryDateFlag" name="queryDateFlag" value="QUERYDATE" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						姓名：<input  id="userName" type="text" name="userName" value="$!req.userName" maxlength="10" size="15"/>
+						手机号码：<input  id="mobile" type="text" name="mobile" value="$!req.mobile" maxlength="11" size="15"/>
+						产品名称：<input  id="productName" type="text" name="productName" value="$!req.productName" maxlength="30" size="15"/>
+						购买金额： <input id="beginBuyAmount" type="text" maxlength="15" name="beginBuyAmount" #if($!req.beginBuyAmount != 0) value="$!number.format("0",$!req.beginBuyAmount)" #end size="15"/> 到 <input id="endBuyAmount" type="text" name="endBuyAmount" maxlength="15" #if($!req.endBuyAmount != 0) value="$!number.format("0",$!req.endBuyAmount)" #end size="15"/>
+					</td>
+					#if($!agentId != "" && $!agentId == "15")
+						<td>
+							<label>分销渠道：</label>
+							<select name="distributionChannel" >
+								<option value="15" #if("$!req.distributionChannel"=="15") selected #end>钱报</option>
+								<option value="999" #if("$!req.distributionChannel"=="999") selected #end>全部</option>
+								<option value="36" #if("$!req.distributionChannel"=="36") selected #end>柯桥日报</option>
+								<option value="47" #if("$!req.distributionChannel"=="47") selected #end>瑞安日报</option>
+								<option value="46" #if("$!req.distributionChannel"=="46") selected #end>海宁日报</option>
+							</select>
+                        </td>
+					#end
+                </tr>
+				<tr>
+					<td>
+						购买日期： <input name="buyBeginTime"  maxdate="{%y}-%M-{%d}"  type="text" id="buyBeginTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.buyBeginTime)" /> 到 <input name="buyEndTime" maxdate="{%y}-%M-{%d}"  type="text" id="buyEndTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.buyEndTime)" />
+						结算日期： <input name="investBeginTime"  type="text" id="investBeginTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.investBeginTime)" /> 到 <input name="investEndTime"  type="text" id="investEndTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.investEndTime)" />
+					</td>
+					#if($!agentId != "" && $!agentId == "15")
+                        <td>
+                            <label>购买终端：</label>
+                            <select name="terminalType" >
+                                <option value="888" #if("$!terminalType"=="888") selected #end>全部</option>
+                                <option value="2" #if("$!terminalType"=="2") selected #end>PC端</option>
+                                <option value="1" #if("$!terminalType"=="1") selected  #end>H5端</option>
+                            </select>
+                        </td>
+					#end
+				</tr>
+				<tr>
+					<td>
+						起息日期： <input name="interestBeginTime" type="text" id="interestBeginTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.interestBeginTime)" /> 到 <input name="interestEndTime" type="text" id="interestEndTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.interestEndTime)" />
+						<span style="margin-left:15px;">
+							<button  onclick="func()" type="button">查询</button>
+							#if($!agentId == 15)<button  onclick="exp()" type="button">导出excel</button> #end
+                        </span>
+						<span style="margin-left:15px;">
+							<font color="red">投资总金额：$!money.format($!sumBalanceAmount)元</font>
+                        </span>
+					</td>
+				</tr>
+				
+			</table>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="168">
+		<thead>
+			<tr>
+				<th width="140">手机号</th>
+				<th width="100">姓名</th>
+                <th width="180">产品名称</th>
+				<th width="80">期限</th>
+				<th width="80">利率</th>
+				<th width="120" orderfield="balance"  class=#if("$!balance" != "") $!balance #else "asc" #end >购买金额</th>
+				<th width="126">提现银行</th>
+				<th width="90">账户状态</th>
+				<th width="180"  orderfield="openTime"  class=#if("$!openTime" != "") $!openTime #else "asc" #end >购买日期</th>
+				<th width="180"  orderfield="investEndTime"  class=#if("$!investEndTime" != "") $!investEndTime #else "asc" #end >到期提现日期</th>
+				#if($!agentId != "" && $!agentId == "15")
+                    <th width="60">分销渠道</th>
+                    <th width="60">购买终端</th>
+				#end
+			</tr>
+		</thead>
+		<tbody>
+			#set($Integer = 0)
+			#foreach($grid in $userBuyMessage)
+			<tr target="sid_user" rel="1">
+				<td>#if("$!grid.mobile" != "") $!grid.mobile#end</td>
+				<td>#if("$!grid.userName" != "") $!grid.userName#end</td>
+                <td>$!grid.productName</td>
+				<td>
+                    #if(0 > $Integer.parseInt("$!grid.term"))
+						#set($termNum = $Integer.parseInt("$!grid.term")*-1 ) $!termNum 天
+                    #else
+						$!grid.term月
+                    #end
+				</td>
+				<td>$!grid.rate</td>
+				<td><div class="gridCol">$!money.format($!grid.balance)</div></td>
+				<td>$!grid.bindBankName</td>
+				<td>$!message.get("ACCOUNT_STATUS_$!grid.accountStatus")</td>
+				<td>$!date.format($!grid.openTime)</td>
+				<td>$!date.format($!grid.investEndTime)</td>
+				#if($!agentId != "" && $!agentId == "15")
+                    <td>
+						#if($!grid.agentId == "15")
+                            钱报
+						#elseif($!grid.agentId == "36")
+                            柯桥日报
+						#elseif($!grid.agentId == "46")
+                            海宁日报
+						#elseif($!grid.agentId == "47")
+                            瑞安日报
+						#else
+						#end
+                    </td>
+                    <td>
+						#if($!grid.terminalType == "1")
+                            H5端
+						#elseif($!grid.terminalType == "2")
+                            PC端
+						#else
+						#end
+                    </td>
+				#end
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+<script>
+
+function func(){
+	var beginTime1 = $("#buyBeginTime").val();
+	var overTime1 = $("#buyEndTime").val();
+	var beginTime2 = $("#investBeginTime").val();
+	var overTime2 = $("#investEndTime").val();
+	
+	var interestBeginTime = $("#interestBeginTime").val();
+	var interestEndTime = $("#interestEndTime").val();
+	
+	
+	var snum1 =  $("#beginBuyAmount").val();
+	var enum1 =  $("#endBuyAmount").val();
+		if(eval(snum1)<0||eval(enum1)<0)
+    	{
+    		alert("输入金额不能小于0！");
+    		return false;
+    	}
+	if(snum1 != "" && enum1 != ""){
+    
+    	if(eval(snum1)>eval(enum1))
+    	{
+    		alert("输入金额前者不能大于后者！");
+    		return false;
+    	}
+	}
+	if(beginTime1 != "" && overTime1 == ""){
+		alert("请输入购买结束时间！");
+		return false;
+	}
+	
+	if(beginTime1 == "" && overTime1 != ""){
+		alert("请输入购买开始时间！");
+		return false;
+	}
+	
+	if(beginTime1 != "" && overTime1 != ""){
+		var result = Date.parse(overTime1.replace(/-/g,"/"))- Date.parse(beginTime1.replace(/-/g,"/"));
+		if(result < 0){
+			alert("购买开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+
+	
+	if(beginTime2 != "" && overTime2 == ""){
+		alert("请输入结算结束时间！");
+		return false;
+	}
+	
+	if(beginTime2 == "" && overTime2 != ""){
+		alert("请输入结算开始时间！");
+		return false;
+	}
+	
+	if(beginTime2 != "" && overTime2 != ""){
+		var result = Date.parse(overTime2.replace(/-/g,"/"))- Date.parse(beginTime2.replace(/-/g,"/"));
+		if(result < 0){
+			alert("结算开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+		
+	if(interestBeginTime != "" && interestEndTime == ""){
+		alert("请输入结算结束时间！");
+		return false;
+	}
+	
+	if(interestBeginTime == "" && interestEndTime != ""){
+		alert("请输入结算开始时间！");
+		return false;
+	}
+	
+	if(interestBeginTime != "" && interestEndTime != ""){
+		var result = Date.parse(interestEndTime.replace(/-/g,"/"))- Date.parse(interestBeginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("起息开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	var url = $("#APP_ROOT_PATH").val() + "/agent/query/index.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+
+
+
+function exp(){
+	var beginTime1 = $("#buyBeginTime").val();
+	var overTime1 = $("#buyEndTime").val();
+	var beginTime2 = $("#investBeginTime").val();
+	var overTime2 = $("#investEndTime").val();
+	
+	var interestBeginTime = $("#interestBeginTime").val();
+	var interestEndTime = $("#interestEndTime").val();
+	
+	var snum1 =  $("#beginBuyAmount").val();
+	var enum1 =  $("#endBuyAmount").val();
+		if(eval(snum1)<0||eval(enum1)<0)
+    	{
+    		alert("输入金额不能小于0！");
+    		return false;
+    	}
+	if(snum1 != "" && enum1 != ""){
+    
+    	if(eval(snum1)>eval(enum1))
+    	{
+    		alert("输入金额前者不能大于后者！");
+    		return false;
+    	}
+	}
+	if(beginTime1 != "" && overTime1 == ""){
+		alert("请输入购买结束时间！");
+		return false;
+	}
+	
+	if(beginTime1 == "" && overTime1 != ""){
+		alert("请输入购买开始时间！");
+		return false;
+	}
+	
+	if(beginTime1 != "" && overTime1 != ""){
+		var result = Date.parse(overTime1.replace(/-/g,"/"))- Date.parse(beginTime1.replace(/-/g,"/"));
+		if(result < 0){
+			alert("购买开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	
+	if(beginTime2 != "" && overTime2 == ""){
+		alert("请输入结算结束时间！");
+		return false;
+	}
+	
+	if(beginTime2 == "" && overTime2 != ""){
+		alert("请输入结算开始时间！");
+		return false;
+	}
+	
+	if(beginTime2 != "" && overTime2 != ""){
+		var result = Date.parse(overTime2.replace(/-/g,"/"))- Date.parse(beginTime2.replace(/-/g,"/"));
+		if(result < 0){
+			alert("结算开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	
+		
+	if(interestBeginTime != "" && interestEndTime == ""){
+		alert("请输入结算结束时间！");
+		return false;
+	}
+	
+	if(interestBeginTime == "" && interestEndTime != ""){
+		alert("请输入结算开始时间！");
+		return false;
+	}
+	
+	if(interestBeginTime != "" && interestEndTime != ""){
+		var result = Date.parse(interestEndTime.replace(/-/g,"/"))- Date.parse(interestBeginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("起息开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	var url = $("#APP_ROOT_PATH").val() + "/agent/userMessage/exportXls.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+
+</script>

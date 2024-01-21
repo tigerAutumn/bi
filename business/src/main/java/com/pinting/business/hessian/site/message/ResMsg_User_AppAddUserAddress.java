@@ -1,0 +1,12 @@
+package com.pinting.business.hessian.site.message;
+
+import com.pinting.core.hessian.msg.ResMsg;
+
+public class ResMsg_User_AppAddUserAddress extends ResMsg {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2197881089130768702L;
+
+}

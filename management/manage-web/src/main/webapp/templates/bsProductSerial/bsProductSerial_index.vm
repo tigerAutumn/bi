@@ -1,0 +1,141 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/bsProductSerial/index.htm')" onsubmit="return navTabSearch(this);">
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<div class="searchBar">
+		<table class="searchContent">
+				<tr>
+					<td>
+						
+					</td>
+				</tr>
+		</table>
+	</div>
+	
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">	
+		<ul class="toolBar">
+			<li><a title="新增系列" class="add" href="$env.getWebURL('/bsProductSerial/detail.htm')" target="dialog" mask="true" rel="createBack" height="280" width="550"><span>新增</span></a></li>
+			<li class="line">line</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="168">
+		<thead>
+			<tr>
+				<th width="20%">序号</th>
+				<th width="20%">系列名</th>
+				<th width="20%">期限</th>
+				<th width="20%">修改时间</th>
+				<th width="20%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $productSerialList)
+			<tr target="sid_user" rel="1" >
+				#if($!numPerPage == 20)
+					#set($a=$!velocityCount + 20 * ($!pageNum - 1))
+					<td>$a</td>
+				#elseif($!numPerPage == 50)
+					#set($b=$!velocityCount + 50 * ($!pageNum - 1))
+					<td>$b</td>
+				#elseif($!numPerPage == 100)
+					#set($c=$!velocityCount + 100 * ($!pageNum - 1))
+					<td>$c</td>
+				#elseif($!numPerPage == 200)
+					#set($d=$!velocityCount + 200 * ($!pageNum - 1))
+					<td>$d</td>
+				#end
+				<td>$!grid.serialName</td>
+				<td>
+					#set($Integer = 0)
+                    #if(0 > $Integer.parseInt("$!grid.term"))
+						#set($termNum = $Integer.parseInt("$!grid.term")*-1 ) $!termNum 天
+                    #else
+						$!grid.term 个月
+                    #end
+				</td>
+				<td>$!date.format($!grid.updateTime)</td>
+				<td>
+				    ##<a title="编辑系列" target="dialog" href="$env.getWebURL('/bsProductSerial/detail.htm?id=')$!grid.id" class="btnEdit" mask="true" rel="createBack" height="300" width="580">编辑系列</a>
+					##<a title="删除" target="ajaxTodo" mask="true" href="$env.getWebURL('/bsProductSerial/delete.htm?id=')$!grid.id" class="btnDel">删除</a>
+					
+					<a href="#" onclick="detailBsProductSerial($!grid.count,$!grid.id)" class="btnEdit">编辑系列</a>
+					<a href="#" onclick="deleteBsProductSerial($!grid.count,$!grid.id)" class="btnDel">删除</a>
+                </td>
+			</tr>
+			#end
+		</tbody>
+		
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option> 
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+//编辑
+function detailBsProductSerial(count,id){
+	var url = $("#APP_ROOT_PATH").val() + "/bsProductSerial/detail.htm?id="+id;
+	var content = "";
+	if(count > 0) {
+		content = "该系列已经被"+count+"个产品引用，不能编辑！";
+		//alertMsg.confirm(content);
+		alert(content);
+	}
+	else {
+		content = "确认编辑？";
+		alertMsg.confirm(content,{okCall:function(){
+    		var options = {"close":"function","mask":true};
+    		$.pdialog.open(url, "serail_edit", "编辑系列", options);
+		}});
+	}
+}
+
+//删除
+function deleteBsProductSerial(count,id){
+	var url = $("#APP_ROOT_PATH").val() + "/bsProductSerial/delete.htm";
+	var content = "";
+	if(count > 0) {
+		content = "该系列已经被"+count+"个产品引用，不能删除！";
+		//alertMsg.confirm(content);
+		alert(content);
+	}
+	else {
+		content = "确认删除？";
+		alertMsg.confirm(content,{okCall:function(){
+		jQuery.ajax({
+			type : 'post',
+			url : url,
+			data : {id:id},
+			dataType: 'json',
+			success : function(json) {
+				alertMsg.correct('删除成功!');
+				$("#myform").submit();
+			}
+    	});
+	}});
+	}
+}
+
+</script>

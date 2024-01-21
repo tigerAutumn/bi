@@ -1,0 +1,74 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!userVO.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!userVO.numPerPage" />
+	<input type="hidden" name="orderField" value="$!{userVO.orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{userVO.orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	 
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="$env.getWebURL('sys/role/detail.htm')" target="dialog" mask="true" rel="createBack" height="350"><span>新增</span></a></li>
+			<li class="line">line</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="20%">用户编号</th>
+				<th width="20%">权限名称</th>
+				<th width="20%">创建日期</th>				
+				<th width="20%">备注</th>
+				<th width="20%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $roleGrid)
+			<tr target="sid_user" rel="1">
+				<td>$!grid.id</td>
+				<td>$!grid.name</td>				
+				<td>$!date.format($!grid.createTime)</td>
+				<td>$!grid.note</td>
+				<td>
+					<a title="删除" target="ajaxTodo" href="$env.getWebURL('sys/role/delete.htm')?id=$!grid.id" class="btnDel">删除</a>
+					<a title="编辑" target="dialog" href="$env.getWebURL('sys/role/detail.htm?id=')$!grid.id" class="btnEdit" mask="true" rel="createBack" height="380">编辑</a>
+				</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+    	
+
+</div>
+<script >
+function ajaxTodo(url, callback){
+	jQuery.ajax({
+		url: url,
+		type: 'get',
+		success: function(data){
+			if(data.statusCode && data.statusCode == '200') {
+				navTab.reload("$env.getWebURL('/sys/role/index.htm')");
+			} else {
+				if(data.message) {
+    				alertMsg.error(data.message);
+    			} else {
+    				alertMsg.error('操作失败');
+    			}
+			}
+			navTab.reload('');
+		},
+		error: function(data){
+			if(data.message) {
+				alertMsg.error(data.message);
+			} else {
+				alertMsg.error('操作失败');
+			}
+		}
+	});
+	return false;
+}
+</script>
+	

@@ -1,0 +1,170 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="page unitBox">
+    <div class="pageHeader">
+        <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/mallUserPointsRecord/getList.htm')" id="myform"  method="post">
+            <input type="hidden" name="pageNum" value="$!pageNum" />
+            <input type="hidden" name="numPerPage" value="$!numPerPage" />
+            <input type="hidden" id="queryData" name="queryData" value="QUERYDATAFLAG" />
+            <div class="searchBar">
+                <table class="searchContent">
+                    <tr>
+                        <td>
+                            手机号：<input id="strMobile" type="text" name="strMobile" maxlength="11" value="$!strMobile" />
+                        </td>
+                        <td>
+                            时间：<input name="startTransTime" dateFmt="yyyy-MM-dd HH:mm:ss" type="text"  id="startTransTime" class=" date textInput readonly" readonly="true"   value="$!startTransTime" />
+                            到&nbsp;&nbsp;&nbsp;
+                            <input name="endTransTime" dateFmt="yyyy-MM-dd HH:mm:ss" type="text" id="endTransTime" class=" date textInput readonly" readonly="true"   value="$!endTransTime" />
+                        </td>
+                        <td>
+                            场景：
+                            <select name="transType" >
+                                <option value="888" #if("$!transType"=="888") selected #end>全部</option>
+                                <option value="REGISTER" #if("$!transType"=="REGISTER") selected #end>成功注册</option>
+                                <option value="OPEN_DEPOSIT" #if("$!transType"=="OPEN_DEPOSIT") selected #end>成功开通存管户</option>
+                                <option value="FINISH_RISK_ASSESSMENT" #if("$!transType"=="FINISH_RISK_ASSESSMENT") selected #end>成功完成风险测评</option>
+                                <option value="FIRST_INVEST" #if("$!transType"=="FIRST_INVEST") selected #end>成功首次完成首次加入产品</option>
+                                <option value="SIGN" #if("$!transType"=="SIGN") selected #end>签到</option>
+                                <option value="INVEST" #if("$!transType"=="INVEST") selected #end>成功加入产品</option>
+                                <option value="TOTAL_INVEST" #if("$!transType"=="TOTAL_INVEST") selected #end>累计成功加入积分奖励</option>
+                                <option value="EXCHANGE" #if("$!transType"=="EXCHANGE") selected #end>积分商城兑换</option>
+                                <option value="BIRTHDAY" #if("$!transType"=="BIRTHDAY") selected #end>用户生日奖励</option>
+                            </select>
+                        </td>
+                        <td>
+                            类型：
+                            <select name="pointsType" >
+                                <option value="999" #if("$!pointsType"=="999") selected #end>全部</option>
+                                <option value="INCOME" #if("$!pointsType"=="INCOME") selected #end>收入</option>
+                                <option value="POINTSEXCHANGE" #if("$!pointsType"=="POINTSEXCHANGE") selected #end>支出</option>
+                            </select>
+                        </td>
+
+                        <td>
+                             <span style="margin-left:20px;">
+                                 <button  onclick="func()" type="button">查询</button>&ensp;&ensp;&ensp;
+                             </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="pageContent">
+        <div class="panelBar">
+            <ul class="toolBar">
+                <li>
+                    <span style="margin-left:10px;">
+                        <font color="red">积分商城兑换：#if(!$!totalPointsStr) 0 #else $!totalPointsStr #end </font>
+                    </span>
+                </li>
+            </ul>
+        </div>
+        <table class="table" width="100%" layoutH="128">
+            <thead>
+            <tr>
+                <th width="10%">序号</th>
+                <th width="18%">手机号</th>
+                <th width="18%">时间</th>
+                <th width="18%">场景</th>
+                <th width="18%">类型</th>
+                <th width="18%">积分</th>
+            </tr>
+            </thead>
+            <tbody>
+                #set($index = $!offset)
+                #foreach($grid in $userPointsRecord)
+                <tr target="sid_user" rel="1">
+                    #set($index = $index + 1)
+                    <td>$!index</td>
+                    <td>$!grid.mobile</td>
+                    <td>$!date.format($!grid.transTime)</td>
+                    <td>
+                        #if("$!grid.transType"=="REGISTER")成功注册
+                        #elseif("$!grid.transType"=="OPEN_DEPOSIT")成功开通存管户
+                        #elseif("$!grid.transType"=="FINISH_RISK_ASSESSMENT")成功完成风险测评
+                        #elseif("$!grid.transType"=="FIRST_INVEST")成功首次完成首次加入产品
+                        #elseif("$!grid.transType"=="INVEST")成功加入产品
+                        #elseif("$!grid.transType"=="TOTAL_INVEST")累计成功加入积分奖励
+                        #elseif("$!grid.transType"=="SIGN")签到
+                        #elseif("$!grid.transType"=="EXCHANGE")积分商城兑换
+                        #elseif("$!grid.transType"=="BIRTHDAY")用户生日奖励
+                        #else
+                        #end
+                    </td>
+                    <td>
+                        #if("$!grid.transType"=="EXCHANGE")
+                            支出
+                        #else
+                            收入
+                        #end
+                    </td>
+                    <td>
+                        #if($!grid.points > 0)
+                            +$!grid.points
+                        #else
+                            $!grid.points
+                        #end
+                    </td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+        <div class="panelBar">
+            <div class="pages">
+                <span>显示</span>
+                <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                    <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                    <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                    <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                    <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+                </select>
+                <span>条，共$!count条</span>
+            </div>
+            <div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+        </div>
+    </div>
+
+</div>
+<script>
+    function func(){
+        var startTransTime = $.trim($('#startTransTime').val());
+        var endTransTime = $.trim($('#endTransTime').val());
+        var strMobile = $.trim($('#strMobile').val());
+        var reg = /^[1-9]\d*$/;
+
+        if((strMobile != "" && !reg.test(strMobile)) || (strMobile != "" && !reg.test(strMobile))) {
+            alertMsg.warn("手机号只能是数字，请重新输入！");
+            return false;
+        }
+
+        if(endTransTime){
+            if(!startTransTime) {
+                alertMsg.warn("开始时间不能为空！");
+                return;
+            }
+        }
+        if(startTransTime){
+            if(!endTransTime) {
+                alertMsg.warn("结束时间不能为空！");
+                return;
+            }
+        }
+        if(startTransTime != "" && endTransTime != ""){
+            var result = Date.parse(endTransTime.replace(/-/g,"/"))- Date.parse(startTransTime.replace(/-/g,"/"));
+            if(result < 0){
+                alertMsg.warn("开始时间不能在结束时间之后！！");
+                return false;
+            }
+        }
+
+        var url = $("#APP_ROOT_PATH").val() + "/mallUserPointsRecord/getList.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+</script>

@@ -1,0 +1,103 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/financial/rebateOrderQueryIndex.htm')" method="post" id="myform" class="pageForm required-validate">
+    	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+    	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+					   	代付日期： <input name="beginTime"  type="text" id="beginTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.beginTime)" /> 到
+					   	<input name="endTime"  type="text" id="endTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.endTime)" />
+						<span style="margin-left:20px;">
+							<button  onclick="func()" type="button">查询</button>
+							<button  onclick="exp()" type="button">导出excel</button>
+                       </span>
+					</td>
+				</tr>
+
+			</table>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="128">
+		<thead>
+			<tr>
+                <th width="10%">资产端借款编号</th>
+				<th width="10%">借款金额</th>
+				<th width="10%">批量代扣订单号</th>
+				<th width="10%">代付金额</th>
+				<th width="10%">代付日期</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $transferList)
+			<tr target="sid_user" rel="1">
+				<td>$!grid.partnerLoanId</td>
+				<td><div>$!money.format($!grid.approveAmount)</div></td>
+				<td>$!grid.dkOrderNo</td>
+				<td><div>$!money.format($!grid.planTotal)</div></td>	
+				<td>$!date.formatYYYYMMDD($!grid.finishTime)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+function func(){
+	var beginTime = $("#beginTime").val();
+	var endTime = $("#endTime").val();
+
+	if(beginTime != "" && endTime != ""){
+		var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("代付开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+
+	var url = $("#APP_ROOT_PATH").val() + "/financial/rebateOrderQueryIndex.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function exp(){
+	
+	var beginTime = $("#beginTime").val();
+	var endTime = $("#endTime").val();
+
+	if(beginTime != "" && endTime != ""){
+		var result = Date.parse(endTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("代付开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	var url = $("#APP_ROOT_PATH").val() + "/financial/rebateOrderQueryIndex/exportXls.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+</script>

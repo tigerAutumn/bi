@@ -1,0 +1,85 @@
+<div class="pageContent">
+	<form id="flashForm" method="post" action="$env.getWebURL('/smsPlatforms/toUpadte.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("id", "$!platform.id")
+		<div class="pageFormContent nowrap" layoutH="56">
+			<table class="table">
+				<tbody>
+                    <tr height="40px">
+						<td width="30%">平台名称：</td>
+						<td width="60%"><input  id="platformsName" type="text" name="platformsName" value="$!platform.platformsName" size="40" maxlength="20"/></td>
+					</tr>
+					<tr height="40px">
+						<td>平台编码：</td>
+						<td>$!platform.platformsCode</td>
+					</tr>
+        			<tr height="40px">
+        				<td>优先级：</td>
+        				<td>
+        					<select name="priority" class="valid">
+        						#foreach($num in  [1..$size])
+        							<option value="$num" #if($!platform.priority== $num) selected #end>$num</option>
+        						#end
+                            </select>
+        				</td>
+        			</tr>
+					<tr height="40px">
+        				<td>短信类型：</td>
+						<td>#if($!platform.platformsType == 'NOTICE') 通知类短信
+							#elseif($!platform.platformsType == 'MARKETING')营销类短信
+							#end
+						</td>
+        			</tr>
+        			<tr height="40px">
+        				<td>账号：</td>
+						<td>$!platform.platformsAct</td>
+        			</tr>
+        			<tr height="40px">
+        				<td>密码：</td>
+						<td>$!platform.platformsPass</td>
+        			</tr>
+        			<tr height="40px">
+        				<td>备注：</td>
+        				<td>
+        					<input  id="note" type="text" name="note" value="$!platform.note" size="40" maxlength="63"/>
+        				</td>
+        			</tr>
+        			<tr height="40px">
+        				<td>创建时间：</td>
+						<td>$!date.format($!platform.createTime)</td>
+        			</tr>
+        			<tr height="40px">
+        				<td>更改时间：</td>
+						<td>$!date.format($!platform.updateTime)</td>
+        			</tr>
+                </tbody>
+            </table>
+			
+			
+			
+		</div>
+		<div class="formBar">
+			<ul style="float:left;">
+				<li><div class="buttonActive"><div class="buttonContent"><button onclick="formsubmint()" type="button">保存</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+	
+ <script>
+ function formsubmint(){
+ 	$("#flashForm").submit();
+ }
+ function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			alertMsg.correct(json.message);
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('/smsPlatforms/configIndex.htm')");
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+ </script>

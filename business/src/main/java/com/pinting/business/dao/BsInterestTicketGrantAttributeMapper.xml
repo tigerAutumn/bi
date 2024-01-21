@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsInterestTicketGrantAttributeMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsInterestTicketGrantAttribute" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="serial_no" property="serialNo" jdbcType="VARCHAR" />
+    <result column="ticket_name" property="ticketName" jdbcType="VARCHAR" />
+    <result column="ticket_apr" property="ticketApr" jdbcType="DOUBLE" />
+    <result column="grant_total" property="grantTotal" jdbcType="INTEGER" />
+    <result column="grant_num" property="grantNum" jdbcType="INTEGER" />
+    <result column="valid_term_type" property="validTermType" jdbcType="VARCHAR" />
+    <result column="use_time_start" property="useTimeStart" jdbcType="TIMESTAMP" />
+    <result column="use_time_end" property="useTimeEnd" jdbcType="TIMESTAMP" />
+    <result column="available_days" property="availableDays" jdbcType="INTEGER" />
+    <result column="notify_channel" property="notifyChannel" jdbcType="VARCHAR" />
+    <result column="invest_limit" property="investLimit" jdbcType="DOUBLE" />
+    <result column="product_limit" property="productLimit" jdbcType="VARCHAR" />
+    <result column="term_limit" property="termLimit" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, serial_no, ticket_name, ticket_apr, grant_total, grant_num, valid_term_type, 
+    use_time_start, use_time_end, available_days, notify_channel, invest_limit, product_limit, 
+    term_limit, note, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsInterestTicketGrantAttributeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_interest_ticket_grant_attribute
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_interest_ticket_grant_attribute
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_interest_ticket_grant_attribute
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsInterestTicketGrantAttributeExample" >
+    delete from bs_interest_ticket_grant_attribute
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsInterestTicketGrantAttribute" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bs_interest_ticket_grant_attribute (serial_no, ticket_name, ticket_apr, 
+      grant_total, grant_num, valid_term_type, 
+      use_time_start, use_time_end, available_days, 
+      notify_channel, invest_limit, product_limit, 
+      term_limit, note, create_time, 
+      update_time)
+    values (#{serialNo,jdbcType=VARCHAR}, #{ticketName,jdbcType=VARCHAR}, #{ticketApr,jdbcType=DOUBLE}, 
+      #{grantTotal,jdbcType=INTEGER}, #{grantNum,jdbcType=INTEGER}, #{validTermType,jdbcType=VARCHAR}, 
+      #{useTimeStart,jdbcType=TIMESTAMP}, #{useTimeEnd,jdbcType=TIMESTAMP}, #{availableDays,jdbcType=INTEGER}, 
+      #{notifyChannel,jdbcType=VARCHAR}, #{investLimit,jdbcType=DOUBLE}, #{productLimit,jdbcType=VARCHAR}, 
+      #{termLimit,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsInterestTicketGrantAttribute" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bs_interest_ticket_grant_attribute
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="serialNo != null" >
+        serial_no,
+      </if>
+      <if test="ticketName != null" >
+        ticket_name,
+      </if>
+      <if test="ticketApr != null" >
+        ticket_apr,
+      </if>
+      <if test="grantTotal != null" >
+        grant_total,
+      </if>
+      <if test="grantNum != null" >
+        grant_num,
+      </if>
+      <if test="validTermType != null" >
+        valid_term_type,
+      </if>
+      <if test="useTimeStart != null" >
+        use_time_start,
+      </if>
+      <if test="useTimeEnd != null" >
+        use_time_end,
+      </if>
+      <if test="availableDays != null" >
+        available_days,
+      </if>
+      <if test="notifyChannel != null" >
+        notify_channel,
+      </if>
+      <if test="investLimit != null" >
+        invest_limit,
+      </if>
+      <if test="productLimit != null" >
+        product_limit,
+      </if>
+      <if test="termLimit != null" >
+        term_limit,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="serialNo != null" >
+        #{serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketName != null" >
+        #{ticketName,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketApr != null" >
+        #{ticketApr,jdbcType=DOUBLE},
+      </if>
+      <if test="grantTotal != null" >
+        #{grantTotal,jdbcType=INTEGER},
+      </if>
+      <if test="grantNum != null" >
+        #{grantNum,jdbcType=INTEGER},
+      </if>
+      <if test="validTermType != null" >
+        #{validTermType,jdbcType=VARCHAR},
+      </if>
+      <if test="useTimeStart != null" >
+        #{useTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useTimeEnd != null" >
+        #{useTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="availableDays != null" >
+        #{availableDays,jdbcType=INTEGER},
+      </if>
+      <if test="notifyChannel != null" >
+        #{notifyChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="investLimit != null" >
+        #{investLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="productLimit != null" >
+        #{productLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="termLimit != null" >
+        #{termLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsInterestTicketGrantAttributeExample" resultType="java.lang.Integer" >
+    select count(*) from bs_interest_ticket_grant_attribute
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_interest_ticket_grant_attribute
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.serialNo != null" >
+        serial_no = #{record.serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ticketName != null" >
+        ticket_name = #{record.ticketName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ticketApr != null" >
+        ticket_apr = #{record.ticketApr,jdbcType=DOUBLE},
+      </if>
+      <if test="record.grantTotal != null" >
+        grant_total = #{record.grantTotal,jdbcType=INTEGER},
+      </if>
+      <if test="record.grantNum != null" >
+        grant_num = #{record.grantNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.validTermType != null" >
+        valid_term_type = #{record.validTermType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.useTimeStart != null" >
+        use_time_start = #{record.useTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.useTimeEnd != null" >
+        use_time_end = #{record.useTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.availableDays != null" >
+        available_days = #{record.availableDays,jdbcType=INTEGER},
+      </if>
+      <if test="record.notifyChannel != null" >
+        notify_channel = #{record.notifyChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.investLimit != null" >
+        invest_limit = #{record.investLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="record.productLimit != null" >
+        product_limit = #{record.productLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.termLimit != null" >
+        term_limit = #{record.termLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_interest_ticket_grant_attribute
+    set id = #{record.id,jdbcType=INTEGER},
+      serial_no = #{record.serialNo,jdbcType=VARCHAR},
+      ticket_name = #{record.ticketName,jdbcType=VARCHAR},
+      ticket_apr = #{record.ticketApr,jdbcType=DOUBLE},
+      grant_total = #{record.grantTotal,jdbcType=INTEGER},
+      grant_num = #{record.grantNum,jdbcType=INTEGER},
+      valid_term_type = #{record.validTermType,jdbcType=VARCHAR},
+      use_time_start = #{record.useTimeStart,jdbcType=TIMESTAMP},
+      use_time_end = #{record.useTimeEnd,jdbcType=TIMESTAMP},
+      available_days = #{record.availableDays,jdbcType=INTEGER},
+      notify_channel = #{record.notifyChannel,jdbcType=VARCHAR},
+      invest_limit = #{record.investLimit,jdbcType=DOUBLE},
+      product_limit = #{record.productLimit,jdbcType=VARCHAR},
+      term_limit = #{record.termLimit,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsInterestTicketGrantAttribute" >
+    update bs_interest_ticket_grant_attribute
+    <set >
+      <if test="serialNo != null" >
+        serial_no = #{serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketName != null" >
+        ticket_name = #{ticketName,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketApr != null" >
+        ticket_apr = #{ticketApr,jdbcType=DOUBLE},
+      </if>
+      <if test="grantTotal != null" >
+        grant_total = #{grantTotal,jdbcType=INTEGER},
+      </if>
+      <if test="grantNum != null" >
+        grant_num = #{grantNum,jdbcType=INTEGER},
+      </if>
+      <if test="validTermType != null" >
+        valid_term_type = #{validTermType,jdbcType=VARCHAR},
+      </if>
+      <if test="useTimeStart != null" >
+        use_time_start = #{useTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useTimeEnd != null" >
+        use_time_end = #{useTimeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="availableDays != null" >
+        available_days = #{availableDays,jdbcType=INTEGER},
+      </if>
+      <if test="notifyChannel != null" >
+        notify_channel = #{notifyChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="investLimit != null" >
+        invest_limit = #{investLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="productLimit != null" >
+        product_limit = #{productLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="termLimit != null" >
+        term_limit = #{termLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsInterestTicketGrantAttribute" >
+    update bs_interest_ticket_grant_attribute
+    set serial_no = #{serialNo,jdbcType=VARCHAR},
+      ticket_name = #{ticketName,jdbcType=VARCHAR},
+      ticket_apr = #{ticketApr,jdbcType=DOUBLE},
+      grant_total = #{grantTotal,jdbcType=INTEGER},
+      grant_num = #{grantNum,jdbcType=INTEGER},
+      valid_term_type = #{validTermType,jdbcType=VARCHAR},
+      use_time_start = #{useTimeStart,jdbcType=TIMESTAMP},
+      use_time_end = #{useTimeEnd,jdbcType=TIMESTAMP},
+      available_days = #{availableDays,jdbcType=INTEGER},
+      notify_channel = #{notifyChannel,jdbcType=VARCHAR},
+      invest_limit = #{investLimit,jdbcType=DOUBLE},
+      product_limit = #{productLimit,jdbcType=VARCHAR},
+      term_limit = #{termLimit,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

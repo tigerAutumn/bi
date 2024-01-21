@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsTransferMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsTransfer" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id1" property="userId1" jdbcType="INTEGER" />
+    <result column="user_id2" property="userId2" jdbcType="INTEGER" />
+    <result column="product_id" property="productId" jdbcType="INTEGER" />
+    <result column="sub_account_id1" property="subAccountId1" jdbcType="INTEGER" />
+    <result column="sub_account_id2" property="subAccountId2" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="worth" property="worth" jdbcType="DOUBLE" />
+    <result column="old_rate" property="oldRate" jdbcType="DOUBLE" />
+    <result column="real_rate" property="realRate" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="distribute_time" property="distributeTime" jdbcType="TIMESTAMP" />
+    <result column="deal_time" property="dealTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id1, user_id2, product_id, sub_account_id1, sub_account_id2, price, worth, 
+    old_rate, real_rate, status, distribute_time, deal_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsTransferExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_transfer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_transfer
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_transfer
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsTransferExample" >
+    delete from bs_transfer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsTransfer" >
+    insert into bs_transfer (id, user_id1, user_id2, 
+      product_id, sub_account_id1, sub_account_id2, 
+      price, worth, old_rate, 
+      real_rate, status, distribute_time, 
+      deal_time)
+    values (#{id,jdbcType=INTEGER}, #{userId1,jdbcType=INTEGER}, #{userId2,jdbcType=INTEGER}, 
+      #{productId,jdbcType=INTEGER}, #{subAccountId1,jdbcType=INTEGER}, #{subAccountId2,jdbcType=INTEGER}, 
+      #{price,jdbcType=DOUBLE}, #{worth,jdbcType=DOUBLE}, #{oldRate,jdbcType=DOUBLE}, 
+      #{realRate,jdbcType=DOUBLE}, #{status,jdbcType=INTEGER}, #{distributeTime,jdbcType=TIMESTAMP}, 
+      #{dealTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsTransfer" >
+    insert into bs_transfer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId1 != null" >
+        user_id1,
+      </if>
+      <if test="userId2 != null" >
+        user_id2,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="subAccountId1 != null" >
+        sub_account_id1,
+      </if>
+      <if test="subAccountId2 != null" >
+        sub_account_id2,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="worth != null" >
+        worth,
+      </if>
+      <if test="oldRate != null" >
+        old_rate,
+      </if>
+      <if test="realRate != null" >
+        real_rate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="distributeTime != null" >
+        distribute_time,
+      </if>
+      <if test="dealTime != null" >
+        deal_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId1 != null" >
+        #{userId1,jdbcType=INTEGER},
+      </if>
+      <if test="userId2 != null" >
+        #{userId2,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="subAccountId1 != null" >
+        #{subAccountId1,jdbcType=INTEGER},
+      </if>
+      <if test="subAccountId2 != null" >
+        #{subAccountId2,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="worth != null" >
+        #{worth,jdbcType=DOUBLE},
+      </if>
+      <if test="oldRate != null" >
+        #{oldRate,jdbcType=DOUBLE},
+      </if>
+      <if test="realRate != null" >
+        #{realRate,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="distributeTime != null" >
+        #{distributeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealTime != null" >
+        #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsTransferExample" resultType="java.lang.Integer" >
+    select count(*) from bs_transfer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_transfer
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId1 != null" >
+        user_id1 = #{record.userId1,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId2 != null" >
+        user_id2 = #{record.userId2,jdbcType=INTEGER},
+      </if>
+      <if test="record.productId != null" >
+        product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.subAccountId1 != null" >
+        sub_account_id1 = #{record.subAccountId1,jdbcType=INTEGER},
+      </if>
+      <if test="record.subAccountId2 != null" >
+        sub_account_id2 = #{record.subAccountId2,jdbcType=INTEGER},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DOUBLE},
+      </if>
+      <if test="record.worth != null" >
+        worth = #{record.worth,jdbcType=DOUBLE},
+      </if>
+      <if test="record.oldRate != null" >
+        old_rate = #{record.oldRate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.realRate != null" >
+        real_rate = #{record.realRate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.distributeTime != null" >
+        distribute_time = #{record.distributeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dealTime != null" >
+        deal_time = #{record.dealTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_transfer
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id1 = #{record.userId1,jdbcType=INTEGER},
+      user_id2 = #{record.userId2,jdbcType=INTEGER},
+      product_id = #{record.productId,jdbcType=INTEGER},
+      sub_account_id1 = #{record.subAccountId1,jdbcType=INTEGER},
+      sub_account_id2 = #{record.subAccountId2,jdbcType=INTEGER},
+      price = #{record.price,jdbcType=DOUBLE},
+      worth = #{record.worth,jdbcType=DOUBLE},
+      old_rate = #{record.oldRate,jdbcType=DOUBLE},
+      real_rate = #{record.realRate,jdbcType=DOUBLE},
+      status = #{record.status,jdbcType=INTEGER},
+      distribute_time = #{record.distributeTime,jdbcType=TIMESTAMP},
+      deal_time = #{record.dealTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsTransfer" >
+    update bs_transfer
+    <set >
+      <if test="userId1 != null" >
+        user_id1 = #{userId1,jdbcType=INTEGER},
+      </if>
+      <if test="userId2 != null" >
+        user_id2 = #{userId2,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="subAccountId1 != null" >
+        sub_account_id1 = #{subAccountId1,jdbcType=INTEGER},
+      </if>
+      <if test="subAccountId2 != null" >
+        sub_account_id2 = #{subAccountId2,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="worth != null" >
+        worth = #{worth,jdbcType=DOUBLE},
+      </if>
+      <if test="oldRate != null" >
+        old_rate = #{oldRate,jdbcType=DOUBLE},
+      </if>
+      <if test="realRate != null" >
+        real_rate = #{realRate,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="distributeTime != null" >
+        distribute_time = #{distributeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealTime != null" >
+        deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsTransfer" >
+    update bs_transfer
+    set user_id1 = #{userId1,jdbcType=INTEGER},
+      user_id2 = #{userId2,jdbcType=INTEGER},
+      product_id = #{productId,jdbcType=INTEGER},
+      sub_account_id1 = #{subAccountId1,jdbcType=INTEGER},
+      sub_account_id2 = #{subAccountId2,jdbcType=INTEGER},
+      price = #{price,jdbcType=DOUBLE},
+      worth = #{worth,jdbcType=DOUBLE},
+      old_rate = #{oldRate,jdbcType=DOUBLE},
+      real_rate = #{realRate,jdbcType=DOUBLE},
+      status = #{status,jdbcType=INTEGER},
+      distribute_time = #{distributeTime,jdbcType=TIMESTAMP},
+      deal_time = #{dealTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <resultMap id="VOResultMap" type="com.pinting.business.model.vo.BsTransferVO" extends="BaseResultMap">
+   	<result column="surplusTime" property="surplusTime" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="selectByExamplePage" parameterType="java.util.HashMap" resultMap="VOResultMap">
+  		select
+	    t.id, t.user_id1, t.product_id, t.sub_account_id1, t.price, worth, 
+		t.old_rate, t.real_rate, t.status,
+		(p.term * 30 ) - (datediff(now(), s.interest_begin_date)) surplusTime
+	    	from bs_transfer t , bs_sub_account s, bs_product p
+		<where>
+		    t.status = 1 and t.sub_account_id1 = s.id and t.product_id = p.id
+		</where>
+         limit #{start , jdbcType=INTEGER}, #{pageSize , jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectTransferVOByPrimaryKey" parameterType="java.lang.Integer" resultMap="VOResultMap">
+  		select
+	    t.id, t.user_id1, t.product_id, t.sub_account_id1, t.price, worth, 
+		t.old_rate, t.real_rate, t.status,
+		(p.term * 30 ) - (datediff(now(), s.interest_begin_date)) surplusTime
+	    	from bs_transfer t , bs_sub_account s, bs_product p
+		<where>
+		    t.status = 1 and t.sub_account_id1 = s.id and t.product_id = p.id and t.id=#{id}
+		</where>
+  </select>
+</mapper>

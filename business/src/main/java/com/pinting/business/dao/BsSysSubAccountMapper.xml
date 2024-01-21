@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsSysSubAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsSysSubAccount" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="open_balance" property="openBalance" jdbcType="DOUBLE" />
+    <result column="balance" property="balance" jdbcType="DOUBLE" />
+    <result column="available_balance" property="availableBalance" jdbcType="DOUBLE" />
+    <result column="can_withdraw" property="canWithdraw" jdbcType="DOUBLE" />
+    <result column="freeze_balance" property="freezeBalance" jdbcType="DOUBLE" />
+    <result column="last_trans_date" property="lastTransDate" jdbcType="DATE" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, code, open_balance, balance, available_balance, can_withdraw, freeze_balance, 
+    last_trans_date, note
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsSysSubAccountExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_sys_sub_account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_sys_sub_account
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_sys_sub_account
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsSysSubAccountExample" >
+    delete from bs_sys_sub_account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsSysSubAccount" >
+    insert into bs_sys_sub_account (id, code, open_balance, 
+      balance, available_balance, can_withdraw, 
+      freeze_balance, last_trans_date, note
+      )
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{openBalance,jdbcType=DOUBLE}, 
+      #{balance,jdbcType=DOUBLE}, #{availableBalance,jdbcType=DOUBLE}, #{canWithdraw,jdbcType=DOUBLE}, 
+      #{freezeBalance,jdbcType=DOUBLE}, #{lastTransDate,jdbcType=DATE}, #{note,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsSysSubAccount" >
+    insert into bs_sys_sub_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="openBalance != null" >
+        open_balance,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="availableBalance != null" >
+        available_balance,
+      </if>
+      <if test="canWithdraw != null" >
+        can_withdraw,
+      </if>
+      <if test="freezeBalance != null" >
+        freeze_balance,
+      </if>
+      <if test="lastTransDate != null" >
+        last_trans_date,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="openBalance != null" >
+        #{openBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DOUBLE},
+      </if>
+      <if test="availableBalance != null" >
+        #{availableBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="canWithdraw != null" >
+        #{canWithdraw,jdbcType=DOUBLE},
+      </if>
+      <if test="freezeBalance != null" >
+        #{freezeBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="lastTransDate != null" >
+        #{lastTransDate,jdbcType=DATE},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsSysSubAccountExample" resultType="java.lang.Integer" >
+    select count(*) from bs_sys_sub_account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_sys_sub_account
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.code != null" >
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.openBalance != null" >
+        open_balance = #{record.openBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.balance != null" >
+        balance = #{record.balance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.availableBalance != null" >
+        available_balance = #{record.availableBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.canWithdraw != null" >
+        can_withdraw = #{record.canWithdraw,jdbcType=DOUBLE},
+      </if>
+      <if test="record.freezeBalance != null" >
+        freeze_balance = #{record.freezeBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.lastTransDate != null" >
+        last_trans_date = #{record.lastTransDate,jdbcType=DATE},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_sys_sub_account
+    set id = #{record.id,jdbcType=INTEGER},
+      code = #{record.code,jdbcType=VARCHAR},
+      open_balance = #{record.openBalance,jdbcType=DOUBLE},
+      balance = #{record.balance,jdbcType=DOUBLE},
+      available_balance = #{record.availableBalance,jdbcType=DOUBLE},
+      can_withdraw = #{record.canWithdraw,jdbcType=DOUBLE},
+      freeze_balance = #{record.freezeBalance,jdbcType=DOUBLE},
+      last_trans_date = #{record.lastTransDate,jdbcType=DATE},
+      note = #{record.note,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsSysSubAccount" >
+    update bs_sys_sub_account
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="openBalance != null" >
+        open_balance = #{openBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=DOUBLE},
+      </if>
+      <if test="availableBalance != null" >
+        available_balance = #{availableBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="canWithdraw != null" >
+        can_withdraw = #{canWithdraw,jdbcType=DOUBLE},
+      </if>
+      <if test="freezeBalance != null" >
+        freeze_balance = #{freezeBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="lastTransDate != null" >
+        last_trans_date = #{lastTransDate,jdbcType=DATE},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsSysSubAccount" >
+    update bs_sys_sub_account
+    set code = #{code,jdbcType=VARCHAR},
+      open_balance = #{openBalance,jdbcType=DOUBLE},
+      balance = #{balance,jdbcType=DOUBLE},
+      available_balance = #{availableBalance,jdbcType=DOUBLE},
+      can_withdraw = #{canWithdraw,jdbcType=DOUBLE},
+      freeze_balance = #{freezeBalance,jdbcType=DOUBLE},
+      last_trans_date = #{lastTransDate,jdbcType=DATE},
+      note = #{note,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+   <select id="selectByCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_sys_sub_account
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+  
+  <update id="updateById" parameterType="com.pinting.business.model.BsSysSubAccount" >
+    update bs_sys_sub_account
+    <set > 
+      <if test="openBalance != null" >
+        open_balance = open_balance+#{openBalance},
+      </if>
+      <if test="availableBalance != null" >
+        available_balance = available_balance+#{availableBalance},
+      </if>
+      <if test="balance != null" >
+        balance = balance+#{balance},
+      </if>
+      <if test="canWithdraw != null" >
+        can_withdraw = can_withdraw+#{canWithdraw},
+      </if>
+      <if test="freezeBalance != null" >
+        freeze_balance = freeze_balance+#{freezeBalance},
+      </if>
+      <if test="lastTransDate != null" >
+        last_trans_date = #{lastTransDate},
+      </if>
+     </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectSysSubAccountForLock" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select * from bs_sys_sub_account where id = #{id} for update
+  </select>
+  
+  <!-- 
+   	   统计系统账户余额 、用户余额  、产品户余额和回款户余额
+   	 @author yanwl
+   	 @date 2015-12-07
+    -->
+  	<select id="countSysSubAccountBalance" resultType="java.util.Map" >
+  		select 
+			sum(case when code = 'JSH' then balance else 0 end )as sysAccBalance,
+			sum(case when code = 'JSH' then freeze_balance else 0 end )as sysFreezeAccBalance,
+			sum(case when code = 'USER' then balance else 0 end )as accBalance,
+			sum(case when code = 'REG_YUN' then balance else 0 end )as proAccBalance,
+			sum(case when code = 'REG_7' then balance else 0 end )as pro7AccBalance,
+			sum(case when code = 'RETURN_YUN' then balance else 0 end )as retAccBalance,
+			sum(case when code = 'RETURN_7' then balance else 0 end )as ret7AccBalance,
+			sum(case when code = 'REDPACKET' then balance else 0 end )as redPaktAccBalance,
+			sum(case when code = 'AUTH_ZAN' then balance else 0 end )as proAuthZanAccBalance,
+			sum(case when code = 'REG_ZAN' then balance else 0 end )as proZanAccBalance,
+			sum(case when code = 'RETURN_ZAN' then balance else 0 end )as retZanAccBalance,
+			sum(case when code = 'MARGIN_ZAN' then balance else 0 end )as marginZanAccBalance,
+			sum(case when code = 'REVENUE_ZAN' then balance else 0 end )as revenueZanAccBalance,
+			sum(case when code = 'BADLOANS_ZAN' then balance else 0 end )as badloansZanAccBalance,
+			sum(case when code = 'BGW_REVENUE_4_ZAN' then balance else 0 end )as revenueBgwAccBalance,
+			sum(case when code = 'FEE' then balance else 0 end )as feeBgwAccBalance 
+		from bs_sys_sub_account
+  	</select>
+	
+	<!-- 原有基础上新增云贷币港湾营收账户余额、币港湾营收（对云贷存管产品）、
+			还款资金子账户-->
+	<select id="countThdSysSubAccountBalance" resultType="java.util.Map" >
+  		select 
+			sum(case when code = 'JSH' then balance else 0 end )as sysAccBalance,
+			sum(case when code = 'JSH' then freeze_balance else 0 end )as sysFreezeAccBalance,
+			sum(case when code = 'USER' then balance else 0 end )as accBalance,
+			sum(case when code = 'REG_YUN' then balance else 0 end )as proAccBalance,
+			sum(case when code = 'REG_7' then balance else 0 end )as pro7AccBalance,
+			sum(case when code = 'RETURN_YUN' then balance else 0 end )as retAccBalance,
+			sum(case when code = 'RETURN_7' then balance else 0 end )as ret7AccBalance,
+			sum(case when code = 'REDPACKET' then balance else 0 end )as redPaktAccBalance,
+			sum(case when code = 'AUTH_ZAN' then balance else 0 end )as proAuthZanAccBalance,
+			sum(case when code = 'REG_ZAN' then balance else 0 end )as proZanAccBalance,
+			sum(case when code = 'RETURN_ZAN' then balance else 0 end )as retZanAccBalance,
+			sum(case when code = 'THD_MARGIN_ZAN' then balance else 0 end )as marginZanAccBalance,
+			sum(case when code = 'THD_REVENUE_ZAN' then balance else 0 end )as revenueZanAccBalance,
+			sum(case when code = 'BADLOANS_ZAN' then balance else 0 end )as badloansZanAccBalance,
+			sum(case when code = 'THD_BGW_REVENUE_ZAN' then balance else 0 end )as revenueBgwAccBalance,
+			sum(case when code = 'THD_BGW_REVENUE_YUN' then balance else 0 end )as revenueBgwYunAccBalance,
+			sum(case when code = 'THD_REVENUE_YUN' then balance else 0 end )as revenueYunAccBalance,
+			sum(case when code = 'THD_BGW_REVENUE_7' then balance else 0 end )as revenueBgw7AccBalance,
+			sum(case when code = 'THD_REVENUE_7' then balance else 0 end )as revenue7AccBalance,
+			sum(case when code = 'THD_REPAY' then balance else 0 end )as repayAccBalance,
+			sum(case when code = 'FEE' then balance else 0 end )as feeBgwAccBalance,
+			sum(case when code = 'BGW_REG_ZSD' then balance else 0 end )as bgwRegZsdAccBalance,
+			sum(case when code = 'BGW_RETURN_ZSD' then balance else 0 end )as bgwReturnZsdAccBalance,
+			sum(case when code = 'THD_MARGIN_ZSD' then balance else 0 end )as marginZsdAccBalance,
+			sum(case when code = 'THD_REVENUE_ZSD' then balance else 0 end )as revenueZsdAccBalance,
+			sum(case when code = 'THD_BGW_REVENUE_ZSD' then balance else 0 end )as revenueBgwZsdAccBalance
+		from bs_sys_sub_account
+  	</select>
+  	
+	<select id="countDepSysSubAccountBalance" resultType="java.util.Map" >
+  		select 
+			sum(case when code = 'DEP_JSH' then balance else 0 end )as depSysAccBalance,
+			sum(case when code = 'DEP_REDPACKET' then balance else 0 end )as depRedPaktAccBalance,
+			sum(case when code = 'BGW_USER' then balance else 0 end )as depUserAccBalance,		
+			sum(case when code = 'BGW_REG_YUN' then balance else 0 end )as depProRegAccBalance,
+			sum(case when code = 'BGW_RETURN_YUN' then balance else 0 end )as depRetAccBalance,
+			sum(case when code = 'DEP_HEADFEE_YUN' then balance else 0 end )as depHeadFeeAccBalance,
+			sum(case when code = 'DEP_OTHER_FEE' then balance else 0 end )as depOtherFeeAccBalance, 
+			sum(case when code = 'DEP_BGW_REVENUE_ZAN' then balance else 0 end )as depRevenueZanAccBalance,
+			sum(case when code = 'DEP_BGW_REVENUE_YUN' then balance else 0 end )as deprevenueYunAccBalance,
+			sum(case when code = 'BGW_REG_ZAN' then balance else 0 end )as depRegZanAccBalance,
+			sum(case when code = 'BGW_RETURN_ZAN' then balance else 0 end )as depRetZanAccBalance,
+			sum(case when code = 'DEP_ADVANCE' then balance else 0 end )as depAdvanceAccBalance,
+			sum(case when code = 'DEP_HEADFEE_ZSD' then balance else 0 end )as depHeadFeeZsdAccBalance,
+			sum(case when code = 'BGW_REG_7' then balance else 0 end )as depProReg7AccBalance,
+			sum(case when code = 'BGW_RETURN_7' then balance else 0 end )as depRet7AccBalance,
+			sum(case when code = 'DEP_BGW_REVENUE_7' then balance else 0 end )as deprevenue7AccBalance,
+			sum(case when code = 'DEP_BGW_REVENUE_ZSD' then balance else 0 end )as depRevenueZsdAccBalance,
+			sum(case when code = 'BGW_AUTH_FREE' then balance else 0 end )as depFreeAccBalance
+		from bs_sys_sub_account
+  	</select>
+  	
+</mapper>

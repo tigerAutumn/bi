@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsHelpChannelAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsHelpChannelAccount" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="channel" property="channel" jdbcType="VARCHAR" />
+    <result column="balance" property="balance" jdbcType="DOUBLE" />
+    <result column="available_balance" property="availableBalance" jdbcType="DOUBLE" />
+    <result column="can_withdraw" property="canWithdraw" jdbcType="DOUBLE" />
+    <result column="freeze_balance" property="freezeBalance" jdbcType="DOUBLE" />
+    <result column="last_trans_date" property="lastTransDate" jdbcType="DATE" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="open_balance" property="openBalance" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, channel, balance, available_balance, can_withdraw, freeze_balance, last_trans_date, 
+    note, open_balance
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsHelpChannelAccountExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_help_channel_account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_help_channel_account
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_help_channel_account
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsHelpChannelAccountExample" >
+    delete from bs_help_channel_account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsHelpChannelAccount" >
+    insert into bs_help_channel_account (id, channel, balance, 
+      available_balance, can_withdraw, freeze_balance, 
+      last_trans_date, note, open_balance
+      )
+    values (#{id,jdbcType=INTEGER}, #{channel,jdbcType=VARCHAR}, #{balance,jdbcType=DOUBLE}, 
+      #{availableBalance,jdbcType=DOUBLE}, #{canWithdraw,jdbcType=DOUBLE}, #{freezeBalance,jdbcType=DOUBLE}, 
+      #{lastTransDate,jdbcType=DATE}, #{note,jdbcType=VARCHAR}, #{openBalance,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsHelpChannelAccount" >
+    insert into bs_help_channel_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="channel != null" >
+        channel,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="availableBalance != null" >
+        available_balance,
+      </if>
+      <if test="canWithdraw != null" >
+        can_withdraw,
+      </if>
+      <if test="freezeBalance != null" >
+        freeze_balance,
+      </if>
+      <if test="lastTransDate != null" >
+        last_trans_date,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="openBalance != null" >
+        open_balance,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null" >
+        #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DOUBLE},
+      </if>
+      <if test="availableBalance != null" >
+        #{availableBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="canWithdraw != null" >
+        #{canWithdraw,jdbcType=DOUBLE},
+      </if>
+      <if test="freezeBalance != null" >
+        #{freezeBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="lastTransDate != null" >
+        #{lastTransDate,jdbcType=DATE},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="openBalance != null" >
+        #{openBalance,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsHelpChannelAccountExample" resultType="java.lang.Integer" >
+    select count(*) from bs_help_channel_account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_help_channel_account
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.channel != null" >
+        channel = #{record.channel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.balance != null" >
+        balance = #{record.balance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.availableBalance != null" >
+        available_balance = #{record.availableBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.canWithdraw != null" >
+        can_withdraw = #{record.canWithdraw,jdbcType=DOUBLE},
+      </if>
+      <if test="record.freezeBalance != null" >
+        freeze_balance = #{record.freezeBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.lastTransDate != null" >
+        last_trans_date = #{record.lastTransDate,jdbcType=DATE},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.openBalance != null" >
+        open_balance = #{record.openBalance,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_help_channel_account
+    set id = #{record.id,jdbcType=INTEGER},
+      channel = #{record.channel,jdbcType=VARCHAR},
+      balance = #{record.balance,jdbcType=DOUBLE},
+      available_balance = #{record.availableBalance,jdbcType=DOUBLE},
+      can_withdraw = #{record.canWithdraw,jdbcType=DOUBLE},
+      freeze_balance = #{record.freezeBalance,jdbcType=DOUBLE},
+      last_trans_date = #{record.lastTransDate,jdbcType=DATE},
+      note = #{record.note,jdbcType=VARCHAR},
+      open_balance = #{record.openBalance,jdbcType=DOUBLE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsHelpChannelAccount" >
+    update bs_help_channel_account
+    <set >
+      <if test="channel != null" >
+        channel = #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=DOUBLE},
+      </if>
+      <if test="availableBalance != null" >
+        available_balance = #{availableBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="canWithdraw != null" >
+        can_withdraw = #{canWithdraw,jdbcType=DOUBLE},
+      </if>
+      <if test="freezeBalance != null" >
+        freeze_balance = #{freezeBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="lastTransDate != null" >
+        last_trans_date = #{lastTransDate,jdbcType=DATE},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="openBalance != null" >
+        open_balance = #{openBalance,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsHelpChannelAccount" >
+    update bs_help_channel_account
+    set channel = #{channel,jdbcType=VARCHAR},
+      balance = #{balance,jdbcType=DOUBLE},
+      available_balance = #{availableBalance,jdbcType=DOUBLE},
+      can_withdraw = #{canWithdraw,jdbcType=DOUBLE},
+      freeze_balance = #{freezeBalance,jdbcType=DOUBLE},
+      last_trans_date = #{lastTransDate,jdbcType=DATE},
+      note = #{note,jdbcType=VARCHAR},
+      open_balance = #{openBalance,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectChannelForLock" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from bs_help_channel_account where channel = #{channel} for update
+  </select>
+  
+  
+  <update id="updateHelpChannelAccount" parameterType="map" >
+    UPDATE bs_help_channel_account SET can_withdraw = can_withdraw - #{amount}, freeze_balance = freeze_balance + #{amount}, available_balance = available_balance - #{amount}, last_trans_date = NOW()
+	WHERE channel = 'REAPAL'
+  </update>
+  
+  <update id="updateHelpChannelAccountSuccess" parameterType="map" >
+    UPDATE bs_help_channel_account SET freeze_balance = freeze_balance - #{amount}, balance = balance - #{amount}, last_trans_date = NOW()
+	WHERE channel = 'REAPAL'
+  </update>
+  
+</mapper>

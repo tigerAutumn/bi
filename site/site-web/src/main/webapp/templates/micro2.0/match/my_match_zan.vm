@@ -1,0 +1,136 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/regular/creditor.min")
+#WeChatShare()
+#Head("end")
+<body>
+<!-- 头部 -->
+<div class="header">
+	<a class="header_arrow" href="javascript:history.go(-1)"></a>
+	<h1 class="heade_ft color_bg">债权明细</h1>
+</div>
+<!-- main -->
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<input type="hidden" id="pageIndex" name="pageIndex" value="$!pageIndex" />
+<input type="hidden" id="totalCount" name="totalCount" value="$!pageNum" />
+<input type="hidden" id="total" name="total" value="$!total" />
+<input type="hidden" id="productId" name="productId" value="$!productId" />
+<input type="hidden" id="subAccountId" name="subAccountId" value="$!subAccountId" />
+<div class="main_pading">
+
+	
+    <div class="tab_fixed_wrap">
+    #if("$!entrustStatus"=="ENTRUST_OVER")
+		<div class="msg">很抱歉系统暂时没有匹配到符合您委托意向的债权，您可以重新购买委托计划哦~（如有疑问，可详询客服热线400-806-1230）</div>
+		<table class="tftable fixed_table" border="1"  id="mainContent" url='/micro2.0/match/myMatch_content_zan?productId=$!productId&subAccountId=$!subAccountId'>
+			<tr>
+        		<th>借款人</th>
+        		<th>债权金额</th>
+				<th>应收本息</th>
+				<th>已收本息</th>
+        		<th>已还/总期数</th>
+				<th>还款状态</th>
+				<th>查看协议</th>
+			</tr>
+		</table>
+    #elseif("$!entrustStatus"=="ENTRUSTING" && $!total == 0)
+		<div class="msg">系统正在为您寻找最优债权配对，请耐心等候...（如有疑问，可详询客服热线400-806-1230）</div>
+		<table class="tftable fixed_table" border="1"  id="mainContent" url='/micro2.0/match/myMatch_content_zan?productId=$!productId&subAccountId=$!subAccountId'>
+			<tr>
+        		<th>借款人</th>
+        		<th>债权金额</th>
+				<th>应收本息</th>
+				<th>已收本息</th>
+        		<th>已还/总期数</th>
+				<th>还款状态</th>
+				<th>查看协议</th>
+			</tr>
+		</table>
+    #else
+		<div class="msg">该产品计划所投向的合作产品为赞分期的小微借款业务，该业务向借款人授予一个信用额度，借款人可以在该额度内进行借还款。借款人的每一笔借款均与出借人的投资对应，您的该笔出借对应关系如下表所示：（如有疑问，可详询客服热线400-806-1230）</div>
+        <table class="tftable fixed_table" border="1"  id="mainContent" url='/micro2.0/match/myMatch_content_zan?productId=$!productId&subAccountId=$!subAccountId'>
+    		<tr>
+        		<th>借款人</th>
+        		<th>债权金额</th>
+				<th>应收本息</th>
+				<th>已收本息</th>
+        		<th>已还/总期数</th>
+				<th>还款状态</th>
+				<th>查看协议</th>
+        	</tr>
+    		#foreach($data in $!dataList)
+        	<tr>
+        		<td>$data.borrowerName</td>
+        		<td>$!money.format($!data.approveAmount)</td>
+				<td>$!money.format($!data.planTotal)</td>
+				<td>$!money.format($!data.realTotal)</td>
+        		<td>$!{data.repayedPeriodCount} / $!{data.period}</td>
+				<td >		
+					#if("$!data.status" == "PAYING")
+        			放款中
+        			#elseif("$!data.status" == "SUCCESS")
+        			还款中
+        			#elseif("$!data.status" == "FAIL")
+        			放款失败
+					#elseif("$!data.status" == "REPAID")
+					还款结束
+					#end
+				</td>
+				<td >
+				#if($!data.transCount > 0)	
+					#if($!qianbao == 'qianbao')
+                        <a onclick="claimsPrint(this);" data-datas="loanRelationId=$!data.id&qianbao=$!qianbao&agentViewFlag=$!agentViewFlag" style="display: block;line-height: 24px;margin-top: -16px;color: #86bbfd ;cursor: pointer;">《债权转让协议》</a>
+					#else
+                        <a onclick="claimsPrint(this);" data-datas="loanRelationId=$!data.id" style="display: block;line-height: 24px;margin-top: -16px;color: #86bbfd ;cursor: pointer;">《债权转让协议》</a>
+					#end
+
+					#if(("$!data.status" == "SUCCESS") || ("$!data.status" == "REPAID"))
+						#if($!qianbao == 'qianbao')
+                            <br/><a onclick="loanPrint(this);" data-datas="loanRelationId=$!data.id&qianbao=$!qianbao&agentViewFlag=$!agentViewFlag" style="display: block;line-height: 24px;margin-top: -16px;color: #86bbfd ;cursor: pointer;">《借款协议》</a>
+						#else
+                            <br/><a onclick="loanPrint(this);" data-datas="loanRelationId=$!data.id" style="display: block;line-height: 24px;margin-top: -16px;color: #86bbfd ;cursor: pointer;">《借款协议》</a>
+						#end
+					#end
+				#else
+					#if(("$!data.status" == "SUCCESS") || ("$!data.status" == "REPAID"))
+						#if($!qianbao == 'qianbao')
+                            <br/><a onclick="loanPrint(this);" data-datas="loanRelationId=$!data.id&qianbao=$!qianbao&agentViewFlag=$!agentViewFlag" style="display: block;line-height: 24px;margin-top: -16px;color: #86bbfd ;cursor: pointer;">《借款协议》</a>
+						#else
+                            <br/><a onclick="loanPrint(this);" data-datas="loanRelationId=$!data.id" style="display: block;line-height: 24px;margin-top: -16px;color: #86bbfd ;cursor: pointer;">《借款协议》</a>
+						#end
+					#end
+				#end
+				
+                </td>
+        	</tr>
+        	#end
+        </table>
+    </div>
+        </div>
+    		<div class="main_height" id="showmore">查看更多</div>
+    	</div>	
+		
+	#end
+	
+#LoadJS("resources/micro2.0/scripts/zepto.min")
+#LoadJS("resources/micro2.0/scripts/assets/custom")
+#LoadJS("resources/micro2.0/scripts/assets/my_match_zan")
+</div>
+<div class="main_height">更多详情请登录币港湾官网查看</div>
+<script>
+
+//打开借款协议
+function loanPrint(obj){
+	window.open($("#APP_ROOT_PATH").val()+"/micro2.0/agreement/loanAgreement?"+$(obj).attr('data-datas'),'_blank','width=800,height=600,menubar=no,toolbar=no, location=no,directories=no,status=no,scrollbars=yes,resizable=yes');
+}
+
+//打开债权转让协议
+function claimsPrint(obj){
+    window.open($("#APP_ROOT_PATH").val()+"/micro2.0/agreement/agreementClaims?"+$(obj).attr('data-datas'),'_blank','width=800,height=600,menubar=no,toolbar=no, location=no,directories=no,status=no,scrollbars=yes,resizable=yes');
+}
+</script>
+</body>
+#Html("end")

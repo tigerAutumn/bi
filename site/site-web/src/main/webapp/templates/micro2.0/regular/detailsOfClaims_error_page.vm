@@ -1,0 +1,37 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/regular/payment_failed.min")
+#WeChatShare()
+#Head("end")
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="errorMsg" value="$!errorMsg" />
+    <input type="hidden" id="qianbao" value="$!qianbao" />
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+    <div class="header">
+        #if($!borrower_msg)
+            <h1 class="heade_ft oran_color">借款人详情</h1>
+        #else
+            <h1 class="heade_ft oran_color">债权明细</h1>
+        #end
+    </div>
+    <h2 class="result-title">
+        #if($!borrower_msg)
+            $!borrower_msg
+        #else
+            抱歉，不存在该债权明细
+        #end
+    </h2>
+    <div class="pay_img"></div>
+        #if("$!qianbao"=="qianbao")
+            <a class="invite" href="$!env.getWebURL('micro2.0/assets/assets')?qianbao=qianbao&agentViewFlag=$!agentViewFlag" title="">返回重试</a>
+        #else
+            <a class="invite" href="$!env.getWebURL('micro2.0/assets/assets')" title="">返回重试</a>
+    	#end
+#LoadJS("resources/micro2.0/scripts/zepto.min")
+#LoadJS("resources/micro2.0/scripts/regular/custom")
+</body>
+#Html("end")

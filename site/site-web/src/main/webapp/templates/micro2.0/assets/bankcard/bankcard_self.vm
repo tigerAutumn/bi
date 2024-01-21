@@ -1,0 +1,68 @@
+#Html("begin")
+#Head("begin","币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("我的资产【币港湾官网】")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/assets/bankcard/bankcard_self.min")
+#WeChatShare()
+#Head("end")
+<body>
+    <input type="hidden" value="$!env.getWebURL('')" id="APP_ROOT_PATH" />
+    <input type="hidden" id="cardId" name="cardId" value="$!bankcard.id" />
+    <input type="hidden" id="qianbao" name="qianbao" value="$!qianbao" />
+    <div class="header">
+        #if($!qianbao)
+            <a class="header_arrow" href="$!env.getWebURL('micro2.0/assets/assets')?qianbao=qianbao"></a>
+        #else
+            <a class="header_arrow" href="$!env.getWebURL('micro2.0/assets/assets')"></a>
+        #end
+        <h1 class="heade_ft cor_orange">我的银行卡</h1>
+    </div>
+    <div class="main">
+        <div class="addMyCard">
+            #if($!size == 0)
+            ## 未绑卡
+                <div class="cardclick">
+                    <div class="add-card-img"></div>
+                    <div class="add-card-txt">添加银行卡</div>
+                    <div class="add-card-none">暂无卡</div>
+                </div>
+            #else
+            ## 已帮卡
+                #foreach($!bankcard in $!bankcards)
+                    <div class="MyCrad">
+                        <img class="Card_logo" src="$!{env.getWebURL('')}/$!{bankcard.smallLogo}" alt="">
+                        <div class="Cardname">$!{bankcard.bankName}</div>
+                        <div class="card-number">
+                            <i class="bank-card-spot"><img src="$!env.getWebURL('resources/micro2.0/images/regular/xingxing.png')" alt=""></i>
+                            <i class="bank-card-spot"><img src="$!env.getWebURL('resources/micro2.0/images/regular/xingxing.png')" alt=""></i>
+                            <i class="bank-card-spot"><img src="$!env.getWebURL('resources/micro2.0/images/regular/xingxing.png')" alt=""></i>
+                            ${string.right($!{bankcard.cardNo},4)}
+                        </div>
+                        <div class="Card_right">#if($!{bankcard.isFirst} == 1)安全卡#end</div>
+                    </div>
+                #end
+            #end
+        </div>
+        <div class="add-card-info">
+            <h2 class="ad-info-title">绑卡说明</h2>
+            <p class="ad-info-txt">1.为了保障您的资金安全，您在币港湾只能绑定一张银行卡，绑定成功此卡将作为您的币港湾安全卡；</p>
+            <p class="ad-info-txt">2.由于安全卡只能设置一张，所以即使您的账户被盗，他人也无法将资金转移到其他账户，保障您的资金万无一失。</p>
+            <div class="five_img">
+                <div class="ad-img">
+                    <img class="ad-img1" src="$!{env.getWebURL('')}/resources/micro2.0/images/assets/bankcard/bank-card-logo.png" alt="">
+                    <img class="ad-img2" src="$!{env.getWebURL('')}/resources/micro2.0/images/assets/bankcard/bank-card-arrow.png" alt="">
+                    <img class="ad-img3" src="$!{env.getWebURL('')}/resources/micro2.0/images/assets/bankcard/bank-card-img.png" alt="">
+                    <span class="ad-txt1">买入</span>
+                    <span class="ad-txt2">取出</span>
+                </div>
+                <div class="ad-account">
+                    <span class="ad-bgw">币港湾账户</span>
+                    <span class="ad-card">币港湾安全卡</span>
+                </div>
+            </div>
+        </div>
+    </div>
+#LoadJS("resources/micro2.0/scripts/assets/bankcard/bankcard_self")		
+</body>
+#Html("end")

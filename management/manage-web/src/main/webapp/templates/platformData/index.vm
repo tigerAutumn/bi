@@ -1,0 +1,83 @@
+
+<form id="pagerForm" method="post" action="#rel#">
+</form>
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<div class="pageHeader">
+	<form id="generalForm" method="post" rel="pagerForm" action="$env.getWebURL('/scheduleTransport/index.htm')" onsubmit="return navTabSearch(this);">
+	<div class="searchBar">
+		<table class="searchContent">
+			<tbody>
+			<tr>
+				<td>
+					选择月份：
+					<select id="year" name="year" class="valid">
+						<option value="2018" #if("$!year"=="2018") selected  #end>2018</option>
+						<option value="2019" #if("$!year"=="2019") selected  #end>2019</option>
+                        <option value="2020" #if("$!year"=="2020") selected  #end>2020</option>
+						<option value="2021" #if("$!year"=="2021") selected  #end>2021</option>
+						<option value="2022" #if("$!year"=="2022") selected  #end>2022</option>
+                        <option value="2023" #if("$!year"=="2023") selected  #end>2023</option>
+						<option value="2024" #if("$!year"=="2024") selected  #end>2024</option>
+						<option value="2025" #if("$!year"=="2025") selected  #end>2025</option>
+                        <option value="2026" #if("$!year"=="2026") selected  #end>2026</option>
+                    </select>
+					年
+                </td>
+				<td>
+					
+					<select id="month" name="month" class="valid">
+						<option value="01" #if("$!month"=="01") selected  #end>1</option>
+						<option value="02" #if("$!month"=="02") selected  #end>2</option>
+						<option value="03" #if("$!month"=="03") selected  #end>3</option>
+						<option value="04" #if("$!month"=="04") selected  #end>4</option>
+						<option value="05" #if("$!month"=="05") selected  #end>5</option>
+						<option value="06" #if("$!month"=="06") selected  #end>6</option>
+						<option value="07" #if("$!month"=="07") selected  #end>7</option>
+						<option value="08" #if("$!month"=="08") selected  #end>8</option>
+						<option value="09" #if("$!month"=="09") selected  #end>9</option>
+						<option value="10" #if("$!month"=="10") selected  #end>10</option>
+						<option value="11" #if("$!month"=="11") selected  #end>11</option>
+						<option value="12" #if("$!month"=="12") selected  #end>12</option>
+
+                    </select>
+					月
+                </td>
+				<td>
+					<div class="buttonActive">
+						<div class="buttonContent">
+							<button  onclick="exportFun()" type="button">导出Excel</button>
+						</div>
+					</div>
+                </td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	</form>
+</div>
+	
+
+<script>  
+	function exportFun(){
+    	jQuery.ajax({
+    		url:$("#APP_ROOT_PATH").val() + "/platformData/exportBefore.htm",
+    		data:{
+    			year:$("#year").val(),
+    			month:$("#month").val()
+    		},
+    		type:'post',
+        	success: function(data){
+    			if(data.statusCode == '200'){
+        			var url = $("#APP_ROOT_PATH").val() + "/platformData/export.htm";
+                	$("#generalForm").attr("action",url);
+                	$("#generalForm").attr("onsubmit","");
+                	$("#generalForm").submit();
+    			}else{
+    				alertMsg.error(data.message);
+					navTab.reload("$env.getWebURL('/platformData/index.htm')");
+    			}
+    		}
+    	});
+	}
+	
+</script> 

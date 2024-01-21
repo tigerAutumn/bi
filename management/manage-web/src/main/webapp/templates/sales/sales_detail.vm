@@ -1,0 +1,85 @@
+<div class="pageContent">
+	<form method="post" id="detail_form" action="$env.getWebURL('/sales/save.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		#Hidden("id", "$!bsSales.id")
+		#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+		<div class="pageFormContent" layoutH="56">
+            <p>
+				<label>姓名：</label>
+				<input name="salesName" type="text" size="30" maxlength="10" class="required" value="$!bsSales.salesName" />
+			</p>
+			<p>
+				<label>手机号码：</label>
+				<input name="mobile" type="text" size="30" class="required phone" value="$!bsSales.mobile" />
+			</p>
+			<p>
+				<label>邀请码：</label>
+				<input id="inviteCode" name="inviteCode" type="text" size="30" maxlength="9" class="required" value="$!bsSales.inviteCode" placeholder="必须含有英文跟字母。"/>
+			</p>
+			<p>
+				<label>入职时间：</label>
+				<input name="entryTime" type="text" size="28" id="entryTime" class=" date textInput readonly" readonly="true"   value="$!date.formatYYYYMMDD($!bsSales.entryTime)" />
+				<a class="inputDateButton" ></a>
+			</p>
+			<p>
+				<label>入职部门：</label>
+		    	<select name="deptId" >
+					<option value="-1" >无部门</option>
+					#foreach($dept in $!depts)
+					<option value="$!dept.id" #if("$!bsSales.deptId"=="$!dept.id") selected  #end>$!dept.deptName</option>
+					#end
+				</select>
+			</p>
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_from()">保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	function submit_from () {
+		var inviteCode = $("#inviteCode").val();
+        var deptId = $("select[name='deptId']").val();
+        if(inviteCode.replace(/^(?![^a-z]+$)(?!\D+$).{1,}$/,'')) {
+            alertMsg.warn("邀请码格式错误！");
+            return false;
+        }
+        var space_reg =/\s/;
+		if(space_reg.test(inviteCode)) {
+            alertMsg.warn("禁止输入空格！");
+            return false;
+		}
+		if(deptId == '3') {
+			// 七店销售人员
+            var isQd = inviteCode.substring(0, 2);
+            if(isQd != 'qd') {
+                alertMsg.warn("七店销售部邀请码必须以qd开头");
+                return false;
+            }
+        } else {
+			// 七店销售人员
+            var isQd = inviteCode.substring(0, 2);
+            if(isQd == 'qd') {
+                alertMsg.warn("其他部门销售人员邀请码不得以qd开头");
+                return false;
+            }
+		}
+        $("#detail_form").submit();
+    }
+
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "301") {
+			alertMsg.warn('该邀请码存在!');
+		} else if (json.statusCode == "200") {
+			alertMsg.correct('保存成功!');
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('sales/index.htm')");
+		} else {
+			alertMsg.error('保存失败!');
+		}
+	}
+</script>

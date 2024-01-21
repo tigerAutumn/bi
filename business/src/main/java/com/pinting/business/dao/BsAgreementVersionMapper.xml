@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsAgreementVersionMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsAgreementVersion" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="partner_code" property="partnerCode" jdbcType="VARCHAR" />
+    <result column="agreement_name" property="agreementName" jdbcType="VARCHAR" />
+    <result column="agreement_type" property="agreementType" jdbcType="VARCHAR" />
+    <result column="agreement_version" property="agreementVersion" jdbcType="VARCHAR" />
+    <result column="agreement_url" property="agreementUrl" jdbcType="VARCHAR" />
+    <result column="agreement_effective_start_time" property="agreementEffectiveStartTime" jdbcType="TIMESTAMP" />
+    <result column="agreement_effective_end_time" property="agreementEffectiveEndTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, partner_code, agreement_name, agreement_type, agreement_version, agreement_url, 
+    agreement_effective_start_time, agreement_effective_end_time, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsAgreementVersionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from bs_agreement_version
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_agreement_version
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_agreement_version
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsAgreementVersionExample" >
+    delete from bs_agreement_version
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsAgreementVersion" >
+    insert into bs_agreement_version (id, partner_code, agreement_name, 
+      agreement_type, agreement_version, agreement_url, 
+      agreement_effective_start_time, agreement_effective_end_time, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{partnerCode,jdbcType=VARCHAR}, #{agreementName,jdbcType=VARCHAR}, 
+      #{agreementType,jdbcType=VARCHAR}, #{agreementVersion,jdbcType=VARCHAR}, #{agreementUrl,jdbcType=VARCHAR}, 
+      #{agreementEffectiveStartTime,jdbcType=TIMESTAMP}, #{agreementEffectiveEndTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsAgreementVersion" >
+    insert into bs_agreement_version
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="partnerCode != null" >
+        partner_code,
+      </if>
+      <if test="agreementName != null" >
+        agreement_name,
+      </if>
+      <if test="agreementType != null" >
+        agreement_type,
+      </if>
+      <if test="agreementVersion != null" >
+        agreement_version,
+      </if>
+      <if test="agreementUrl != null" >
+        agreement_url,
+      </if>
+      <if test="agreementEffectiveStartTime != null" >
+        agreement_effective_start_time,
+      </if>
+      <if test="agreementEffectiveEndTime != null" >
+        agreement_effective_end_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="partnerCode != null" >
+        #{partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="agreementName != null" >
+        #{agreementName,jdbcType=VARCHAR},
+      </if>
+      <if test="agreementType != null" >
+        #{agreementType,jdbcType=VARCHAR},
+      </if>
+      <if test="agreementVersion != null" >
+        #{agreementVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="agreementUrl != null" >
+        #{agreementUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="agreementEffectiveStartTime != null" >
+        #{agreementEffectiveStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="agreementEffectiveEndTime != null" >
+        #{agreementEffectiveEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsAgreementVersionExample" resultType="java.lang.Integer" >
+    select count(*) from bs_agreement_version
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_agreement_version
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.partnerCode != null" >
+        partner_code = #{record.partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agreementName != null" >
+        agreement_name = #{record.agreementName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agreementType != null" >
+        agreement_type = #{record.agreementType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agreementVersion != null" >
+        agreement_version = #{record.agreementVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agreementUrl != null" >
+        agreement_url = #{record.agreementUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agreementEffectiveStartTime != null" >
+        agreement_effective_start_time = #{record.agreementEffectiveStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.agreementEffectiveEndTime != null" >
+        agreement_effective_end_time = #{record.agreementEffectiveEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_agreement_version
+    set id = #{record.id,jdbcType=INTEGER},
+      partner_code = #{record.partnerCode,jdbcType=VARCHAR},
+      agreement_name = #{record.agreementName,jdbcType=VARCHAR},
+      agreement_type = #{record.agreementType,jdbcType=VARCHAR},
+      agreement_version = #{record.agreementVersion,jdbcType=VARCHAR},
+      agreement_url = #{record.agreementUrl,jdbcType=VARCHAR},
+      agreement_effective_start_time = #{record.agreementEffectiveStartTime,jdbcType=TIMESTAMP},
+      agreement_effective_end_time = #{record.agreementEffectiveEndTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsAgreementVersion" >
+    update bs_agreement_version
+    <set >
+      <if test="partnerCode != null" >
+        partner_code = #{partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="agreementName != null" >
+        agreement_name = #{agreementName,jdbcType=VARCHAR},
+      </if>
+      <if test="agreementType != null" >
+        agreement_type = #{agreementType,jdbcType=VARCHAR},
+      </if>
+      <if test="agreementVersion != null" >
+        agreement_version = #{agreementVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="agreementUrl != null" >
+        agreement_url = #{agreementUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="agreementEffectiveStartTime != null" >
+        agreement_effective_start_time = #{agreementEffectiveStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="agreementEffectiveEndTime != null" >
+        agreement_effective_end_time = #{agreementEffectiveEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsAgreementVersion" >
+    update bs_agreement_version
+    set partner_code = #{partnerCode,jdbcType=VARCHAR},
+      agreement_name = #{agreementName,jdbcType=VARCHAR},
+      agreement_type = #{agreementType,jdbcType=VARCHAR},
+      agreement_version = #{agreementVersion,jdbcType=VARCHAR},
+      agreement_url = #{agreementUrl,jdbcType=VARCHAR},
+      agreement_effective_start_time = #{agreementEffectiveStartTime,jdbcType=TIMESTAMP},
+      agreement_effective_end_time = #{agreementEffectiveEndTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectAgreementVersion" resultMap="BaseResultMap" parameterType="java.util.Map">
+    SELECT
+      <include refid="Base_Column_List" />
+    FROM bs_agreement_version
+    WHERE agreement_type = #{agreementType}
+    AND agreement_effective_start_time &lt; #{effectiveTime}
+    ORDER BY agreement_effective_start_time DESC
+    LIMIT 1
+  </select>
+
+  <select id="selectAgreementVersionDate" resultMap="BaseResultMap" parameterType="java.util.Map">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM bs_agreement_version
+    WHERE agreement_type = #{agreementType}
+    AND agreement_version = #{agreementVersion}
+  </select>
+
+
+</mapper>

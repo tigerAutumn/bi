@@ -1,0 +1,74 @@
+<div class="pageContent">
+    <form id="applyForm" method="post" action="$env.getWebURL('/bsuser/operateQuestionnaireQuota.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+        #Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+   		<input id="quotaId" type="hidden" name="quotaId" value="$!quotaId">
+    	#Hidden("mUserId",$!mUserId)
+        <div class="pageFormContent nowrap" layoutH="97" >
+            <dl>
+                <dt >风险测评结果：</dt>
+                    <span style="font-size:12px;line-height:21px;">$!evaluateTypeValue</span>                
+            </dl>
+            <dl>
+                <dt >出借额度：</dt>
+                <dd style="width:0px; display: inline-table;">
+                    <input type="text" id="amountLimit" name="amountLimit" value="$!quota.amountLimit" class="required" style="width:160px; height:16px" />
+                	万元
+                </dd>
+            </dl>
+            <dl>
+                <dt >产品期限限制：</dt>
+                <dd style="width:0px;">
+                    <select name="periodLimit" id="periodLimit">
+						<option value="30" #if("$!quota.periodLimit"=="30") selected  #end>30天内</option>
+        				<option value="90" #if("$!quota.periodLimit"=="90") selected  #end>90天内</option>
+        				<option value="180" #if("$!quota.periodLimit"=="180") selected  #end>180天内</option>
+        				<option value="365" #if("$!quota.periodLimit"=="365") selected  #end>365天内</option>
+                	</select>
+                </dd>
+            </dl>
+        </div>
+        <div class="formBar">
+        	<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_operateForm()">保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+            
+        </div>
+    </form>
+</div>
+<script>
+
+    function submit_operateForm(){
+        var amountLimit = $("#amountLimit").val();
+        var mUserId = $("#mUserId").val();
+        var periodLimit = $("#periodLimit").val();
+
+        var regAmount = /^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$/;
+        if((amountLimit == null || amountLimit == "")){
+            alertMsg.warn("出借额度不能为空！");
+            return false;
+        }
+		if(!regAmount.test(amountLimit)) {
+            alertMsg.warn("出借额度格式不正确！");
+            return false;
+        }
+        $("#applyForm").submit();
+    }
+	
+	
+	function navTabAjaxDone(json) {
+	    if (json.statusCode == "300") {
+	        alertMsg.warn('失败!');
+	    } else if (json.statusCode == "200") {
+	        alertMsg.correct('操作成功!');
+	        $.pdialog.closeCurrent();
+	        navTab.reload("$env.getWebURL('/bsuser/questionnaireQuotaIndex.htm')");
+	    } else {
+	        alertMsg.error('操作失败!');
+	    }
+    	$.pdialog.closeCurrent();
+	}
+	
+</script>

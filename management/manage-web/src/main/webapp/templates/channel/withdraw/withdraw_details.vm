@@ -1,0 +1,101 @@
+<style>
+	tables.table,.tables tr,.tables td{padding:10px;}
+	.pageContent_userInfo{width:740px;min-height:100px;background:#fff;auto 20px;}
+</style>
+<script src="$env.getWebURL('resources/js/withdraw_details.js')"></script>
+<div class="pageContent_userInfo">
+    <input type="hidden" name="userId" id="userId" value="$!userId">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+
+	<table class="tables" width="100%"  border="1">
+		<thead>
+				<tr>
+                    <td style="width:100px;background: #64aabc;">姓名</td><td style="width:100px;" class="user_name">$!userName</td>
+                    <td style="width:100px;background: #64aabc;">身份证</td><td style="width:100px;" class="id_card">$!idCard</td>
+                    <td style="width:100px;background: #64aabc;">身份证归属地</td><td style="width:100px;"  class="id_cardAttribution">$!idCardAttribution</td>
+				</tr>
+				<tr>
+					<td style="width:100px;background: #64aabc;">年龄</td><td style="width:100px;" class="age">$!age</td>
+                    <td style="width:100px;background: #64aabc;">银行卡</td><td style="width:100px;" class="card_no">$!cardNo</td>
+                    <td style="width:100px;background: #64aabc;">银行卡归属地</td><td style="width:100px;" class="cardNo_attribution">$!cardNoAttribution</td>
+				</tr>
+				<tr>
+					<td style="width:100px;background: #64aabc;">性别	</td><td style="width:100px;" class="gender">$!gender</td>
+                    <td style="width:100px;background: #64aabc;">注册手机</td><td style="width:100px;" class="mobile">$!mobile</td>
+                    <td style="width:100px;background: #64aabc;">注册手机归属地</td><td style="width:100px;" class="registered_mobileAttribution">$!registeredMobileAttribution</td>
+				</tr>
+				<tr>
+					<td style="width:100px;background: #64aabc;">预留手机</td><td style="width:100px;" class="reserved_mobile">$!reservedMobile</td>
+                    <td style="width:100px;background: #64aabc;">预留手机归属地</td><td style="width:100px;" class="reserved_mobileAttribution">$!reservedMobileAttribution</td>
+                    <td style="width:100px;background: #64aabc;"></td><td style="width:100px;"></td>
+                </tr>
+		</thead>
+	</table>
+</div>
+
+<div class="pageContent">
+	<table class="table" width="1296" layoutH="208">
+		<thead>
+			<tr>
+                <th width="3%">编号</th>
+				<th width="5%">渠道来源</th>
+				<th width="5%">销售人员</th>
+				<th width="5%">客户经理</th>
+				<th width="5%">邀请人</th>
+				<th width="5%">金额</th>
+
+				<th width="5%">状态</th>
+				<th width="21%">返回信息</th>
+				<th width="5%">银行类型</th>
+				<th width="16%">订单号</th>
+                <th width="5%">交易类型</th>
+				
+				<th width="10%">创建时间</th>
+				<th width="10%">更新时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $userOrdersList)
+			<tr target="sid_user" rel="1">
+				#set($a=$!velocityCount)
+                <td>$a</td>
+				<td>$!grid.agentName</td>
+				<td>$!grid.saleName</td>
+				<td>$!grid.managerName</td>
+				<td>$!grid.recommendName</td>
+				<td>$!money.format($!grid.amount)</td>
+				
+				<td  style="color:
+						#if("$!grid.status" == "6") green;font-weight:bolder ">
+						#elseif("$!grid.status" == "7") red ">
+						#else ">
+						#end
+					$!message.get("ACCOUNT_ORDER_STATUS_$!grid.status")</td>
+				<td>$!grid.returnMsg</td>
+				<td>$!grid.bankName</td>
+				<td>$!grid.orderNo</td>
+                <td>
+					#if($!grid.transType == "CARD_BUY_PRODUCT") 卡购买
+					#elseif($!grid.transType == "BALANCE_BUY_PRODUCT") 余额购买
+					#elseif($!grid.transType == "TOP_UP") 充值
+					#elseif($!grid.transType == "RETURN_2_USER_BANK_CARD") 回款到用户银行卡
+					#elseif($!grid.transType == "BALANCE_WITHDRAW") 余额提现
+					#elseif($!grid.transType == "SYS_BUY_DAFY") 系统账户购买
+					#elseif($!grid.transType == "CHANNEL_WITHDRAW") 辅助通道提现
+					#elseif($!grid.transType == "BIND_CARD") 绑卡
+					#end
+				</td>
+
+				<td>$!date.format($!grid.createTime)</td>
+				<td>$!date.format($!grid.updateTime)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+
+    <div class="panelBar">
+
+    </div>
+
+</div>
+

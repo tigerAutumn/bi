@@ -1,0 +1,1105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinting.business.dao.LnUserMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.LnUser" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="partner_code" property="partnerCode" jdbcType="VARCHAR" />
+    <result column="partner_user_id" property="partnerUserId" jdbcType="VARCHAR" />
+    <result column="hf_user_id" property="hfUserId" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="profession" property="profession" jdbcType="VARCHAR" />
+    <result column="work_unit" property="workUnit" jdbcType="VARCHAR" />
+    <result column="education" property="education" jdbcType="VARCHAR" />
+    <result column="marriage" property="marriage" jdbcType="VARCHAR" />
+    <result column="annual_income" property="annualIncome" jdbcType="INTEGER" />
+    <result column="province_code" property="provinceCode" jdbcType="VARCHAR" />
+    <result column="city_code" property="cityCode" jdbcType="VARCHAR" />
+    <result column="area_code" property="areaCode" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, partner_code, partner_user_id, hf_user_id, user_name, mobile, id_card, profession,
+    work_unit, education, marriage, annual_income, province_code, city_code, area_code,
+    create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.LnUserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ln_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from ln_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ln_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.LnUserExample" >
+    delete from ln_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.LnUser" useGeneratedKeys="true" keyProperty="id" >
+    insert into ln_user (partner_code, partner_user_id, hf_user_id,
+    user_name, mobile, id_card,
+    profession, work_unit, education,
+    marriage, annual_income, province_code,
+    city_code, area_code, create_time,
+    update_time)
+    values (#{partnerCode,jdbcType=VARCHAR}, #{partnerUserId,jdbcType=VARCHAR}, #{hfUserId,jdbcType=VARCHAR},
+    #{userName,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR},
+    #{profession,jdbcType=VARCHAR}, #{workUnit,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR},
+    #{marriage,jdbcType=VARCHAR}, #{annualIncome,jdbcType=INTEGER}, #{provinceCode,jdbcType=VARCHAR},
+    #{cityCode,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+    #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.LnUser" useGeneratedKeys="true" keyProperty="id" >
+    insert into ln_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="partnerCode != null" >
+        partner_code,
+      </if>
+      <if test="partnerUserId != null" >
+        partner_user_id,
+      </if>
+      <if test="hfUserId != null" >
+        hf_user_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="idCard != null" >
+        id_card,
+      </if>
+      <if test="profession != null" >
+        profession,
+      </if>
+      <if test="workUnit != null" >
+        work_unit,
+      </if>
+      <if test="education != null" >
+        education,
+      </if>
+      <if test="marriage != null" >
+        marriage,
+      </if>
+      <if test="annualIncome != null" >
+        annual_income,
+      </if>
+      <if test="provinceCode != null" >
+        province_code,
+      </if>
+      <if test="cityCode != null" >
+        city_code,
+      </if>
+      <if test="areaCode != null" >
+        area_code,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="partnerCode != null" >
+        #{partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerUserId != null" >
+        #{partnerUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="hfUserId != null" >
+        #{hfUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="profession != null" >
+        #{profession,jdbcType=VARCHAR},
+      </if>
+      <if test="workUnit != null" >
+        #{workUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null" >
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="marriage != null" >
+        #{marriage,jdbcType=VARCHAR},
+      </if>
+      <if test="annualIncome != null" >
+        #{annualIncome,jdbcType=INTEGER},
+      </if>
+      <if test="provinceCode != null" >
+        #{provinceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null" >
+        #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null" >
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.LnUserExample" resultType="java.lang.Integer" >
+    select count(*) from ln_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ln_user
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.partnerCode != null" >
+        partner_code = #{record.partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.partnerUserId != null" >
+        partner_user_id = #{record.partnerUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hfUserId != null" >
+        hf_user_id = #{record.hfUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null" >
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null" >
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCard != null" >
+        id_card = #{record.idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.profession != null" >
+        profession = #{record.profession,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workUnit != null" >
+        work_unit = #{record.workUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.education != null" >
+        education = #{record.education,jdbcType=VARCHAR},
+      </if>
+      <if test="record.marriage != null" >
+        marriage = #{record.marriage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.annualIncome != null" >
+        annual_income = #{record.annualIncome,jdbcType=INTEGER},
+      </if>
+      <if test="record.provinceCode != null" >
+        province_code = #{record.provinceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cityCode != null" >
+        city_code = #{record.cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.areaCode != null" >
+        area_code = #{record.areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ln_user
+    set id = #{record.id,jdbcType=INTEGER},
+    partner_code = #{record.partnerCode,jdbcType=VARCHAR},
+    partner_user_id = #{record.partnerUserId,jdbcType=VARCHAR},
+    hf_user_id = #{record.hfUserId,jdbcType=VARCHAR},
+    user_name = #{record.userName,jdbcType=VARCHAR},
+    mobile = #{record.mobile,jdbcType=VARCHAR},
+    id_card = #{record.idCard,jdbcType=VARCHAR},
+    profession = #{record.profession,jdbcType=VARCHAR},
+    work_unit = #{record.workUnit,jdbcType=VARCHAR},
+    education = #{record.education,jdbcType=VARCHAR},
+    marriage = #{record.marriage,jdbcType=VARCHAR},
+    annual_income = #{record.annualIncome,jdbcType=INTEGER},
+    province_code = #{record.provinceCode,jdbcType=VARCHAR},
+    city_code = #{record.cityCode,jdbcType=VARCHAR},
+    area_code = #{record.areaCode,jdbcType=VARCHAR},
+    create_time = #{record.createTime,jdbcType=TIMESTAMP},
+    update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.LnUser" >
+    update ln_user
+    <set >
+      <if test="partnerCode != null" >
+        partner_code = #{partnerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerUserId != null" >
+        partner_user_id = #{partnerUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="hfUserId != null" >
+        hf_user_id = #{hfUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="profession != null" >
+        profession = #{profession,jdbcType=VARCHAR},
+      </if>
+      <if test="workUnit != null" >
+        work_unit = #{workUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null" >
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="marriage != null" >
+        marriage = #{marriage,jdbcType=VARCHAR},
+      </if>
+      <if test="annualIncome != null" >
+        annual_income = #{annualIncome,jdbcType=INTEGER},
+      </if>
+      <if test="provinceCode != null" >
+        province_code = #{provinceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null" >
+        city_code = #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null" >
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.LnUser" >
+    update ln_user
+    set partner_code = #{partnerCode,jdbcType=VARCHAR},
+      partner_user_id = #{partnerUserId,jdbcType=VARCHAR},
+      hf_user_id = #{hfUserId,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      profession = #{profession,jdbcType=VARCHAR},
+      work_unit = #{workUnit,jdbcType=VARCHAR},
+      education = #{education,jdbcType=VARCHAR},
+      marriage = #{marriage,jdbcType=VARCHAR},
+      annual_income = #{annualIncome,jdbcType=INTEGER},
+      province_code = #{provinceCode,jdbcType=VARCHAR},
+      city_code = #{cityCode,jdbcType=VARCHAR},
+      area_code = #{areaCode,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+  <select id="selectByLnUserDTO" parameterType="com.pinting.business.model.dto.LoanUserDTO" resultType="com.pinting.business.model.vo.LoanUserVO">
+    SELECT
+    lu.id as userId,
+    lu.partner_code as partnerCode,
+    lu.user_name as userName,
+    ll.historyLoanAmount,
+    n.noReturnNum,
+    n.noReturnAmount,
+    rs.lateNotAmount,
+    sl.lateAmount,
+    lu.create_time as createTime
+
+    FROM
+    (
+    (
+    SELECT
+    u.id,
+    u.user_name,
+    u.partner_code,
+    u.create_time
+    FROM
+    ln_user u
+    ORDER BY
+    u.create_time DESC
+    ) lu
+    LEFT JOIN(
+    SELECT l.ln_user_id,SUM(l.approve_amount) AS historyLoanAmount
+    FROM
+    ln_loan l
+    GROUP BY l.ln_user_id
+    ) ll ON ll.ln_user_id=lu.id
+
+    LEFT JOIN (
+    SELECT
+    l.ln_user_id,
+    COUNT(s.id) AS noReturnNum,
+    SUM(s.plan_total) AS noReturnAmount
+    FROM
+    ln_repay_schedule s
+    LEFT JOIN ln_loan l ON s.loan_id = l.id
+    WHERE
+    l.`status` = 'PAIED'
+    AND s.`status` IN ('INIT', 'LATE_NOT')
+    GROUP BY
+    l.ln_user_id
+    ) n ON n.ln_user_id = lu.id
+    LEFT JOIN (
+    SELECT
+    SUM(s.plan_total) AS lateNotAmount,
+    l.ln_user_id
+    FROM
+    ln_repay_schedule s
+    LEFT JOIN ln_loan l ON s.loan_id = l.id
+    WHERE
+    s.`status` = 'LATE_NOT'
+    AND l.`status` = 'PAIED'
+    GROUP BY
+    l.ln_user_id
+    ) rs ON rs.ln_user_id = lu.id
+    LEFT JOIN (
+    SELECT
+    l.ln_user_id,
+    SUM(s.plan_total) AS lateAmount
+    FROM
+    ln_repay_schedule s
+    LEFT JOIN ln_loan l ON s.loan_id = l.id
+    WHERE
+    s.`status` in ('LATE_REPAIED','LATE_NOT')
+    AND l.`status` = 'PAIED'
+    GROUP BY
+    l.ln_user_id
+    ) sl ON sl.ln_user_id=lu.id
+    )
+    WHERE 1=1
+    <if test="userid != null">
+      AND lu.id=#{userid}
+    </if>
+    <if test="partner != null">
+      AND lu.partner_code=#{partner}
+    </if>
+    <if test="createTimeStart != null">
+      AND lu.create_time &gt;= #{createTimeStart}
+    </if>
+    <if test="createTimeEnd != null">
+      AND lu.create_time &lt;= DATE_FORMAT(#{createTimeEnd},'%Y-%m-%d 23:59:59')
+    </if>
+    <if test="sNoReturn != null">
+
+      <if test="sNoReturn==0">
+        AND (n.noReturnAmount &gt;= #{sNoReturn} or n.noReturnAmount IS NULL)
+      </if>
+      <if test="sNoReturn!=0">
+        AND n.noReturnAmount &gt;= #{sNoReturn}
+      </if>
+    </if>
+    <if test="eNoReturn != null">
+      <if test="eNoReturn==0">
+        AND (n.noReturnAmount &lt;= #{eNoReturn} or n.noReturnAmount IS NULL)
+      </if>
+      <if test="eNoReturn!=0">
+        <if test="sNoReturn==0 or sNoReturn==null">
+          AND (n.noReturnAmount &lt;= #{eNoReturn} OR  n.noReturnAmount IS NULL)
+        </if>
+        <if test="sNoReturn!=null and sNoReturn!=0">
+          AND n.noReturnAmount &lt;= #{eNoReturn}
+        </if>
+
+      </if>
+    </if>
+    <if test="sBreak != null">
+      <if test="sBreak==0">
+        AND (rs.lateNotAmount &gt;= #{sBreak} or rs.lateNotAmount IS NULL)
+      </if>
+      <if test="sBreak!=0">
+        AND rs.lateNotAmount &gt;= #{sBreak}
+      </if>
+    </if>
+    <if test="eBreak != null">
+      <if test="eBreak==0">
+        AND (rs.lateNotAmount &lt;= #{eBreak} or rs.lateNotAmount IS NULL)
+      </if>
+      <if test="eBreak!=0">
+        <if test="sBreak==0 or sBreak==null">
+          AND (rs.lateNotAmount IS NULL OR rs.lateNotAmount &lt;= #{eBreak})
+        </if>
+        <if test="sBreak!=null and sBreak!=0">
+          AND rs.lateNotAmount &lt;= #{eBreak}
+        </if>
+      </if>
+    </if>
+    <if test="sHistory != null">
+      <if test="sHistory==0">
+        AND (ll.historyLoanAmount &gt;= #{sHistory} or ll.historyLoanAmount IS NULL)
+      </if>
+      <if test="sHistory!=0">
+        AND ll.historyLoanAmount &gt;= #{sHistory}
+      </if>
+
+    </if>
+    <if test="eHistory != null">
+      <if test="eHistory==0">
+        AND (ll.historyLoanAmount &lt;= #{eHistory} or ll.historyLoanAmount IS NULL)
+      </if>
+      <if test="eHistory!=0">
+        <if test="sHistory==null or sHistory==0">
+          AND (ll.historyLoanAmount &lt;= #{eHistory} or ll.historyLoanAmount IS NULL)
+        </if>
+        <if test="sHistory!=null and sHistory!=0">
+          AND ll.historyLoanAmount &lt;= #{eHistory}
+        </if>
+      </if>
+    </if>
+
+    <include refid="sql-global.pagination" />
+  </select>
+
+  <select id="selectByLnUserDTOCount" parameterType="com.pinting.business.model.dto.LoanUserDTO" resultType="java.lang.Integer">
+    SELECT
+    COUNT(*)
+
+    FROM
+    (
+    (
+    SELECT
+    u.id,
+    u.user_name,
+    u.partner_code,
+    u.create_time
+    FROM
+    ln_user u
+    ORDER BY
+    u.create_time DESC
+    ) lu
+    LEFT JOIN(
+    SELECT l.ln_user_id,SUM(l.approve_amount) AS historyLoanAmount
+    FROM
+    ln_loan l
+    GROUP BY l.ln_user_id
+    ) ll ON ll.ln_user_id=lu.id
+
+    LEFT JOIN (
+    SELECT
+    l.ln_user_id,
+    COUNT(s.id) AS noReturnNum,
+    SUM(s.plan_total) AS noReturnAmount
+    FROM
+    ln_repay_schedule s
+    LEFT JOIN ln_loan l ON s.loan_id = l.id
+    WHERE
+    l.`status` = 'PAIED'
+    AND s.`status` IN ('INIT', 'LATE_NOT')
+    GROUP BY
+    l.ln_user_id
+    ) n ON n.ln_user_id = lu.id
+    LEFT JOIN (
+    SELECT
+    SUM(s.plan_total) AS lateNotAmount,
+    l.ln_user_id
+    FROM
+    ln_repay_schedule s
+    LEFT JOIN ln_loan l ON s.loan_id = l.id
+    WHERE
+    s.`status` = 'LATE_NOT'
+    AND l.`status` = 'PAIED'
+    GROUP BY
+    l.ln_user_id
+    ) rs ON rs.ln_user_id = lu.id
+    LEFT JOIN (
+    SELECT
+    l.ln_user_id,
+    SUM(s.plan_total) AS lateAmount
+    FROM
+    ln_repay_schedule s
+    LEFT JOIN ln_loan l ON s.loan_id = l.id
+    WHERE
+    s.`status` in ('LATE_REPAIED','LATE_NOT')
+    AND l.`status` = 'PAIED'
+    GROUP BY
+    l.ln_user_id
+    ) sl ON sl.ln_user_id=lu.id
+    )
+    WHERE 1=1
+    <if test="userid != null">
+      AND lu.id=#{userid}
+    </if>
+    <if test="partner != null">
+      AND lu.partner_code=#{partner}
+    </if>
+    <if test="createTimeStart != null">
+      AND lu.create_time &gt;= #{createTimeStart}
+    </if>
+    <if test="createTimeEnd != null">
+      AND lu.create_time &lt;= DATE_FORMAT(#{createTimeEnd},'%Y-%m-%d 23:59:59')
+    </if>
+    <if test="sNoReturn != null">
+
+      <if test="sNoReturn==0">
+        AND (n.noReturnAmount &gt;= #{sNoReturn} or n.noReturnAmount IS NULL)
+      </if>
+      <if test="sNoReturn!=0">
+        AND n.noReturnAmount &gt;= #{sNoReturn}
+      </if>
+    </if>
+    <if test="eNoReturn != null">
+      <if test="eNoReturn==0">
+        AND (n.noReturnAmount &lt;= #{eNoReturn} or n.noReturnAmount IS NULL)
+      </if>
+      <if test="eNoReturn!=0">
+        <if test="sNoReturn==0 or sNoReturn==null">
+          AND (n.noReturnAmount &lt;= #{eNoReturn} OR  n.noReturnAmount IS NULL)
+        </if>
+        <if test="sNoReturn!=null and sNoReturn!=0">
+          AND n.noReturnAmount &lt;= #{eNoReturn}
+        </if>
+
+      </if>
+    </if>
+    <if test="sBreak != null">
+      <if test="sBreak==0">
+        AND (rs.lateNotAmount &gt;= #{sBreak} or rs.lateNotAmount IS NULL)
+      </if>
+      <if test="sBreak!=0">
+        AND rs.lateNotAmount &gt;= #{sBreak}
+      </if>
+    </if>
+    <if test="eBreak != null">
+      <if test="eBreak==0">
+        AND (rs.lateNotAmount &lt;= #{eBreak} or rs.lateNotAmount IS NULL)
+      </if>
+      <if test="eBreak!=0">
+        <if test="sBreak==0 or sBreak==null">
+          AND (rs.lateNotAmount IS NULL OR rs.lateNotAmount &lt;= #{eBreak})
+        </if>
+        <if test="sBreak!=null and sBreak!=0">
+          AND rs.lateNotAmount &lt;= #{eBreak}
+        </if>
+      </if>
+    </if>
+    <if test="sHistory != null">
+      <if test="sHistory==0">
+        AND (ll.historyLoanAmount &gt;= #{sHistory} or ll.historyLoanAmount IS NULL)
+      </if>
+      <if test="sHistory!=0">
+        AND ll.historyLoanAmount &gt;= #{sHistory}
+      </if>
+
+    </if>
+    <if test="eHistory != null">
+      <if test="eHistory==0">
+        AND (ll.historyLoanAmount &lt;= #{eHistory} or ll.historyLoanAmount IS NULL)
+      </if>
+      <if test="eHistory!=0">
+        <if test="sHistory==null or sHistory==0">
+          AND (ll.historyLoanAmount &lt;= #{eHistory} or ll.historyLoanAmount IS NULL)
+        </if>
+        <if test="sHistory!=null and sHistory!=0">
+          AND ll.historyLoanAmount &lt;= #{eHistory}
+        </if>
+
+      </if>
+    </if>
+  </select>
+
+  <resultMap type="com.pinting.business.model.vo.LoanRepayVO" id="loanRepayVoMap" >
+    <result column="partner_code" property="partnerCode" jdbcType="VARCHAR" />
+    <result column="loan_user_id" property="loanUserId" jdbcType="INTEGER" />
+    <result column="loan_user_name" property="loanUserName" jdbcType="VARCHAR" />
+    <result column="loan_count" property="loanCount" jdbcType="INTEGER" />
+    <result column="advanced_repay_count" property="advancedRepayCount" jdbcType="INTEGER" />
+    <result column="repay_count" property="repayCount" jdbcType="INTEGER" />
+    <result column="overdue_principal_compensate" property="overduePrincipalCompensate" jdbcType="INTEGER" />
+    <result column="overdue_interest_compensate" property="overdueInterestCompensate" jdbcType="INTEGER" />
+  </resultMap>
+
+  <select id="selectLoanRepayForLnUserIdList" parameterType="com.pinting.business.model.vo.LoanRepayVO" resultType="java.lang.Integer">
+    select * from (
+    SELECT
+    u.id
+    <if test="(loanCountStart != null and loanCountStart >= 0) or (loanCountEnd != null and loanCountEnd >= 0) or (orderField != null and orderField == 'loan_count') ">
+      ,IFNULL(loan.count,0) AS loan_count
+    </if>
+    <if test="(advancedRepayCountStart != null and advancedRepayCountStart >= 0) or (advancedRepayCountEnd != null and advancedRepayCountEnd >= 0) or (orderField != null and orderField == 'advanced_repay_count') ">
+      ,IFNULL(advanced_repay.count,0) AS advanced_repay_count
+    </if>
+    <if test="(repayCountStart != null and repayCountStart >= 0) or (repayCountEnd != null and repayCountEnd >= 0) or (orderField != null and orderField == 'repay_count') ">
+      ,IFNULL(repay.count,0) AS repay_count
+    </if>
+    <if test="(overduePrincipalCompensateStart != null and overduePrincipalCompensateStart >= 0) or (overduePrincipalCompensateEnd != null and overduePrincipalCompensateEnd) or (orderField != null and orderField == 'overdue_principal_compensate') ">
+      ,IFNULL(overdue_principal_compensate.count,0) AS overdue_principal_compensate
+    </if>
+    <if test="(overdueInterestCompensateStart != null and overdueInterestCompensateStart >= 0) or (overdueInterestCompensateEnd != null and overdueInterestCompensateEnd > 0) or (orderField != null and orderField == 'overdue_interest_compensate') ">
+      ,IFNULL(overdue_interest_compensate.count,0) AS overdue_interest_compensate
+    </if>
+    FROM
+      (SELECT id FROM ln_user
+      WHERE partner_code = #{partnerCode}
+      AND id not in (SELECT conf_value from bs_sys_config where conf_key in('7_DAI_SELF_SUPER_LN_USER','YUN_DAI_SELF_SUPER_LN_USER'))
+      ORDER BY id ASC) u
+    <if test="(loanCountStart != null and loanCountStart >= 0) or (loanCountEnd != null and loanCountEnd >= 0) or (orderField != null and orderField == 'loan_count') ">
+    LEFT JOIN (
+    SELECT count(DISTINCT l.id) AS count, l.ln_user_id
+    FROM
+    (SELECT id, ln_user_id FROM ln_loan WHERE `status` = 'PAIED') l
+    INNER JOIN ln_repay_schedule r ON r.loan_id = l.id
+    WHERE substring(r.partner_repay_id, 0, 4) != 'RGCL'
+    GROUP BY l.ln_user_id) loan ON u.id = loan.ln_user_id
+    </if>
+    <if test="(advancedRepayCountStart != null and advancedRepayCountStart >= 0) or (advancedRepayCountEnd != null and advancedRepayCountEnd >= 0) or (orderField != null and orderField == 'advanced_repay_count') ">
+    LEFT JOIN (
+    SELECT count(DISTINCT r.id) AS count, r.ln_user_id
+    FROM
+    (SELECT a.id, a.repay_plan_id, a.done_time, a.ln_user_id
+    FROM ln_repay a
+    INNER JOIN ln_repay_detail b ON b.repay_id = a.id
+    WHERE a.`status` = 'REPAIED'
+    AND b.subject_code = 'PRINCIPAL'
+    AND b.done_amount > 0) r
+    INNER JOIN ln_repay_schedule rs ON rs.id = r.repay_plan_id
+    WHERE substring(rs.partner_repay_id, 0, 4) != 'RGCL'
+    AND (rs.serial_id = 0 OR r.done_time &lt;  rs.plan_date)
+    GROUP BY r.ln_user_id) advanced_repay ON advanced_repay.ln_user_id = u.id
+    </if>
+    <if test="(repayCountStart != null and repayCountStart >= 0) or (repayCountEnd != null and repayCountEnd >= 0) or (orderField != null and orderField == 'repay_count') ">
+    LEFT JOIN (
+    SELECT count(DISTINCT r.id) AS count, r.ln_user_id
+    FROM
+    (SELECT a.id, a.repay_plan_id, a.ln_user_id FROM ln_repay a WHERE a.`status` = 'REPAIED') r
+    INNER JOIN ln_repay_schedule rs ON rs.id = r.repay_plan_id
+    WHERE substring(rs.partner_repay_id, 0, 4) != 'RGCL'
+    AND (select count(1) from ln_repeat_repay_record where repay_plan_id = rs.id AND repay_type='USER_REPAY') = 0
+    GROUP BY r.ln_user_id) repay ON repay.ln_user_id = u.id
+    </if>
+    <if test="(overduePrincipalCompensateStart != null and overduePrincipalCompensateStart >= 0) or (overduePrincipalCompensateEnd != null and overduePrincipalCompensateEnd >= 0) or (orderField != null and orderField == 'overdue_principal_compensate') ">
+    LEFT JOIN (
+    SELECT count(DISTINCT r.partner_repay_id) AS count, r.ln_user_id
+    FROM
+    (SELECT a.id, a.partner_repay_id, a.ln_user_id FROM ln_deposition_repay_schedule a) r
+    INNER JOIN ln_compensate_detail cd ON cd.partner_repay_id = r.partner_repay_id
+    AND cd.`status` = 'SUCC'
+    WHERE cd.principal > 0 GROUP BY r.ln_user_id
+    ) overdue_principal_compensate ON overdue_principal_compensate.ln_user_id = u.id
+    </if>
+    <if test="(overdueInterestCompensateStart != null and overdueInterestCompensateStart >= 0) or (overdueInterestCompensateEnd != null and overdueInterestCompensateEnd >= 0) or (orderField != null and orderField == 'overdue_interest_compensate') ">
+    LEFT JOIN (
+    SELECT count(DISTINCT r.partner_repay_id) AS count, r.ln_user_id
+    FROM
+    (SELECT a.id, a.partner_repay_id, a.ln_user_id FROM ln_deposition_repay_schedule a) r
+    INNER JOIN ln_compensate_detail cd ON cd.partner_repay_id = r.partner_repay_id
+    AND cd.`status` = 'SUCC'
+    WHERE cd.interest > 0 GROUP BY r.ln_user_id
+    ) overdue_interest_compensate ON overdue_interest_compensate.ln_user_id = u.id
+    </if>
+    ) loanRepay
+    WHERE 1 = 1
+    <if test="loanCountStart != null and loanCountStart >= 0 ">
+      and loan_count >= #{loanCountStart}
+    </if>
+    <if test="loanCountEnd != null and loanCountStart >= 0 ">
+      and #{loanCountEnd} >= loan_count
+    </if>
+    <if test="advancedRepayCountStart != null and advancedRepayCountStart >= 0 ">
+      and advanced_repay_count >= #{advancedRepayCountStart}
+    </if>
+    <if test="advancedRepayCountEnd != null and advancedRepayCountEnd >= 0 ">
+      and #{advancedRepayCountEnd} >= advanced_repay_count
+    </if>
+    <if test="repayCountStart != null and repayCountStart >= 0 ">
+      and repay_count >= #{repayCountStart}
+    </if>
+    <if test="repayCountEnd != null and repayCountEnd >= 0 ">
+      and #{repayCountEnd} >= repay_count
+    </if>
+    <if test="overduePrincipalCompensateStart != null and overduePrincipalCompensateStart >= 0 ">
+      and overdue_principal_compensate >= #{overduePrincipalCompensateStart}
+    </if>
+    <if test="overduePrincipalCompensateEnd != null and overduePrincipalCompensateEnd >= 0 ">
+      and #{overduePrincipalCompensateEnd} >= overdue_principal_compensate
+    </if>
+    <if test="overdueInterestCompensateStart != null and overdueInterestCompensateStart >= 0 ">
+      and overdue_interest_compensate >= #{overdueInterestCompensateStart}
+    </if>
+    <if test="overdueInterestCompensateEnd != null and overdueInterestCompensateEnd >= 0 ">
+      and #{overdueInterestCompensateEnd} >= overdue_interest_compensate
+    </if>
+    <if test="orderDirection != null and orderDirection != ''  and orderField != ''  and orderField != null ">
+      order by ${orderField}  ${orderDirection}
+    </if>
+    <include refid="sql-global.pagination" />
+  </select>
+
+  <select id="selectLoanRepayInfoByLnUserId" parameterType="java.util.Map" resultMap="loanRepayVoMap">
+    SELECT
+    u.id AS loan_user_id,
+    u.user_name AS loan_user_name,
+    u.partner_code,
+    IFNULL(loan.count,0) AS loan_count,
+    IFNULL(advanced_repay.count,0) AS advanced_repay_count,
+    IFNULL(repay.count,0) AS repay_count,
+    IFNULL(overdue_principal_compensate.count,0) AS overdue_principal_compensate,
+    IFNULL(overdue_interest_compensate.count,0) AS overdue_interest_compensate
+    FROM
+      (
+        SELECT
+        id,
+        user_name,
+        partner_code
+        FROM
+        ln_user
+        WHERE
+        id IN
+        <foreach collection="lnUserIds" item="item" index="index" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      ) u
+    LEFT JOIN (
+      SELECT
+      count(DISTINCT l.id) AS count,
+      l.ln_user_id
+      FROM
+      (
+        SELECT
+        id,
+        ln_user_id
+        FROM
+        ln_loan
+        WHERE
+        ln_user_id IN
+        <foreach collection="lnUserIds" item="item" index="index" open="(" separator="," close=")">
+        #{item}
+        </foreach>
+        AND `status` = 'PAIED'
+      ) l
+      INNER JOIN ln_repay_schedule r ON r.loan_id = l.id
+      WHERE
+      substring(r.partner_repay_id, 0, 4) &lt;&gt; 'RGCL'
+      GROUP BY
+      l.ln_user_id
+    ) loan ON u.id = loan.ln_user_id
+    LEFT JOIN (
+      SELECT
+      count(DISTINCT r.id) AS count,
+      r.ln_user_id
+      FROM
+      (
+        SELECT
+        a.id,
+        a.repay_plan_id,
+        a.done_time,
+        a.ln_user_id
+        FROM
+        ln_repay a
+        WHERE
+        a.`status` = 'REPAIED'
+        AND a.ln_user_id IN
+        <foreach collection="lnUserIds" item="item" index="index" open="(" separator="," close=")">
+        #{item}
+        </foreach>
+      ) r
+      INNER JOIN ln_repay_detail b ON b.repay_id = r.id
+      AND b.subject_code = 'PRINCIPAL'
+      AND b.done_amount > 0
+      INNER JOIN ln_repay_schedule rs ON rs.id = r.repay_plan_id
+      WHERE
+      substring(rs.partner_repay_id, 0, 4) &lt;&gt; 'RGCL'
+      AND (
+      rs.serial_id = 0
+      OR r.done_time &lt; rs.plan_date
+      )
+      GROUP BY
+      r.ln_user_id
+    ) advanced_repay ON advanced_repay.ln_user_id = u.id
+    LEFT JOIN (
+      SELECT
+      count(DISTINCT r.id) AS count,
+      r.ln_user_id
+      FROM
+      (
+        SELECT
+        a.id,
+        a.repay_plan_id,
+        a.ln_user_id
+        FROM
+        ln_repay a
+        WHERE
+        a.ln_user_id IN
+        <foreach collection="lnUserIds" item="item" index="index" open="(" separator="," close=")">
+        #{item}
+        </foreach>
+        AND a.`status` = 'REPAIED'
+      ) r
+      INNER JOIN ln_repay_schedule rs ON rs.id = r.repay_plan_id
+      WHERE
+      substring(rs.partner_repay_id, 0, 4) &lt;&gt; 'RGCL'
+      AND (select count(1) from ln_repeat_repay_record where repay_plan_id = rs.id AND repay_type='USER_REPAY') = 0
+      GROUP BY
+      r.ln_user_id
+    ) repay ON repay.ln_user_id = u.id
+    LEFT JOIN (
+    SELECT
+    count(DISTINCT r.partner_repay_id) AS count,
+    r.ln_user_id
+    FROM
+    (
+    SELECT
+    a.id,
+    a.partner_repay_id,
+    a.ln_user_id
+    FROM
+    ln_deposition_repay_schedule a
+    WHERE
+    a.ln_user_id IN
+    <foreach collection="lnUserIds" item="item" index="index" open="(" separator="," close=")">
+    #{item}
+    </foreach>
+    ) r
+    INNER JOIN ln_compensate_detail cd ON cd.partner_repay_id = r.partner_repay_id
+    AND cd.`status` = 'SUCC'
+    WHERE
+    cd.principal > 0
+    GROUP BY
+    r.ln_user_id
+    ) overdue_principal_compensate ON overdue_principal_compensate.ln_user_id = u.id
+    LEFT JOIN (
+      SELECT
+      count(DISTINCT r.partner_repay_id) AS count,
+      r.ln_user_id
+      FROM
+        (
+        SELECT
+        a.id,
+        a.partner_repay_id,
+        a.ln_user_id
+        FROM
+        ln_deposition_repay_schedule a
+        WHERE
+        a.ln_user_id IN
+        <foreach collection="lnUserIds" item="item" index="index" open="(" separator="," close=")">
+        #{item}
+        </foreach>
+      ) r
+      INNER JOIN ln_compensate_detail cd ON cd.partner_repay_id = r.partner_repay_id
+      AND cd.`status` = 'SUCC'
+      WHERE
+      cd.interest > 0
+      GROUP BY
+      r.ln_user_id
+    ) overdue_interest_compensate ON overdue_interest_compensate.ln_user_id = u.id
+
+    <if test="orderDirection != null and orderDirection != ''  and orderField != ''  and orderField != null ">
+      order by ${orderField}  ${orderDirection}
+    </if>
+
+  </select>
+
+  <select id="selectLoanRepayForLnUserIdCount" parameterType="com.pinting.business.model.vo.LoanRepayVO" resultType="java.lang.Integer" >
+    SELECT IFNULL(COUNT(1),0) FROM (select * from (
+    SELECT
+    u.id
+    <if test="(loanCountStart != null and loanCountStart >= 0) or (loanCountEnd != null and loanCountEnd >= 0) ">
+      ,IFNULL(loan.count,0) AS loan_count
+    </if>
+    <if test="(advancedRepayCountStart != null and advancedRepayCountStart >= 0) or (advancedRepayCountEnd != null and advancedRepayCountEnd >= 0)">
+      ,IFNULL(advanced_repay.count,0) AS advanced_repay_count
+    </if>
+    <if test="(repayCountStart != null and repayCountStart >= 0) or (repayCountEnd != null and repayCountEnd >= 0) ">
+      ,IFNULL(repay.count,0) AS repay_count
+    </if>
+    <if test="(overduePrincipalCompensateStart != null and overduePrincipalCompensateStart >= 0) or (overduePrincipalCompensateEnd != null and overduePrincipalCompensateEnd >= 0)">
+      ,IFNULL(overdue_principal_compensate.count,0) AS overdue_principal_count
+    </if>
+    <if test="(overdueInterestCompensateStart != null and overdueInterestCompensateStart >= 0) or (overdueInterestCompensateEnd != null and overdueInterestCompensateEnd >= 0)">
+      ,IFNULL(overdue_interest_compensate.count,0) AS overdue_interest_count
+    </if>
+    FROM
+      (SELECT id FROM ln_user
+      WHERE partner_code = #{partnerCode}
+      AND id not in (SELECT conf_value from bs_sys_config where conf_key in('7_DAI_SELF_SUPER_LN_USER','YUN_DAI_SELF_SUPER_LN_USER'))
+      ORDER BY id ASC) u
+    <if test="(loanCountStart != null and loanCountStart >= 0) or (loanCountEnd != null and loanCountEnd >= 0) ">
+      LEFT JOIN (
+      SELECT count(DISTINCT l.id) AS count, l.ln_user_id
+      FROM
+      (SELECT id, ln_user_id FROM ln_loan WHERE `status` = 'PAIED') l
+      INNER JOIN ln_repay_schedule r ON r.loan_id = l.id
+      WHERE substring(r.partner_repay_id, 0, 4) != 'RGCL'
+      GROUP BY l.ln_user_id) loan ON u.id = loan.ln_user_id
+    </if>
+    <if test="(advancedRepayCountStart != null and advancedRepayCountStart >= 0) or (advancedRepayCountEnd != null and advancedRepayCountEnd >= 0)">
+      LEFT JOIN (
+      SELECT count(DISTINCT r.id) AS count, r.ln_user_id
+      FROM
+      (SELECT a.id, a.repay_plan_id, a.done_time, a.ln_user_id
+      FROM ln_repay a
+      INNER JOIN ln_repay_detail b ON b.repay_id = a.id
+      WHERE a.`status` = 'REPAIED'
+      AND b.subject_code = 'PRINCIPAL'
+      AND b.done_amount > 0) r
+      INNER JOIN ln_repay_schedule rs ON rs.id = r.repay_plan_id
+      WHERE substring(rs.partner_repay_id, 0, 4) != 'RGCL'
+      AND (rs.serial_id = 0 OR r.done_time &lt; rs.plan_date)
+      GROUP BY r.ln_user_id) advanced_repay ON advanced_repay.ln_user_id = u.id
+    </if>
+    <if test="(repayCountStart != null and repayCountStart >= 0) or (repayCountEnd != null and repayCountEnd >= 0) ">
+      LEFT JOIN (
+      SELECT count(DISTINCT r.id) AS count, r.ln_user_id
+      FROM
+      (SELECT a.id, a.repay_plan_id, a.ln_user_id FROM ln_repay a WHERE a.`status` = 'REPAIED') r
+      INNER JOIN ln_repay_schedule rs ON rs.id = r.repay_plan_id
+      WHERE substring(rs.partner_repay_id, 0, 4) != 'RGCL'
+      AND (select count(1) from ln_repeat_repay_record where repay_plan_id = rs.id AND repay_type='USER_REPAY') = 0
+      GROUP BY r.ln_user_id) repay ON repay.ln_user_id = u.id
+    </if>
+    <if test="(overduePrincipalCompensateStart != null and overduePrincipalCompensateStart >= 0) or (overduePrincipalCompensateEnd != null and overduePrincipalCompensateEnd >= 0)">
+      LEFT JOIN (
+      SELECT count(DISTINCT r.partner_repay_id) AS count, r.ln_user_id
+      FROM
+      (SELECT a.id, a.partner_repay_id, a.ln_user_id FROM ln_deposition_repay_schedule a) r
+      INNER JOIN ln_compensate_detail cd ON cd.partner_repay_id = r.partner_repay_id
+      AND cd.`status` = 'SUCC'
+      WHERE cd.principal > 0 GROUP BY r.ln_user_id
+      ) overdue_principal_compensate ON overdue_principal_compensate.ln_user_id = u.id
+    </if>
+    <if test="(overdueInterestCompensateStart != null and overdueInterestCompensateStart >= 0) or (overdueInterestCompensateEnd != null and overdueInterestCompensateEnd >= 0)">
+      LEFT JOIN (
+      SELECT count(DISTINCT r.partner_repay_id) AS count, r.ln_user_id
+      FROM
+      (SELECT a.id, a.partner_repay_id, a.ln_user_id FROM ln_deposition_repay_schedule a) r
+      INNER JOIN ln_compensate_detail cd ON cd.partner_repay_id = r.partner_repay_id
+      AND cd.`status` = 'SUCC'
+      WHERE cd.interest > 0 GROUP BY r.ln_user_id
+      ) overdue_interest_compensate ON overdue_interest_compensate.ln_user_id = u.id
+    </if>
+    ) loanRepay
+    WHERE 1 = 1
+    <if test="loanCountStart != null and loanCountStart >= 0 ">
+      and loan_count >= #{loanCountStart}
+    </if>
+    <if test="loanCountEnd != null and loanCountStart >= 0 ">
+      and #{loanCountEnd} >= loan_count
+    </if>
+    <if test="advancedRepayCountStart != null and advancedRepayCountStart >= 0 ">
+      and advanced_repay_count >= #{advancedRepayCountStart}
+    </if>
+    <if test="advancedRepayCountEnd != null and advancedRepayCountEnd >= 0 ">
+      and #{advancedRepayCountEnd} >= advanced_repay_count
+    </if>
+    <if test="repayCountStart != null and repayCountStart >= 0 ">
+      and repay_count >= #{repayCountStart}
+    </if>
+    <if test="repayCountEnd != null and repayCountEnd >= 0 ">
+      and #{repayCountEnd} >= repay_count
+    </if>
+    <if test="overduePrincipalCompensateStart != null and overduePrincipalCompensateStart >= 0 ">
+      and overdue_principal_count >= #{overduePrincipalCompensateStart}
+    </if>
+    <if test="overduePrincipalCompensateEnd != null and overduePrincipalCompensateEnd >= 0 ">
+      and #{overduePrincipalCompensateEnd} >= overdue_principal_count
+    </if>
+    <if test="overdueInterestCompensateStart != null and overdueInterestCompensateStart >= 0 ">
+      and overdue_interest_count >= #{overdueInterestCompensateStart}
+    </if>
+    <if test="overdueInterestCompensateEnd != null and overdueInterestCompensateEnd >= 0 ">
+      and #{overdueInterestCompensateEnd} >= overdue_interest_count
+    </if>
+    ) a
+  </select>
+
+</mapper>

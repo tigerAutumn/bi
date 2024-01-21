@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>对账汇总凭证定时和PC首页标的排序规则优化</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h2>对账汇总凭证定时</h2>
+<ol>
+<li>
+<p>需求描述
+当天宝付对账完成后，进行宝付对账信息汇总</p>
+</li>
+<li>
+<p>需求背景
+财务对账需要</p>
+</li>
+<li>
+<p>业务逻辑</p>
+</li>
+</ol>
+<h3>修改点</h3>
+<ol>
+<li>
+<p>新增宝付对账汇总凭证定时，判断当天是否已对账（查询bs<em>19pay</em>check check_time是对账日期的有无记录），如果没有宝付对账结果信息进行日志输出 </p>
+</li>
+<li>
+<p>检查宝付对账汇总，检查主辅商户各业务汇总的sql其它方法无调用。（其它方法无调用）</p>
+</li>
+<li>
+<p>主商户对账汇总业务: 余额提现、奖励金提现、宝付代付到归集户、合作方营收划转（赞分期营收、云贷营收、7贷营收、赞时贷营收）、老产品回款
+				合作方重复还款划转（云贷重复还款、7贷重复还款、赞时贷重复还款）、存管代偿（云贷合作方代偿、7贷合作方代偿、赞时贷合作方代偿）、
+				存管产品还款（赞分期还款、云贷还款、7贷还款、赞时贷还款）、资产合作方线下还款（赞分期线下还款、7贷线下还款、赞时贷线下还款）		
+辅商户对账汇总业务: 存管产品还款（赞分期还款、云贷还款、7贷还款、赞时贷还款）、辅助通道转账到主通道</p>
+</li>
+<li>
+<p>宝付对账汇总sql查询速度优化，资产合作方线下还款sql、代扣还款sql</p>
+</li>
+<li>
+<p>具体执行时间以上线为准:</p>
+<pre>
+INSERT INTO `bs_schedule_config`(`job_name`, `job_group`, `job_status`, `cron_expression`, `bean_class`, `method_name`, `bean_id`, `is_concurrent`, `description`, `create_time`, `update_time`) 
+VALUES ('baofooCheckSummaryTime', 'SCHEDULE', 'RUNNING', '0 30 10 * * ?', 'com.pinting.schedule.dayend.task.BaoFooGachaSummaryTask', 'execute', 'baoFooGachaSummaryTask', 'NO', '宝付对账汇总凭证定时', '2018-05-28 11:30:55', '2018-05-28 11:30:58');
+</pre>
+</li>
+</ol>
+<h2>PC首页标的排序规则优化</h2>
+<ol>
+<li>
+<p>需求描述
+活动标的结束后,无其他标的的情况下,标的数据写入缓存导致首页精选产品展示数据异常，禅道bug9845
+新的排序规则:
+	更新时间降序(推荐进行中 &gt; 推荐未开始 &gt; 普通进行中 &gt; 普通未开始 &gt; 已完成)</p>
+</li>
+<li>
+<p>需求背景
+线上bug</p>
+</li>
+<li>
+<p>业务逻辑</p>
+</li>
+</ol>
+<h3>修改点</h3>
+<pre><code>入口HomeFacade类infoQuery方法
+</code></pre>
+
+<ol>
+<li>精选产品列表原先的sql中有activity_type = 'ACTIVITY'条件判断，现去除。（原有的逻辑只查询了活动标的，先去掉，按需求描述的排序规则进行排序）</li>
+</ol>
+<p>针对新手标的，现逻辑已经排除状态是进行中和未开始的，已完成的新手标的如果符合排序规则，可以展示在精选产品列表。            </p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

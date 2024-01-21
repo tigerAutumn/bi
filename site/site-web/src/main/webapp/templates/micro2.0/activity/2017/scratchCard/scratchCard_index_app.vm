@@ -1,0 +1,466 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadCSS("/resources/micro2.0/styles/activity/default")
+#LoadJS("/resources/micro2.0/scripts/common/common")
+#LoadJS("/resources/micro2.0/scripts/activity/six")
+#LoadJS("/resources/micro2.0/scripts/activity/2017/scratchCard/scratch_card_app")
+#LoadCSS("/resources/micro2.0/styles/activity/2017/scratchCard/scratchCard")
+#LoadJS("/resources/micro2.0/scripts/activity/2017/scratchCard/scrollForever")
+#LoadJS("/resources/micro2.0/scripts/activity/2017/scratchCard/jquery.eraser")
+#WeChatShare()
+#Head("end")
+<body>
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<input type="hidden" id="isLogin" value="$!isLogin" />
+<input type="hidden" id="ticketsPlayStatus" value="$!ticketsPlayStatus" />
+<input type="hidden" id="hasScratchChance" value="$!hasScratchChance" />
+<input type="hidden" id="isScratch" value="$!isScratch" />
+<input type="hidden" id="client" value="$!client"/>
+<input type="hidden" id="userId" value="$!userId" />
+<input type="hidden" id="systemFormatTime" value="$!systemFormatTime" />
+<input type="hidden" id="userAwardCount" value="$!userAwardCount" />
+
+<div class="ggle">
+    <div class="ggle_banner">
+        <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/2017/scratchCard/ggle_banner.jpg" alt="">
+    </div>
+    <div class="ggle_container">
+        <div class="ggle_tickets">
+            <div class="tickets_wrap">
+            ##正常情况
+                #if($!ticketsPlayStatus == 'isNotStart')
+                    <div class="ggle_tickets_content" id="ggle_tickets_content_isNotStart">
+                        <h4>刮奖区</h4>
+                    </div>
+
+                    <div class="ggle_tickets_result" id="ggle_tickets_text_isNotStart" #*style="display: none;"*#>
+                        <div class="ggle_tickets_text">
+                            <h5>恭喜您获得</h5>
+                            <p id="prizes_name_show_isNotStart"></p>
+                        </div>
+                    </div>
+
+                    <div class="ggle_tickets_result" id="isNotStart_to_end" style="display: none;">
+                        <div class="ggle_tickets_text">
+                            <h5>登录可查看</h5>
+                            <p>获奖奖品</p>
+                        </div>
+                    </div>
+
+                    <div class="ggle_tickets_content" id="isNotStart_to_endContent" style="display: none;">
+                        <div class="ggle_tickets_text">
+                            <h5>您本期尚未</h5>
+                            <p>参与刮奖</p>
+                        </div>
+                    </div>
+
+                    <div class="main_box" id="playResult">
+                        <div class="box">
+                            <div class="content">
+                                <div id="mask_img_bg">
+                                    <div class="ggle_tickets_result">
+                                        <div class="ggle_tickets_text">
+                                            <h5>恭喜您获得</h5>
+                                            <p id="prizes_name"><span>$!prizeSize</span>$!prizeName</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <img id="redux" src="$!env.getWebURL('')/resources/micro2.0/images/activity/2017/scratchCard/ggle_tickets_play_bg.jpg" />
+                            </div>
+                        </div>
+                    </div>
+
+                #elseif($!ticketsPlayStatus == 'isStart')
+                    #if($!isScratch == "yes")
+                        <div class="ggle_tickets_result">
+                            <div class="ggle_tickets_text">
+                                <h5>恭喜您获得</h5>
+                                #if($!prizeContent.indexOf('元') >= 1)
+                                    #set($index=$!prizeContent.indexOf('元')+1)
+                                    #set($length=$!prizeContent.length())
+                                    #set($prizeSize=$!prizeContent.substring(0, $index))
+                                    #set($prizeName=$!prizeContent.substring($index, $length))
+                                    <p><span>$!prizeSize</span>$!prizeName</p>
+                                #elseif($!prizeContent.indexOf('M') >= 1)
+                                    #set($index=$!prizeContent.indexOf('M')+1)
+                                    #set($length=$!prizeContent.length())
+                                    #set($prizeSize=$!prizeContent.substring(0, $index))
+                                    #set($prizeName=$!prizeContent.substring($index, $length))
+                                    <p><span>$!prizeSize</span>$!prizeName</p>
+                                #else
+                                    <p>$!prizeContent</p>
+                                #end
+                            </div>
+                        </div>
+
+                    #else
+                        <div class="ggle_tickets_content" id="ggle_tickets_result_isStart">
+                            <h4>刮奖区</h4>
+                        </div>
+
+                        <div class="ggle_tickets_result" id="id_tickets_result" id="isStart_tickets_content">
+                            <div class="ggle_tickets_text">
+                                <h5>恭喜您获得</h5>
+                                <p id="prizes_name_show"></p>
+                            </div>
+                        </div>
+
+                        <div class="ggle_tickets_result" id="notStart_to_start" style="display: none;">
+                            <div class="ggle_tickets_text">
+                                <h5>登录可查看</h5>
+                                <p>获奖奖品</p>
+                            </div>
+                        </div>
+
+                        <div class="ggle_tickets_content" id="notStart_to_end" style="display: none;">
+                            <div class="ggle_tickets_text">
+                                <h5>您本期尚未</h5>
+                                <p>参与刮奖</p>
+                            </div>
+                        </div>
+
+                    #end
+                #elseif($!ticketsPlayStatus == 'isEnd')
+                    #if($!isLogin == "false")
+                        <div class="ggle_tickets_result">
+                            <div class="ggle_tickets_text">
+                                <h5>登录可查看</h5>
+                                <p>获奖奖品</p>
+                            </div>
+                        </div>
+                    #else
+                        #if($!isScratch == 'yes')
+                            <div class="ggle_tickets_result">
+                                <div class="ggle_tickets_text">
+                                    <h5>恭喜您获得</h5>
+                                    #if($!prizeContent.indexOf('元') >= 1)
+                                        #set($index=$!prizeContent.indexOf('元')+1)
+                                        #set($length=$!prizeContent.length())
+                                        #set($prizeSize=$!prizeContent.substring(0, $index))
+                                        #set($prizeName=$!prizeContent.substring($index, $length))
+                                        <p><span>$!prizeSize</span>$!prizeName</p>
+
+                                    #elseif($!prizeContent.indexOf('M') >= 1)
+                                        #set($index=$!prizeContent.indexOf('M')+1)
+                                        #set($length=$!prizeContent.length())
+                                        #set($prizeSize=$!prizeContent.substring(0, $index))
+                                        #set($prizeName=$!prizeContent.substring($index, $length))
+                                        <p><span>$!prizeSize</span>$!prizeName</p>
+                                    #else
+                                        <p>$!prizeContent</p>
+                                    #end
+                                </div>
+                            </div>
+                        #else
+                            <div class="ggle_tickets_content">
+                                <div class="ggle_tickets_text">
+                                    <h5>您本期尚未</h5>
+                                    <p>参与刮奖</p>
+                                </div>
+                            </div>
+                        #end
+                    #end
+                #end
+
+            ##开始刮奖
+                #if($!ticketsPlayStatus == 'isStart')
+                    #if($!isScratch == "yes")
+                    #else
+                        <div class="main_box" id="playResult">
+                            <div class="box">
+                                <div class="content">
+                                    <div id="mask_img_bg">
+                                        <div class="ggle_tickets_result">
+                                            <div class="ggle_tickets_text">
+                                                <h5>恭喜您获得</h5>
+                                                <p id="prizes_name"><span>$!prizeSize</span>$!prizeName</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <img id="redux" src="$!env.getWebURL('')/resources/micro2.0/images/activity/2017/scratchCard/ggle_tickets_play_bg.jpg" />
+                                </div>
+                            </div>
+                        </div>
+                    #end
+                #end
+            </div>
+
+            #if($!ticketsPlayStatus == 'isNotStart')
+                <div class="ggle_btn btn_disabled" id="ticketsPlay_noStart">本期尚未开始</div>
+
+                <div class="ggle_btn" id="ticketsPlay_start_touzi" style="display: none;" onclick="clickAppProductList()">投资参与刮奖</div>
+
+                <div class="ggle_btn" id="ticketsPlay" style="display: none;">开始刮奖</div>
+
+                <div class="ggle_btn" id="ticketsPlay_login" style="display: none;" onclick="clickAppLogin()">立即登录</div>
+
+                <div class="ggle_btn btn_disabled" id="isNotStart_activityEnd" style="display: none;">本期已结束</div>
+
+            #elseif($!ticketsPlayStatus == 'isStart')
+            ##未登录
+                #if($!isLogin == "false")
+                    <div class="ggle_btn" onclick="clickAppLogin()" id="isStart_login">立即登录</div>
+                #else
+                    #if(!$hasScratchChance)
+                        <div class="ggle_btn" onclick="clickAppProductList()" id="isStart_false">投资参与刮奖</div>
+                        <div class="ggle_btn btn_disabled" id="isStart_false_activityEnd" style="display: none;">本期已结束</div>
+                    #else
+                        #if($!isScratch == "yes")
+                            <div class="ggle_btn btn_disabled" id="ticketsPlayed_yes">您已参与</div>
+                            <div class="ggle_btn btn_disabled" id="isStart_activityEnd" style="display: none;">本期已结束</div>
+                        #else
+                            <div class="ggle_btn" id="ticketsPlay">开始刮奖</div>
+                            <div class="ggle_btn btn_disabled" id="isStart_toEnd" style="display: none;">本期已结束</div>
+                        #end
+                    #end
+                #end
+            #elseif($!ticketsPlayStatus == 'isEnd')
+                #if($!isLogin == "false")
+                    <div class="ggle_btn" onclick="clickAppLogin()">立即登录</div>
+                #else
+                    <div class="ggle_btn btn_disabled">本期已结束</div>
+                #end
+            #end
+
+        ##不可点击按钮
+            <div class="ggle_btn btn_disabled wrap_hide" id="alreadyPlay">请刮开涂层</div>
+            <p class="game_des">
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/2017/scratchCard/bulb.png"/>即刮即开，100%中奖！
+            </p>
+        </div>
+        <div class="winner_list">
+            <div class="winner_title"></div>
+            <div class="list_warp_out">
+                <div class="list_warp">
+                    <div class="winnerlist_title">
+                        <ul class="clearfix">
+                            <li>获奖时间</li>
+                            <li>手机号码</li>
+                            <li>奖品</li>
+                        </ul>
+                    </div>
+                    <div class="winnerlist_content" id="winnerList">
+                        <ul>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="active_rule">
+            <ul>
+                <li>活动时间：本周四0:00:00-24:00:00；</li>
+                <li>活动标的：仅限港湾计划系列标的（除新手标）；</li>
+                <li>活动资格：每位用户仅首笔投资可获得一次刮奖机会（仅限当日刮奖，逾期作废）；</li>
+                <li>用户中奖后，奖品将于活动结束后的3个工作日内由客服人员与您取得联系确认收货信息后，安排发放或寄出。（红包/奖励金类奖品将在3个工作日内发放至您的账户，请在【我的资产】-【我的红包】/【我的奖励】中查看）。</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(window).load(function  () { //这个适用手机端，等图片加载完再显示，因为有可能会出现第一次加载图片没有加载完就不会出现canvas
+        $('#redux').eraser( {
+            size: 40,   //设置橡皮擦大小
+            completeRatio: .5, //设置擦除面积比例
+            completeFunction: showResetButton   //大于擦除面积比例触发函数
+        });
+    })
+
+    var root = $("#APP_ROOT_PATH").val();
+    var userId = $("#userId").val();
+    // 抽奖成功更新滚动数据
+    function scrollData() {
+        var winnerListEmpty = $("#winnerList ul").children(".empty_list");
+        var winnerListHtml = $("#winnerList ul").html();
+        var emptyList = "<li class='empty_list'>" + "暂无获奖名单" + "</li>";
+        var userId = $("#userId").val();
+
+        $.ajax({
+            url: root + '/micro2.0/activity/userAwardList',
+            dataType: 'json',
+            data: {
+                userId: userId
+            },
+            success: function (data) {
+                var html = '';
+                if(data.userAwardList) {
+                    $.each(data.userAwardList, function(i,item){
+                        html += '<li class="clearfix">' +
+                                '<span> '+ item.createTime
+                                +'</span><span>'+item.mobile
+                                +'</span><span>'+item.content
+                                + '</span>'+'</li>';
+                    });
+                }
+                if (html){
+                    $('#winnerList ul').html(html);
+                    var winnerListNum = $("#winnerList ul").children(".clearfix").length;
+                    if(winnerListEmpty.length == 0){
+                        if(winnerListNum > 5){
+                            $("#winnerList").scrollForever();
+                        }
+                    }
+                }else {
+                    $('#winnerList ul').html(emptyList);
+                }
+
+            }
+        });
+    }
+
+
+    $("#ticketsPlay").click(function(){
+
+        var root = $("#APP_ROOT_PATH").val();
+        var userId = $("#userId").val();
+        var client = $("#client").val();
+        var ticketsPlayStatus = $("#ticketsPlayStatus").val();
+
+        $.ajax({
+            url: root + '/micro2.0/activity/user_scraping_opportunities',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                client:client,
+                userId:userId
+            },
+            success: function (data) {
+                if (data.resCode == "hasAward") { // 已刮奖
+
+
+                    if(ticketsPlayStatus == "isNotStart") {
+
+                        drawToast("您已参与刮奖，请勿重复操作！");
+
+                        //点击该按钮确定奖品，奖品信息通过Ajax传到前端
+                        $("#ticketsPlay").addClass("btn_disabled");
+                        $("#ticketsPlay").html("您已参与");
+
+                        $(".ggle_tickets_result").hide();
+                        $("#ggle_tickets_text_isNotStart").show();
+
+                        $(".ggle_tickets_content").addClass("wrap_hide");
+                        $("#redux").hide();
+
+                        if (data.prize.indexOf('元') >= 1) {
+                            $("#prizes_name_show_isNotStart").html('<span>' + data.prize.substring(0, data.prize.indexOf('元') + 1) + '</span>' + data.prize.substring(data.prize.indexOf('元') + 1, data.prize.length));
+                        } else if (data.prize.indexOf('M') >= 1) {
+                            $("#prizes_name_show_isNotStart").html('<span>' + data.prize.substring(0, data.prize.indexOf('M') + 1) + '</span>' + data.prize.substring(data.prize.indexOf('M') + 1, data.prize.length));
+                        } else {
+                            $("#prizes_name_show_isNotStart").html(data.prize);
+                        }
+
+
+                    }else {
+                        drawToast("您已参与刮奖，请勿重复操作！");
+
+                        //点击该按钮确定奖品，奖品信息通过Ajax传到前端
+                        $("#ticketsPlay").addClass("btn_disabled");
+                        $("#ticketsPlay").html("您已参与");
+
+                        $(".ggle_tickets_result").hide();
+                        $("#id_tickets_result").show();
+
+                        $(".ggle_tickets_content").addClass("wrap_hide");
+                        $("#redux").hide();
+
+                        if (data.prize.indexOf('元') >= 1) {
+                            $("#prizes_name_show").html('<span>' + data.prize.substring(0, data.prize.indexOf('元') + 1) + '</span>' + data.prize.substring(data.prize.indexOf('元') + 1, data.prize.length));
+                        } else if (data.prize.indexOf('M') >= 1) {
+                            $("#prizes_name_show").html('<span>' + data.prize.substring(0, data.prize.indexOf('M') + 1) + '</span>' + data.prize.substring(data.prize.indexOf('M') + 1, data.prize.length));
+                        } else {
+                            $("#prizes_name_show").html(data.prize);
+                        }
+                    }
+
+                    scrollData();
+
+                    return;
+
+                } else {
+
+                    $("#ticketsPlay").addClass("wrap_hide");
+                    $(".ggle_tickets_content").addClass("wrap_hide")
+                    $("#alreadyPlay").removeClass("wrap_hide");
+
+                }
+            }
+
+        });
+
+    })
+
+    function showResetButton(){
+        $("#redux").fadeOut(300);
+        $("#alreadyPlay").html("您已参与");
+
+        // 刮奖操作
+        var root = $("#APP_ROOT_PATH").val();
+        $.ajax({
+            url: root + '/micro2.0/activity/user_scratchcard_app',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                userId: userId
+            },
+            success: function (data) {
+                if(data.resCode == '000000') {
+                    $('#userAwardCount').val('1');
+                    if(data.prize.indexOf('元') >= 1) {
+                        $("#prizes_name").html('<span>' +data.prize.substring(0, data.prize.indexOf('元')+1) +'</span>' + data.prize.substring(data.prize.indexOf('元')+1, data.prize.length));
+                    }else if(data.prize.indexOf('M') >= 1) {
+                        $("#prizes_name").html('<span>' + data.prize.substring(0, data.prize.indexOf('M')+1) +'</span>' + data.prize.substring(data.prize.indexOf('M')+1, data.prize.length));
+                    }else {
+                        $("#prizes_name").html(data.prize);
+                    }
+
+                    scrollData();
+                } else {
+                    if(data.resCode == 'hasAward') {
+                        drawToast('您已参与刮奖，请勿重复操作！');
+                        setTimeout('location.reload()', 2000);
+                    } else {
+                        drawToast(data.resMsg);
+                    }
+                }
+
+            }
+        });
+
+    }
+
+    // 登录页面
+    function clickAppLogin() {
+        var client = $('#client').val();
+        var json = '{"appActive" : {"page": "m"}}';
+        if(client == "android") {
+            toAndroidPage(json);
+        }
+        if(client == "ios") {
+            toiOSPage(json);
+        }
+    }
+
+    // 产品列表页
+    function clickAppProductList() {
+        var client = $('#client').val();
+        var json = '{"appActive" : {"page": "b"}}';
+        if(client == "android") {
+            toAndroidPage(json);
+        }
+        if(client == "ios") {
+            toiOSPage(json);
+        }
+    }
+
+    function toiOSPage(json) {
+    }
+
+    function toAndroidPage(json) {
+        javascript:coinharbour.toAndroidPage(json);
+    }
+
+</script>
+</body>
+#Html("end")

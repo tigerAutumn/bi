@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsAppVersionMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsAppVersion" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="app_type" property="appType" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="is_mandatory" property="isMandatory" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, app_type, version, content, is_mandatory, url, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsAppVersionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_app_version
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_app_version
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_app_version
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsAppVersionExample" >
+    delete from bs_app_version
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsAppVersion" >
+    insert into bs_app_version (id, app_type, version, 
+      content, is_mandatory, url, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{appType,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{isMandatory,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertBsAppVersion" parameterType="com.pinting.business.model.BsAppVersion" keyProperty="id" useGeneratedKeys="true">
+    insert into bs_app_version
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="appType != null" >
+        app_type,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="isMandatory != null" >
+        is_mandatory,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="appType != null" >
+        #{appType,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="isMandatory != null" >
+        #{isMandatory,jdbcType=INTEGER},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsAppVersionExample" resultType="java.lang.Integer" >
+    select count(*) from bs_app_version
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_app_version
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.appType != null" >
+        app_type = #{record.appType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.version != null" >
+        version = #{record.version,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isMandatory != null" >
+        is_mandatory = #{record.isMandatory,jdbcType=INTEGER},
+      </if>
+      <if test="record.url != null" >
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_app_version
+    set id = #{record.id,jdbcType=INTEGER},
+      app_type = #{record.appType,jdbcType=VARCHAR},
+      version = #{record.version,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      is_mandatory = #{record.isMandatory,jdbcType=INTEGER},
+      url = #{record.url,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsAppVersion" >
+    update bs_app_version
+    <set >
+      <if test="appType != null" >
+        app_type = #{appType,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="isMandatory != null" >
+        is_mandatory = #{isMandatory,jdbcType=INTEGER},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsAppVersion" >
+    update bs_app_version
+    set app_type = #{appType,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      is_mandatory = #{isMandatory,jdbcType=INTEGER},
+      url = #{url,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 
+		- 查询所有app版本列表
+		- @auth yanwl
+		- @date 2016-02-18
+	 -->
+	<select id="selectAppVersion" parameterType="com.pinting.business.model.vo.BsAppVersionVO" resultMap="BaseResultMap">
+		select 
+	    <include refid="Base_Column_List" />
+	    from bs_app_version av
+	   	order by av.create_time desc
+	   	<include refid="sql-global.pagination"/>
+	</select>
+	
+	<!-- 
+		- 查询所有app版本列表总数
+		- @auth yanwl
+		- @date 2016-02-18
+	 -->
+	<select id="selectAllAppVersionCount" resultType="java.lang.Integer" >
+	    select count(*) from bs_app_version
+  </select>
+  
+   <!-- 
+	- 根据多条件查询app版本列表
+	- @auth yanwl
+	- @date 2016-02-18
+	-->
+   <select id="selectVersionByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_app_version
+    where 1=1 
+    <if test="version != null and version != ''">
+    	and version = #{version}
+    </if>
+    <if test="appType != null and appType != ''">
+    	and app_type = #{appType}
+    </if>
+    <if test="compareVersion != null and compareVersion != ''">
+    	and STRCMP(#{compareVersion},version) = 1
+    </if>
+  </select>
+   
+   <!-- 
+	- 根据版本和app类型查询是否是最新版本
+	- @auth yanwl
+	- @date 2016-02-18
+	-->
+   <select id="selectIsLastVersion" resultType="java.lang.Integer" parameterType="java.util.Map" >
+    select 
+    STRCMP(max(version),#{appVersion})
+    from bs_app_version
+    where 1=1 
+    <if test="appType != null and appType != ''">
+    	and app_type = #{appType}
+    </if>
+  </select>
+  
+  <!-- 查找ios/android APP版本号的最大值 -->
+  <select id="selectAppVersionMaxValue" parameterType="com.pinting.business.model.vo.BsAppVersionVO" resultMap="BaseResultMap">
+    SELECT 
+    	id, app_type, max(version) as version, content, is_mandatory, url, create_time, update_time 
+    FROM bs_app_version 
+    GROUP BY app_type
+  </select>
+  
+</mapper>

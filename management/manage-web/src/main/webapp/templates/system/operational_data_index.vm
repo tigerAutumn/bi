@@ -1,0 +1,122 @@
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')"/>
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="pageHeader">
+    <form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/sys/operationalData/index.htm')" onsubmit="return navTabSearch(this);">
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="pageNum" value="$!pageNum" />
+        <input type="hidden" name="numPerPage" value="$!numPerPage" />
+        <div class="searchBar">
+            <table class="searchContent">
+				<tr>
+					<td>
+						昵称：<input id="nickName" type="text" name="nickName" value="$!req.nickName" size="25"/>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+					    <span style="margin-left:20px;">
+							<button  onclick="func()" type="button">查询</button>
+                        </span>
+					</td>
+				</tr>
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <table class="table" width="1396" layoutH="108">
+        <thead>
+        <tr>
+            <th width="15%">序号</th>
+            <th width="20%">昵称</th>
+            <th width="15%">真实姓名</th>
+            <th width="25%">修改间</th>
+            <th width="20%">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach($grid in $!pageList)
+            <tr target="sid_user" rel="1" >
+                <td>$!grid.rowno</td>
+                <td>
+                 	#if("$!grid.nickName"=="")
+                    	暂无
+                    #else
+                		$!grid.nickName
+                	#end	
+                </td>
+                <td>
+                    #if("$!grid.mName"=="")
+                    	暂无
+                    #else
+                    	$!grid.mName
+                    #end
+                </td>
+                <td>
+                	#if("$!grid.updateTime"=="")
+                    	暂无
+                    #else
+                    	$!date.format($!grid.updateTime)
+                    #end
+                </td>
+                <td>
+                    <a title="编辑" target="dialog" href="$env.getWebURL('/sys/operationalData/detail.htm?nick=')$!grid.nickName&mId=$!grid.id" mask="true" rel="createBack" height="240" width="420">编辑</a>
+                	&nbsp;&nbsp;&nbsp;&nbsp;
+                	<a title="删除" onclick="closeRule('$!grid.id')" mask="true">删除</a>
+                </td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!totalRows条</span>
+        </div>
+        <div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+    </div>
+</div>
+
+<script>
+
+	function func() {	
+	    var nickName = $.trim($("#nickName").val());
+	    var regNickName = /^[a-zA-Z0-9_\u4e00-\u9fa5]+$/;
+	
+	    $("#myform").submit();
+	}
+
+    function closeRule(mId) {
+        var mId = mId;
+        alertMsg.confirm("你确定删除此用户？", {
+            okCall: function () {
+                $.ajax({
+                    type: 'post',
+                    url: $("#APP_ROOT_PATH").val() + "/sys/operationalData/updateStatus.htm",
+                    data: {
+                    	mId: mId
+                    },
+                    success: function (data) {
+                        if (data.statusCode == "200") {
+                            alertMsg.correct("删除用户成功");
+                            navTab.reload("$env.getWebURL('/sys/operationalData/index.htm')");
+                        } else {
+                            if (data.message) {
+                                alertMsg.error(data.message);
+                            } else {
+                                alertMsg.error("操作失败");
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    }
+    
+</script>

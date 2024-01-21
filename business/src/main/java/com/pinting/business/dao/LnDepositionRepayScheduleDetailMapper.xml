@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinting.business.dao.LnDepositionRepayScheduleDetailMapper">
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.LnDepositionRepayScheduleDetail">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="plan_id" jdbcType="INTEGER" property="planId" />
+    <result column="subject_code" jdbcType="VARCHAR" property="subjectCode" />
+    <result column="plan_amount" jdbcType="DOUBLE" property="planAmount" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, plan_id, subject_code, plan_amount, create_time, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.pinting.business.model.LnDepositionRepayScheduleDetailExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ln_deposition_repay_schedule_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ln_deposition_repay_schedule_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ln_deposition_repay_schedule_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.LnDepositionRepayScheduleDetailExample">
+    delete from ln_deposition_repay_schedule_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.LnDepositionRepayScheduleDetail">
+    insert into ln_deposition_repay_schedule_detail (id, plan_id, subject_code, 
+      plan_amount, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{planId,jdbcType=INTEGER}, #{subjectCode,jdbcType=VARCHAR}, 
+      #{planAmount,jdbcType=DOUBLE}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.LnDepositionRepayScheduleDetail">
+    insert into ln_deposition_repay_schedule_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="planId != null">
+        plan_id,
+      </if>
+      <if test="subjectCode != null">
+        subject_code,
+      </if>
+      <if test="planAmount != null">
+        plan_amount,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="planId != null">
+        #{planId,jdbcType=INTEGER},
+      </if>
+      <if test="subjectCode != null">
+        #{subjectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="planAmount != null">
+        #{planAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.LnDepositionRepayScheduleDetailExample" resultType="java.lang.Long">
+    select count(*) from ln_deposition_repay_schedule_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ln_deposition_repay_schedule_detail
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.planId != null">
+        plan_id = #{record.planId,jdbcType=INTEGER},
+      </if>
+      <if test="record.subjectCode != null">
+        subject_code = #{record.subjectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.planAmount != null">
+        plan_amount = #{record.planAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ln_deposition_repay_schedule_detail
+    set id = #{record.id,jdbcType=INTEGER},
+      plan_id = #{record.planId,jdbcType=INTEGER},
+      subject_code = #{record.subjectCode,jdbcType=VARCHAR},
+      plan_amount = #{record.planAmount,jdbcType=DOUBLE},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.LnDepositionRepayScheduleDetail">
+    update ln_deposition_repay_schedule_detail
+    <set>
+      <if test="planId != null">
+        plan_id = #{planId,jdbcType=INTEGER},
+      </if>
+      <if test="subjectCode != null">
+        subject_code = #{subjectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="planAmount != null">
+        plan_amount = #{planAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.LnDepositionRepayScheduleDetail">
+    update ln_deposition_repay_schedule_detail
+    set plan_id = #{planId,jdbcType=INTEGER},
+      subject_code = #{subjectCode,jdbcType=VARCHAR},
+      plan_amount = #{planAmount,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+   <!-- 统计存管产品 ，借款服务费 -->
+  <select id="countLoanServiceFee" parameterType="map" resultType="java.lang.Integer">
+  	SELECT
+        IFNULL(COUNT(distinct(a.id)), 0)
+       	FROM
+          (
+          SELECT a.id, a.loan_id, a.ln_user_id, a.return_flag FROM ln_deposition_repay_schedule a
+          WHERE 1=1
+          <if test="startTime != null and startTime != ''">
+              <![CDATA[
+                      AND DATE(a.finish_time) >= #{startTime}
+                  ]]>
+          </if>
+          <if test="endTime != null and endTime != ''">
+              <![CDATA[
+                      AND DATE(a.finish_time) <= #{endTime}
+                  ]]>
+          </if>
+          ) a
+        LEFT JOIN ln_deposition_repay_schedule_detail b ON a.id = b.plan_id AND b.subject_code IN ('LOAN_SERVICE_FEE', 'PRINCIPAL', 'INTEREST')
+		LEFT JOIN ln_user c on a.ln_user_id = c.id
+        LEFT JOIN ln_loan d on a.loan_id = d.id
+	  <where>	
+	  	  a.return_flag in ('REPAY_SUCC', 'RETURN_SUCC', 'RETURN_PROCESS', 'RETURN_FAIL')
+	      <if test="userName != null and userName != ''">
+	        AND c.user_name like concat(concat('%', #{userName}),'%')
+	      </if>
+	      <if test="mobile != null and mobile != ''">
+	        AND c.mobile like concat(concat('%', #{mobile}),'%')
+	      </if>
+	      <if test="partnerCode != null and partnerCode != ''">
+	        AND c.partner_code = #{partnerCode}
+	      </if>
+          <if test="partnerBusinessFlag != null and partnerBusinessFlag != '' and partnerBusinessFlag !='777' and partnerBusinessFlag !='888' and partnerBusinessFlag !='999' ">
+              AND d.partner_business_flag = #{partnerBusinessFlag}
+          </if>
+          <if test="partnerBusinessFlag != null and partnerBusinessFlag != '' and partnerBusinessFlag =='777' ">
+              AND d.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+          </if>
+          <if test="partnerBusinessFlag != null and partnerBusinessFlag != '' and partnerBusinessFlag =='888' ">
+              AND d.partner_business_flag IN ('现金循环贷', 'REPAY_ANY_TIME')
+          </if>
+      </where>
+  </select>
+    
+  <select id="sumLoanServiceFee" resultMap="LnLoanServiceFeeMap">
+  	SELECT IFNULL(sum(LOAN_SERVICE_FEE), 0) AS loanServiceFeeTotal, IFNULL(sum(INTEREST), 0) AS loanInterestTotal FROM
+	(SELECT a.finish_time, a.note, c.partner_code, c.user_name, c.mobile,
+      	concat("161", a.partner_repay_id, c.id) billNo,
+      	case c.partner_code when 'YUN_DAI_SELF' then 1.4 when '7_DAI_SELF' then 1.6 else 1.7 end ln_customer_code,
+		MAX(CASE WHEN b.subject_code = 'LOAN_SERVICE_FEE' THEN b.plan_amount ELSE 0 END) as LOAN_SERVICE_FEE,
+		MAX(CASE WHEN b.subject_code = 'PRINCIPAL' THEN b.plan_amount ELSE 0 END) as PRINCIPAL,
+		MAX(CASE WHEN b.subject_code = 'INTEREST' THEN b.plan_amount ELSE 0 END) as INTEREST
+		FROM
+          (
+          SELECT a.id, a.loan_id, a.ln_user_id, a.return_flag, a.finish_time, a.note, a.partner_repay_id
+          FROM ln_deposition_repay_schedule a
+          WHERE 1=1
+          <if test="startTime != null and startTime != ''">
+              <![CDATA[
+                      AND DATE(a.finish_time) >= #{startTime}
+                  ]]>
+          </if>
+          <if test="endTime != null and endTime != ''">
+              <![CDATA[
+                      AND DATE(a.finish_time) <= #{endTime}
+                  ]]>
+          </if>
+          ) a
+        LEFT JOIN ln_deposition_repay_schedule_detail b ON a.id = b.plan_id AND b.subject_code IN ('LOAN_SERVICE_FEE', 'PRINCIPAL', 'INTEREST')
+		LEFT JOIN ln_user c on a.ln_user_id=c.id
+        LEFT JOIN ln_loan d on a.loan_id = d.id
+      <where>
+      	  a.return_flag in ('REPAY_SUCC', 'RETURN_SUCC', 'RETURN_PROCESS', 'RETURN_FAIL')
+	      <if test="userName != null and userName != ''">
+	        AND c.user_name like concat(concat('%', #{userName}),'%')
+	      </if>
+	      <if test="mobile != null and mobile != ''">
+	        AND c.mobile like concat(concat('%', #{mobile}),'%')
+	      </if>
+	      <if test="partnerCode != null and partnerCode != ''">
+	        AND c.partner_code = #{partnerCode}
+	      </if>
+          <if test="partnerBusinessFlag != null and partnerBusinessFlag != '' and partnerBusinessFlag !='777' and partnerBusinessFlag !='888' and partnerBusinessFlag !='999' ">
+              AND d.partner_business_flag = #{partnerBusinessFlag}
+          </if>
+          <if test="partnerBusinessFlag != null and partnerBusinessFlag != '' and partnerBusinessFlag =='777' ">
+              AND d.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+          </if>
+          <if test="partnerBusinessFlag != null and partnerBusinessFlag != '' and partnerBusinessFlag =='888' ">
+              AND d.partner_business_flag IN ('现金循环贷', 'REPAY_ANY_TIME')
+          </if>
+	  </where>    
+	  GROUP BY b.plan_id) t
+  </select>
+
+  <select id="selectLoanServiceFeeList" resultMap="LnLoanServiceFeeMap">
+    SELECT
+    (@rowNO := @rowNo + 1) rowno,
+    t.*
+    FROM
+    (SELECT @rowNO := #{start}) aa,
+    (
+        SELECT a.finish_time, a.note, c.user_name, c.mobile,
+      	concat("161", a.partner_repay_id, a.id) billNo,
+      	case c.partner_code when 'YUN_DAI_SELF' then '云贷存管' when '7_DAI_SELF' then '7贷存管' end partner_code,
+      	case c.partner_code when 'YUN_DAI_SELF' then 1.4 when '7_DAI_SELF' then 1.6 else 1.7 end ln_customer_code,
+		MAX(CASE WHEN b.subject_code = 'LOAN_SERVICE_FEE' THEN b.plan_amount ELSE 0 END) as LOAN_SERVICE_FEE,
+		MAX(CASE WHEN b.subject_code = 'PRINCIPAL' THEN b.plan_amount ELSE 0 END) as PRINCIPAL,
+		MAX(CASE WHEN b.subject_code = 'INTEREST' THEN b.plan_amount ELSE 0 END) as INTEREST,
+        d.partner_business_flag
+      FROM
+      (
+          SELECT a.id, a.loan_id, a.ln_user_id, a.return_flag, a.finish_time, a.note, a.partner_repay_id
+          FROM ln_deposition_repay_schedule a
+          WHERE 1=1
+          <if test="startTime != null and startTime != ''">
+              <![CDATA[
+                      AND DATE(a.finish_time) >= #{startTime}
+                  ]]>
+          </if>
+          <if test="endTime != null and endTime != ''">
+              <![CDATA[
+                      AND DATE(a.finish_time) <= #{endTime}
+                  ]]>
+          </if>
+      ) a
+        LEFT JOIN ln_deposition_repay_schedule_detail b ON a.id = b.plan_id AND b.subject_code IN ('LOAN_SERVICE_FEE', 'PRINCIPAL', 'INTEREST')
+		LEFT JOIN ln_user c on a.ln_user_id=c.id
+        LEFT JOIN ln_loan d on a.loan_id = d.id
+      <where>
+      	  a.return_flag in ('REPAY_SUCC', 'RETURN_SUCC', 'RETURN_PROCESS', 'RETURN_FAIL')	
+	      <if test="userName != null and userName != ''">
+	        AND c.user_name like concat(concat('%', #{userName}),'%')
+	      </if>
+	      <if test="mobile != null and mobile != ''">
+	        AND c.mobile like concat(concat('%', #{mobile}),'%')
+	      </if>
+	      <if test="partnerCode != null and partnerCode != ''">
+	        AND c.partner_code = #{partnerCode}
+	      </if>
+          <if test="partnerBusinessFlag != null and partnerBusinessFlag != '' and partnerBusinessFlag !='777' and partnerBusinessFlag !='888' and partnerBusinessFlag !='999' ">
+              AND d.partner_business_flag = #{partnerBusinessFlag}
+          </if>
+          <if test="partnerBusinessFlag != null and partnerBusinessFlag != '' and partnerBusinessFlag =='777' ">
+              AND d.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT', 'FIXED_PRINCIPAL_INTEREST')
+          </if>
+          <if test="partnerBusinessFlag != null and partnerBusinessFlag != '' and partnerBusinessFlag =='888' ">
+              AND d.partner_business_flag IN ('现金循环贷', 'REPAY_ANY_TIME')
+          </if>
+	  </where>    
+	  GROUP BY b.plan_id
+      ORDER BY a.finish_time DESC, a.id DESC
+      LIMIT #{start}, #{numPerPage}
+    ) t
+  </select>
+  
+  <resultMap id="LnLoanServiceFeeMap" type="com.pinting.business.model.vo.LnLoanServiceFeeVO">
+      <result column="rowno" property="serialNo" jdbcType="INTEGER"/>
+      <result column="bill_no" property="billNo" jdbcType="VARCHAR"/>
+      <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+      <result column="ln_customer_code" property="lnCustomerCode" jdbcType="VARCHAR"/>
+      <result column="partner_code" property="partnerCode" jdbcType="VARCHAR"/>
+      <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+      <result column="principal" property="principal" jdbcType="DOUBLE"/>
+      <result column="interest" property="interest" jdbcType="DOUBLE"/>
+      <result column="loan_service_fee" property="loanServiceFee" jdbcType="DOUBLE"/>
+      <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP"/>
+      <result column="note" property="note" jdbcType="VARCHAR"/>
+      <result column="loanServiceFeeTotal" property="loanServiceFeeTotal" jdbcType="DOUBLE"/>
+      <result column="loanInterestTotal" property="loanInterestTotal" jdbcType="DOUBLE"/>
+      <result column="partner_business_flag" property="partnerBusinessFlag" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+</mapper>

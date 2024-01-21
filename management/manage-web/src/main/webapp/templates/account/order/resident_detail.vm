@@ -1,0 +1,78 @@
+<div class="pageContent">
+    #Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+    <form id="residentOrderForm" method="post" action="$env.getWebURL('/account/order/residentOrderSave.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, reloadPage)">
+        <div class="pageFormContent nowrap" layoutH="97">
+            <dl>
+                <dt >
+                    订单号：
+                </dt>
+                <dd >
+                    <input type="text" id="order_no" name="orderNo" maxlength="64" value="" style="width:250px; height:16px" />
+                </dd>
+            </dl>
+            <dl>
+                <dt >
+                    订单状态：
+                </dt>
+                <td>
+                    <select name="orderStatus" id ="status" class="valid">
+                        <option value="5" #if("$!sTransType"=="5") selected  #end>处理中</option>
+                        <option value="6" #if("$!sTransType"=="6") selected  #end>成功</option>
+                        <option value="7" #if("$!sTransType"=="7") selected  #end>失败</option>
+                    </select>
+                </td>
+            </dl>
+
+        </div>
+        <div class="formBar">
+            <ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_residentOrderForm()">保存</button></div></div></li>
+                <li>
+                    <div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+<script>
+    function submit_residentOrderForm(){
+        var orderNo = $.trim($("#order_no").val());
+        var status = $.trim($("#status").val());
+        var regOrderNo = /^[a-zA-Z0-9\u4E00-\u9FA5]+$/;
+        if((orderNo == null || orderNo == "")){
+            alertMsg.warn("订单号不能为空，请输入对应的订单号！");
+            return false;
+        }
+        if(!regOrderNo.test(orderNo)) {
+            alertMsg.warn("订单号里面不能含有特殊字符！");
+            return false;
+        }
+        if(status == '6'){
+            alertMsg.confirm("亲，你确认要添加一个成功订单吗？",{
+                okCall: function(){
+                    $("#residentOrderForm").submit();
+                }
+            });
+        }else if(status == '7'){
+            alertMsg.confirm("亲，你确认要添加一个失败订单吗？",{
+                okCall: function(){
+                    $("#residentOrderForm").submit();
+                }
+            });
+        }else{
+            $("#residentOrderForm").submit();
+        }
+    }
+
+    function reloadPage(json) {
+        if (json.statusCode == "301") {
+            alertMsg.warn('订单不存在！');
+        }else if (json.statusCode == "200") {
+            alertMsg.correct('订单添加成功，信息已存入redis！');
+            $.pdialog.closeCurrent();
+            navTab.reload("$env.getWebURL('/account/order/residentOrder.htm')");
+        } else {
+            alertMsg.error('操作失败!');
+        }
+    }
+</script>

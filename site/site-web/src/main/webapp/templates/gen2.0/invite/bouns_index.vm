@@ -1,0 +1,41 @@
+<input type="hidden" id="indexTotalCount" value="$!totalCount" />
+<div class="content_wp">
+	<div class="one_h3"><span>奖励金：</span><span class="one_cor">$!money.format($!bonus)元</span></div>
+#if($!haveSpecial == 'false')
+	#if($!bonus > 0 )
+		<a href="javascript:showDialog();" class="one_btn">转出到银行卡</a>
+	#else
+		<a class="one_btn one_gray">转出到银行卡</a>
+	#end
+	</div>
+#else
+	</div>
+##	<h4 class="one_h4">您有一笔 <span class="one_cor"> $!specialAmout元</span>的奖励金正在提现处理中，请耐心等待</h4>
+#end
+<div class="table">
+	<ul class="one_title">
+		<li class="ble_item ble_gray">时间</li><li class="ble_item ble_gray">金额</li><li class="ble_item ble_gray bor_none">摘要</li>
+	</ul>
+	#if($!bonusList)
+		<ul class="one_ul repeat">
+			#foreach($!grid in $!bonusList)
+				#if($!grid.bonusType == 'ACTIVITY' && (!$!grid.note || $!grid.note == ''))
+				<li class="ble_item">$!date.formatDateTime($!grid.earningsDate,'yyyy-MM-dd')</li><li class="ble_item one_cor">＋$!money.format($!grid.amount)</li><li class="ble_item bor_none">活动奖励</li>
+				#elseif($!grid.bonusType == 'ACTIVITY' && $!grid.note && $!grid.note != '')
+				<li class="ble_item">$!date.formatDateTime($!grid.earningsDate,'yyyy-MM-dd')</li><li class="ble_item one_cor">＋$!money.format($!grid.amount)</li><li class="ble_item bor_none">$!grid.note</li>
+				#elseif($!grid.bonusType == 'BONUS_WITHDRAW')
+				<li class="ble_item">$!date.formatDateTime($!grid.earningsDate,'yyyy-MM-dd')</li><li class="ble_item one_out">$!money.format($!grid.amount)</li><li class="ble_item bor_none">提现到银行卡</li>
+				#elseif($!grid.bonusType == 'DEP_FILL_INTEREST')
+				<li class="ble_item">$!date.formatDateTime($!grid.earningsDate,'yyyy-MM-dd')</li><li class="ble_item one_out">$!money.format($!grid.amount)</li><li class="ble_item bor_none">奖励金返还</li>
+				#elseif($!grid.amount < 0)
+                    <li class="ble_item">$!date.formatDateTime($!grid.earningsDate,'yyyy-MM-dd')</li><li class="ble_item one_out">$!money.format($!grid.amount)</li><li class="ble_item bor_none">获得奖励金</li>
+				#else
+                    <li class="ble_item">$!date.formatDateTime($!grid.earningsDate,'yyyy-MM-dd')</li><li class="ble_item one_cor">＋$!money.format($!grid.amount)</li><li class="ble_item bor_none">推荐奖励</li>
+				#end
+			#end
+		</ul>
+	#else
+		<div class="no_content">暂无记录</div>
+	#end
+</div>
+#LoadGenJS("/resources/gen2.0/scripts/assets/bouns_index")		

@@ -1,0 +1,72 @@
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	<form id="financeForm" method="post" action="$env.getWebURL('/bsTag/save.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		#Hidden("id", "$!bsTag.id")
+		<div class="pageFormContent nowrap" layoutH="97">
+			<dl>
+				<dt >
+					标签内容：
+                </dt>
+				<dd >
+					<input type="text" id="content_id" name="content" maxlength="15" value="$!bsTag.content" style="width:250px; height:16px" />
+                </dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="submit_financeForm()">保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	function submit_financeForm(){
+		var content = $.trim($("#content_id").val());
+		var regContent = /^[a-zA-Z0-9\u4E00-\u9FA5]+$/;
+		if((content == null || content == "")){
+		    alertMsg.warn("标签内容不能为空，请输入对应的信息！");
+        	return false;
+		}
+		if(!regContent.test(content)) {
+			alertMsg.warn("标签名称，不能含有特殊字符！");
+        	return false;
+    	}
+		//修改
+		if($("#id").val() != "") {
+			$("#financeForm").submit();
+		}
+		//新增
+		else {
+			jQuery.ajax({
+    			type : 'post',
+    			url : $("#APP_ROOT_PATH").val()+"/bsTag/count.htm",
+    			dataType: 'json',
+    			success : function(json) {
+    				var count = json.count;
+    				if(count < 50) {
+    					$("#financeForm").submit();
+    				}
+    				else {
+    					alertMsg.warn("标签最多添加50条");
+    				}
+    			}
+        	});
+		}
+	}
+
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "301") {
+			alertMsg.warn('标签名称已存在!');
+		} else if (json.statusCode == "200") {
+			alertMsg.correct('操作成功!');
+			$.pdialog.closeCurrent();
+			navTab.reload("$env.getWebURL('/bsTag/index.htm')");
+		} else {
+			alertMsg.error('操作失败!');
+		}
+	}
+	
+</script>

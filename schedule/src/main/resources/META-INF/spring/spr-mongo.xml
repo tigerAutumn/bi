@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/data/mongo
+        http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+		
+	<!-- 
+		WriteConcern.NONE:没有异常抛出  
+	    WriteConcern.NORMAL:仅抛出网络错误异常，没有服务器错误异常  
+	    WriteConcern.SAFE:抛出网络错误异常、服务器错误异常；并等待服务器完成写操作。  
+	    WriteConcern.MAJORITY: 抛出网络错误异常、服务器错误异常；并等待一个主服务器完成写操作。  
+	    WriteConcern.FSYNC_SAFE: 抛出网络错误异常、服务器错误异常；写操作等待服务器将数据刷新到磁盘。  
+	    WriteConcern.JOURNAL_SAFE:抛出网络错误异常、服务器错误异常；写操作等待服务器提交到磁盘的日志文件。  
+	    WriteConcern.REPLICAS_SAFE:抛出网络错误异常、服务器错误异常；等待至少2台服务器完成写操作。
+	    
+	   	connections-per-host 每个host允许链接的最大链接数,这些链接空闲时会放入池中,如果链接被耗尽，任何请求链接的操作会被阻塞等待链接可用,推荐配置10
+	   	threads-allowed-to-block-for-connection-multiplier 当链接空闲时,空闲线程池中最大链接数
+	    ###此参数跟connectionsPerHost的乘机为一个线程变为可用的最大阻塞数，超过此乘机数之后的所有线程将
+	    ###及时获取一个异常.eg.connectionsPerHost=10 and threadsAllowedToBlockForConnectionMultiplier=5,最多50个线程等级一个链接，推荐配置为5
+	   	max-wait-time 一个线程等待链接可用的最大等待毫秒数，0表示不等待，负数表示等待时间不确定，推荐配置120000 
+	   	connect-timeout 链接超时的毫秒数,0表示不超时,此参数只用在新建一个新链接时,推荐配置10,000.
+	    socket-timeout 此参数表示socket I/O读写超时时间,推荐为不超时,即 0 Socket.setSoTimeout(int)
+	    socket-keep-alive 该标志用于控制socket保持活动的功能，通过防火墙保持连接活着 
+	    	#true:假如链接不能建立时,
+	    	驱动将重试相同的server,有最大的重试次数,默认为15次,这样可以避免一些server因为一些阻塞操作零时down而驱动抛出异常,
+	    	这个对平滑过度到一个新的master,也是很有用的,注意:当集群为复制集时,驱动将在这段时间里,尝试链接到旧的master上,
+	    	而不会马上链接到新master上
+	    	#false 当在进行socket读写时,不会阻止异常抛出,驱动已经有自动重建破坏链接和重试读操作. 推荐配置false
+	    auto-connect-retry 
+	   		 重新打开链接到相同server的最大毫秒数,推荐配置为0,如果 autoConnectRetry=true,表示时间为15s;
+			#com.jd.mongodbclient2.mongo.JDClientMongo.maxAutoConnectRetryTime=false;
+			#表示当没有手动关闭游标时,是否有一个自动释放游标对象的方法,如果你总是很小心的关闭游标,则可以将其设为false 推荐配置true;
+			#com.jd.mongodbclient2.mongo.JDClientMongo.cursorFinalizerEnabled=true;
+		#安全模式 
+		#slave-ok为true表示读写分离
+	 -->
+	<!-- 定义mongo对象，对应的是mongodb官方jar包中的Mongo，replica-set设置集群副本的ip地址和端口
+			单机使用host="${mongo.host}" port="${mongo.port}"  -->
+	
+	<mongo:mongo id="mongo" replica-set="${mongo.hostport}" write-concern="SAFE">
+		<mongo:options	
+			connections-per-host="${mongo.connectionsPerHost}"
+			threads-allowed-to-block-for-connection-multiplier="${mongo.threadsAllowedToBlockForConnectionMultiplier}"
+			connect-timeout="${mongo.connectTimeout}"
+			max-wait-time="${mongo.maxWaitTime}"
+			auto-connect-retry="${mongo.autoConnectRetry}"
+			socket-keep-alive="${mongo.socketKeepAlive}"
+			socket-timeout="${mongo.socketTimeout}"
+			slave-ok="${mongo.slaveOk}"
+			write-number="1" 
+			write-timeout="0"
+			write-fsync="true"
+			/>
+	</mongo:mongo>
+	<mongo:db-factory id="mongoDbFactory" 
+		username="${mongo.username}" password="${mongo.password}" dbname="${mongo.dbname}" mongo-ref="mongo"/>
+	<!-- 配置编程式事务支持 -->
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+    </bean>
+	<!-- 用户验证 -->
+	<!-- <bean id="mgFactory" class="org.springframework.data.authentication.UserCredentials">
+		<constructor-arg name="username" value="${mongo.username}" />  
+        <constructor-arg name="password" value="${mongo.password}" />  
+	</bean> -->
+	<!-- 配置编程式事务支持 -->
+	<!-- <bean id ="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+       	<constructor-arg name="mongo" ref="mongo"/>
+       	<constructor-arg name="databaseName" value="${mongo.dbname}"/>
+     	<constructor-arg ref = "mgFactory"/>
+	</bean> -->
+</beans>

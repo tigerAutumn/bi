@@ -1,0 +1,36 @@
+#Html("begin")
+#Head("begin","币港湾港湾资讯,币港湾官网","")
+#set($strTitle="$!{details.subject}【币港湾官网】")
+#Title("$!strTitle")
+#LoadJS("/resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("/resources/micro2.0/styles/platform/news.min")
+#WeChatShare()
+#Head("end")
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="qianbao" name="qianbao" value="$!qianbao" />
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+    ##header
+    <div class="header header_line">
+    	<a class="header_arrow" href="javascript:history.go(-1)"></a>
+    	#if("$!type" == "NEWS")
+    		<h1 class="heade_ft color_bg">媒体报道</h1>
+    	#elseif("$!type" == "COMPANY_DYNAMIC")
+    		<h1 class="heade_ft color_bg">公司动态</h1>
+    	#elseif("$!type" == "WFANS_ACTIVITY")
+    		<h1 class="heade_ft color_bg">湾粉活动</h1>
+    	#end
+    </div>
+    <div class="main main_content">
+    	<div class="small-wrap">
+    		<h1 class="news_title">$!details.subject</h1>
+    		<h6 class="news_time">$!date.formatYYYYMMDD($!details.publishTime)</h6>
+    		<div class="news_ft">
+    			$!details.content
+    		</div>
+    		<div style="clear: both;"></div>
+    	</div>
+    </div>
+</body>
+#Html("end")

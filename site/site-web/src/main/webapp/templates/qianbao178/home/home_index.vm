@@ -1,0 +1,312 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/swiper.min")
+#LoadCSS("resources/micro2.0/styles/home/index_qianbao.min")
+#LoadCSS("resources/micro2.0/styles/footer-qianbao.min")
+#WeChatShare()
+#Head("end")
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="page" name="page" value="$!page" />
+    <input type="hidden" id="totalCount" name="totalCount" value="$!totalCount" />
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag" />
+    ## 头部开始
+    ## banner开始
+    <div class="swiper-container swiper-container-horizontal">
+        <div class="swiper-wrapper">
+    		#foreach($banner in $!bannerList.bannerList)
+    			#if($string.isNotBlank($!banner.url))
+        			#if($string.startsWith($!banner.url,"http"))
+    					<div class="swiper-slide" style="background: url($!env.getWebURL($!banner.imgPath)) no-repeat center;">
+    						<a href="$!banner.url" style="display:block; width:100%; height:100%;" ></a>
+    					</div>
+        			#else
+    					<div class="swiper-slide" style="background: url($!env.getWebURL($!banner.imgPath)) no-repeat center;">
+    						<a href="$!env.getWebURL($!banner.url)" style="display:block; width:100%; height:100%;" ></a>
+    					</div>
+    				#end
+    			#else
+    				<div class="swiper-slide" style="background: url($!env.getWebURL($!banner.imgPath)) no-repeat center;">
+    				</div>
+    			#end
+    		#end
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+    ## banner结束
+    ## 公告 start
+	#if($!hasNews==true)
+		<div class="notice">
+			<div class="broadcast"></div>
+			<div class="swiper-container2 swiper-container-horizontal line">
+				<div class="swiper-wrapper line_li">
+					#foreach($!notice in $!news)
+						<div class="swiper-slide ani_li li" onclick="go_notice(this)" url="$!env.getWebURL('')/micro2.0/platform/notice_info/detail?id=$!notice.id&qianbao=qianbao">
+							<i class="ani_li_txt">$!notice.subject</i>
+							#if("$!notice.isRead" == "NO")
+								<div class="ani_li_sbox"><span class="ani_li_spot"></span></div>
+							#end
+						</div>
+					#end
+				</div>
+			</div>
+			<a class="notice_btn" href="$!env.getWebURL('')/micro2.0/platform/noticeInfo/index?qianbao=qianbao"><span class="close">更多</span></a>
+		</div>
+		<script>
+			function go_notice(obj) {
+				location.href = $(obj).attr('url');
+			}
+		</script>
+		##end
+		## 公告 end
+	#end
+
+    <div class="classify">
+    	<dl class="fy_dl fy_right_border" onclick="go_data_index('qianbao')">
+    		<dt class="dt_img icon2"></dt>
+    		<dd class="img_info">平台数据</dd>
+    	</dl>
+    	<dl class="fy_dl" onclick="go_safe('qianbao')">
+    		<dt class="dt_img icon1"></dt>
+    		<dd class="img_info">安全保障</dd>
+    	</dl>
+    </div>
+	## 头部结束
+
+    ## 所有产品开始
+    <div class="main" id="mainContent">
+    	#foreach($pro in $item)
+    		#if("$!pro.flag" != "finish")
+    			<section class="manage_main">
+    				<input type="hidden" name="id" class="id" value="$!pro.id"/>
+            		<input type="hidden" name="term" class="term" value="$!pro.term"/>
+            		<input type="hidden" name="rate" class="rate" value="$!pro.rate"/>
+            		<input type="hidden" name="name" class="name" value="$!pro.name"/>
+            		<input type="hidden" name="minInvestAmount" class="minInvestAmount" value="$!pro.minInvestAmount"/>
+            		<input type="hidden" name="userType" class="userType" value="$!userType"/>
+            		<div class="manage_title" onclick="selPro(this, 'qianbao')">
+    					$pro.name
+    						#if("$!pro.activityType" == "NEW_BUYER")
+								<span class="manage_txt"><i class="small_i">新手专享</i></span>
+							#elseif("$!pro.activityType" == "ACTIVITY")
+								<span class="manage_txt"><i class="small_i">限时活动</i></span>
+							#end
+							#if($!pro.remindTagContent)
+								<span class="manage_txt"><i class="small_i">$!pro.remindTagContent</i></span>
+							#else
+							#end
+    				</div>
+					<div class="manage_list" onclick="selPro(this, 'qianbao')">
+						#if($!pro.interestRatesTagContent)
+							<span class="numberTicket">$!pro.interestRatesTagContent</span>
+						#else
+						#end
+						<div class="number_num">
+							<div class="num">$!{pro.rate}</div>
+							<div class="num_pt">%</div>
+						</div>
+						<div class="number_info">预期年化收益</div>
+					</div>
+					<div class="manage_list" onclick="selPro(this, 'qianbao')">
+						<div class="manage_list_box">
+							#if($!pro.propertySymbol == "ZAN")
+								<div class="number_info1">委托意向</div>
+							#else
+								<div class="number_info1">产品期限</div>
+							#end
+							<div class="number_num1">
+								<div class="num1">$!pro.term</div>#if($!pro.propertySymbol == "ZAN")<div class="num1">个月内</div>#else<div class="num1">天</div>#end
+							</div>
+						</div>
+						<div class="manage_list_box1">
+							起投金额
+							#if($!pro.minInvestAmount <= 50000)
+								<div class="right_title small_color02">
+							#elseif($!pro.minInvestAmount <= 200000)
+								<div class="right_title small_color01">
+							#elseif($!pro.minInvestAmount <= 500000)
+            					<div class="right_title medium_color">
+            				#else
+            					<div class="right_title big_color">
+            				#end
+            					#if($!pro.minInvestAmount >= 10000)
+                        			#if($!pro.minInvestAmount %10000 >0 && $!pro.minInvestAmount %1000>0)
+                        				#set($minInvestAmount = $!pro.minInvestAmount/10000)
+                        				$!number.format("0.00",$minInvestAmount)万
+                        			#elseif($!pro.minInvestAmount %10000 >0 && $!pro.minInvestAmount %1000==0)
+                        				#set($minInvestAmount = $!pro.minInvestAmount/10000)
+                        				$!number.format("0.0",$minInvestAmount)万
+                        			#else
+                        				#set($minInvestAmount = $!pro.minInvestAmount/10000)
+                        				$!number.format("0",$minInvestAmount)万
+                        			#end
+                        		#else
+									$!string.replace($!money.format($!pro.minInvestAmount),".00","")元
+								#end
+    							</div>
+						</div>
+                	</div>
+        				#if("$!pro.flag" == "buy")
+        					<div class="manage_list manage_list_height" onclick="go_buy(this, 'qianbao')">
+        						#if("$!pro.activityType" == "NEW_BUYER")
+                                    <div class="number_btn">
+        								#if($!pro.maxSingleInvestAmount)
+                                            <div class="new_btn_ft">
+                                                <div class="new_ft1">立即加入</div>
+                                                ##<div class="new_ft2">
+													##限购$!{pro.maxSingleInvestAmount}万
+                                                ##</div>
+                                            </div>
+        								#else
+                                            <div class="new_btn_ft" style="top:25px;">
+                                                <div class="new_ft1">立即加入</div>
+                                            </div>
+        								#end
+                                    </div>
+        						#else
+                                    <div class="number_btn">立即加入</div>
+        						#end
+                            </div>
+        				#elseif("$!pro.flag" == "countdown")
+        					#if("$!pro.isSameDay" == "yes")
+            					<div class="manage_list manage_list_height" onclick="selPro(this, 'qianbao')">
+            						<div class="number_btn purchase_btn">
+                        				<div class="today">今日</div>
+                        				$!date.formatDateTime($!date.parseDateTime("$!pro.startTime"), "HH:mm")开始
+                        			</div>
+                                </div>
+        					#else
+                                #if($!date.isSameDay($!date.parseDateTime("$!pro.startTime"), $!tomorrow))
+                                    <div class="manage_list manage_list_height" onclick="selPro(this, 'qianbao')">
+                                        <div class="number_btn purchase_btn">
+                                            <div class="today">明日</div>
+											$!date.formatDateTime($!date.parseDateTime("$!pro.startTime"), "HH:mm")开始
+										</div>
+                                    </div>
+								#else
+                                    <div class="manage_list manage_list_height" onclick="selPro(this, 'qianbao')">
+                                        <div class="number_btn purchase_btn">
+                                            <div class="today">$!date.formatDateTime($!date.parseDateTime("$!pro.startTime"), "MM月dd日")</div>
+											$!date.formatDateTime($!date.parseDateTime("$!pro.startTime"), "HH:mm")开始
+                                        </div>
+                                    </div>
+								#end
+        					#end
+        				#end
+            	</section>
+    		#else
+    			<section class="manage_main end_color">
+    				<input type="hidden" name="id" class="id" value="$!pro.id"/>
+            		<input type="hidden" name="term" class="term" value="$!pro.term"/>
+            		<input type="hidden" name="rate" class="rate" value="$!pro.rate"/>
+            		<input type="hidden" name="name" class="name" value="$!pro.name"/>
+            		<input type="hidden" name="minInvestAmount" class="minInvestAmount" value="$!pro.minInvestAmount"/>
+            		<input type="hidden" name="userType" class="userType" value="$!userType"/>
+            		<div class="manage_title" onclick="selPro(this, 'qianbao')">
+    					$pro.name
+    						#if("$!pro.activityType" == "NEW_BUYER")
+									<span class="manage_txt"><i class="small_i">新手专享</i></span>
+			                #elseif("$!pro.activityType" == "ACTIVITY")
+									<span class="manage_txt"><i class="small_i">限时活动</i></span>
+							#end
+							#if($!pro.remindTagContent)
+								<span class="manage_txt"><i class="small_i">$!pro.remindTagContent</i></span>
+							#else
+							#end
+    				</div>
+					<div class="manage_list" onclick="selPro(this, 'qianbao')">
+						#if($!pro.interestRatesTagContent)
+							<span class="numberTicket">$!pro.interestRatesTagContent</span>
+						#else
+						#end
+						<div class="number_num">
+							<div class="num">$!{pro.rate}</div>
+							<div class="num_pt">%</div>
+						</div>
+						<div class="number_info" onclick="selPro(this, 'qianbao')">预期年化收益</div>
+					</div>
+					<div class="manage_list list_two" onclick="selPro(this, 'qianbao')">    
+						<div class="manage_list_box">
+							#if($!pro.propertySymbol == "ZAN")
+								<div class="number_info1">委托意向</div>
+            				#else
+								<div class="number_info1">产品期限</div>
+        					#end
+							<div class="number_num1">
+								<div class="num1">$!pro.term</div>
+								#if($!pro.propertySymbol == "ZAN")
+									<div class="num1">个月</div>
+            					#else
+                                    <div class="num1">天</div>
+								#end
+							</div>
+						</div>
+						<div class="manage_list_box1">
+    							起投金额
+    							#if($!pro.minInvestAmount <= 50000)
+    								<div class="right_title small_color02">
+    							#elseif($!pro.minInvestAmount <= 200000)
+    								<div class="right_title small_color01">
+            					#elseif($!pro.minInvestAmount <= 500000)
+            						<div class="right_title medium_color">
+            					#else
+            						<div class="right_title big_color">
+            					#end
+            						#if($!pro.minInvestAmount >= 10000)
+                        				#if($!pro.minInvestAmount %10000 >0 && $!pro.minInvestAmount %1000>0)
+                        					#set($minInvestAmount = $!pro.minInvestAmount/10000)
+                        					$!number.format("0.00",$minInvestAmount)万
+                        				#elseif($!pro.minInvestAmount %10000 >0 && $!pro.minInvestAmount %1000==0)
+                        					#set($minInvestAmount = $!pro.minInvestAmount/10000)
+                        					$!number.format("0.0",$minInvestAmount)万
+                        				#else
+                        					#set($minInvestAmount = $!pro.minInvestAmount/10000)
+                        					$!number.format("0",$minInvestAmount)万
+                        				#end
+                        			#else
+										$!string.replace($!money.format($!pro.minInvestAmount),".00","")元
+                        			#end						
+    								</div>
+						</div>
+                	</div>
+					<div class="manage_list manage_list_height" onclick="selPro(this, 'qianbao')">
+						<div class="number_btn_stop">已结束</div>
+					</div>
+            	</section>
+    		#end
+    	#end
+    	<div id="showmore"></div>
+    </div>
+	<div class="placehold"></div>
+    <script type="text/javascript">
+    	function qianbao(url) {
+    		var root = $("#APP_ROOT_PATH").val();
+			location.href = root + url + '?qianbao=qianbao' + '&agentViewFlag=' + $('#agentViewFlag').val();
+    	}
+    </script>
+    #if("$!userId"!="")
+    	#FooterQianBao("1")
+    #else
+    <div class="login_wap" style="display:block;">
+    	<div class="login_fixed">
+        	<input class="lg_btn zc_btn" type="button" name="" value="会员登录" url="$!env.getWebURL('/micro2.0/user/login/index')?qianbao=qianbao&agentViewFlag=$!agentViewFlag">
+        	<input class="lg_btn dl_btn" type="button" name="" value="免费注册" url="$!env.getWebURL('/micro2.0/user/register_first_new_index')?qianbao=qianbao&agentViewFlag=$!agentViewFlag">
+    	</div>
+    </div>
+    <script >
+    	$(".zc_btn").click(function(){
+    		location.href = $(this).attr('url');
+    	});
+    	$(".dl_btn").click(function(){
+    		location.href = $(this).attr('url');
+    	});
+    </script>
+#end
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/swiper.jquery.min")
+#LoadJS("resources/micro2.0/scripts/home/index")
+</body>
+#Html("end")

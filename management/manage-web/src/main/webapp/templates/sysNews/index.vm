@@ -1,0 +1,212 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" id="flag" value="$!flag" />
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+<div class="pageHeader">
+	#if($!flag == 'company_dynamic')
+		<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/sysNews/company_dynamic.htm')" onsubmit="return TabnavTabAjaxDone(this);">
+	#elseif($!flag == 'news')
+		<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/sysNews/news.htm')" onsubmit="return TabnavTabAjaxDone(this);">
+	#elseif($!flag == 'notice')
+		<form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/sysNews/notice.htm')" onsubmit="return TabnavTabAjaxDone(this);">
+	#end
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" value="$!flag" />
+	<div class="searchBar">
+		<table class="searchContent">
+				<tr>
+					<td>
+						标题：<input id="subject" maxlength="50"  type="text" name="subject" value="$!req.subject" />
+						#if("$!req.type"=="NOTICE" || "$!req.type"=="NEWS")
+						#else
+						类型：
+						<select name="type" > 
+							<option value="COMPANY_DYNAMIC_WFANS_ACTIVITY" #if("$!req.type"=="COMPANY_DYNAMIC_WFANS_ACTIVITY") selected #end>全部</option>
+							<option value="COMPANY_DYNAMIC" #if("$!req.type"=="COMPANY_DYNAMIC") selected  #end>公司动态</option>
+							<option value="WFANS_ACTIVITY" #if("$!req.type"=="WFANS_ACTIVITY") selected  #end>湾粉活动</option>
+        				</select>
+						#end
+						发布端口：
+						<select name="receiverType" > 
+							<option value="" #if("$!req.receiverType"=="") selected #end>全部</option>
+							<option value="BGW" #if("$!req.receiverType"=="BGW") selected #end>币港湾</option>
+        					<option value="BGW178" #if("$!req.receiverType"=="BGW178") selected  #end>钱报-币港湾</option>
+                            <option value="BGWKQ" #if("$!req.receiverType"=="BGWKQ") selected  #end>柯桥日报-币港湾</option>
+                            <option value="BGWHN" #if("$!req.receiverType"=="BGWHN") selected  #end>海宁日报-币港湾</option>
+                            <option value="BGWRUIAN" #if("$!req.receiverType"=="BGWRUIAN") selected  #end>瑞安日报-币港湾</option>
+                            <option value="BGWQD" #if("$!req.receiverType"=="BGWQD") selected  #end>七店-币港湾</option>
+                            <option value="BGWQHDJT" #if("$!req.receiverType"=="BGWQHDJT") selected  #end>秦皇岛交通广播-币港湾</option>
+                            <option value="BGWQHDXW" #if("$!req.receiverType"=="BGWQHDXW") selected  #end>秦皇岛新闻891-币港湾</option>
+                            <option value="BGWQHDTV" #if("$!req.receiverType"=="BGWQHDTV") selected  #end>秦皇岛电视台今日报道-币港湾</option>
+                            <option value="BGWQHDST" #if("$!req.receiverType"=="BGWQHDST") selected  #end>视听之友-币港湾</option>
+                            <option value="BGWQHDSJC" #if("$!req.receiverType"=="BGWQHDSJC") selected  #end>1038私家车广播-币港湾</option>
+        				</select>
+						状态：
+						<select name="status" > 
+							<option value="" #if("$!req.status"=="") selected #end>全部</option>
+							<option value="PUBLISHED" #if("$!req.status"=="PUBLISHED") selected #end>已发布</option>
+        					<option value="NOT_PUBLISH" #if("$!req.status"=="NOT_PUBLISH") selected  #end>未发布</option>
+							<option value="REMOVED" #if("$!req.status"=="REMOVED") selected  #end>已撤下</option>
+        				</select>
+						<span style="margin-left:20px;">
+							<button onclick="func()" type="button">查询</button>
+                        </span>
+						
+					</td>
+				</tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">	
+		<ul class="toolBar">
+		#if($!flag == 'company_dynamic')
+			<li><a title="新增公司动态"class="add" href="$env.getWebURL('/sysNews/detail/company_dynamic.htm')" target="navTab"><span>新增</span></a></li>
+    	#elseif($!flag == 'news')
+			<li><a title="新增新闻报道"class="add" href="$env.getWebURL('/sysNews/detail/news.htm')" target="navTab"><span>新增</span></a></li>
+    	#elseif($!flag == 'notice')
+			<li><a title="新增网站公告 "class="add" href="$env.getWebURL('/sysNews/detail/notice.htm')" target="navTab"><span>新增</span></a></li>
+    	#end
+			<li class="line">line</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="138">
+		<thead>
+			<tr>
+				<th width="20%">标题</th>
+				<th width="7%">类型</th>
+				<th width="10%">发布端口</th>
+				<th width="8%">状态</th>
+				<th width="12%">修改时间</th>
+				<th width="8%">操作人</th>
+				<th width="7%">是否推荐</th>
+				<th width="16%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $sysNewsList)
+			<tr target="sid_user" rel="1" >
+				<td title="$!grid.subject">$!grid.subject</td>
+                <td>#if($!grid.type  == 'NOTICE') 网站公告  #elseif($!grid.type == 'NEWS') 新闻报道#elseif($!grid.type == 'COMPANY_DYNAMIC') 公司动态 #elseif($!grid.type == 'WFANS_ACTIVITY') 湾粉活动  #else  #end</td>
+                <td>
+					$!grid.receiverType
+                </td>
+				##<td>#if($!grid.status == 'PUBLISHED') 已发布  #elseif($!grid.status == 'NOT_PUBLISH') 未发布   #elseif($!grid.status == 'REMOVED') 已撤下  #else $!grid.status #end    </td>
+				<td style="color: 
+					   #if("$!grid.status" == "PUBLISHED") green;
+					   #elseif("$!grid.status" == "REMOVED") red;
+					   #else 
+					   #end ">
+					   $!message.get("BS_SYS_NEWS_STAUTS_$!grid.status")</td>
+				<td>$!date.format($!grid.updateTime)</td>
+				<td>$!grid.mUserName</td>
+				<td>#if($!grid.priority == 1) 推荐#else 非推荐#end</td>
+				<td>
+					#if($!grid.status == 'PUBLISHED')
+						<a title="撤下" target="ajaxTodo" href="$env.getWebURL('/sysNews/publish.htm?id=')$!grid.id&pubilsh=REMOVED" mask="true" >撤下</a>&nbsp&nbsp&nbsp
+						<a title="编辑#if($!grid.type  == 'NOTICE')网站公告  #elseif($!grid.type == 'NEWS')新闻报道 #elseif($!grid.type == 'COMPANY_DYNAMIC')公司动态 #elseif($!grid.type == 'WFANS_ACTIVITY')湾粉活动  #else  #end" target="navTab" href="$env.getWebURL('/sysNews/news_detail.htm?id=')$!grid.id"  mask="true">编辑</a>&nbsp&nbsp&nbsp
+						<a title="查看#if($!grid.type  == 'NOTICE')网站公告  #elseif($!grid.type == 'NEWS')新闻报道 #elseif($!grid.type == 'COMPANY_DYNAMIC')公司动态 #elseif($!grid.type == 'WFANS_ACTIVITY')湾粉活动  #else  #end" target="navTab" href="$env.getWebURL('/sysNews/news_review.htm?id=')$!grid.id" mask="true">查看</a> &nbsp&nbsp&nbsp 
+						#if($!grid.priority == 1)
+							<span style="color: #abadb3;">推荐&nbsp&nbsp&nbsp</span>
+						#else
+							<a title="推荐" target="ajaxTodo" href="$env.getWebURL('/sysNews/priority.htm?id=')$!grid.id"  mask="true">推荐</a>&nbsp&nbsp&nbsp
+                        #end
+						<span style="color: #abadb3;">删除</span>
+					#else
+						<a title="发布" target="ajaxTodo" href="$env.getWebURL('/sysNews/publish.htm?id=')$!grid.id&pubilsh=PUBLISHED"  mask="true" >发布</a>&nbsp&nbsp&nbsp 
+						<a title="编辑#if($!grid.type  == 'NOTICE')网站公告  #elseif($!grid.type == 'NEWS')新闻报道 #elseif($!grid.type == 'COMPANY_DYNAMIC')公司动态 #elseif($!grid.type == 'WFANS_ACTIVITY')湾粉活动  #else  #end" target="navTab" href="$env.getWebURL('/sysNews/news_detail.htm?id=')$!grid.id"  mask="true">编辑</a>&nbsp&nbsp&nbsp 
+						<a title="查看#if($!grid.type  == 'NOTICE')网站公告  #elseif($!grid.type == 'NEWS')新闻报道 #elseif($!grid.type == 'COMPANY_DYNAMIC')公司动态 #elseif($!grid.type == 'WFANS_ACTIVITY')湾粉活动  #else  #end" target="navTab" href="$env.getWebURL('/sysNews/news_review.htm?id=')$!grid.id" mask="true">查看</a> &nbsp&nbsp&nbsp 
+						#if($!grid.priority == 1)
+							<span style="color: #abadb3;">推荐&nbsp&nbsp&nbsp</span>
+						#else
+							<a title="推荐" target="ajaxTodo" href="$env.getWebURL('/sysNews/priority.htm?id=')$!grid.id"  mask="true">推荐</a>&nbsp&nbsp&nbsp
+                        #end
+						<a title="删除" target="ajaxTodo" mask="true" href="$env.getWebURL('/sysNews/delete.htm?id=')$!grid.id" >删除</a>
+					#end
+					
+                </td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+<script>
+
+function func(){
+	var url = $("#APP_ROOT_PATH").val() + "/sysNews/"+$("#flag").val()+".htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+function TabnavTabAjaxDone(json){
+      DWZ.ajaxDone(json);
+      if (json.statusCode == DWZ.statusCode.ok){
+        if (json.navTabId){ //把指定navTab页面标记为需要“重新载入”。注意navTabId不能是当前navTab页面的
+              navTab.reloadFlag(json.navTabId);
+        } else { //重新载入当前navTab页面
+              navTabPageBreak();
+        }
+        if ("closeCurrent" == json.callbackType) {
+              setTimeout(function(){navTab.closeCurrentTab();}, 100);
+        } else if ("forward" == json.callbackType) {
+              navTab.reload(json.forwardUrl);
+        }
+    }
+}
+
+function ajaxTodo(url, callback){
+	//console.log(url);
+	$.ajax({
+		url: url,
+		type: 'get',
+		success: function(data){
+			if(data.statusCode && data.statusCode == '200') {
+				if("$!flag" == 'company_dynamic') {
+					navTab.reload("$env.getWebURL('/sysNews/company_dynamic.htm')");
+				} else if("$!flag" == 'news') {
+					navTab.reload("$env.getWebURL('/sysNews/news.htm')");
+				} else if("$!flag" == 'notice') {
+					navTab.reload("$env.getWebURL('/sysNews/notice.htm')");
+				}
+			} else {
+				if(data.message) {
+    				alertMsg.error(data.message);
+    			} else {
+    				alertMsg.error('操作失败');
+    			}
+			}
+			navTab.reload('');
+		},
+		error: function(data){
+			if(data.message) {
+				alertMsg.error(data.message);
+			} else {
+				alertMsg.error('操作失败');
+			}
+		}
+	});
+	return false;
+}
+
+</script>

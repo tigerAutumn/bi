@@ -1,0 +1,205 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadJS("resources/micro2.0/scripts/extra_product/six")
+#LoadCSS("resources/micro2.0/styles/extra_product/default")
+#LoadCSS("resources/micro2.0/styles/extra_product/extra_index")
+#LoadJS("resources/micro2.0/scripts/extra_product/click_toggle")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#WeChatShare()
+#Head("end")
+
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<input type="hidden" name="e" id="e" value="$!request.getParameter('e')"/>
+<body class="bg">
+<div class="shark_title">
+	<a href="$!env.getWebURL('')">
+	<div class="hike_top">
+		<span class="top_index_ft">首页</span>
+	</div>
+	</a>
+	<img class="img_win" src="$!env.getWebURL('resources/micro2.0/images/hike_title.jpg')" alt="">
+	<span class="product_title">精选产品</span>
+</div>
+<div class="pack_info_wrap">
+#foreach($pro in $pros)
+ <div class="product">
+	<input type="hidden" name="id" class="id" value="$!pro.id"/>
+	<input type="hidden" name="term" class="term" value="$!pro.trem"/>
+	<input type="hidden" name="rate" class="rate" value="$!pro.rate"/>
+	<input type="hidden" name="name" class="name" value="$!pro.productName"/>
+	<input type="hidden" name="minInvestAmount" class="minInvestAmount" value="$!pro.minInvestAmount"/>
+	<input type="hidden" name="pla" class="pla" value="YES"/>
+	<input type="hidden" name="balance" class="balance" value=""/>
+	<div class="label"></div>
+	<a class="productBuyDetail" href="javascript:void(0)" onclick="">
+		<div class="main_product">
+			<div class="product_time">
+				$string.substringBefore($!pro.productName, "-")
+				
+			</div>
+			<div class="earnings_wrap">
+				<div class="earnings easr_one" style="font-size:4.5rem">
+					#if("$!pro.id"=="49")
+						8%+3%
+					#elseif("$!pro.id"=="50")
+						12%+1.2%
+					#end
+				</div>
+				<div class="ear_font">年化收益</div>
+			</div>
+			<div class="earnings_wrap fate">
+				<div class="earnings easr_two">
+					$!pro.trem 天
+				</div>
+				<div class="ear_font">固定投资期限</div>
+			</div>
+			<div class="dotted"></div>
+		</div>
+	</a>
+	<a class="productBuyBtn" href="javascript:void(0)" onclick="">
+		<div class="purchase">
+			<div class="pur_img1"></div>
+			<div class="purchase_bg" style="background:#cccccc"><span class="purchase_font" style="top:48px;">已结束</span></div>
+		</div>
+	</a>
+ </div>
+#end
+	<script >
+		$(function(){
+			var APP_ROOT_PATH = $("#APP_ROOT_PATH").val();
+    		var e = $("#e").val();
+			
+			$.post(APP_ROOT_PATH+'/micro2.0/extraProduct/balanceQuery',{'proId':49},
+				function(data){
+					if(parseFloat(data.productBalance.replace(",","")) <= 99){
+						$(".productBuyBtn").eq(0).attr("onclick", "over('new')").find(".purchase_bg").css("background","#cccccc").find(".purchase_font").html("已抢完啦");
+						$(".productBuyDetail").eq(0).attr("onclick", "over('new')");
+						$(".balance").eq(0).val(0);
+					}else{
+						$(".balance").eq(0).val(data.productBalance);
+					}
+			},'json');
+			$.post(APP_ROOT_PATH+'/micro2.0/extraProduct/balanceQuery',{'proId':50},
+				function(data){
+					if(parseFloat(data.productBalance.replace(",","")) <= 99){
+						$(".productBuyBtn").eq(1).attr("onclick", "over('addRate')").find(".purchase_bg").css("background","#cccccc").find(".purchase_font").html("已抢完啦");
+						$(".productBuyDetail").eq(1).attr("onclick", "over('addRate')");
+						$(".balance").eq(1).val(0);
+						if(e){
+                			drawAlertClose('活动小助手', "啊哦~来晚了哦，新手活动标已经被抢完了，下次下手要快一点~您还可投资为期30天-365天的币港湾安全收益产品，去看看吧", null, "去看看", APP_ROOT_PATH+"/micro2.0/regular/list");
+                			$("#e").val("");
+                		}
+					}else{
+						$(".balance").eq(1).val(data.productBalance);
+						if(e){
+                			drawAlertClose('活动小助手', "新手标是专为平台新人体验的活动，您已是本平台资深投资用户，有资格购买年化收益更高的加息标哦！加息标限额5000万，千万不可错过~", null, "知道了", null);
+                			$("#e").val("");
+                		}
+					}
+			},'json');
+		});
+		
+		function over(type){
+			var APP_ROOT_PATH = $("#APP_ROOT_PATH").val();
+			if(type=="new"){
+				if(parseFloat($(".balance").eq(1).val().replace(",","")) > 99){
+					drawAlertClose('活动小助手', "啊哦~来晚了哦，新手活动标已经被抢完了，现在还有年化13.2%的加息标，数量有限，千万不可错过~", null, "知道了", null);
+				
+				}else{
+					drawAlertClose('活动小助手', "啊哦~来晚了哦，新手活动标已经被抢完了，下次下手要快一点~您还可投资为期30天-365天的币港湾安全收益产品，去看看吧", null, "去看看", APP_ROOT_PATH+"/micro2.0/regular/list");
+				}
+			}else{
+				drawAlertClose('活动小助手', "啊哦~来晚了哦，加息活动标已经被抢完了，下次下手要快一点~您还可投资为期30天-365天的币港湾安全收益产品，去看看吧", null, "去看看", APP_ROOT_PATH+"/micro2.0/regular/list");
+			}
+		}
+		
+		function selPro(val) {
+        	var APP_ROOT_PATH = $("#APP_ROOT_PATH").val();
+			if(val == 49){
+				$.post(APP_ROOT_PATH+'/micro2.0/extraProduct/balanceQuery',{'proId':49},
+    				function(data){
+    					if(parseFloat(data.productBalance.replace(",","")) <= 99){
+    						$(".productBuyBtn").eq(0).attr("onclick", "over('new')").find(".purchase_bg").css("background","#cccccc").find(".purchase_font").html("已抢完啦");
+    						$(".productBuyDetail").eq(0).attr("onclick", "over('new')");
+    						$(".balance").eq(0).val(0);
+    					}else{
+    						$(".balance").eq(0).val(data.productBalance);
+    						location.href=APP_ROOT_PATH+"/micro2.0/extraProduct/buyForward?p=extra&pId="+val;
+    					}
+    			},'json');
+			}else if(val == 50){
+				$.post(APP_ROOT_PATH+'/micro2.0/extraProduct/balanceQuery',{'proId':50},
+    				function(data){
+    					if(parseFloat(data.productBalance.replace(",","")) <= 99){
+    						$(".productBuyBtn").eq(1).attr("onclick", "over('addRate')").find(".purchase_bg").css("background","#cccccc").find(".purchase_font").html("已抢完啦");
+    						$(".productBuyDetail").eq(1).attr("onclick", "over('addRate')");
+    						$(".balance").eq(1).val(0);
+    					}else{
+    						$(".balance").eq(1).val(data.productBalance);
+    						location.href=APP_ROOT_PATH+"/micro2.0/extraProduct/buyForward?p=extra&pId="+val;
+    					}
+    			},'json');
+			}
+        };
+		function gobuy(val) {
+			var APP_ROOT_PATH = $("#APP_ROOT_PATH").val();
+			if(val == 49){
+				$.post(APP_ROOT_PATH+'/micro2.0/extraProduct/balanceQuery',{'proId':49},
+    				function(data){
+    					if(parseFloat(data.productBalance.replace(",","")) <= 99){
+    						$(".productBuyBtn").eq(0).attr("onclick", "over('new')").find(".purchase_bg").css("background","#cccccc").find(".purchase_font").html("已抢完啦");
+    						$(".productBuyDetail").eq(0).attr("onclick", "over('new')");
+    						$(".balance").eq(0).val(0);
+    					}else{
+    						$(".balance").eq(0).val(data.productBalance);
+    						location.href=APP_ROOT_PATH+"/micro2.0/extraProduct/buyForward?t=buy&p=extra&pId="+val;
+    					}
+    			},'json');
+			}else if(val == 50){
+				$.post(APP_ROOT_PATH+'/micro2.0/extraProduct/balanceQuery',{'proId':50},
+    				function(data){
+    					if(parseFloat(data.productBalance.replace(",","")) <= 99){
+    						$(".productBuyBtn").eq(1).attr("onclick", "over('addRate')").find(".purchase_bg").css("background","#cccccc").find(".purchase_font").html("已抢完啦");
+    						$(".productBuyDetail").eq(1).attr("onclick", "over('addRate')");
+    						$(".balance").eq(1).val(0);
+    					}else{
+    						$(".balance").eq(1).val(data.productBalance);
+    						location.href=APP_ROOT_PATH+"/micro2.0/extraProduct/buyForward?t=buy&p=extra&pId="+val;
+    					}
+    			},'json');
+			}
+		}
+	</script>
+<a href="$!env.getWebURL('micro2.0/shake/guide?from=groupmessage&isappinstalled=0')">
+<div class="banner">
+	<img class="banner_vert" src="$!env.getWebURL('resources/micro2.0/images/hike_vert.jpg')" alt="">
+</div>
+</a>
+<div class="activity_title">
+	<span class="activity_click">活动规则</span>
+	<i class="arrow_down"></i>
+</div>
+<div class="activity_main" style="font-size:24px;">
+	<div class="veteran">活动时间：2016年3月21日至3月31日</div>
+	<div class="veteran">一、“想要发”新手专享：</div>
+	<ul class="main_ul">
+		<li class="main_li">活动期间购买“想要发”新手专享产品，立享3%加息，总量5000万元，先抢先得。</li>
+        <li class="main_li"></li>
+		<li class="main_li"><span class="">1.</span>本活动仅面向新手用户，每个注册未投资用户自动拥有1万元初始购买额度；</li>
+		<li class="main_li"><span class="">2.</span>进入微信币港湾公众号，分享活动页面给好友可提高5000元购买额度，通过此方法最高可提高2万元购买额度；</li>
+		<li class="main_li"><span class="">3.</span>活动期间每邀请一人注册币港湾可提高2万元购买额度。</li>
+	</ul>
+	<div class="veteran">二、“在一起”感恩活动：</div>
+	<ul class="main_ul">
+		<li class="main_li">活动期间购买“在一起”感恩活动产品，立享1.2%加息，总量5000万元，先抢先得。</li>
+		<li class="main_li"></li>
+		<li class="main_li"><span class="">1.</span>本活动面向币港湾全部用户；</li>
+		<li class="main_li"><span class="">2.</span>本活动对单个用户无购买额度限制。</li>
+	</ul>
+	<div class="acti_bottom">本活动最终解释权归币港湾所有</div>
+</div>
+
+
+</body>
+#Html("end")

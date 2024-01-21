@@ -1,0 +1,22 @@
+# 微信小程序我的奖品
+## 接口地址
+> weixin/activity/getAwardList
+## 代码逻辑
+### 1.cookie 获取userId
+### 2.调用ActivityFacade.weChatAwardListInfo 查询我的奖品列表，查询时排除awardId = 125的奖品(代表抽奖机会)
+
+```
+    select note, user_draw_time
+      from bs_activity_lucky_draw a
+      where a.activity_id = 37 and a.user_id = '用户id' and a.award_id != 125
+```
+### 3.当接口调用成功时，返回result，result 中数据结构为：
+```
+    {"awardListResult": 
+        {"awardList":
+            [{"award": "奖品",
+              "date": "获奖日期", //2018.05.29
+              "time": "获奖时间" //13:26:00
+                }]
+    }
+```

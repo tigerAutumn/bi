@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsBonusGrantPlanMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsBonusGrantPlan" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="be_recommend_user_id" property="beRecommendUserId" jdbcType="INTEGER" />
+    <result column="sub_account_id" property="subAccountId" jdbcType="INTEGER" />
+    <result column="serial_no" property="serialNo" jdbcType="INTEGER" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="grant_type" property="grantType" jdbcType="VARCHAR" />
+    <result column="grant_date" property="grantDate" jdbcType="DATE" />
+    <result column="finish_date" property="finishDate" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="op_user_id" property="opUserId" jdbcType="INTEGER" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, be_recommend_user_id, sub_account_id, serial_no, amount, grant_type, 
+    grant_date, finish_date, status, op_user_id, note, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsBonusGrantPlanExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_bonus_grant_plan
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_bonus_grant_plan
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_bonus_grant_plan
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsBonusGrantPlanExample" >
+    delete from bs_bonus_grant_plan
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsBonusGrantPlan" >
+    insert into bs_bonus_grant_plan (id, user_id, be_recommend_user_id, 
+      sub_account_id, serial_no, amount, 
+      grant_type, grant_date, finish_date, 
+      status, op_user_id, note, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{beRecommendUserId,jdbcType=INTEGER}, 
+      #{subAccountId,jdbcType=INTEGER}, #{serialNo,jdbcType=INTEGER}, #{amount,jdbcType=DOUBLE}, 
+      #{grantType,jdbcType=VARCHAR}, #{grantDate,jdbcType=DATE}, #{finishDate,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=VARCHAR}, #{opUserId,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsBonusGrantPlan" useGeneratedKeys="true" keyProperty="id">
+    insert into bs_bonus_grant_plan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="beRecommendUserId != null" >
+        be_recommend_user_id,
+      </if>
+      <if test="subAccountId != null" >
+        sub_account_id,
+      </if>
+      <if test="serialNo != null" >
+        serial_no,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="grantType != null" >
+        grant_type,
+      </if>
+      <if test="grantDate != null" >
+        grant_date,
+      </if>
+      <if test="finishDate != null" >
+        finish_date,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="opUserId != null" >
+        op_user_id,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="beRecommendUserId != null" >
+        #{beRecommendUserId,jdbcType=INTEGER},
+      </if>
+      <if test="subAccountId != null" >
+        #{subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="serialNo != null" >
+        #{serialNo,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="grantType != null" >
+        #{grantType,jdbcType=VARCHAR},
+      </if>
+      <if test="grantDate != null" >
+        #{grantDate,jdbcType=DATE},
+      </if>
+      <if test="finishDate != null" >
+        #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="opUserId != null" >
+        #{opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsBonusGrantPlanExample" resultType="java.lang.Integer" >
+    select count(*) from bs_bonus_grant_plan
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_bonus_grant_plan
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.beRecommendUserId != null" >
+        be_recommend_user_id = #{record.beRecommendUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.subAccountId != null" >
+        sub_account_id = #{record.subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="record.serialNo != null" >
+        serial_no = #{record.serialNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.grantType != null" >
+        grant_type = #{record.grantType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grantDate != null" >
+        grant_date = #{record.grantDate,jdbcType=DATE},
+      </if>
+      <if test="record.finishDate != null" >
+        finish_date = #{record.finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.opUserId != null" >
+        op_user_id = #{record.opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_bonus_grant_plan
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      be_recommend_user_id = #{record.beRecommendUserId,jdbcType=INTEGER},
+      sub_account_id = #{record.subAccountId,jdbcType=INTEGER},
+      serial_no = #{record.serialNo,jdbcType=INTEGER},
+      amount = #{record.amount,jdbcType=DOUBLE},
+      grant_type = #{record.grantType,jdbcType=VARCHAR},
+      grant_date = #{record.grantDate,jdbcType=DATE},
+      finish_date = #{record.finishDate,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=VARCHAR},
+      op_user_id = #{record.opUserId,jdbcType=INTEGER},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsBonusGrantPlan" >
+    update bs_bonus_grant_plan
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="beRecommendUserId != null" >
+        be_recommend_user_id = #{beRecommendUserId,jdbcType=INTEGER},
+      </if>
+      <if test="subAccountId != null" >
+        sub_account_id = #{subAccountId,jdbcType=INTEGER},
+      </if>
+      <if test="serialNo != null" >
+        serial_no = #{serialNo,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="grantType != null" >
+        grant_type = #{grantType,jdbcType=VARCHAR},
+      </if>
+      <if test="grantDate != null" >
+        grant_date = #{grantDate,jdbcType=DATE},
+      </if>
+      <if test="finishDate != null" >
+        finish_date = #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="opUserId != null" >
+        op_user_id = #{opUserId,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsBonusGrantPlan" >
+    update bs_bonus_grant_plan
+    set user_id = #{userId,jdbcType=INTEGER},
+      be_recommend_user_id = #{beRecommendUserId,jdbcType=INTEGER},
+      sub_account_id = #{subAccountId,jdbcType=INTEGER},
+      serial_no = #{serialNo,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DOUBLE},
+      grant_type = #{grantType,jdbcType=VARCHAR},
+      grant_date = #{grantDate,jdbcType=DATE},
+      finish_date = #{finishDate,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      op_user_id = #{opUserId,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="sumBonusAmount" parameterType="java.lang.Integer" resultType="java.lang.Double">
+    select IFNULL(sum(bonus),0) from bs_daily_bonus a where type = 'RECOMMEND'
+    <if test="userId != null" >
+       and a.user_id = #{userId,jdbcType=INTEGER}
+    </if>
+  </select>
+
+	<select id="getNeedNoticeList" resultMap="BaseResultMap">
+	select id,user_id,amount,finish_date from bs_bonus_grant_plan  
+	where ((grant_type ='BONUS_4_ACTIVITY') or (grant_type != 'BONUS_4_ACTIVITY'  and  serial_no !=1))
+	and status='SUCC' and grant_date =DATE(NOW()) and date(finish_date)=DATE(NOW()) 
+	and amount>0;
+	</select>
+</mapper>

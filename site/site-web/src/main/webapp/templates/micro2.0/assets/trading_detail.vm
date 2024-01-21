@@ -1,0 +1,83 @@
+#Html("begin")
+#Head("begin","币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("我的资产【币港湾官网】")
+#WeChatShare()
+#Head("end")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/assets/trading_detail.min")
+<body>	
+	#if($!totalCount ==0 )
+        <div class="header">
+            <a class="header_arrow" href="javascript:history.go(-1)"></a>
+            <h1 class="heade_ft oran_color">交易明细</h1>
+        </div>
+        <div class="Acc_null_img">
+			<div class="ACC_null_title">暂无交易</div>
+		</div>
+	#else
+	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+	<div class="header">
+		<a class="header_arrow" href="javascript:history.go(-1)"></a>
+		<h1 class="heade_ft oran_color">交易明细</h1>
+    </div>
+	##<section class="s_null"></section>
+		<div class="u_top">
+			<div class="i_one i_oneborder">
+				<p class="p_i_one">交易用途</p>
+				<p class="i_p i_p_1">金额（元）</p>
+				<p class="i_p z_ft">交易结果</p>
+			</div>
+		</div>			
+		<input type="hidden" id="pageIndex" name="pageIndex" value="$!pageIndex" />
+		<input type="hidden" id="totalCount" name="totalCount" value="$!totalCount" />
+		<div id="mainContent" url='/micro2.0/assets/trading_detail_content'>
+		#foreach($!grid in $!transsList)
+            #if($!grid.transType == "ZAN_RETURN")
+                <div class="zan_num">
+                    <div class="i_one">
+                        <p class="p_i_one">
+                            <span class="span">$!grid.transName</span>
+                            <span class="span1">$!date.formatDateTime($!grid.transTime,'yyyy-MM-dd HH:mm')</span>
+                        </p>
+                        <p class="i_p i_p_1 z_number zan_money" time="$!date.formatDateTime($!grid.transTime,'yyyy-MM-dd HH:mm')">+$!money.format($!grid.transAmount)<i class="zan_moneyimg zan_moneydown"></i></p>
+                        <p class="i_p z_ft">交易$!grid.transStatus</p>
+                    </div>
+                    ##下拉框
+                    <div class="zan_bottom" style="display:none;">
+						
+                    </div>
+                </div>
+            #else
+                <div class="i_one">
+                    <p class="p_i_one">
+                        <span class="span">$!grid.transName</span>
+                        <span class="span1">$!date.formatDateTime($!grid.transTime,'yyyy-MM-dd HH:mm')</span>
+                    </p>
+                    <p class="#if($!grid.transAmount>0)i_p i_p_1">+#else i_p  i_p_two">#end$!money.format($!grid.transAmount)</p>
+                    <p class="i_p z_ft">交易$!grid.transStatus</p>
+                </div>
+            #end
+
+		#end
+		</div>
+		<div class="i_last" id="showmore">查看更多</div>
+		<div class="i_last" id="showmore_copy"></div>
+        <div class="zan_ul zan_hide" style="display: none;">
+            <div class="i_two">
+                <p class="p_i_two">
+                    <span class="p_i_twospan1 zan_time"></span>
+                </p>
+                <p class="twoi_p twoi_p_1 twoz_number zan_amount"></p>
+                <p class="twoi_p twoz_ft zan_status"></p>
+            </div>
+        </div>
+	#end
+#LoadJS("resources/micro/scripts/common/form")
+#LoadJS("resources/micro/scripts/common/form-validate")
+#LoadJS("resources/micro/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/assets/custom")
+#LoadJS("resources/micro2.0/scripts/assets/trade_detail_pagination")
+#LoadJS("resources/micro2.0/scripts/assets/trading_detail")
+</body>
+#Html("end")

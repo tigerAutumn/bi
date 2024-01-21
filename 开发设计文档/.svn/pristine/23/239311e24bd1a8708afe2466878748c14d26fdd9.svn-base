@@ -1,0 +1,313 @@
+## 一、云贷分期产品-前端、协议签章 ##
+
+### 1、债权明细页、还款 ###
+
+```
+根据 bs_property_info property_symbol 根据产品资产方查询，可以兼容，不涉及到代码开发；
+```
+
+### 2、债权明细页-借款协议 ###
+<pre>
+借款协议修改
+
+云贷存管产品
+存管版 （不变）
+合规版本（不变）-- 线上版本 原型\协议\协议（存管后）\云贷\2018备案终稿\借款协议（云贷）20180303修订版.docx
+随借随还（在合规版上添加借款人地址和邮箱） <font color=#DC143C>债权协议不变线上合规版本</font>
+等额本息 新页面1  <font color=#DC143C>债权协议借款期限改成“期数”，在线上合规版本的基础上修改</font>
+等本等息 新页面2  <font color=#DC143C>债权协议借款期限改成“期数”，在线上合规版本的基础上修改</font>
+
+借款协议跟着资产方借款产品走；
+</pre>
+
+<pre>
+1. 云贷分期产品债权明细页
+借款产品是现金循环贷 REPAY_ANY_TIME，在合规版上添加借款人地址和邮箱；
+ln_loan的业务标识partner_business_flag=FIXED_INSTALLMENT等额本息，显示等额本息版借款协议；
+ln_loan的业务标识partner_business_flag=FIXED_PRINCIPAL_INTEREST等本等息，显示等本等息版借款协议；
+2. 借款协议 3.2.3条 借款服务月费率，取bs_sys_config LOAN_SERVICE_RATE_YUN_DAI 云贷借款服务费率；
+</pre>
+
+### 3、债权明细页-债转协议 ###
+<pre>
+云贷分期产品债权明细页
+借款产品是现金循环贷 REPAY_ANY_TIME，债转协议显示线上合规版本；
+ln_loan的业务标识partner_business_flag=FIXED_INSTALLMENT等额本息或
+ln_loan的业务标识partner_business_flag=FIXED_PRINCIPAL_INTEREST等本等息产品
+显示债转协议借款期限由“90天”显示成“期数”
+
+</pre>
+
+### 4、借款协议-生成签章文件 ###
+
+<pre>
+生成pdf签章文件，对应3个版本
+1、REPAY_ANY_TIME 消费循环贷
+2、FIXED_INSTALLMENT 等额本息
+3、FIXED_PRINCIPAL_INTEREST 等本等息
+
+LoanAgreementSignSealProcess createSrcPdf()
+添加借款标识的判断ln_loan.partner_business_flag
+if(REPAY_ANY_TIME .equals(ln_loan.partner_business_flag) {
+	// （1）消费循环贷 pdf协议url
+}else if(FIXED_INSTALLMENT .equals(ln_loan.partner_business_flag) {
+    // （2）等额本息 pdf协议url
+}else if(FIXED_PRINCIPAL_INTEREST .equals(ln_loan.partner_business_flag) {
+    // （3）等本等息 pdf协议url
+}
+
+
+-----------------------------------------------
+LoanAgreementSignSealServiceImpl
+outOfAccountResultAccept()
+loanAgreementSignSealService.protocolSeal- 传入的LnLoan对象
+
+HFBankFacade
+outOfAccount() ln_pay_orders中获取partner_code
+
+LoanAgreementSignSealProcess
+createSrcPdf 生成YUN_DAI_SELF云贷借款协议，根据借款标识partnerBusinessFlag生成不同版本的协议；
+</pre>
+
+### 5、债转协议-生成签章文件 ###
+
+<pre>
+1. 云贷分期产品
+随借随还（在合规版上添加借款人地址和邮箱）  <font color=#DC143C>债权协议不变线上合规版本</font>
+等额本息 新页面1  <font color=#DC143C>债权协议借款期限改成“期数”，在线上合规版本的基础上修改</font>
+等本等息 新页面2  <font color=#DC143C>债权协议借款期限改成“期数”，在线上合规版本的基础上修改</font>
+
+2. 根据借款标识的判断ln_loan.partner_business_flag生产不同版本的PDF文件
+if(FIXED_INSTALLMENT .equals(ln_loan.partner_business_flag || 	FIXED_PRINCIPAL_INTEREST .equals(ln_loan.partner_business_flag) {
+    // （1）等额本息、等本等息 pdf协议url
+}else {
+    // （2）消费循环贷REPAY_ANY_TIME pdf协议url
+}
+
+
+--------------------------------------------
+AgreementSignCreditTransferAspect
+DepFixedUserRelationTransferTask userQuitTransfer()
+userQuitTransferOld 切面原先切的方法已经废弃
+
+</pre>
+
+
+## 6、借款详情页面修改 ##
+<pre>
+借款详情页面
+1. partnerBusinessFlag == 等额本息FIXED_INSTALLMENT || partnerBusinessFlag == 等本等息FIXED_PRINCIPAL_INTEREST
+借款期限 显示期数
+否则显示天数
+2. 还款方式 根据partnerBusinessFlag判断显示
+
+等额本息。
+借款金额为X，年利率为Y，借款期限为Z月，月还款本息为T，则第一个月应还利息计算公式为：X×Y/12,第二个月应还利息计算公式为：（X-(T-第一个月应还利息））×Y/12，各月以此类推，应还总利息计算公式为：第一个月应还利息+第二个月应还利息+…第Z个月的应还利息。应还本金为X。每月按30天算。
+
+
+一次还本付息。
+借款金额为X，年利率为Y，借款期限为Z天，则应还总利息计算公式为：X×Y/365×Z天。应还本金为X。
+
+等本等息。
+借款金额为X，月利率为Y，借款期限为Z月，则每月应还利息计算公式为：X*Y，应还总利息计算公式为：X*Y*Z。应还本金为X。每月按30天算
+
+[云贷分期产品对接，债权明细页面相关调](https://tower.im/projects/3d05349e05b2474dbd3198d04ac77804/todos/126e868e026a4546b5151b23c08e83fa/)
+
+</pre>
+
+
+## 7、协议修改sql脚本、配置汇总 ##
+<pre>
+1. sql脚本
+-- 合规二期存管云贷借款协议（添加借款人地址和邮箱
+INSERT INTO `bs_agreement_version` (`partner_code`, `agreement_name`, `agreement_type`, `agreement_version`, `agreement_url`, `agreement_effective_start_time`, `agreement_effective_end_time`, `create_time`, `update_time`) VALUES ('YUN_DAI_SELF', '合规二期存管云贷借款协议（添加借款人地址和邮箱）', 'HF_YUN_LOAN_AGREEMENT', '1_3', 'agreement/hfCustodyLoanVersionAgreement', NOW(), NULL, NOW(), NOW());
+
+-- 存管云贷债转协议（等额本息、等本等息）
+INSERT INTO `bs_agreement_version` (`partner_code`, `agreement_name`, `agreement_type`, `agreement_version`, `agreement_url`, `agreement_effective_start_time`, `agreement_effective_end_time`, `create_time`, `update_time`) VALUES ('YUN_DAI_SELF', '存管云贷债转协议（等额本息、等本等息产品）', 'hf_yundai_claimsAgreement', '1_2', 'agreement/hfCustodyClaimsAgreementInit', NOW(), NULL, NOW(), NOW());
+
+-- 存管云贷借款协议（等额本息）
+INSERT INTO `bs_agreement_version` (`partner_code`, `agreement_name`, `agreement_type`, `agreement_version`, `agreement_url`, `agreement_effective_start_time`, `agreement_effective_end_time`, `create_time`, `update_time`) VALUES ('YUN_DAI_SELF', '存管云贷借款协议（等额本息产品）', 'hf_yundai_loanAgreement_installment', '1_1', 'agreement/entrance', NOW(), NULL, NOW(), NOW());
+
+-- 存管云贷借款协议（等本等息）
+INSERT INTO `bs_agreement_version` (`partner_code`, `agreement_name`, `agreement_type`, `agreement_version`, `agreement_url`, `agreement_effective_start_time`, `agreement_effective_end_time`, `create_time`, `update_time`) VALUES ('YUN_DAI_SELF', '存管云贷借款协议（等本等息产品）', 'hf_yundai_loanAgreement_principal_interest', '1_1', 'agreement/entrance', NOW(), NULL, NOW(), NOW());
+
+
+2. 配置
+business placeholder.properties
+
+# 云贷等额本息借款协议
+cfca.seal.loanAgreementYunInstallmentPdf.pdfSrcHtml=https://hc1h5.bigangwan.com/micro2.0/agreement/loanAgreementYunInstallmentPdf
+# 云贷等本等息借款协议
+cfca.seal.loanAgreementYunPrincipalInterestPdf.pdfSrcHtml=https://hc1h5.bigangwan.com/micro2.0/agreement/loanAgreementYunPrincipalInterestPdf
+
+# 云贷分期等额本息、等本等息借款产品债转协议
+cfca.seal.yundaiClaimsStagingProductPdf.pdfSrcHtml=https://hc1h5.bigangwan.com/micro2.0/agreement/hfCustodyClaimsAgreementStagingProductPdf
+
+</pre> 
+
+
+## 二、云贷分期产品-管理台 ##
+
+### 1. 存管产品统计（恒丰）-支付融资客户(云贷赞时贷)###
+<pre>
+1. 查询条件中添加借款产品的下拉框；
+资产方选择云贷、七贷、赞时贷时，借款产品随之变化
+云贷
+	全部
+	随借随还 
+	等额本息
+	等本等息
+七贷
+	全部
+	随借随还
+	先息后本
+赞时贷
+	全部
+2. 列表中新增借款产品列；
+DepFinanceStatisticsController queryPayFinance()
+
+#if("$!user.partnerBusinessFlag" == "REPAY_ANY_TIME")
+    随借随还
+#elseif("$!user.partnerBusinessFlag" == "FIXED_INSTALLMENT")
+    等额本息
+#elseif("$!user.partnerBusinessFlag" == "FIXED_PRINCIPAL_INTEREST")
+    等本等息
+#elseif("$!user.partnerBusinessFlag" == "现金循环贷")
+    先息后本
+#elseif("$!user.partnerBusinessFlag" == "INSTALMENT")
+	分期产品
+#else
+	$!user.partnerBusinessFlag
+#end
+
+3. 导出excel，数据验证
+4. 获得用户融资列表数据
+bsPayOrdersMapper.payFinanceYunZSDStatistics
+添加partner_business_flag的查询条件；
+
+a、云贷全部
+ln_loan.partner_business_flag IN ('REPAY_ANY_TIME', 'FIXED_INSTALLMENT'， 'FIXED_PRINCIPAL_INTEREST')
+b、七贷全部
+ln_loan.partner_business_flag IN ('现金循环贷', 'REPAY_ANY_TIME')
+c、赞时贷全部
+不需要加额外的条件
+d、ln_loan_relation.ln_user_id not in (SELECT conf_value from bs_sys_config where conf_key in('7_DAI_SELF_SUPER_LN_USER','YUN_DAI_SELF_SUPER_LN_USER'))
+
+5. 获得用户融资记录数
+bsPayOrdersMapper.payFinanceYunZSDStatisticsCount
+6. 出借总金额
+bsPayOrdersMapper.payFinanceYunZSDTotalAmount
+</pre>
+
+### 2. 存管产品统计（恒丰）-融资客户结算(云贷七贷)###
+<pre>
+1. 查询条件中添加借款产品的下拉框；
+资产方选择云贷、七贷、赞时贷时，借款产品随之变化
+云贷
+	全部
+	随借随还 
+	等额本息
+	等本等息
+七贷
+	全部
+	随借随还
+	先息后本
+赞时贷
+	全部
+2. 列表中新增借款产品列；
+FinancialAccountController balanceFinanceStatistics()
+3. 导出excel，数据验证
+4. 记录数+金额合计
+bsPayOrdersMapper.depBalanceFinanceStatisticsCount
+ln_loan aa
+添加partner_business_flag的查询条件；
+5. 列表数据
+bsPayOrdersMapper.depBalanceFinanceStatistics
+</pre>
+
+### 3. 存管产品统计（恒丰）-融资客户结算（总）###
+<pre>
+1. 查询条件中添加借款产品的下拉框；
+资产方选择云贷、七贷、赞时贷时，借款产品随之变化
+云贷
+	全部
+	随借随还 
+	等额本息
+	等本等息
+七贷
+	全部
+	随借随还
+	先息后本
+赞时贷
+	全部
+2. 列表中新增借款产品列；
+LnCustomerSettlementController dataIndex()
+3. 导出excel，数据验证
+4. 记录数
+lnRepayScheduleMapper.countLnCustomerSettlementList 
+5. 列表
+lnRepayScheduleMapper.selectLnCustomerSettlementList
+6. 金额统计
+lnRepayScheduleMapper.sumLnCustomerSettlementInterest
+</pre>
+
+### 4. 存管产品统计（恒丰）-存管债转及支付###
+<pre>
+1. 查询条件中添加借款产品的下拉框；
+资产方选择云贷、七贷、赞时贷时，借款产品随之变化
+云贷
+	全部
+	随借随还 
+	等额本息
+	等本等息
+七贷
+	全部
+	随借随还
+	先息后本
+赞时贷
+	全部
+2. 列表中新增借款产品列；
+FinancialLnCreditTransferController lnCreditTransferYunZSDIndex()
+3. 导出excel，数据验证
+4. 记录数
+lnCreditTransferMapper.countLnCreditTransferPayYunZSD
+5. 列表
+lnCreditTransferMapper.selectLnCreditTransferPayYunZSD
+6. 金额统计
+lnCreditTransferMapper.transSumAmountYunZSD
+7. 查询在2017-11-08之前的数据，并且是云贷产品的
+lnCreditTransferMapper.selectLnCreditTransferPayYun
+lnCreditTransferMapper.transSumAmountYun
+
+</pre>
+
+
+### 5. 存管产品统计（恒丰）-借款服务费###
+<pre>
+1. 查询条件中添加借款产品的下拉框；
+资产方选择云贷、七贷、赞时贷时，借款产品随之变化
+云贷
+	全部
+	随借随还 
+	等额本息
+	等本等息
+七贷
+	全部
+	随借随还
+	先息后本
+赞时贷
+	全部
+2. 列表中新增借款产品列；
+DepFinanceStatisticsController  queryLoanServiceFeeList()
+3. 导出excel，数据验证
+4. 记录数
+lnDepositionRepayScheduleDetailMapper.countLoanServiceFee
+5. 列表
+lnDepositionRepayScheduleDetailMapper.selectLoanServiceFeeList
+6. 金额统计
+lnDepositionRepayScheduleDetailMapper.sumLoanServiceFee
+</pre>
+
+
+<font color=#DC143C>123</font>
+

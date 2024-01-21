@@ -1,0 +1,285 @@
+#** ------------------------------- 
+* Function: <Html></Html>。
+* 
+* @author 
+* @date   
+*  
+* @param  (String) path  文件全路径
+* ------------------------------- **#
+#macro(Html $flag)
+#if("$!{flag}" == "begin")
+<!DOCTYPE html>
+#elseif("$!{flag}" == "end")
+</html>
+#end
+#end
+
+#** ------------------------------- 
+* Function: <Head></Head>。
+* 
+* @author 
+* @date   
+*  
+* @param  (String) path  文件全路径
+* ------------------------------- **#
+#macro(Head $flag $keywords $description)
+#if("$!{flag}" == "begin")
+<head>
+	<meta name="robots" content="none">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+#elseif("$!{flag}" == "end")
+</head>
+#end
+#end
+
+#** ------------------------------- 
+* Function: <title></title>。
+* 
+* @author
+* @date   
+*  
+* @param  (String) path  文件全路径
+* ------------------------------- **#
+#macro(Title $title)
+<title>$!esc.htmlEscape($!{title})</title>
+#end
+
+#** ------------------------------- 
+* Function: 载入静态资源服务器上的JS文件。
+* 
+* @author 
+* @date   
+*  
+* @param  (String) path  文件全路径
+* ------------------------------- **#
+#macro(LoadJS $path)
+#set($suffix=".js?v=1.0.1")
+<script type="text/javascript" src="$!env.getWebURL($!esc.htmlEscape($!{path}))$suffix" charset="UTF-8"></script>
+#end
+
+#** ------------------------------- 
+* Function: 载入静态资源服务器上的CSS文件。
+* 
+* @author
+* @date  
+*  
+* @param  (String) path  文件全路径
+* ------------------------------- **#
+#macro(LoadCSS $path)
+#set($suffix=".css?v=1.0.1")
+#if("$!path" == "default")
+<link rel="stylesheet" type="text/css" href="$!env.getWebURL($!esc.htmlEscape('css'))$suffix" charset="UTF-8"></link>
+#else
+<link rel="stylesheet" type="text/css" href="$!env.getWebURL($!esc.htmlEscape($!{path}))$suffix" charset="UTF-8"></link>
+#end
+#end
+
+#** ------------------------------- 
+* Function: 支持国际化。
+* 
+* @author 
+* @date 
+*  
+* @param  (String) path  文件全路径
+* --------------!----------------- **#
+#macro(Label $title)
+#springMessage($title)
+#end
+
+#** ------------------------------- 
+* Function: Hidden
+* 
+* @author 
+* @date   
+*  
+* @param  
+* ------------------------------- **#
+#macro(Hidden $name $value)
+    <input id="$!esc.htmlEscape($!{name})" type="hidden" name="$!esc.htmlEscape($!{name})" value="$!esc.htmlEscape($!{value})"></input>
+#end
+#** ------------------------------- 
+* Function: uploadImg
+* 
+* @author jipengfei
+* @date   2012-12-28
+*  
+* @param  (String) name  组件名
+* ------------------------------- **#
+#macro(UploadImg $name $value)
+	<input type="hidden" value="$env.get('micro.web')" class="site_app_root_path"/>
+	<div id="fileQueue"></div>
+    <div class="unit" style="width:120px;height:150px;float:left;margin-left:20px;">
+		#if("$!value"=="")
+			<img src="$env.getWebURL('/resources/dwz/resource/images/nophoto.gif')" name="imgPho" id="imgPho" style="width:120px;height:120px;"/>
+		#else
+			<img src="$value" name="imgPho" id="imgPho" style="width:120px;height:120px;"/>
+		#end
+			<input id="imgPath" type="hidden" value="$value" name="$name" />
+			<input id="testFileInput" type="file" name="filedata" 
+                        uploader="$!env.getWebURL('/resources/dwz/external/dwz-ria/uploadify/scripts/uploadify.swf')"
+                		cancelImg="$!env.getWebURL('/resources/dwz/external/dwz-ria/uploadify/cancel.png')" 
+                		script="$!env.getWebURL('/upload/img.htm')" 
+                		scriptData="{PHPSESSID:'xxx', ajax:1}"
+                		fileQueue="fileQueue"
+						buttonText="上传"
+						auto="true"
+						multi="false"
+						onComplete="uploadifyComplete"
+                		fileExt="*.jpg;*.jpeg;*.gif;*.png;"
+                		fileDesc="*.jpg;*.jpeg;*.gif;*.png;"
+					/>
+    </div>
+<script type="text/javascript">
+	function uploadifyComplete(event,queueId,fileObj,response,data){
+		var urlImg = '';
+		var response =jQuery.parseJSON(response)
+		
+		if(response.err == "1"){
+			alertMsg.error(response.msg);
+			return;
+		}
+		
+		var url = response.msg.url;
+		if(url.indexOf("$!mUrl") == -1 ){
+			urlImg = "$!mUrl"+url;
+		} else {
+			urlImg = $(".site_app_root_path").val()+"/"+"$!mUrl"+url;
+		}
+		$("#imgPho").attr("src",urlImg);
+		$("#imgPath").val(url);
+     }
+</script>
+#end
+
+
+#macro(UploadImgs $name $value)
+	<input type="hidden" value="$env.get('micro.web')" class="site_app_root_path"/>
+	<div id="fileQueues"></div>
+    <div class="unit" style="width:120px;height:150px;float:left;margin-left:20px;">
+		#if("$!value"=="")
+			<img src="$env.getWebURL('/resources/dwz/resource/images/nophoto.gif')" name="imgPho" id="img2Pho" style="width:120px;height:120px;"/>
+		#else
+			<img src="$value" name="imgPho" id="img2Pho" style="width:120px;height:120px;"/>
+		#end
+			<input id="img2Path" type="hidden" value="$value" name="$name" />
+			<input id="testFileInput2" type="file" name="filedata" 
+                        uploader="$!env.getWebURL('/resources/dwz/external/dwz-ria/uploadify/scripts/uploadify.swf')"
+                		cancelImg="$!env.getWebURL('/resources/dwz/external/dwz-ria/uploadify/cancel.png')" 
+                		script="$!env.getWebURL('/upload/img.htm')" 
+                		scriptData="{PHPSESSID:'xxx', ajax:1}"
+                		fileQueue="fileQueues"
+						buttonText="上传"
+						auto="true"
+						multi="false"
+						onComplete="uploadifyCompleteTwo"
+                		fileExt="*.jpg;*.jpeg;*.gif;*.png;"
+                		fileDesc="*.jpg;*.jpeg;*.gif;*.png;"
+					/>
+    </div>
+<script type="text/javascript">
+	function uploadifyCompleteTwo(event,queueId,fileObj,response,data){
+		var urlImg = '';
+		var response =jQuery.parseJSON(response)
+		
+		if(response.err == "1"){
+			alertMsg.error(response.msg);
+			return;
+		}
+		
+		var url = response.msg.url;
+		if(url.indexOf("$!mUrl") == -1 ){
+			urlImg = "$!mUrl"+url;
+		} else {
+			urlImg = $(".site_app_root_path").val()+"/"+"$!mUrl"+url;
+		}
+		$("#img2Pho").attr("src",urlImg);
+		$("#img2Path").val(url);
+     }
+</script>
+#end
+#macro(Highcharts $Datas $titletext $yAxistext $seriestext $startTime)
+
+    <div id="HighChart" style="min-width:700px;height:400px"></div>
+
+<script type="text/javascript">
+ $('#HighChart').highcharts({
+        chart: {
+            zoomType: 'x',
+            spacingRight: 20
+        },
+        title: {
+            text: '$titletext'
+        },
+        subtitle: {
+            text: document.ontouchstart === undefined ?
+                'Click and drag in the plot area to zoom in' :
+                'Pinch the chart to zoom in'
+        },
+        xAxis: {
+            type: 'datetime',
+            maxZoom: 14 * 24 * 3600000, // fourteen days
+            title: {
+                text: null
+            },
+			labels: {  
+                        formatter: function () {  
+                            return Highcharts.dateFormat('%m.%d', this.value);  
+                        }  
+                    } 
+        },
+        yAxis: {
+            title: {
+			 	align: 'high',
+                offset: 20,
+                rotation: 0,
+                y: -10,
+				x:10,
+                text: $yAxistext
+            }
+        },
+        tooltip: {
+		 xDateFormat: '%Y-%m-%d',
+         shared: true,
+		  valueSuffix: $yAxistext
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            area: {
+                fillColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                },
+                lineWidth: 1,
+                marker: {
+                    enabled: false
+                },
+                shadow: false,
+                states: {
+                    hover: {
+                        lineWidth: 1
+                    }
+                },
+                threshold: null
+            }
+        },
+
+        series: [{
+            type: 'area',
+            name: $seriestext,
+            pointInterval: 24 * 3600 * 1000,
+            pointStart: Date.UTC($startTime),
+            data: [
+                  $Datas
+            ]
+        }]
+		
+    });
+</script>
+#end

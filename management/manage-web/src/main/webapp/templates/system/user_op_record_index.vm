@@ -1,0 +1,121 @@
+<form id="pagerForm" method="post" action="$env.getWebURL('/sys/userOpRecord/index.htm')">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/sales/index.htm')" method="post">
+		<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+		<input type="hidden" name="totalRows" value="$!totalRows" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						操作人姓名：<input id="managerName" type="text" name="managerName" maxlength="20" value="$!mRecord.managerName" class="clear"/>
+					</td>
+					<td>
+						操作菜单：<input id="functionName" type="text" name="functionName" maxlength="20" value="$!mRecord.functionName" class="clear"/>
+					</td>
+					<td>
+						操作内容：<input id="opContent" type="text" name="opContent" maxlength="20" value="$!mRecord.opContent" class="clear"/>
+					</td>
+					<td >操作时间：<input name="startTime"   type="text"  id="startTime" class=" date textInput readonly" readonly="true" value="$!mRecord.startTime" dateFmt="yyyy-MM-dd HH:mm:ss"/></td >
+					<td>到  &nbsp;&nbsp;&nbsp;&nbsp;
+						<input name="endTime" type="text" id="endTime" class=" date textInput readonly" readonly="true" value="$!mRecord.endTime" dateFmt="yyyy-MM-dd HH:mm:ss"/>
+					</td>
+					<td>
+						<button  onclick="func()" type="button">查询</button>
+					</td>
+				</tr>
+			</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	
+	<table class="table" width="80%" layoutH="138">
+		<thead>
+			<tr>
+				<th width="12%">操作人姓名</th>
+				<th width="12%">操作菜单</th>
+				<th width="20%">操作内容</th>
+				<th width="12%">操作时间</th>
+				<th width="12%">操作ip</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $recordList)
+			<tr target="sid_user" rel="1">
+				<td>$!grid.managerName</td>
+				<td>$!grid.functionName</td>
+				<td>$!grid.opContent</td>
+				<td>$!date.format($!grid.opTime)</td>
+				<td>$!grid.ip</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+    	
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+
+    function func(){
+    	var beginTime = $("#startTime").val();
+    	var overTime = $("#endTime").val();
+    	
+    	if(beginTime != "" && overTime == ""){
+    		alert("请输入结束时间！");
+    		return false;
+    	}
+    	
+    	if(beginTime == "" && overTime != ""){
+    		alert("请输入开始时间！");
+    		return false;
+    	}
+    	
+    	if(beginTime != "" && overTime != ""){
+    		var result = Date.parse(overTime.replace(/-/g,"/"))- Date.parse(beginTime.replace(/-/g,"/"));
+    		if(result < 0){
+    			alert("开始时间不能在结束时间之后！！");
+    			return false;
+    		}
+    	}
+    	
+    	
+    	var url = $("#APP_ROOT_PATH").val() + "/sys/userOpRecord/index.htm";
+    	$("#myform").attr("action",url);
+    	$("#myform").attr("onsubmit","return navTabSearch(this);");
+    	$("#myform").submit();
+    
+    }
+
+	function navTabAjaxDone(json) {
+		if (json.statusCode == "200") {
+			alertMsg.correct(json.message);
+		} else {
+			alertMsg.error(json.message);
+		}
+	}
+</script>
+	
+	

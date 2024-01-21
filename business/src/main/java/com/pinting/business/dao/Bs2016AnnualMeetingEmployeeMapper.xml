@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinting.business.dao.Bs2016AnnualMeetingEmployeeMapper" >
+    <resultMap id="BaseResultMap" type="com.pinting.business.model.Bs2016AnnualMeetingEmployee" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="employee_name" property="employeeName" jdbcType="VARCHAR" />
+        <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+        <result column="is_win" property="isWin" jdbcType="VARCHAR" />
+        <result column="award_id" property="awardId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="win_time" property="winTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List" >
+        id, employee_name, company_name, is_win, award_id, create_time, update_time, win_time
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.Bs2016AnnualMeetingEmployeeExample" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        'true' as QUERYID,
+        <include refid="Base_Column_List" />
+        from bs_2016_annual_meeting_employee
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from bs_2016_annual_meeting_employee
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from bs_2016_annual_meeting_employee
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.pinting.business.model.Bs2016AnnualMeetingEmployeeExample" >
+        delete from bs_2016_annual_meeting_employee
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.pinting.business.model.Bs2016AnnualMeetingEmployee" >
+        insert into bs_2016_annual_meeting_employee (id, employee_name, company_name,
+        is_win, award_id, create_time,
+        update_time, win_time)
+        values (#{id,jdbcType=INTEGER}, #{employeeName,jdbcType=VARCHAR}, #{companyName,jdbcType=VARCHAR},
+        #{isWin,jdbcType=VARCHAR}, #{awardId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}, #{winTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.pinting.business.model.Bs2016AnnualMeetingEmployee" >
+        insert into bs_2016_annual_meeting_employee
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="employeeName != null" >
+                employee_name,
+            </if>
+            <if test="companyName != null" >
+                company_name,
+            </if>
+            <if test="isWin != null" >
+                is_win,
+            </if>
+            <if test="awardId != null" >
+                award_id,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="updateTime != null" >
+                update_time,
+            </if>
+            <if test="winTime != null" >
+                win_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="employeeName != null" >
+                #{employeeName,jdbcType=VARCHAR},
+            </if>
+            <if test="companyName != null" >
+                #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="isWin != null" >
+                #{isWin,jdbcType=VARCHAR},
+            </if>
+            <if test="awardId != null" >
+                #{awardId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="winTime != null" >
+                #{winTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.pinting.business.model.Bs2016AnnualMeetingEmployeeExample" resultType="java.lang.Integer" >
+        select count(*) from bs_2016_annual_meeting_employee
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
+        update bs_2016_annual_meeting_employee
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.employeeName != null" >
+                employee_name = #{record.employeeName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.companyName != null" >
+                company_name = #{record.companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.isWin != null" >
+                is_win = #{record.isWin,jdbcType=VARCHAR},
+            </if>
+            <if test="record.awardId != null" >
+                award_id = #{record.awardId,jdbcType=INTEGER},
+            </if>
+            <if test="record.createTime != null" >
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateTime != null" >
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.winTime != null" >
+                win_time = #{record.winTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map" >
+        update bs_2016_annual_meeting_employee
+        set id = #{record.id,jdbcType=INTEGER},
+        employee_name = #{record.employeeName,jdbcType=VARCHAR},
+        company_name = #{record.companyName,jdbcType=VARCHAR},
+        is_win = #{record.isWin,jdbcType=VARCHAR},
+        award_id = #{record.awardId,jdbcType=INTEGER},
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+        win_time = #{record.winTime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.Bs2016AnnualMeetingEmployee" >
+        update bs_2016_annual_meeting_employee
+        <set >
+            <if test="employeeName != null" >
+                employee_name = #{employeeName,jdbcType=VARCHAR},
+            </if>
+            <if test="companyName != null" >
+                company_name = #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="isWin != null" >
+                is_win = #{isWin,jdbcType=VARCHAR},
+            </if>
+            <if test="awardId != null" >
+                award_id = #{awardId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null" >
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="winTime != null" >
+                win_time = #{winTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.Bs2016AnnualMeetingEmployee" >
+    update bs_2016_annual_meeting_employee
+    set employee_name = #{employeeName,jdbcType=VARCHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      is_win = #{isWin,jdbcType=VARCHAR},
+      award_id = #{awardId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      win_time = #{winTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <resultMap id="VoResultMap" type="com.pinting.business.model.vo.AnnualMeetingEmpVO" extends="BaseResultMap">
+	<result column="is_win" property="isWin" jdbcType="VARCHAR" />
+	<result column="back_draw_time" property="backDrawTime" jdbcType="TIMESTAMP" />
+	<result column="content" property="content" jdbcType="VARCHAR" />
+	<result column="activity_award_id" property="activityAwardId" jdbcType="INTEGER" />
+	<result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="findAnnualMeetingEmpList" resultMap="VoResultMap" parameterType="com.pinting.business.model.vo.AnnualMeetingEmpVO" >
+      SELECT aa.employee_name, aa.is_win, aa.back_draw_time, aa.activity_award_id, aa.content, aa.note, aa.company_name
+      FROM
+      (
+      SELECT
+      a.employee_name, a.is_win, a.win_time as back_draw_time, a.award_id, c.id AS activity_award_id, c.content, c.note, a.id, a.company_name
+      FROM bs_2016_annual_meeting_employee a
+      LEFT JOIN bs_activity_award c ON a.award_id = c.id
+      WHERE 1=1
+      <if test="isWin != null and isWin != '' and isWin == '-1' " >
+          AND a.is_win = 'Y'
+      </if>
+      <if test="isWin != null and isWin != '' and isWin == '-2' " >
+          AND (a.is_win is null or a.is_win != 'Y')
+      </if>
+      ) aa
+      WHERE 1=1
+      <if test="employeeName != null and employeeName != '' " >
+          AND aa.employee_name like concat(concat('%', #{employeeName,jdbcType=VARCHAR}),'%')
+      </if>
+      <if test="activityAwardId != null and activityAwardId != '' " >
+          AND aa.award_id = #{activityAwardId,jdbcType=INTEGER}
+      </if>
+      ORDER BY
+      <if test="orderDirection!=null and orderDirection != ''  and orderField != ''  and orderField!=null ">
+          ${orderField} ${orderDirection},
+      </if>
+      aa.back_draw_time DESC, aa.id desc
+	 <include refid="sql-global.pagination" />
+  </select>
+  
+  <select id="findAnnualMeetingCount" parameterType="com.pinting.business.model.vo.AnnualMeetingEmpVO" resultType="java.lang.Integer">
+      SELECT count(aa.employee_name)
+      FROM
+      (
+      SELECT
+      a.employee_name, a.is_win, a.win_time as back_draw_time, a.award_id, c.id AS activity_award_id, c.content, c.note
+      FROM bs_2016_annual_meeting_employee a
+      LEFT JOIN bs_activity_award c ON a.award_id = c.id
+      WHERE 1=1
+      <if test="isWin != null and isWin != '' and isWin == '-1' " >
+          AND a.is_win = 'Y'
+      </if>
+      <if test="isWin != null and isWin != '' and isWin == '-2' " >
+          AND (a.is_win is null or a.is_win != 'Y')
+      </if>
+      ) aa
+      WHERE 1=1
+      <if test="employeeName != null and employeeName != '' " >
+          AND aa.employee_name like concat(concat('%', #{employeeName,jdbcType=VARCHAR}),'%')
+      </if>
+      <if test="activityAwardId != null and activityAwardId != '' " >
+          AND aa.award_id = #{activityAwardId,jdbcType=INTEGER}
+      </if>
+  </select>
+  
+  <select id="selectRecordByEmployeeName" resultMap="BaseResultMap" parameterType="com.pinting.business.model.Bs2016CheckInUser" >
+	 SELECT
+		<include refid="Base_Column_List" />
+	 FROM bs_2016_annual_meeting_employee 
+	 WHERE 1 = 1 
+     <if test="employeeName != null and employeeName != '' " >
+	   	 AND employee_name = #{employeeName,jdbcType=VARCHAR}
+	  </if>
+	 LIMIT 0,1
+  </select>
+  
+  <insert id="insertAnnualMeetingEmployee">
+  	${sql}
+  </insert>
+
+  <resultMap id="annualVOResultMap" type="com.pinting.business.model.vo.EndOf2016CompanyAnnualVO">
+    <result column="employee_name" property="employeeName" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectLotteryNameList" resultMap="annualVOResultMap" parameterType="com.pinting.business.model.vo.EndOf2016CompanyAnnualVO">
+    SELECT a.employee_name
+    FROM bs_2016_annual_meeting_employee a
+    WHERE a.employee_name
+    NOT IN
+    (SELECT b.note FROM bs_activity_lucky_draw b WHERE b.award_id IN (30,31,32,33,34,35,36))
+  </select>
+
+  <select id="selectLargestAward" resultMap="annualVOResultMap" parameterType="com.pinting.business.model.vo.EndOf2016CompanyAnnualVO">
+    SELECT a.employee_name
+    FROM bs_2016_annual_meeting_employee a
+    WHERE a.employee_name
+    NOT IN
+    (SELECT b.note FROM bs_activity_lucky_draw b WHERE b.award_id IN (30,31,32,33,34,35,36)) AND a.company_name NOT IN ('信邦')
+  </select>
+
+  <select id="selectNumberOfWinners" resultType="java.lang.Integer" parameterType="java.util.Map">
+    SELECT
+    COUNT(*)
+    FROM bs_2016_annual_meeting_employee a, bs_activity_lucky_draw b
+    WHERE a.employee_name = b.note
+    AND b.award_id = #{activityAwardId,jdbcType=INTEGER}
+  </select>
+
+    <update id="revertWin" parameterType="map" >
+        update bs_2016_annual_meeting_employee
+        set is_win = 'N',
+        award_id = null,
+        update_time = now(),
+        win_time = null
+        where is_win = 'Y'
+    </update>
+</mapper>

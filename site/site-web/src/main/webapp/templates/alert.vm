@@ -1,0 +1,158 @@
+
+<style>
+#mask {
+display: block;
+width: 100%;
+height: 100%;
+background: #000;
+z-index: 999999;
+position: fixed;
+top: 0;
+left: 0;
+opacity:0.5;
+}
+
+.b-popup {
+    display: block;
+    width: 500px;
+    -webkit-border-radius: 3px;
+    border-radius:3px;
+    -webkit-transition: all  0.20s  ease-in-out;
+    transition: all 0.20s  ease-in-out;
+    z-index: 15;
+    background: #fff;
+	top:50%;
+	left:50%;
+	margin-left: -250px;
+	margin-top: -90px;
+	position: fixed;
+	text-align:center;
+	padding: 20px 30px;
+}
+
+.b-popup .b-popup-title{
+    font-size:16px;
+	text-align:center;
+    color: #ff6633;
+	line-height: 20px;
+	margin-bottom: 20px;;
+}
+
+.b-popup .b-popup-content {
+	margin-bottom: 20px;
+    color: #999;
+    font-size:14px;
+	min-height: 40px;
+	line-height: 20px;
+}
+
+.b-popup .b-popup-button {
+	border-top:1px solid #1D9FE8;	
+	margin:0;
+}
+
+.b-popup .b-popup-button>a{
+	width:140px;
+	text-align:center;
+	height: 40px;
+	line-height: 40px;
+	background: #ff6633;
+	color:#fff;
+	margin: 0 40px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+	float: left;
+}
+.b-popup .b-popup-button>a:first-child {
+	border: solid 1px #e5e5e5;
+	background: #f5f5f5;
+	color: #999;
+}
+#J_join .ab {position:absolute;right:0px;top:0px;}
+#J_join .ab img {height:30px;}
+#J_join .b-popup-content {margin:50px auto;width:80%;}
+#J_join .b-popup-content .item {margin-bottom:2px;color:#646464;}
+</style>
+<div id="mask" style="display:none;"></div>
+<div class="b-popup" id="J_popup" style="display:none;">
+	<div class="b-popup-title">请勿重复报名！</div>
+    <div class="b-popup-content">您可以在'个人中心'->'我报名的活动'里实时的管理活动</div>
+    <div class="b-popup-button">
+    	<a href="javascript:;"  class="back">取消</a>
+        <a href="javascript:;"  class="submit">确定</a>
+    	<div style="clear:both"></div>
+    </div>
+</div>
+
+<script>
+function myAlert(obj)
+{
+	this.id=obj.id;
+	this.title=obj.title;	
+	this.content=obj.content;	
+	this.goback=obj.goback||"取消";	
+	this.commit=obj.commit||"确定";	
+	this.target=obj.eventTarget;
+	this.goback=obj.goback;
+	this.commit=obj.commit;
+	this.show=function(){
+		$("html").css({
+                 "height": "100%",
+                 "overflow": "hidden"   //让滚动条消失
+        });
+		var screenWidth=$(document).width();
+		var popScroll=document.documentElement.scrollTop || document.body.scrollTop;
+		var screenHeight=$(document).height();
+		var popWidth=280;
+		var popHeight=$("#"+this.id).height();
+		//alert(popScroll+" "+popHeight);
+		$("#mask").css({
+			"display":"block",	
+		});
+		$("#"+this.id).css({
+			"display":"block"
+		});
+		
+	};
+	this.hide=function(){
+		$("#mask").add("#"+this.id).hide();
+		$("html").css({
+                 "overflow": "auto"  //让滚动条显示
+        });
+	};
+}
+
+myAlert.prototype={
+	init:function(){
+		var _this=this;
+		$("#"+this.target).bind("click",function(){
+			_this.show();	
+		});	
+		$("#"+this.id).find(".b-popup-title").html(this.title);
+		$("#"+this.id).find(".b-popup-content").html(this.content);
+		$("#"+this.id).find(".back").html(this.goback[0]);
+		$("#"+this.id).find(".submit").html(this.commit[0]);
+		if(this.goback[1])
+		{
+			$("#"+this.id).find(".back").attr("href",this.goback[1]);
+		}else
+		{
+			$("#"+this.id).find(".back").bind("click",function(){
+				_this.hide();		
+			});	
+		}
+		if(this.commit[1])
+		{
+			$("#"+this.id).find(".submit").attr("href",this.commit[1]);
+		}else
+		{
+			$("#"+this.id).find(".submit").bind("click",function(){
+				_this.hide();		
+			});	
+		}
+		
+	}
+	
+};
+</script>

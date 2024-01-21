@@ -1,0 +1,90 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/platformData/inventoryDataIndex.htm')" method="post" id="myform" class="pageForm required-validate">
+    	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+    	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    	<input type="hidden" name="pageNum" value="$!pageNum" />
+    	<input type="hidden" name="queryFlag" value="QUERY" />
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+					   	时间： <input name="endTime"  type="text" id="endTime" dateFmt="yyyy-MM-dd HH:mm:ss" class="date dateInitEnd textInput readonly" readonly="true" size="15"  value="$!endTime" />
+					</td>
+					<td>
+						站岗户：
+						<select name="productType" >
+							<option value="ALL" #if("$!productType"=="ALL") selected #end>全部</option>
+							<option value="AUTH_YUN" #if("$!productType"=="AUTH_YUN") selected  #end>云贷</option>
+							<option value="AUTH_7" #if("$!productType"=="AUTH_7") selected  #end>7贷</option>
+							<option value="AUTH_FREE" #if("$!productType"=="AUTH_FREE") selected  #end>自由站岗户</option>
+						</select>
+						&nbsp;&nbsp;
+						资产合作方：
+						<select name="partnerCode" >
+							<option value="" #if("$!partnerCode"=="") selected #end>全部</option>
+							<option value="YUN_DAI_SELF" #if("$!partnerCode"=="YUN_DAI_SELF") selected  #end>云贷</option>
+							<option value="7_DAI_SELF" #if("$!partnerCode"=="7_DAI_SELF") selected  #end>7贷</option>
+						</select>
+						&nbsp;&nbsp;
+						<span style="margin-left:20px;">
+							<button  onclick="func()" type="button">查询</button>
+                        </span>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	
+	<table class="table" width="896" layoutH="128">
+		<thead>
+			<tr>
+                <th width="40%">投资余额(本)</th>
+				<th width="40%">待还余额(本)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr target="sid_user" rel="1">
+				
+				<td>$!money.format($!financesAuthBalance)</td>	 
+				<td>$!money.format($!loanRepayBalance)</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共1条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+
+<script>
+function func(){
+	var endTime = $("#endTime").val();
+	if((endTime == null || endTime == "")){
+        alertMsg.warn("截止时间不能为空，请输入对应的时间！");
+        return false;
+    }
+
+	var url = $("#APP_ROOT_PATH").val() + "/platformData/inventoryDataIndex.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+</script>

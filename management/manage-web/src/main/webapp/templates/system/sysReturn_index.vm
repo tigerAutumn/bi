@@ -1,0 +1,111 @@
+<div class="pageHeader">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+	<form id="checkForm" method="post" action="$env.getWebURL('/sysReturn/checkBefore.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+    	<div class="pageFormContent nowrap" layoutH="700">
+    		<dl>
+    			<dt>输入批次号：</dt>
+    			<dd>
+    				<textarea name="batchIds" id="batchIds" cols="80" rows="4" tools="simple"  placeholder="请输入批次号，多个用逗号隔开">$!batchIds</textarea>
+        			
+				</dd>
+                <dd><div class="buttonActive" style="margin-top:30px;"><div class="buttonContent"><button type="button" onclick="checkBefore()">检索</button></div></div></dd>
+    		</dl>
+        </div>
+	</form>
+</div>
+	
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<span style="margin-left:10px;">
+				<font color="red">应还总本金：#if("$!sumPrincipal" != "") $!money.format($!sumPrincipal) 元#else 0.00 元 #end</font>
+			</span>
+			<span style="margin-left:10px;">
+				<font color="red">应还总金额：#if("$!sumTotal" != "") $!money.format($!sumTotal) 元#else 0.00 元 #end</font>
+			</span>
+		</ul>
+	</div>
+	<table class="table" width="1000" layoutH="478" >
+		<thead>
+			<tr>
+				<th width="5%">序号</th>
+				<th width="19%">批次号</th>
+				<th width="19%">理财周期（天）</th>
+				<th width="19%">本次赎回本金</th>
+				<th width="19%">本次应付利息</th>
+				<th width="19%">总计</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $list)
+				<tr>
+    				<td>$grid.rowno</td>
+    				<td>$grid.sendBatchId</td>
+    				<td>$grid.term</td>
+    				<td>$grid.principal</td>
+    				<td>$grid.interest</td>
+    				<td>$grid.total</td>
+                </tr>
+			#end
+        </tbody>
+    </table>
+	
+	#if("$!sumTotal" != "")
+        <div class="panelBar"></div>
+		<div style="margin-top:20px;">
+			<span style="margin-left:10px;">
+    			<font color="red">注意：如赎回本金核对与表格不一致，或者总计与打款不一致，请勿操作执行！！！</font>
+    		</span>
+        </div>
+		
+		<div class="buttonActive" style="margin-left:30px;margin-top:30px;"><div class="buttonContent"><button type="button" onclick="doReturn()">批量执行</button></div></div>
+	#end
+</div>
+	
+<script>
+	function checkBefore(){
+		var batchIds = $("#batchIds").val();
+		if(batchIds == ''){
+			alertMsg.warn('批次号不能为空！');
+		}
+		$("#checkForm").submit();
+	}
+	
+	function navTabAjaxDone(json) {
+		var batchIds=$("#batchIds").val();
+		if (json.statusCode == 200) {
+			navTab.reload("$env.getWebURL('/sysReturn/checkAfter.htm?batchIds=')"+batchIds);
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+				navTab.reload("$env.getWebURL('/sysReturn/index.htm')");
+			}
+		}
+	}
+	
+	function doReturn(){
+		var url = $("#APP_ROOT_PATH").val() +"/sysReturn/doSysReturn.htm";
+		var batchIds=$("#batchIds").val();
+		alertMsg.confirm("请二次确认！",{
+			okCall: function(){
+				jQuery.ajax({
+    				url:url,
+    				data:{
+						batchIds : batchIds
+    				},
+    				type:'post',
+    				success: function(data){
+        				if(data.statusCode == '200'){
+        					alertMsg.correct('操作成功！');
+							navTab.closeCurrentTab();
+        					navTab.reload("$env.getWebURL('/sysReturn/index.htm')");
+        				}else{
+        					alertMsg.error('操作失败!');
+        					navTab.reload("$env.getWebURL('/sysReturn/index.htm')");
+        				}
+					}
+				});
+			}
+		});
+	}
+</script>

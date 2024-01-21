@@ -1,0 +1,559 @@
+#Html("begin")
+#GenHead("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+##LoadGenCSS("/resources/gen2.0/styles/activity/default")
+#LoadGenCSS("/resources/gen2.0/styles/activity/ecup2016/index")
+#LoadGenJS("/resources/gen2.0/scripts/common/Custom")
+
+#LoadGenJS("/resources/gen2.0/scripts/activity/ecup2016/index")
+#LoadGenJS("/resources/gen2.0/scripts/activity/ecup2016/ecup_index")
+##LoadGenJS("/resources/gen2.0/scripts/activity/ecup2016/PIE")
+<!--[if lte IE 8]> 
+            <script src="$!env.get('gen.server.web')/resources/gen2.0/scripts/activity/ecup2016/PIE.js" type="text/javascript" charset="utf-8"></script>
+ <![endif]-->
+
+        <script type="text/javascript">
+            $(function() {
+                if (window.PIE) {
+                    $('.rounded').each(function() {
+                        PIE.attach(this);
+                    });
+                }
+            });
+        </script>
+#GenHead("end")
+<body class="body">
+	#Gen2Header("home")
+    <input type="hidden" id="APP_ROOT_PATH_GEN" value="$!env.get('gen.server.web')"/>
+	<input type="hidden" id="now" value="$!now"/>
+	<input type="hidden" id="now_new" value="$!now"/>
+	#if($!ecupPro.size() > 0)
+		<input type="hidden" id="ecup_start_time" value="$!ecupPro.get(0).startTime"/>
+    	<input type="hidden" id="ecup_end_time" value="$!ecupPro.get(0).endTime"/>
+    	<input type="hidden" id="ecup_status" value="$!ecupPro.get(0).status"/>
+		<input type="hidden" id="ecup_pro_left_amount" value='$string.replace($!money.format($!{ecupPro.get(0).leftAmount}), ".00","")'/>
+	#else
+	#end
+	#if($!newUserPro.size() > 0)
+		<input type="hidden" id="newUser_start_time" value="$!newUserPro.get(0).startTime"/>
+    	<input type="hidden" id="newUser_end_time" value="$!newUserPro.get(0).endTime"/>
+    	<input type="hidden" id="newUser_status" value="$!newUserPro.get(0).status"/>
+		#set($overAmount2 = ($!newUserPro.get(0).maxTotalAmount - $!newUserPro.get(0).currTotalAmount)/100000 )
+    	<input type="hidden" id="new_pro_left_amount" value="$!number.format("0",$overAmount2)"/>
+	#else
+	#end
+	
+	<input type='hidden' id='champion_team'/>
+	<input type='hidden' id='silver_team'/>
+	<input type="hidden" id="page" name="page" value="0" />
+	<input type="hidden" id="totalCount" name="totalCount" value="$!totalCount" />
+	<input type="hidden" id="userChampion" value="$!userChampion" />
+	<input type="hidden" id="userSilver" value="$!userSilver" />
+	<input type="hidden" id="show" value="$!show"/>
+		<!--banner-->
+		<div class="banner"></div>
+		<!--main-->
+		<div class="main_cont">
+			<!--特享区-->
+			<div class="main_Premium">
+				<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/main_Premium1.png" class="main_preimg1" />
+				<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/main_Premium2.png" class="main_preimg2" />
+				
+				<div class="main_prezone1 ">
+					<div class="main_pre1">
+						<div class="main_pretop">
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/main_Premium6.png" class="main_preimg3" />
+							<span class="main_prespan1">欧洲杯新手专享</span>
+						</div>
+						<div class="main_precenter rounded">
+							<div class="main_preleft">
+								<div class="main_preraise main_preraise1">
+									<div class="main_preopacity"></div>
+									<span class="main_preraisespan main_preraisespan1">投资送iPhone 6s plus 64G</span>                                    
+								</div>
+								<div class="main_prerates">
+									<i class="main_preratesi">每天限量</i><span class="main_preratesspan">5台</span>
+								</div>
+							</div>
+							#if($!newUserPro.size() > 0)
+    							#if($!ecupStatus == 'noStart')
+                    				<!--状态5-->
+        							<div class="main_preright">
+        								<div class="main_prerimg"></div>
+        								<!--<div class="main_closetime">活动期间10点准时开抢</div>-->
+        								<div class="main_byebtn">
+        									<a href="$!env.get('gen.server.web')/gen2.0/regular/index?id=$!newUserPro.get(0).id" class="main_byebtna2">
+        										<!--<div class="main_byetxt">还剩300,000元</div>-->
+        										<div class="main_byetime" style="line-height:48px;font-size: 36px;color:#8b8989;">敬请期待</div>
+        									</a>
+        								</div>
+        							</div>
+                    			#elseif($!ecupStatus == 'isEnd')
+                    				<!--状态4-->
+        							<div class="main_preright">
+        								<div class="main_prerimg"></div>
+        								<!--<div class="main_closetime">活动期间10点准时开抢</div>-->
+        								<div class="main_byebtn">
+        									<a href="$!env.get('gen.server.web')/gen2.0/regular/index?id=$!newUserPro.get(0).id" class="main_byebtna2">
+        										<!--<div class="main_byetxt">还剩300,000元</div>-->
+        										<div class="main_byetime" style="line-height:48px;font-size: 36px;color:#8b8989;">活动已结束</div>
+        									</a>
+        								</div>
+        							</div>
+                    			#else
+    								#if($!newUserPro.get(0).status == 5)
+    									<!--状态1-->
+            							<div class="main_preright">
+            								<div class="main_prerimg"></div>
+            								<div class="main_closetime top_show_text">仅限首次加入</div>
+            								<!--倒计时-->
+            								<div class="main_byebtn">
+            									<a href="$!env.get('gen.server.web')/gen2.0/regular/index?id=$!newUserPro.get(0).id" class="main_byebtna">
+            										<div class="main_byetxt middle_show_text">每天10点准时开抢</div>
+            										<div class="main_byetime bottom_show_text"></div>
+            									</a>
+            								</div>
+            							</div>
+                    				#elseif($!newUserPro.get(0).status == 6)
+                    					<!--状态2-->
+            							<div class="main_preright">
+            								<div class="main_prerimg"></div>
+            								<div class="main_closetime top_show_text">仅限首次加入</div>
+            								<div class="main_byebtn">
+            									<a href="$!env.get('gen.server.web')/gen2.0/regular/index?id=$!newUserPro.get(0).id" class="main_byebtna1">
+            										<div class="main_byetxt middle_show_text">还剩$!number.format("0",$overAmount2)台iPhone 6s plus</div>
+            										<div class="main_byetime bottom_show_text">立即开抢</div>
+            									</a>
+            								</div>
+            							</div>
+                    				#elseif($!newUserPro.get(0).status == 7)
+                    					<!--状态3-->
+            							<div class="main_preright">
+            								<div class="main_prerimg"></div>
+            								<div class="main_closetime top_show_text">活动期间每天10点准时开抢</div>
+            								<div class="main_byebtn">
+            									<a href="$!env.get('gen.server.web')/gen2.0/regular/index?id=$!newUserPro.get(0).id" class="main_byebtna">
+            										<!--<div class="main_byetxt">还剩300,000元</div>-->
+            										<div class="main_byetime bottom_show_text" style="line-height:48px;">标的已完成</div>
+            									</a>
+            								</div>
+            							</div>
+                    				#end
+								#end
+							#else
+								<!--状态5-->
+    							<div class="main_preright">
+    								<div class="main_prerimg"></div>
+    								<!--<div class="main_closetime">活动期间10点准时开抢</div>-->
+    								<div class="main_byebtn">
+    									<a href="javascript:void(0)" class="main_byebtna2">
+    										<!--<div class="main_byetxt">还剩300,000元</div>-->
+    										<div class="main_byetime" style="line-height:48px;font-size: 36px;color:#8b8989;">敬请期待</div>
+    									</a>
+    								</div>
+    							</div>
+							#end
+						</div>
+					</div>
+				</div>
+				
+				<div class="main_prezone1 main_prezone2">
+					<div class="main_pre1">
+						<div class="main_pretop">
+							<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/main_Premium6.png" class="main_preimg3" />
+							<span class="main_prespan1">欧洲杯特享</span>
+						</div>
+						<div class="main_precenter rounded">
+							<div class="main_preleft">
+								<div class="main_preraise">
+									<div class="main_preopacity"></div>
+									<span class="main_preraisespan"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/main_Premium8.png" class="main_preraiseimg"/>固定加息1%</span>
+								</div>
+								<div class="main_prerates">
+									<i class="main_preratesi">每天限量</i><span class="main_preratesspan">50万</span>
+								</div>
+							</div>
+							#if($!ecupPro.size() > 0)
+								#if($!ecupStatus == 'noStart')
+                    				<!--状态5-->
+        							<div class="main_preright">
+        								<div class="main_prerimg"></div>
+        								<!--<div class="main_closetime">活动期间10点准时开抢</div>-->
+        								<div class="main_byebtn">
+        									<a href="$!env.get('gen.server.web')/gen2.0/regular/index?id=$!ecupPro.get(0).id" class="main_byebtna2">
+        										<!--<div class="main_byetxt">还剩300,000元</div>-->
+        										<div class="main_byetime" style="line-height:48px;font-size: 36px;color:#8b8989;">敬请期待</div>
+        									</a>
+        								</div>
+        							</div>
+                    			#elseif($!ecupStatus == 'isEnd')
+                    				<!--状态4-->
+        							<div class="main_preright">
+        								<div class="main_prerimg"></div>
+        								<!--<div class="main_closetime">活动期间10点准时开抢</div>-->
+        								<div class="main_byebtn">
+        									<a href="$!env.get('gen.server.web')/gen2.0/regular/index?id=$!ecupPro.get(0).id" class="main_byebtna2">
+        										<!--<div class="main_byetxt">还剩300,000元</div>-->
+        										<div class="main_byetime" style="line-height:48px;font-size: 36px;color:#8b8989;">活动已结束</div>
+        									</a>
+        								</div>
+        							</div>
+                    			#else
+    								#if($!ecupPro.get(0).status == 5)
+    									<!--状态1-->
+            							<div class="main_preright">
+            								<div class="main_prerimg"></div>
+            								<div class="main_closetime show_time_text">疯抢1小时售完即止</div>
+            								<div class="main_byebtn">
+            									<a href="$!env.get('gen.server.web')/gen2.0/regular/index?id=$!ecupPro.get(0).id" class="main_byebtna">
+            										<div class="main_byetxt small_btn_text">每天10点准时开抢</div>
+            										<div class="main_byetime main_btn_text"></div>
+            									</a>
+            								</div>
+            							</div>
+                    				#elseif($!ecupPro.get(0).status == 6)
+                    					<!--状态2-->
+            							<div class="main_preright">
+            								<div class="main_prerimg"></div>
+            								<div class="main_closetime show_time_text"></div>##剩余时间 59分22秒
+            								<div class="main_byebtn">
+            									<a href="$!env.get('gen.server.web')/gen2.0/regular/index?id=$!ecupPro.get(0).id" class="main_byebtna1">
+            										<div class="main_byetxt small_btn_text">还剩$string.replace($!money.format($!{ecupPro.get(0).leftAmount}), ".00","")元</div>
+            										<div class="main_byetime main_btn_text">立即开抢</div>
+            									</a>
+            								</div>
+            							</div>
+                    				#elseif($!ecupPro.get(0).status == 7)
+                    					<!--状态3-->
+            							<div class="main_preright">
+            								<div class="main_prerimg"></div>
+            								<div class="main_closetime show_time_text">活动期间每天10点准时开抢</div>
+            								<div class="main_byebtn">
+            									<a href="$!env.get('gen.server.web')/gen2.0/regular/index?id=$!ecupPro.get(0).id" class="main_byebtna">
+            										<!--<div class="main_byetxt">还剩300,000元</div>-->
+            										<div class="main_byetime main_btn_text" style="line-height:48px;">标的已完成</div>
+            									</a>
+            								</div>
+            							</div>
+                    				#end
+                    			#end
+							#else
+								<!--状态5-->
+    							<div class="main_preright">
+    								<div class="main_prerimg"></div>
+    								<!--<div class="main_closetime">活动期间10点准时开抢</div>-->
+    								<div class="main_byebtn">
+    									<a href="javascript:void(0)" class="main_byebtna2">
+    										<!--<div class="main_byetxt">还剩300,000元</div>-->
+    										<div class="main_byetime" style="line-height:48px;font-size: 36px;color:#8b8989;">敬请期待</div>
+    									</a>
+    								</div>
+    							</div>
+							#end
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--竞猜区-->
+			<div class="guessing">
+				<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/guessingbg.png" style="position:absolute;top:1634px;left:0;" />
+				<div class="guess_c">
+					<h3 class="guess_ch3"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/guessing1.png"/></h3>
+					<div class="guess_top rounded">
+						<ul class="guess_top1">
+							<li class="guess_top1li">
+								<div class="guess_topyuan rounded"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/max1.png" /></div>
+								<div class="guess_toptxt">
+									<div class="guess_toptxt1">冠军支持率：<span class="guess_toptxtspan">$!championList.get(0).championRate%</span></div>
+									<div class="guess_toptxt1">亚军支持率：<span class="guess_toptxtspan">$!silverList.get(0).silverRate%</span></div>
+									<div class="guess_toptxt2">波兰足球协会成立于1919年12月，“波兰铁军”在上世纪曾经威震世界，74年的西德世界杯和82年的西班牙世界杯，两次荣获季军。</div>
+								</div>
+
+							</li>
+							<li class="guess_top1li guess_top1licopy">
+								<div class="guess_topyuan rounded"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/max3.png" /></div>
+								<div class="guess_toptxt">
+									<div class="guess_toptxt1">冠军支持率：<span class="guess_toptxtspan">$!championList.get(1).championRate%</span></div>
+									<div class="guess_toptxt1">亚军支持率：<span class="guess_toptxtspan">$!silverList.get(1).silverRate%</span></div>
+									<div class="guess_toptxt2">威尔士男子足球代表队在1876年3月25日成立，早年的国际赛只限于英伦三岛四队的比赛，包括本土四角锦标赛，总共夺得12届冠军。</div>
+								</div>
+
+							</li>
+							<li class="guess_top1li">
+								<div class="guess_topyuan rounded"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/max2.png" /></div>
+								<div class="guess_toptxt">
+									<div class="guess_toptxt1">冠军支持率：<span class="guess_toptxtspan">$!championList.get(2).championRate%</span></div>
+									<div class="guess_toptxt1">亚军支持率：<span class="guess_toptxtspan">$!silverList.get(2).silverRate%</span></div>
+									<div class="guess_toptxt2">葡萄牙国家队由葡萄牙足协领导，代表葡萄牙国家参加A级际比赛。04年欧锦赛上取得亚军，是2016年欧锦赛决赛圈的种子队之一。</div>
+								</div>
+
+							</li>
+							<li class="guess_top1li guess_top1licopy">
+								<div class="guess_topyuan rounded"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/max7.png" /></div>
+								<div class="guess_toptxt">
+									<div class="guess_toptxt1">冠军支持率：<span class="guess_toptxtspan">$!championList.get(3).championRate%</span></div>
+									<div class="guess_toptxt1">亚军支持率：<span class="guess_toptxtspan">$!silverList.get(3).silverRate%</span></div>
+									<div class="guess_toptxt2">法国国家男子足球队是法国足球总会领导的国家级别足球队。法国队史世界杯射手王方丹、科帕、皮安托尼的三叉戟攻击力扬名欧洲。</div>
+								</div>
+
+							</li>
+							<li class="guess_top1li">
+								<div class="guess_topyuan rounded"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/max5.png" /></div>
+								<div class="guess_toptxt">
+									<div class="guess_toptxt1">冠军支持率：<span class="guess_toptxtspan">$!championList.get(4).championRate%</span></div>
+									<div class="guess_toptxt1">亚军支持率：<span class="guess_toptxtspan">$!silverList.get(4).silverRate%</span></div>
+									<div class="guess_toptxt2">德国国家男子足球代表队，由德国足球协会负责管辖，代表德国参加大型国际性足球赛事，是世界上历史最悠久、战绩最辉煌的豪门球队之一。</div>
+								</div>
+
+							</li>
+							<li class="guess_top1li guess_top1licopy">
+								<div class="guess_topyuan rounded"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/max4.png" /></div>
+								<div class="guess_toptxt">
+									<div class="guess_toptxt1">冠军支持率：<span class="guess_toptxtspan">$!championList.get(5).championRate%</span></div>
+									<div class="guess_toptxt1">亚军支持率：<span class="guess_toptxtspan">$!silverList.get(5).silverRate%</span></div>
+									<div class="guess_toptxt2">比利时国家男子足球队是比利时的官方足球队，由比利时足球协会管理。曾夺得1920年和1900年奥运会足球项目的金牌和铜牌。</div>
+								</div>
+							</li>
+							<li class="guess_top1li">
+								<div class="guess_topyuan rounded"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/max6.png" /></div>
+								<div class="guess_toptxt">
+									<div class="guess_toptxt1">冠军支持率：<span class="guess_toptxtspan">$!championList.get(6).championRate%</span></div>
+									<div class="guess_toptxt1">亚军支持率：<span class="guess_toptxtspan">$!silverList.get(6).silverRate%</span></div>
+									<div class="guess_toptxt2">意大利国家男子足球队是意大利足协所组织的国家级足球队，代表意大利足球的精神面貌与最高水平。意大利队曾赢得四届世界杯冠军。</div>
+								</div>
+							</li>
+							<li class="guess_top1li guess_top1licopy">
+								<div class="guess_topyuan rounded"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/max8.png" /></div>
+								<div class="guess_toptxt">
+									<div class="guess_toptxt1">冠军支持率：<span class="guess_toptxtspan">$!championList.get(7).championRate%</span></div>
+									<div class="guess_toptxt1">亚军支持率：<span class="guess_toptxtspan">$!silverList.get(7).silverRate%</span></div>
+									<div class="guess_toptxt2">冰岛国家男子足球队是冰岛的足球代表队，由冰岛足球协会管理。成功晋级2016年欧洲杯，首次打入国际型大赛。绝对冷门！！！</div>
+								</div>
+							</li>
+						</ul>
+						<!--猜之前-->
+						#if($!userFlag == 'No')
+						<div class="guess_top2 rounded" style="display:block;">
+							<div class="guess_flag">
+								<div class="guess_flagleft">
+									<h4 class="guess_flaglefth4"><i class="guess_flaglefti">我猜冠军是</i><span class="guess_flagleftspan">选择“投注”的球队</span></h4>
+									<ul class="guess_flagleftul">
+										<li><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/flag1.png" />
+											<div>波兰</div>
+										</li>
+										<li><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/flag2.png" />
+											<div>威尔士</div>
+										</li>
+										<li><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/flag5.png" />
+											<div>葡萄牙</div>
+										</li>
+										<li><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/flag4.png" />
+											<div>法国</div>
+										</li>
+										<li><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/flag3.png" />
+											<div>德国</div>
+										</li>
+										<li><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/flag6.png" />
+											<div>比利时</div>
+										</li>
+										<li><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/flag7.png" />
+											<div>意大利</div>
+										</li>
+										<li><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/flag8.png" />
+											<div>冰岛</div>
+										</li>
+									</ul>
+								</div>
+								<div class="guess_flagright">
+									<h4 class="guess_flaglefth4"><i class="guess_flaglefti">我猜亚军是</i><span class="guess_flagleftspancopy">选择“投注”的球队</span></h4>
+									<ul class="guess_flagleftulcopy">
+										<li><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/flag1.png" />
+											<div>波兰</div>
+										</li>
+										<li><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/flag2.png" />
+											<div>威尔士</div>
+										</li>
+										<li><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/flag5.png" />
+											<div>葡萄牙</div>
+										</li>
+										<li><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/flag4.png" />
+											<div>法国</div>
+										</li>
+										<li><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/flag3.png" />
+											<div>德国</div>
+										</li>
+										<li><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/flag6.png" />
+											<div>比利时</div>
+										</li>
+										<li><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/flag7.png" />
+											<div>意大利</div>
+										</li>
+										<li><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/flag8.png" />
+											<div>冰岛</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<a class="flag_btna"><img class="flag_btnaimg" src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/glag_btn1.png"/><span class="flag_btnaspan">我要赢奖品</span></a>
+						</div>
+						#else
+						<!--猜之后-->
+						<div class="guess_top2 rounded" id="show_after" style='display:block'>
+							<div class="back_top">
+								<div class="back_l">
+									<h5>我猜冠军是：<b>$!userChampion</b></h5>
+									<img class="champion_img" src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/3.jpg" style="width:146px;height:84px;margin-top: 16px;" />
+									<div class="back_more"><span class="back_morespan" style="width:$!userChampionRate%"></span></div>
+									<p class="back_morep">$!userChampionRate%用户支持</p>
+								</div>
+								<div class="back_r">
+									<h5>我猜亚军是：<b>$!userSilver</b></h5>
+									<img class="silver_img" src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/3.jpg" style="width:146px;height:84px;margin-top: 16px;" />
+									<div class="back_more"><span class="back_morespan" style="width:$!userSilverRate%"></span></div>
+									<p class="back_morep">$!userSilverRate%用户支持</p>
+								</div>
+							</div>
+							<div class="back_bottom">
+								<div class="back_bl">
+									<img src="$!matrix" style="width:125px;height:125px;margin-left: 297px;" />
+									<div style="font-size: 18px;line-height: 18px;color:#fff;margin:10px 0 0 286px">扫码分享邀请助力</div>
+								</div>
+								<div class="back_br">
+									<div class="back_btxt1">助力值：<span>$!userSupportNum</span>
+										#set($num = 20 - $!userSupportNum)
+                            			#if($num >0)
+                            				#if(0>$!overLuckyNum )
+                            					（还剩0个名额）
+                            				#else
+                            					（还剩$!overLuckyNum个名额）
+                            				#end
+                            			#else
+                            				#if(500 >= $!userSupportRanking)
+                            					（助力成功排名第$!userSupportRanking）
+                            				#else
+                            					（还剩0个名额）
+                            				#end
+										#end
+									</div>
+									<div class="back_btxt2">助力值最先达到20的前500名用户可获得30元奖励金</div>
+									<a class="back_btxt3">助力排行榜</a>
+								</div>
+							</div>
+						</div>
+						#end
+						<div class="guess_top3 rounded">
+							<div class="prize_h4"></div>
+							<div class="prize">
+								<div class="prize_left">
+									<div class="l_table1">奖项</div>
+									<div class="l_table2">
+										<div class="l_table2txt">专业球迷奖</div><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/prize3.png" /></div>
+									<div class="l_table3">疯狂球迷奖</div>
+									<div class="l_table4">幸运球迷奖</div>
+
+								</div>
+								<div class="prize_center">
+									<div class="c_table1">排名</div>
+									<div class="c_table3">前三名</div>
+									<div class="c_table3">4~7</div>
+									<div class="c_table3">8~15</div>
+									<div class="c_table3">16~40</div>
+									<div class="c_table3">41~100</div>
+									<div class="c_table3">助力值前500名</div>
+									<div class="c_table4">随机500名</div>
+								</div>
+								<div class="prize_right">
+									<div class="r_table1">奖品</div>
+									<div class="r_table3">Apple Watch</div>
+									<div class="r_table3">红米note3</div>
+									<div class="r_table3">300元话费</div>
+									<div class="r_table3">80元奖励金</div>
+									<div class="r_table3">30元奖励金</div>
+									<div class="r_table3">30元奖励金</div>
+									<div class="r_table4">5元奖励金</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="rule">
+						<div class="rule_left">活动规则：</div>
+						<div class="rule_right">
+							<p><span class="rule_rspan">1.</span><i class="rule_ri">活动时间：6月29日-7月11日；</i></p>
+							<p><span class="rule_rspan">2.</span><i class="rule_ri">获得iPhone 6s plus 64G的用户，平台将会在5个工作日内由客服回访用户确认用户信息，尽快寄出手机；</i></p>
+							<p><span class="rule_rspan">3.</span><i class="rule_ri">获得专业球迷奖实物奖励的用户，平台将会在活动结束后5个工作日内由客服回访用户确认用户信息，尽快寄出物品；</i></p>
+							<p><span class="rule_rspan">4.</span><i class="rule_ri">好友推荐奖励覆盖欧洲杯特享标和欧洲杯新手专享标；</i></p>
+							<p><span class="rule_rspan">5.</span><i class="rule_ri">欧洲杯新手专享标仅限未投资的新用户购买；</i></p>
+							<p><span class="rule_rspan">6.</span><i class="rule_ri">活动期间每位用户最多可为3位好友助力；</i></p>
+							<p><span class="rule_rspan">7.</span><i class="rule_ri">奖励金将在活动结束后的3个工作日内，发放至用户账户，微信及app：可在“我的资产—我的奖励”中查看，电脑：可在“我的账户—邀请好友”中查看；</i></p>
+							<p><span class="rule_rspan">8.</span><i class="rule_ri rule_ricopy">奖励金转到余额后方可提现；</i></p>
+							<p><span class="rule_rspan">9.</span><i class="rule_ri"><b class="rule_rispan">竞猜奖项可重复，可叠加</b>（获得专业球迷奖的同时可获得另外两项奖励）；</i></p>
+							<p><span class="rule_rspan">10.</span><i class="rule_ri">对于违规及作弊者（包括但不限于恶意注册虚假帐号、恶意刷奖等），币港湾将取消其相应奖励。</i></p>
+						</div>
+					</div>
+                    <div class="foot_bottom">
+                        <p>本次活动的最终解释权归币港湾所有</p>
+                    <p>如有疑问可致电币港湾客服：400-806-1230</p>
+                    </div>
+				</div>
+			</div>
+		</div>
+		<!--遮盖层-->
+		<div class="bg"></div>
+		<!--弹窗1-->
+		<div class="window1" style="display: none;">
+			<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/win1.png" />
+			<div class="window1img">邀请好友来助力，前500名可获得30元奖励金</div>
+			<a href="$!env.get('gen.server.web')/gen2.0/activity/ecup/ecup2016_index?show=show_after" class="window1btn go_share">确定</a>
+			<a href="javascript:void(0)" class="window1close"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/win3.png" /></a>
+		</div>
+		<!--弹窗2-->
+		<div class="window2" style="display: none;">
+			<div class="window1img2">请选择一个球队吧</div>
+			<a href="javascript:void(0)" class="window1close2"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/win3.png" /></a>
+		</div>
+		<!--弹窗3-->
+		<div class="window3" style="display: none;">
+			<div class="window1img2">冠亚军不能选同一支球队哦~</div>
+			<a href="javascript:void(0)" class="window1close2"><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/win3.png" /></a>
+		</div>
+		<div class="alert_window" style="display: none;">
+			<div class="alert_text">冠亚军不能选同一支球队哦~</div>
+			<a href="javascript:void(0)" class="alert_close">
+				<img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/win3.png" />
+			</a>
+		</div>
+		<!--4-->
+		<div class="prize_have" style="display: none;">
+			<h3 class="prize_nh3">助力排行榜<a><img src="$!env.get('gen.server.web')/resources/gen2.0/images/activity/ecup2016/win3.png" class="closeimg"/></a></h3>
+
+			<div class="prize_txt">
+				<ul class="prize_txtlong main">
+					#if($!dataGrid)
+    					#set($num = 0)
+        				#foreach($grid in $!dataGrid)
+        					#set($num = $num+1)
+    						<li><b>$num</b><span>$grid.mobile</span><i>完成助力</i></li>
+        				#end
+    				#else
+						<li><span style="    width: 100%;text-align: center;">当前还未产生排名</span></li>
+    				#end
+					
+				</ul>
+				<div id="showmore"></div>
+			</div>
+		</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</body>
+#Html("end")

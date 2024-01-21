@@ -1,0 +1,111 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{param.orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{param.orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/account/investMature/warm.htm')" method="post" id="myform" class="pageForm required-validate">
+		<input type="hidden" name="numPerPage" value="$!numPerPage" />
+		<input type="hidden" name="pageNum" value="$!pageNum" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						姓名：<input class="requested" id="userName" type="text" name="userName" value="$!req.userName" size="15" maxlength="4" style="width:120px; height:16px"/>
+						结算日期： <input name="settleBeginTime"  type="text" id="settleBeginTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.settleBeginTime)" /> 到 <input name="settleEndTime"  type="text" id="settleEndTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.settleEndTime)" />
+						<span style="margin-left:130px;">
+							<button onclick="func()" type="button">查询</button>
+                        </span>
+					</td>
+					
+				</tr>
+			</table>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="1396" layoutH="148">
+		<thead>
+			<tr>
+				<th width="3%">姓名</th>
+				<th width="6%">手机号</th>
+				<th width="11%">身份证</th>
+				<th width="6%">资产合作方</th>
+                <th width="7%">产品名称</th>
+				<th width="3.5%">期限</th>
+				
+				<th width="3.5%">利率</th>
+				<th width="5%">购买银行</th>
+				<th width="10%">购买银行卡号</th>
+				<th width="5%">购买金额</th>
+                <th width="5%">应提利息</th>
+				<th width="5%">提现银行</th>
+				<th width="7%">提现银行卡号</th>
+				
+				<th width="4%">账户状态</th>
+				<th width="9.5%">购买日期</th>
+				<th width="9.5%">到期提现日期</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $!warmList)
+			<tr target="sid_user" rel="1">
+				<td>#if("$!grid.userName" != "") $!grid.userName#end</td>
+				<td>#if("$!grid.mobile" != "") $!grid.mobile#end</td>
+				<td>#if("$!grid.idCard" != "") $!grid.idCard#end</td>
+				<td>$!grid.propertyName</td>
+                <td>$!grid.productName</td>
+				<td>
+					#set($Integer = 0)
+                    #if(0 > $Integer.parseInt("$!grid.term"))
+						#set($termNum = $Integer.parseInt("$!grid.term")*-1 ) $!termNum 天
+                    #else
+						$!grid.term 月
+                    #end
+				</td>
+				<td>$!grid.rate %</td>
+				<td>$!grid.buyBankName</td>
+				<td>$!grid.buyBankCard</td>
+				<td>$!grid.balance</td>
+				<td>$!grid.accmulationInerest</td>
+				<td>$!grid.bindBankName</td>
+				<td>$!grid.bindBankCard</td>
+				<td>$!message.get("ACCOUNT_STATUS_$!grid.accountStatus")</td>
+				<td>$!date.format($!grid.openTime)</td>
+				<td>$!date.format($!grid.investEndTime)</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+<script>
+function func(){
+	var settleBeginTime = $("#settleBeginTime").val();
+	var settleEndTime = $("#settleEndTime").val();
+	if(settleBeginTime != "" && settleEndTime != ""){
+		var result = Date.parse(settleEndTime.replace(/-/g,"/"))- Date.parse(settleBeginTime.replace(/-/g,"/"));
+		if(result < 0){
+			alert("结算时间的开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	$("#myform").submit();
+}
+</script>

@@ -1,0 +1,108 @@
+﻿$axure.loadCurrentPage({
+  "url":"充值三方支付页面（同绑卡）.html",
+  "generationDate":new Date(1423549442168.97),
+  "isCanvasEnabled":false,
+  "variables":["OnLoadVariable"],
+  "page":{
+    "packageId":"290fdd3057b841e38d96b97fb3612201",
+    "type":"Axure:Page",
+    "name":"充值三方支付页面（同绑卡）",
+    "notes":{
+},
+    "style":{
+      "baseStyle":"627587b6038d43cca051c114ac41ad32",
+      "pageAlignment":"near",
+      "fill":{
+        "fillType":"solid",
+        "color":0xFFFFFFFF},
+      "image":null,
+      "imageHorizontalAlignment":"near",
+      "imageVerticalAlignment":"near",
+      "imageRepeat":"auto",
+      "favicon":null,
+      "sketchFactor":"0",
+      "colorStyle":"appliedColor",
+      "fontName":"应用字体",
+      "borderWidth":"0"},
+    "adaptiveStyles":{
+},
+    "interactionMap":{
+},
+    "diagram":{
+      "objects":[{
+          "id":"36300a3db52747f0b47a4df2f210bb69",
+          "label":"",
+          "type":"imageBox",
+          "styleType":"imageBox",
+          "visible":true,
+          "style":{
+            "location":{
+              "x":2,
+              "y":0},
+            "size":{
+              "width":350,
+              "height":552}},
+          "adaptiveStyles":{
+},
+          "objects":[{
+              "id":"d17172cf6c3548f39e535e682ab68c47",
+              "label":"",
+              "isContained":true,
+              "type":"richTextPanel",
+              "styleType":"paragraph",
+              "visible":true,
+              "style":{
+                "location":{
+                  "x":2,
+                  "y":0},
+                "size":{
+                  "width":350,
+                  "height":552}},
+              "adaptiveStyles":{
+}}],
+          "images":{
+            "normal~":"images/充值三方支付页面（同绑卡）/u0.png"}},
+{
+          "id":"f094efc2115446f69c9d8675f317bdf8",
+          "label":"",
+          "type":"imageBox",
+          "styleType":"imageBox",
+          "visible":true,
+          "style":{
+            "location":{
+              "x":2,
+              "y":97},
+            "size":{
+              "width":158,
+              "height":53}},
+          "adaptiveStyles":{
+},
+          "objects":[{
+              "id":"ef722e7771c84c9380158c820a956674",
+              "label":"",
+              "isContained":true,
+              "type":"richTextPanel",
+              "styleType":"paragraph",
+              "visible":true,
+              "style":{
+                "location":{
+                  "x":2,
+                  "y":97},
+                "size":{
+                  "width":158,
+                  "height":53}},
+              "adaptiveStyles":{
+}}],
+          "images":{
+            "normal~":"images/充值三方支付页面（同绑卡）/u2.png"}}]}},
+  "masters":{
+},
+  "objectPaths":{
+    "36300a3db52747f0b47a4df2f210bb69":{
+      "scriptId":"u0"},
+    "d17172cf6c3548f39e535e682ab68c47":{
+      "scriptId":"u1"},
+    "f094efc2115446f69c9d8675f317bdf8":{
+      "scriptId":"u2"},
+    "ef722e7771c84c9380158c820a956674":{
+      "scriptId":"u3"}}});

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dafy.mapper.global-sql">
+	
+	<!--
+      - ===============================================
+      - MySql的分页
+      - @author yanwl
+      - @date 2015-11-19
+      - ===============================================
+	-->
+	<sql id="pagination">limit #{start},#{pageSize} </sql>
+	
+	<!--
+      - ===============================================
+      - 动态排序
+      - @author yanwl
+      - @date 2015-11-19
+      - ===============================================
+	-->
+	<sql id="orderBy">
+		<if test="sortField != null and sortField != ''">order by ${sortField} ${sortOrder}</if>
+	</sql>
+	
+	<!--
+      - ===============================================
+      - 分组
+      - @author yanwl
+      - @date 2015-11-19
+      - ===============================================
+	-->
+	<sql id="groupBy">
+		<if test="groupField != null and groupField != ''">group by ${groupField} </if>
+	</sql>
+	
+	<cache 
+		eviction="FIFO"
+		flushInterval="60000"
+		size="512"
+		readOnly="true" 
+	/>
+	
+</mapper>

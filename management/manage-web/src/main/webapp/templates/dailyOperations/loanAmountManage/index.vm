@@ -1,0 +1,147 @@
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageList.pageNum" />
+    <input type="hidden" name="numPerPage" value="$!pageList.numPerPage" />
+</form>
+
+<div class="pageHeader">
+    <form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/dailyOperations/loanAmountManage/index.htm')" class="pageForm required-validate"
+          onsubmit="return navTabSearch(this);" >
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="freeAvailableAuthMoney" value="$!freeAvailableAuthMoney"/>
+        <input type="hidden" name="freeQuitAuthMoney" value="$!freeQuitAuthMoney"/>
+        <input type="hidden" name="yunAvailableAuthMoney" value="$!yunAvailableAuthMoney"/>
+        <input type="hidden" name="yunQuitAuthMoney" value="$!yunQuitAuthMoney"/>
+        <input type="hidden" name="sevenAvailableAuthMoney" value="$!sevenAvailableAuthMoney"/>
+        <input type="hidden" name="sevenDianAvailableAuthMoney" value="$!sevenDianAvailableAuthMoney"/>
+        <input type="hidden" name="sevenQuitAuthMoney" value="$!sevenQuitAuthMoney"/>
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        <label>状态：</label>
+                        <select name="statusSearch" id="statusSearch" style="float:left;width:100px;">
+                            #foreach($enumKey in $!statusEnum.keySet())
+                                <option value="$!enumKey" #if("$!statusSearch"=="$!enumKey") selected #end >$!statusEnum.get($!enumKey)</option>
+                            #end
+                        </select>
+                        <label style="width:20px;">&nbsp</label>
+                    </td>
+                    <td>
+                        <div class="buttonActive">
+                            <div class="buttonContent">
+                                <button onclick="searchFunction()" type="button">查询</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+<p class="pageContent">
+    <div class="panelBar" style="height: 95px;overflow: auto">
+        <ul style="height: 25px">
+            <li>
+				<span style="margin-left:10px; min-width:240px; display:inline-block;">
+    				<font color="red">当前自由站岗资金：$!money.format($!freeAvailableAuthMoney) 元</font>
+                </span>
+            </li>
+            <li>
+				<span style="margin-left:10px; min-width:200px; display:inline-block;">
+    				<font color="blue">自由站岗户次日退出本息总计约：$!money.format($!freeQuitAuthMoney) 元</font>
+                </span>
+            </li>
+        </ul>
+        <ul style="height: 25px">
+            <li>
+				<span style="margin-left:10px; min-width:240px; display:inline-block;">
+    				<font color="red">当前云贷站岗资金：$!money.format($!yunAvailableAuthMoney) 元</font>
+                </span>
+            </li>
+            <li>
+				<span style="margin-left:10px; min-width:200px; display:inline-block;">
+    				<font color="blue">云贷站岗户次日退出本息总计约：$!money.format($!yunQuitAuthMoney) 元</font>
+                </span>
+            </li>
+        </ul>
+        <ul style="height: 25px">
+            <li>
+				<span style="margin-left:10px; min-width:240px; display:inline-block;">
+    				<font color="red">当前七贷站岗资金：$!money.format($!sevenAvailableAuthMoney) 元</font>
+                </span>
+            </li>
+            <li>
+				<span style="margin-left:10px; min-width:200px; display:inline-block;">
+    				<font color="blue">七贷站岗户次日退出本息总计约：$!money.format($!sevenQuitAuthMoney) 元</font>
+                </span>
+            </li>
+        </ul>
+        <ul style="height: 25px">
+            <li>
+				<span style="margin-left:10px; min-width:200px; display:inline-block;">
+    				<font color="red">七店用户站岗资金（所有端口）：$!money.format($!sevenDianAvailableAuthMoney) 元</font>
+                </span>
+            </li>
+        </ul>
+    </div>
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li><a class="add" target="dialog" href="$env.getWebURL('/dailyOperations/loanAmountManage/addOrModify_page.htm')" mask="true" rel="createBack" id="loanAmountManage"><span>资金管理</span></a></li>
+        </ul>
+    </div>
+    <table class="table" width="900" layoutH="213">
+        <thead>
+            <tr>
+                <th width="10%">资产方</th>
+                <th width="20%">产品备注</th>
+                <th width="10%">当前配置比例</th>
+				<th width="20%">自由站岗户额度</th>
+                <th width="20%">老站岗户额度</th>
+                <th width="20%">使用日期</th>
+            </tr>
+        </thead>
+        <tbody>
+            #foreach($grid in $!pageList.list)
+                <tr target="sid_user" rel="1">
+                    <td>
+                        #if("$!grid.partnerCode"=="YUN_DAI_SELF")
+								云贷
+                        #elseif("$!grid.partnerCode"=="7_DAI_SELF")
+                                7贷
+                        #end
+                    </td>
+                    <td>
+                        #if("$!grid.partnerCode"=="YUN_DAI_SELF")
+                            随借随还
+                        #elseif("$!grid.partnerCode"=="7_DAI_SELF")
+                            随借随还、先息后本
+                        #end
+                    </td>
+                    <td>$!number.integer($!grid.freeRate)%</td>
+					<td>$!money.format($!grid.freeAmount)</td>
+                    <td>$!money.format($!grid.partnerAmount)</td>
+                    <td>$!date.formatYYYYMMDD($!grid.useDate)</td>
+                </tr>
+            #end
+        </tbody>
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                <option #if("$!pageList.numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!pageList.numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!pageList.numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!pageList.numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!pageList.totalRow条</span>
+        </div>
+        <div class="pagination" targetType="navTab" totalCount="$!pageList.totalRow" numPerPage="$!pageList.numPerPage" currentPage="$!pageList.pageNum"></div>
+    </div>
+</div>
+
+<script>
+    function searchFunction() {
+        $("#myform").submit();
+    }
+</script>

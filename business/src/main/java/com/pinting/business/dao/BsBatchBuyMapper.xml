@@ -1,0 +1,742 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsBatchBuyMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsBatchBuy" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="property_symbol" property="propertySymbol" jdbcType="VARCHAR" />
+    <result column="product_code" property="productCode" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="send_amount" property="sendAmount" jdbcType="DOUBLE" />
+    <result column="receive_amount" property="receiveAmount" jdbcType="DOUBLE" />
+    <result column="dafy_rate" property="dafyRate" jdbcType="DOUBLE" />
+    <result column="send_batch_id" property="sendBatchId" jdbcType="VARCHAR" />
+    <result column="pay19_order_no" property="pay19OrderNo" jdbcType="VARCHAR" />
+    <result column="pay19_mp_order_no" property="pay19MpOrderNo" jdbcType="VARCHAR" />
+    <result column="dafy_pay19_mp_order_no" property="dafyPay19MpOrderNo" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
+    <result column="expect_time" property="expectTime" jdbcType="TIMESTAMP" />
+    <result column="return_time" property="returnTime" jdbcType="TIMESTAMP" />
+    <result column="financing_date" property="financingDate" jdbcType="DATE" />
+    <result column="pay19_return_code" property="pay19ReturnCode" jdbcType="VARCHAR" />
+    <result column="pay19_return_msg" property="pay19ReturnMsg" jdbcType="VARCHAR" />
+    <result column="dafy_return_code" property="dafyReturnCode" jdbcType="VARCHAR" />
+    <result column="dafy_return_msg" property="dafyReturnMsg" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, property_symbol, product_code, amount, send_amount, receive_amount, dafy_rate, 
+    send_batch_id, pay19_order_no, pay19_mp_order_no, dafy_pay19_mp_order_no, status, 
+    send_time, expect_time, return_time, financing_date, pay19_return_code, pay19_return_msg, 
+    dafy_return_code, dafy_return_msg, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsBatchBuyExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_batch_buy
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_batch_buy
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_batch_buy
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsBatchBuyExample" >
+    delete from bs_batch_buy
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsBatchBuy" useGeneratedKeys="true" keyProperty="id">
+    insert into bs_batch_buy (id, property_symbol, product_code, 
+      amount, send_amount, receive_amount, 
+      dafy_rate, send_batch_id, pay19_order_no, 
+      pay19_mp_order_no, dafy_pay19_mp_order_no, status, 
+      send_time, expect_time, return_time, 
+      financing_date, pay19_return_code, pay19_return_msg, 
+      dafy_return_code, dafy_return_msg, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{propertySymbol,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=DOUBLE}, #{sendAmount,jdbcType=DOUBLE}, #{receiveAmount,jdbcType=DOUBLE}, 
+      #{dafyRate,jdbcType=DOUBLE}, #{sendBatchId,jdbcType=VARCHAR}, #{pay19OrderNo,jdbcType=VARCHAR}, 
+      #{pay19MpOrderNo,jdbcType=VARCHAR}, #{dafyPay19MpOrderNo,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{sendTime,jdbcType=TIMESTAMP}, #{expectTime,jdbcType=TIMESTAMP}, #{returnTime,jdbcType=TIMESTAMP}, 
+      #{financingDate,jdbcType=DATE}, #{pay19ReturnCode,jdbcType=VARCHAR}, #{pay19ReturnMsg,jdbcType=VARCHAR}, 
+      #{dafyReturnCode,jdbcType=VARCHAR}, #{dafyReturnMsg,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsBatchBuy" useGeneratedKeys="true" keyProperty="id">
+    insert into bs_batch_buy
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="propertySymbol != null" >
+        property_symbol,
+      </if>
+      <if test="productCode != null" >
+        product_code,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="sendAmount != null" >
+        send_amount,
+      </if>
+      <if test="receiveAmount != null" >
+        receive_amount,
+      </if>
+      <if test="dafyRate != null" >
+        dafy_rate,
+      </if>
+      <if test="sendBatchId != null" >
+        send_batch_id,
+      </if>
+      <if test="pay19OrderNo != null" >
+        pay19_order_no,
+      </if>
+      <if test="pay19MpOrderNo != null" >
+        pay19_mp_order_no,
+      </if>
+      <if test="dafyPay19MpOrderNo != null" >
+        dafy_pay19_mp_order_no,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="sendTime != null" >
+        send_time,
+      </if>
+      <if test="expectTime != null" >
+        expect_time,
+      </if>
+      <if test="returnTime != null" >
+        return_time,
+      </if>
+      <if test="financingDate != null" >
+        financing_date,
+      </if>
+      <if test="pay19ReturnCode != null" >
+        pay19_return_code,
+      </if>
+      <if test="pay19ReturnMsg != null" >
+        pay19_return_msg,
+      </if>
+      <if test="dafyReturnCode != null" >
+        dafy_return_code,
+      </if>
+      <if test="dafyReturnMsg != null" >
+        dafy_return_msg,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="propertySymbol != null" >
+        #{propertySymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null" >
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="sendAmount != null" >
+        #{sendAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="receiveAmount != null" >
+        #{receiveAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="dafyRate != null" >
+        #{dafyRate,jdbcType=DOUBLE},
+      </if>
+      <if test="sendBatchId != null" >
+        #{sendBatchId,jdbcType=VARCHAR},
+      </if>
+      <if test="pay19OrderNo != null" >
+        #{pay19OrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="pay19MpOrderNo != null" >
+        #{pay19MpOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="dafyPay19MpOrderNo != null" >
+        #{dafyPay19MpOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expectTime != null" >
+        #{expectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnTime != null" >
+        #{returnTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="financingDate != null" >
+        #{financingDate,jdbcType=DATE},
+      </if>
+      <if test="pay19ReturnCode != null" >
+        #{pay19ReturnCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pay19ReturnMsg != null" >
+        #{pay19ReturnMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="dafyReturnCode != null" >
+        #{dafyReturnCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dafyReturnMsg != null" >
+        #{dafyReturnMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsBatchBuyExample" resultType="java.lang.Integer" >
+    select count(*) from bs_batch_buy
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_batch_buy
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.propertySymbol != null" >
+        property_symbol = #{record.propertySymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productCode != null" >
+        product_code = #{record.productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sendAmount != null" >
+        send_amount = #{record.sendAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.receiveAmount != null" >
+        receive_amount = #{record.receiveAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.dafyRate != null" >
+        dafy_rate = #{record.dafyRate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sendBatchId != null" >
+        send_batch_id = #{record.sendBatchId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pay19OrderNo != null" >
+        pay19_order_no = #{record.pay19OrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pay19MpOrderNo != null" >
+        pay19_mp_order_no = #{record.pay19MpOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dafyPay19MpOrderNo != null" >
+        dafy_pay19_mp_order_no = #{record.dafyPay19MpOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendTime != null" >
+        send_time = #{record.sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.expectTime != null" >
+        expect_time = #{record.expectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.returnTime != null" >
+        return_time = #{record.returnTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.financingDate != null" >
+        financing_date = #{record.financingDate,jdbcType=DATE},
+      </if>
+      <if test="record.pay19ReturnCode != null" >
+        pay19_return_code = #{record.pay19ReturnCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pay19ReturnMsg != null" >
+        pay19_return_msg = #{record.pay19ReturnMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dafyReturnCode != null" >
+        dafy_return_code = #{record.dafyReturnCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dafyReturnMsg != null" >
+        dafy_return_msg = #{record.dafyReturnMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_batch_buy
+    set id = #{record.id,jdbcType=INTEGER},
+      property_symbol = #{record.propertySymbol,jdbcType=VARCHAR},
+      product_code = #{record.productCode,jdbcType=VARCHAR},
+      amount = #{record.amount,jdbcType=DOUBLE},
+      send_amount = #{record.sendAmount,jdbcType=DOUBLE},
+      receive_amount = #{record.receiveAmount,jdbcType=DOUBLE},
+      dafy_rate = #{record.dafyRate,jdbcType=DOUBLE},
+      send_batch_id = #{record.sendBatchId,jdbcType=VARCHAR},
+      pay19_order_no = #{record.pay19OrderNo,jdbcType=VARCHAR},
+      pay19_mp_order_no = #{record.pay19MpOrderNo,jdbcType=VARCHAR},
+      dafy_pay19_mp_order_no = #{record.dafyPay19MpOrderNo,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      send_time = #{record.sendTime,jdbcType=TIMESTAMP},
+      expect_time = #{record.expectTime,jdbcType=TIMESTAMP},
+      return_time = #{record.returnTime,jdbcType=TIMESTAMP},
+      financing_date = #{record.financingDate,jdbcType=DATE},
+      pay19_return_code = #{record.pay19ReturnCode,jdbcType=VARCHAR},
+      pay19_return_msg = #{record.pay19ReturnMsg,jdbcType=VARCHAR},
+      dafy_return_code = #{record.dafyReturnCode,jdbcType=VARCHAR},
+      dafy_return_msg = #{record.dafyReturnMsg,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsBatchBuy" >
+    update bs_batch_buy
+    <set >
+      <if test="propertySymbol != null" >
+        property_symbol = #{propertySymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null" >
+        product_code = #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="sendAmount != null" >
+        send_amount = #{sendAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="receiveAmount != null" >
+        receive_amount = #{receiveAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="dafyRate != null" >
+        dafy_rate = #{dafyRate,jdbcType=DOUBLE},
+      </if>
+      <if test="sendBatchId != null" >
+        send_batch_id = #{sendBatchId,jdbcType=VARCHAR},
+      </if>
+      <if test="pay19OrderNo != null" >
+        pay19_order_no = #{pay19OrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="pay19MpOrderNo != null" >
+        pay19_mp_order_no = #{pay19MpOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="dafyPay19MpOrderNo != null" >
+        dafy_pay19_mp_order_no = #{dafyPay19MpOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        send_time = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expectTime != null" >
+        expect_time = #{expectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnTime != null" >
+        return_time = #{returnTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="financingDate != null" >
+        financing_date = #{financingDate,jdbcType=DATE},
+      </if>
+      <if test="pay19ReturnCode != null" >
+        pay19_return_code = #{pay19ReturnCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pay19ReturnMsg != null" >
+        pay19_return_msg = #{pay19ReturnMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="dafyReturnCode != null" >
+        dafy_return_code = #{dafyReturnCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dafyReturnMsg != null" >
+        dafy_return_msg = #{dafyReturnMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsBatchBuy" >
+    update bs_batch_buy
+    set property_symbol = #{propertySymbol,jdbcType=VARCHAR},
+      product_code = #{productCode,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DOUBLE},
+      send_amount = #{sendAmount,jdbcType=DOUBLE},
+      receive_amount = #{receiveAmount,jdbcType=DOUBLE},
+      dafy_rate = #{dafyRate,jdbcType=DOUBLE},
+      send_batch_id = #{sendBatchId,jdbcType=VARCHAR},
+      pay19_order_no = #{pay19OrderNo,jdbcType=VARCHAR},
+      pay19_mp_order_no = #{pay19MpOrderNo,jdbcType=VARCHAR},
+      dafy_pay19_mp_order_no = #{dafyPay19MpOrderNo,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      send_time = #{sendTime,jdbcType=TIMESTAMP},
+      expect_time = #{expectTime,jdbcType=TIMESTAMP},
+      return_time = #{returnTime,jdbcType=TIMESTAMP},
+      financing_date = #{financingDate,jdbcType=DATE},
+      pay19_return_code = #{pay19ReturnCode,jdbcType=VARCHAR},
+      pay19_return_msg = #{pay19ReturnMsg,jdbcType=VARCHAR},
+      dafy_return_code = #{dafyReturnCode,jdbcType=VARCHAR},
+      dafy_return_msg = #{dafyReturnMsg,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectBsBatchBuy4Repeat19Send" resultMap="BaseResultMap">
+  		select 
+  			sum(amount) amount, pay19_order_no, property_symbol
+  		from 
+  			bs_batch_buy 
+  		where 
+  			`status`='MONEY_TO_19_FAIL' 
+  		GROUP BY pay19_order_no
+  </select>
+  
+  <select id="selectBsBatchBuy4RepeatDafySend" resultMap="BaseResultMap">
+  		select 
+  			sum(amount) amount, pay19_order_no, property_symbol
+  		from 
+  			bs_batch_buy 
+  		where 
+  			`status` in ('MONEY_TO_DAFY_FAIL','BUY_DAFY_FAIL')
+  		GROUP BY pay19_order_no
+  </select>
+  
+  <select id="selectBsBatchBuy4LoanRelation" resultMap="BaseResultMap">
+  	select * from bs_batch_buy 
+  	where ((`status` = 'DAFY_RETURN_SUCCESS' or `status` = 'DAFY_RETURN_FAIL')
+		and send_batch_id not in
+		(select order_no from bs_loan_relative_record GROUP BY order_no having order_no is not null)
+	) or `status` = 'BUY_DAFY_SUCCESS'
+  </select>
+  
+  <!-- 2.0 当日系统待回款产品 -->
+  <select id="selectCurrDaySysAwaitingReturn2" resultType="java.util.Map" parameterType="java.util.Map">
+	SELECT DISTINCT a.*, b.term,
+		(CASE WHEN b.term=1 THEN 30*a.amount*0.24/365
+			WHEN b.term=3 THEN 90*a.amount*0.24/365
+			WHEN b.term=6 THEN 180*a.amount*0.24/365
+			WHEN b.term=12 THEN a.amount*0.24
+		END) as dafy_return_interest
+	from bs_batch_buy a
+		LEFT JOIN bs_product b on a.product_code = b.`code`
+	where 
+		datediff(DATE_FORMAT(a.send_time,'%y-%m-%d'), '2015-12-02') >= 0 and 
+		datediff(DATE_FORMAT(a.send_time,'%y-%m-%d'),'2016-02-01') &lt;= 0 and 
+		CASE WHEN b.term=1 THEN datediff(DATE_ADD(a.send_time,INTERVAL 30 day), #{currTime}) = 0 
+			WHEN b.term=3 THEN datediff(DATE_ADD(a.send_time,INTERVAL 90 day), #{currTime}) = 0 
+			WHEN b.term=6 THEN datediff(DATE_ADD(a.send_time,INTERVAL 180 day), #{currTime}) = 0 
+			WHEN b.term=12 THEN datediff(DATE_ADD(a.send_time,INTERVAL 365 day), #{currTime}) = 0 
+		END ;
+  </select>
+  
+  <!-- 3.0 当日系统待回款产品 -->
+  <select id="selectCurrDaySysAwaitingReturn3" resultType="java.util.Map" parameterType="java.util.Map">
+	SELECT DISTINCT a.*, b.term,
+  		CASE when b.term = 12 and datediff(DATE_ADD(DATE_FORMAT(a.send_time,'%y-%m-%d'),interval 365 day) , #{currTime})=0 
+			then 35 when b.term &lt; 0 then ABS(b.term) else 30
+        END as interest_days,
+        CASE WHEN a.property_symbol = 'YUN_DAI' AND SUBSTR(a.product_code,1,2) in('14') THEN
+          (CASE when b.term = 12 and datediff(DATE_ADD(DATE_FORMAT(a.send_time,'%y-%m-%d'),interval 365 day) , #{currTime})=0
+          then 35*a.amount*0.2/365 when b.term &lt; 0 then ABS(b.term)*a.amount*0.2/365 else 30*a.amount*0.2/365 end)
+          WHEN a.property_symbol = '7_DAI' AND SUBSTR(a.product_code,1,2) in('24') THEN
+          (CASE when b.term = 12 and datediff(DATE_ADD(DATE_FORMAT(a.send_time,'%y-%m-%d'),interval 365 day) , #{currTime})=0
+          then 35*a.amount*0.18/365 when b.term &lt; 0 then ABS(b.term)*a.amount*0.2/365 else 30*a.amount*0.18/365 end)
+    WHEN a.property_symbol = '7_DAI' AND SUBSTR(a.product_code,1,2) not in('24') THEN
+    (CASE when b.term = 12 and datediff(DATE_ADD(DATE_FORMAT(a.send_time,'%y-%m-%d'),interval 365 day) , #{currTime})=0
+    then 35*a.amount*0.2/365 when b.term &lt; 0 then ABS(b.term)*a.amount*0.2/365 else 30*a.amount*0.2/365 end)
+          ELSE
+          (CASE when b.term = 12 and datediff(DATE_ADD(DATE_FORMAT(a.send_time,'%y-%m-%d'),interval 365 day) , #{currTime})=0
+          then 35*a.amount*0.24/365 when b.term &lt; 0 then ABS(b.term)*a.amount*0.2/365 else 30*a.amount*0.24/365 end)
+		END as dafy_return_interest
+ 	from bs_batch_buy a
+		LEFT JOIN bs_product b on a.product_code = b.`code`
+	where datediff(DATE_FORMAT(a.send_time,'%y-%m-%d'), '2016-02-02') >= 0 and  
+		datediff(DATE_FORMAT(a.send_time,'%y-%m-%d'), #{currTime}) &lt;= 0 and
+		(str_to_date(DATE_FORMAT(a.send_time,'%y-%m-%d'),'%y-%m-%d') 
+		in (SUBDATE(#{currTime},30),SUBDATE(#{currTime},60),SUBDATE(#{currTime},90),
+		SUBDATE(#{currTime},120),SUBDATE(#{currTime},150),SUBDATE(#{currTime},180),
+		SUBDATE(#{currTime},210),SUBDATE(#{currTime},240),SUBDATE(#{currTime},270),
+		SUBDATE(#{currTime},300),SUBDATE(#{currTime},330),SUBDATE(#{currTime},365)) 
+		and (a.return_time is null or a.return_time >= #{currTime} ) 
+		or (str_to_date(DATE_FORMAT(a.send_time,'%y-%m-%d'),'%y-%m-%d') in(SUBDATE(#{currTime},7)) 
+		and b.term=-7))
+  </select>
+  
+  <select id="selectOneDaySysAwaitingReturnYunDai" resultType="java.lang.Double"  parameterType="java.util.Map">
+  	select ROUND(sum(tt.need_pay),2)from (select sum(t2.principal+t2.dafy_return_interest) as need_pay from (
+  		SELECT DISTINCT a.*, b.term,
+			(
+			  CASE
+                  WHEN a.property_symbol = 'YUN_DAI' AND SUBSTR(b.`code`,1,2) IN ('14') THEN
+                      CASE
+                          WHEN b.term IN (1,3,6) THEN 30*b.term*a.amount*0.2/365
+                          WHEN b.term=12 THEN a.amount*0.2
+                      END
+                  ELSE
+                      CASE
+                          WHEN b.term IN (1,3,6) THEN 30*b.term*a.amount*0.24/365
+                          WHEN b.term=12 THEN a.amount*0.24
+                      END
+              END
+			) as dafy_return_interest,
+			CASE WHEN b.term=-7 THEN
+				CASE WHEN DATE_ADD(a.financing_date,INTERVAL 8 DAY)=#{currTime} THEN a.amount ELSE 0 END
+			WHEN b.term=12 THEN 
+				CASE WHEN DATE_ADD(a.financing_date,INTERVAL 366 DAY)=#{currTime} THEN a.amount ELSE 0 END
+			ELSE 
+				CASE WHEN DATE_ADD(a.financing_date,INTERVAL 30*b.term+1 DAY)=#{currTime} THEN a.amount ELSE 0 END
+			END as principal
+		from bs_batch_buy a
+			LEFT JOIN bs_product b on a.product_code = b.`code`
+		where 
+			datediff(DATE_FORMAT(a.send_time,'%y-%m-%d'), '2015-12-02') >= 0 and 
+			datediff(DATE_FORMAT(a.send_time,'%y-%m-%d'),'2016-02-01') &lt;= 0 and 
+			CASE WHEN b.term=1 THEN datediff(DATE_ADD(a.send_time,INTERVAL 30 day), #{currTime}) = 0 
+				WHEN b.term=3 THEN datediff(DATE_ADD(a.send_time,INTERVAL 90 day), #{currTime}) = 0 
+				WHEN b.term=6 THEN datediff(DATE_ADD(a.send_time,INTERVAL 180 day), #{currTime}) = 0 
+				WHEN b.term=12 THEN datediff(DATE_ADD(a.send_time,INTERVAL 365 day), #{currTime}) = 0 
+			END 
+	)t2 
+	UNION ALL
+	select sum(t3.principal+t3.dafy_return_interest) as need_pay from (
+		SELECT DISTINCT a.*, b.term,
+	  		CASE when b.term = 12 and datediff(DATE_ADD(DATE_FORMAT(a.send_time,'%y-%m-%d'),interval 365 day) , #{currTime})=0 
+				then 35 when b.term &lt; 0 then ABS(b.term) else 30 end as interest_days,
+			CASE a.property_symbol WHEN 'YUN_DAI' THEN
+			(
+              CASE
+                WHEN SUBSTR(b.`code`,1,2) IN ('14') THEN
+                CASE
+                  when b.term = 12 and datediff(DATE_ADD(DATE_FORMAT(a.send_time,'%y-%m-%d'),interval 365 day) , #{currTime})=0
+                  then 35*a.amount*0.2/365
+                  when b.term &lt; 0 then ABS(b.term)*a.amount*0.2/365
+                  else 30*a.amount*0.2/365
+                END
+              ELSE
+                CASE
+                  when b.term = 12 and datediff(DATE_ADD(DATE_FORMAT(a.send_time,'%y-%m-%d'),interval 365 day) , #{currTime})=0
+                  then 35*a.amount*0.24/365
+                  when b.term &lt; 0 then ABS(b.term)*a.amount*0.2/365
+                  else 30*a.amount*0.24/365
+                END
+              END
+			)
+			END 		
+			as dafy_return_interest,
+			CASE WHEN b.term=-7 THEN
+				CASE WHEN DATE_ADD(a.financing_date,INTERVAL 8 DAY)=#{currTime} THEN a.amount ELSE 0 END
+			WHEN b.term=12 THEN 
+				CASE WHEN DATE_ADD(a.financing_date,INTERVAL 366 DAY)=#{currTime} THEN a.amount ELSE 0 END
+			ELSE 
+				CASE WHEN DATE_ADD(a.financing_date,INTERVAL 30*b.term+1 DAY)=#{currTime} THEN a.amount ELSE 0 END
+			END as principal
+	 	from bs_batch_buy a
+			LEFT JOIN bs_product b on a.product_code = b.`code`
+		where datediff(DATE_FORMAT(a.send_time,'%y-%m-%d'), '2016-02-02') >= 0 and  
+			datediff(DATE_FORMAT(a.send_time,'%y-%m-%d'), #{currTime}) &lt;= 0 and
+			(str_to_date(DATE_FORMAT(a.send_time,'%y-%m-%d'),'%y-%m-%d') 
+			in (SUBDATE(#{currTime},30),SUBDATE(#{currTime},60),SUBDATE(#{currTime},90),
+			SUBDATE(#{currTime},120),SUBDATE(#{currTime},150),SUBDATE(#{currTime},180),
+			SUBDATE(#{currTime},210),SUBDATE(#{currTime},240),SUBDATE(#{currTime},270),
+			SUBDATE(#{currTime},300),SUBDATE(#{currTime},330),SUBDATE(#{currTime},365)) 
+			and (a.return_time is null or a.return_time >= #{currTime} ) 
+			or (str_to_date(DATE_FORMAT(a.send_time,'%y-%m-%d'),'%y-%m-%d') in(SUBDATE(#{currTime},7)) 
+			and b.term=-7))and a.property_symbol ='YUN_DAI'  and  DATE_FORMAT(ADDDATE(#{currTime},0),'%y-%m-%d') &lt;= DATE_FORMAT(a.expect_time,'%y-%m-%d')
+	)t3)tt;
+  </select>
+  
+  <select id="selectOneDaySysAwaitingReturn7Dai" resultType="java.lang.Double"  parameterType="java.util.Map">
+  	select ROUND(sum(t3.principal+t3.dafy_return_interest),2) as need_pay from (
+		SELECT DISTINCT a.*, b.term,
+	  		CASE when b.term = 12 and datediff(DATE_ADD(DATE_FORMAT(a.send_time,'%y-%m-%d'),interval 365 day) , #{currTime})=0 
+				then 35 when b.term &lt; 0 then ABS(b.term) else 30 end as interest_days,
+            CASE WHEN a.property_symbol = '7_DAI' AND SUBSTR(a.product_code,1,2) in('24') THEN
+              (CASE when b.term = 12 and datediff(DATE_ADD(DATE_FORMAT(a.send_time,'%y-%m-%d'),interval 365 day) , #{currTime})=0
+              then 35*a.amount*0.18/365 when b.term &lt; 0 then ABS(b.term)*a.amount*0.2/365 else 30*a.amount*0.18/365 end)
+            ELSE
+              (CASE when b.term = 12 and datediff(DATE_ADD(DATE_FORMAT(a.send_time,'%y-%m-%d'),interval 365 day) , #{currTime})=0
+              then 35*a.amount*0.2/365 when b.term &lt; 0 then ABS(b.term)*a.amount*0.2/365 else 30*a.amount*0.2/365 end)
+            END
+			as dafy_return_interest,
+			CASE WHEN b.term=-7 THEN
+				CASE WHEN DATE_ADD(a.financing_date,INTERVAL 8 DAY)=#{currTime} THEN a.amount ELSE 0 END
+			WHEN b.term=12 THEN 
+				CASE WHEN DATE_ADD(a.financing_date,INTERVAL 366 DAY)=#{currTime} THEN a.amount ELSE 0 END
+			ELSE 
+				CASE WHEN DATE_ADD(a.financing_date,INTERVAL 30*b.term+1 DAY)=#{currTime} THEN a.amount ELSE 0 END
+			END as principal
+			
+	 	from bs_batch_buy a
+			LEFT JOIN bs_product b on a.product_code = b.`code`
+		where datediff(DATE_FORMAT(a.send_time,'%y-%m-%d'), '2016-02-02') >= 0 and  
+			datediff(DATE_FORMAT(a.send_time,'%y-%m-%d'), #{currTime}) &lt;= 0 and
+			(str_to_date(DATE_FORMAT(a.send_time,'%y-%m-%d'),'%y-%m-%d') 
+			in (SUBDATE(#{currTime},30),SUBDATE(#{currTime},60),SUBDATE(#{currTime},90),
+			SUBDATE(#{currTime},120),SUBDATE(#{currTime},150),SUBDATE(#{currTime},180),
+			SUBDATE(#{currTime},210),SUBDATE(#{currTime},240),SUBDATE(#{currTime},270),
+			SUBDATE(#{currTime},300),SUBDATE(#{currTime},330),SUBDATE(#{currTime},365)) 
+			and (a.return_time is null or a.return_time >= #{currTime} ) 
+			or (str_to_date(DATE_FORMAT(a.send_time,'%y-%m-%d'),'%y-%m-%d') in(SUBDATE(#{currTime},7)) 
+			and b.term=-7)) and a.property_symbol ='7_DAI' and DATE_FORMAT(ADDDATE(#{currTime},0),'%y-%m-%d') &lt;=   DATE_FORMAT(a.expect_time,'%y-%m-%d')
+	)t3
+  </select>
+
+  <resultMap id="SysNotReceivableVOMap" type="com.pinting.business.model.vo.SysNotReceivableVO">
+    <result column="property_symbol" jdbcType="VARCHAR" property="propertySymbol" />
+    <result column="send_batch_id" jdbcType="VARCHAR" property="sendBatchId" />
+    <result column="buy_amount" jdbcType="DOUBLE" property="buyAmount" />
+    <result column="term" jdbcType="INTEGER" property="term" />
+    <result column="expect_time" jdbcType="TIMESTAMP" property="expectTime" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="receive_amount" jdbcType="DOUBLE" property="receiveAmount" />
+    <result column="product_return_term" jdbcType="INTEGER" property="productReturnTerm" />
+    <result column="pay_finsh_time" jdbcType="TIMESTAMP" property="payFinshTime" />
+  </resultMap>
+
+  <select id="selectSysNotReceivableInfo" parameterType="java.util.Map" resultMap="SysNotReceivableVOMap">
+    select
+      t.property_symbol,
+      t.send_batch_id,
+      t.amount AS buy_amount,
+      t.term,
+      t.expect_time,
+      t.status,
+      srm.type,
+      srm.amount AS receive_amount,
+      srm.product_return_term,
+      srm.pay_finsh_time
+    from (
+      SELECT DISTINCT a.*, b.term,
+      CASE
+      when b.term = 12
+      and datediff(
+        DATE_ADD(DATE_FORMAT(a.send_time,'%y-%m-%d'),interval 365 day), DATE_FORMAT(#{dateTime},"%Y,%m,%d")
+      )=0
+        then 35
+      when b.term &lt; 0 then ABS(b.term) else 30
+      end as interest_days,
+      CASE a.property_symbol WHEN 'YUN_DAI' THEN
+        (CASE when b.term = 12 and datediff(DATE_ADD(DATE_FORMAT(a.send_time,'%y-%m-%d'),interval 365 day) , DATE_FORMAT(#{dateTime},"%Y,%m,%d"))=0
+        then 35*a.amount*0.24/365
+        when b.term &lt; 0 then ABS(b.term)*a.amount*0.2/365 else 30*a.amount*0.24/365 end)
+      ELSE
+        (CASE when b.term = 12 and datediff(DATE_ADD(DATE_FORMAT(a.send_time,'%y-%m-%d'),interval 365 day) , DATE_FORMAT(#{dateTime},"%Y,%m,%d"))=0
+        then 35*a.amount*0.2/365
+        when b.term &lt; 0 then ABS(b.term)*a.amount*0.2/365 else 30*a.amount*0.2/365 end)
+      END as dafy_return_interest
+      from bs_batch_buy a
+      LEFT JOIN bs_product b on a.product_code = b.`code`
+      where datediff(DATE_FORMAT(a.send_time,'%y-%m-%d'), '2016-02-02') >= 0 and
+      datediff(DATE_FORMAT(a.send_time,'%y-%m-%d'), DATE_FORMAT(#{dateTime},"%Y,%m,%d")) &lt; 0 and
+      (str_to_date(DATE_FORMAT(a.send_time,'%y-%m-%d'),'%y-%m-%d')
+      in (SUBDATE(DATE_FORMAT(#{dateTime},"%Y,%m,%d"),30),SUBDATE(DATE_FORMAT(#{dateTime},"%Y,%m,%d"),60),SUBDATE(DATE_FORMAT(#{dateTime},"%Y,%m,%d"),90),
+      SUBDATE(DATE_FORMAT(#{dateTime},"%Y,%m,%d"),120),SUBDATE(DATE_FORMAT(#{dateTime},"%Y,%m,%d"),150),SUBDATE(DATE_FORMAT(#{dateTime},"%Y,%m,%d"),180),
+      SUBDATE(DATE_FORMAT(#{dateTime},"%Y,%m,%d"),210),SUBDATE(DATE_FORMAT(#{dateTime},"%Y,%m,%d"),240),SUBDATE(DATE_FORMAT(#{dateTime},"%Y,%m,%d"),270),
+      SUBDATE(DATE_FORMAT(#{dateTime},"%Y,%m,%d"),300),SUBDATE(DATE_FORMAT(#{dateTime},"%Y,%m,%d"),330),SUBDATE(DATE_FORMAT(#{dateTime},"%Y,%m,%d"),365))
+      and (a.return_time is null or a.return_time >= DATE_FORMAT(#{dateTime},"%Y,%m,%d") )
+      or (str_to_date(DATE_FORMAT(a.send_time,'%y-%m-%d'),'%y-%m-%d') in(SUBDATE(DATE_FORMAT(#{dateTime},"%Y,%m,%d"),7))
+      and b.term=-7))
+    ) t LEFT JOIN (select * from bs_sys_receive_money aa where aa.status='SUCC' and DATE(aa.pay_finsh_time)=DATE(#{dateTime})) srm on t.send_batch_id=srm.product_order_no
+    ORDER BY t.property_symbol
+  </select>
+
+</mapper>

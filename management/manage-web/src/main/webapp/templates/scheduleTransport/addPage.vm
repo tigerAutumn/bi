@@ -1,0 +1,97 @@
+<div class="pageContent">
+	<form id="flashForm" method="post" action="$env.getWebURL('/scheduleTransport/add.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<div class="pageContent">
+	
+	<form id="flashForm" method="post" action="$env.getWebURL('/scheduleTransport/add.htm')" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<div class="pageFormContent nowrap" layoutH="97">
+			<dl>
+				<dt>任务名称：</dt>
+				<dd>
+					<input type="text" id="jobName" name="jobName" size="60" class="required" maxlength="40" value="" />
+				</dd>
+			</dl>
+			<dl>
+				<dt>任务组别：</dt>
+				<dd>
+					<select name="jobGroup" class="valid">
+						<option value="SCHEDULE">SCHEDULE</option>
+						<option value="MANAGE">MANAGE</option>
+                        <option value="BUSINESS">BUSINESS</option>
+                    </select>
+				</dd>
+			</dl>
+			<dl>
+				<dt>任务状态：</dt>
+				<dd>
+					启用
+					<input type="hidden" name="jobStatus" value="RUNNING" />
+				</dd>
+			</dl>
+			<dl>
+				<dt>执行表达式：</dt>
+				<dd>
+					<input type="text" id="cronExpression" name="cronExpression" size="30" class="required" maxlength="20" value="" />
+				</dd>
+			</dl>
+			<dl>
+				<dt>执行类Class：</dt>
+				<dd>
+					<input type="text" id="beanClass" name="beanClass" size="80" class="required" maxlength="60" value="" />
+				</dd>
+			</dl>
+			<dl>
+				<dt>执行方法名：</dt>
+				<dd>
+					<input type="text" id="methodName" name="methodName" size="60" class="required" maxlength="40" value="" />
+				</dd>
+			</dl>
+			<dl>
+				<dt>执行类Id：</dt>
+				<dd>
+					<input type="text" id="beanId" name="beanId" size="60" class="required" maxlength="40" value="" />
+				</dd>
+			</dl>
+			<dl>
+				<dt>是否允许并发：</dt>
+				<dd>
+					<select name="isConcurrent" class="valid">
+						<option value="NO">否</option>
+						<option value="YES">是</option>
+                    </select>
+				</dd>
+			</dl>
+			<dl>
+				<dt>任务描述：</dt>
+				<dd>
+					<textarea class="textInput valid" rows="3" cols="35" name="description" maxlength="200" style="float: left;"></textarea>
+				</dd>
+			</dl>
+				
+		</div>
+		<div class="formBar">
+			<ul style="float:left;">
+				<li><div class="buttonActive"><div class="buttonContent"><button onclick="formsubmint()" type="button">保存</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+	
+ <script>
+ function formsubmint(){
+ 
+ 	$("#flashForm").submit();
+ }
+ function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			navTab.closeCurrentTab();
+			alertMsg.correct(json.message);
+			navTab.reload("$env.getWebURL('/scheduleTransport/index.htm')");
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+ </script>

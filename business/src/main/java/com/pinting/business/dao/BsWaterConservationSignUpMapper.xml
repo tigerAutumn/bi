@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsWaterConservationSignUpMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsWaterConservationSignUp" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="serial_no" property="serialNo" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="activity_id" property="activityId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="family_num" property="familyNum" jdbcType="INTEGER" />
+    <result column="month_water_rate" property="monthWaterRate" jdbcType="DOUBLE" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="water_save_photo" property="waterSavePhoto" jdbcType="VARCHAR" />
+    <result column="water_rate_photo" property="waterRatePhoto" jdbcType="VARCHAR" />
+    <result column="vote_num" property="voteNum" jdbcType="INTEGER" />
+    <result column="check_status" property="checkStatus" jdbcType="VARCHAR" />
+    <result column="check_user_id" property="checkUserId" jdbcType="INTEGER" />
+    <result column="check_time" property="checkTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, serial_no, user_id, activity_id, user_name, mobile, family_num, month_water_rate, 
+    content, water_save_photo, water_rate_photo, vote_num, check_status, check_user_id, 
+    check_time, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsWaterConservationSignUpExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from bs_water_conservation_sign_up
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_water_conservation_sign_up
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_water_conservation_sign_up
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsWaterConservationSignUpExample" >
+    delete from bs_water_conservation_sign_up
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsWaterConservationSignUp" >
+    insert into bs_water_conservation_sign_up (id, serial_no, user_id, 
+      activity_id, user_name, mobile, 
+      family_num, month_water_rate, content, 
+      water_save_photo, water_rate_photo, vote_num, 
+      check_status, check_user_id, check_time, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{serialNo,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{activityId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{familyNum,jdbcType=INTEGER}, #{monthWaterRate,jdbcType=DOUBLE}, #{content,jdbcType=VARCHAR}, 
+      #{waterSavePhoto,jdbcType=VARCHAR}, #{waterRatePhoto,jdbcType=VARCHAR}, #{voteNum,jdbcType=INTEGER}, 
+      #{checkStatus,jdbcType=VARCHAR}, #{checkUserId,jdbcType=INTEGER}, #{checkTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsWaterConservationSignUp" >
+    insert into bs_water_conservation_sign_up
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="serialNo != null" >
+        serial_no,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="activityId != null" >
+        activity_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="familyNum != null" >
+        family_num,
+      </if>
+      <if test="monthWaterRate != null" >
+        month_water_rate,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="waterSavePhoto != null" >
+        water_save_photo,
+      </if>
+      <if test="waterRatePhoto != null" >
+        water_rate_photo,
+      </if>
+      <if test="voteNum != null" >
+        vote_num,
+      </if>
+      <if test="checkStatus != null" >
+        check_status,
+      </if>
+      <if test="checkUserId != null" >
+        check_user_id,
+      </if>
+      <if test="checkTime != null" >
+        check_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="serialNo != null" >
+        #{serialNo,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null" >
+        #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="familyNum != null" >
+        #{familyNum,jdbcType=INTEGER},
+      </if>
+      <if test="monthWaterRate != null" >
+        #{monthWaterRate,jdbcType=DOUBLE},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="waterSavePhoto != null" >
+        #{waterSavePhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="waterRatePhoto != null" >
+        #{waterRatePhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="voteNum != null" >
+        #{voteNum,jdbcType=INTEGER},
+      </if>
+      <if test="checkStatus != null" >
+        #{checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="checkUserId != null" >
+        #{checkUserId,jdbcType=INTEGER},
+      </if>
+      <if test="checkTime != null" >
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsWaterConservationSignUpExample" resultType="java.lang.Integer" >
+    select count(*) from bs_water_conservation_sign_up
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_water_conservation_sign_up
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.serialNo != null" >
+        serial_no = #{record.serialNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.activityId != null" >
+        activity_id = #{record.activityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userName != null" >
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobile != null" >
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.familyNum != null" >
+        family_num = #{record.familyNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.monthWaterRate != null" >
+        month_water_rate = #{record.monthWaterRate,jdbcType=DOUBLE},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.waterSavePhoto != null" >
+        water_save_photo = #{record.waterSavePhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="record.waterRatePhoto != null" >
+        water_rate_photo = #{record.waterRatePhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="record.voteNum != null" >
+        vote_num = #{record.voteNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkStatus != null" >
+        check_status = #{record.checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkUserId != null" >
+        check_user_id = #{record.checkUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkTime != null" >
+        check_time = #{record.checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_water_conservation_sign_up
+    set id = #{record.id,jdbcType=INTEGER},
+      serial_no = #{record.serialNo,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      activity_id = #{record.activityId,jdbcType=INTEGER},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      family_num = #{record.familyNum,jdbcType=INTEGER},
+      month_water_rate = #{record.monthWaterRate,jdbcType=DOUBLE},
+      content = #{record.content,jdbcType=VARCHAR},
+      water_save_photo = #{record.waterSavePhoto,jdbcType=VARCHAR},
+      water_rate_photo = #{record.waterRatePhoto,jdbcType=VARCHAR},
+      vote_num = #{record.voteNum,jdbcType=INTEGER},
+      check_status = #{record.checkStatus,jdbcType=VARCHAR},
+      check_user_id = #{record.checkUserId,jdbcType=INTEGER},
+      check_time = #{record.checkTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsWaterConservationSignUp" >
+    update bs_water_conservation_sign_up
+    <set >
+      <if test="serialNo != null" >
+        serial_no = #{serialNo,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null" >
+        activity_id = #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="familyNum != null" >
+        family_num = #{familyNum,jdbcType=INTEGER},
+      </if>
+      <if test="monthWaterRate != null" >
+        month_water_rate = #{monthWaterRate,jdbcType=DOUBLE},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="waterSavePhoto != null" >
+        water_save_photo = #{waterSavePhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="waterRatePhoto != null" >
+        water_rate_photo = #{waterRatePhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="voteNum != null" >
+        vote_num = #{voteNum,jdbcType=INTEGER},
+      </if>
+      <if test="checkStatus != null" >
+        check_status = #{checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="checkUserId != null" >
+        check_user_id = #{checkUserId,jdbcType=INTEGER},
+      </if>
+      <if test="checkTime != null" >
+        check_time = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsWaterConservationSignUp" >
+    update bs_water_conservation_sign_up
+    set serial_no = #{serialNo,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      activity_id = #{activityId,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      family_num = #{familyNum,jdbcType=INTEGER},
+      month_water_rate = #{monthWaterRate,jdbcType=DOUBLE},
+      content = #{content,jdbcType=VARCHAR},
+      water_save_photo = #{waterSavePhoto,jdbcType=VARCHAR},
+      water_rate_photo = #{waterRatePhoto,jdbcType=VARCHAR},
+      vote_num = #{voteNum,jdbcType=INTEGER},
+      check_status = #{checkStatus,jdbcType=VARCHAR},
+      check_user_id = #{checkUserId,jdbcType=INTEGER},
+      check_time = #{checkTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectRecentData" resultMap="BaseResultMap" parameterType="java.util.Map">
+    SELECT a.* FROM bs_water_conservation_sign_up a
+    WHERE a.user_id = #{userId} ORDER BY a.update_time DESC LIMIT 1
+  </select>
+
+
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="java.util.Map">
+    SELECT a.* FROM bs_water_conservation_sign_up a
+    ORDER BY FIELD(a.check_status, 'INIT', 'PASS', 'REFUSE'), a.create_time DESC
+    LIMIT #{start}, #{numPerPage}
+  </select>
+
+  <select id="selectBySignUpNo" resultMap="BaseResultMap" parameterType="java.util.Map">
+    SELECT a.id, a.serial_no,
+    CASE
+      WHEN CHARACTER_LENGTH(a.user_name) &lt; 2 THEN a.user_name
+      WHEN CHARACTER_LENGTH(a.user_name) = 2 THEN CONCAT(LEFT(a.user_name, 1), '*')
+      WHEN CHARACTER_LENGTH(a.user_name) > 2 THEN CONCAT(LEFT(a.user_name, 1), '*', RIGHT(a.user_name, 1))
+    END AS user_name , a.vote_num, a.month_water_rate, a.content
+    FROM bs_water_conservation_sign_up a WHERE a.check_status = 'PASS'
+    <if test="signUpNo != null">
+      AND a.serial_no = #{signUpNo}
+    </if>
+    ORDER BY a.vote_num DESC, a.serial_no ASC
+    LIMIT #{start}, #{numPerPage}
+  </select>
+
+  <select id="countBySignUpNo" resultType="java.lang.Integer" parameterType="java.util.Map">
+    SELECT count(*) FROM bs_water_conservation_sign_up a WHERE a.check_status = 'PASS'
+    <if test="signUpNo != null">
+      AND a.serial_no = #{signUpNo}
+    </if>
+  </select>
+</mapper>

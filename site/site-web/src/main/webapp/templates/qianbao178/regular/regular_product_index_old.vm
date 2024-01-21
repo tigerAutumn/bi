@@ -1,0 +1,122 @@
+#Html("begin")
+#Head("begin")
+#Title("币港湾官网_国资系互联网金融服务平台_品听资产_杭商资产_浙大网新_P2P网贷")
+#LoadJS("resources/micro2.0/scripts/regular/six")
+#LoadCSS("resources/micro2.0/styles/regular/default")
+#LoadCSS("resources/micro2.0/styles/regular/product_details.min")
+#WeChatShare()
+#Head("end")
+<body>
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<input type="hidden" id="id" name="id" value="$!id" />
+<input type="hidden" id="name" name="name" value="$!name" />
+<input type="hidden" id="rate" name="rate" value="$!rate" />
+<input type="hidden" id="term" name="term" value="$!term" />
+<input type="hidden" id="minInvestAmount" name="minInvestAmount" value="$!minInvestAmount">
+<input type="hidden" id="qianbao" name="qianbao" value="qianbao" />
+<div class="header">
+	<a class="header_arrow" href="javascript:history.go(-1)"></a>
+	<h1 class="heade_ft oran_color">定期理财</h1>
+</div>
+<div class="mian">
+	<div class="product">
+		<a href="javascript:void(0)" title="">
+			<div class="label"></div>
+			<div class="main_product">
+				<input id="minInvestAmount" type="hidden" value="$!minInvestAmount" />
+				<div class="product_time" style="color:#ff6633"	>起投金额 <span id="amount">$!amoun1t</span> 万</div>
+				<script >
+					var minInvestAmount = parseFloat($("#minInvestAmount").val());
+					var amount = minInvestAmount / 10000;
+					$("#amount").text(amount);
+                </script>
+				<div class="earnings_wrap">
+					<div class="earnings">$!{rate}%</div>
+					<div class="ear_font">年化收益</div>
+				</div>
+				<div class="earnings_wrap fate">
+					<div class="earnings">$!{term}天</div>
+					<div class="ear_font">固定投资期限</div>
+				</div>
+				## <div class="deta_info">[活动，加息0.5%]：原$!{beforeRate}％＋加0.5%＝现$!{rate}%</div>
+			</div>
+		</a>
+	</div>
+</div>
+<div class="deta_container contan_animation">
+	<div class="deta_title1">
+		<div class="t1_ft oran_color">产品特点</div>
+		<div class="tit_line"></div>
+		<div class="ft_conu">
+			<h3>(1)金额小</h3>
+				<ul>
+					<li class="conu_li">• 只收购金额小于5000元的债权，分散投资大幅降低风险</li>
+				</ul>
+            <h3>(2)资信高</h3>
+				<ul>
+					<li class="conu_li">• 国内知名的消费金融优质债权</li>
+					<li class="conu_li">• 经毕马威审计、国内四大评级公司之首的中诚信评级</li>
+					<li class="conu_li">• 不良率仅有2.3%</li>
+				</ul>
+           <h3>(3)风控好</h3>
+			<ul>
+				<li class="conu_li">• 国际顶尖的风控系统</li>
+				<li class="conu_li">• 完善的风险备付金制度</li>
+				<li class="conu_li">• 国内首家的针对借款人的“保险”理赔保障</li>
+			</ul>	
+		</div>
+	</div>
+	<div class="deta_title1">
+		<div class="t1_ft oran_color">收益计息</div>
+		<div class="tit_line"></div>
+		<div class="ft_conu">购入第二天即开始计息；产品到期后，1-3天内自动本息回款；年化收益$!{rate}%；到期一次性本息兑付。</div>
+	</div>
+	<div class="deta_title1">
+		<div class="t1_ft oran_color">投资去向</div>
+		<div class="tit_line"></div>
+		<div class="ft_conu">币港湾的理财资金用于受让国内知名的达飞金融优质债权，具有金额小、借款人分散、资信状况良好、产品不良率极低四大特点。</div>
+	</div>
+	<div class="deta_title1">
+		<div class="t1_ft oran_color">本息保障</div>
+		<div class="tit_line"></div>
+		<div class="ft_conu">
+		1. 由太平洋财险对借款人履约能力进行承保，利息和本金都托管于国资系三方支付平台，任何第三方包括币港湾均无权挪用用户资金；
+		<p>&nbsp;</p>
+		2. 用户在币港湾的投资债权均为优质的小微借款，此项债权由太平洋财险对债权对应的借款人进行人身意外险和履约险的承保；
+		<p>&nbsp;</p>
+		3. 币港湾受让的小微借款不良率只有2.3%，平台将会根据投资额提取3%（不良率的150%）的风险备付金用于不良兑付。
+		</div>
+	</div>
+	<div class="deta_title1">
+		<div class="t1_ft oran_color">快捷支付银行</div>
+		<div class="tit_line"></div>
+		<div class="ft_conu">*具体金额以银行卡实际允许额度为准</div>
+	</div>
+	#foreach($bank in $bankList)
+    	<div class="bank_list">
+    		<div class="list_left">
+    			<i class="ban_list ban_list_$!bank.bankId"></i>
+    			<span class="list_sp">$!{bank.bankName}</span>
+    		</div>
+    		<div class="list_right">
+				#if($bank.isAvailable == 1)
+					单笔$!{bank.oneTop}万，单日$!{bank.dayTop}万
+				#else
+					暂不可用
+				#end
+			</div>
+    	</div>
+	#end
+</div>
+<div style="height:80px">
+	&nbsp;
+</div>
+<div class="deta_btn">
+	<a class="btn_go" href="javascript:void(0)" onclick="buy()">已结束</a>
+</div>
+#LoadJS("resources/micro2.0/scripts/zepto.min")
+#LoadJS("resources/micro2.0/scripts/swiper.min")
+#LoadJS("resources/micro2.0/scripts/regular/custom")
+#LoadJS("resources/micro2.0/scripts/regular/regular_product_index_old")
+</body>
+#Html("end")

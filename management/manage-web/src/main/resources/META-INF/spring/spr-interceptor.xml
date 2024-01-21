@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<!--
+       - ===============================================
+       - 拦截器配置
+       - @author linkin
+       - @date 2014-11-19
+       - ===============================================
+    -->
+   <mvc:interceptors>
+    	<mvc:interceptor>
+			 <!--  <mvc:mapping path="/micro/wealth/*" />
+			  <mvc:mapping path="/micro/myaccount/*" />
+			  <mvc:mapping path="/micro/account/*" /> -->
+			  <mvc:mapping path="/**"/>
+			 <mvc:exclude-mapping path="/"/>  
+			 
+			<mvc:exclude-mapping path="/login/*"/>
+			<mvc:exclude-mapping path="/operationalWeChat/**"/>
+			<mvc:exclude-mapping path="/captcha/code.htm"/>
+			<mvc:exclude-mapping path="/500.htm"/>
+			<mvc:exclude-mapping path="/404.htm"/>
+    		<bean class="com.pinting.manage.controller.URLInterceptor" />
+    	</mvc:interceptor>
+    <!-- 	<mvc:interceptor>
+    		<mvc:mapping path="/**" />
+    		<bean class="com.pinting.site.common.interceptor.TraceLogInterceptor" />
+    	</mvc:interceptor> -->
+    </mvc:interceptors>
+    
+    
+    <!-- 菜单链接权限拦截 -->
+    <mvc:interceptors>
+    	<mvc:interceptor>
+    		<mvc:mapping path="/**" />
+			
+    		<bean class="com.pinting.manage.interceptor.MenuURLInterceptor" />
+    	</mvc:interceptor>
+    </mvc:interceptors>
+    
+      <!-- 订单跟踪查询特殊操作拦截 -->
+    <mvc:interceptors>
+    	<mvc:interceptor>
+    		<mvc:mapping path="/account/order/indexNormal.htm" />
+			<mvc:mapping path="/account/order/indexNormal/getUserInfo.htm" />
+			<mvc:mapping path="/bank/statusModifyCard.htm" />
+    		<bean class="com.pinting.manage.interceptor.MuserURLInterceptor" />
+    	</mvc:interceptor>
+    </mvc:interceptors>
+    
+     <!-- 非菜单的特殊链接权限拦截 -->
+    <!-- <mvc:interceptors>
+    	<mvc:interceptor>
+    		用户管理
+    		<mvc:mapping path="/userMessage/exportXls.htm" />
+    		销售人员管理
+    		<mvc:mapping path="/sales/xls.htm" />
+    		<mvc:mapping path="/sales/save.htm" />
+    		<mvc:mapping path="/sales/status.htm" />
+    		投资购买查询
+    		<mvc:mapping path="/buyMessage/exportXls.htm" />
+    		投资回款查询
+    		<mvc:mapping path="/investmentBackSection/exportXls.htm" />
+    		系统订单查询
+    		<mvc:mapping path="/account/order/exportExcel.htm" />
+    		营销短信
+    		<mvc:mapping path="/bsuser/sms.htm" />
+    		<mvc:mapping path="/bsuser/sendWelinkMessage.htm" />
+    		绑定银行卡管理
+    		<mvc:mapping path="/bank/statusModifyCard.htm" />
+    		APP通知管理
+    		<mvc:mapping path="/app/notice/addNotice.htm" />
+    		APP版本控制
+    		<mvc:mapping path="/app/version/addVersion.htm" />
+    		<mvc:mapping path="/app/version/deleteVersion.htm" />
+    		红包预算审核
+    		<mvc:mapping path="/bsRedPacketApply/updatePass.htm" />
+    		<mvc:mapping path="/bsRedPacketApply/updateRefuse.htm" />
+    		财务提现
+    		<mvc:mapping path="/channelWithdraw/channelWithdraw.htm" /> 
+			<mvc:mapping path="/channelWithdraw/confirmTransfer.htm" /> 
+			财务确认处理
+    		<mvc:mapping path="/channelWithdraw/auditWithdrawCheck.htm" />
+    		财务线下提现登记
+    		<mvc:mapping path="/financial/financialRegistry.htm" />
+    		<mvc:mapping path="/financial/confirmFinancialRegistry.htm" />
+    		红包申请管理
+    		<mvc:mapping path="/bsRedPacketApply/save.htm" /> 
+    		红包发放管理
+    		<mvc:mapping path="/autoPacket/save.htm" /> 
+    		<mvc:mapping path="/manualPacket/sendRedPacket.htm" /> 
+    		<mvc:mapping path="/redPacket/manualRedPacketSend.htm" /> 
+    		红包发放审核
+    		<mvc:mapping path="/redPacket/redPacketCheckPass.htm" /> 
+    		<mvc:mapping path="/redPacket/redPacketCheckRefuse.htm" /> 
+    		APP活动管理
+    		<mvc:mapping path="/app/active/activeModify.htm" /> 
+    		<mvc:mapping path="/app/active/activeDelete.htm" /> 
+    		细分用户运营
+    		<mvc:mapping path="/user/operate/push.htm" /> 
+    		微信公告管理
+    		<mvc:mapping path="/sysMessage/save.htm" /> 
+    		<mvc:mapping path="/sysMessage/delete.htm" /> 
+    		
+    		
+    		
+    		网站新闻管理
+    		<mvc:mapping path="/sysNews/delete.htm" /> 
+    		<mvc:mapping path="/sysNews/save.htm" /> 
+    		<mvc:mapping path="/sysNews/publish.htm" /> 
+    		banner管理
+    		<mvc:mapping path="/banner/addOrUpdate.htm" /> 
+    		差错账目管理
+    		<mvc:mapping path="/account/acctTransRepeatSend/index.htm" /> 
+    		<mvc:mapping path="/account/acctTransAllSend.htm" /> 
+    		银行列表维护
+    		<mvc:mapping path="/bank/save.htm" /> 
+    		<mvc:mapping path="/bank/statusModify.htm" /> 
+    		银行渠道维护
+    		<mvc:mapping path="/bank/bs19PayBank/save.htm" /> 
+    		<mvc:mapping path="/bank/isAvailableModify.htm" /> 
+    		后台用户
+    		<mvc:mapping path="/user/management/save.htm" /> 
+    		<mvc:mapping path="/user/management/delete.htm" /> 
+    		<mvc:mapping path="/user/management/update.htm" /> 
+    		角色权限分配
+    		<mvc:mapping path="/sys/rolemenu/update.htm" /> 
+    		角色管理：增删改
+    		<mvc:mapping path="/sys/role/save.htm" /> 
+    		<mvc:mapping path="/sys/role/delete.htm" /> 
+    		系统配置设置：修改
+    		<mvc:mapping path="/sys/config/update.htm" /> 
+    		系统维护设置：挂起启用
+    		<mvc:mapping path="/sys/halt/update.htm" /> 
+    		微信自定义菜单
+    		<mvc:mapping path="/wx/menu/addMenu.htm" /> 
+    		<mvc:mapping path="/wx/menu/deleteMenu.htm" /> 
+    		<mvc:mapping path="/wx/menu/wechat/createMenu.htm" /> 
+    		微信消息自动回复
+    		<mvc:mapping path="/wx/autoReply/addOrUpdate.htm" /> 
+    		<mvc:mapping path="/wx/autoReply/delete.htm" /> 
+			
+    		<bean class="com.pinting.manage.interceptor.SpecialURLInterceptor" />
+    	</mvc:interceptor>
+    </mvc:interceptors> -->
+    
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <!-- <bean id="mJnl" class="com.pinting.site.common.interceptor.MJnlInterceptor"></bean>  --> 
+</beans>

@@ -1,0 +1,376 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+	<input type="hidden" name="orderField" value="$!{orderField}" />
+	<input type="hidden" name="orderDirection" value="$!{orderDirection}" />
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/statistics/buyMessage/query/index.htm')" method="post" id="myform" class="pageForm required-validate">
+    	<input type="hidden" name="numPerPage" value="$!numPerPage" />
+    	<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    	<input type="hidden" name="pageNum" value="$!pageNum" />
+	<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						手机号码：<input  id="mobile" type="text" name="mobile" value="$!req.mobile" />
+						姓名：<input  id="userName" type="text" name="userName" value="$!req.userName" size="15"/>
+						<!-- 身份证号码：<input id="idCard" type="text" name="idCard" value="$!req.idCard" />-->
+						订单号：<input  id="orderNo" type="text" name="orderNo" value="$!req.orderNo" size="15"/>
+						<!-- 购买银行卡号：<input id="buyBankCard" type="text" name="buyBankCard" value="$!req.buyBankCard" />-->
+						购买银行卡类型：
+						<select name="buyBankType" >
+							<option value="" #if("$!req.buyBankType"=="") selected #end>全部</option>
+							#foreach($buyBankTypeList in $!buyBankTypeLists)
+							<option value="$!buyBankTypeList.bankId" #if("$!req.buyBankType"=="$!buyBankTypeList.bankId") selected  #end>$!buyBankTypeList.bankName</option>
+							#end
+							<option value=-1 #if("$!req.buyBankType"==-1) selected  #end>无</option>
+						</select>
+						<!--渠道来源：
+						<select name="agentId" >
+							<option value="" #if("$!req.id"=="") selected #end>全部</option>
+							#foreach($agent in $!agents)
+							<option value="$!agent.id" #if("$!req.agentId"=="$!agent.id") selected  #end>$!agent.agentName</option>
+							#end
+							<option value=-1 #if("$!req.agentId"==-1) selected  #end>非渠道</option>
+        				</select>-->
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="add" href="$env.getWebURL('/agent/agent_list.htm')" target="dialog" mask="true" rel="createBack" height="390" width="600"><span><button type="button">选择渠道</button></span></a>
+						<input type="hidden" id="agentTotal" name="agentTotal" value="$!agentTotal"/>
+						<input type="hidden" id="agentIds" name="agentIds" value="$!req.agentIds"/>
+						<input type="hidden" id="nonAgentId" name="nonAgentId" value="$!req.nonAgentId"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						
+						起息日期： <input name="buyBeginTime" type="text" id="buyBeginTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.buyBeginTime)" /> 到 <input name="buyEndTime" type="text" id="buyEndTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.buyEndTime)" />
+						结算日期： <input name="investBeginTime"  type="text" id="investBeginTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.investBeginTime)" /> 到 <input name="investEndTime"  type="text" id="investEndTime" class="date textInput readonly" readonly="true" size="15"  value="$!date.formatYYYYMMDD($!req.investEndTime)" />
+						投资利率： <input name="startRate"  type="text" id="startRate" size="3"  value="$!req.startRate" />% 到 <input name="endRate"  type="text" id="endRate" size="3"  value="$!req.endRate" />%
+						资产合作方：
+						<select name="propertySymbol" >
+							<option value="" #if("$!req.propertySymbol"=="") selected #end>全部</option>
+							<option value="YUN_DAI" #if("$!req.propertySymbol"=="YUN_DAI") selected  #end>云贷</option>
+							<option value="7_DAI" #if("$!req.propertySymbol"=="7_DAI") selected  #end>七贷</option>
+        				</select>
+					</td>	
+                </tr>
+				
+				<tr>
+					<td>
+					         购买金额： <input id="beginBuyAmount" type="text" name="beginBuyAmount" #if($!req.beginBuyAmount != 0) value="$!number.format("0",$!req.beginBuyAmount)" #end size="15"/> 到 <input id="endBuyAmount" type="text" name="endBuyAmount" #if($!req.endBuyAmount != 0) value="$!number.format("0",$!req.endBuyAmount)" #end size="15"/>
+						产品购买类别：
+						<select name="productCode" >
+							<option value="" #if("$!req.productCode"=="") selected #end>全部</option>#set($Integer = 0)
+							#foreach($productLists in $!productList)
+								#if($!productLists.term)
+									<option value="$!productLists.id" #if("$!req.productCode"=="$!productLists.id") selected  #end> #if(0 > $Integer.parseInt("$!productLists.term"))  #set($termNum = $Integer.parseInt("$!productLists.term")*-1 ) $!termNum 天  #else $!productLists.term个月 #end $!productLists.baseRate </option>
+								#end
+							#end
+        				</select>
+						产品状态：
+						<select name="accountStatus" >
+							<option value="0" #if("$!req.accountStatus"=="0") selected #end>全部</option>
+							##<option value="1" #if("$!req.accountStatus"=="1") selected  #end>开户</option>
+        					<option value="2" #if("$!req.accountStatus"=="2") selected  #end>投资中</option>
+							<option value="3" #if("$!req.accountStatus"=="3") selected  #end>转让中</option>
+							<option value="4" #if("$!req.accountStatus"=="4") selected  #end>已转让</option>
+							<option value="7" #if("$!req.accountStatus"=="7") selected  #end>结算中</option>
+							<option value="5" #if("$!req.accountStatus"=="5") selected  #end>已结算</option>
+							##<option value="6" #if("$!req.accountStatus"=="6") selected  #end>已销户</option>
+							<option value="8" #if("$!req.accountStatus"=="8") selected  #end>结算失败</option>
+        				</select>
+
+    					投资期限：
+    					<select name="term">
+                            <option value="0" #if("$!req.term"=="0") selected #end>全部</option>
+							<option value="-7" #if("$!req.term"=="-7") selected #end>7天</option>
+							<option value="1" #if("$!req.term"=="1") selected #end>1个月</option>
+							<option value="3" #if("$!req.term"=="3") selected #end>3个月</option>
+							<option value="6" #if("$!req.term"=="6") selected #end>6个月</option>
+							<option value="12" #if("$!req.term"=="12") selected #end>12个月</option>
+                        </select>
+						
+						<!-- 投资利率：
+						<select name="rate" > 
+							<option value="" #if("$!req.rate"=="") selected #end>全部</option>
+							#foreach($rateList in $!rates)
+								<option value="$!rateList.baseRate" #if("$!req.rate"=="$!rateList.baseRate") selected  #end>$!rateList.baseRate %</option>
+							#end
+        				</select>-->
+						<span style="margin-left:20px;">
+							<button  onclick="exp()" type="button">导出excel</button>
+							<button  onclick="func()" type="button">查询</button>
+                        </span>
+
+					</td>
+					</tr>
+			</table>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li>		
+				<span style="margin-left:10px;">
+    				<font color="red">投资总金额：#if(!$!sumBalanceAmount)0.00 #else $!money.format($!sumBalanceAmount) #end 元</font>
+                    <font color="blue" style="margin-left:10px;">累计投资总金额：#if(!$!currTotalAmount)0.00 #else $!money.format($!currTotalAmount) #end 元</font>
+    				<font color="blue" style="margin-left:10px;">累计投资人次：$!money.format($!investNum)人次</font>
+                </span>
+			</li>
+		</ul>
+	</div>
+	<table class="table" width="1396" layoutH="218">
+		<thead>
+			<tr>
+                <th width="60">用户id</th>
+				<th width="110">手机号</th>
+				<th width="70">姓名</th>
+				<th width="60">资产合作方</th>
+				<th width="220">订单号</th>
+				<th width="55">期限</th>
+				<th width="55">利率</th>
+			 	<th width="80" orderfield="buyBankName"  class=#if("$!buyBankName" != "") $!buyBankName #else "asc" #end >购买银行类别</th>
+				<!-- <th width="6%">购买银行卡号</th>-->
+				<th width="80" orderfield="balance"  class=#if("$!balance" != "") $!balance #else "asc" #end >购买金额</th>
+				##<th width="5%">提现银行</th>
+				##<th width="4%">提现银行卡号</th>
+				<th width="100">产品状态</th>
+				<!-- <th width="12%">返回信息</th>-->
+				<th width="158"  orderfield="openTime"  class=#if("$!openTime" != "") $!openTime #else "asc" #end >购买日期</th>
+				<th width="158"  orderfield="investEndTime"  class=#if("$!investEndTime" != "") $!investEndTime #else "asc" #end >到期提现日期</th>
+				<th width="100">渠道来源</th>
+				<th width="90">查看债权匹配</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($grid in $userBuyMessage)
+			<tr target="sid_user" rel="1">
+				<td>$!grid.id</td>
+				<td>#if("$!grid.preMobile" != "" || "$!grid.afterMobile" != "") $!grid.preMobile****$!grid.afterMobile#end</td>
+				<td>#if("$!grid.userName" != "") $!grid.userName#end</td>
+					
+				<td>#if("$!grid.propertySymbol" == "" || "$!grid.propertySymbol" == "YUN_DAI") 云贷 
+					#elseif("$!grid.propertySymbol" == "7_DAI") 七贷
+					#elseif("$!grid.propertySymbol" == "ZAN") 赞分期
+					#end</td>
+				
+				<td>$!grid.orderNo</td>
+				<td>
+					#if($!grid.term != "")
+						#if(0 > $Integer.parseInt("$!grid.term") ) #set($termNumS = $Integer.parseInt("$!grid.term")*-1 ) $!termNumS 天 #else  $!grid.term个月 #end
+					#end
+				</td>
+				<td>$!grid.rate</td>
+				<td><div class="gridCol">$!grid.bankName</div></td>
+				##<td>$!grid.buyBankCard</td>
+				<td><div class="gridCol">$!money.format($!grid.openBalance)</div></td>
+				##<td>$!grid.bindBankName</td>
+				##<td>$!grid.bindBankCard</td>
+				<td>$!message.get("ACCOUNT_STATUS_$!grid.accountStatus")</td>
+				 
+				<!-- <td>
+					#if($!grid.returnMsg && $!grid.returnCode)
+					$!grid.returnMsg (返回码 :$!grid.returnCode)
+					#elseif($!grid.returnMsg && !$!grid.returnCode)
+					$!grid.returnMsg  $!grid.returnCode
+					#elseif(!$!grid.returnMsg && $!grid.returnCode)
+					$!grid.returnMsg  返回码 :$!grid.returnCode
+					#else
+					$!grid.returnMsg  $!grid.returnCode	
+					#end
+				</td> -->
+				<td>$!date.format($!grid.openTime)</td>
+				<td>$!date.formatYYYYMMDD($!grid.investEndTime)</td>
+				<td>#if($!grid.agentName) $!grid.agentName #else 无 #end</td>
+                <td><a href="$env.getWebURL('/statistics/buyMessage/userMatch.htm?subAccountId=')$!grid.subAccountId" target="dialog" mask="true" height="720" width="960">查看</a></td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+				<option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+				<option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+				<option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+				<option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+			</select>
+			<span>条，共$!totalRows条</span>
+		</div>
+		
+		<div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+	</div>
+</div>
+<script>
+
+function func(){
+	var beginTime1 = $("#buyBeginTime").val();
+	var overTime1 = $("#buyEndTime").val();
+	var beginTime2 = $("#investBeginTime").val();
+	var overTime2 = $("#investEndTime").val();
+	var snum1 =  $("#beginBuyAmount").val();
+	var enum1 =  $("#endBuyAmount").val();
+	var startRate = $("#startRate").val();
+	var endRate = $("#endRate").val();
+	if(startRate < 0 || endRate < 0) {
+		alert("输入利率不能小于0！");
+    	return false;
+	}
+	if(startRate > 0 && startRate >= 100) {
+		alert("利率不可能为100%！");
+    	return false;
+	}
+	if(endRate > 0 && endRate >= 100) {
+		alert("利率不可能为100%！");
+    	return false;
+	}
+	if(startRate != "" &&  endRate != "") {
+		if(eval(startRate) > eval(endRate)) {
+			alert("开始利率不能大于结束利率！");
+    		return false;
+		}
+	}
+	if(snum1<0||enum1<0)
+    	{
+    		alert("输入金额不能小于0！");
+    		return false;
+    	}
+	if(snum1 != "" && enum1 != ""){
+    	if(eval(snum1) > eval(enum1)){
+    		alert("开始金额不能大于结束金额！");
+    		return false;
+    	}
+	}
+	if(beginTime1 != "" && overTime1 == ""){
+		alert("请输入购买结束时间！");
+		return false;
+	}
+	
+	if(beginTime1 == "" && overTime1 != ""){
+		alert("请输入购买开始时间！");
+		return false;
+	}
+	
+	if(beginTime1 != "" && overTime1 != ""){
+		var result = Date.parse(overTime1.replace(/-/g,"/"))- Date.parse(beginTime1.replace(/-/g,"/"));
+		if(result < 0){
+			alert("购买开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	
+	if(beginTime2 != "" && overTime2 == ""){
+		alert("请输入结算结束时间！");
+		return false;
+	}
+	
+	if(beginTime2 == "" && overTime2 != ""){
+		alert("请输入结算开始时间！");
+		return false;
+	}
+	
+	if(beginTime2 != "" && overTime2 != ""){
+		var result = Date.parse(overTime2.replace(/-/g,"/"))- Date.parse(beginTime2.replace(/-/g,"/"));
+		if(result < 0){
+			alert("结算开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	var url = $("#APP_ROOT_PATH").val() + "/statistics/buyMessage/query/index.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+
+
+
+
+function exp(){
+	var beginTime1 = $("#buyBeginTime").val();
+	var overTime1 = $("#buyEndTime").val();
+	var beginTime2 = $("#investBeginTime").val();
+	var overTime2 = $("#investEndTime").val();
+	var snum1 =  $("#beginBuyAmount").val();
+	var enum1 =  $("#endBuyAmount").val();
+	var startRate = $("#startRate").val();
+	var endRate = $("#endRate").val();
+	if(startRate < 0 || endRate < 0) {
+		alert("输入利率不能小于0！");
+    	return false;
+	}
+	if(startRate > 0 && startRate >= 100) {
+		alert("利率不可能为100%！");
+    	return false;
+	}
+	if(endRate > 0 && endRate >= 100) {
+		alert("利率不可能为100%！");
+    	return false;
+	}
+	if(startRate != "" &&  endRate != "") {
+		if(eval(startRate) > eval(endRate)) {
+			alert("开始利率不能大于结束利率！");
+    		return false;
+		}
+	}
+		if(snum1<0||enum1<0)
+    	{
+    		alert("输入金额不能小于0！");
+    		return false;
+    	}
+	if(snum1 != "" && enum1 != ""){
+    
+    	if(snum1>enum1)
+    	{
+    		alert("输入金额不能小于0！");
+    		return false;
+    	}
+	}
+	if(beginTime1 != "" && overTime1 == ""){
+		alert("请输入购买结束时间！");
+		return false;
+	}
+	
+	if(beginTime1 == "" && overTime1 != ""){
+		alert("请输入购买开始时间！");
+		return false;
+	}
+	
+	if(beginTime1 != "" && overTime1 != ""){
+		var result = Date.parse(overTime1.replace(/-/g,"/"))- Date.parse(beginTime1.replace(/-/g,"/"));
+		if(result < 0){
+			alert("购买开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	
+	if(beginTime2 != "" && overTime2 == ""){
+		alert("请输入结算结束时间！");
+		return false;
+	}
+	
+	if(beginTime2 == "" && overTime2 != ""){
+		alert("请输入结算开始时间！");
+		return false;
+	}
+	
+	if(beginTime2 != "" && overTime2 != ""){
+		var result = Date.parse(overTime2.replace(/-/g,"/"))- Date.parse(beginTime2.replace(/-/g,"/"));
+		if(result < 0){
+			alert("结算开始时间不能在结束时间之后！！");
+			return false;
+		}
+	}
+	
+	var url = $("#APP_ROOT_PATH").val() + "/buyMessage/exportXls.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","");
+	$("#myform").submit();
+}
+
+</script>

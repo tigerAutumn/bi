@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pinting.business.dao.BsBannerConfigMapper">
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsBannerConfig">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="channel" jdbcType="VARCHAR" property="channel" />
+    <result column="subject" jdbcType="VARCHAR" property="subject" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="img_path" jdbcType="VARCHAR" property="imgPath" />
+    <result column="priority" jdbcType="INTEGER" property="priority" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="m_user_id" jdbcType="INTEGER" property="mUserId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="show_page" jdbcType="VARCHAR" property="showPage" />
+    <result column="activity_type" jdbcType="VARCHAR" property="activityType" />
+    <result column="show_page" property="showPage" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <resultMap id="BaseResultVOMap" type="com.pinting.business.model.vo.BsBannerConfigVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="channel" property="channel" jdbcType="VARCHAR" />
+    <result column="subject" property="subject" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="img_path" property="imgPath" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="m_user_id" property="mUserId" jdbcType="INTEGER" />
+    <result column="m_user" property="mUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="show_page" jdbcType="VARCHAR" property="showPage" />
+    <result column="activity_type" jdbcType="VARCHAR" property="activityType" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, channel, subject, url, img_path, priority, status, m_user_id, create_time, update_time, 
+    show_page, activity_type
+  </sql>
+	    
+  <select id="selectByExample" parameterType="com.pinting.business.model.BsBannerConfigExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_banner_config
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from bs_banner_config
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bs_banner_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsBannerConfigExample">
+    delete from bs_banner_config
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  
+  <insert id="insert" parameterType="com.pinting.business.model.BsBannerConfig">
+    insert into bs_banner_config (id, channel, subject, 
+      url, img_path, priority, 
+      status, m_user_id, create_time, 
+      update_time, show_page, activity_type
+      )
+    values (#{id,jdbcType=INTEGER}, #{channel,jdbcType=VARCHAR}, #{subject,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{imgPath,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, 
+      #{status,jdbcType=VARCHAR}, #{mUserId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{showPage,jdbcType=VARCHAR}, #{activityType,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsBannerConfig">
+    insert into bs_banner_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="channel != null">
+        channel,
+      </if>
+      <if test="subject != null">
+        subject,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="imgPath != null">
+        img_path,
+      </if>
+      <if test="priority != null">
+        priority,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="mUserId != null">
+        m_user_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+	  <if test="showPage != null" >
+        show_page,
+      </if>    
+      <if test="activityType != null">
+        activity_type,
+      </if> 
+    </trim>
+     
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="channel != null">
+        #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null">
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="imgPath != null">
+        #{imgPath,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="mUserId != null">
+        #{mUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+	  <if test="showPage != null" >
+        #{showPage,jdbcType=VARCHAR},
+      </if>
+      <if test="activityType != null" >
+        #{activityType,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsBannerConfigExample" resultType="java.lang.Integer">
+    select count(*) from bs_banner_config
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update bs_banner_config
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.channel != null">
+        channel = #{record.channel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subject != null">
+        subject = #{record.subject,jdbcType=VARCHAR},
+      </if>
+      <if test="record.url != null">
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imgPath != null">
+        img_path = #{record.imgPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.priority != null">
+        priority = #{record.priority,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mUserId != null">
+        m_user_id = #{record.mUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+	  <if test="record.showPage != null" >
+        show_page = #{record.showPage,jdbcType=VARCHAR},
+      </if>    
+       <if test="record.activityType != null">
+        activity_type = #{record.activityType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <update id="updateByExample" parameterType="map">
+    update bs_banner_config
+    set id = #{record.id,jdbcType=INTEGER},
+      channel = #{record.channel,jdbcType=VARCHAR},
+      subject = #{record.subject,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      img_path = #{record.imgPath,jdbcType=VARCHAR},
+      priority = #{record.priority,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      m_user_id = #{record.mUserId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      show_page = #{record.showPage,jdbcType=VARCHAR},
+      activity_type = #{record.activityType,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsBannerConfig">
+    update bs_banner_config
+    <set>
+      <if test="channel != null">
+        channel = #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null">
+        subject = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="imgPath != null">
+        img_path = #{imgPath,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        priority = #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="mUserId != null">
+        m_user_id = #{mUserId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="showPage != null" >
+        show_page = #{showPage,jdbcType=VARCHAR},
+      </if>    
+      <if test="activityType != ''">
+        activity_type = #{activityType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsBannerConfig">
+    update bs_banner_config
+    set channel = #{channel,jdbcType=VARCHAR},
+      subject = #{subject,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      img_path = #{imgPath,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      m_user_id = #{mUserId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      show_page = #{showPage,jdbcType=VARCHAR},
+      activity_type = #{activityType,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  
+  <update id="updateBannersByPri" parameterType="map">
+    update bs_banner_config
+    set priority = priority+#{addNum,jdbcType=INTEGER},
+      update_time = now()
+    where priority &gt;= #{priority,jdbcType=INTEGER} 
+    and channel = #{channel,jdbcType=VARCHAR}
+    and show_page = 'INDEX'
+    and status != 'HIDE'
+  </update>
+  
+  <update id="updateBannersByPris" parameterType="map">
+    update bs_banner_config
+    set priority = priority+#{addNum,jdbcType=INTEGER},
+      update_time = now()
+    where priority &gt;= #{small,jdbcType=INTEGER} 
+    and priority &lt;= #{big,jdbcType=INTEGER} 
+    and channel = #{channel,jdbcType=VARCHAR}
+    and show_page = 'INDEX'
+    and status != 'HIDE'
+  </update>
+
+  <select id="getListByBannerConfig" parameterType="com.pinting.business.model.BsBannerConfig" resultMap="BaseResultVOMap">
+  select bc.*,m.name as m_user from bs_banner_config bc
+  left join m_user m on m.id = bc.m_user_id
+  	where bc.channel = #{channel,jdbcType=VARCHAR} and show_page = 'INDEX'
+  	<if test="subject != null and subject !=''">
+    	and bc.subject like CONCAT(CONCAT('%',  TRIM(#{subject})),'%')
+    </if>
+    <if test="status != null and status !=''">
+    	and bc.status = #{status,jdbcType=VARCHAR}
+    </if>
+    order by bc.status desc,bc.priority
+    LIMIT #{pageNum}, #{numPerPage}
+  </select>
+
+  <select id="countByBannerConfig" parameterType="com.pinting.business.model.BsBannerConfig" resultType="java.lang.Integer">
+  select count(bc.id) from bs_banner_config bc
+  	where bc.channel = #{channel,jdbcType=VARCHAR} and show_page = 'INDEX'
+  	<if test="subject != null and subject !=''">
+    	and bc.subject like CONCAT(CONCAT('%', TRIM(#{subject})),'%')
+    </if>
+    <if test="status != null and status !=''">
+    	and bc.status = #{status,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  
+  <select id="getPictureListByBannerConfig" resultMap="BaseResultVOMap">
+  	select bc.*,m.name as m_user from bs_banner_config bc
+  	left join m_user m on m.id = bc.m_user_id
+  	<where>
+	  	<if test="channel != null and channel !=''" >
+	    	bc.channel = #{channel,jdbcType=VARCHAR}
+	    </if>
+	  	<if test="subject != null and subject !=''"  >
+	    	and bc.subject like CONCAT(CONCAT('%',  TRIM(#{subject})),'%')
+	    </if>
+	    <if test="status != null and status !=''" >
+	    	and bc.status = #{status,jdbcType=VARCHAR}
+	    </if>
+	    <if test="showPages != null">
+	           and (show_page in
+	           <foreach collection="showPages" item="item" index="index"
+	                    open="(" close=")" separator=",">
+	               #{item}
+	           </foreach>
+	           )
+	    </if> 
+    </where>
+    order by field(bc.status, "SHOW", "HIDE"), bc.update_time desc
+    LIMIT #{pageNum}, #{numPerPage}
+  </select>
+  
+  <select id="countPictureByBannerConfig" resultType="java.lang.Integer">
+	select count(bc.id) from bs_banner_config bc
+  	<where>
+	   <if test="channel != null and channel !=''"  >
+	   	bc.channel = #{channel,jdbcType=VARCHAR}
+	   </if>
+	   <if test="subject != null and subject !=''"  >
+	   	and bc.subject like CONCAT(CONCAT('%', TRIM(#{subject})),'%')
+	   </if>
+	   <if test="status != null and status !=''" >
+	   	and bc.status = #{status,jdbcType=VARCHAR}
+	   </if>
+	   <if test="showPages != null">
+	           and (show_page in
+	           <foreach collection="showPages" item="item" index="index"
+	                    open="(" close=")" separator=",">
+	               #{item}
+	           </foreach>
+	           )
+	    </if> 
+     </where> 
+  </select>
+  
+  <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultVOMap">
+    select bc.*,m.name as m_user from bs_banner_config bc
+  	left join m_user m on m.id = bc.m_user_id
+    where bc.id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectBannerInfo" parameterType="map" resultMap="BaseResultMap">
+    select bc.id, bc.activity_type from bs_banner_config bc
+    where bc.channel = #{channel,jdbcType=VARCHAR}
+    and bc.url like concat(concat('%', #{url,jdbcType=VARCHAR}),'%')
+  </select>
+  
+  <select id="selectBannerCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(id) from bs_banner_config
+    where  url like concat(concat('%', #{url,jdbcType=VARCHAR}),'%')
+  </select>
+  
+  <select id="selectBannerConfigInfo" parameterType="map" resultMap="BaseResultMap">
+  	select bc.* from bs_banner_config bc
+  	<where>
+  		<if test="channel != null and channel !=''"  >
+	   		bc.channel = #{channel,jdbcType=VARCHAR}
+	    </if>
+	    <if test="status != null and status !=''" >
+	   		and bc.status = #{status,jdbcType=VARCHAR}
+	    </if>
+  		<if test="showPage != null and showPage !=''" >
+        	and bc.show_page = #{showPage,jdbcType=VARCHAR}
+      	</if>
+      	<if test="currBannerId != null">
+        	and bc.id != #{currBannerId,jdbcType=INTEGER}
+      	</if>
+  	</where>
+  </select>
+  
+  <update id="updateBannerConfigStatus" parameterType="map">
+   	update bs_banner_config
+    set priority = -1,
+    update_time = now(),
+    status = #{opStatus, jdbcType=VARCHAR}
+    <where>
+    	<if test="channel != null and channel !=''">
+	   		channel = #{channel, jdbcType=VARCHAR}
+	    </if>
+    	<if test="preStatus != null and preStatus !=''">
+	   		and status = #{preStatus, jdbcType=VARCHAR}
+	    </if>
+		<if test="showPage != null and showPage !=''">
+        	and show_page = #{showPage, jdbcType=VARCHAR}  
+      	</if>
+		<if test="currBannerId != null">
+        	and id != #{currBannerId, jdbcType=INTEGER}
+      	</if>
+	</where>
+  </update>
+  
+   <update id="updateBannersByShowPage" parameterType="map">
+    update bs_banner_config
+    set priority = priority+#{addNum,jdbcType=INTEGER},
+      update_time = now()
+    where priority &gt;= #{priority, jdbcType=INTEGER} 
+    and channel = #{channel, jdbcType=VARCHAR}
+    and show_page = #{showPage, jdbcType=VARCHAR}
+    and status != 'HIDE'
+  </update>
+  
+  <update id="updateBannersByShowPages" parameterType="map">
+    update bs_banner_config
+    set priority = priority+#{addNum,jdbcType=INTEGER},
+      update_time = now()
+    where priority &gt;= #{small,jdbcType=INTEGER} 
+    and priority &lt;= #{big,jdbcType=INTEGER} 
+    and channel = #{channel,jdbcType=VARCHAR}
+    and show_page = #{showPage, jdbcType=VARCHAR}
+    and status != 'HIDE'
+  </update>
+  
+</mapper>

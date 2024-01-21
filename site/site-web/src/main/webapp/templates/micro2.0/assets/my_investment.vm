@@ -1,0 +1,315 @@
+#Html("begin")
+#Head("begin","币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("我的资产【币港湾官网】")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("resources/micro2.0/styles/assets/invest.min")
+#WeChatShare()
+#Head("end")
+<body>
+    <div class="header">
+        <a class="header_arrow" href="javascript:history.go(-1)"></a>
+        <h1 class="heade_ft color_bg">计划管理</h1>
+    </div>
+    #if($!processingNum && $!processingNum >0)
+    	<div class="inver_info" style="padding: 15px 0px;font-size: 24px;line-height: 24px;text-indent: 35px;border-bottom: 1px solid #e5e5e5;color: #333333; padding-bottom: 0;">
+    		有<span class="inver_color" style="color:red">$!processingNum</span>
+    		笔交易正在努力确认中，确认成功即可查看
+    	</div>
+    #else
+    	
+    #end
+    ## 理财投资列表
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="pageIndex" name="pageIndex" value="$!pageIndex" />
+    <input type="hidden" id="totalCount" name="totalCount" value="$!totalCount" />
+    ## 委托计划参数
+    <input type="hidden" id="totalPage" name="totalPage" value="$!totalPage" />
+    <input type="hidden" id="pageNum" name="pageNum" value="$!pageNum" />
+    <input type="hidden" id="qianbao" value="$!qianbao" />
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+    #set($showTab = "init")
+    #if($!investList)
+        #foreach($!invest in $!investList)
+            #if($!invest.status != 5)
+                #set($showTab = "gw")
+            #end
+        #end
+    #end
+    #if($showTab != "gw")
+        #if($!commissionList)
+            #foreach($!invest in $!commissionList)
+                #if($!invest.entrustStatus == "ENTRUSTING")## 委托中
+                    #set($showTab = "wt")
+                #elseif($!invest.entrustStatus == "RETURNING")## 回款中
+                    #set($showTab = "wt")
+                #end
+            #end
+        #else
+            #set($showTab = "gw")
+        #end
+    #end
+    <div class="tab_wrap">
+        #if("$!showTab" != "wt")
+            <div id="tab01" class="tab_btn tab_active tab_btn_active">定期类计划<span class="fy-line fy-line-active"></span></div>
+            <div id="tab02" class="tab_btn">分期类计划<span class="fy-line"></span></div>
+        #else
+            <div id="tab01" class="tab_btn">定期类计划<span class="fy-line"></span></div>
+            <div id="tab02" class="tab_btn tab_active tab_btn_active">分期类计划<span class="fy-line fy-line-active"></span></div>
+        #end
+    </div>
+    #if("$!showTab" != "wt")
+        <div class="main_pading" id="mainContent" atrId="tab01">
+    #else
+        <div class="main_pading tabContent_hide" id="mainContent" atrId="tab01">
+    #end
+    	#if(!$!investList)
+    		#if($!processingNum && $!processingNum >0)
+    			<div class="inver_info" style="padding: 15px 0px;font-size: 24px;line-height: 24px;text-indent: 35px;border-bottom: 1px solid #e5e5e5;color: #333333; padding-bottom: 0;">
+    				有<span class="inver_color" style="color:red">$!processingNum</span>
+    				笔交易正在努力确认中，确认成功即可查看
+    			</div>
+    		#else
+    			<div class="zeek_null"></div>
+    			<div class="zeek_null_txt">您还没有<i class="zeek_null_color">加入港湾计划</i><br>赶紧开始轻松自由的收益之旅吧！</div>
+    		#end</div>
+        #else
+    		#foreach($!invest in $!investList)
+                <section class="invest_main" investId="$!invest.id">
+                    <div class="invest_title">$!invest.productName</div>
+                    <div class="invest_wp">
+                        <ul class="invest_ul_one">
+                            <li class="invest_li">
+                                <span class="invest_ft">预期年化收益：</span>
+                                <span class="invest_number">$!number.format("0.00", $!{invest.productRate})%</span>
+                                #if($!invest.ticketApr != 0)
+                                <span class="ticketRight">+$!{money.format($!invest.ticketApr)}%</span>
+                                #end
+                            </li>
+							<li class="invest_li ticketBox">
+								<div class="ticketChild">
+									<span class="invest_ft">加入本金：</span>
+									<span class="invest_number">¥$!money.format($!invest.balance)</span>
+								</div>
+								<div class="ticketChild">
+                                    <span class="invest_ft">预期收益：</span>
+            						<span class="invest_number">
+            							#if(0>$!invest.term)
+            								#set($termShow = $!invest.balance * $!invest.productRate * $!invest.term *-1/36500)
+                                            ¥$!money.format($termShow)
+            							#elseif($!invest.term == 12)
+            								#set($termShow = $!invest.balance * $!invest.productRate / 100)
+                                            ¥$!money.format($termShow)
+            							#else
+            								#set($termShow = $!invest.balance * $!invest.productRate * $!invest.term *30/36500)
+                                            ¥$!money.format($termShow)
+            							#end
+            						</span>
+								</div>
+    						</li>
+    						#if($!invest.redAmount > 0)
+							<li class="invest_li">
+								<span class="invest_ft">红包抵扣：</span>
+								<span class="invest_number">¥$!money.format($!invest.redAmount)</span>
+							</li>
+    						#end               
+    						#if($!invest.interestAmount != 0)
+    							<li class="invest_li increase_li">
+                                	<span class="invest_ft increase_color">预期加息收益：</span>
+                                	<span class="invest_number increase_color">¥$!money.format($!invest.interestAmount)</span>
+									<img class="increase_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/increase_color.png" alt=""/>
+									
+								</li>	
+								<li class="alert_info">
+									<div class="alert_title">提示</div>
+									<div class="alert_ul">
+										本产品您已使用$!{money.format($!invest.ticketApr)}%加息券，预期加息收益会以奖励金形式于$!date.formatDateTime($!invest.investEndTime,'yyyy-MM-dd')发放。
+									</div>
+									<div class="btn_group">
+										<div class="top_line close_btn">我知道了</div>
+									</div>
+								</li>
+    						#end
+                        </ul>
+                        <ul class="invest_ul_one inve_two">
+                            <li class="invest_li">
+                                <span class="invest_ft">起息时间：</span>
+                                <span class="invest_number">$!date.formatDateTime($!invest.interestBeginDate,'yyyy-MM-dd')</span>
+                            </li>
+                            <li class="invest_li">
+                                <span class="invest_ft">到期时间：</span>
+    						<span class="invest_number">$!date.formatDateTime($!invest.investEndTime,'yyyy-MM-dd')
+    
+    							#if($!tomorrowDate == $!date.formatDateTime($!invest.interestBeginDate,'yyyy-MM-dd'))
+    							#else
+    								#if($!invest.investDay > 0)
+										（剩余$!{invest.investDay}天）
+    								#end
+    							#end
+    						</span>
+                            </li>
+                        </ul>    					
+                    </div>
+					#if($!invest.status == 2)
+    					#if($!invest.investDay > 7)
+							<img class="status_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/horn1.png" alt=""> ##投资中
+    					#else
+							<img class="status_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/horn2.png" alt=""> ##即将到期
+    					#end
+    				#elseif($!invest.status == 7)
+						<img class="status_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/horn6.png" alt=""> ##结算中
+    				#elseif($!invest.status == 5)
+						<img class="status_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/horn5.png" alt=""> ##回款中 已结算
+    				#end
+                    <div class="invest_footer">
+    					#if("$!invest.loan" == "yes")
+                            <div class="footer_btn bnt_right_border" onclick="investment_agreement($!invest.id,'$!invest.propertyType')">
+                                #if($!invest.powerAttorneyFlag == 'no')
+                                    出借服务协议
+                                #elseif($!invest.powerAttorneyFlag == 'yes')
+                                    授权委托书
+                                #else
+                                    出借服务协议
+                                #end
+                            </div>
+                            <div class="footer_btn" onclick="creditor_rights($!invest.productId,$!invest.id,'')">债权明细</div>
+    					#else
+                            <div class="footer_btn" onclick="investment_agreement($!invest.id,'$!invest.propertyType')">出借服务协议</div>
+    					#end
+                    </div>
+                </section>
+    		#end
+            <div id="showmore"></div>
+    	#end
+    </div>
+    
+    #if("$!showTab" != "wt")
+    <div class="main_pading tabContent_hide" id="mainContent2" atrId="tab02">
+    #else
+    <div class="main_pading" id="mainContent2" atrId="tab02">
+    #end
+    	#if(!$!commissionList)
+    		#if($!processingNum && $!processingNum >0)
+    			<div class="inver_info" style="padding: 15px 0px;font-size: 24px;line-height: 24px;text-indent: 35px;border-bottom: 1px solid #e5e5e5;color: #333333; padding-bottom: 0;">
+    				有<span class="inver_color" style="color:red">$!processingNum</span>
+    				笔交易正在努力确认中，确认成功即可查看
+    			</div>
+    		#else
+    			&nbsp
+			#end
+			<div class="zeek_null1"></div>
+    		<div class="zeek_null_txt">您还没有<i class="zeek_null_color">加入分期计划</i><br>赶紧开始轻松自由的收益之旅吧！</div>
+    	#else
+    		#foreach($!invest in $!commissionList)
+                <section class="invest_main" commitionId="$!invest.id">
+                    <div class="invest_title">$!invest.productName</div>
+                    <div class="invest_wp">
+                        <ul class="invest_ul_one">
+							<li class="invest_li">
+								<span class="invest_ft">预期年化收益：</span>
+								<span class="invest_number">$!number.format("0.00", $!{invest.productRate})%</span>
+							</li>
+                            <li class="invest_li ticketBox">
+								<div class="ticketChild">
+									<span class="invest_ft">委托金额：</span>
+									<span class="invest_number">¥$!money.format($!invest.openBalance)</span>
+								</div>
+								<div class="ticketChild">
+                                    <span class="invest_ft">委托意向：</span>
+                					<span class="invest_number">
+                						#if(0 > $!invest.term)
+                							#set($termShow = $!invest.term *-1)
+                							$!{termShow}天内
+                						#else
+                							$!{invest.term}个月内
+                						#end
+                					</span>
+								</div>
+							</li>   						
+                            <li class="invest_li ticketBox">								
+								<div class="ticketChild">
+									<span class="invest_ft">回款方式：</span>
+									<span class="invest_number">等额本息</span>
+								</div>
+								<div class="ticketChild">
+                                    <span class="invest_ft">委托时间：</span>
+                                    <span class="invest_number">$!date.formatDateTime($!invest.openTime,'yyyy-MM-dd')</span>
+                                </div>
+                            </li>                            
+                        </ul>
+                        <ul class="invest_ul_one inve_two">
+                            <li class="invest_li ticketBox">
+								<div class="ticketChild">
+                                    <span class="invest_ft">待收本金：</span>
+                                    <span class="invest_number">¥$!money.format($!invest.receivePrincipalAmount)</span>
+								</div>
+								<div class="ticketChild">
+									<span class="invest_ft">待收利息：</span>
+									<span class="invest_number">¥$!money.format($!invest.receiveInterestAmount)</span>
+								</div>
+                            </li>
+                            <li class="invest_li">
+                                <span class="invest_ft">已回款：</span>
+                                <span class="invest_number">¥$!money.format($!invest.returnAmount)</span>
+                            </li>   						
+                        </ul>   					
+                    </div>
+					#if($!invest.entrustStatus == "ENTRUSTING")
+    					## 委托中
+						<img class="status_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/horn3.png" alt="">
+    				#elseif($!invest.entrustStatus == "RETURNING")
+    					## 回款中
+						<img class="status_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/horn7.png" alt=""> ##结算中
+    				#elseif($!invest.entrustStatus == "RETURN_OVER")
+    					## 回款结束
+						<img class="status_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/horn4.png" alt=""> ##回款中
+    				#elseif($!invest.entrustStatus == "ENTRUST_OVER")
+    					## 委托结束
+						<img class="status_img" src="$!env.getWebURL('')/resources/micro2.0/images/assets/horn8.png" alt=""> ##委托结束
+    				#end
+                    <div class="invest_footer">
+                        <div class="footer_btn bnt_right_border" onclick="loan_agreement($!invest.id)">自动出借计划协议</div>
+                        <div class="footer_btn" onclick="creditor_rights($!invest.productId,$!invest.id,'$!invest.entrustStatus')">债权明细</div>
+                    </div>
+                </section>
+    		#end
+            <div id="showmore_commission"></div>
+    	#end
+    </div>
+	<div class="dialog_notice alert_hide"></div>
+#LoadJS("resources/micro2.0/scripts/assets/my_invest_page")
+<script >
+	// 出借咨询与服务协议
+	function investment_agreement(id,e){
+        var qianbao = $('#qianbao').val();
+        var agentViewFlag = $('#agentViewFlag').val();
+        if(qianbao == 'qianbao' && agentViewFlag != '') {
+            location.href = "$!env.getWebURL('/micro2.0/regular/buyagreement?investId=')" + id+"&propertyType="+e +"&qianbao="+qianbao +"&agentViewFlag="+agentViewFlag;
+        }else {
+            location.href = "$!env.getWebURL('/micro2.0/regular/buyagreement?investId=')" + id+"&propertyType="+e;
+        }
+	}
+	// 自动出借计划协议
+	function loan_agreement(id){
+        var qianbao = $('#qianbao').val();
+        var agentViewFlag = $('#agentViewFlag').val();
+        if(qianbao == 'qianbao' && agentViewFlag != '') {
+            location.href = "$!env.getWebURL('/micro2.0/agreement/entrustAgreementApp?investId=')" + id +"&qianbao="+qianbao +"&agentViewFlag="+agentViewFlag;
+        }else {
+            location.href = "$!env.getWebURL('/micro2.0/agreement/entrustAgreementApp?investId=')" + id;
+        }
+	}
+
+	// 债权明细
+	function creditor_rights(productId,e,status){
+        var qianbao = $('#qianbao').val();
+        var agentViewFlag = $('#agentViewFlag').val();
+        if(qianbao == 'qianbao' && agentViewFlag != '') {
+            location.href = "$!env.getWebURL('/micro2.0/match/myMatch?productId=')" + productId+"&subAccountId="+e+"&entrustStatus="+status +"&qianbao="+qianbao +"&agentViewFlag="+agentViewFlag;
+        }else {
+            location.href = "$!env.getWebURL('/micro2.0/match/myMatch?productId=')" + productId+"&subAccountId="+e+"&entrustStatus="+status;
+        }
+	}
+</script>
+</body>
+#Html("end")

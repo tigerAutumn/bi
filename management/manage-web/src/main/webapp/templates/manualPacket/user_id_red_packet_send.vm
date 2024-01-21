@@ -1,0 +1,279 @@
+<div class="pageContent">
+	<form method="post" id="manual_user_id_packet_form" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+		#Hidden("userCount","$!totalRows")
+		<div class="pageFormContent" layoutH="56">
+			<p style="width:530px;">
+				<label>红包名称：</label>
+				<input id="packetName" name="serialName" type="text" size="30" maxlength="12" class="required"/>
+				<span style="margin-left: 20px;margin-top: 9px;">最多12个字，允许中英文和数字</span>
+			</p>
+			<p style="width:540px;">
+				<label>红包策略：</label>
+				<input id="policyType" name="policyType" type="text" size="30" maxlength="10" class="required" value="$!policyType"/>
+				<span style="margin-left:20px;margin-top: 9px;">最多10个字，允许中英文和数字</span>
+			</p>
+			<p>
+				<label>选择预算来源：</label>
+				<select name="applyNo" id="applyNo" >
+					<option value="" >请选择</option>
+					#foreach($packet in $!packetList)
+						<option value="$!packet.applyNo" >$!packet.rpName</option>
+					#end
+				</select>
+			</p>
+			<p>
+				<label>选择红包类型：</label>
+				<select name="useCondition" id="useCondition" >
+					<option value="FULL_SUBTRACT" > 满减包</option>
+				</select>
+			</p>
+			<p style="width:530px;">
+				<label>红包使用条件：</label>
+				单次购买满&nbsp;&nbsp;<input id="full" onkeyup="value=value.replace(/[^\d]/g,'')" name="full" type="text" size="15" maxlength="8" class="required number" value="" placeholder="" style="float: none;"/>&nbsp;&nbsp;元
+				<span style="margin-left: 20px;margin-top:9px;">如果超过10万，则后四位为0</span>
+			</p>
+			<p style="width:530px;">
+				<label>红包金额：</label>
+				<input id="subtract" name="subtract" onkeyup="value=value.replace(/\.\d{2,}$/,value.substr(value.indexOf('.'),3))" type="text" size="10" maxlength="5" class="required number" value="" placeholder="" style="float: none;"/>&nbsp;&nbsp;元
+				<span style="margin-left: 117px;margin-top: 9px;">5位数字，可以有小数</span>
+			</p>
+			<p>当前预算余额：<em id="canUseAmount">0</em>元</p>
+			<p>已选择 $!totalRows 个用户,共计<em id="totalAcount">0</em>元</p>
+			<p style="width:500px;">
+				<label>使用有效期：</label>
+				<input name="useTimeStart" datefmt="yyyy-MM-dd 00:00:00" type="text"  id="useTimeStart" class=" date textInput readonly" readonly="true" size="18"/> 
+				<label style="width:15px;">至</label>
+			    <input style="margin-right:15px;" name="useTimeEnd"  datefmt="yyyy-MM-dd 23:59:59" type="text"  id="useTimeEnd" class=" date textInput readonly" readonly="true" size="18"/>
+			</p>
+			<p>##style="width:600px;"
+				<label>限用标的：</label>
+				<input type="checkbox" name="term" value="1"/> 30天     
+				<input type="checkbox" name="term" value="3"/> 90天      
+				<input type="checkbox" name="term" value="6"/> 180天
+				##<input type="checkbox" name="term" value="9"/> 270天
+				<input type="checkbox" name="term" value="12"/> 365天
+				<input type="hidden" id="termLimit" name="termLimit" value=""/>
+			</p>
+			<p style="height:60px;width:490px;">
+				<label>红包备注：</label>
+				<textarea class="textInput valid" rows="3" cols="35" name="note" id="note" maxlength="200"></textarea>
+			</p>
+			<p>
+				<label>&nbsp;</label>
+				<input type="checkbox" name="notify" value="SMS"/> 短信通知     
+				<input type="checkbox" name="notify" value="WECHAT"/> 微信通知       
+				<input type="checkbox" name="notify" value="APP"/> APP通知
+				<input type="hidden" id="notifyChannel" name="notifyChannel" value=""/>
+			</p>
+		</div>
+		<div class="formBar" style="display:$!op">
+			<ul>
+                <li ><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="redPacketSend()">确定</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+	$(function(){
+		$("select[name=applyNo]").on('change',function(){
+    		var val = this.value;
+			if(val !=null &&  val !=''){
+    			var url = $("#APP_ROOT_PATH").val() + "/autoPacket/getByApplyNo.htm";
+        		jQuery.ajax({
+        			type : 'post',
+        			url : url,
+        			data : {applyNo : val},
+        			async : false,
+        			success : function(data) {
+        				$('#canUseAmount').html(data.canPutAmount);
+        			},
+					error : function() {
+						$('#canUseAmount').html('0');
+					}
+        		});
+			}else{
+				$('#canUseAmount').html('0');
+			}
+			
+		});
+		
+		$("#subtract").on('change',function(){
+			var userCount = $.trim($('#userCount').val()),
+				subtract = $.trim($('#subtract').val());
+			if(subtract == null || subtract == '') {
+				subtract = 0;
+			}
+			var totalAcount = parseInt(userCount) * parseFloat(subtract);
+			$("#totalAcount").html(totalAcount.toFixed(2));
+		});
+		
+		$("#policyType").on('input',function(){
+    		var policyType = $("#policyType").val();
+    		if(policyType != null && policyType !=''){
+    			var url = $("#APP_ROOT_PATH").val() + "/autoPacket/getCheckByPolicy.htm";
+            	jQuery.ajax({
+            		type : 'post',
+            		url : url,
+            		data : {policyType : policyType},
+            		async : false,
+            		success : function(data) {
+        				if(data.checkPolicy.length>0){
+    						if($("#show_all_policy_div")) {
+    							$("#show_all_policy_div").remove();
+    						}
+    						var showHtml ='<div id="show_all_policy_div" style="border: 1px solid #aaa;line-height: 25px;position: absolute;top: 25px;left: 130px;cursor:pointer;width: 198px;background-color: #fff;padding: 6px;z-index: 100;">';
+    						for(var i=0;i<data.checkPolicy.length;i++){
+    							showHtml = showHtml + '<div onclick="choosePolicy(this)" style="font-size: 12px;">'+data.checkPolicy[i].policyType+'</div>';
+        					}
+    						showHtml = showHtml + '</div>';
+                			$('#policyType').after(showHtml);
+        				} else {
+    						$("#show_all_policy_div").remove();
+    					}
+            		}
+            	});
+    		}
+		});
+	})
+	
+	
+	function choosePolicy(obj){
+    	var policy = $.trim($(obj).text());
+    	$("#policyType").val(policy);
+    	$("#show_all_policy_div").hide();
+	}
+	
+	function redPacketSend() {
+		var serialName = $.trim($('#packetName').val()),
+			applyNo = $.trim($('#applyNo').val()),
+			useCondition = $.trim($('#useCondition').val()),
+			full = $.trim($('#full').val()),
+			subtract = $.trim($('#subtract').val()),
+			useTimeStart = $.trim($('#useTimeStart').val()),
+			useTimeEnd = $.trim($('#useTimeEnd').val()),
+			userCount = $.trim($('#userCount').val()),
+			policyType = $.trim($('#policyType').val());
+			
+		if(serialName == null || serialName == '') {
+			alertMsg.warn("红包名称不能为空！");
+			return false;
+		}
+		if(policyType == null || policyType == '') {
+			alertMsg.warn("红包策略不能为空！");
+			return false;
+		}
+		if(applyNo == null || applyNo == '') {
+			alertMsg.warn("预算来源不能为空！");
+			return false;
+		}
+		if(useCondition == null || useCondition == '') {
+			alertMsg.warn("红包类型不能为空！");
+			return false;
+		}
+		if(full == null || full == '') {
+			alertMsg.warn("红包使用条件不能为空！");
+			return false;
+		}else {
+			if(parseInt(full) <= parseInt(0)){
+				alertMsg.warn("红包使用条件金额必须大于0！");
+					return false;
+			}else if(parseInt(full) > parseInt(100000)){
+				var t = parseInt(full) % parseInt(10000);
+				if(parseInt(t) > parseInt(0)){
+					alertMsg.warn("红包使用条件金额大于10万时不能存在万位以下!");
+					return false;
+				}
+			}
+		}
+		if(subtract == null || subtract == '') {
+			alertMsg.warn("红包金额不能为空！");
+			return false;
+		}
+		if(parseFloat(subtract) <= parseFloat(0)){
+			alertMsg.warn("红包金额必须大于0！");
+			return false;
+		}
+		if(parseFloat(subtract) > parseFloat(full)){
+			alertMsg.warn("红包金额不能大于使用条件金额！");
+			return false;
+		}
+		if(useTimeStart == null || useTimeStart == '') {
+			alertMsg.warn("使用有效期开始时间不能为空！");
+			return false;
+		}
+		if(useTimeEnd == null || useTimeEnd == '') {
+			alertMsg.warn("使用有效期结束时间不能为空！");
+			return false;
+		}
+		if(useTimeStart !=null && useTimeStart != "" && useTimeEnd != null && useTimeEnd != ""){
+    		var result = Date.parse(useTimeEnd.replace(/-/g,"/"))- Date.parse(useTimeStart.replace(/-/g,"/"));
+    		if(result < 0){
+    			alertMsg.warn("有效期开始时间不能在结束时间之后！！");
+    			return false;
+    		}
+    	}
+		var notify = '';
+		$("input[name=notify]:checkbox").each(function(){
+			if($(this).attr("checked")) {
+				notify += $(this).attr('value') + ",";
+			}
+		});
+		if(notify != ''){
+			$("#notifyChannel").val(notify);
+		}
+		
+		var totalAcount = parseInt(userCount) * parseFloat(subtract),
+			canUseAmount = parseFloat($.trim($('#canUseAmount').html()));
+		if(userCount <= 0) {
+			alertMsg.warn("当前没有选择用户，请重新选择用户！！");
+    		return false;
+		}
+		if(parseFloat(canUseAmount.toFixed(2)) < parseFloat(totalAcount.toFixed(2))) {
+			alertMsg.warn("当前支出预算不能大于当前预算余额！！");
+    		return false;
+		}
+		
+		var term = '';
+		$("input[name=term]:checkbox").each(function(){
+			if($(this).attr("checked")) {
+				term += $(this).attr('value') + ",";
+			}
+		});
+		if(term != ''){
+			$("#termLimit").val(term);
+		}else {
+			alertMsg.warn("请至少选择一个限用标的！！");
+    		return false;
+		}
+		
+		var url = $("#APP_ROOT_PATH").val() + "/manualPacket/sendRedPacket.htm";
+		$.ajax({
+			type : 'post',
+			url : url,
+			data : {
+				userIds : $("#userIds").val(),
+				serialName : serialName,
+				applyNo : applyNo,
+    			useCondition : useCondition,
+    			full : full,
+    			subtract : subtract,
+    			useTimeStart : useTimeStart,
+    			useTimeEnd : useTimeEnd,
+    			userCount : userCount,
+    			policyType : policyType,
+				termLimit : $("#termLimit").val(),
+				notifyChannel : $("#notifyChannel").val(),
+				note : $('#note').val()
+			},
+			success : function(data) {
+				alertMsg.correct("红包正在发送中，请稍后！！");
+			}
+		})
+		
+		$.pdialog.close("manual_user_id_red_pocket");
+	}
+</script>

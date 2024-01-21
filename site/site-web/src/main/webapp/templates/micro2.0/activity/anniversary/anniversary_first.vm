@@ -1,0 +1,172 @@
+#Html("begin")
+#Head("begin")
+#Title("【币港湾官网】国资背景互联网金融服务平台")
+#LoadCSS("resources/micro2.0/styles/activity/default")
+#LoadCSS("resources/micro2.0/styles/activity/anniversary/celebration_01")
+#LoadJS("resources/micro2.0/scripts/common/common")
+#LoadJS("resources/micro2.0/scripts/activity/six")
+#LoadJS("resources/micro2.0/scripts/activity/anniversary/common")
+#LoadJS("resources/micro2.0/scripts/activity/anniversary/anniversary_first")
+#WeChatShare()
+#Head("end")
+
+<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+<body class="BGColor">
+    <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/01.png" alt="" class="headerImg">
+    <div class="win_border">
+        <div class="pos_title">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/02.png" alt="">
+            <div class="right_title">
+                <div class="tit_info">随机福利标，加息天天有</div>
+                <div class="tit_time">3月10日-3月24日</div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="ner_font">
+                活动说明：活动期间，每日有随机加息标可抢购哦，最高加息0.8%。机会稍纵即逝，要记得留意哟。
+            </div>
+            <div class="pro_win">
+                <div class="pro_title">港湾系列加息</div>
+                <div class="pro_number">0.1%~0.6%</div>
+            </div>
+            <div class="pro_win pro_marginLeft">
+                <div class="pro_title">赞分期系列加息</div>
+                <div class="pro_number">0.3%~0.8%</div>
+            </div>
+            <div class="btn go_product_list">立即投资</div>
+        </div>
+    </div>
+
+    <div class="win_border pos_two">
+        <div class="pos_title">
+            <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/03.png" alt="">
+            <div class="right_title">
+                <div class="tit_info">周年庆元宝，最高300元</div>
+                <div class="tit_time">3月10日-3月17日</div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="ner_font">
+                活动说明：活动开始每位用户即可获得一个周年庆元宝，更多元宝可通过分享好友助力页面，邀请好友点击助力获得。每位好友助力一次，元宝将随机增加数量，单个用户周年庆元宝最多可获得60个。
+            </div>
+        </div>
+        <div class="neikuan">
+            <div class="neikuan_title">我的元宝<img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/04.png" alt="" class="icon"></div>
+            <div class="num_page">
+                #if($!firstPageInfo.isLogin == "yes")
+                    #if($!firstPageInfo.isStartSecond == "start")
+                        <span class="num">$!{firstPageInfo.goldIngotNum}</span>个
+                    #elseif($!firstPageInfo.isStartSecond == "end")
+                        <span class="num">$!{firstPageInfo.goldIngotNum}</span>个
+                    #else
+                        <span class="num">0</span>个
+                    #end
+                #else
+                    <span class="num">---</span>
+                #end
+            </div>
+            #if($!firstPageInfo.isLogin == "yes")
+                #if($!firstPageInfo.isStartSecond == "start")
+                    <div class="this_bumber">（当前已解锁$!{firstPageInfo.unlockedNum}个）</div>
+                #elseif($!firstPageInfo.isStartSecond == "end")
+                    <div class="this_bumber">（当前已解锁$!{firstPageInfo.unlockedNum}个）</div>
+                #else
+                    <div class="this_bumber">（当前已解锁0个）</div>
+                #end
+            #else
+                <div class="this_bumber">（当前已解锁0个）</div>
+            #end
+            <div class="thatopen" style="font-weight:600;">元宝仅可3月18日当天解锁</div>
+            #if($!firstPageInfo.isStartSecond == "end")
+                <div class="btn is_end">已结束</div>
+            #else
+                #if($!firstPageInfo.isLogin == "yes")
+                    #if($!firstPageInfo.canUnlock == "yes")
+                        <div class="btn go_product_list">立即投资</div>
+                    #else
+                        <div class="btn to_share">分享好友来助力</div>
+                    #end
+                #else
+                    <div class="btn go_login">登录后查看</div>
+                #end
+            #end
+
+            <div class="last_pro third_rule_btn">活动规则</div>
+        </div>
+    </div>
+    <div class="footer_info">
+        本次活动的最终解释权归币港湾所有
+    </div>
+    <script>
+        $(function() {
+            $('.third_rule_btn').click(function() {
+                $('.third_rule').removeClass('alert_hide');
+            });
+            $('.close').click(function() {
+                $('.third_rule').removeClass('alert_hide').addClass('alert_hide');
+            });
+            $('.icon').click(function() {
+                $('.Question_rule').removeClass('alert_hide');
+            });
+            $('.close').click(function() {
+                $('.Question_rule').removeClass('alert_hide').addClass('alert_hide');
+            });
+        })
+    </script>
+    <!-- 弹窗 -->
+    <div class="dialog_notice alert_hide third_rule">
+        <div class="wrap_dialog">
+            <div class="dialog_title">
+                2重礼 活动规则
+                <div class="close">
+                    <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/close.png" alt="" class="closeImg">
+                </div>
+            </div>
+            <ul class="dialog_ul">
+                <li class="dialog_li">1.活动时间：2017年3月10日-3月17日；</li>
+                <li class="dialog_li">2.活动开始每位用户即可获得一个周年庆元宝，更多元宝可通过分享好友助力页面，邀请好友点击助力获得；</li>
+                <li class="dialog_li">3.周年庆元宝最高可获得数量为60个，用户最高解锁元宝数量，以用户活动期间获得的元宝为准；</li>
+                <li class="dialog_li">4.用户周年庆当天（3月18日）投资每满5000元可解锁一个元宝；</li>
+                <li class="dialog_li">例：小湾积累了10个元宝，小湾3.18日当天投资港湾计划稳定收5万元，则小湾的10个元宝全部开启，可获得50元现金奖励；</li>
+                <li class="dialog_li">5.元宝在用户投资完成后根据满足情况解锁，获得的奖励金在投资完成时即刻返现至“我的账户-我的奖励”中。</li>
+            </ul>
+        </div>
+    </div>
+    <!--问号弹窗-->
+    <div class="dialog_notice alert_hide Question_rule">
+        <div class="wrap_dialog">
+            <div class="dialog_title">
+                                        元宝说明
+                <div class="close">
+                    <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/close.png" alt="" class="closeImg">
+                </div>
+            </div>
+            <ul class="dialog_ul">
+                <li class="dialog_li">1.使用比例为每”1元宝”需5000元解锁（即投资5000元解锁1元宝= 5元奖励金）；</li>
+                <li class="dialog_li">2.投资期限为30天及以上标的；</li>
+                <li class="dialog_li">3.使用日期为3月18日</li>
+                <li class="dialog_li">用户例子：小湾积累了”10元宝”，小湾3月18日当天购买港湾计划稳定收5万元，则小湾的”10元宝”全部开启，可获得50元现金奖励；</li>
+                <li class="dialog_li">4.元宝在用户投资完成后根据满足情况解锁，获得的奖励金在投资完成时即刻返现至“奖励金账户”中（可提现）。</li>
+            </ul>
+        </div>
+    </div>
+    <!-- 提示框 -->
+    <div class="dialog_notice smalldialog prompt_dialog alert_hide" >
+        <div class="wrap_dialog">
+            <div class="dialog_title prompt_close" >
+                <img src="$!env.getWebURL('')/resources/micro2.0/images/activity/anniversary/close_gray.png" alt="" class="closegrayImg">
+            </div>
+            <div class="dialog_font prompt_content">亲~今天已经送过祝福了喔~</div>
+            <div class="dialog_btn prompt_btn">知道了</div>
+        </div>
+    </div>
+
+    <!--分享-->
+    <div class="shae_dialgo share_one" style="display: none;">
+        <div class="arrow"></div>
+        <div class="shar_off"></div>
+    </div>
+</body>
+
+#Html("end")
+

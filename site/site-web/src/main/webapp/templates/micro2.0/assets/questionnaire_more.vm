@@ -1,0 +1,137 @@
+#Html("begin")
+#Head("begin","风险评测,币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("风险评测【币港湾官网】")
+#LoadGenJS("/resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadGenCSS("/resources/micro2.0/styles/assets/questionnaire.min")
+#WeChatShare()
+#Head("end")
+	<body id="body">
+		<div class="header">
+			<a class="header_arrow" href="javascript:history.go(-1)"></a>
+			<h1 class="heade_ft color_bg">风险测评</h1>
+		</div>
+        <input type="hidden" id="entry" value="$!entry">
+		<!--首次评测-->
+		#if($!questionMoreMsg.hasQuestionnaire!=1)
+		<div class="Qindex">
+			<div class="Qindex_title">尊敬的客户</div>
+			<div class="Qindex_txt">
+				 为了便于您了解自身的风险承受能力，选择合适的产品和服务，请您填写以下风险承受能力测评。风险承受能力测评能够帮助用户准确的对自我风险承受能力，理念、性格等进行专业的认知测试，综合评估您的风险承受能力高低，是您进行选择产品之前重要的准备工作。本风险承受能力测评仅作为本公司客户适当性服务的依据。实际选择产品时请慎重选择， 本公司不对用户据此选择产品所产生的风险承担责任。为了及时了解您的风险承受能力，我们建议您持续做好动态评估。
+			</div>
+			<div class="Qindex_txt">
+				风险提示：选择产品需承担各类风险，可能遭受资金损失。市场有风险，用户需谨慎。
+			</div>
+			<div class="Qindex_txt">
+				测评需知：在风险承受能力测试过程中，您提供的全部信息、资料是真实、准确和完整的，测试结果真实、准确地反映了您的风险承受程度。我们承诺对您的所有个人资料保密。请您认真作答，感谢您的配合！（每个问题请选择唯一选项，不可多选）
+			</div>
+			<div class="Qindex_btn">
+				#if("$!qianbao" == "qianbao")
+                   <a class="Qindex_btna" href="$!env.getWebURL('/micro2.0/assets/questionnaire')?qianbao=qianbao&agentViewFlag=$!agentViewFlag">测一测</a>	
+				#else
+                   <a class="Qindex_btna" href="$!env.getWebURL('/micro2.0/assets/questionnaire')">测一测</a>	
+				#end
+			</div>
+		</div>
+		<!--再次评测-->
+		#else
+		<div class="Q_rsult">
+			<img src="$!env.getWebURL('')/resources/micro2.0/images/assets/questionnaire/bg.png" class="Q_rsult_bg" />
+			
+	            #if($!questionMoreMsg.assessType == "conservative")
+	                <img src="$!env.getWebURL('')/resources/micro2.0/images/assets/questionnaire/bs.png" alt="保守" class="Q_rsult_img">
+	            #elseif($!questionMoreMsg.assessType == "steady")
+	                <img src="$!env.getWebURL('')/resources/micro2.0/images/assets/questionnaire/wj.png" alt="稳健" class="Q_rsult_img">
+	            #elseif($!questionMoreMsg.assessType == "balanced")
+	                <img src="$!env.getWebURL('')/resources/micro2.0/images/assets/questionnaire/ph.png" alt="平衡" class="Q_rsult_img">
+	            #elseif($!questionMoreMsg.assessType == "aggressive")
+	                <img src="$!env.getWebURL('')/resources/micro2.0/images/assets/questionnaire/jq.png" alt="进取" class="Q_rsult_img">
+	            #elseif($!questionMoreMsg.assessType == "radical")
+	                <img src="$!env.getWebURL('')/resources/micro2.0/images/assets/questionnaire/jj.png" alt="激进" class="Q_rsult_img">
+	            #else
+                    <div class="result-none">未测评</div>
+                #end
+			<div class="Q_rsult_time">有效期截止时间：$!questionMoreMsg.expireTime</div>
+			##过期icon
+			#if($!hfDepGuideInfo.riskStatus=="expire")
+				<img src="$!env.getWebURL('')/resources/micro2.0/images/assets/questionnaire/expired.png" class="Q_expire" />
+			#end
+		</div>
+		<div class="Qindex">
+			<div class="Qindex_txt">
+				#if($!questionMoreMsg.assessType == "conservative")
+		                    在参与任何产品项目中，保证本金不受损失和保持资产的流动性是您的首要目标。您对参与产品项目的态度是希望收益极度稳定，不愿承担高风险以换取高收益，不愿意承受太大波动对心理的煎熬，追求稳定。
+		                #elseif($!questionMoreMsg.assessType == "steady")
+		                    在参与任何产品项目中，稳定是您首要考虑的因素。您希望在保证本金安全的基础上能有一些增值收入。追求较低的风险，对回报的要求不高。
+		                #elseif($!questionMoreMsg.assessType == "balanced")
+		                    在参与任何产品项目中，在风险较小的情况下获得一定的收益是您主要目的。您通常愿意面临一定的风险，但在做决定时，会仔细地对将要面临的风险进行认真的分析。您对风险总是客观存在有清楚的认识。
+		                #elseif($!questionMoreMsg.assessType == "aggressive")
+		                    在参与任何产品项目中，您渴望有较高的收益，但又不愿承受较大的风险；可以承受一定的资金波动，但是希望自己的资金风险小于市场的整体风险。您有较高的收益目标，且对风险有清醒的认识。
+		                #elseif($!questionMoreMsg.assessType == "radical")
+		                    在参与任何产品项目中，您通常专注于资本的长期增值，并愿意为此承受较大的风险。短期的资金波动并不会对您造成大的影响，追求超高的回报才是您关注的目标。
+		         #end
+			</div>
+			<div class="Q_rsult_btn">	
+				#if("$!qianbao" == "qianbao")
+                   <a class="Qindex_btna" href="$!env.getWebURL('/micro2.0/assets/questionnaire')?qianbao=qianbao&agentViewFlag=$!agentViewFlag">
+                   		#if($!questionMoreMsg.hasQuestionnaire==1)
+							重新测评
+	                	#else
+							开始测评
+	                	#end
+                   </a>	
+				#else
+                   <a class="Qindex_btna" href="$!env.getWebURL('/micro2.0/assets/questionnaire')">
+                   		#if($!questionMoreMsg.hasQuestionnaire==1)
+							重新测评
+	                	#else
+							开始测评
+	                	#end
+                   </a>	
+				#end
+			</div>
+			<div class="result-tips">测评结果仅供参考，请结合自身情况选择产品！</div>
+		</div>
+		#end
+		#if($!hfDepGuideInfo.riskStatus=="no")
+		##未测评	
+    	<div class="dialog_notice">
+            <div class="alert_info">
+                <div class="alert_title">提示</div>
+                <div class="alert_ul">
+    				风险承受能力测评完成后可加入产品、充值、提现
+                </div>
+                <div class="btn_group">
+                    <div class="top_line close_btn">知道了</div>
+                </div>
+            </div>
+        </div>	
+		#elseif($!hfDepGuideInfo.riskStatus=="expire")
+		##已过期
+		<div class="dialog_notice">
+            <div class="alert_info">
+                <div class="alert_title">提示</div>
+                <div class="alert_ul">
+    				您的风险承受能力测评已过期，重新测评完成后可加入产品、充值、提现
+                </div>
+                <div class="btn_group">
+                    <div class="top_line close_btn">知道了</div>
+                </div>
+            </div>
+        </div>		
+		#else
+		##已测评	
+		#end		
+		<script>
+			$(function(){
+				$(".close_btn").click(function(){
+					$(".dialog_notice").stop().hide();
+				});
+				var en=$("#entry").val();
+				$(".Qindex_btna").on("click",function(){
+					sessionStorage.setItem("entry", en);					
+				});
+			})
+		</script>
+	</body>
+#Html("end")

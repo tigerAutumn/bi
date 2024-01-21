@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sql-global">
+	
+	<!--
+      - ===============================================
+      - MySql的分页
+      - @author Flouny.Caesar
+      - @date 2012-12-28
+      - ===============================================
+	-->
+	<sql id="pagination">
+		<![CDATA[ limit #{start}, #{numPerPage}]]>
+	</sql>
+	<!--
+      - ===============================================
+      - 动态排序
+      - @author Flouny.Caesar
+      - @date 2009-12-25
+      - ===============================================
+	-->
+	<sql id="orderBy">
+		<if test="sortField!=null and sortField!='' ">   
+			order by $sortField$ $sortOrder$
+		</if>
+	</sql>
+</mapper>

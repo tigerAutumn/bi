@@ -1,0 +1,224 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!record.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!record.numPerPage" />
+</form>
+<div class="pageHeader">
+	<form id="myform" method="post" rel="pagerForm" action="$env.getWebURL('/scheduleTransport/index.htm')" onsubmit="return navTabSearch(this);">
+	<div class="searchBar">
+		<table class="searchContent">
+			<tbody>
+			<tr>
+				<td>
+					任务组别：
+					<select name="jobGroup" class="valid">
+						<option value="" #if("$!req.jobGroup"=="") selected  #end>全部</option>
+						<option value="SCHEDULE" #if("$!req.jobGroup"=="SCHEDULE") selected  #end>SCHEDULE</option>
+						<option value="MANAGE" #if("$!req.jobGroup"=="MANAGE") selected  #end>MANAGE</option>
+                        <option value="BUSINESS" #if("$!req.jobGroup"=="BUSINESS") selected  #end>BUSINESS</option>
+                    </select>
+                </td>
+				<td>
+					任务状态：
+					<select name="jobStatus" class="valid">
+						<option value="" #if("$!req.jobStatus"=="") selected  #end>全部</option>
+						<option value="STOP" #if("$!req.jobStatus"=="STOP") selected  #end>停止</option>
+						<option value="RUNNING" #if("$!req.jobStatus"=="RUNNING") selected  #end>启用</option>
+                        <option value="DELETE" #if("$!req.jobStatus"=="DELETE") selected  #end>删除</option>
+                    </select>
+                </td>
+				<td>
+					<input type="button" id="search" onclick="func()" value="查询"/>
+                </td>
+			</tr>
+		</tbody></table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="$env.getWebURL('/scheduleTransport/addPage.htm')" target="navtab" mask="true" width="1000" height="770"rel="createBack" ><span>新增</span></a></li>
+		</ul>
+    </div>
+	<table class="table" width="1750" layoutH="150">
+		<thead>
+			<tr>
+				<th width="20%">任务描述</th>
+				<th width="15%">任务名称</th>
+				<th width="5%">任务组别</th>
+                <th width="5%">任务状态</th>
+				<th width="10%">执行表达式</th>
+                <th width="20%">操作</th>
+				<th width="5%">执行类Class</th>
+				<th width="5%">执行方法名</th>
+				<th width="10%">执行类Id</th>
+				<th width="5%">允许并发</th>
+			</tr>
+		</thead>
+		<tbody>
+			#foreach($sche in $!list)
+			<tr target="sid_user" rel="1" style="height:30px;">
+				<td width="20%">$!sche.description</td>
+                <td width="15%">$!sche.jobName</td>
+				<td width="5%">$!sche.jobGroup</td>
+                <td width="5%">
+					#if($!sche.jobStatus == 'STOP')停止
+					#elseif($!sche.jobStatus == 'RUNNING')启用
+					#elseif($!sche.jobStatus == 'DELETE')删除
+					#end
+				</td>
+				<td width="10%">$!sche.cronExpression</td>
+                <td width="20%">
+                    <a class="" href="$env.getWebURL('/scheduleTransport/updatePage.htm?id=')$!sche.id&cronExpression=$!sche.cronExpression&description=$!sche.description&jobGroup=$!sche.jobGroup" target="navtab" mask="true" rel="createBack" style="color:blue;margin-left:20px;margin-right:20px;"><span>修改</span></a>
+					#if($!sche.jobStatus != 'DELETE')
+                        <a title="立即执行一次?" onclick="do_now(this)" jobId="$!sche.id" jobGroup="$!sche.jobGroup" href="javascript:void(0)" mask="true" url="$env.getWebURL('/scheduleTransport/doNow.htm?jobId=')$!sche.id&jobGroup=$!sche.jobGroup" style="margin-right:20px;color:blue">立即执行</a>
+					#end
+					#if($!sche.jobStatus == 'STOP')
+                        <a onclick="runing(this)" jobId="$!sche.id" jobGroup="$!sche.jobGroup"  href="javascript:void(0)" url="$env.getWebURL('/scheduleTransport/runing.htm')" mask="true" style="color:blue;margin-right:20px;"><span>启用</span></a>
+                        <a title="确认删除？" onclick="do_delete(this)" jobId="$!sche.id" jobGroup="$!sche.jobGroup"  href="javascript:void(0)" url="$env.getWebURL('/scheduleTransport/delete.htm')" mask="true" style="color:red;margin-right:20px;"><span>删除</span></a>
+					#elseif($!sche.jobStatus == 'RUNNING')
+                        <a onclick="stop(this)" jobId="$!sche.id" jobGroup="$!sche.jobGroup"  href="javascript:void(0)" url="$env.getWebURL('/scheduleTransport/stop.htm')" mask="true" style="color:red;margin-right:20px;"><span>停止</span></a>
+                        <a title="确认删除？" onclick="do_delete(this)" jobId="$!sche.id" jobGroup="$!sche.jobGroup"  href="javascript:void(0)" url="$env.getWebURL('/scheduleTransport/delete.htm')" mask="true" style="color:red;margin-right:20px;"><span>删除</span></a>
+					#end
+                </td>
+				<td width="5%">$!sche.beanClass</td>
+				<td width="5%">$!sche.methodName</td>
+				<td width="10%">$!sche.beanId</td>
+				<td width="5%">#if($!sche.isConcurrent=='NO')否
+					#elseif($!sche.isConcurrent=='YES')是
+					#end
+				</td>
+			</tr>
+			#end
+            
+		</tbody>
+	</table>
+	
+	<div class="panelBar">
+		<div class="pages">
+			共$!totalRows条
+		</div>
+		
+
+	</div>
+	
+</div>
+
+<script>
+function navTabAjaxDone(json) {
+		if (json.statusCode == 200) {
+			navTab.closeCurrentTab();
+			navTab.reload("$env.getWebURL('/scheduleTransport/index.htm')");
+		} else {
+			if(json.message){
+				alertMsg.error(json.message);
+			}else{
+				alertMsg.error('操作失败!');
+			}
+		}
+	}
+function func(){	
+	$("#myform").submit();
+}
+
+function do_now(obj){
+	var $this = $(obj);
+	var title = $this.attr("title");
+	alertMsg.confirm(title, {
+		okCall: function(){
+			jQuery.ajax({
+    			url:$this.attr("url"),
+    			data:{
+    				id : $this.attr('jobId'),
+					jobGroup : $this.attr('jobGroup')
+    			},
+    			type:'post',
+    			success: function(data){
+        			if(data.statusCode == '200'){
+        				alertMsg.correct('操作成功！');
+						navTab.closeCurrentTab();
+        				navTab.reload("$env.getWebURL('/scheduleTransport/index.htm')");
+        			}else{
+        				alertMsg.error(data.message);
+        				navTab.reload("$env.getWebURL('/scheduleTransport/index.htm')");
+        			}
+				}
+			});
+		}
+	});
+}	
+
+
+function runing(obj){
+	var $this = $(obj);
+	
+	jQuery.ajax({
+    			url:$this.attr("url"),
+    			data:{
+    				id : $this.attr('jobId'),
+                    jobGroup : $this.attr('jobGroup')
+    			},
+    			type:'post',
+    			success: function(data){
+        			if(data.statusCode == '200'){
+        				alertMsg.correct('操作成功！');
+						navTab.closeCurrentTab();
+        				navTab.reload("$env.getWebURL('/scheduleTransport/index.htm')");
+        			}else{
+        				alertMsg.error(data.message);
+        				navTab.reload("$env.getWebURL('/scheduleTransport/index.htm')");
+        			}
+				}
+			});
+}	
+
+function stop(obj){
+	var $this = $(obj);
+	jQuery.ajax({
+    			url:$this.attr("url"),
+    			data:{
+    				id : $this.attr('jobId'),
+                    jobGroup : $this.attr('jobGroup')
+    			},
+    			type:'post',
+    			success: function(data){
+        			if(data.statusCode == '200'){
+        				alertMsg.correct('操作成功！');
+						navTab.closeCurrentTab();
+        				navTab.reload("$env.getWebURL('/scheduleTransport/index.htm')");
+        			}else{
+        				alertMsg.error(data.message);
+        				navTab.reload("$env.getWebURL('/scheduleTransport/index.htm')");
+        			}
+				}
+			});
+}	
+
+function do_delete(obj){
+	var $this = $(obj);
+	var title = $this.attr("title");
+	alertMsg.confirm(title, {
+		okCall: function(){
+			jQuery.ajax({
+    			url:$this.attr("url"),
+    			data:{
+    				id : $this.attr('jobId'),
+                    jobGroup : $this.attr('jobGroup')
+    			},
+    			type:'post',
+    			success: function(data){
+        			if(data.statusCode == '200'){
+        				alertMsg.correct('操作成功！');
+						navTab.closeCurrentTab();
+        				navTab.reload("$env.getWebURL('/scheduleTransport/index.htm')");
+        			}else{
+        				alertMsg.error(data.message);
+        				navTab.reload("$env.getWebURL('/scheduleTransport/index.htm')");
+        			}
+				}
+			});
+		}
+	});
+}	
+</script>
+		

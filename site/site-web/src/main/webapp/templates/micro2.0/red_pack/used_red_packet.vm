@@ -1,0 +1,63 @@
+#Html("begin")
+#Head("begin","币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("我的资产【币港湾官网】")
+#LoadJS("resources/micro2.0/scripts/six_new")
+#LoadCSS("/resources/micro2.0/styles/default")
+#LoadCSS("/resources/micro2.0/styles/red_pack/info.min")
+#WeChatShare()
+#Head("end")
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="qianbao" value="$!qianbao"/>
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+    <input type="hidden" id="initPageNum" name="initPageNum" value="$!initPageNum">
+    <input type="hidden" id="overPageNum" name="overPageNum" value="$!overPageNum">
+    <input type="hidden" id="usedPageNum" name="usedPageNum" value="$!usedPageNum">
+    <input type="hidden" id="initTotalPages" name="initTotalPages" value="$!initTotalPages">
+    <input type="hidden" id="overTotalPages" name="overTotalPages" value="$!overTotalPages">
+    <input type="hidden" id="usedTotalPages" name="usedTotalPages" value="$!usedTotalPages">
+    <input type="hidden" id="status" value="USED"/>
+    <body id="body">
+    <!--头部导航-->
+    <div class="header">
+        <a class="header_arrow" href="javascript:history.go(-1)">
+        </a>
+        <h1 class="heade_ft oran_color">已使用红包</h1>
+    </div>
+    <div class="null_box">        
+       <!--已使用-->
+        #if($!result.dataList.size() > 0)
+            <div class="null_img" style="display:block;">
+                <ul class="Acc_img used_ul">
+                    #foreach($!grid in $!result.dataList)
+                        <li class="red_pack used_li">
+							<img class="pack_img" src="$!{env.getWebURL('')}/resources/micro2.0/images/red_pack/red_bg02.png" alt="">
+							<div class="orange1">
+								<div class="pack_money">
+                                    <span class="money_small">¥</span>$!money.format($!grid.subtract)
+                                </div>
+								<div class="gray_full">$!grid.serialName</div>
+								<div class="red_money">
+                                    <div class="pace_full">										
+                                        <i class="pack_spot1"></i>#if($!grid.isWan == "yes")满$!number.format("0.00",$!grid.full)万元减#else满$!number.format("0.00",$!grid.full)元减#end$!number.format("0.00",$!grid.subtract)元
+                                    </div>      
+									<span class="pace_tlimit"><i class="pack_spot1"></i>$!grid.termLimitMsg</span>
+                                </div>
+								<span class="pace_time"><i class="pack_spot1"></i>$!date.formatYYYYMMDD($!grid.useTimeStart)至$!date.formatYYYYMMDD($!grid.useTimeEnd)</span>
+							</div>
+                        </li>
+                    #end
+                </ul>
+                <div class="ACC_null_title show_text pdaaing_bottom" style="display: none;"><i class="line-used1"></i><i class="yuan-used1"></i>仅显示最近90天内的红包<i class="yuan-used2"></i><i class="line-used2"></i></div>
+                <div id="show_more_used" style="display: none"></div>
+            </div>
+        #else
+            <div class="null_img" style="display:block;">
+                <div class="Acc_null_img1 red_used_bg"></div>
+                <h2 class="ACC_null_title1 pdaaing_bottom">仅显示最近<i class="fy_dlclick">90天内</i>的红包</h2>
+            </div>
+        #end       
+#LoadJS("/resources/micro2.0/scripts/common/common")
+#LoadJS("/resources/micro2.0/scripts/red_pack/red_pack")
+</body>
+#Html("end")

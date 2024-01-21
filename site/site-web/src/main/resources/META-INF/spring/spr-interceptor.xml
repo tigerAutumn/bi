@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<!--
+       - ===============================================
+       - 拦截器配置
+       - @author linkin
+       - @date 2014-11-19
+       - ===============================================
+    -->
+	<mvc:interceptors>
+		<!-- 拦截网站1.0版本页面 -->
+
+		<!--<mvc:interceptor>-->
+		<!--<mvc:mapping path="/**"/>-->
+		<!--<mvc:exclude-mapping path="/resources/**"/>-->
+		<!--<mvc:exclude-mapping path="/micro2.0/user/login/out"/>-->
+		<!--<mvc:exclude-mapping path="/gen2.0/user/login/out"/>-->
+		<!--<mvc:exclude-mapping path="/gen178/user/login/out"/>-->
+		<!--<bean class="com.pinting.site.common.interceptor.SessionInterceptor" />-->
+		<!--</mvc:interceptor>-->
+
+		<mvc:interceptor>
+			<mvc:mapping path="/gen/**"/>
+			<mvc:mapping path="/micro/**"/>
+			<bean class="com.pinting.site.common.interceptor.MicroInterceptor" />
+		</mvc:interceptor>
+
+		<mvc:interceptor>
+			<mvc:mapping path="/gen178/**"/>
+			<mvc:mapping path="/micro2.0/**"/>
+			<mvc:mapping path="/*/mall/**"/>
+			<mvc:mapping path="/withdraw/withdraw_result_page/**"/>
+			<bean class="com.pinting.site.common.interceptor.PreURLInterceptor" />
+		</mvc:interceptor>
+
+		<mvc:interceptor>
+			<!--  <mvc:mapping path="/micro2.0/wealth/*" />
+             <mvc:mapping path="/micro2.0/myaccount/*" />
+             <mvc:mapping path="/micro2.0/account/*" /> -->
+			<mvc:mapping path="/**"/>
+
+			<mvc:exclude-mapping path="/"/>
+			<mvc:exclude-mapping path="/alert"/>
+			<mvc:exclude-mapping path="/alerts"/>
+			<mvc:exclude-mapping path="/index"/>
+			<mvc:exclude-mapping path="/dispather"/>
+			<mvc:exclude-mapping path="/alertClose"/>
+			<mvc:exclude-mapping path="/micro2.0/home/buyOrder"/>
+			<mvc:exclude-mapping path="/weiChat/**"/>
+			<mvc:exclude-mapping path="/weChat/**"/>
+			<mvc:exclude-mapping path="/micro2.0/agent/*"/>
+			<mvc:exclude-mapping path="/gen2.0/agent/*"/>
+			<mvc:exclude-mapping path="/common/serverUsableCheck"/>
+			<mvc:exclude-mapping path="/micro2.0/fund/index"/>
+			<mvc:exclude-mapping path="/micro2.0/fund/appoint"/>
+			<mvc:exclude-mapping path="/micro2.0/regular/list"/>
+			<mvc:exclude-mapping path="/micro2.0/regular/index"/>
+			<mvc:exclude-mapping path="/micro2.0/regular/detail"/>
+			<mvc:exclude-mapping path="/micro2.0/regular/error"/>
+			<mvc:exclude-mapping path="/micro2.0/regular/transferIndex"/>
+			<mvc:exclude-mapping path="/micro2.0/regular/checkIsLegal"/>
+			<mvc:exclude-mapping path="/micro2.0/index"/>
+			<mvc:exclude-mapping path="/micro2.0/wealth/about"/>
+			<mvc:exclude-mapping path="/micro2.0/wealth/help_index"/>
+			<mvc:exclude-mapping path="/micro2.0/home/index"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/register"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/account"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/financial"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/pay"/>
+			<mvc:exclude-mapping path="/micro2.0/regular/buyAgreementApp"/>
+			<mvc:exclude-mapping path="/gen2.0/home/*"/>
+			<mvc:exclude-mapping path="/micro2.0/games/*"/>
+			<mvc:exclude-mapping path="/gen2.0/regular/index*"/>
+			<mvc:exclude-mapping path="/gen2.0/regular/regular_success"/>
+			<mvc:exclude-mapping path="/gen2.0/regular/error"/>
+			<mvc:exclude-mapping path="/gen2.0/regular/list"/>
+			<mvc:exclude-mapping path="/gen2.0/user/**"/>
+			<mvc:exclude-mapping path="/gen2.0/user/login*"/>
+			<mvc:exclude-mapping path="/gen2.0/user/login/*"/>
+			<mvc:exclude-mapping path="/gen2.0/user/login/out"/>
+			<mvc:exclude-mapping path="/gen2.0/service/*"/>
+			<mvc:exclude-mapping path="/gen2.0/index*"/>
+			<mvc:exclude-mapping path="/gen2.0/index.htm"/>
+			<mvc:exclude-mapping path="/gen2.0/get_nick_cookie"/>
+			<mvc:exclude-mapping path="/micro2.0/fund/**"/>
+			<mvc:exclude-mapping path="/micro2.0/regular/activityProductDetail*"/>
+			<mvc:exclude-mapping path="/gen2.0/regular/activityProduct*"/>
+			<mvc:exclude-mapping path="/gen2.0/regular/positionVoucherPdfHtml"/>
+			<mvc:exclude-mapping path="/micro2.0/regular/pay/return*"/>
+			<mvc:exclude-mapping path="/gen2.0/regular/pay/return*"/>
+			<mvc:exclude-mapping path="/micro2.0/identity/mobilecode"/>
+			<mvc:exclude-mapping path="/micro2.0/identity/registerMobilecode"/>
+			<mvc:exclude-mapping path="/gen2.0/identity/mobilecode.htm"/>
+			<mvc:exclude-mapping path="/gen2.0/identity/registerMobilecode.htm"/>
+			<mvc:exclude-mapping path="/gen2.0/identity/validatemobile.htm"/>
+			<mvc:exclude-mapping path="/micro2.0/identity/validatemobile"/>
+			<mvc:exclude-mapping path="/micro2.0/user/**"/>
+			<mvc:exclude-mapping path="/micro2.0/home/attention"/>
+			<mvc:exclude-mapping path="/micro2.0/profile/paypasswordsubimt"/>
+			<mvc:exclude-mapping path="/gen2.0/profile/paypasswordsubimt.htm"/>
+			<mvc:exclude-mapping path="/micro2.0/finance/**"/>
+			<mvc:exclude-mapping path="/resources/**"/>
+			<mvc:exclude-mapping path="/micro2.0/more/more"/>
+			<mvc:exclude-mapping path="/micro2.0/more/aboutBiGangWan"/>
+			<mvc:exclude-mapping path="/micro2.0/more/aboutBiGangWanApp"/>
+			<mvc:exclude-mapping path="/micro2.0/more/security"/>
+			<mvc:exclude-mapping path="/micro2.0/more/help"/>
+			<mvc:exclude-mapping path="/micro2.0/more/feedback"/>
+			<mvc:exclude-mapping path="/micro2.0/more/biGangWanURL"/>
+			<mvc:exclude-mapping path="/gen2.0/identity/interval_time"/>
+			<mvc:exclude-mapping path="/micro2.0/more/toRecommendInfoApp"/>
+			<mvc:exclude-mapping path="/micro2.0/landing/landingPage318"/>
+			<mvc:exclude-mapping path="/user/login_index_csai"/>
+			<mvc:exclude-mapping path="/micro2.0/regular/list/page"/>
+			<mvc:exclude-mapping path="/micro2.0/regular/protocol"/>
+			<mvc:exclude-mapping path="/micro2.0/regular/index_page"/>
+			<mvc:exclude-mapping path="/micro2.0/homeIndexPage"/>
+			<mvc:exclude-mapping path="/micro2.0/regular/product_AddInform"/>
+			<mvc:exclude-mapping path="/micro2.0/regular/newBuyerCheck"/>
+			<mvc:exclude-mapping path="/micro2.0/regular/oldBuyerCheck"/>
+			<mvc:exclude-mapping path="/app/regular/index"/>
+			<mvc:exclude-mapping path="/app_android/regular/index"/>
+			<mvc:exclude-mapping path="/micro2.0/gw_info/detailApp"/>
+			<mvc:exclude-mapping path="/micro2.0/staticApp/*"/>
+			<mvc:exclude-mapping path="/micro2.0/regular/buyagreementPdf"/>
+			<mvc:exclude-mapping path="/gen2.0/regular/buyagreementPdf"/>
+			<mvc:exclude-mapping path="/micro2.0/assets/questionnaireMore_app"/>
+			<mvc:exclude-mapping path="/micro2.0/assets/questionnaire"/>
+			<mvc:exclude-mapping path="/micro2.0/assets/questionnaireResult"/>
+			<mvc:exclude-mapping path="/micro2.0/more/more"/>
+
+
+			<mvc:exclude-mapping path="/gen2.0/home/businessLicense"/>
+			<mvc:exclude-mapping path="/gen178/home/businessLicense"/>
+
+			<mvc:exclude-mapping path="/gen2.0/agreement/entrustAgreement"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/entrustAgreement"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/entrustAgreementApp"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/entrustBuyAgreementApp"/>
+
+			<mvc:exclude-mapping path="/micro2.0/bankcard/isbind"/>
+			<mvc:exclude-mapping path="/gen2.0/bankcard/isbind"/>
+
+			<mvc:exclude-mapping path="/500.htm"/>
+			<mvc:exclude-mapping path="/404.htm"/>
+			<mvc:exclude-mapping path="/micro2.0/agent/regist/*"/>
+			<mvc:exclude-mapping path="/gen2.0/user/register_first_validate/mobile"/>
+			<mvc:exclude-mapping path="/gen2.0/identity/mobilecode"/>
+			<mvc:exclude-mapping path="/gen2.0/identity/registerMobilecode"/>
+			<mvc:exclude-mapping path="/gen2.0/platform/**"/>
+			<mvc:exclude-mapping path="/micro2.0/platform/**"/>
+			<mvc:exclude-mapping path="/gen2.0/help/**"/>
+			<mvc:exclude-mapping path="/a/**"/>
+			<mvc:exclude-mapping path="/channel/**"/>
+			<mvc:exclude-mapping path="/micro2.0/channel/channel_not_exisit"/>
+			<mvc:exclude-mapping path="/micro2.0/channel/channel_error"/>
+			<mvc:exclude-mapping path="/micro2.0/channel/channel_index"/>
+			<mvc:exclude-mapping path="/micro2.0/channel/register_second_index"/>
+			<mvc:exclude-mapping path="/micro2.0/more/toRecommendApp"/>
+			<mvc:exclude-mapping path="/micro2.0/activity/**"/>
+			<mvc:exclude-mapping path="/gen2.0/activity/**"/>
+			<mvc:exclude-mapping path="/micro2.0/extraProduct/index"/>
+			<mvc:exclude-mapping path="/gen2.0/extraProduct/index"/>
+			<mvc:exclude-mapping path="/micro2.0/extraProduct/balanceQuery"/>
+			<mvc:exclude-mapping path="/gen2.0/extraProduct/balanceQuery"/>
+			<mvc:exclude-mapping path="/gen2.0/extraProduct/loginUserCheck"/>
+			<mvc:exclude-mapping path="/gen2.0/landing/landingPage318"/>
+			<mvc:exclude-mapping path="/gen2.0/home/video"/>
+			<mvc:exclude-mapping path="/gen2.0/regular/product_AddInform"/>
+			<mvc:exclude-mapping path="/gen2.0/regular/newBuyerCheck"/>
+			<mvc:exclude-mapping path="/gen2.0/regular/oldBuyerCheck"/>
+			<mvc:exclude-mapping path="/micro2.0/activity/**"/>
+			<mvc:exclude-mapping path="/gen2.0/home/noviceStandard"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/borrowingServicesZan4Pdf"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/loanAgreement4Pdf"/>
+			<mvc:exclude-mapping path="/micro2.0/captcha/*"/>
+			<mvc:exclude-mapping path="/gen2.0/annualMeeting/**"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/agreementClaimsZan4Pdf"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/topUpAgreement4Pdf"/>
+
+			<!-- 云贷、七贷三方协议 -->
+			<mvc:exclude-mapping path="/micro2.0/agreement/loanAgreementYunPdf"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/loanAgreement7Pdf"/>
+			<!-- 云贷等额本息产品借款协议 -->
+			<mvc:exclude-mapping path="/micro2.0/agreement/loanAgreementYunInstallmentPdf"/>
+			<!-- 云贷等本等息产品借款协议 -->
+			<mvc:exclude-mapping path="/micro2.0/agreement/loanAgreementYunPrincipalInterestPdf"/>
+
+			<!-- 代偿协议 -->
+			<mvc:exclude-mapping path="/micro2.0/agreement/receiptConfirmServiceFee4Pdf"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/letterOfCreditConfirm4Pdf"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/lateRepayCreditorNotice4Pdf"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/lateRepayCreditor4Pdf"/>
+
+			<!-- 代偿协议重新生成 -->
+			<mvc:exclude-mapping path="/micro2.0/agreement/renewReceiptConfirmServiceFee4Pdf"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/renewLetterOfCreditConfirm4Pdf"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/renewLateRepayCreditorNotice4Pdf"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/renewLateRepayCreditor4Pdf"/>
+
+			<!-- gen178钱报 -->
+			<mvc:exclude-mapping path="/gen178/home/*"/>
+			<mvc:exclude-mapping path="/gen178/regular/index*"/>
+			<mvc:exclude-mapping path="/gen178/regular/regular_success"/>
+			<mvc:exclude-mapping path="/gen178/regular/error"/>
+			<mvc:exclude-mapping path="/gen178/regular/list"/>
+			<mvc:exclude-mapping path="/gen178/user/**"/>
+			<mvc:exclude-mapping path="/gen178/user/login*"/>
+			<mvc:exclude-mapping path="/gen178/user/login/*"/>
+			<mvc:exclude-mapping path="/gen178/user/login/out"/>
+			<mvc:exclude-mapping path="/gen178/service/*"/>
+			<mvc:exclude-mapping path="/gen178/index*"/>
+			<mvc:exclude-mapping path="/gen178/index.htm"/>
+			<mvc:exclude-mapping path="/gen178/get_nick_cookie"/>
+			<mvc:exclude-mapping path="/gen178/regular/activityProduct*"/>
+			<mvc:exclude-mapping path="/gen178/regular/pay/return*"/>
+			<mvc:exclude-mapping path="/gen178/identity/mobilecode.htm"/>
+			<mvc:exclude-mapping path="/gen178/identity/registerMobilecode.htm"/>
+			<mvc:exclude-mapping path="/gen178/identity/validatemobile.htm"/>
+			<mvc:exclude-mapping path="/gen178/profile/paypasswordsubimt.htm"/>
+			<mvc:exclude-mapping path="/gen178/identity/interval_time"/>
+			<mvc:exclude-mapping path="/gen178/user/register_first_validate/mobile"/>
+			<mvc:exclude-mapping path="/gen178/identity/mobilecode"/>
+			<mvc:exclude-mapping path="/gen178/identity/registerMobilecode"/>
+			<mvc:exclude-mapping path="/gen178/platform/**"/>
+			<mvc:exclude-mapping path="/gen178/help/**"/>
+			<mvc:exclude-mapping path="/gen178/activity/**"/>
+			<mvc:exclude-mapping path="/gen178/regular/positionVoucherPdfHtml"/>
+			<mvc:exclude-mapping path="/gen178/regular/product_AddInform"/>
+			<mvc:exclude-mapping path="/gen178/regular/newBuyerCheck"/>
+
+			<mvc:exclude-mapping path="/gen178/agreement/entrustAgreement"/>
+			<mvc:exclude-mapping path="/gen178/bankcard/isbind"/>
+
+			<!-- app活动 -->
+			<mvc:exclude-mapping path="/app/active/**"/>
+			<mvc:exclude-mapping path="/app/platform/info/platform_data/index"/>
+
+			<!-- app -->
+			<mvc:exclude-mapping path="/micro2.0/match/myMatchDetailZan"/>
+			<mvc:exclude-mapping path="/micro2.0/match/myMatch_content"/>
+			<mvc:exclude-mapping path="/micro2.0/match/myMatchApp"/>
+			<mvc:exclude-mapping path="/micro2.0/match/myMatch_content_zan"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/loanAgreementBGWAPPInit"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/agreementClaimsBGWAPPInit"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/paymentAgreementZanApp"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/loanAgreementZanApp"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/borrowingServicesZanApp"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/loanAgreementZanAppNoData"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/borrowingServicesZanAppNoData"/>
+			<mvc:exclude-mapping path="/micro2.0/staticFourSeasons/index"/>
+			<mvc:exclude-mapping path="/micro2.0/zanProductDetails/index"/>
+			<mvc:exclude-mapping path="/micro2.0/bankCustodyMoveApp/index"/>
+			<mvc:exclude-mapping path="/micro2.0/depositoryProjectApp/index"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/hfCustodyAccountServiceInit"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/registAccountServiceAgreement"/>
+
+			<mvc:exclude-mapping path="/micro2.0/agreement/hfCustodyLoanAgreementApp"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/hfCustodyClaimsAgreementApp"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/registAccountServiceAgreement"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/zsdAppLoanAgreement"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/zsdAppBorrowingServices"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/zsdAppLoanAgreementPreview"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/zsdAppBorrowingServicesPreview"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/borrowingServicesZsd4Pdf"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/zsdLoanAgreement4Pdf"/>
+
+			<!-- 投资计算器 -->
+			<mvc:exclude-mapping path="/micro2.0/regular/calculator/**"/>
+
+			<!-- 静态页面展示 -->
+			<mvc:exclude-mapping path="/*/static/*"/>
+
+			<mvc:exclude-mapping path="/micro2.0/landing/**"/>
+			<mvc:exclude-mapping path="/gen2.0/landing/**"/>
+
+			<mvc:exclude-mapping path="/micro2.0/178/activity/water"/>
+			<mvc:exclude-mapping path="/micro2.0/178/activity/water/sign_up_index"/>
+			<mvc:exclude-mapping path="/micro2.0/178/activity/water/vote_index"/>
+			<mvc:exclude-mapping path="/micro2.0/178/activity/water/vote"/>
+			<mvc:exclude-mapping path="/micro2.0/178/activity/water/vote/list"/>
+
+			<mvc:exclude-mapping path="/micro2.0/regular/list/depage"/>
+			<mvc:exclude-mapping path="/common/checkHFBankDepOpened"/>
+			<mvc:exclude-mapping path="/micro2.0/common/captcha/code"/>
+			<mvc:exclude-mapping path="/gen2.0/common/captcha/code"/>
+			<mvc:exclude-mapping path="/gen178/common/captcha/code"/>
+
+			<mvc:exclude-mapping path="/app/activity/**"/>
+
+			<mvc:exclude-mapping path="/micro2.0/qb_index"/>
+			<mvc:exclude-mapping path="/gen2.0/qb_index"/>
+			<!-- 秦皇岛H5入口页-->
+			<mvc:exclude-mapping path="/h5/qhd_index/*"/>
+			<!-- 秦皇岛PC入口页-->
+			<mvc:exclude-mapping path="/pc/qhd_index/*"/>
+
+			<!-- 合规改造风险提示页面 -->
+			<mvc:exclude-mapping path="/micro2.0/agreement/riskWarningInfo"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/loanAgreement7Pdf"/>
+			<mvc:exclude-mapping path="/gen2.0/agreement/loanAgreement7Pdf"/>
+			<mvc:exclude-mapping path="/gen178/agreement/loanAgreement7Pdf"/>
+			<mvc:exclude-mapping path="/gen2.0/agreement/loanAgreement7PdfAnyRepay"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/loanAgreement7PdfAnyRepay"/>
+			<!-- 债权转让协议(云贷，七贷) -->
+			<mvc:exclude-mapping path="/micro2.0/agreement/hfCustodyClaimsAgreementInitPdf"/>
+			<mvc:exclude-mapping path="/micro2.0/agreement/entrancePdf"/>
+			<!-- 债权转让协议(云贷分期等额本息、等本等息借款产品) -->
+			<mvc:exclude-mapping path="/micro2.0/agreement/hfCustodyClaimsAgreementStagingProductPdf"/>
+			<!-- 微信小程序 -->
+			<mvc:exclude-mapping path="/weixin/user/login/index"/>
+			<mvc:exclude-mapping path="/weixin/user/login"/>
+			<mvc:exclude-mapping path="/weixin/user/register_first_new_index"/>
+			<mvc:exclude-mapping path="/weixin/user/register_second_index"/>
+			<mvc:exclude-mapping path="/weixin/user/register_submit"/>
+			<mvc:exclude-mapping path="/weixin/user/forget_password_first"/>
+			<mvc:exclude-mapping path="/weixin/user/forget_password_second"/>
+			<mvc:exclude-mapping path="/weixin/user/passwordSubimt"/>
+			<mvc:exclude-mapping path="/weixin/activity/shareWeChatMiniProgram"/>
+			<mvc:exclude-mapping path="/weixin/activity/weChatLuckyTurning"/>
+			<mvc:exclude-mapping path="/weixin/activity/getAwardList"/>
+			<mvc:exclude-mapping path="/weixin/activity/startTheLottery"/>
+			<mvc:exclude-mapping path="/weixin/activity/aboutBGW"/>
+			<!-- 积分商城页面 start -->
+			<!-- app页面 -->
+			<mvc:exclude-mapping path="/ios/mall/homeIndex"/>
+			<mvc:exclude-mapping path="/ios/mallPoints/pointsRecord"/>
+			<mvc:exclude-mapping path="/ios/mallPoints/pointsRecord/page"/>
+			<mvc:exclude-mapping path="/ios/mallExchange/myExchangeList"/>
+			<mvc:exclude-mapping path="/ios/mallExchange/myExchangeDetail"/>
+			<mvc:exclude-mapping path="/ios/mallExchange/myExchangeList_content"/>
+			<mvc:exclude-mapping path="/ios/mallPoints/pointsRuleIndex"/>
+			<mvc:exclude-mapping path="/ios/mallCommodity/commodityDetail"/>
+			<mvc:exclude-mapping path="/ios/mallCommodity/exchangeCheck"/>
+			<mvc:exclude-mapping path="/ios/mallCommodity/exchangeCommodity"/>
+			<mvc:exclude-mapping path="/ios/mallCommodity/exchangeSuccPage"/>
+
+			<mvc:exclude-mapping path="/android/mall/homeIndex"/>
+			<mvc:exclude-mapping path="/android/mallPoints/pointsRecord"/>
+			<mvc:exclude-mapping path="/android/mallPoints/pointsRecord/page"/>
+			<mvc:exclude-mapping path="/android/mallExchange/myExchangeList"/>
+			<mvc:exclude-mapping path="/android/mallExchange/myExchangeDetail"/>
+			<mvc:exclude-mapping path="/android/mallExchange/myExchangeList_content"/>
+			<mvc:exclude-mapping path="/android/mallPoints/pointsRuleIndex"/>
+			<mvc:exclude-mapping path="/android/mallCommodity/commodityDetail"/>
+			<mvc:exclude-mapping path="/android/mallCommodity/exchangeCheck"/>
+			<mvc:exclude-mapping path="/android/mallCommodity/exchangeCommodity"/>
+			<mvc:exclude-mapping path="/android/mallCommodity/exchangeSuccPage"/>
+
+			<mvc:exclude-mapping path="/pc/mall/homeIndex"/>
+			<mvc:exclude-mapping path="/pc_a/mall/homeIndex"/>
+			<!-- 静态页面展示 -->
+			<mvc:exclude-mapping path="/*/mallStatic/*"/>
+			<!-- 签到链接 -->
+			<mvc:exclude-mapping path="/*/mall/userSign.htm"/>
+
+			<!-- 积分商城页面 end -->
+
+			<!-- 加薪计划活动 -->
+			<mvc:exclude-mapping path="/activity/salary_increase_plan"/>
+			<mvc:exclude-mapping path="activity/salaryIncreasePlan/getNewData"/>
+			
+			<bean class="com.pinting.site.common.interceptor.URLInterceptor" />
+		</mvc:interceptor>
+		<!-- 	<mvc:interceptor>
+                <mvc:mapping path="/**" />
+                <bean class="com.pinting.site.common.interceptor.TraceLogInterceptor" />
+            </mvc:interceptor> -->
+
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/resources/micro2.0/**"/>
+			<mvc:exclude-mapping path="/resources/common/**"/>
+			<bean class="com.pinting.site.common.interceptor.AbnormalRequestInterceptor" />
+		</mvc:interceptor>
+
+		<!-- 微信游戏授权拦截器 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/micro2.0/games/**"/>
+			<bean class="com.pinting.site.common.interceptor.WeiChatInterceptor" />
+		</mvc:interceptor>
+		<!-- 微信获取openid拦截器 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/micro2.0/regular/list"/>
+			<mvc:mapping path="/micro2.0/assets/assets"/>
+			<mvc:mapping path="/micro2.0/index"/>
+			<mvc:mapping path="/micro2.0/activity/ecup/quizResults"/>
+			<mvc:mapping path="/micro2.0/activity/anniversary_share"/>
+			<bean class="com.pinting.site.common.interceptor.WeixinInterceptor" />
+		</mvc:interceptor>
+
+
+		<!-- 购买交易拦截器 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/micro2.0/regular/buy*"/>
+			<mvc:mapping path="/gen2.0/regular/buy*"/>
+			<mvc:mapping path="/gen178/regular/buy*"/>
+			<bean class="com.pinting.site.common.interceptor.StatusInterceptor" />
+		</mvc:interceptor>
+		<!-- 系统维护拦截器 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/"/>
+			<mvc:exclude-mapping path="/resources/**"/>
+			<mvc:exclude-mapping path="/protect.htm"/>
+			<bean class="com.pinting.site.common.interceptor.sysStatusInterceptor" />
+		</mvc:interceptor>
+		<!-- 红包自动发放拦截器（用户注册、邀请满人） -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**/user/register_submit"/>
+			<bean class="com.pinting.site.common.interceptor.RedPacketAutoGrantInterceptor" />
+		</mvc:interceptor>
+		<!-- 关键业务登记拦截器（登录，购买，我的资产） -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**/user/login"/> <!-- 登录页面 -->
+			<mvc:mapping path="/**/user/login_index_qianbao"/> <!-- 钱报登录页面 -->
+			<mvc:mapping path="/**/regular/bind"/><!-- 已绑卡购买页面 -->
+			<mvc:mapping path="/**/regular/firstBuy"/><!-- 未绑卡购买页面 -->
+			<mvc:mapping path="/**/assets/assets"/><!-- 我的资产页面 -->
+			<bean class="com.pinting.site.common.interceptor.UserMainOperationInterceptor" />
+		</mvc:interceptor>
+		<!-- 所有的正式下单或者预下单拦截器（校验购买金额是否大于标的剩余额度或者大于可买额度） -->
+		<mvc:interceptor>
+			<!-- 所有的预下单拦截器（校验购买金额是否大于标的剩余额度或者大于可买额度） -->
+			<!-- PC购买 -->
+			<mvc:mapping path="/gen2.0/regular/firstBuySubmitPro"/> <!-- 新用户购买提交(PC)预下单 -->
+			<mvc:mapping path="/gen2.0/regular/pre_submit_bind"/> <!-- 已绑卡用户（预下单） -->
+			<mvc:mapping path="/gen2.0/regular/netBankbuySubmit"/> <!-- 网银购买提交 -->
+			<!-- 微网(H5)购买 -->
+			<mvc:mapping path="/micro2.0/regular/preOrder"/> <!-- 未绑定银行卡用户预下单 -->
+			<mvc:mapping path="/micro2.0/regular/regularPreOrder"/> <!-- 绑定银行卡用户预下单 -->
+
+			<!-- 所有的正式单拦截器（校验购买金额是否大于标的剩余额度或者大于可买额度） -->
+			<!-- PC购买 -->
+			<mvc:mapping path="/gen2.0/regular/firstBuySubmit"/> <!-- 新用户购买提交(PC)正式下单 -->
+			<mvc:mapping path="/gen2.0/regular/submit_bind"/> <!-- 已绑卡用户（正式下单） -->
+			<mvc:mapping path="/gen2.0/regular/balance_buy"/> <!-- 余额购买正式下单 -->
+			<!-- 微网(H5)购买 -->
+			<mvc:mapping path="/micro2.0/regular/order"/> <!-- 未绑定银行卡用户正式下单 -->
+			<mvc:mapping path="/micro2.0/regular/regularOrder"/> <!-- 绑定银行卡用户正式下单 -->
+			<mvc:mapping path="/micro2.0/regular/balanceBuy"/> <!-- 余额购买正式下单 -->
+			<bean class="com.pinting.site.common.interceptor.CheckUserBuyInterceptor" />
+		</mvc:interceptor>
+		<!-- 付费广告拦截器（落地页进来、注册提交） -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/"/>
+			<mvc:exclude-mapping path="/resources/**"/>
+			<mvc:exclude-mapping path="/alert"/>
+			<mvc:exclude-mapping path="/alerts"/>
+			<mvc:exclude-mapping path="/dispather"/>
+			<mvc:exclude-mapping path="/alertClose"/>
+			<mvc:exclude-mapping path="/index"/>
+			<mvc:exclude-mapping path="/gen2.0/get_nick_cookie"/>
+			<mvc:exclude-mapping path="/500.htm"/>
+			<mvc:exclude-mapping path="/404.htm"/>
+			<mvc:exclude-mapping path="/gen178/get_nick_cookie"/>
+			<bean class="com.pinting.site.common.interceptor.PayAdsInterceptor" />
+		</mvc:interceptor>
+		<!-- PC头部按登录状态变化的拦截器：登录状态，显示手机号；未登录状态，显示登录注册按钮 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/gen2.0/**"/>
+			<mvc:mapping path="/gen178/**"/>
+			<mvc:mapping path="/withdraw/withdraw_result_page/**"/>
+			<mvc:mapping path="/assets/bonus2JSH_result_page/**"/>
+			<mvc:mapping path="/pc/**"/>
+			<mvc:mapping path="/pc_a/**"/>
+			<bean class="com.pinting.site.common.interceptor.HeadChangeByLoginStatusInterceptor" />
+		</mvc:interceptor>
+
+		<!-- Growing IO 页面监控拦截器 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/"/>
+			<mvc:exclude-mapping path="/resources/**"/>
+			<bean class="com.pinting.site.common.interceptor.GrowingIOInterceptor" />
+		</mvc:interceptor>
+		
+		
+		
+		<!-- register_first_validate/mobile 接口访问控制拦截器 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/gen2.0/finance/buy_product_add_card"/>
+			<mvc:mapping path="/gen178/finance/buy_product_add_card"/>
+			<mvc:mapping path="/micro2.0/finance/buy_product_add_card"/>
+			<mvc:mapping path="/gen2.0/regular/bind"/>
+			<mvc:mapping path="/gen178/regular/bind"/>
+			<mvc:mapping path="/micro2.0/regular/bind"/>
+			<mvc:mapping path="/gen2.0/profile/forget_pay_password_index"/>
+			<mvc:mapping path="/gen178/profile/forget_pay_password_index"/>
+			<mvc:mapping path="/micro2.0/profile/forget_pay_password_index"/>
+			<mvc:mapping path="/gen2.0/safe/forget_pay_password"/>
+			<mvc:mapping path="/gen178/safe/forget_pay_password"/>
+			<mvc:mapping path="/micro2.0/safe/forget_pay_password"/>
+			<mvc:mapping path="/gen2.0/user/forget_password_first"/>
+			<mvc:mapping path="/gen178/user/forget_password_first"/>
+			<mvc:mapping path="/micro2.0/user/forget_password_first"/>
+			<mvc:mapping path="/gen2.0/user/register_first_index"/>
+			<mvc:mapping path="/gen178/user/register_first_index"/>
+			<mvc:mapping path="/micro2.0/user/register_first_index"/>
+			<mvc:mapping path="/gen2.0/user/register_first_new_index"/>
+			<mvc:mapping path="/gen178/user/register_first_new_index"/>
+			<mvc:mapping path="/micro2.0/user/register_first_new_index"/>
+			<mvc:mapping path="/gen2.0/landing/**"/>
+			<mvc:mapping path="/gen178/landing/**"/>
+			<mvc:mapping path="/micro2.0/landing/**"/>
+			<mvc:mapping path="/gen2.0/user/login/index"/>
+			<mvc:mapping path="/gen178/user/login/index"/>
+			<mvc:mapping path="/micro2.0/user/login/index"/>
+			<mvc:mapping path="/gen2.0/user/login/out"/>
+			<mvc:mapping path="/gen178/user/login/out"/>
+			<mvc:mapping path="/micro2.0/user/login/out"/>
+			<bean class="com.pinting.site.common.interceptor.MobileTokenInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	<!-- <bean id="mJnl" class="com.pinting.site.common.interceptor.MJnlInterceptor"></bean>  -->
+</beans>

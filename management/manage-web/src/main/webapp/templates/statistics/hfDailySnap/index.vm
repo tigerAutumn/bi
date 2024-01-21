@@ -1,0 +1,71 @@
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="pageHeader">
+    <form id="myform" rel="pagerForm" method="post" action="$env.getWebURL('/statistics/hfDailySnap/index.htm')" onsubmit="return navTabSearch(this);">
+        <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+        <input type="hidden" name="pageNum" value="$!pageNum" />
+        <input type="hidden" name="numPerPage" value="$!numPerPage" />
+        <div class="searchBar">
+            <table class="searchContent">
+                <tr>
+                    <td>
+                        <button onclick="func()" type="button" style="background-color:#666666; display:none;"></button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <table class="table" width="1036" layoutH="118">
+        <thead>
+        <tr>
+            <th width="15%">截止日期</th>
+            <th width="10%">自有子账户余额</th>
+            <th width="10%">抵用金账户余额</th>
+            <th width="10%">手续费账户余额</th>
+            <th width="10%">垫付金账户余额</th>
+            <th width="10%">用户余额</th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach($grid in $hfDailySnapList)
+            <tr target="sid_user" rel="1" >
+                <td>$!grid.snapDate</td>
+                <td>$!money.format($!grid.hfJsh)</td>
+                <td>$!money.format($!grid.hfFee)</td>
+                <td>$!money.format($!grid.hfCoupon)</td>
+                <td>$!money.format($!grid.hfAdvance)</td>
+                <td>$!money.format($!grid.hfAdvanceTransit)</td>
+            </tr>
+            #end
+        </tbody>
+
+    </table>
+    <div class="panelBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({pageNum:1,numPerPage:this.value})">
+                <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+            </select>
+            <span>条，共$!totalRows条</span>
+        </div>
+
+        <div class="pagination" targetType="navTab" totalCount="$!totalRows" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+
+    </div>
+</div>
+
+<script>
+    function func(){
+        var url = $("#APP_ROOT_PATH").val() + "/statistics/hfDailySnap/index.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+    }
+</script>

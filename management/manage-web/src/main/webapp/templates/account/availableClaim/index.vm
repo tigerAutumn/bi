@@ -1,0 +1,85 @@
+<form id="pagerForm" method="post" action="#rel#">
+	<input type="hidden" name="pageNum" value="$!req.pageNum" />
+	<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+</form>
+
+<div class="pageHeader" style="overflow:visible;">
+	<form rel="pagerForm" style="overflow:visible;" id="myform" class="pageForm required-validate" onsubmit="return navTabSearch(this);" method="post" action="$env.getWebURL('/account/availableClaim.htm')">
+		<input type="hidden" name="numPerPage" value="$!req.numPerPage" />
+		<input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+		<input type="hidden" name="pageNum" value="$!req.pageNum" />
+		<input type="hidden" name="totalRows" value="$!req.totalRows" />
+		
+    	<div class="searchBar">
+				<tr>
+					<td>
+						产品类型：
+						<select name="productType" > 
+							<option value="ZAN" #if("$!productType"=="ZAN") selected #end>赞分期</option>
+							<option value="ZSD" #if("$!productType"=="ZSD") selected #end>赞时贷</option>
+        				</select>
+					</td>
+					<td>
+						<span style="margin-left:20px;">
+							<button  onclick="func()" type="button">查询</button>
+                        </span>
+                    </td>    
+				</tr>
+		</div>
+	
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="800" layoutH="200">
+		<thead>
+			<tr>
+			#if("$!productType"=="ZAN")
+				<th width="25%">周期</th>
+				<th width="25%">实际可转</th>
+				<th width="25%">当前VIP</th>
+				<th width="25%">用户站岗</th>
+			#else
+				<th width="20%">周期</th>
+				<th width="20%">实际可转</th>
+				<th width="20%">当前VIP</th>
+				<th width="20%">VIP利息</th>
+				<th width="20%">用户站岗</th>
+			#end	
+			</tr>
+		</thead>
+		<tbody>
+			#if("$!productType"=="ZAN")
+				#foreach($data in $dataGrid)
+				<tr>
+					<td>$!data.period</td>
+					<td>$!money.format($!data.availableClaim)</td>
+					<td>$!money.format($!data.vipClaim)</td>
+					<td>$!money.format($!data.userStandAmount)</td>
+				</tr>
+				#end
+			#else
+				#foreach($data in $dataGrid)
+				<tr>
+					<td>/</td>
+					<td>$!money.format($!data.availableClaim)</td>
+					<td>$!money.format($!data.vipClaim)</td>
+					<td>$!money.format($!data.vipInterest)</td>
+					<td>$!money.format($!data.userStandAmount)</td>
+				</tr>
+				#end
+			#end
+		</tbody>
+	</table>
+	
+</div>
+#LoadJS("/resources/js/global_validate")
+
+<script>
+function func(){
+
+	var url = $("#APP_ROOT_PATH").val() + "/account/availableClaim.htm";
+	$("#myform").attr("action",url);
+	$("#myform").attr("onsubmit","return navTabSearch(this);");
+	$("#myform").submit();
+}
+</script>

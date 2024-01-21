@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsAuthMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsAuth" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="mobile_code" property="mobileCode" jdbcType="VARCHAR" />
+    <result column="mobile_time" property="mobileTime" jdbcType="TIMESTAMP" />
+    <result column="mobile_times" property="mobileTimes" jdbcType="INTEGER" />
+    <result column="mobile_code_use_times" property="mobileCodeUseTimes" jdbcType="INTEGER" />
+    <result column="mobile_last_time" property="mobileLastTime" jdbcType="TIMESTAMP" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="email_code" property="emailCode" jdbcType="VARCHAR" />
+    <result column="email_time" property="emailTime" jdbcType="TIMESTAMP" />
+    <result column="email_code_use_times" property="emailCodeUseTimes" jdbcType="INTEGER" />
+    <result column="email_last_time" property="emailLastTime" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, mobile, mobile_code, mobile_time, mobile_times, mobile_code_use_times, 
+    mobile_last_time, email, email_code, email_time, email_code_use_times, email_last_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsAuthExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_auth
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_auth
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_auth
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsAuthExample" >
+    delete from bs_auth
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsAuth" >
+    insert into bs_auth (id, user_id, mobile, 
+      mobile_code, mobile_time, mobile_times, 
+      mobile_code_use_times, mobile_last_time, email, 
+      email_code, email_time, email_code_use_times, 
+      email_last_time)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, 
+      #{mobileCode,jdbcType=VARCHAR}, #{mobileTime,jdbcType=TIMESTAMP}, #{mobileTimes,jdbcType=INTEGER}, 
+      #{mobileCodeUseTimes,jdbcType=INTEGER}, #{mobileLastTime,jdbcType=TIMESTAMP}, #{email,jdbcType=VARCHAR}, 
+      #{emailCode,jdbcType=VARCHAR}, #{emailTime,jdbcType=TIMESTAMP}, #{emailCodeUseTimes,jdbcType=INTEGER}, 
+      #{emailLastTime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsAuth" >
+    insert into bs_auth
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="mobileCode != null" >
+        mobile_code,
+      </if>
+      <if test="mobileTime != null" >
+        mobile_time,
+      </if>
+      <if test="mobileTimes != null" >
+        mobile_times,
+      </if>
+      <if test="mobileCodeUseTimes != null" >
+        mobile_code_use_times,
+      </if>
+      <if test="mobileLastTime != null" >
+        mobile_last_time,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="emailCode != null" >
+        email_code,
+      </if>
+      <if test="emailTime != null" >
+        email_time,
+      </if>
+      <if test="emailCodeUseTimes != null" >
+        email_code_use_times,
+      </if>
+      <if test="emailLastTime != null" >
+        email_last_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileCode != null" >
+        #{mobileCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileTime != null" >
+        #{mobileTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mobileTimes != null" >
+        #{mobileTimes,jdbcType=INTEGER},
+      </if>
+      <if test="mobileCodeUseTimes != null" >
+        #{mobileCodeUseTimes,jdbcType=INTEGER},
+      </if>
+      <if test="mobileLastTime != null" >
+        #{mobileLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="emailCode != null" >
+        #{emailCode,jdbcType=VARCHAR},
+      </if>
+      <if test="emailTime != null" >
+        #{emailTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="emailCodeUseTimes != null" >
+        #{emailCodeUseTimes,jdbcType=INTEGER},
+      </if>
+      <if test="emailLastTime != null" >
+        #{emailLastTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsAuthExample" resultType="java.lang.Integer" >
+    select count(*) from bs_auth
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_auth
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.mobile != null" >
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobileCode != null" >
+        mobile_code = #{record.mobileCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobileTime != null" >
+        mobile_time = #{record.mobileTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mobileTimes != null" >
+        mobile_times = #{record.mobileTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.mobileCodeUseTimes != null" >
+        mobile_code_use_times = #{record.mobileCodeUseTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.mobileLastTime != null" >
+        mobile_last_time = #{record.mobileLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.emailCode != null" >
+        email_code = #{record.emailCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.emailTime != null" >
+        email_time = #{record.emailTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.emailCodeUseTimes != null" >
+        email_code_use_times = #{record.emailCodeUseTimes,jdbcType=INTEGER},
+      </if>
+      <if test="record.emailLastTime != null" >
+        email_last_time = #{record.emailLastTime,jdbcType=DATE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_auth
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      mobile_code = #{record.mobileCode,jdbcType=VARCHAR},
+      mobile_time = #{record.mobileTime,jdbcType=TIMESTAMP},
+      mobile_times = #{record.mobileTimes,jdbcType=INTEGER},
+      mobile_code_use_times = #{record.mobileCodeUseTimes,jdbcType=INTEGER},
+      mobile_last_time = #{record.mobileLastTime,jdbcType=TIMESTAMP},
+      email = #{record.email,jdbcType=VARCHAR},
+      email_code = #{record.emailCode,jdbcType=VARCHAR},
+      email_time = #{record.emailTime,jdbcType=TIMESTAMP},
+      email_code_use_times = #{record.emailCodeUseTimes,jdbcType=INTEGER},
+      email_last_time = #{record.emailLastTime,jdbcType=DATE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsAuth" >
+    update bs_auth
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileCode != null" >
+        mobile_code = #{mobileCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileTime != null" >
+        mobile_time = #{mobileTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mobileTimes != null" >
+        mobile_times = #{mobileTimes,jdbcType=INTEGER},
+      </if>
+      <if test="mobileCodeUseTimes != null" >
+        mobile_code_use_times = #{mobileCodeUseTimes,jdbcType=INTEGER},
+      </if>
+      <if test="mobileLastTime != null" >
+        mobile_last_time = #{mobileLastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="emailCode != null" >
+        email_code = #{emailCode,jdbcType=VARCHAR},
+      </if>
+      <if test="emailTime != null" >
+        email_time = #{emailTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="emailCodeUseTimes != null" >
+        email_code_use_times = #{emailCodeUseTimes,jdbcType=INTEGER},
+      </if>
+      <if test="emailLastTime != null" >
+        email_last_time = #{emailLastTime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsAuth" >
+    update bs_auth
+    set user_id = #{userId,jdbcType=INTEGER},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      mobile_code = #{mobileCode,jdbcType=VARCHAR},
+      mobile_time = #{mobileTime,jdbcType=TIMESTAMP},
+      mobile_times = #{mobileTimes,jdbcType=INTEGER},
+      mobile_code_use_times = #{mobileCodeUseTimes,jdbcType=INTEGER},
+      mobile_last_time = #{mobileLastTime,jdbcType=TIMESTAMP},
+      email = #{email,jdbcType=VARCHAR},
+      email_code = #{emailCode,jdbcType=VARCHAR},
+      email_time = #{emailTime,jdbcType=TIMESTAMP},
+      email_code_use_times = #{emailCodeUseTimes,jdbcType=INTEGER},
+      email_last_time = #{emailLastTime,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

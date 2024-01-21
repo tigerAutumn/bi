@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsRevenueTransRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsRevenueTransRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="payer_code" property="payerCode" jdbcType="VARCHAR" />
+    <result column="payer_name" property="payerName" jdbcType="VARCHAR" />
+    <result column="payee_code" property="payeeCode" jdbcType="VARCHAR" />
+    <result column="payee_name" property="payeeName" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="settle_type" property="settleType" jdbcType="VARCHAR" />
+    <result column="settle_date" property="settleDate" jdbcType="DATE" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, payer_code, payer_name, payee_code, payee_name, order_no, amount, settle_type, 
+    settle_date, finish_time, status, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsRevenueTransRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_revenue_trans_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_revenue_trans_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_revenue_trans_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsRevenueTransRecordExample" >
+    delete from bs_revenue_trans_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsRevenueTransRecord" >
+    insert into bs_revenue_trans_record (id, payer_code, payer_name, 
+      payee_code, payee_name, order_no, 
+      amount, settle_type, settle_date, 
+      finish_time, status, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{payerCode,jdbcType=VARCHAR}, #{payerName,jdbcType=VARCHAR}, 
+      #{payeeCode,jdbcType=VARCHAR}, #{payeeName,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=DOUBLE}, #{settleType,jdbcType=VARCHAR}, #{settleDate,jdbcType=DATE}, 
+      #{finishTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pinting.business.model.BsRevenueTransRecord" useGeneratedKeys="true" keyProperty="id">
+    insert into bs_revenue_trans_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="payerCode != null" >
+        payer_code,
+      </if>
+      <if test="payerName != null" >
+        payer_name,
+      </if>
+      <if test="payeeCode != null" >
+        payee_code,
+      </if>
+      <if test="payeeName != null" >
+        payee_name,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="settleType != null" >
+        settle_type,
+      </if>
+      <if test="settleDate != null" >
+        settle_date,
+      </if>
+      <if test="finishTime != null" >
+        finish_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="payerCode != null" >
+        #{payerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payerName != null" >
+        #{payerName,jdbcType=VARCHAR},
+      </if>
+      <if test="payeeCode != null" >
+        #{payeeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payeeName != null" >
+        #{payeeName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="settleType != null" >
+        #{settleType,jdbcType=VARCHAR},
+      </if>
+      <if test="settleDate != null" >
+        #{settleDate,jdbcType=DATE},
+      </if>
+      <if test="finishTime != null" >
+        #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsRevenueTransRecordExample" resultType="java.lang.Integer" >
+    select count(*) from bs_revenue_trans_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_revenue_trans_record
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.payerCode != null" >
+        payer_code = #{record.payerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payerName != null" >
+        payer_name = #{record.payerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payeeCode != null" >
+        payee_code = #{record.payeeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payeeName != null" >
+        payee_name = #{record.payeeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderNo != null" >
+        order_no = #{record.orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.settleType != null" >
+        settle_type = #{record.settleType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.settleDate != null" >
+        settle_date = #{record.settleDate,jdbcType=DATE},
+      </if>
+      <if test="record.finishTime != null" >
+        finish_time = #{record.finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_revenue_trans_record
+    set id = #{record.id,jdbcType=INTEGER},
+      payer_code = #{record.payerCode,jdbcType=VARCHAR},
+      payer_name = #{record.payerName,jdbcType=VARCHAR},
+      payee_code = #{record.payeeCode,jdbcType=VARCHAR},
+      payee_name = #{record.payeeName,jdbcType=VARCHAR},
+      order_no = #{record.orderNo,jdbcType=VARCHAR},
+      amount = #{record.amount,jdbcType=DOUBLE},
+      settle_type = #{record.settleType,jdbcType=VARCHAR},
+      settle_date = #{record.settleDate,jdbcType=DATE},
+      finish_time = #{record.finishTime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsRevenueTransRecord" >
+    update bs_revenue_trans_record
+    <set >
+      <if test="payerCode != null" >
+        payer_code = #{payerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payerName != null" >
+        payer_name = #{payerName,jdbcType=VARCHAR},
+      </if>
+      <if test="payeeCode != null" >
+        payee_code = #{payeeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payeeName != null" >
+        payee_name = #{payeeName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="settleType != null" >
+        settle_type = #{settleType,jdbcType=VARCHAR},
+      </if>
+      <if test="settleDate != null" >
+        settle_date = #{settleDate,jdbcType=DATE},
+      </if>
+      <if test="finishTime != null" >
+        finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsRevenueTransRecord" >
+    update bs_revenue_trans_record
+    set payer_code = #{payerCode,jdbcType=VARCHAR},
+      payer_name = #{payerName,jdbcType=VARCHAR},
+      payee_code = #{payeeCode,jdbcType=VARCHAR},
+      payee_name = #{payeeName,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DOUBLE},
+      settle_type = #{settleType,jdbcType=VARCHAR},
+      settle_date = #{settleDate,jdbcType=DATE},
+      finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectLastSettleDate" resultType="java.util.Date" >
+    SELECT settle_date FROM bs_revenue_trans_record WHERE status='SUCCESS' AND payee_code ='ZAN' ORDER BY id DESC LIMIT 0, 1
+  </select>
+	
+  <select id="selectLastSettleDateByCode" parameterType="map" resultType="java.util.Date" >
+    SELECT settle_date FROM bs_revenue_trans_record WHERE status='SUCCESS' AND settle_type = 'REPAY_REVENUE'
+    <if test="partnerCode != null" >
+        AND payee_code = #{partnerCode,jdbcType=VARCHAR}
+    </if>
+    ORDER BY id DESC LIMIT 0, 1
+  </select>	
+  
+  <select id="selectYesRevenueTransRecord" parameterType="map" resultMap="BaseResultMap">
+  	<![CDATA[
+  			SELECT a.* FROM bs_revenue_trans_record a 
+  			WHERE a.payee_code = #{partnerCode}
+  			and a.settle_date >= #{begin}
+  			and a.settle_date <= #{end}
+  			and a.settle_type = #{type}
+    ]]> 
+  </select>
+
+  <resultMap id="DafyRevenueSelfForCheckVOMap" type="com.pinting.business.model.vo.DafyRevenueSelfForCheckVO">
+    <result column="partner_code" property="partner_code" jdbcType="VARCHAR"/>
+    <result column="trans_type" property="trans_type" jdbcType="VARCHAR"/>
+    <result column="partner_business_flag" property="partner_business_flag" jdbcType="VARCHAR"/>
+    <result column="amount" property="amount" jdbcType="DOUBLE"/>
+    <result column="order_no" property="order_no" jdbcType="VARCHAR"/>
+    <result column="settle_date" property="settle_date" jdbcType="TIMESTAMP"/>
+    <result column="create_time" property="create_time" jdbcType="TIMESTAMP"/>
+    <result column="finish_time" property="finish_time" jdbcType="TIMESTAMP"/>
+    <result column="channel" property="channel" jdbcType="VARCHAR"/>
+    <result column="pay_type" property="pay_type" jdbcType="VARCHAR"/>
+  </resultMap>
+  <select id="selectForCheck" parameterType="map" resultMap="DafyRevenueSelfForCheckVOMap">
+    SELECT '云贷' AS partner_code, a.settle_type AS trans_type, a.amount, a.order_no, a.settle_date, a.create_time, a.finish_time, 'BAOFOO' AS channel, '商户划拨' AS pay_type
+    FROM bs_revenue_trans_record a WHERE a.payee_code = 'YUN_DAI_SELF' AND DATE(a.finish_time) = DATE(#{time}) AND a.`status` = 'SUCCESS' AND a.settle_type = 'REPAY_REVENUE'
+    LIMIT #{start}, #{numPerPage}
+  </select>
+
+	
+  <resultMap id="ZsdRevenueForCheckVOMap" type="com.pinting.business.model.vo.ZsdRevenueForCheckVO">
+    <result column="partner_code" property="partner_code" jdbcType="VARCHAR"/>
+    <result column="trans_type" property="trans_type" jdbcType="VARCHAR"/>
+    <result column="amount" property="amount" jdbcType="DOUBLE"/>
+    <result column="order_no" property="order_no" jdbcType="VARCHAR"/>
+    <result column="settle_date" property="settle_date" jdbcType="TIMESTAMP"/>
+    <result column="create_time" property="create_time" jdbcType="TIMESTAMP"/>
+    <result column="finish_time" property="finish_time" jdbcType="TIMESTAMP"/>
+    <result column="channel" property="channel" jdbcType="VARCHAR"/>
+    <result column="pay_type" property="pay_type" jdbcType="VARCHAR"/>
+  </resultMap>
+  <select id="selectForZsdCheck" parameterType="map" resultMap="ZsdRevenueForCheckVOMap">
+    SELECT '赞时贷' AS partner_code, a.settle_type AS trans_type, a.amount, a.order_no, a.settle_date, a.create_time, a.finish_time, '宝付' AS channel, '商户划拨' AS pay_type
+    FROM bs_revenue_trans_record a WHERE a.payee_code = 'ZSD' AND DATE(a.finish_time) = DATE(#{time}) AND a.`status` = 'SUCCESS' AND a.settle_type = 'REPAY_REVENUE'
+    LIMIT #{start}, #{numPerPage}
+  </select>
+
+  <!-- 成功七贷营收对账单 -->
+  <select id="selectForSevenCheck" parameterType="map" resultMap="DafyRevenueSelfForCheckVOMap">
+    SELECT '7贷' AS partner_code, a.settle_type AS trans_type, a.amount, a.order_no, a.settle_date, a.create_time, a.finish_time, 'BAOFOO' AS channel, '商户划拨' AS pay_type
+    FROM bs_revenue_trans_record a WHERE a.payee_code = '7_DAI_SELF' AND DATE(a.finish_time) = DATE(#{time}) AND a.`status` = 'SUCCESS' AND a.settle_type = 'REPAY_REVENUE'
+    LIMIT #{start}, #{numPerPage}
+  </select>
+</mapper>

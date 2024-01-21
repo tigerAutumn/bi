@@ -1,0 +1,60 @@
+#Html("begin")
+#Head("begin","港湾资讯,币港湾,币港湾官网","币港湾官网，国资背景安心收益，为您提供互联网金融服务，是优质的互联网金融服务平台。")
+#Title("港湾资讯【币港湾官网】")
+#LoadJS("resources/micro2.0/scripts/six")
+#LoadCSS("resources/micro2.0/styles/default")
+#LoadCSS("/resources/micro2.0/styles/platform/information.min")
+#WeChatShare()
+#Head("end")
+<body>
+    <input type="hidden" id="APP_ROOT_PATH" value="$!env.getWebURL('')"/>
+    <input type="hidden" id="qianbao" name="qianbao" value="$!qianbao" />
+    <input type="hidden" id="page" name="page" value="1" />
+    <input type="hidden" id="totalCount" name="totalCount" value="$!count" />
+    <input type="hidden" id="agentViewFlag" name="agentViewFlag" value="$!agentViewFlag">
+	<!-- 头部 -->
+	<div class="header">
+		<a class="header_arrow" href="javascript:history.go(-1)"></a>
+		<h1 class="heade_ft color_bg">港湾资讯</h1>
+	</div>
+    <div class="main" id="id_gwinfo">
+    	<ul class="main_nav">
+    		<li class="main_nav_child main_nav_active" onclick="clickConpanyDynamic()">
+    			<span class="oration_name">公司动态</span><span class="main_nav_border" style="display:block;"><span>
+    		</li>
+    		<li class="main_nav_child" onclick="clickNews()">
+                <span class="oration_name">媒体报道</span><span class="main_nav_border"><span>
+    		</li>
+    		<li class="main_nav_child" onclick="clickWfansActivity()">
+                <span class="oration_name">湾粉活动</span><span class="main_nav_border"><span>
+    		</li>
+    	</ul>
+    	<div class="main_box">
+			#foreach($!data in $!dataGrid)
+				<div class="main_content" onclick='go_detail($!data.id, "$!data.type")'>
+					<div class="info_img"><img class="info_img_content" src="$!data.subjectImg" alt=""/></div>
+					<div class="info_title">
+						<span class="info_title_txt">
+							#if("$!data.type" == "NEWS")
+								【媒体报道】$!data.subject
+							#elseif("$!data.type" == "COMPANY_DYNAMIC")
+								【公司动态】$!data.subject
+							#elseif("$!data.type" == "WFANS_ACTIVITY")
+								【湾粉活动】$!data.subject
+							#else
+								$!data.subject
+							#end
+						</span>
+					</div>
+					<div class="info_time"><span class="info_time_img"></span>$!date.formatYYYYMMDD($!data.publishTime)</div>
+				</div>
+			#end    
+		</div>
+	</div>
+	<div id="info_load" class="info_load">
+		<span class="info_load_line info_load_right"></span>查看更多
+		<span class="info_load_line info_load_left"></span>
+	</div>	
+#LoadJS("/resources/micro2.0/scripts/platform/gw_info")
+</body>
+#Html("end")

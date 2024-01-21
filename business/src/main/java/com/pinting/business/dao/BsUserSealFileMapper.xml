@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pinting.business.dao.BsUserSealFileMapper" >
+  <resultMap id="BaseResultMap" type="com.pinting.business.model.BsUserSealFile" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_src" property="userSrc" jdbcType="VARCHAR" />
+    <result column="agreement_no" property="agreementNo" jdbcType="VARCHAR" />
+    <result column="src_address" property="srcAddress" jdbcType="VARCHAR" />
+    <result column="file_address" property="fileAddress" jdbcType="VARCHAR" />
+    <result column="seal_type" property="sealType" jdbcType="VARCHAR" />
+    <result column="relative_info" property="relativeInfo" jdbcType="VARCHAR" />
+    <result column="seal_status" property="sealStatus" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, user_src, agreement_no, src_address, file_address, seal_type, relative_info, 
+    seal_status, note, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pinting.business.model.BsUserSealFileExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bs_user_seal_file
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bs_user_seal_file
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bs_user_seal_file
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pinting.business.model.BsUserSealFileExample" >
+    delete from bs_user_seal_file
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pinting.business.model.BsUserSealFile" >
+    insert into bs_user_seal_file (id, user_id, user_src, 
+      agreement_no, src_address, file_address, 
+      seal_type, relative_info, seal_status, 
+      note, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userSrc,jdbcType=VARCHAR}, 
+      #{agreementNo,jdbcType=VARCHAR}, #{srcAddress,jdbcType=VARCHAR}, #{fileAddress,jdbcType=VARCHAR}, 
+      #{sealType,jdbcType=VARCHAR}, #{relativeInfo,jdbcType=VARCHAR}, #{sealStatus,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.pinting.business.model.BsUserSealFile" >
+    insert into bs_user_seal_file
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userSrc != null" >
+        user_src,
+      </if>
+      <if test="agreementNo != null" >
+        agreement_no,
+      </if>
+      <if test="srcAddress != null" >
+        src_address,
+      </if>
+      <if test="fileAddress != null" >
+        file_address,
+      </if>
+      <if test="sealType != null" >
+        seal_type,
+      </if>
+      <if test="relativeInfo != null" >
+        relative_info,
+      </if>
+      <if test="sealStatus != null" >
+        seal_status,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userSrc != null" >
+        #{userSrc,jdbcType=VARCHAR},
+      </if>
+      <if test="agreementNo != null" >
+        #{agreementNo,jdbcType=VARCHAR},
+      </if>
+      <if test="srcAddress != null" >
+        #{srcAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="fileAddress != null" >
+        #{fileAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="sealType != null" >
+        #{sealType,jdbcType=VARCHAR},
+      </if>
+      <if test="relativeInfo != null" >
+        #{relativeInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="sealStatus != null" >
+        #{sealStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pinting.business.model.BsUserSealFileExample" resultType="java.lang.Integer" >
+    select count(*) from bs_user_seal_file
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bs_user_seal_file
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userSrc != null" >
+        user_src = #{record.userSrc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agreementNo != null" >
+        agreement_no = #{record.agreementNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.srcAddress != null" >
+        src_address = #{record.srcAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileAddress != null" >
+        file_address = #{record.fileAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sealType != null" >
+        seal_type = #{record.sealType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relativeInfo != null" >
+        relative_info = #{record.relativeInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sealStatus != null" >
+        seal_status = #{record.sealStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bs_user_seal_file
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      user_src = #{record.userSrc,jdbcType=VARCHAR},
+      agreement_no = #{record.agreementNo,jdbcType=VARCHAR},
+      src_address = #{record.srcAddress,jdbcType=VARCHAR},
+      file_address = #{record.fileAddress,jdbcType=VARCHAR},
+      seal_type = #{record.sealType,jdbcType=VARCHAR},
+      relative_info = #{record.relativeInfo,jdbcType=VARCHAR},
+      seal_status = #{record.sealStatus,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pinting.business.model.BsUserSealFile" >
+    update bs_user_seal_file
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userSrc != null" >
+        user_src = #{userSrc,jdbcType=VARCHAR},
+      </if>
+      <if test="agreementNo != null" >
+        agreement_no = #{agreementNo,jdbcType=VARCHAR},
+      </if>
+      <if test="srcAddress != null" >
+        src_address = #{srcAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="fileAddress != null" >
+        file_address = #{fileAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="sealType != null" >
+        seal_type = #{sealType,jdbcType=VARCHAR},
+      </if>
+      <if test="relativeInfo != null" >
+        relative_info = #{relativeInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="sealStatus != null" >
+        seal_status = #{sealStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pinting.business.model.BsUserSealFile" >
+    update bs_user_seal_file
+    set user_id = #{userId,jdbcType=INTEGER},
+      user_src = #{userSrc,jdbcType=VARCHAR},
+      agreement_no = #{agreementNo,jdbcType=VARCHAR},
+      src_address = #{srcAddress,jdbcType=VARCHAR},
+      file_address = #{fileAddress,jdbcType=VARCHAR},
+      seal_type = #{sealType,jdbcType=VARCHAR},
+      relative_info = #{relativeInfo,jdbcType=VARCHAR},
+      seal_status = #{sealStatus,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="querySignRepeatData" resultMap="BaseResultMap" >
+	SELECT
+		*
+	FROM
+		bs_user_seal_file
+	WHERE
+		seal_status != 'SUCC'
+		<if test="type != null and type != '' and type == 'LOAN_AGREEMENT' " >
+			AND seal_type = 'LOAN_AGREEMENT'  AND user_src = 'YUN_DAI_SELF'  
+		</if>
+		<if test="type != null and type != '' and type == 'SEVEN_DAI_SELF_LOAN_AGREEMENT' " >
+			AND seal_type = 'LOAN_AGREEMENT'  AND user_src = '7_DAI_SELF'  
+		</if>
+		<if test="type != null and type != '' and type == 'BORROW_SERVICES' " >
+			AND seal_type = 'BORROW_SERVICES' AND user_src = 'ZAN'  
+		</if>
+		<if test="type != null and type != '' and type == 'ZSD_BORROW_SERVICES' " >
+			AND seal_type = 'BORROW_SERVICES' AND user_src = 'ZSD'  
+		</if>
+		<if test="type == null or type == '' " >
+			AND (
+			(seal_type = 'BORROW_SERVICES' AND user_src = 'ZAN') OR
+			(seal_type = 'BORROW_SERVICES' AND user_src = 'ZSD')  OR
+			(seal_type = 'LOAN_AGREEMENT'  AND user_src = 'YUN_DAI_SELF' ) OR
+			(seal_type = 'LOAN_AGREEMENT'  AND user_src = '7_DAI_SELF' )
+			)
+		</if>
+	ORDER BY id DESC
+	LIMIT #{start,jdbcType=INTEGER},#{numPerPage,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectMaxId" resultType="java.lang.Integer" >
+	SELECT
+		IFNULL(max(id),0)
+	FROM
+		bs_user_seal_file
+	WHERE
+		seal_status != 'SUCC'
+	AND ((seal_type = 'LOAN_AGREEMENT'
+				AND user_src in ('YUN_DAI_SELF','7_DAI_SELF'))
+		OR seal_type in ('ZSD_BORROW_SERVICES', 'BORROW_SERVICES'))
+	AND create_time &lt; DATE_ADD(now(), Interval -1 hour)
+  </select>
+  
+  <select id="selectRepeatSendList" resultMap="BaseResultMap" >
+	SELECT
+		<include refid="Base_Column_List" />
+	FROM
+		bs_user_seal_file
+	WHERE
+		seal_status != 'SUCC'
+	AND id &lt; #{id,jdbcType=INTEGER}
+	AND ((seal_type = 'LOAN_AGREEMENT'
+				AND user_src in ('YUN_DAI_SELF','7_DAI_SELF'))
+		OR seal_type in ('ZSD_BORROW_SERVICES', 'BORROW_SERVICES'))
+	ORDER BY id DESC
+	LIMIT #{selectNum,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countSignRepeatData" resultType="java.lang.Integer" >
+	SELECT
+		COUNT(id)
+	FROM
+		bs_user_seal_file
+	WHERE
+	seal_status != 'SUCC'
+	<if test="type != null and type != '' and type == 'LOAN_AGREEMENT' " >
+		AND seal_type = 'LOAN_AGREEMENT'  AND user_src = 'YUN_DAI_SELF'  
+	</if>
+	<if test="type != null and type != '' and type == 'SEVEN_DAI_SELF_LOAN_AGREEMENT' " >
+		AND seal_type = 'LOAN_AGREEMENT'  AND user_src = '7_DAI_SELF'  
+	</if>
+	<if test="type != null and type != '' and type == 'BORROW_SERVICES' " >
+		AND seal_type = 'BORROW_SERVICES' AND user_src = 'ZAN'  
+	</if>
+	<if test="type != null and type != '' and type == 'ZSD_BORROW_SERVICES' " >
+		AND seal_type = 'BORROW_SERVICES' AND user_src = 'ZSD'  
+	</if>
+	<if test="type == null or type == '' " >
+		AND (
+			(seal_type = 'BORROW_SERVICES' AND user_src = 'ZAN') OR
+			(seal_type = 'BORROW_SERVICES' AND user_src = 'ZSD')  OR
+		 (seal_type = 'LOAN_AGREEMENT'  AND user_src = 'YUN_DAI_SELF' ) OR
+		 (seal_type = 'LOAN_AGREEMENT'  AND user_src = '7_DAI_SELF' )
+		)
+	</if>
+	
+  </select>
+
+  <select id="selectAgreementByPartnerLoanId" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    SELECT
+      a.agreement_no
+    FROM bs_user_seal_file a, ln_loan b
+    WHERE a.relative_info = b.id AND b.partner_loan_id = #{partnerLoanId} AND a.user_src = #{userSrc}
+    AND a.seal_type = 'LOAN_AGREEMENT'
+  </select>
+  
+</mapper>

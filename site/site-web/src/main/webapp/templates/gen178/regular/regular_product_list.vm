@@ -1,0 +1,362 @@
+#Html("begin")
+#GenHead("begin","互联网金融产品，币港湾，币港湾官网","欢迎了解币港湾产品,币港湾官网为您提供多种互联网金融产品,是优质的互联网金融服务平台。")
+#Title("产品列表,互联网金融产品【币港湾官网】")
+#LoadGenCSS("/resources/gen178/styles/product/product_list")
+#LoadGenJS("/resources/gen178/scripts/common/common")
+#LoadGenJS("/resources/gen178/scripts/regular/product_list")
+#GenHead("end")
+<body>
+	<!--header -s-->
+	#Gen178Header("product")
+	<!--header -e-->
+	
+	## 表单基本信息 -s
+	<form id="generalForm" method="post" action="$!env.get('gen.server.web')/gen178/regular/list">
+        <input type="hidden" name="agentViewFlag" value="$!agentViewFlag">
+		<input type="hidden" name="status" value="$!status" class="status"/>
+		<input type="hidden" name="term" value="$!term" class="term"/>
+		<input type="hidden" name="page" value="$!page" class="page"/>
+		<input type="hidden" name="returnType" value="$!returnType" class="returnType"/>
+		<input type="hidden" name="totalCount" value="$!totalCount" class="totalCount"/>
+	</form>
+	<input type="hidden" name="totalPages" value="$!totalPages" class="totalPages"/>
+	## 表单基本信息 -e
+	
+	
+	<!-- content -s -->
+	<div class="main">
+		##<div class="product_banner" style="background-image:url($!env.get('gen.server.web')/resources/gen178/images/regular/product_list_banner_01.jpg);"></div>##
+		#if("$!imgPath" != "") 
+    		<div class="product_banner" style="background-image:url($!env.get('gen.server.web')/$!imgPath);">
+				#if($!bannerUrl && $!bannerUrl != "")
+                    <a href="$!bannerUrl" style="display:block; width:100%; height:100%;" target="_blank"></a>
+				#else
+                    <a href="javascript:void(0)" style="cursor: default;display:block; width:100%; height:100%;"></a>
+				#end
+    		</div>
+    	#else
+
+    	#end
+		
+		<div class="main_center">
+			<div class="mc_top">
+				<span class="mctspan">计划状态：</span>
+				#if("$!status" == "")
+					<a href="javascript:void(0)" class="mc_at" onclick="changeStatusSearch()">全部</a>
+					<a href="javascript:void(0)" class="mct_a" onclick="changeStatusSearch(6)">可加入</a>
+				#else
+					<a href="javascript:void(0)" class="mct_a" onclick="changeStatusSearch()">全部</a>
+					<a href="javascript:void(0)" class="mc_at" onclick="changeStatusSearch(6)">可加入</a>
+				#end
+			</div>
+			<div class="mc_top">
+				<span class="mctspan">产品期限：</span>
+				<a href="javascript:void(0)" onclick="changeTermSearch('')" #if("$!term" == "") class="mc_at" #else class="mct_a" #end>全部</a>
+				<a href="javascript:void(0)" onclick="changeTermSearch('0-60')" #if("$!term" == "0-60") class="mc_at" #else class="mct_a" #end>0-60天</a>
+				<a href="javascript:void(0)" onclick="changeTermSearch('61-200')" #if("$!term" == "61-200") class="mc_at" #else class="mct_a" #end>61-200天</a>
+				<a href="javascript:void(0)" onclick="changeTermSearch('200_over')" #if("$!term" == "200_over") class="mc_at" #else class="mct_a" #end>200天以上</a>
+			</div>
+			
+			<div class="mc_top">
+				<span class="mctspan">还款方式：</span>
+				<a href="javascript:void(0)" onclick="changeReturnType('')" #if("$!returnType" == "") class="mc_at" #else class="mct_a" #end>全部</a>
+				<a href="javascript:void(0)" onclick="changeReturnType('FINISH_RETURN_ALL')" #if("$!returnType" == "FINISH_RETURN_ALL") class="mc_at" #else class="mct_a" #end>到期还本付息</a>
+				<a href="javascript:void(0)" onclick="changeReturnType('AVERAGE_CAPITAL_PLUS_INTEREST')" #if("$!returnType" == "AVERAGE_CAPITAL_PLUS_INTEREST") class="mc_at" #else class="mct_a" #end>等额本息</a>
+			</div>
+		</div>
+		<div class="main_down">
+			##foreach($index in [0..$!rows])
+			#foreach($!prosEachRow in $!dataGrid)	## 每一行
+                <ul class="md_ul">
+					#foreach($!pro in $!prosEachRow)
+						#if("$!pro.flag" == "buy")
+							<li>
+								<div class="md_card">
+									<div onclick="clickMe($!{pro.id})" style="cursor:pointer;">
+										#if("$!pro.activityType" == "NEW_BUYER")	## 新手标
+                                            <img src="$!env.get('gen.server.web')/resources/gen178/images/regular/regular_index/Novice.png" style="position:absolute;top:-4px;left:-3px;"/>
+										#end
+                    					<div class="md_divone">$!pro.name</div>
+                    					<div class="md_divthr">
+											#if($!pro.interestRatesTagContent)
+												#if($!pro.remindTagContent)
+                                                    <div class="md_divthr_left">
+														$!{pro.rate}<span class="md_thrspan">%</span>
+                                                    </div>
+                                                    <div class="md_divthr_right">
+                                                        <p class="activity_tag"><span>$!pro.remindTagContent</span></p>
+                                                        <p class="redpack_tag">$!pro.interestRatesTagContent</p>
+                                                    </div>
+												#else
+                                                    <div class="md_divthr_left">
+														$!{pro.rate}<span class="md_thrspan">%</span>
+                                                    </div>
+                                                    <div class="md_divthr_right">
+                                                        <p class="redpack_tag redpack_tag_middle">$!pro.interestRatesTagContent</p>
+                                                    </div>
+												#end
+											#elseif($!pro.remindTagContent)
+												#if($!pro.interestRatesTagContent)
+                                                    <div class="md_divthr_left">
+														$!{pro.rate}<span class="md_thrspan">%</span>
+                                                    </div>
+                                                    <div class="md_divthr_right">
+                                                        <p class="activity_tag"><span>$!pro.remindTagContent</span></p>
+                                                        <p class="redpack_tag">$!pro.interestRatesTagContent</p>
+                                                    </div>
+												#else
+                                                    <div class="md_divthr_left">
+														$!{pro.rate}<span class="md_thrspan">%</span>
+                                                    </div>
+                                                    <div class="md_divthr_right">
+                                                        <p class="activity_tag activity_tag_middle"><span>$!pro.remindTagContent</span></p>
+                                                    </div>
+												#end
+											#else
+												$!{pro.rate}<span class="md_thrspan">%</span>
+											#end
+                                            <div class="clearfix"></div>
+										</div>
+                    					<div class="md_divtwo">预期年化收益</div>
+                    					<div class="md_divfiv">
+    										#if($!{pro.propertySymbol} == "ZAN")
+                                                <div class="md_fivspan"><strong>$!{pro.dayTerm}</strong>个月内</div>
+    										#else
+                                                <div class="md_fivspan"><strong>$!{pro.term}</strong>天期限</div>
+    										#end
+                                            <div class="md_fivspan"><strong>$string.replace($!money.format($!{pro.minInvestAmount}),".00","")</strong>元起投</div>
+        								</div>
+                    					<div class="md_divsix">
+    										<div class="md_six">
+                                                <div class="md_bg">
+    												<div class="md_sixspan" style="width:$!number.format('0',$!{pro.progress})%"></div>
+    											</div>
+    										</div>
+    									</div>
+                    					<div class="md_sev">
+                                            <p>
+    											进度：<span style="color: #ffc33c;">$string.replace($!money.format($!{pro.currTotalAmount}),".00","")</span>
+                                            		/$string.replace($!money.format($!{pro.maxTotalAmount}),".00","")
+    											<i style="color: #ffc33c;">$!number.format('0',$!{pro.progress})%</i>
+    										</p>
+    									</div>
+                    					<div class="md_btn">
+        									<a href="$!env.get('gen.server.web')/gen178/regular/index?id=$!{pro.id}&agentViewFlag=$!agentViewFlag" class="md_a">立即加入</a>
+                                        </div>
+									</div>
+								</div>
+            				</li>
+						#elseif("$!pro.flag" == "countdown")
+							<li>
+                                <div class="md_card">
+                                    <div onclick="clickMe($!{pro.id})" style="cursor:pointer;">
+                                        <div class="md_divone">$!pro.name</div>
+                                        <div class="md_divthr">
+											#if($!pro.interestRatesTagContent)
+												#if($!pro.remindTagContent)
+                                                    <div class="md_divthr_left">
+														$!{pro.rate}<span class="md_thrspan">%</span>
+                                                    </div>
+                                                    <div class="md_divthr_right">
+                                                        <p class="activity_tag"><span>$!pro.remindTagContent</span></p>
+                                                        <p class="redpack_tag">$!pro.interestRatesTagContent</p>
+                                                    </div>
+												#else
+                                                    <div class="md_divthr_left">
+														$!{pro.rate}<span class="md_thrspan">%</span>
+                                                    </div>
+                                                    <div class="md_divthr_right">
+                                                        <p class="redpack_tag redpack_tag_middle">$!pro.interestRatesTagContent</p>
+                                                    </div>
+												#end
+											#elseif($!pro.remindTagContent)
+												#if($!pro.interestRatesTagContent)
+                                                    <div class="md_divthr_left">
+														$!{pro.rate}<span class="md_thrspan">%</span>
+                                                    </div>
+                                                    <div class="md_divthr_right">
+                                                        <p class="activity_tag"><span>$!pro.remindTagContent</span></p>
+                                                        <p class="redpack_tag">$!pro.interestRatesTagContent</p>
+                                                    </div>
+												#else
+                                                    <div class="md_divthr_left">
+														$!{pro.rate}<span class="md_thrspan">%</span>
+                                                    </div>
+                                                    <div class="md_divthr_right">
+                                                        <p class="activity_tag activity_tag_middle"><span>$!pro.remindTagContent</span></p>
+                                                    </div>
+												#end
+											#else
+												$!{pro.rate}<span class="md_thrspan">%</span>
+											#end
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="md_divtwo">预期年化收益</div>
+                                        <div class="md_divfiv">
+											#if($!{pro.propertySymbol} == "ZAN")
+                                                <div class="md_fivspan"><strong>$!{pro.dayTerm}</strong>个月内</div>
+											#else
+                                                <div class="md_fivspan"><strong>$!{pro.term}</strong>天期限</div>
+											#end
+                                            <div class="md_fivspan">
+                                                <strong>$string.replace($!money.format($!{pro.minInvestAmount}),".00",
+													"")</strong>元起投
+                                            </div>
+                                        </div>
+                                        <div class="md_divsix">
+                                            <div class="md_six">
+                                                <span class="md_sixspan" style="width:0%"></span>
+                                            </div>
+                                        </div>
+                                        <div class="md_sev">
+                                            进度：<span>0</span>
+                                            /$string.replace($!money.format($!{pro.maxTotalAmount}),".00","")
+                                            <i>0%</i>
+                                        </div>
+                                    </div>
+                                    <div class="md_btn">
+                                        <a href="$!env.get(
+											'gen.server.web')/gen178/regular/index?id=$!{pro.id}&agentViewFlag=$!agentViewFlag"
+                                           class="md_a">
+											#if($!date.isSameDay($!date.parseDateTime("$!pro.startTime"), $!now))
+                                                今日$!date.formatDateTime($!date.parseDateTime("$!pro.startTime"),
+												"HH时mm分")开始
+											#elseif($!date.isSameDay($!date.parseDateTime(
+												"$!pro.startTime"), $!tomorrow))
+                                                明日$!date.formatDateTime($!date.parseDateTime("$!pro.startTime"),
+												"HH时mm分")开始
+											#else
+												$!date.formatDateTime($!date.parseDateTime("$!pro.startTime"),
+													"MM月dd日HH时mm分")开始
+											#end
+                                        </a>
+                                    </div>
+								</div>
+                            </li>
+						#elseif("$!pro.flag" == "finish")
+							<li>
+                                <div class="md_card pro_finish">
+									<div onclick="clickMe($!{pro.id})" style="cursor:pointer;">
+        								#if("$!pro.activityType" == "NEW_BUYER")	## 新手标
+        									<img src="$!env.get('gen.server.web')/resources/gen178/images/regular/regular_index/Novice.png" style="position:absolute;top:-4px;left:-3px;"/>
+        								#end
+                    					<div class="md_divone">$!pro.name</div>
+                                        <div class="md_divthr" style="color: #666;">
+											#if($!pro.interestRatesTagContent)
+												#if($!pro.remindTagContent)
+                                                    <div class="md_divthr_left">
+														$!{pro.rate}<span class="md_thrspan">%</span>
+                                                    </div>
+                                                    <div class="md_divthr_right">
+                                                        <p class="activity_tag"><span>$!pro.remindTagContent</span></p>
+                                                        <p class="redpack_tag">$!pro.interestRatesTagContent</p>
+                                                    </div>
+												#else
+                                                    <div class="md_divthr_left">
+														$!{pro.rate}<span class="md_thrspan">%</span>
+                                                    </div>
+                                                    <div class="md_divthr_right">
+                                                        <p class="redpack_tag redpack_tag_middle">$!pro.interestRatesTagContent</p>
+                                                    </div>
+												#end
+											#elseif($!pro.remindTagContent)
+												#if($!pro.interestRatesTagContent)
+                                                    <div class="md_divthr_left">
+														$!{pro.rate}<span class="md_thrspan">%</span>
+                                                    </div>
+                                                    <div class="md_divthr_right">
+                                                        <p class="activity_tag"><span>$!pro.remindTagContent</span></p>
+                                                        <p class="redpack_tag">$!pro.interestRatesTagContent</p>
+                                                    </div>
+												#else
+                                                    <div class="md_divthr_left">
+														$!{pro.rate}<span class="md_thrspan">%</span>
+                                                    </div>
+                                                    <div class="md_divthr_right">
+                                                        <p class="activity_tag activity_tag_middle"><span>$!pro.remindTagContent</span></p>
+                                                    </div>
+												#end
+											#else
+												$!{pro.rate}<span class="md_thrspan">%</span>
+											#end
+                                            <div class="clearfix"></div>
+                                        </div>
+                    					<div class="md_divtwo">预期年化收益</div>
+                    					<div class="md_divfiv">
+    										#if($!{pro.propertySymbol} == "ZAN")
+                                                <div class="md_fivspan"><strong>$!{pro.dayTerm}</strong>个月内</div>
+        									#else
+                                                <div class="md_fivspan"><strong>$!{pro.term}</strong>天期限</div>
+        									#end
+                                            <div class="md_fivspan"><strong>$string.replace($!money.format($!{pro.minInvestAmount}),".00","")</strong>元起投</div>
+    									</div>
+										<div class="md_divsix">
+    										<div class="md_six">
+    										</div>
+    									</div>
+										
+                    					<div class="md_sev">
+                                            <p>
+												#set($maxTotal = $!pro.maxTotalAmount/100000000)
+	                                            #set($currTotal = $!pro.currTotalAmount/100000000)	
+	                                            #if($!pro.maxTotalAmount>100000000)
+	                                            	$string.replace($!money.format($!{pro.currTotalAmount}),".00","")
+	                                            #else
+	                                                $string.replace($!money.format($!{pro.currTotalAmount}),".00","")/$string.replace($!money.format($!{pro.maxTotalAmount}),".00","")
+	                                            #end
+                                                <i><strong>已完成</strong></i>
+    										</p>
+    									</div>
+    									<div class="md_btn md_finish_btn">
+            								<a href="$!env.get('gen.server.web')/gen178/regular/index?id=$!{pro.id}&agentViewFlag=$!agentViewFlag" class="md_a">查看详情</a>
+                                        </div>
+    								</div>
+								</div>
+            				</li>
+						#end
+					#end
+				</ul>
+			#end
+		</div>
+	</div>
+	<!--fenye-->
+    <div class="fenye">
+        <div class="fenye_wrap">
+			#set($nextPage = $page + 1)
+			#set($nextSecondPage = $page + 2)
+			#set($prePage = $page - 1)
+			#set($preSecondPage = $page - 2)
+			#set($totalPage = $totalPages)
+			#if($!totalPage > 1)
+	            <a href="javascript:void(0)" onclick="prePage(1)" class="fy_l">首页</a>
+	            <a href="javascript:void(0)" onclick="prePage($prePage)" class="fy_ll"></a>
+				#if($!prePage > 0)
+					#if($!preSecondPage > 0 && $!nextPage > $totalPage)
+	                    <a href="javascript:void(0)" onclick="prePage($preSecondPage)" class="fy_c">$!preSecondPage</a>
+					#end
+	                <a href="javascript:void(0)" onclick="prePage($prePage)" class="fy_c">$!prePage</a>
+	                <a href="javascript:void(0)" class="fy_c fy_atpage">$!page</a>
+					#if($!nextPage <= $totalPage)
+	                    <a href="javascript:void(0)" onclick="nextPage($nextPage)" class="fy_c">$!nextPage</a>
+					#end
+				#else
+	                <a href="javascript:void(0)" class="fy_c fy_atpage">$!page</a>
+					#if($!nextPage <= $totalPage)
+	                    <a href="javascript:void(0)" onclick="nextPage($nextPage)" class="fy_c">$!nextPage</a>
+					#end
+					#if($!nextSecondPage <= $totalPage)
+	                    <a href="javascript:void(0)" onclick="nextPage($nextSecondPage)" class="fy_c">$!nextSecondPage</a>
+					#end
+				#end
+	            <a href="javascript:void(0)" onclick="nextPage($nextPage)" class="fy_rr"></a>
+	            <a href="javascript:void(0)" onclick="nextPage($totalPage)" class="fy_r">尾页</a>
+	        #end    
+        </div>
+    </div>
+		
+	<!--footer -s-->
+	#Gen178Footer()
+	<!--footer -e-->
+	
+</body>
+#Html("end")

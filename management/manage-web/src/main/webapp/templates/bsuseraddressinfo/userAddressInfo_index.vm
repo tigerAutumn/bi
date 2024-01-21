@@ -1,0 +1,137 @@
+#LoadJS("resources/js/ajaxfileupload")
+<input type="hidden" id="APP_ROOT_PATH" name="APP_ROOT_PATH" value="$env.getWebURL('')" />
+<form id="pagerForm" method="post" action="#rel#">
+    <input type="hidden" name="pageNum" value="$!pageNum" />
+    <input type="hidden" name="numPerPage" value="$!numPerPage" />
+</form>
+<div class="page unitBox">
+    <div class="pageHeader">
+        <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="$env.getWebURL('/userAddressInfo/getList.htm')" id="myform"  method="post">
+            <input type="hidden" name="pageNum" value="$!pageNum" />
+            <input type="hidden" name="numPerPage" value="$!numPerPage" />
+            <input type="hidden" id="queryDataFlag" name="queryDataFlag" value="QUERYDATA" />
+            <div class="searchBar">
+                <table class="searchContent">
+                    <tr>
+                        <td>
+                            姓名：<input id="userName_search" type="text" name="userName" maxlength="4" value="$!userName" class="clear num" />
+                        </td>
+                        <td>
+                            手机号码：<input id="mobile_search" type="text" name="mobile" maxlength="11" value="$!mobile" class="clear num" />
+                        </td>
+                        <td>
+                            <div class="buttonActive">
+                                <div class="buttonContent">
+                                    <button onclick="searchFunction()" type="button">查询</button>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <button onclick="exp()" type="button">下载模板</button>
+                        </td>
+
+                        <td>
+                            <form>
+                                <input type="file" name="fileField" id="fileField" onclick="this.form.reset();" onchange="fileUpload()">
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="pageContent">
+        <div class="panelBar">
+            <ul class="toolBar">
+                <li><a class="add" href="$env.getWebURL('/userAddressInfo/detailSingle.htm')" target="dialog" mask="true" rel="createBack" height="460" width="720"><span>新增</span></a></li>
+                <li class="line">line</li>
+            </ul>
+        </div>
+        <table class="table" width="1396" layoutH="123">
+            <thead>
+            <tr>
+                <th width="10%">姓名</th>
+                <th width="10%">手机号</th>
+                <th width="45%">默认地址</th>
+                <th width="20%">最后更新时间</th>
+                <th width="15%">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                #foreach($grid in $resultList)
+                <tr target="sid_user" rel="1">
+                    <td>$!grid.userName</td>
+                    <td>$!grid.mobile</td>
+                    <td title="$!grid.consigneeAddress" class="hoverAddress" " style="width: 25%;text-align: center;border: solid 1px #e5e5e5;position: relative;overflow: visible;">
+                        <span style="display: inline-block;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;width:96%;line-height: 21px;">$!grid.consigneeAddress</span>
+                    </td>
+                    <td>$!date.format($!grid.updateTime)</td>
+                    <td>
+                        <a style="color:blue;" title="查看/编辑" target="navtab" rel="createBack" href="$env.getWebURL('/userAddressInfo/detail_review.htm?userId=')$!grid.userId"">查看/编辑</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <a style="color:red;" title="确定删除该用户，将删除用户所有地址信息，是否删除？" target="ajaxTodo" href="$env.getWebURL('/userAddressInfo/deleteSingle.htm?userId=')$!grid.userId">删除</a>
+                    </td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+        <div class="panelBar">
+            <div class="pages">
+                <span>显示</span>
+                <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+                    <option #if("$!numPerPage" == "20") selected #end value="20">20</option>
+                    <option #if("$!numPerPage" == "50") selected #end value="50">50</option>
+                    <option #if("$!numPerPage" == "100") selected #end value="100">100</option>
+                    <option #if("$!numPerPage" == "200") selected #end value="200">200</option>
+                </select>
+                <span>条，共$!count条</span>
+            </div>
+            <div class="pagination" targetType="navTab" totalCount="$!count" numPerPage="$!numPerPage" currentPage="$!pageNum"></div>
+        </div>
+    </div>
+
+</div>
+<script>
+    // 查询
+    function searchFunction(){
+        var url = $("#APP_ROOT_PATH").val() + "/userAddressInfo/getList.htm";
+        $("#myform").attr("action",url);
+        $("#myform").attr("onsubmit","return navTabSearch(this);");
+        $("#myform").submit();
+        $("#myform").submit();
+    }
+
+    // 导入模板下载
+    function exp(){
+        location.href = $("#APP_ROOT_PATH").val() + "/userAddressInfo/downLoadXls.htm";
+    }
+
+    // 数据批量导入
+    function fileUpload(){
+        var url = $("#APP_ROOT_PATH").val() + "/userAddressInfo/readExcel.htm";
+        $.ajaxFileUpload
+        ({
+            url:url,
+            secureuri :false,
+            fileElementId :'fileField',
+            dataType :'json',
+            success : function (data){
+                if(data.statusCode == "200"){
+                    alertMsg.correct("文件读取成功，数据已存库！");
+                    navTab.reload("$env.getWebURL('/userAddressInfo/getList.htm')");
+                }else if(data.statusCode == "300"){
+                    alertMsg.warn("文件格式错误或文件内容为空！");
+                }else if(data.statusCode == "301"){
+                    alertMsg.warn("导入号码格式有误，请检查导入的注册手机号、收件人手机号！");
+                }else if(data.statusCode == "302"){
+                    alertMsg.warn("导入的数据中用户不存在或用户手机号与姓名不一致！");
+                }else if(data.statusCode == "303"){
+                    alertMsg.warn("导入的数据在地址信息表中已存在！");
+                }else{
+                    alertMsg.warn("操作失败！");
+                }
+            }
+        });
+    }
+
+</script>

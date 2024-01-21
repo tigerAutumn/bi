@@ -1,0 +1,92 @@
+-- 代偿协议重新生成
+
+-- 一、sql脚本
+
+-- 代偿明细表添加代偿协议生成状态字段
+ALTER TABLE `ln_compensate_detail`  ADD COLUMN `agreement_generate_status` varchar(11) NULL DEFAULT null COMMENT '代偿协议生成状态 SUCC：已生成 FAIL：未生成' AFTER `status`;
+
+-- 生成代偿协议数据查询开始时间标记（补协议）
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('LATE_AGREEMENT_GRNERATE_START_DATE', '2018-02-22 00:00:01', '生成代偿协议数据查询时间标记（补协议）', '生成代偿协议数据查询时间标记（补协议）');
+
+-- 生成代偿协议数据查询结束时间标记（补协议）
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('LATE_AGREEMENT_GRNERATE_END_DATE', '2018-02-22 00:00:01', '生成代偿协议数据查询时间标记（补协议）', '生成代偿协议数据查询时间标记（补协议）');
+
+-- 生成代偿协议数据查询记录条数（补协议）
+INSERT INTO `bs_sys_config` (`conf_key`, `conf_value`, `name`, `note`) VALUES ('LATE_AGREEMENT_GRNERATE_NUM', 5, '生成代偿协议数据查询记录条数（补协议）', '生成代偿协议数据查询记录条数（补协议）');
+
+-- 代偿协议重新生成重新生成定时
+INSERT INTO `bs_schedule_config` (`job_name`, `job_group`, `job_status`, `cron_expression`, `bean_class`, `method_name`, `bean_id`, `is_concurrent`, `description`, `create_time`, `update_time`) VALUES ('lateAgreementRepeatGenerateTaskTime', 'SCHEDULE', 'STOP', '0 0/5 * * * ? ', 'com.pinting.business.dayend.task.LateAgreementRepeatGenerateTask', 'execute', 'lateAgreementRepeatGenerateTask', 'NO', '代偿协议重新生成', NOW(), NOW());
+
+-- 老数据代偿协议是否生成状态更新
+UPDATE ln_compensate_detail SET agreement_generate_status = 'SUCC', update_time = NOW() 
+WHERE id
+IN (
+	select a.id from
+	(
+		select c.id , b.agreement_type,b.order_no, b.partner_loan_id,b.succ_times, c.compensate_id
+		from 
+		(select a.id, a.order_no from ln_compensate a where a.partner_code in ('7_DAI_SELF', 'YUN_DAI_SELF')) as a,
+		(select b.order_no, count(DISTINCT b.agreement_type) as succ_times, partner_loan_id,b.agreement_type from ln_compensate_agreement_address b 
+			group by b.order_no, b.partner_loan_id having count(DISTINCT b.agreement_type) >= 4) as b,
+		(select id,compensate_id,partner_loan_id from ln_compensate_detail where `status` = 'SUCC' and principal > 0) c
+		where a.order_no = b.order_no
+		and b.partner_loan_id = c.partner_loan_id and a.id = c.compensate_id 
+		order by b.order_no, b.partner_loan_id
+	) as a, (
+		select b.* from (
+			select b.partner_loan_id,b.succ_times, c.compensate_id
+			from 
+			(select a.id, a.order_no from ln_compensate a where a.partner_code in ('7_DAI_SELF', 'YUN_DAI_SELF')) as a,
+			(select b.order_no, count(b.agreement_type) as succ_times, partner_loan_id,b.agreement_type from ln_compensate_agreement_address b 
+				where b.agreement_type = 'DEBT_TRANSFER'
+				group by b.order_no, b.partner_loan_id ) as b,
+			(select id,compensate_id,partner_loan_id from ln_compensate_detail where `status` = 'SUCC' and principal > 0) c
+			where a.order_no = b.order_no
+			and b.partner_loan_id = c.partner_loan_id and a.id = c.compensate_id 
+			order by b.order_no, b.partner_loan_id
+		) as b, (
+			SELECT e.partner_loan_id, count(e.partner_loan_id) as count_c
+				FROM
+					ln_compensate_relation a,
+					ln_deposition_repay_schedule b,
+					bs_user c,
+					ln_loan_relation d,
+					ln_loan e
+				WHERE
+					a.dep_plan_id = b.id
+				AND d.id = a.loan_relation_id
+				AND c.id = d.bs_user_id
+				and d.loan_id = e.id 
+				group by e.partner_loan_id
+		) as c
+		where b.partner_loan_id = c.partner_loan_id and b.succ_times = c.count_c
+	) as b
+	where a.compensate_id = b.compensate_id and a.partner_loan_id = b.partner_loan_id
+);
+
+
+	
+-- 二、配置
+
+-- business placeholder.properties
+## 代偿协议重新生成配置
+cfca.seal.renewReceiptConfirmServiceFee.pdfSrcHtml=https://devh5.bigangwan.com/micro2.0/agreement/renewReceiptConfirmServiceFee4Pdf
+cfca.seal.renewLetterOfCreditConfirmation.pdfSrcHtml=https://devh5.bigangwan.com/micro2.0/agreement/renewLetterOfCreditConfirm4Pdf
+cfca.seal.renewLateRepayCreditorNotice.pdfSrcHtml=https://devh5.bigangwan.com/micro2.0/agreement/renewLateRepayCreditorNotice4Pdf
+cfca.seal.renewLateRepayCreditor.pdfSrcHtml=https://devh5.bigangwan.com/micro2.0/agreement/renewLateRepayCreditor4Pdf
+
+
+-- schedule placeholder.properties
+##云贷代偿协议存储路径
+cfca.agreement.pdfSrcPath=/home/pinting/server/ftp/yundai2/seal/compensate
+##七贷代偿协议存储路径
+cfca.seven.agreement.pdfSrcPath=/home/pinting/server/ftp/7dai/seal/compensate
+## 代偿协议重新生成配置
+cfca.seal.renewReceiptConfirmServiceFee.pdfSrcHtml=https://devh5.bigangwan.com/micro2.0/agreement/renewReceiptConfirmServiceFee4Pdf
+cfca.seal.renewLetterOfCreditConfirmation.pdfSrcHtml=https://devh5.bigangwan.com/micro2.0/agreement/renewLetterOfCreditConfirm4Pdf
+cfca.seal.renewLateRepayCreditorNotice.pdfSrcHtml=https://devh5.bigangwan.com/micro2.0/agreement/renewLateRepayCreditorNotice4Pdf
+cfca.seal.renewLateRepayCreditor.pdfSrcHtml=https://devh5.bigangwan.com/micro2.0/agreement/renewLateRepayCreditor4Pdf
+
+
+
+

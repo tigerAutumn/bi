@@ -1,0 +1,215 @@
+<div class="pageContent">
+	#Hidden("APP_ROOT_PATH",$env.getWebURL(''))
+		#Hidden("id", "$!autoRedPocket.id")
+		<div class="pageFormContent nowrap" layoutH="97">
+			<dl>
+				<dt>
+					红包名称：
+				</dt>
+				<dd>
+					$!autoRedPocket.serialName
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					红包策略：
+				</dt>
+				<dd>
+					$!autoRedPocket.policyType
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					申请人：
+				</dt>
+				<dd>
+					$!autoRedPocket.applicantName
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					预算来源：
+				</dt>
+				<dd>
+					$!autoRedPocket.rpName
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					红包类型：
+                </dt>
+				<dd >
+					#if($!autoRedPocket.useCondition == 'FULL_SUBTRACT')
+					满减包
+					#else
+					$!autoRedPocket.useCondition
+					#end
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					使用条件：
+                </dt>
+				<dd >
+					满$!number.format("0.00", $!autoRedPocket.full)  减  $!number.format("0.00", $!autoRedPocket.subtract) 
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					红包金额：
+                </dt>
+				<dd >
+					$!number.format("0.00", $!autoRedPocket.amount)  元
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					成本比例：
+                </dt>
+				<dd >
+					#set($Integer = 0)
+					#set($termD=$Integer.parseInt($!autoRedPocket.termLimit.split(",")[0]))
+					#if($!termD == "365") #set($newNum = $!autoRedPocket.amount/$!autoRedPocket.full  )#else  #set($newNum = $!autoRedPocket.amount/$!autoRedPocket.full * 365/$!termD ) #end
+					
+					$!number.format("0.000", $!newNum)
+				</dd>
+			</dl>
+			<dl>
+				<dt>
+					限用标的：
+                </dt>
+				<dd >
+					$!autoRedPocket.termLimit 天
+				</dd>
+			</dl>
+			<dl>
+				<dt >
+					数量：
+                </dt>
+				<dd >
+					$!autoRedPocket.total 个
+                </dd>
+			</dl>
+			<dl>
+				<dt>
+					渠道：
+                </dt>
+				<dd  class="content_dd" content="$!autoRedPocket.agentids" title="$!autoRedPocket.agentids">
+					$!autoRedPocket.agentids 
+				</dd>
+			</dl>
+			<dl>
+				<dt >
+					触发条件：
+                </dt>
+                
+				#if($!autoRedPocket.triggertype == 'NEW_USER')
+				
+				<dd >
+					新用户注册
+                </dd>
+				#elseif($!autoRedPocket.triggertype == 'BUY_FULL')
+
+				<dd >
+					购买 $!number.format("0.00",$!autoRedPocket.triggeramountstart)  至  $!number.format("0.00",$!autoRedPocket.triggeramountend)  
+                </dd>
+				#elseif($!autoRedPocket.triggertype == 'INVITE_FULL')
+		
+				<dd >
+					邀请满$!autoRedPocket.triggerinvitenum 人
+                </dd>				
+				#elseif($!autoRedPocket.triggertype == '318_GAME_OLD_USER')
+
+				<dd >
+					318摇一摇老用户
+                </dd>
+				#elseif($!autoRedPocket.triggertype == 'EXCHANGE_4MALL')
+
+				<dd >
+					积分商城兑换
+                </dd>
+                #elseif($!autoRedPocket.triggertype == 'BIRTHDAY_BENEFIT')
+			
+				<dd >
+					生日福利
+                </dd>
+				#else
+
+				<dd >
+					$!autoRedPocket.triggertype
+                </dd>
+				#end 
+
+			</dl>
+			<dl>
+				<dt >
+					触发时间：
+                </dt>
+				<dd >
+					$!date.format($!autoRedPocket.distributetimestart) 至  $!date.format($!autoRedPocket.distributetimeend)  
+                </dd>
+			</dl>
+			<dl>
+				
+				#if($!autoRedPocket.validtermtype == 'AFTER_RECEIVE')
+					
+					
+				<dt >
+					红包有效期：
+                </dt>
+				<dd >
+					发放后 $!autoRedPocket.availabledays 日
+                </dd>
+				
+				#else
+				<dt >
+					红包有效期：
+                </dt>
+				<dd >
+					$!date.formatYYYYMMDD($!autoRedPocket.useTimeStart) 至   $!date.formatYYYYMMDD( $!autoRedPocket.useTimeEnd)
+                </dd>
+				
+				#end
+				
+				
+			</dl>
+			
+			<dl>
+				<dt >
+					红包备注：
+                </dt>
+				<dd >
+					$!autoRedPocket.note 
+                </dd>
+			</dl>
+			<dl>
+				<dt >
+					通知管道：
+                </dt>
+				<dd >
+					#foreach($notify in $!notifyChannel)
+						#if($!notify =='SMS') 短信通知 ；  #elseif($!notify =='WECHAT') 微信通知 ；   #elseif($!notify =='APP') APP通知  #else $!notify #end
+					#end
+                </dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">确定</button></div></div>
+				</li>
+			</ul>
+		</div>
+</div>
+	
+<script >
+	$('.content_dd').each(function(){
+    	var content = $(this).attr('content');
+    	var size = content.length;
+    	if(size > 100) {
+    		var contentStr = content.substr(0, 100);
+    		$(this).html(contentStr + "...");
+    	}
+	});
+    	
+</script>
